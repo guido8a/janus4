@@ -70,7 +70,7 @@
 
     $('.selectpicker').selectpicker({
         style: 'btn-info',
-        size: 4
+        size: 5
     });
 
     var searchRes = [];
