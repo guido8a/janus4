@@ -1,49 +1,13 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
-    <head>
-        <meta name="layout" content="main">
-        <title>ITEMS</title>
+<head>
+    <meta name="layout" content="main">
+    <title>Registro y Mantenimiento de Items</title>
 
-        <asset:javascript src="/jquery/plugins/jstree/jquery.jstree.js"/>
-        <asset:javascript src="/jquery/plugins/jstree/_lib/jquery.cookie.js"/>
-        <asset:javascript src="/jquery/plugins/jquery-validation-1.9.0/jquery.validate.min.js"/>
-        <asset:javascript src="/jquery/plugins/jquery-validation-1.9.0/messages_es.js"/>
-        <asset:javascript src="/jquery/plugins/jgrowl/jquery.jgrowl.js"/>
-
-        %{--<script type="text/javascript" src="${resource(dir: 'js/jquery/plugins/jstree', file: 'jquery.jstree.js')}"></script>--}%
-        %{--<script type="text/javascript" src="${resource(dir: 'js/jquery/plugins/jstree/_lib', file: 'jquery.cookie.js')}"></script>--}%
-        %{--<script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'jquery.validate.min.js')}"></script>--}%
-        %{--<script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'messages_es.js')}"></script>--}%
-        %{--<script src="${resource(dir: 'js/jquery/plugins/jgrowl', file: 'jquery.jgrowl.js')}"></script>--}%
-
-        <asset:stylesheet src="/jquery/plugins/jgrowl/jquery.jgrowl.css"/>
-        <asset:stylesheet src="/jquery/plugins/jgrowl/jquery.jgrowl.customThemes.css"/>
-
-        %{--<link href="${resource(dir: 'js/jquery/plugins/jgrowl', file: 'jquery.jgrowl.css')}" rel="stylesheet"/>--}%
-        %{--<link href="${resource(dir: 'js/jquery/plugins/jgrowl', file: 'jquery.jgrowl.customThemes.css')}" rel="stylesheet"/>--}%
-
-        <g:if test="${janus.Parametros.findByEmpresaLike(message(code: 'ambiente2'))}">
-            <asset:stylesheet src="treeV2.css"/>
-            %{--<link href="${resource(dir: 'css', file: 'treeV2.css')}" rel="stylesheet"/>--}%
-        </g:if>
-        <g:else>
-            %{--<link href="${resource(dir: 'css', file: 'tree.css')}" rel="stylesheet"/>--}%
-            %{--<link href="${resource(dir: 'js/jquery/plugins/jstree/themes/default', file: 'style.css')}" rel="stylesheet"/>--}%
-            <asset:stylesheet src="jquery/plugins/jstree/themes/default/style.css"/>
-        </g:else>
-
-
-
-        %{--<script type="text/javascript" src="${resource(dir: 'js/jquery/css', file: 'jquery.jstree.js')}"></script>--}%
-        %{--<link href="${resource(dir: 'js/jquery/css/bw', file: 'jquery-ui-1.10.2.custom.min.css')}" rel="stylesheet"/>--}%
-        %{--<script src="${resource(dir: 'js/jquery/js', file: 'jquery-ui-1.10.2.custom.min.js')}"></script>--}%
-        %{--<script type="text/javascript" src="${resource(dir: 'js/jquery/plugins/jstree/_lib', file: 'jquery.cookie.js')}"></script>--}%
-        %{--<script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'custom-methods.js')}"></script>--}%
-        %{--<script src="${resource(dir: 'js/jquery/plugins/box/js', file: 'jquery.luz.box.js')}"></script>--}%
-        %{--<link href="${resource(dir: 'js/jquery/plugins/box/css', file: 'jquery.luz.box.css')}" rel="stylesheet"/>--}%
+    <asset:javascript src="/jstree-3.0.8/dist/jstree.min.js"/>
+    <asset:stylesheet src="/jstree-3.0.8/dist/themes/default/style.min.css"/>
 
     <style>
-
     .hide {
         display: none;
     }
@@ -51,989 +15,1203 @@
     .show {
         display: block;
     }
-
     </style>
+</head>
 
-    </head>
+<body>
 
-    <body>
+<div class="span12 btn-group" >
+    <a href="#" id="btnMateriales" class="btn btn-info">
+        <i class="fa fa-box"></i>
+        Materiales
+    </a>
+    <a href="#" id="btnMano" class="btn btn-info ">
+        <i class="fa fa-user"></i>
+        Mano de obra
+    </a>
+    <a href="#" id="btnEquipos" class="btn btn-info ">
+        <i class="fa fa-briefcase"></i>
+        Equipos
+    </a>
 
-        <g:if test="${flash.message}">
-            <div class="span12">
-                <div class="alert ${flash.clase ?: 'alert-info'}" role="status">
-                    <a class="close" data-dismiss="alert" href="#">×</a>
-                    ${flash.message}
-                </div>
-            </div>
-        </g:if>
+    <div class="col-md-4">
+        <div class="input-group input-group-sm">
+            <g:textField name="searchArbol" class="form-control input-sm" placeholder="Buscador"/>
+            <span class="input-group-btn">
+                <a href="#" id="btnSearchArbol" class="btn btn-sm btn-info">
+                    <i class="fa fa-search"></i>&nbsp;
+                </a>
+            </span>
+        </div><!-- /input-group -->
+    </div>
 
-        <div class="span12 btn-group" data-toggle="buttons-radio">
-            <a href="#" id="1" class="btn btn-info toggle active">
-                <i class="icon-folder-open-alt"></i>
-                Materiales <!--grpo--><!--sbgr -> Grupo--><!--dprt -> Subgrupo--><!--item-->
+    <div class="col-md-2 hidden" id="divSearchRes">
+        <span id="spanSearchRes">
+
+        </span>
+
+        <div class="btn-group">
+            <a href="#" class="btn btn-xs btn-default" id="btnNextSearch" title="Siguiente">
+                <i class="fa fa-chevron-down"></i>&nbsp;
             </a>
-            <a href="#" id="2" class="btn btn-info toggle">
-                <i class="icon-user"></i>
-                Mano de obra
+            <a href="#" class="btn btn-xs btn-default" id="btnPrevSearch" title="Anterior">
+                <i class="fa fa-chevron-up"></i>&nbsp;
             </a>
-            <a href="#" id="3" class="btn btn-info toggle">
-                <i class="icon-truck"></i>
-                Equipos
+            <a href="#" class="btn btn-xs btn-default" id="btnClearSearch" title="Limpiar búsqueda">
+                <i class="fa fa-times-circle"></i>&nbsp;
             </a>
-            <form class="form-search" style="width: 700px; margin-left: 380px; margin-top: -30px;">
-                <div class="input-append">
-                    <input type="text" class="input-medium search-query" id="search"/>
-                    <a href='#' class='btn' id="btnSearch"><i class='icon-zoom-in'></i> Buscar</a>
-                </div>
-                <span id="cantRes"></span>
-                <input type="button" class="btn " value="Cerrar todo" onclick="$('#tree').jstree('close_all');">
-            </form>
-
         </div>
+    </div>
 
-        <div id="loading" style="text-align:center;">
-            <img src="${resource(dir: 'images', file: 'spinner_24.gif')}" alt="Cargando..."/>
-
-            <p>Cargando... Por favor espere.</p>
+    <div class="col-md-1" style="float: right">
+        <div class="btn-group">
+            <a href="#" class="btn btn-success" id="btnCollapseAll" title="Cerrar todos los nodos">
+                <i class="fa fa-minus-square"></i> Cerrar todo&nbsp;
+            </a>
         </div>
+    </div>
 
 
-        <div id="treeArea" class="hide">
-        %{--<div id="treeArea">--}%
-            Arbol
-            <div id="tree" class="ui-corner-all"></div>
 
-            <div id="info" class="ui-corner-all"></div>
-        </div>
+</div>
 
-        <div class="modal longModal hide fade" id="modal-tree">
-            <div class="modal-header" id="modalHeader">
-                <button type="button" class="close" data-dismiss="modal">×</button>
+<div id="cargando" class="text-center hide">
+    <img src="${resource(dir: 'images', file: 'spinner.gif')}" alt='Cargando...' width="64px" height="64px"/>
+    <p>Cargando...Por favor espere</p>
+</div>
 
-                <h3 id="modalTitle"></h3>
-            </div>
+<div id="alerta1" class="alert alert-info hide" style="margin-top: 5px">MATERIALES</div>
+<div id="alerta2" class="alert alert-warning hide" style="margin-top: 5px">MANO DE OBRA</div>
+<div id="alerta3" class="alert alert-success hide" style="margin-top: 5px">EQUIPOS</div>
 
-            <div class="modal-body" id="modalBody">
-            </div>
+<div id="tree" class="col-md-8 ui-corner-all" style="overflow: auto"></div>
+<div id="tree2" class="col-md-8 ui-corner-all hide"></div>
+<div id="tree3" class="col-md-8 ui-corner-all hide"></div>
+<div id="info" class="col-md-4 ui-corner-all hide" style="border-style: groove; border-color: #0d7bdc"></div>
 
-            <div class="modal-footer" id="modalFooter">
-            </div>
-        </div>
+<script type="text/javascript">
+    var searchRes = [];
+    var posSearchShow = 0;
+    var tipoSeleccionado = 1;
 
-        <div class="modal hide fade" id="modal-small">
-            <div class="modal-header" id="modalHeaderSmall">
-                <button type="button" class="close" data-dismiss="modal">×</button>
+    var $treeContainer = $("#tree");
+    var $treeContainer2 = $("#tree2");
+    var $treeContainer3 = $("#tree3");
 
-                <h3 id="modalTitleSmall"></h3>
-            </div>
+    $("#btnCollapseAll").click(function () {
 
-            <div class="modal-body" id="modalBodySmall">
-            </div>
+        if(tipoSeleccionado === 1){
+            $("#tree").jstree("close_all");
+            var $scrollTo = $("#root");
+            $("#tree").jstree("deselect_all").jstree("select_node", $scrollTo).animate({
+                scrollTop : $scrollTo.offset().top - $treeContainer.offset().top + $treeContainer.scrollTop() - 50
+            });
+            tipoSeleccionado = 1;
+            recargarMateriales();
+        }else if(tipoSeleccionado === 2){
+            $("#tree2").jstree("close_all");
+            var $scrollTo = $("#root");
+            $("#tree2").jstree("deselect_all").jstree("select_node", $scrollTo).animate({
+                scrollTop : $scrollTo.offset().top - $treeContainer.offset().top + $treeContainer.scrollTop() - 50
+            });
+            tipoSeleccionado = 2;
+            recargaMano();
+        }else{
+            $("#tree3").jstree("close_all");
+            var $scrollTo = $("#root");
+            $("#tree3").jstree("deselect_all").jstree("select_node", $scrollTo).animate({
+                scrollTop : $scrollTo.offset().top - $treeContainer.offset().top + $treeContainer.scrollTop() - 50
+            });
+            tipoSeleccionado = 3;
+            recargaEquipo();
+        }
 
-            <div class="modal-footer" id="modalFooterSmall">
-            </div>
-        </div>
+        $("#info").addClass('hide');
+        $("#info").html('');
 
-        <script type="text/javascript">
+        return false;
+    });
 
-            $.jGrowl.defaults.closerTemplate = '<div>[ cerrar todo ]</div>';
+    function scrollToNode($scrollTo) {
+        if(tipoSeleccionado === 1){
+            $("#tree").jstree("deselect_all").jstree("select_node", $scrollTo).animate({
+                scrollTop : $scrollTo.offset().top - $treeContainer.offset().top + $treeContainer.scrollTop() - 50
+            });
+        }else if(tipoSeleccionado === 2){
+            $("#tree2").jstree("deselect_all").jstree("select_node", $scrollTo).animate({
+                scrollTop : $scrollTo.offset().top - $treeContainer.offset().top + $treeContainer.scrollTop() - 50
+            });
+        }else{
+            $("#tree3").jstree("deselect_all").jstree("select_node", $scrollTo).animate({
+                scrollTop : $scrollTo.offset().top - $treeContainer.offset().top + $treeContainer.scrollTop() - 50
+            });
+        }
+    }
 
-            var btn = $("<a href='#' class='btn' id='btnSearch'><i class='icon-zoom-in'></i> Buscar</a>");
-            var urlSp = "${resource(dir: 'images', file: 'spinner.gif')}";
-            var sp = $('<span class="add-on" id="btnSearch"><img src="' + urlSp + '"/></span>');
+    function scrollToRoot() {
+        var $scrollTo = $("#root");
+        scrollToNode($scrollTo);
+    }
 
-            var current = "1";
+    function scrollToSearchRes() {
+        var $scrollTo = $(searchRes[posSearchShow]).parents("li").first();
+        $("#spanSearchRes").text("Resultado " + (posSearchShow + 1) + " de " + searchRes.length);
+        scrollToNode($scrollTo);
+    }
 
-            var icons = {
-                edit                     : "${resource(dir: 'images/tree', file: 'edit.png')}",
-                delete                   : "${resource(dir: 'images/tree', file: 'delete.gif')}",
-                info                     : "${resource(dir: 'images/tree', file: 'info.png')}",
-                copiar                   : "${resource(dir: 'images/tree', file: 'copiar.png')}",
+    $('#btnSearchArbol').click(function () {
+        // $treeContainer.jstree("open_all");
 
-                %{--grupo_material : "${resource(dir: 'images/tree', file: 'grupo_material.png')}",--}%
-                grupo_material           : "${resource(dir: 'images/tree', file: 'carpeta2.png')}",
-                %{--grupo_manoObra : "${resource(dir: 'images/tree', file: 'grupo_manoObra.png')}",--}%
-                grupo_manoObra           : "${resource(dir: 'images/tree', file: 'carpeta5.png')}",
-                %{--grupo_equipo   : "${resource(dir: 'images/tree', file: 'grupo_equipo.png')}",--}%
-                grupo_equipo             : "${resource(dir: 'images/tree', file: 'carpeta6.png')}",
-                grupo_consultoria        : "${resource(dir: 'images/tree', file: 'carpeta5.png')}",
+        if(tipoSeleccionado === 1){
+            $treeContainer.jstree(true).search($.trim($("#searchArbol").val()));
+        }else if(tipoSeleccionado === 2){
+            $treeContainer2.jstree(true).search($.trim($("#searchArbol").val()));
+        }else{
+            $treeContainer3.jstree(true).search($.trim($("#searchArbol").val()));
+        }
 
-                %{--subgrupo_material : "${resource(dir: 'images/tree', file: 'subgrupo_material.png')}",--}%
-                subgrupo_material        : "${resource(dir: 'images/tree', file: 'carpeta.png')}",
-                subgrupo_manoObra        : "${resource(dir: 'images/tree', file: 'subgrupo_manoObra.png')}",
-                %{--subgrupo_equipo   : "${resource(dir: 'images/tree', file: 'subgrupo_equipo.png')}",--}%
-                subgrupo_equipo          : "${resource(dir: 'images/tree', file: 'item_equipo.png')}",
-                subgrupo_consultoria     : "${resource(dir: 'images/tree', file: 'subgrupo_manoObra.png')}",
+        if($("#searchArbol").val() !== ''){
+            dialogoBuscar(tipoSeleccionado);
+        }
 
-                %{--departamento_material : "${resource(dir: 'images/tree', file: 'departamento_material.png')}",--}%
-                departamento_material    : "${resource(dir: 'images/tree', file: 'carpeta3.png')}",
-                departamento_manoObra    : "${resource(dir: 'images/tree', file: 'departamento_manoObra.png')}",
-                departamento_equipo      : "${resource(dir: 'images/tree', file: 'departamento_equipo.png')}",
-                departamento_consultoria : "${resource(dir: 'images/tree', file: 'departamento_manoObra.png')}",
+        return false;
+    });
 
-                item_material    : "${resource(dir: 'images/tree', file: 'item_material.png')}",
-                item_manoObra    : "${resource(dir: 'images/tree', file: 'item_manoObra.png')}",
-                item_equipo      : "${resource(dir: 'images/tree', file: 'item_material.png')}",
-                item_consultoria : "${resource(dir: 'images/tree', file: 'item_manoObra.png')}"
-            };
-
-            function log(msg, error) {
-                var sticky = false;
-                var theme = "success";
-                if (error) {
-                    sticky = true;
-                    theme = "error";
-                }
-                $.jGrowl(msg, {
-                    speed          : 'slow',
-                    sticky         : sticky,
-                    theme          : theme,
-                    closerTemplate : '<div>[ cerrar todos ]</div>',
-                    themeState     : ''
-                });
+    $("#searchArbol").keypress(function (ev) {
+        if (ev.keyCode === 13) {
+            // $treeContainer.jstree("open_all");
+            if(tipoSeleccionado === 1){
+                $treeContainer.jstree(true).search($.trim($("#searchArbol").val()));
+            }else if(tipoSeleccionado === 2){
+                $treeContainer2.jstree(true).search($.trim($("#searchArbol").val()));
+            }else{
+                $treeContainer3.jstree(true).search($.trim($("#searchArbol").val()));
             }
 
-            function showInfo() {
-                var node = $.jstree._focused().get_selected();
-                var parent = node.parent().parent();
+            if($("#searchArbol").val() !== ''){
+                dialogoBuscar(tipoSeleccionado);
+            }
 
-                var nodeStrId = node.attr("id");
-                var nodeText = $.trim(node.children("a").text());
+            return false;
+        }
+    });
 
-                var nodeRel = node.attr("rel");
-                var parts = nodeRel.split("_");
-                var nodeNivel = parts[0];
-                var nodeTipo = parts[1];
+    $("#btnPrevSearch").click(function () {
+        if (posSearchShow > 0) {
+            posSearchShow--;
+        } else {
+            posSearchShow = searchRes.length - 1;
+        }
+        scrollToSearchRes();
+        return false;
+    });
 
-                parts = nodeStrId.split("_");
-                var nodeId = parts[1];
+    $("#btnNextSearch").click(function () {
+        if (posSearchShow < searchRes.length - 1) {
+            posSearchShow++;
+        } else {
+            posSearchShow = 0;
+        }
+        scrollToSearchRes();
+        return false;
+    });
 
-                var url = "";
+    $("#btnClearSearch").click(function () {
+        limpiarBusqueda();
+    });
 
-                switch (nodeNivel) {
-                    case "grupo":
-//                        console.log(nodeTipo);
-                        url = "${createLink(action:'showGr_ajax')}";
-                        if (nodeTipo == "manoObra") {
-                            url = "${createLink(action:'showSg_ajax')}";
+    function limpiarBusqueda(){
+        $treeContainer.jstree("clear_search");
+        $treeContainer2.jstree("clear_search");
+        $treeContainer3.jstree("clear_search");
+        $("#searchArbol").val("");
+        posSearchShow = 0;
+        searchRes = [];
+        $("#divSearchRes").addClass("hidden");
+        $("#spanSearchRes").text("");
+        $("#info").addClass('hide');
+    }
+
+    $("#btnMateriales").click(function () {
+        tipoSeleccionado = 1;
+        cargarMateriales();
+        limpiarBusqueda();
+        $("#divSearchRes").addClass("hidden")
+    });
+
+    function dialogoBuscar(tipo){
+        $.ajax({
+            type    : "POST",
+            url     :  "${createLink(controller: 'mantenimientoItems', action:'tablaBusqueda_ajax')}",
+            data    : {
+                criterio: $("#searchArbol").val(),
+                tipo: tipo
+            },
+            success : function (msg) {
+                var b = bootbox.dialog({
+                    id      : "dlgShowB",
+                    title   : "Búsqueda",
+                    class   : "modal-lg",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
                         }
-                        break;
-                    case "subgrupo":
-                        url = "${createLink(action:'showSg_ajax')}";
-                        break;
-                    case "departamento":
-                        url = "${createLink(action:'showDp_ajax')}";
-                        break;
-                    case "item":
-                        url = "${createLink(action:'showIt_ajax')}";
-                        break;
-                }
+                    } //buttons
+                }); //dialog
+            } //success
+        }); //ajax
+    }
 
+    function showInfo() {
+        var node = $("#tree").jstree(true).get_selected();
+
+        var nodeId = node.toString().split("_")[1];
+        var nodeNivel = node.toString().split("_")[0];
+
+        if(nodeNivel !== 'root'){
+            cargarInfo(nodeNivel, nodeId);
+        }
+    }
+
+    function showInfo2() {
+        var node = $("#tree2").jstree(true).get_selected();
+
+        var nodeId = node.toString().split("_")[1];
+        var nodeNivel = node.toString().split("_")[0];
+
+        if(nodeNivel !== 'root'){
+            cargarInfo(nodeNivel, nodeId);
+        }
+    }
+
+    function showInfo3() {
+        var node = $("#tree3").jstree(true).get_selected();
+
+        var nodeId = node.toString().split("_")[1];
+        var nodeNivel = node.toString().split("_")[0];
+
+        if(nodeNivel !== 'root'){
+            cargarInfo(nodeNivel, nodeId);
+        }
+    }
+
+    function cargarInfo(nodeNivel, nodeId){
+        switch (nodeNivel) {
+            case "gp":
+                url = "${createLink(action:'showGr_ajax')}";
+                break;
+            case "sg":
+                url = "${createLink(action:'showSg_ajax')}";
+                break;
+            case "dp":
+                url = "${createLink(action:'showDp_ajax')}";
+                break;
+            case "it":
+                url = "${createLink(action:'showIt_ajax')}";
+                break;
+        }
+
+        $.ajax({
+            type    : "POST",
+            url     : url,
+            data    : {
+                id : nodeId
+            },
+            success : function (msg) {
+                $("#info").removeClass('hide');
+                $("#info").html(msg);
+            }
+        });
+    }
+
+    function recargarMateriales () {
+        $("#tree").removeClass("hide");
+        $("#tree2").addClass("hide") ;
+        $("#tree3").addClass("hide");
+        $("#btnMateriales").addClass('active');
+        $("#btnMano").removeClass('active');
+        $("#btnEquipos").removeClass('active');
+        $("#alerta1").removeClass('hide');
+        $("#alerta2").addClass('hide');
+        $("#alerta3").addClass('hide');
+        var $treeContainer = $("#tree");
+        $treeContainer.jstree("refresh")
+    }
+
+    function cargarMateriales() {
+        $("#tree").removeClass("hide");
+        $("#tree2").addClass("hide") ;
+        $("#tree3").addClass("hide");
+        $("#btnMateriales").addClass('active');
+        $("#btnMano").removeClass('active');
+        $("#btnEquipos").removeClass('active');
+        $("#alerta1").removeClass('hide');
+        $("#alerta2").addClass('hide');
+        $("#alerta3").addClass('hide');
+        // $("#info").addClass('hide');
+        $("#info").html("")
+
+        $("#cargando").removeClass('hide');
+
+        var $treeContainer = $("#tree");
+
+        $treeContainer.on("loaded.jstree", function () {
+            $("#cargando").hide();
+            $("#tree").removeClass("hidden");
+
+        }).on("select_node.jstree", function (node, selected, event) {
+        }).jstree({
+            plugins     : ["types", "state", "contextmenu", "search"],
+            core        : {
+                multiple       : false,
+                check_callback : true,
+                themes         : {
+                    variant : "small",
+                    dots    : true,
+                    stripes : true
+                },
+                data           : {
+                    url   : '${createLink(action:"loadTreePart_nuevo")}',
+                    data  : function (node) {
+                        return {
+                            id    : node.id,
+                            tipo  : 1
+                        };
+                    }
+                }
+            },
+            contextmenu : {
+                show_at_node : false,
+                items        : createContextMenu
+            },
+            state       : {
+                key : "unidades",
+                opened: false
+            },
+            search      : {
+                fuzzy             : false,
+                show_only_matches : false,
+                ajax              : {
+                    url     : "${createLink(action:'arbolSearch_ajax')}",
+                    success : function (msg) {
+                        var json = $.parseJSON(msg);
+                        $.each(json, function (i, obj) {
+                            $('#tree').jstree("open_node", obj);
+                        });
+                        setTimeout(function () {
+                            searchRes = $(".jstree-search");
+                            var cantRes = searchRes.length;
+                            posSearchShow = 0;
+                            $("#divSearchRes").removeClass("hidden");
+                            $("#spanSearchRes").text("Resultado " + (posSearchShow + 1) + " de " + cantRes);
+                            scrollToSearchRes();
+                        }, 300);
+
+                    }
+                }
+            },
+            types       : {
+                root                : {
+                    icon : "fa fa-sitemap text-info"
+                }
+            }
+        }).bind("select_node.jstree", function (node, selected) {
+            showInfo();
+        });
+    }
+
+    function cargarMano () {
+        $("#tree").addClass("hide");
+        $("#tree2").removeClass("hide") ;
+        $("#tree3").addClass("hide");
+        $("#btnMateriales").removeClass('active');
+        $("#btnMano").addClass('active');
+        $("#btnEquipos").removeClass('active');
+        $("#alerta1").addClass('hide');
+        $("#alerta2").removeClass('hide');
+        $("#alerta3").addClass('hide');
+        // $("#info").addClass('hide');
+        $("#info").html("");
+        $("#cargando").removeClass('hide');
+
+        var $treeContainer = $("#tree2");
+
+        $treeContainer.on("loaded.jstree", function () {
+            $("#cargando").hide();
+            $("#tree2").removeClass("hidden");
+
+        }).on("select_node.jstree", function (node, selected, event) {
+        }).jstree({
+            plugins     : ["types", "state", "contextmenu", "search"],
+            core        : {
+                multiple       : false,
+                check_callback : true,
+                themes         : {
+                    variant : "small",
+                    dots    : true,
+                    stripes : true
+                },
+                data           : {
+                    url   : '${createLink(action:"loadTreePart_nuevo")}',
+                    data  : function (node) {
+                        return {
+                            id    : node.id,
+                            tipo  : 2
+                        };
+                    }
+                }
+            },
+            contextmenu : {
+                show_at_node : false,
+                items        : createContextMenu
+            },
+            state       : {
+                key : "unidades",
+                opened: false
+            },
+            search      : {
+                fuzzy             : false,
+                show_only_matches : false,
+                ajax              : {
+                    url     : "${createLink(action:'arbolSearch_ajax')}",
+                    success : function (msg) {
+                        var json = $.parseJSON(msg);
+                        $.each(json, function (i, obj) {
+                            $('#tree2').jstree("open_node", obj);
+                        });
+                        setTimeout(function () {
+                            searchRes = $(".jstree-search");
+                            var cantRes = searchRes.length;
+                            posSearchShow = 0;
+                            $("#divSearchRes").removeClass("hidden");
+                            $("#spanSearchRes").text("Resultado " + (posSearchShow + 1) + " de " + cantRes);
+                            scrollToSearchRes();
+                        }, 300);
+
+                    }
+                }
+            },
+            types       : {
+                root                : {
+                    icon : "fa fa-sitemap text-info"
+                }
+            }
+        }).bind("select_node.jstree", function (node, selected) {
+            showInfo2();
+        });
+    }
+
+    $("#btnMano").click(function () {
+        tipoSeleccionado = 2;
+        cargarMano();
+        limpiarBusqueda();
+        $("#divSearchRes").addClass("hidden")
+    });
+
+    function recargaMano(){
+        $("#tree").addClass("hide");
+        $("#tree2").removeClass("hide") ;
+        $("#tree3").addClass("hide");
+        $("#btnMateriales").removeClass('active');
+        $("#btnMano").addClass('active');
+        $("#btnEquipos").removeClass('active');
+        $("#alerta1").addClass('hide');
+        $("#alerta2").removeClass('hide');
+        $("#alerta3").addClass('hide');
+        var $treeContainer = $("#tree2");
+        $treeContainer.jstree("refresh")
+    }
+
+    $("#btnEquipos").click(function () {
+        tipoSeleccionado = 3;
+        cargarEquipo();
+        limpiarBusqueda();
+        $("#divSearchRes").addClass("hidden")
+    });
+
+    function cargarEquipo(){
+        $("#tree").addClass("hide");
+        $("#tree2").addClass("hide") ;
+        $("#tree3").removeClass("hide");
+        $("#btnMateriales").removeClass('active');
+        $("#btnMano").removeClass('active');
+        $("#btnEquipos").addClass('active');
+        $("#alerta1").addClass('hide');
+        $("#alerta2").addClass('hide');
+        $("#alerta3").removeClass('hide');
+        // $("#info").addClass('hide');
+        $("#info").html("");
+        $("#cargando").removeClass('hide');
+
+        var $treeContainer = $("#tree3");
+
+        $treeContainer.on("loaded.jstree", function () {
+            $("#cargando").hide();
+            $("#tree3").removeClass("hidden");
+
+        }).on("select_node.jstree", function (node, selected, event) {
+        }).jstree({
+            plugins     : ["types", "state", "contextmenu", "search"],
+            core        : {
+                multiple       : false,
+                check_callback : true,
+                themes         : {
+                    variant : "small",
+                    dots    : true,
+                    stripes : true
+                },
+                data           : {
+                    url   : '${createLink(action:"loadTreePart_nuevo")}',
+                    data  : function (node) {
+                        return {
+                            id    : node.id,
+                            tipo  : 3
+                        };
+                    }
+                }
+            },
+            contextmenu : {
+                show_at_node : false,
+                items        : createContextMenu
+            },
+            state       : {
+                key : "unidades",
+                opened: false
+            },
+            search      : {
+                fuzzy             : false,
+                show_only_matches : false,
+                ajax              : {
+                    url     : "${createLink(action:'arbolSearch_ajax')}",
+                    success : function (msg) {
+                        var json = $.parseJSON(msg);
+                        $.each(json, function (i, obj) {
+                            $('#tree3').jstree("open_node", obj);
+                        });
+                        setTimeout(function () {
+                            searchRes = $(".jstree-search");
+                            var cantRes = searchRes.length;
+                            posSearchShow = 0;
+                            $("#divSearchRes").removeClass("hidden");
+                            $("#spanSearchRes").text("Resultado " + (posSearchShow + 1) + " de " + cantRes);
+                            scrollToSearchRes();
+                        }, 300);
+
+                    }
+                }
+            },
+            types       : {
+                root                : {
+                    icon : "fa fa-sitemap text-info"
+                }
+            }
+        }).bind("select_node.jstree", function (node, selected) {
+            showInfo3();
+        });
+    }
+
+    function recargaEquipo(){
+        $("#tree").addClass("hide");
+        $("#tree2").addClass("hide") ;
+        $("#tree3").removeClass("hide");
+        $("#btnMateriales").removeClass('active');
+        $("#btnMano").removeClass('active');
+        $("#btnEquipos").addClass('active');
+        $("#alerta1").addClass('hide');
+        $("#alerta2").addClass('hide');
+        $("#alerta3").removeClass('hide');
+        var $treeContainer = $("#tree3");
+        $treeContainer.jstree("refresh")
+    }
+
+    function createContextMenu(node) {
+
+        var nodeStrId = node.id;
+        var $node = $("#" + nodeStrId);
+        var nodeId = nodeStrId.split("_")[1];
+        var parentId = $node.parent().parent().children()[1].id.split("_")[1];
+        var nodeType = $node.data("jstree").type;
+        var esRoot = nodeType === "root";
+        var esPrincipal = nodeType === "principal";
+        var esSubgrupo = nodeType.contains("subgrupo");
+        var esDepartamento = nodeType.contains("departamento");
+        var esItem = nodeType.contains("item");
+        var tipoGrupo = $node.data("tipo");
+        var nodeHasChildren = $node.hasClass("hasChildren");
+        var abueloId = null;
+
+        if(esDepartamento){
+            abueloId = $node.parent().parent().parent().parent().children()[1].id.split("_")[1];
+        }else{
+            abueloId = parentId
+        }
+
+        var items = {};
+
+        var nuevoGrupo = {
+            label  : "Nuevo grupo",
+            icon   : "fa fa-copyright text-info",
+            action : function () {
+                createEditGrupo(null, nodeId);
+            }
+        };
+
+        var editarGrupo = {
+            label  : "Editar grupo",
+            icon   : "fa fa-copyright text-info",
+            action : function () {
+                createEditGrupo(nodeId, parentId);
+            }
+        };
+
+        var nuevoSubgrupo = {
+            label  : "Nuevo subgrupo",
+            icon   : "fa fa-registered text-danger",
+            action : function () {
+                createEditSubgrupo(null, nodeId, abueloId);
+            }
+        };
+
+        var editarSubgrupo = {
+            label  : "Editar subgrupo",
+            icon   : "fa fa-registered text-danger",
+            action : function () {
+                createEditSubgrupo(nodeId, parentId, abueloId);
+            }
+        };
+
+        var nuevoMaterial = {
+            label  : "Nuevo material",
+            icon   : "fa fa-info-circle text-warning",
+            action : function () {
+                createEditItem(null, nodeId);
+            }
+        };
+
+        var nuevaManoObra = {
+            label  : "Nueva mano de obra",
+            icon   : "fa fa-info-circle text-warning",
+            action : function () {
+                createEditItem(null, nodeId);
+            }
+        };
+
+        var nuevoEquipo = {
+            label  : "Nuevo equipo",
+            icon   : "fa fa-info-circle text-warning",
+            action : function () {
+                createEditItem(null, nodeId);
+            }
+        };
+
+        var editarMaterial = {
+            label  : "Editar material",
+            icon   : "fa fa-info-circle text-warning",
+            action : function () {
+                createEditItem(nodeId, parentId);
+            }
+        };
+
+        var editarManoObra = {
+            label  : "Editar mano de obra",
+            icon   : "fa fa-info-circle text-warning",
+            action : function () {
+                createEditItem(nodeId, parentId);
+            }
+        };
+
+        var editarEquipo = {
+            label  : "Editar equipo",
+            icon   : "fa fa-info-circle text-warning",
+            action : function () {
+                createEditItem(nodeId, parentId);
+            }
+        };
+
+        var verItem = {
+            label            : "Ver información del Item",
+            icon             : "fa fa-laptop text-info",
+            separator_before : true,
+            action           : function () {
                 $.ajax({
                     type    : "POST",
-                    url     : url,
+                    url     : "${createLink(action:'infoItems')}",
                     data    : {
                         id : nodeId
                     },
                     success : function (msg) {
-                        $("#info").html(msg);
-                    }
-                });
-            }
-
-            function createUpdate(params) {
-//                console.log("params:", params);
-                var obj = {
-                    label            : params.label,
-                    separator_before : params.sepBefore, // Insert a separator before the item
-                    separator_after  : params.sepAfter, // Insert a separator after the item
-                    icon             : params.icon,
-                    action           : function (obj) {
-                        $.ajax({
-                            type     : "POST",
-                            url      : params.url,
-                            data     : params.data,
-                            success  : function (msg) {
-                                var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');
-                                var btnSave = $('<a href="#"  class="btn btn-success"><i class="icon-ok"></i> Guardar</a>');
-
-                                btnSave.click(function () {
-                                    if ($("#frmSave").valid()) {
-                                        btnSave.replaceWith(spinner);
-                                        var url = $("#frmSave").attr("action");
-                                        $.ajax({
-                                            type    : "POST",
-                                            url     : url,
-                                            data    : $("#frmSave").serialize(),
-                                            success : function (msg) {
-                                                var parts = msg.split("_");
-                                                    if (parts[0] == "OK") {
-                                                    if (params.action == "create") {
-                                                        if (params.open) {
-                                                            $("#" + params.nodeStrId).removeClass("jstree-leaf").addClass("jstree-closed");
-                                                            $('#tree').jstree("open_node", $("#" + params.nodeStrId));
-                                                        }
-                                                        $('#tree').jstree("create_node", $("#" + params.nodeStrId), params.where, {attr : {id : params.tipo + "_" + parts[2]}, data : parts[3]});
-                                                        $("#modal-tree").modal("hide");
-                                                        log(params.log + parts[3] + " creado correctamente");
-                                                    } else if (params.action == "update") {
-                                                        $("#tree").jstree('rename_node', $("#" + params.nodeStrId), parts[3]);
-                                                        $("#modal-tree").modal("hide");
-                                                        log(params.log + parts[3] + " editado correctamente");
-                                                        showInfo();
-                                                    }
-                                                } else {
-                                                    $("#modal-tree").modal("hide");
-                                                    log("Ha ocurrido el siguiente error: " + parts[1], true);
-                                                }
-                                            }
-                                        });
+                        bootbox.dialog({
+                            title   : "Ver información del Item",
+                            message : msg,
+                            class : 'modal-lg',
+                            buttons : {
+                                ok : {
+                                    label     : "Aceptar",
+                                    className : "btn-primary",
+                                    callback  : function () {
                                     }
-//                                            $("#frmSave").submit();
-                                    return false;
-                                });
-                                if (params.action == "create") {
-                                    $("#modalHeader").removeClass("btn-edit btn-show btn-delete");
-                                } else if (params.action == "update") {
-                                    $("#modalHeader").removeClass("btn-edit btn-show btn-delete").addClass("btn-edit");
                                 }
-                                $("#modalTitle").html(params.title);
-                                $("#modalBody").html(msg);
-//                                console.log("Botones", btnOk, btnSave)
-                                $("#modalFooter").html("").append(btnOk).append(btnSave);
-//                                console.log("Footer:", $("#modalFooter"))
-                                $("#modal-tree").modal("show");
-                            },
-                            complete : function () {
-                                $('#modalBody').animate({scrollTop : $('#frmSave').offset().top}, 'slow');
-//                                console.log($('#nombre').focus())
-//                                $('input').first().focus();
                             }
                         });
                     }
-                };
-                return obj;
+                });
             }
+        };
 
-            function remove(params) {
-                var obj = {
-                    label            : params.label,
-                    separator_before : params.sepBefore, // Insert a separator before the item
-                    separator_after  : params.sepAfter, // Insert a separator after the item
-                    icon             : params.icon,
-                    action           : function (obj) {
-
-                        var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');
-                        var btnSave = $('<a href="#"  class="btn btn-danger"><i class="icon-trash"></i> Eliminar</a>');
-                        $("#modalHeader").removeClass("btn-edit btn-show btn-delete").addClass("btn-delete");
-                        $("#modalTitle").html(params.title);
-                        $("#modalBody").html("<p>Está seguro de querer eliminar este " + params.confirm + "?</p>");
-                        $("#modalFooter").html("").append(btnOk).append(btnSave);
-                        $("#modal-tree").modal("show");
-
-                        btnSave.click(function () {
-                            btnSave.replaceWith(spinner);
+        var borrarGrupo = {
+            label            : "Eliminar Grupo",
+            icon             : "fa fa-trash text-danger",
+            separator_before : true,
+            action           : function () {
+                bootbox.confirm({
+                    title: "Eliminar Grupo",
+                    message: "Está seguro de borrar este grupo? Esta acción no puede deshacerse.",
+                    buttons: {
+                        cancel: {
+                            label: '<i class="fa fa-times"></i> Cancelar',
+                            className: 'btn-primary'
+                        },
+                        confirm: {
+                            label: '<i class="fa fa-trash"></i> Borrar',
+                            className: 'btn-danger'
+                        }
+                    },
+                    callback: function (result) {
+                        if(result){
+                            var dialog = cargarLoader("Borrando...");
                             $.ajax({
-                                type    : "POST",
-                                url     : params.url,
-                                data    : params.data,
-                                success : function (msg) {
-                                    var parts = msg.split("_");
-                                    if (parts[0] == "OK") {
-                                        $("#tree").jstree('delete_node', $("#" + params.nodeStrId));
-                                        $("#modal-tree").modal("hide");
-                                        log(params.log + " eliminado correctamente");
-                                        if ($("#" + params.parentStrId).children("ul").children().size() == 0) {
-                                            $("#" + params.parentStrId).removeClass("hasChildren");
-                                        }
-                                    } else {
-                                        $("#modal-tree").modal("hide");
-                                        log("Ha ocurrido un error al eliminar", true);
+                                type: 'POST',
+                                url: '${createLink(action: 'deleteSg_ajax')}',
+                                data:{
+                                    id: nodeId
+                                },
+                                success: function (msg) {
+                                    dialog.modal('hide');
+                                    if(msg === 'OK'){
+                                        log("Grupo borrado correctamente","success");
+                                        setTimeout(function () {
+                                            if(tipoSeleccionado === 1){
+                                                recargarMateriales();
+                                            }else if(tipoSeleccionado === 2){
+                                                recargaMano();
+                                            }else{
+                                                recargaEquipo();
+                                            }
+                                        }, 1000);
+                                    }else{
+                                        log("Error al borrar el grupo", "error")
                                     }
                                 }
-                            });
-                            return false;
-                        });
-                    }
-                };
-                return obj;
-            }
-
-            function createContextmenu(node) {
-                var parent = node.parent().parent();
-
-                var nodeStrId = node.attr("id");
-                var nodeText = $.trim(node.children("a").text());
-
-                var parentStrId = parent.attr("id");
-                var parentText = $.trim(parent.children("a").text());
-
-                var nodeRel = node.attr("rel");
-                var parts = nodeRel.split("_");
-                var nodeNivel = parts[0];
-                var nodeTipo = parts[1];
-
-                var parentRel = parent.attr("rel");
-                parts = nodeRel.split("_");
-                var parentNivel = parts[0];
-                var parentTipo = parts[1];
-
-                parts = nodeStrId.split("_");
-                var nodeId = parts[1];
-
-                parts = parentStrId.split("_");
-                var parentId = parts[1];
-
-                var nodeHasChildren = node.hasClass("hasChildren");
-                var cantChildren = node.children("ul").children().size();
-                nodeHasChildren = nodeHasChildren || cantChildren != 0;
-
-                var menuItems = {}, lbl = "", item = "";
-
-                switch (nodeTipo) {
-                    case "material":
-                        lbl = "o material";
-                        item = "Material";
-                        break;
-                    case "manoObra":
-                        lbl = "a mano de obra";
-                        item = "Mano de obra";
-                        break;
-                    case "equipo":
-                        lbl = "o equipo";
-                        item = "Equipo";
-                        break;
-                }
-
-//                console.log(nodeNivel);
-
-                switch (nodeNivel) {
-                    case "grupo":
-                        if (current == 2) {
-//                            nodeId = 21;
-                            menuItems.crearHijo = createUpdate({
-                                action    : "create",
-                                label     : "Nuevo subgrupo",
-                                sepBefore : false,
-                                sepAfter  : false,
-                                icon      : icons["departamento_" + nodeTipo],
-                                url       : "${createLink(action:'formDp_ajax')}",
-                                data      : {
-                                    subgrupo : nodeId
-                                },
-                                open      : true,
-                                nodeStrId : nodeStrId,
-                                where     : "first",
-                                tipo      : "dp",
-                                log       : "Subgrupo ",
-                                title     : "Nuevo subgrupo"
-                            });
-                        } else {
-                            menuItems.crearHijo = createUpdate({
-                                action    : "create",
-                                label     : "Nuevo grupo",
-                                icon      : icons["subgrupo_" + nodeTipo],
-                                sepBefore : false,
-                                sepAfter  : false,
-                                url       : "${createLink(action:'formSg_ajax')}",
-                                data      : {
-                                    grupo : nodeId
-                                },
-                                open      : false,
-                                nodeStrId : nodeStrId,
-                                where     : "first",
-                                tipo      : "sg",
-                                log       : "Grupo ",
-                                title     : "Nuevo grupo"
                             });
                         }
-                        break;
-                    case "subgrupo":
-                        menuItems.editar = createUpdate({
-                            action    : "update",
-                            label     : "Editar grupo",
-                            icon      : icons.edit,
-                            sepBefore : false,
-                            sepAfter  : false,
-                            url       : "${createLink(action:'formSg_ajax')}",
-                            data      : {
-                                grupo : parentId,
-                                id    : nodeId
-                            },
-                            open      : false,
-                            nodeStrId : nodeStrId,
-                            log       : "Grupo ",
-                            title     : "Editar grupo"
-                        });
-                        if (!nodeHasChildren) {
-                            menuItems.eliminar = remove({
-                                label       : "Eliminar grupo",
-                                sepBefore   : false,
-                                sepAfter    : false,
-                                icon        : icons.delete,
-                                title       : "Eliminar grupo",
-                                confirm     : "grupo",
-                                url         : "${createLink(action:'deleteSg_ajax')}",
-                                data        : {
-                                    id : nodeId
-                                },
-                                nodeStrId   : nodeStrId,
-                                parentStrId : parentStrId,
-                                log         : "Grupo "
-                            });
-                        }
-                        menuItems.crearHermano = createUpdate({
-                            action    : "create",
-                            label     : "Nuevo grupo",
-                            icon      : icons[nodeRel],
-                            sepBefore : true,
-                            sepAfter  : true,
-                            url       : "${createLink(action:'formSg_ajax')}",
-                            data      : {
-                                grupo : parentId
-                            },
-                            open      : false,
-                            nodeStrId : nodeStrId,
-                            where     : "after",
-                            tipo      : "sg",
-                            log       : "Grupo ",
-                            title     : "Nuevo grupo"
-                        });
-                        menuItems.crearHijo = createUpdate({
-                            action    : "create",
-                            label     : "Nuevo subgrupo",
-                            sepBefore : false,
-                            sepAfter  : false,
-                            icon      : icons["departamento_" + nodeTipo],
-                            url       : "${createLink(action:'formDp_ajax')}",
-                            data      : {
-                                subgrupo : nodeId
-                            },
-                            open      : true,
-                            nodeStrId : nodeStrId,
-                            where     : "first",
-                            tipo      : "dp",
-                            log       : "Subgrupo ",
-                            title     : "Nuevo subgrupo"
-                        });
-                        break;
-                    case "departamento":
-
-//                        if (current == 2) {
-//                            parentId = 21;
-//                        }
-
-                        menuItems.editar = createUpdate({
-                            action    : "update",
-                            label     : "Editar subgrupo",
-                            icon      : icons.edit,
-                            sepBefore : false,
-                            sepAfter  : false,
-                            url       : "${createLink(action:'formDp_ajax')}",
-                            data      : {
-                                subgrupo : parentId,
-                                id       : nodeId
-                            },
-                            open      : false,
-                            nodeStrId : nodeStrId,
-                            log       : "Subgrupo ",
-                            title     : "Editar subgrupo"
-                        });
-                        if (!nodeHasChildren) {
-                            menuItems.eliminar = remove({
-                                label       : "Eliminar subgrupo",
-                                sepBefore   : false,
-                                sepAfter    : false,
-                                icon        : icons.delete,
-                                title       : "Eliminar subgrupo",
-                                confirm     : "subgrupo",
-                                url         : "${createLink(action:'deleteDp_ajax')}",
-                                data        : {
-                                    id : nodeId
-                                },
-                                nodeStrId   : nodeStrId,
-                                parentStrId : parentStrId,
-                                log         : "Subgrupo "
-                            });
-                        }
-                        menuItems.crearHermano = createUpdate({
-                            action    : "create",
-                            label     : "Nuevo subgrupo",
-                            sepBefore : true,
-                            sepAfter  : true,
-                            icon      : icons[nodeRel],
-                            url       : "${createLink(action:'formDp_ajax')}",
-                            data      : {
-                                subgrupo : parentId
-                            },
-                            open      : false,
-                            nodeStrId : nodeStrId,
-                            where     : "after",
-                            tipo      : "dp",
-                            log       : "Subgrupo ",
-                            title     : "Nuevo subgrupo"
-                        });
-                        menuItems.crearHijo = createUpdate({
-                            action    : "create",
-                            label     : "Nuev" + lbl,
-                            sepBefore : false,
-                            sepAfter  : false,
-                            icon      : icons["item_" + nodeTipo],
-                            url       : "${createLink(action:'formIt_ajax')}",
-                            data      : {
-                                departamento : nodeId,
-                                grupo        : current
-                            },
-                            open      : true,
-                            nodeStrId : nodeStrId,
-                            where     : "first",
-                            tipo      : "it",
-                            log       : item + " ",
-                            title     : "Nuevo " + item.toLowerCase()
-                        });
-                        break;
-                    case "item":
-                        menuItems.editar = createUpdate({
-                            action    : "update",
-                            label     : "Editar " + item.toLowerCase(),
-                            icon      : icons.edit,
-                            sepBefore : false,
-                            sepAfter  : false,
-                            url       : "${createLink(action:'formIt_ajax')}",
-                            data      : {
-                                departamento : parentId,
-                                id           : nodeId,
-                                grupo        : current
-                            },
-                            open      : false,
-                            nodeStrId : nodeStrId,
-                            log       : item + " ",
-                            title     : "Editar " + item.toLowerCase()
-                        });
-                        menuItems.info = {
-                            label            : "Información",
-                            separator_before : false, // Insert a separator before the item
-                            separator_after  : false, // Insert a separator after the item
-                            icon             : icons.info,
-                            action           : function (obj) {
-                                $.ajax({
-                                    type    : "POST",
-                                    url     : "${createLink(action: 'infoItems')}",
-                                    data    : {
-                                        id : nodeId
-                                    },
-                                    success : function (msg) {
-                                        var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Aceptar</a>');
-                                        $("#modalHeader").removeClass("btn-edit btn-show btn-delete");
-
-                                        $("#modalTitle").html("Información del item");
-                                        $("#modalBody").html(msg);
-                                        $("#modalFooter").html("").append(btnOk);
-                                        $("#modal-tree").modal("show");
-                                    }
-                                });
-                            }
-                        };
-                        menuItems.copiar = {
-                            label            : "Copiar a oferentes",
-                            separator_before : false, // Insert a separator before the item
-                            separator_after  : false, // Insert a separator after the item
-                            icon             : icons.copiar,
-                            action           : function (obj) {
-                                $.ajax({
-                                    type    : "POST",
-                                    url     : "${createLink(action: 'copiarOferentes')}",
-                                    data    : {
-                                        id : nodeId
-                                    },
-                                    success : function (msg) {
-                                        var p = msg.split("_");
-                                        var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Aceptar</a>');
-                                        $("#modalTitleSmall").html("Información");
-                                        if (p[0] == "OK") {
-                                            $("#modalBodySmall").html("El item fue copiado a oferentes");
-                                        } else {
-                                            $("#modalBodySmall").html(p[1]);
-                                        }
-                                        $("#modalFooterSmall").html("").append(btnOk);
-                                        $("#modal-small").modal("show");
-                                    }
-                                });
-                            }
-                        };
-                        if (!nodeHasChildren) {
-                            %{--menuItems.eliminar = remove({--}%
-                            %{--label       : "Eliminar " + item.toLowerCase(),--}%
-                            %{--sepBefore   : false,--}%
-                            %{--sepAfter    : false,--}%
-                            %{--icon        : icons.delete,--}%
-                            %{--title       : "Eliminar " + item.toLowerCase(),--}%
-                            %{--confirm     : item.toLowerCase(),--}%
-                            %{--url         : "${createLink(action:'deleteIt_ajax')}",--}%
-                            %{--data        : {--}%
-                            %{--id : nodeId--}%
-                            %{--},--}%
-                            %{--nodeStrId   : nodeStrId,--}%
-                            %{--parentStrId : parentStrId,--}%
-                            %{--log         : item + " "--}%
-                            %{--});--}%
-                            menuItems.eliminar = {
-                                label            : "Eliminar",
-                                separator_before : false, // Insert a separator before the item
-                                separator_after  : false, // Insert a separator after the item
-                                icon             : icons.delete,
-                                action           : function (obj) {
-                                    $.ajax({
-                                        type    : "POST",
-                                        url     : "${createLink(action: 'infoItems')}",
-                                        data    : {
-                                            id     : nodeId,
-                                            delete : 1
-                                        },
-                                        success : function (msg) {
-                                            var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Aceptar</a>');
-                                            $("#modalHeader").removeClass("btn-edit btn-show btn-delete");
-
-                                            $("#modalTitle").html("Eliminar item");
-                                            $("#modalBody").html(msg);
-                                            $("#modalFooter").html("").append(btnOk);
-                                            $("#modal-tree").modal("show");
-                                        }
-                                    });
-                                }
-                            };
-                        }
-                        menuItems.crearHermano = createUpdate({
-                            action    : "create",
-                            label     : "Nuev" + lbl,
-                            sepBefore : true,
-                            sepAfter  : true,
-                            icon      : icons[nodeRel],
-                            url       : "${createLink(action:'formIt_ajax')}",
-                            data      : {
-                                departamento : parentId,
-                                grupo        : current
-                            },
-                            open      : false,
-                            nodeStrId : nodeStrId,
-                            where     : "after",
-                            tipo      : "it",
-                            log       : item + " ",
-                            title     : "Nuevo " + item
-                        });
-                        break;
-                }
-
-                return menuItems;
-            }
-
-            function initTree(tipo) {
-                var id, rel, label;
-                var li = "";
-                switch (tipo) {
-                    case "1":
-                        id = "materiales_1";
-                        rel = "grupo_material";
-                        label = "Materiales";
-                        li = "<li id='" + id + "' class='root hasChildren jstree-closed' rel='" + rel + "' ><a href='#' class='label_arbol'>" + label + "</a></li>";
-                        break;
-                    case "2":
-//                        id = "manoObra_2";
-//                        rel = "grupo_manoObra";
-//                        label = "Mano de obra";
-//                        extra = "<li id='consultoria_2' class='root hasChildren jstree-closed' rel='grupo_consultoria' ><a href='#' class='label_arbol'>Consultoría</a>";
-                        $.ajax({
-                            type    : "POST",
-                            async   : false,
-                            url     : "${createLink(action:'loadMO')}",
-                            success : function (msg) {
-                                var p = msg.split("*");
-                                li = p[0];
-                                id = p[1];
-                            }
-                        });
-                        break;
-                    case "3":
-                        id = "equipos_3";
-                        rel = "grupo_equipo";
-                        label = "Equipos";
-                        li = "<li id='" + id + "' class='root hasChildren jstree-closed' rel='" + rel + "' ><a href='#' class='label_arbol'>" + label + "</a></li>";
-                        break;
-                }
-
-                console.log('Carga árbol');
-                
-                $("#tree").bind("loaded.jstree",
-                        function (event, data) {
-                            $("#loading").addClass("hide");
-                            $("#treeArea").addClass("show");
-                        }).jstree({
-                            "core"        : {
-                                "initially_open" : [ id ]
-                            },
-                            "plugins"     : ["themes", "html_data", "json_data", "ui", "types", "contextmenu", "search", "crrm"/*, "dnd"/*, "wholerow"*/],
-                            "html_data"   : {
-                                "data" : "<ul type='root'>" + li + "</ul>",
-                                "ajax" : {
-                                    "url"   : "${createLink(action: 'loadTreePart')}",
-                                    "data"  : function (n) {
-                                        var obj = $(n);
-                                        var id = obj.attr("id");
-                                        var parts = id.split("_");
-                                        id = 0;
-                                        if (parts.length > 1) {
-                                            id = parts[1]
-                                        }
-                                        var tipo = obj.attr("rel");
-                                        return {id : id, tipo : tipo}
-                                    },
-                                    success : function (data) {
-
-                                    },
-                                    error   : function (data) {
-                                        ////////console.log("error");
-                                        ////////console.log(data);
-                                    }
-                                }
-                            },
-                            "types"       : {
-                                "valid_children" : [ "grupo_material", "grupo_manoObra", "grupo_equipo"  ],
-                                "types"          : {
-                                    "grupo_material"        : {
-                                        "icon"           : {
-                                            "image" : icons.grupo_material
-                                        },
-                                        "valid_children" : [ "subgrupo_material" ]
-                                    },
-                                    "subgrupo_material"     : {
-                                        "icon"           : {
-                                            "image" : icons.subgrupo_material
-                                        },
-                                        "valid_children" : [ "departamento_material" ]
-                                    },
-                                    "departamento_material" : {
-                                        "icon"           : {
-                                            "image" : icons.departamento_material
-                                        },
-                                        "valid_children" : [ "item_material" ]
-                                    },
-                                    "item_material"         : {
-                                        "icon"           : {
-                                            "image" : icons.item_material
-                                        },
-                                        "valid_children" : [ "" ]
-                                    },
-
-                                    "grupo_manoObra"        : {
-                                        "icon"           : {
-                                            "image" : icons.grupo_manoObra
-                                        },
-                                        "valid_children" : [ "departamento_manoObra" ]
-                                    },
-                                    "subgrupo_manoObra"     : {
-                                        "icon"           : {
-                                            "image" : icons.subgrupo_manoObra
-                                        },
-                                        "valid_children" : [ "departamento_manoObra" ]
-                                    },
-                                    "departamento_manoObra" : {
-                                        "icon"           : {
-                                            "image" : icons.departamento_manoObra
-                                        },
-                                        "valid_children" : [ "item_manoObra" ]
-                                    },
-                                    "item_manoObra"         : {
-                                        "icon"           : {
-                                            "image" : icons.item_manoObra
-                                        },
-                                        "valid_children" : [ "" ]
-                                    },
-
-                                    "grupo_equipo"        : {
-                                        "icon"           : {
-                                            "image" : icons.grupo_equipo
-                                        },
-                                        "valid_children" : [ "subgrupo_equipo" ]
-                                    },
-                                    "subgrupo_equipo"     : {
-                                        "icon"           : {
-                                            "image" : icons.subgrupo_equipo
-                                        },
-                                        "valid_children" : [ "departamento_equipo" ]
-                                    },
-                                    "departamento_equipo" : {
-                                        "icon"           : {
-                                            "image" : icons.departamento_equipo
-                                        },
-                                        "valid_children" : [ "item_equipo" ]
-                                    },
-                                    "item_equipo"         : {
-                                        "icon"           : {
-                                            "image" : icons.item_equipo
-                                        },
-                                        "valid_children" : [ "" ]
-                                    }
-                                }
-                            },
-                            "themes"      : {
-                                "theme" : "default"
-                            },
-                            "search"      : {
-                                "case_insensitive" : true,
-                                "ajax"             : {
-                                    "url"    : "${createLink(action:'searchTree_ajax')}",
-                                    "data"   : function () {
-                                        return { search : this.data.search.str, tipo : current }
-                                    },
-                                    complete : function () {
-                                        $("#btnSearch").replaceWith(btn);
-                                        btn.click(function () {
-                                            doSearch();
-                                        });
-                                    }
-                                }
-                            },
-                            "contextmenu" : {
-                                select_node : true,
-                                "items"     : createContextmenu
-                            }, //contextmenu
-                            "ui"          : {
-                                "select_limit" : 1
-                            }
-                        }).bind("search.jstree",function (e, data) {
-                            var cant = data.rslt.nodes.length;
-                            var search = data.rslt.str;
-                            $("#cantRes").html("<b>" + cant + "</b> resultado" + (cant == 1 ? "" : "s"));
-                            if (cant > 0) {
-                                var container = $('#tree'), scrollTo = $('.jstree-search').first();
-                                container.animate({
-                                    scrollTop : scrollTo.offset().top - container.offset().top + container.scrollTop()
-                                }, 2000);
-                            }
-                        }).bind("select_node.jstree", function (NODE, REF_NODE) {
-                            showInfo();
-                        })
-                %{--.bind("move_node.jstree", function (event, data) {--}%
-                %{--//                            ////console.log('move', data);--}%
-                %{--var oldParent = data.rslt.op;--}%
-                %{--var newParent = data.rslt.np;--}%
-                %{--var node = data.rslt.o;--}%
-
-                %{--var nodeId = node.attr("id");--}%
-                %{--var newParentId = newParent.attr("id");--}%
-
-                %{--if (oldParent.attr("id") != newParentId) {--}%
-                %{--var html = "Está seguro de mover el item <b>" + $.trim(node.children("a").text()) + "</b> de <b>" + $.trim(oldParent.children("a").text()) + "</b>";--}%
-                %{--html += " a <b>" + $.trim(newParent.children("a").text()) + "</b>?";--}%
-                %{--$.box({--}%
-                %{--imageClass : "box_info",--}%
-                %{--text       : html,--}%
-                %{--title      : "Confirmación",--}%
-                %{--iconClose  : false,--}%
-                %{--dialog     : {--}%
-                %{--resizable     : false,--}%
-                %{--draggable     : false,--}%
-                %{--closeOnEscape : false,--}%
-                %{--buttons       : {--}%
-                %{--"Aceptar"  : function () {--}%
-                %{--$.ajax({--}%
-                %{--type    : "POST",--}%
-                %{--url     : "${createLink(action:'moveNode_ajax')}",--}%
-                %{--data    : {--}%
-                %{--node      : nodeId,--}%
-                %{--newParent : newParentId--}%
-                %{--},--}%
-                %{--success : function (msg) {--}%
-                %{--var parts = msg.split("_");--}%
-                %{--log(parts[1], parts[0] == "NO");--}%
-                %{--if (parts[0] == "NO") {--}%
-                %{--$.jstree.rollback(data.rlbk);--}%
-                %{--}--}%
-                %{--}--}%
-                %{--});--}%
-                %{--},--}%
-                %{--"Cancelar" : function () {--}%
-                %{--$.jstree.rollback(data.rlbk);--}%
-                %{--}--}%
-                %{--}--}%
-                %{--}--}%
-                %{--})--}%
-                %{--;--}%
-
-                %{--} else {--}%
-                %{--$.jstree.rollback(data.rlbk);--}%
-                %{--}--}%
-                %{--})--}%
-                ;
-            }
-
-            function doSearch() {
-                var val = $.trim($("#search").val());
-                if (val != "") {
-                    $("#btnSearch").replaceWith(sp);
-                    $("#tree").jstree("search", val);
-                }
-            }
-
-            $(function () {
-
-                // $(".modal").draggable({
-                //     handle : $(".modal-header"),
-                //     cancel : '.btn, input, select'
-                // });
-
-                $("#search").val("");
-
-                $(".toggle").click(function () {
-                    var tipo = $(this).attr("id");
-                    if (tipo != current) {
-//                        ////console.log(tipo);
-                        current = tipo;
-                        initTree(current);
                     }
                 });
+            }
+        };
 
-                initTree("1");
-
-                $("#btnSearch").click(function () {
-                    doSearch();
-                });
-
-                $("#search").keyup(function (ev) {
-                    if (ev.keyCode == 13) {
-                        doSearch();
+        var borrarSubgrupo = {
+            label            : "Eliminar subgrupo",
+            icon             : "fa fa-trash text-danger",
+            separator_before : true,
+            action           : function () {
+                bootbox.confirm({
+                    title: "Eliminar subgrupo",
+                    message: "Está seguro de borrar este subgrupo? Esta acción no puede deshacerse.",
+                    buttons: {
+                        cancel: {
+                            label: '<i class="fa fa-times"></i> Cancelar',
+                            className: 'btn-primary'
+                        },
+                        confirm: {
+                            label: '<i class="fa fa-trash"></i> Borrar',
+                            className: 'btn-danger'
+                        }
+                    },
+                    callback: function (result) {
+                        if(result){
+                            var dialog = cargarLoader("Borrando...");
+                            $.ajax({
+                                type: 'POST',
+                                url: '${createLink(action: 'deleteDp_ajax')}',
+                                data:{
+                                    id: nodeId
+                                },
+                                success: function (msg) {
+                                    dialog.modal('hide');
+                                    if(msg === 'OK'){
+                                        log("Subgrupo borrado correctamente","success");
+                                        setTimeout(function () {
+                                            if(tipoSeleccionado === 1){
+                                                recargarMateriales();
+                                            }else if(tipoSeleccionado === 2){
+                                                recargaMano();
+                                            }else{
+                                                recargaEquipo();
+                                            }
+                                        }, 1000);
+                                    }else{
+                                        log("Error al borrar el Subgrupo", "error")
+                                    }
+                                }
+                            });
+                        }
                     }
                 });
+            }
+        };
 
-                var cache = {};
-                %{--$("#search").autocomplete({--}%
-                %{--    minLength : 3,--}%
-                %{--    source    : function (request, response) {--}%
-                %{--        var term = request.term;--}%
-                %{--        if (term in cache) {--}%
-                %{--            response(cache[ term ]);--}%
-                %{--            return;--}%
-                %{--        }--}%
+        var borrarItem = {
+            label            : "Eliminar item",
+            icon             : "fa fa-trash text-danger",
+            separator_before : true,
+            action           : function () {
+                bootbox.confirm({
+                    title: "Eliminar item",
+                    message: "Está seguro de borrar este item? Esta acción no puede deshacerse.",
+                    buttons: {
+                        cancel: {
+                            label: '<i class="fa fa-times"></i> Cancelar',
+                            className: 'btn-primary'
+                        },
+                        confirm: {
+                            label: '<i class="fa fa-trash"></i> Borrar',
+                            className: 'btn-danger'
+                        }
+                    },
+                    callback: function (result) {
+                        if(result){
+                            var dialog = cargarLoader("Borrando...");
+                            $.ajax({
+                                type: 'POST',
+                                url: '${createLink(action: 'deleteIt_ajax')}',
+                                data:{
+                                    id: nodeId
+                                },
+                                success: function (msg) {
+                                    dialog.modal('hide');
+                                    if(msg === 'OK'){
+                                        log("Borrado correctamente","success");
+                                        setTimeout(function () {
+                                            if(tipoSeleccionado === 1){
+                                                recargarMateriales();
+                                            }else if(tipoSeleccionado === 2){
+                                                recargaMano();
+                                            }else{
+                                                recargaEquipo();
+                                            }
+                                        }, 1000);
+                                    }else{
+                                        log("Error al borrar", "error")
+                                    }
+                                }
+                            });
+                        }
+                    }
+                });
+            }
+        };
 
-                %{--        $.ajax({--}%
-                %{--            type     : "POST",--}%
-                %{--            dataType : 'json',--}%
-                %{--            url      : "${createLink(action: 'search_ajax')}",--}%
-                %{--            data     : {--}%
-                %{--                search : term,--}%
-                %{--                tipo   : current--}%
-                %{--            },--}%
-                %{--            success  : function (data) {--}%
-                %{--                cache[ term ] = data;--}%
-                %{--                response(data);--}%
-                %{--            }--}%
-                %{--        });--}%
+        var copiarOferentes = {
+            label            : "Copiar a oferentes",
+            icon             : "fa fa-file text-success",
+            separator_before : true,
+            action           : function () {
+                $.ajax({
+                    type    : "POST",
+                    url     : "${createLink(action:'copiarOferentes')}",
+                    data    : {
+                        id : nodeId
+                    },
+                    success : function (msg) {
+                        var parts =  msg.split("_");
+                        if(parts[0] === 'OK'){
+                            log("Item copiado a oferentes","success")
+                        }else{
+                            log("Error al copiar el item a oferentes","error")
+                        }
+                    }
+                });
+            }
+        };
 
-                %{--    }--}%
-                %{--});--}%
 
+        if (esRoot) {
+        } else if (esPrincipal) {
+            if(tipoGrupo !== 2){
+                items.nuevoGrupo = nuevoGrupo;
+            }
+        } else if (esSubgrupo) {
+            if(tipoGrupo !== 2){
+                items.editarGrupo = editarGrupo;
+            }
+            items.nuevoSubgrupo = nuevoSubgrupo;
+            if(!nodeHasChildren){
+                items.borrarGrupo = borrarGrupo;
+            }
+        } else if (esDepartamento) {
+            items.editarSubgrupo = editarSubgrupo;
+            if(tipoGrupo === 1){
+                items.nuevoMaterial= nuevoMaterial;
+            }else if(tipoGrupo === 2){
+                items.nuevaManoObra= nuevaManoObra;
+            }else if(tipoGrupo === 3){
+                items.nuevoEquipo= nuevoEquipo;
+            }
+            if(!nodeHasChildren){
+                items.borrarSubgrupo = borrarSubgrupo;
+            }
+
+        } else if (esItem) {
+            items.verItem = verItem;
+            if(tipoGrupo === 1){
+                items.editarMaterial= editarMaterial;
+            }else if(tipoGrupo === 2){
+                items.editarManoObra= editarManoObra;
+            }else if(tipoGrupo === 3){
+                items.editarEquipo= editarEquipo;
+            }
+            items.copiarOferentes = copiarOferentes;
+            if(!nodeHasChildren){
+                items.borrarItem = borrarItem;
+            }
+        }
+        return items;
+    }
+
+    function createEditSubgrupo(id, parentId, abueloId) {
+        var title = id ? "Editar" : "Crear";
+        var data = id ? {id : id} : {};
+        if (parentId) {
+            data.subgrupo = parentId;
+        }
+        $.ajax({
+            type    : "POST",
+            url     : "${createLink( action:'formDp_ajax')}",
+            data    : data,
+            success : function (msg) {
+                var b = bootbox.dialog({
+                    id    : "dlgCreateEditDP",
+                    title : title + " subgrupo",
+                    class : "modal-lg",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        },
+                        guardar  : {
+                            id        : "btnSave",
+                            label     : "<i class='fa fa-save'></i> Guardar",
+                            className : "btn-success",
+                            callback  : function () {
+                                return submitFormSubgrupo(abueloId);
+                            } //callback
+                        } //guardar
+                    } //buttons
+                }); //dialog
+                setTimeout(function () {
+                    b.find(".form-control").first().focus()
+                }, 500);
+            } //success
+        }); //ajax
+    } //createEdit
+
+    function submitFormSubgrupo(tipo) {
+        var $form = $("#frmSave");
+        var $btn = $("#dlgCreateEditDP").find("#btnSave");
+        if ($form.valid()) {
+            var data = $form.serialize();
+            $btn.replaceWith(spinner);
+            var dialog = cargarLoader("Guardando...");
+            $.ajax({
+                type    : "POST",
+                url     : $form.attr("action"),
+                data    : data,
+                success : function (msg) {
+                    dialog.modal('hide');
+                    var parts = msg.split("_");
+                    if(parts[0] === 'ok'){
+                        log(parts[1], "success");
+                        setTimeout(function () {
+                            if(tipo === '1'){
+                                recargarMateriales();
+                            }else if(tipo === '2'){
+                                recargaMano();
+                            }else{
+                                recargaEquipo();
+                            }
+                        }, 1000);
+                    }else{
+                        bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
+                        return false;
+                    }
+                }
             });
-        </script>
+        } else {
+            return false;
+        }
+    }
 
-    </body>
+    function createEditGrupo(id, parentId) {
+        var title = id ? "Editar" : "Crear";
+        var data = id ? {id : id} : {};
+        data.grupo = parentId;
+        $.ajax({
+            type    : "POST",
+            url     : "${createLink( action:'formSg_ajax')}",
+            data    : data,
+            success : function (msg) {
+                var b = bootbox.dialog({
+                    id    : "dlgCreateEditGP",
+                    title : title + " grupo",
+                    class : "modal-lg",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        },
+                        guardar  : {
+                            id        : "btnSave",
+                            label     : "<i class='fa fa-save'></i> Guardar",
+                            className : "btn-success",
+                            callback  : function () {
+                                return submitFormGrupo(parentId);
+                            } //callback
+                        } //guardar
+                    } //buttons
+                }); //dialog
+                setTimeout(function () {
+                    b.find(".form-control").first().focus()
+                }, 500);
+            } //success
+        }); //ajax
+    } //createEdit
+
+    function submitFormGrupo(tipo) {
+        var $form = $("#frmSave");
+        var $btn = $("#dlgCreateEditGP").find("#btnSave");
+        if ($form.valid()) {
+            var data = $form.serialize();
+            $btn.replaceWith(spinner);
+            var dialog = cargarLoader("Guardando...");
+            $.ajax({
+                type    : "POST",
+                url     : $form.attr("action"),
+                data    : data,
+                success : function (msg) {
+                    dialog.modal('hide');
+                    var parts = msg.split("_");
+                    if(parts[0] === 'ok'){
+                        log(parts[1], "success");
+                        setTimeout(function () {
+                            if(tipo === '1'){
+                                recargarMateriales();
+                            }else if(tipo === '2'){
+                                recargaMano();
+                            }else{
+                                recargaEquipo();
+                            }
+                        }, 1000);
+                    }else{
+                        bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
+                        return false;
+                    }
+                }
+            });
+        } else {
+            return false;
+        }
+    }
+
+    function createEditItem(id, parentId) {
+        var title = id ? "Editar" : "Crear";
+        var data = id ? {id : id} : {};
+        if (parentId) {
+            data.departamento = parentId;
+        }
+
+        data.grupo = tipoSeleccionado;
+
+        $.ajax({
+            type    : "POST",
+            url     : "${createLink( action:'formIt_ajax')}",
+            data    : data,
+            success : function (msg) {
+                var b = bootbox.dialog({
+                    id    : "dlgCreateEditIT",
+                    title : title + " item",
+                    class : "modal-lg",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        },
+                        guardar  : {
+                            id        : "btnSave",
+                            label     : "<i class='fa fa-save'></i> Guardar",
+                            className : "btn-success",
+                            callback  : function () {
+                                return submitFormItem();
+                            } //callback
+                        } //guardar
+                    } //buttons
+                }); //dialog
+                setTimeout(function () {
+                    b.find(".form-control").first().focus()
+                }, 500);
+            } //success
+        }); //ajax
+    } //createEdit
+
+    function submitFormItem() {
+        var $form = $("#frmSave");
+        var $btn = $("#dlgCreateEditIT").find("#btnSave");
+        if ($form.valid()) {
+            var data = $form.serialize();
+            $btn.replaceWith(spinner);
+            var dialog = cargarLoader("Guardando...");
+            $.ajax({
+                type    : "POST",
+                url     : $form.attr("action"),
+                data    : data,
+                success : function (msg) {
+                    dialog.modal('hide');
+                    var parts = msg.split("_");
+                    if(parts[0] === 'ok'){
+                        log(parts[1], "success");
+                        setTimeout(function () {
+                            if(parts[2] === '1'){
+                                recargarMateriales();
+                            }else if(parts[2] === '2'){
+                                recargaMano();
+                            }else{
+                                recargaEquipo();
+                            }
+                        }, 1000);
+                    }else{
+                        bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
+                        return false;
+                    }
+                }
+            });
+        } else {
+            return false;
+        }
+    }
+
+</script>
+
+</body>
 </html>

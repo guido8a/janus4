@@ -4,92 +4,75 @@
     <meta name="layout" content="main">
     <title>Registro y Mantenimiento de Items</title>
 
-    <asset:javascript src="/jstree-3.0.8/dist/jstree.min.js"/>
-    <asset:stylesheet src="/jstree-3.0.8/dist/themes/default/style.min.css"/>
+    <asset:javascript src="/bootstrap-select-1.13.14/dist/js/bootstrap-select.min.js"/>
+    <asset:stylesheet src="/bootstrap-select-1.13.14/dist/css/bootstrap-select.min.css"/>
 
     <style>
-    .hide {
-        display: none;
-    }
 
-    .show {
-        display: block;
-    }
     </style>
 </head>
 
 <body>
 
-<div class="span12 btn-group" >
-    <a href="#" id="btnMateriales" class="btn btn-info">
-        <i class="fa fa-box"></i>
-        Materiales
-    </a>
-    <a href="#" id="btnMano" class="btn btn-info ">
-        <i class="fa fa-user"></i>
-        Mano de obra
-    </a>
-    <a href="#" id="btnEquipos" class="btn btn-info ">
-        <i class="fa fa-briefcase"></i>
-        Equipos
-    </a>
+<select class="selectpicker">
+    <option>Mustard</option>
+    <option>Ketchup</option>
+    <option>Relish</option>
+</select>
 
-    <div class="col-md-4">
-        <div class="input-group input-group-sm">
-            <g:textField name="searchArbol" class="form-control input-sm" placeholder="Buscador"/>
-            <span class="input-group-btn">
-                <a href="#" id="btnSearchArbol" class="btn btn-sm btn-info">
-                    <i class="fa fa-search"></i>&nbsp;
-                </a>
+<select class="selectpicker" style="height: auto">
+    <optgroup label="Picnic">
+        <option>Mustard</option>
+        <option>Ketchup</option>
+        <option>Relish</option>
+    </optgroup>
+    <optgroup label="Camping">
+        <option>Tent</option>
+        <option>Flashlight</option>
+        <option>Toilet Paper</option>
+    </optgroup>
+</select>
+
+<div>
+    <fieldset class="borde" style="border-radius: 4px; margin-bottom: 10px">
+        <div class="row-fluid" style="margin-left: 10px">
+            <span class="grupo">
+                <span class="col-md-2">
+                    <label class="control-label text-info">Buscar Por</label>
+                    <g:select name="buscarPor" class="buscarPor col-md-12 form-control" from="${[1: 'Materiales', 2: 'Mano de Obra', 3: 'Equipos']}" optionKey="key"
+                              optionValue="value"/>
+                </span>
+                <span class="col-md-2">
+                    <label class="control-label text-info">Tipo</label>
+                    <g:select name="tipo" class="tipo col-md-12 form-control" from="${[1: 'Grupo', 2: 'Subgrupo', 3: 'Materiales']}" optionKey="key"
+                              optionValue="value"/>
+                </span>
+                <span class="col-md-3">
+                    <label class="control-label text-info">Criterio</label>
+                    <g:textField name="criterio" id="criterio" class="form-control"/>
+                </span>
             </span>
-        </div><!-- /input-group -->
-    </div>
-
-    <div class="col-md-2 hidden" id="divSearchRes">
-        <span id="spanSearchRes">
-
-        </span>
-
-        <div class="btn-group">
-            <a href="#" class="btn btn-xs btn-default" id="btnNextSearch" title="Siguiente">
-                <i class="fa fa-chevron-down"></i>&nbsp;
-            </a>
-            <a href="#" class="btn btn-xs btn-default" id="btnPrevSearch" title="Anterior">
-                <i class="fa fa-chevron-up"></i>&nbsp;
-            </a>
-            <a href="#" class="btn btn-xs btn-default" id="btnClearSearch" title="Limpiar búsqueda">
-                <i class="fa fa-times-circle"></i>&nbsp;
-            </a>
+            <div class="col-md-2" style="margin-top: 20px">
+                <button class="btn btn-info" id="btnBuscar"><i class="fa fa-search"></i>Buscar</button>
+                <button class="btn btn-warning" id="btnLimpiar" title="Limpiar Búsqueda"><i class="fa fa-eraser"></i>Limpiar</button>
+            </div>
         </div>
-    </div>
+    </fieldset>
 
-    <div class="col-md-1" style="float: right">
-        <div class="btn-group">
-            <a href="#" class="btn btn-success" id="btnCollapseAll" title="Cerrar todos los nodos">
-                <i class="fa fa-minus-square"></i> Cerrar todo&nbsp;
-            </a>
+    <fieldset class="borde" style="border-radius: 4px">
+        <div id="divTablaItems" >
         </div>
-    </div>
-
-
-
+    </fieldset>
 </div>
-
-<div id="cargando" class="text-center hide">
-    <img src="${resource(dir: 'images', file: 'spinner.gif')}" alt='Cargando...' width="64px" height="64px"/>
-    <p>Cargando...Por favor espere</p>
-</div>
-
-<div id="alerta1" class="alert alert-info hide" style="margin-top: 5px">MATERIALES</div>
-<div id="alerta2" class="alert alert-warning hide" style="margin-top: 5px">MANO DE OBRA</div>
-<div id="alerta3" class="alert alert-success hide" style="margin-top: 5px">EQUIPOS</div>
-
-<div id="tree" class="col-md-8 ui-corner-all" style="overflow: auto"></div>
-<div id="tree2" class="col-md-8 ui-corner-all hide"></div>
-<div id="tree3" class="col-md-8 ui-corner-all hide"></div>
-<div id="info" class="col-md-4 ui-corner-all hide" style="border-style: groove; border-color: #0d7bdc"></div>
 
 <script type="text/javascript">
+
+
+    $('.selectpicker').selectpicker({
+        style: 'btn-info',
+        size: 4
+    });
+
     var searchRes = [];
     var posSearchShow = 0;
     var tipoSeleccionado = 1;
