@@ -2260,8 +2260,29 @@ itemId: item.id
                 "itemnmbr ilike '%${params.criterio}%' order by itemnmbr "
         def cn = dbConnectionService.getConnection()
         def res = cn.rows(sql.toString());
-//        println("res " + res)
         return[res: res]
+    }
+
+
+    def tablaGrupos_ajax(){
+        def grupo = Grupo.get(params.buscarPor)
+        def grupos = SubgrupoItems.findAllByGrupo(grupo, [sort: 'codigo'])
+        return [grupos: grupos, grupo: grupo]
+    }
+
+    def tablaSubgrupos_ajax(){
+        def grupo = Grupo.get(params.buscarPor)
+        def grupos = SubgrupoItems.findAllByGrupo(grupo, [sort: 'codigo'])
+        def subgrupos = DepartamentoItem.findAllBySubgrupoInList(grupos, [sort: 'subgrupo.descripcion', order: 'asc'])
+        return [subgrupos: subgrupos, grupo: grupo]
+    }
+
+    def tablaMateriales_ajax(){
+        def grupo = Grupo.get(params.buscarPor)
+        def grupos = SubgrupoItems.findAllByGrupo(grupo)
+        def subgrupos = DepartamentoItem.findAllBySubgrupoInList(grupos)
+        def materiales = Item.findAllByDepartamentoInList(subgrupos, [sort: 'codigo'])
+        return [materiales: materiales, grupo: grupo]
     }
 
 }
