@@ -20,18 +20,20 @@
     <option>Relish</option>
 </select>
 
-<select class="selectpicker" style="height: auto">
-    <optgroup label="Picnic">
-        <option>Mustard</option>
-        <option>Ketchup</option>
-        <option>Relish</option>
-    </optgroup>
-    <optgroup label="Camping">
-        <option>Tent</option>
-        <option>Flashlight</option>
-        <option>Toilet Paper</option>
-    </optgroup>
-</select>
+<div style="height: 200px">
+    <select class="selectpicker">
+        <optgroup label="Picnic">
+            <option>Mustard</option>
+            <option>Ketchup</option>
+            <option>Relish</option>
+        </optgroup>
+        <optgroup label="Camping">
+            <option>Tent</option>
+            <option>Flashlight</option>
+            <option>Toilet Paper</option>
+        </optgroup>
+    </select>
+</div>
 
 <div>
     <fieldset class="borde" style="border-radius: 4px; margin-bottom: 10px">
