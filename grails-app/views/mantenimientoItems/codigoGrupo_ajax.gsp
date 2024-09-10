@@ -1,0 +1,1 @@
+<g:textField name="codigoSubgrupo" class="form-control" value="${grupo?.codigo ?: ''}" readonly=""/>

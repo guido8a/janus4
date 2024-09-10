@@ -1,11 +1,20 @@
 <div class="col-md-12" style="text-align: center; font-size: 14px; font-weight: bold">
     <div class="col-md-4"></div>
-    <div class="alert alert-success col-md-2" role="alert"><i class="fa fa-${grupo?.descripcion == 'MATERIALES' ? 'box' : (grupo?.descripcion == 'MANO DE OBRA' ? 'users' : 'truck') } text-warning"></i> ${grupo?.descripcion}</div>
-   <div class="col-md-4" role="alert">
+    <div class="col-md-2" role="alert">
+        <ol class="breadcrumb" style="font-weight: bold">
+            <li class="active"><i class="fa fa-${grupo?.descripcion == 'MATERIALES' ? 'box' : (grupo?.descripcion == 'MANO DE OBRA' ? 'users' : 'truck') } text-warning"></i> ${grupo?.descripcion}</li>
+        </ol>
+    </div>
+    <div class="col-md-4" role="alert">
         <ol class="breadcrumb" style="font-weight: bold">
             <li class="active">GRUPO</li>
             <li class="active">SUBGRUPO</li>
         </ol>
+    </div>
+    <div class="col-md-2">
+        <a href="#" class="btn btn-sm btn-success btnNuevoSubgrupo" title="Crear nuevo subgrupo">
+            <i class="fas fa-file"></i> Nuevo Subgrupo
+        </a>
     </div>
 </div>
 
@@ -48,14 +57,88 @@
 
 <script type="text/javascript">
 
+    var dfs;
+
+    $(".btnNuevoSubgrupo").click(function () {
+        createEditSubgrupo();
+    });
+
     $(".btnEditarSubgrupo").click(function () {
         var id = $(this).data("id");
-        // createEditRow(id);
+        createEditSubgrupo(id);
     });
 
     $(".btnEliminarSubgrupo").click(function () {
         var id = $(this).data("id");
         // deleteRow(id);
     });
+
+    function createEditSubgrupo(id) {
+        var title = id ? "Editar" : "Crear";
+        var data = id ? {id : id} : {};
+        data.grupo = '${grupo?.id}';
+        $.ajax({
+            type    : "POST",
+            url     : "${createLink( action:'formDp_ajax')}",
+            data    : data,
+            success : function (msg) {
+                dfs= bootbox.dialog({
+                    id    : "dlgCreateEditDP",
+                    title : title + " subgrupo",
+                    class : "modal-lg",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        },
+                        guardar  : {
+                            id        : "btnSave",
+                            label     : "<i class='fa fa-save'></i> Guardar",
+                            className : "btn-success",
+                            callback  : function () {
+                                return submitFormSubgrupo();
+                            } //callback
+                        } //guardar
+                    } //buttons
+                }); //dialog
+            } //success
+        }); //ajax
+    } //createEdit
+
+    function submitFormSubgrupo() {
+        var $form = $("#frmSave");
+        if ($form.valid()) {
+            var data = $form.serialize();
+            var dialog = cargarLoader("Guardando...");
+            $.ajax({
+                type    : "POST",
+                url     : $form.attr("action"),
+                data    : data,
+                success : function (msg) {
+                    dialog.modal('hide');
+                    var parts = msg.split("_");
+                    if(parts[0] === 'ok'){
+                        log(parts[1], "success");
+                        cargarTablaItems();
+                        cerrarFormSubgrupo();
+                    }else{
+                        bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
+                        return false;
+                    }
+                }
+            });
+            return false;
+        } else {
+            return false;
+        }
+    }
+
+    function cerrarFormSubgrupo(){
+        dfs.modal("hide");
+    }
+
 
 </script>

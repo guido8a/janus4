@@ -1,12 +1,21 @@
 <div class="col-md-12" style="text-align: center; font-size: 14px; font-weight: bold">
     <div class="col-md-4"></div>
-    <div class="alert alert-success col-md-2" role="alert"><i class="fa fa-${grupo?.descripcion == 'MATERIALES' ? 'box' : (grupo?.descripcion == 'MANO DE OBRA' ? 'users' : 'truck') } text-warning"></i> ${grupo?.descripcion}</div>
+    <div class="col-md-2" role="alert">
+        <ol class="breadcrumb" style="font-weight: bold">
+            <li class="active"><i class="fa fa-${grupo?.descripcion == 'MATERIALES' ? 'box' : (grupo?.descripcion == 'MANO DE OBRA' ? 'users' : 'truck') } text-warning"></i> ${grupo?.descripcion}</li>
+        </ol>
+    </div>
     <div class="col-md-4" role="alert">
         <ol class="breadcrumb" style="font-weight: bold">
             <li class="active">GRUPO</li>
             <li class="active">SUBGRUPO</li>
             <li class="active">MATERIALES</li>
         </ol>
+    </div>
+    <div class="col-md-2">
+        <a href="#" class="btn btn-sm btn-success btnNuevoMaterial" title="Crear nuevo material">
+            <i class="fas fa-file"></i> Nuevo Material
+        </a>
     </div>
 </div>
 
@@ -38,6 +47,9 @@
                 <td style="width: 10%">${material?.codigo}</td>
                 <td style="width: 35%">${material?.nombre}</td>
                 <td style="width: 10%; text-align: center">
+                    <a href="#" class="btn btn-xs btn-info btnVerMaterial" data-id="${material?.id}" title="Ver">
+                        <i class="fas fa-search"></i>
+                    </a>
                     <a href="#" class="btn btn-xs btn-success btnEditarMaterial" data-id="${material?.id}" title="Editar">
                         <i class="fas fa-edit"></i>
                     </a>

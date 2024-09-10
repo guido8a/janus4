@@ -47,6 +47,12 @@
 
 <script type="text/javascript">
 
+    $("#btnLimpiar").click(function () {
+        $("#buscarPor, #tipo").val(1);
+        $("#criterio").val('');
+        cargarTablaItems();
+    });
+
     $("#buscarPor, #tipo").change(function () {
         cargarTablaItems();
     });
@@ -184,588 +190,448 @@
 
 
 
-%{--    function createContextMenu(node) {--}%
+    %{--function createContextMenu(node) {--}%
 
-%{--        var nodeStrId = node.id;--}%
-%{--        var $node = $("#" + nodeStrId);--}%
-%{--        var nodeId = nodeStrId.split("_")[1];--}%
-%{--        var parentId = $node.parent().parent().children()[1].id.split("_")[1];--}%
-%{--        var nodeType = $node.data("jstree").type;--}%
-%{--        var esRoot = nodeType === "root";--}%
-%{--        var esPrincipal = nodeType === "principal";--}%
-%{--        var esSubgrupo = nodeType.contains("subgrupo");--}%
-%{--        var esDepartamento = nodeType.contains("departamento");--}%
-%{--        var esItem = nodeType.contains("item");--}%
-%{--        var tipoGrupo = $node.data("tipo");--}%
-%{--        var nodeHasChildren = $node.hasClass("hasChildren");--}%
-%{--        var abueloId = null;--}%
+    %{--    var nodeStrId = node.id;--}%
+    %{--    var $node = $("#" + nodeStrId);--}%
+    %{--    var nodeId = nodeStrId.split("_")[1];--}%
+    %{--    var parentId = $node.parent().parent().children()[1].id.split("_")[1];--}%
+    %{--    var nodeType = $node.data("jstree").type;--}%
+    %{--    var esRoot = nodeType === "root";--}%
+    %{--    var esPrincipal = nodeType === "principal";--}%
+    %{--    var esSubgrupo = nodeType.contains("subgrupo");--}%
+    %{--    var esDepartamento = nodeType.contains("departamento");--}%
+    %{--    var esItem = nodeType.contains("item");--}%
+    %{--    var tipoGrupo = $node.data("tipo");--}%
+    %{--    var nodeHasChildren = $node.hasClass("hasChildren");--}%
+    %{--    var abueloId = null;--}%
 
-%{--        if(esDepartamento){--}%
-%{--            abueloId = $node.parent().parent().parent().parent().children()[1].id.split("_")[1];--}%
-%{--        }else{--}%
-%{--            abueloId = parentId--}%
-%{--        }--}%
+    %{--    if(esDepartamento){--}%
+    %{--        abueloId = $node.parent().parent().parent().parent().children()[1].id.split("_")[1];--}%
+    %{--    }else{--}%
+    %{--        abueloId = parentId--}%
+    %{--    }--}%
 
-%{--        var items = {};--}%
+    %{--    var items = {};--}%
 
-%{--        var nuevoGrupo = {--}%
-%{--            label  : "Nuevo grupo",--}%
-%{--            icon   : "fa fa-copyright text-info",--}%
-%{--            action : function () {--}%
-%{--                createEditGrupo(null, nodeId);--}%
-%{--            }--}%
-%{--        };--}%
+    %{--    var nuevoGrupo = {--}%
+    %{--        label  : "Nuevo grupo",--}%
+    %{--        icon   : "fa fa-copyright text-info",--}%
+    %{--        action : function () {--}%
+    %{--            createEditGrupo(null, nodeId);--}%
+    %{--        }--}%
+    %{--    };--}%
 
-%{--        var editarGrupo = {--}%
-%{--            label  : "Editar grupo",--}%
-%{--            icon   : "fa fa-copyright text-info",--}%
-%{--            action : function () {--}%
-%{--                createEditGrupo(nodeId, parentId);--}%
-%{--            }--}%
-%{--        };--}%
+    %{--    var editarGrupo = {--}%
+    %{--        label  : "Editar grupo",--}%
+    %{--        icon   : "fa fa-copyright text-info",--}%
+    %{--        action : function () {--}%
+    %{--            createEditGrupo(nodeId, parentId);--}%
+    %{--        }--}%
+    %{--    };--}%
 
-%{--        var nuevoSubgrupo = {--}%
-%{--            label  : "Nuevo subgrupo",--}%
-%{--            icon   : "fa fa-registered text-danger",--}%
-%{--            action : function () {--}%
-%{--                createEditSubgrupo(null, nodeId, abueloId);--}%
-%{--            }--}%
-%{--        };--}%
+    %{--    var nuevoSubgrupo = {--}%
+    %{--        label  : "Nuevo subgrupo",--}%
+    %{--        icon   : "fa fa-registered text-danger",--}%
+    %{--        action : function () {--}%
+    %{--            createEditSubgrupo(null, nodeId, abueloId);--}%
+    %{--        }--}%
+    %{--    };--}%
 
-%{--        var editarSubgrupo = {--}%
-%{--            label  : "Editar subgrupo",--}%
-%{--            icon   : "fa fa-registered text-danger",--}%
-%{--            action : function () {--}%
-%{--                createEditSubgrupo(nodeId, parentId, abueloId);--}%
-%{--            }--}%
-%{--        };--}%
+    %{--    var editarSubgrupo = {--}%
+    %{--        label  : "Editar subgrupo",--}%
+    %{--        icon   : "fa fa-registered text-danger",--}%
+    %{--        action : function () {--}%
+    %{--            createEditSubgrupo(nodeId, parentId, abueloId);--}%
+    %{--        }--}%
+    %{--    };--}%
 
-%{--        var nuevoMaterial = {--}%
-%{--            label  : "Nuevo material",--}%
-%{--            icon   : "fa fa-info-circle text-warning",--}%
-%{--            action : function () {--}%
-%{--                createEditItem(null, nodeId);--}%
-%{--            }--}%
-%{--        };--}%
+    %{--    var nuevoMaterial = {--}%
+    %{--        label  : "Nuevo material",--}%
+    %{--        icon   : "fa fa-info-circle text-warning",--}%
+    %{--        action : function () {--}%
+    %{--            createEditItem(null, nodeId);--}%
+    %{--        }--}%
+    %{--    };--}%
 
-%{--        var nuevaManoObra = {--}%
-%{--            label  : "Nueva mano de obra",--}%
-%{--            icon   : "fa fa-info-circle text-warning",--}%
-%{--            action : function () {--}%
-%{--                createEditItem(null, nodeId);--}%
-%{--            }--}%
-%{--        };--}%
+    %{--    var nuevaManoObra = {--}%
+    %{--        label  : "Nueva mano de obra",--}%
+    %{--        icon   : "fa fa-info-circle text-warning",--}%
+    %{--        action : function () {--}%
+    %{--            createEditItem(null, nodeId);--}%
+    %{--        }--}%
+    %{--    };--}%
 
-%{--        var nuevoEquipo = {--}%
-%{--            label  : "Nuevo equipo",--}%
-%{--            icon   : "fa fa-info-circle text-warning",--}%
-%{--            action : function () {--}%
-%{--                createEditItem(null, nodeId);--}%
-%{--            }--}%
-%{--        };--}%
+    %{--    var nuevoEquipo = {--}%
+    %{--        label  : "Nuevo equipo",--}%
+    %{--        icon   : "fa fa-info-circle text-warning",--}%
+    %{--        action : function () {--}%
+    %{--            createEditItem(null, nodeId);--}%
+    %{--        }--}%
+    %{--    };--}%
 
-%{--        var editarMaterial = {--}%
-%{--            label  : "Editar material",--}%
-%{--            icon   : "fa fa-info-circle text-warning",--}%
-%{--            action : function () {--}%
-%{--                createEditItem(nodeId, parentId);--}%
-%{--            }--}%
-%{--        };--}%
+    %{--    var editarMaterial = {--}%
+    %{--        label  : "Editar material",--}%
+    %{--        icon   : "fa fa-info-circle text-warning",--}%
+    %{--        action : function () {--}%
+    %{--            createEditItem(nodeId, parentId);--}%
+    %{--        }--}%
+    %{--    };--}%
 
-%{--        var editarManoObra = {--}%
-%{--            label  : "Editar mano de obra",--}%
-%{--            icon   : "fa fa-info-circle text-warning",--}%
-%{--            action : function () {--}%
-%{--                createEditItem(nodeId, parentId);--}%
-%{--            }--}%
-%{--        };--}%
+    %{--    var editarManoObra = {--}%
+    %{--        label  : "Editar mano de obra",--}%
+    %{--        icon   : "fa fa-info-circle text-warning",--}%
+    %{--        action : function () {--}%
+    %{--            createEditItem(nodeId, parentId);--}%
+    %{--        }--}%
+    %{--    };--}%
 
-%{--        var editarEquipo = {--}%
-%{--            label  : "Editar equipo",--}%
-%{--            icon   : "fa fa-info-circle text-warning",--}%
-%{--            action : function () {--}%
-%{--                createEditItem(nodeId, parentId);--}%
-%{--            }--}%
-%{--        };--}%
+    %{--    var editarEquipo = {--}%
+    %{--        label  : "Editar equipo",--}%
+    %{--        icon   : "fa fa-info-circle text-warning",--}%
+    %{--        action : function () {--}%
+    %{--            createEditItem(nodeId, parentId);--}%
+    %{--        }--}%
+    %{--    };--}%
 
-%{--        var verItem = {--}%
-%{--            label            : "Ver información del Item",--}%
-%{--            icon             : "fa fa-laptop text-info",--}%
-%{--            separator_before : true,--}%
-%{--            action           : function () {--}%
-%{--                $.ajax({--}%
-%{--                    type    : "POST",--}%
-%{--                    url     : "${createLink(action:'infoItems')}",--}%
-%{--                    data    : {--}%
-%{--                        id : nodeId--}%
-%{--                    },--}%
-%{--                    success : function (msg) {--}%
-%{--                        bootbox.dialog({--}%
-%{--                            title   : "Ver información del Item",--}%
-%{--                            message : msg,--}%
-%{--                            class : 'modal-lg',--}%
-%{--                            buttons : {--}%
-%{--                                ok : {--}%
-%{--                                    label     : "Aceptar",--}%
-%{--                                    className : "btn-primary",--}%
-%{--                                    callback  : function () {--}%
-%{--                                    }--}%
-%{--                                }--}%
-%{--                            }--}%
-%{--                        });--}%
-%{--                    }--}%
-%{--                });--}%
-%{--            }--}%
-%{--        };--}%
+    %{--    var verItem = {--}%
+    %{--        label            : "Ver información del Item",--}%
+    %{--        icon             : "fa fa-laptop text-info",--}%
+    %{--        separator_before : true,--}%
+    %{--        action           : function () {--}%
+    %{--            $.ajax({--}%
+    %{--                type    : "POST",--}%
+    %{--                url     : "${createLink(action:'infoItems')}",--}%
+    %{--                data    : {--}%
+    %{--                    id : nodeId--}%
+    %{--                },--}%
+    %{--                success : function (msg) {--}%
+    %{--                    bootbox.dialog({--}%
+    %{--                        title   : "Ver información del Item",--}%
+    %{--                        message : msg,--}%
+    %{--                        class : 'modal-lg',--}%
+    %{--                        buttons : {--}%
+    %{--                            ok : {--}%
+    %{--                                label     : "Aceptar",--}%
+    %{--                                className : "btn-primary",--}%
+    %{--                                callback  : function () {--}%
+    %{--                                }--}%
+    %{--                            }--}%
+    %{--                        }--}%
+    %{--                    });--}%
+    %{--                }--}%
+    %{--            });--}%
+    %{--        }--}%
+    %{--    };--}%
 
-%{--        var borrarGrupo = {--}%
-%{--            label            : "Eliminar Grupo",--}%
-%{--            icon             : "fa fa-trash text-danger",--}%
-%{--            separator_before : true,--}%
-%{--            action           : function () {--}%
-%{--                bootbox.confirm({--}%
-%{--                    title: "Eliminar Grupo",--}%
-%{--                    message: "Está seguro de borrar este grupo? Esta acción no puede deshacerse.",--}%
-%{--                    buttons: {--}%
-%{--                        cancel: {--}%
-%{--                            label: '<i class="fa fa-times"></i> Cancelar',--}%
-%{--                            className: 'btn-primary'--}%
-%{--                        },--}%
-%{--                        confirm: {--}%
-%{--                            label: '<i class="fa fa-trash"></i> Borrar',--}%
-%{--                            className: 'btn-danger'--}%
-%{--                        }--}%
-%{--                    },--}%
-%{--                    callback: function (result) {--}%
-%{--                        if(result){--}%
-%{--                            var dialog = cargarLoader("Borrando...");--}%
-%{--                            $.ajax({--}%
-%{--                                type: 'POST',--}%
-%{--                                url: '${createLink(action: 'deleteSg_ajax')}',--}%
-%{--                                data:{--}%
-%{--                                    id: nodeId--}%
-%{--                                },--}%
-%{--                                success: function (msg) {--}%
-%{--                                    dialog.modal('hide');--}%
-%{--                                    if(msg === 'OK'){--}%
-%{--                                        log("Grupo borrado correctamente","success");--}%
-%{--                                        setTimeout(function () {--}%
-%{--                                            if(tipoSeleccionado === 1){--}%
-%{--                                                recargarMateriales();--}%
-%{--                                            }else if(tipoSeleccionado === 2){--}%
-%{--                                                recargaMano();--}%
-%{--                                            }else{--}%
-%{--                                                recargaEquipo();--}%
-%{--                                            }--}%
-%{--                                        }, 1000);--}%
-%{--                                    }else{--}%
-%{--                                        log("Error al borrar el grupo", "error")--}%
-%{--                                    }--}%
-%{--                                }--}%
-%{--                            });--}%
-%{--                        }--}%
-%{--                    }--}%
-%{--                });--}%
-%{--            }--}%
-%{--        };--}%
+    %{--    var borrarGrupo = {--}%
+    %{--        label            : "Eliminar Grupo",--}%
+    %{--        icon             : "fa fa-trash text-danger",--}%
+    %{--        separator_before : true,--}%
+    %{--        action           : function () {--}%
+    %{--            bootbox.confirm({--}%
+    %{--                title: "Eliminar Grupo",--}%
+    %{--                message: "Está seguro de borrar este grupo? Esta acción no puede deshacerse.",--}%
+    %{--                buttons: {--}%
+    %{--                    cancel: {--}%
+    %{--                        label: '<i class="fa fa-times"></i> Cancelar',--}%
+    %{--                        className: 'btn-primary'--}%
+    %{--                    },--}%
+    %{--                    confirm: {--}%
+    %{--                        label: '<i class="fa fa-trash"></i> Borrar',--}%
+    %{--                        className: 'btn-danger'--}%
+    %{--                    }--}%
+    %{--                },--}%
+    %{--                callback: function (result) {--}%
+    %{--                    if(result){--}%
+    %{--                        var dialog = cargarLoader("Borrando...");--}%
+    %{--                        $.ajax({--}%
+    %{--                            type: 'POST',--}%
+    %{--                            url: '${createLink(action: 'deleteSg_ajax')}',--}%
+    %{--                            data:{--}%
+    %{--                                id: nodeId--}%
+    %{--                            },--}%
+    %{--                            success: function (msg) {--}%
+    %{--                                dialog.modal('hide');--}%
+    %{--                                if(msg === 'OK'){--}%
+    %{--                                    log("Grupo borrado correctamente","success");--}%
+    %{--                                    setTimeout(function () {--}%
+    %{--                                        if(tipoSeleccionado === 1){--}%
+    %{--                                            recargarMateriales();--}%
+    %{--                                        }else if(tipoSeleccionado === 2){--}%
+    %{--                                            recargaMano();--}%
+    %{--                                        }else{--}%
+    %{--                                            recargaEquipo();--}%
+    %{--                                        }--}%
+    %{--                                    }, 1000);--}%
+    %{--                                }else{--}%
+    %{--                                    log("Error al borrar el grupo", "error")--}%
+    %{--                                }--}%
+    %{--                            }--}%
+    %{--                        });--}%
+    %{--                    }--}%
+    %{--                }--}%
+    %{--            });--}%
+    %{--        }--}%
+    %{--    };--}%
 
-%{--        var borrarSubgrupo = {--}%
-%{--            label            : "Eliminar subgrupo",--}%
-%{--            icon             : "fa fa-trash text-danger",--}%
-%{--            separator_before : true,--}%
-%{--            action           : function () {--}%
-%{--                bootbox.confirm({--}%
-%{--                    title: "Eliminar subgrupo",--}%
-%{--                    message: "Está seguro de borrar este subgrupo? Esta acción no puede deshacerse.",--}%
-%{--                    buttons: {--}%
-%{--                        cancel: {--}%
-%{--                            label: '<i class="fa fa-times"></i> Cancelar',--}%
-%{--                            className: 'btn-primary'--}%
-%{--                        },--}%
-%{--                        confirm: {--}%
-%{--                            label: '<i class="fa fa-trash"></i> Borrar',--}%
-%{--                            className: 'btn-danger'--}%
-%{--                        }--}%
-%{--                    },--}%
-%{--                    callback: function (result) {--}%
-%{--                        if(result){--}%
-%{--                            var dialog = cargarLoader("Borrando...");--}%
-%{--                            $.ajax({--}%
-%{--                                type: 'POST',--}%
-%{--                                url: '${createLink(action: 'deleteDp_ajax')}',--}%
-%{--                                data:{--}%
-%{--                                    id: nodeId--}%
-%{--                                },--}%
-%{--                                success: function (msg) {--}%
-%{--                                    dialog.modal('hide');--}%
-%{--                                    if(msg === 'OK'){--}%
-%{--                                        log("Subgrupo borrado correctamente","success");--}%
-%{--                                        setTimeout(function () {--}%
-%{--                                            if(tipoSeleccionado === 1){--}%
-%{--                                                recargarMateriales();--}%
-%{--                                            }else if(tipoSeleccionado === 2){--}%
-%{--                                                recargaMano();--}%
-%{--                                            }else{--}%
-%{--                                                recargaEquipo();--}%
-%{--                                            }--}%
-%{--                                        }, 1000);--}%
-%{--                                    }else{--}%
-%{--                                        log("Error al borrar el Subgrupo", "error")--}%
-%{--                                    }--}%
-%{--                                }--}%
-%{--                            });--}%
-%{--                        }--}%
-%{--                    }--}%
-%{--                });--}%
-%{--            }--}%
-%{--        };--}%
+    %{--    var borrarSubgrupo = {--}%
+    %{--        label            : "Eliminar subgrupo",--}%
+    %{--        icon             : "fa fa-trash text-danger",--}%
+    %{--        separator_before : true,--}%
+    %{--        action           : function () {--}%
+    %{--            bootbox.confirm({--}%
+    %{--                title: "Eliminar subgrupo",--}%
+    %{--                message: "Está seguro de borrar este subgrupo? Esta acción no puede deshacerse.",--}%
+    %{--                buttons: {--}%
+    %{--                    cancel: {--}%
+    %{--                        label: '<i class="fa fa-times"></i> Cancelar',--}%
+    %{--                        className: 'btn-primary'--}%
+    %{--                    },--}%
+    %{--                    confirm: {--}%
+    %{--                        label: '<i class="fa fa-trash"></i> Borrar',--}%
+    %{--                        className: 'btn-danger'--}%
+    %{--                    }--}%
+    %{--                },--}%
+    %{--                callback: function (result) {--}%
+    %{--                    if(result){--}%
+    %{--                        var dialog = cargarLoader("Borrando...");--}%
+    %{--                        $.ajax({--}%
+    %{--                            type: 'POST',--}%
+    %{--                            url: '${createLink(action: 'deleteDp_ajax')}',--}%
+    %{--                            data:{--}%
+    %{--                                id: nodeId--}%
+    %{--                            },--}%
+    %{--                            success: function (msg) {--}%
+    %{--                                dialog.modal('hide');--}%
+    %{--                                if(msg === 'OK'){--}%
+    %{--                                    log("Subgrupo borrado correctamente","success");--}%
+    %{--                                    setTimeout(function () {--}%
+    %{--                                        if(tipoSeleccionado === 1){--}%
+    %{--                                            recargarMateriales();--}%
+    %{--                                        }else if(tipoSeleccionado === 2){--}%
+    %{--                                            recargaMano();--}%
+    %{--                                        }else{--}%
+    %{--                                            recargaEquipo();--}%
+    %{--                                        }--}%
+    %{--                                    }, 1000);--}%
+    %{--                                }else{--}%
+    %{--                                    log("Error al borrar el Subgrupo", "error")--}%
+    %{--                                }--}%
+    %{--                            }--}%
+    %{--                        });--}%
+    %{--                    }--}%
+    %{--                }--}%
+    %{--            });--}%
+    %{--        }--}%
+    %{--    };--}%
 
-%{--        var borrarItem = {--}%
-%{--            label            : "Eliminar item",--}%
-%{--            icon             : "fa fa-trash text-danger",--}%
-%{--            separator_before : true,--}%
-%{--            action           : function () {--}%
-%{--                bootbox.confirm({--}%
-%{--                    title: "Eliminar item",--}%
-%{--                    message: "Está seguro de borrar este item? Esta acción no puede deshacerse.",--}%
-%{--                    buttons: {--}%
-%{--                        cancel: {--}%
-%{--                            label: '<i class="fa fa-times"></i> Cancelar',--}%
-%{--                            className: 'btn-primary'--}%
-%{--                        },--}%
-%{--                        confirm: {--}%
-%{--                            label: '<i class="fa fa-trash"></i> Borrar',--}%
-%{--                            className: 'btn-danger'--}%
-%{--                        }--}%
-%{--                    },--}%
-%{--                    callback: function (result) {--}%
-%{--                        if(result){--}%
-%{--                            var dialog = cargarLoader("Borrando...");--}%
-%{--                            $.ajax({--}%
-%{--                                type: 'POST',--}%
-%{--                                url: '${createLink(action: 'deleteIt_ajax')}',--}%
-%{--                                data:{--}%
-%{--                                    id: nodeId--}%
-%{--                                },--}%
-%{--                                success: function (msg) {--}%
-%{--                                    dialog.modal('hide');--}%
-%{--                                    if(msg === 'OK'){--}%
-%{--                                        log("Borrado correctamente","success");--}%
-%{--                                        setTimeout(function () {--}%
-%{--                                            if(tipoSeleccionado === 1){--}%
-%{--                                                recargarMateriales();--}%
-%{--                                            }else if(tipoSeleccionado === 2){--}%
-%{--                                                recargaMano();--}%
-%{--                                            }else{--}%
-%{--                                                recargaEquipo();--}%
-%{--                                            }--}%
-%{--                                        }, 1000);--}%
-%{--                                    }else{--}%
-%{--                                        log("Error al borrar", "error")--}%
-%{--                                    }--}%
-%{--                                }--}%
-%{--                            });--}%
-%{--                        }--}%
-%{--                    }--}%
-%{--                });--}%
-%{--            }--}%
-%{--        };--}%
+    %{--    var borrarItem = {--}%
+    %{--        label            : "Eliminar item",--}%
+    %{--        icon             : "fa fa-trash text-danger",--}%
+    %{--        separator_before : true,--}%
+    %{--        action           : function () {--}%
+    %{--            bootbox.confirm({--}%
+    %{--                title: "Eliminar item",--}%
+    %{--                message: "Está seguro de borrar este item? Esta acción no puede deshacerse.",--}%
+    %{--                buttons: {--}%
+    %{--                    cancel: {--}%
+    %{--                        label: '<i class="fa fa-times"></i> Cancelar',--}%
+    %{--                        className: 'btn-primary'--}%
+    %{--                    },--}%
+    %{--                    confirm: {--}%
+    %{--                        label: '<i class="fa fa-trash"></i> Borrar',--}%
+    %{--                        className: 'btn-danger'--}%
+    %{--                    }--}%
+    %{--                },--}%
+    %{--                callback: function (result) {--}%
+    %{--                    if(result){--}%
+    %{--                        var dialog = cargarLoader("Borrando...");--}%
+    %{--                        $.ajax({--}%
+    %{--                            type: 'POST',--}%
+    %{--                            url: '${createLink(action: 'deleteIt_ajax')}',--}%
+    %{--                            data:{--}%
+    %{--                                id: nodeId--}%
+    %{--                            },--}%
+    %{--                            success: function (msg) {--}%
+    %{--                                dialog.modal('hide');--}%
+    %{--                                if(msg === 'OK'){--}%
+    %{--                                    log("Borrado correctamente","success");--}%
+    %{--                                    setTimeout(function () {--}%
+    %{--                                        if(tipoSeleccionado === 1){--}%
+    %{--                                            recargarMateriales();--}%
+    %{--                                        }else if(tipoSeleccionado === 2){--}%
+    %{--                                            recargaMano();--}%
+    %{--                                        }else{--}%
+    %{--                                            recargaEquipo();--}%
+    %{--                                        }--}%
+    %{--                                    }, 1000);--}%
+    %{--                                }else{--}%
+    %{--                                    log("Error al borrar", "error")--}%
+    %{--                                }--}%
+    %{--                            }--}%
+    %{--                        });--}%
+    %{--                    }--}%
+    %{--                }--}%
+    %{--            });--}%
+    %{--        }--}%
+    %{--    };--}%
 
-%{--        var copiarOferentes = {--}%
-%{--            label            : "Copiar a oferentes",--}%
-%{--            icon             : "fa fa-file text-success",--}%
-%{--            separator_before : true,--}%
-%{--            action           : function () {--}%
-%{--                $.ajax({--}%
-%{--                    type    : "POST",--}%
-%{--                    url     : "${createLink(action:'copiarOferentes')}",--}%
-%{--                    data    : {--}%
-%{--                        id : nodeId--}%
-%{--                    },--}%
-%{--                    success : function (msg) {--}%
-%{--                        var parts =  msg.split("_");--}%
-%{--                        if(parts[0] === 'OK'){--}%
-%{--                            log("Item copiado a oferentes","success")--}%
-%{--                        }else{--}%
-%{--                            log("Error al copiar el item a oferentes","error")--}%
-%{--                        }--}%
-%{--                    }--}%
-%{--                });--}%
-%{--            }--}%
-%{--        };--}%
+    %{--    var copiarOferentes = {--}%
+    %{--        label            : "Copiar a oferentes",--}%
+    %{--        icon             : "fa fa-file text-success",--}%
+    %{--        separator_before : true,--}%
+    %{--        action           : function () {--}%
+    %{--            $.ajax({--}%
+    %{--                type    : "POST",--}%
+    %{--                url     : "${createLink(action:'copiarOferentes')}",--}%
+    %{--                data    : {--}%
+    %{--                    id : nodeId--}%
+    %{--                },--}%
+    %{--                success : function (msg) {--}%
+    %{--                    var parts =  msg.split("_");--}%
+    %{--                    if(parts[0] === 'OK'){--}%
+    %{--                        log("Item copiado a oferentes","success")--}%
+    %{--                    }else{--}%
+    %{--                        log("Error al copiar el item a oferentes","error")--}%
+    %{--                    }--}%
+    %{--                }--}%
+    %{--            });--}%
+    %{--        }--}%
+    %{--    };--}%
 
 
-%{--        if (esRoot) {--}%
-%{--        } else if (esPrincipal) {--}%
-%{--            if(tipoGrupo !== 2){--}%
-%{--                items.nuevoGrupo = nuevoGrupo;--}%
-%{--            }--}%
-%{--        } else if (esSubgrupo) {--}%
-%{--            if(tipoGrupo !== 2){--}%
-%{--                items.editarGrupo = editarGrupo;--}%
-%{--            }--}%
-%{--            items.nuevoSubgrupo = nuevoSubgrupo;--}%
-%{--            if(!nodeHasChildren){--}%
-%{--                items.borrarGrupo = borrarGrupo;--}%
-%{--            }--}%
-%{--        } else if (esDepartamento) {--}%
-%{--            items.editarSubgrupo = editarSubgrupo;--}%
-%{--            if(tipoGrupo === 1){--}%
-%{--                items.nuevoMaterial= nuevoMaterial;--}%
-%{--            }else if(tipoGrupo === 2){--}%
-%{--                items.nuevaManoObra= nuevaManoObra;--}%
-%{--            }else if(tipoGrupo === 3){--}%
-%{--                items.nuevoEquipo= nuevoEquipo;--}%
-%{--            }--}%
-%{--            if(!nodeHasChildren){--}%
-%{--                items.borrarSubgrupo = borrarSubgrupo;--}%
-%{--            }--}%
+    %{--    if (esRoot) {--}%
+    %{--    } else if (esPrincipal) {--}%
+    %{--        if(tipoGrupo !== 2){--}%
+    %{--            items.nuevoGrupo = nuevoGrupo;--}%
+    %{--        }--}%
+    %{--    } else if (esSubgrupo) {--}%
+    %{--        if(tipoGrupo !== 2){--}%
+    %{--            items.editarGrupo = editarGrupo;--}%
+    %{--        }--}%
+    %{--        items.nuevoSubgrupo = nuevoSubgrupo;--}%
+    %{--        if(!nodeHasChildren){--}%
+    %{--            items.borrarGrupo = borrarGrupo;--}%
+    %{--        }--}%
+    %{--    } else if (esDepartamento) {--}%
+    %{--        items.editarSubgrupo = editarSubgrupo;--}%
+    %{--        if(tipoGrupo === 1){--}%
+    %{--            items.nuevoMaterial= nuevoMaterial;--}%
+    %{--        }else if(tipoGrupo === 2){--}%
+    %{--            items.nuevaManoObra= nuevaManoObra;--}%
+    %{--        }else if(tipoGrupo === 3){--}%
+    %{--            items.nuevoEquipo= nuevoEquipo;--}%
+    %{--        }--}%
+    %{--        if(!nodeHasChildren){--}%
+    %{--            items.borrarSubgrupo = borrarSubgrupo;--}%
+    %{--        }--}%
 
-%{--        } else if (esItem) {--}%
-%{--            items.verItem = verItem;--}%
-%{--            if(tipoGrupo === 1){--}%
-%{--                items.editarMaterial= editarMaterial;--}%
-%{--            }else if(tipoGrupo === 2){--}%
-%{--                items.editarManoObra= editarManoObra;--}%
-%{--            }else if(tipoGrupo === 3){--}%
-%{--                items.editarEquipo= editarEquipo;--}%
-%{--            }--}%
-%{--            items.copiarOferentes = copiarOferentes;--}%
-%{--            if(!nodeHasChildren){--}%
-%{--                items.borrarItem = borrarItem;--}%
-%{--            }--}%
-%{--        }--}%
-%{--        return items;--}%
-%{--    }--}%
+    %{--    } else if (esItem) {--}%
+    %{--        items.verItem = verItem;--}%
+    %{--        if(tipoGrupo === 1){--}%
+    %{--            items.editarMaterial= editarMaterial;--}%
+    %{--        }else if(tipoGrupo === 2){--}%
+    %{--            items.editarManoObra= editarManoObra;--}%
+    %{--        }else if(tipoGrupo === 3){--}%
+    %{--            items.editarEquipo= editarEquipo;--}%
+    %{--        }--}%
+    %{--        items.copiarOferentes = copiarOferentes;--}%
+    %{--        if(!nodeHasChildren){--}%
+    %{--            items.borrarItem = borrarItem;--}%
+    %{--        }--}%
+    %{--    }--}%
+    %{--    return items;--}%
+    %{--}--}%
 
-%{--    function createEditSubgrupo(id, parentId, abueloId) {--}%
-%{--        var title = id ? "Editar" : "Crear";--}%
-%{--        var data = id ? {id : id} : {};--}%
-%{--        if (parentId) {--}%
-%{--            data.subgrupo = parentId;--}%
-%{--        }--}%
-%{--        $.ajax({--}%
-%{--            type    : "POST",--}%
-%{--            url     : "${createLink( action:'formDp_ajax')}",--}%
-%{--            data    : data,--}%
-%{--            success : function (msg) {--}%
-%{--                var b = bootbox.dialog({--}%
-%{--                    id    : "dlgCreateEditDP",--}%
-%{--                    title : title + " subgrupo",--}%
-%{--                    class : "modal-lg",--}%
-%{--                    message : msg,--}%
-%{--                    buttons : {--}%
-%{--                        cancelar : {--}%
-%{--                            label     : "Cancelar",--}%
-%{--                            className : "btn-primary",--}%
-%{--                            callback  : function () {--}%
-%{--                            }--}%
-%{--                        },--}%
-%{--                        guardar  : {--}%
-%{--                            id        : "btnSave",--}%
-%{--                            label     : "<i class='fa fa-save'></i> Guardar",--}%
-%{--                            className : "btn-success",--}%
-%{--                            callback  : function () {--}%
-%{--                                return submitFormSubgrupo(abueloId);--}%
-%{--                            } //callback--}%
-%{--                        } //guardar--}%
-%{--                    } //buttons--}%
-%{--                }); //dialog--}%
-%{--                setTimeout(function () {--}%
-%{--                    b.find(".form-control").first().focus()--}%
-%{--                }, 500);--}%
-%{--            } //success--}%
-%{--        }); //ajax--}%
-%{--    } //createEdit--}%
 
-%{--    function submitFormSubgrupo(tipo) {--}%
-%{--        var $form = $("#frmSave");--}%
-%{--        var $btn = $("#dlgCreateEditDP").find("#btnSave");--}%
-%{--        if ($form.valid()) {--}%
-%{--            var data = $form.serialize();--}%
-%{--            $btn.replaceWith(spinner);--}%
-%{--            var dialog = cargarLoader("Guardando...");--}%
-%{--            $.ajax({--}%
-%{--                type    : "POST",--}%
-%{--                url     : $form.attr("action"),--}%
-%{--                data    : data,--}%
-%{--                success : function (msg) {--}%
-%{--                    dialog.modal('hide');--}%
-%{--                    var parts = msg.split("_");--}%
-%{--                    if(parts[0] === 'ok'){--}%
-%{--                        log(parts[1], "success");--}%
-%{--                        setTimeout(function () {--}%
-%{--                            if(tipo === '1'){--}%
-%{--                                recargarMateriales();--}%
-%{--                            }else if(tipo === '2'){--}%
-%{--                                recargaMano();--}%
-%{--                            }else{--}%
-%{--                                recargaEquipo();--}%
-%{--                            }--}%
-%{--                        }, 1000);--}%
-%{--                    }else{--}%
-%{--                        bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');--}%
-%{--                        return false;--}%
-%{--                    }--}%
-%{--                }--}%
-%{--            });--}%
-%{--        } else {--}%
-%{--            return false;--}%
-%{--        }--}%
-%{--    }--}%
+    function createEditItem(id, parentId) {
+        var title = id ? "Editar" : "Crear";
+        var data = id ? {id : id} : {};
+        if (parentId) {
+            data.departamento = parentId;
+        }
 
-%{--    function createEditGrupo(id, parentId) {--}%
-%{--        var title = id ? "Editar" : "Crear";--}%
-%{--        var data = id ? {id : id} : {};--}%
-%{--        data.grupo = parentId;--}%
-%{--        $.ajax({--}%
-%{--            type    : "POST",--}%
-%{--            url     : "${createLink( action:'formSg_ajax')}",--}%
-%{--            data    : data,--}%
-%{--            success : function (msg) {--}%
-%{--                var b = bootbox.dialog({--}%
-%{--                    id    : "dlgCreateEditGP",--}%
-%{--                    title : title + " grupo",--}%
-%{--                    class : "modal-lg",--}%
-%{--                    message : msg,--}%
-%{--                    buttons : {--}%
-%{--                        cancelar : {--}%
-%{--                            label     : "Cancelar",--}%
-%{--                            className : "btn-primary",--}%
-%{--                            callback  : function () {--}%
-%{--                            }--}%
-%{--                        },--}%
-%{--                        guardar  : {--}%
-%{--                            id        : "btnSave",--}%
-%{--                            label     : "<i class='fa fa-save'></i> Guardar",--}%
-%{--                            className : "btn-success",--}%
-%{--                            callback  : function () {--}%
-%{--                                return submitFormGrupo(parentId);--}%
-%{--                            } //callback--}%
-%{--                        } //guardar--}%
-%{--                    } //buttons--}%
-%{--                }); //dialog--}%
-%{--                setTimeout(function () {--}%
-%{--                    b.find(".form-control").first().focus()--}%
-%{--                }, 500);--}%
-%{--            } //success--}%
-%{--        }); //ajax--}%
-%{--    } //createEdit--}%
+        data.grupo = tipoSeleccionado;
 
-%{--    function submitFormGrupo(tipo) {--}%
-%{--        var $form = $("#frmSave");--}%
-%{--        var $btn = $("#dlgCreateEditGP").find("#btnSave");--}%
-%{--        if ($form.valid()) {--}%
-%{--            var data = $form.serialize();--}%
-%{--            $btn.replaceWith(spinner);--}%
-%{--            var dialog = cargarLoader("Guardando...");--}%
-%{--            $.ajax({--}%
-%{--                type    : "POST",--}%
-%{--                url     : $form.attr("action"),--}%
-%{--                data    : data,--}%
-%{--                success : function (msg) {--}%
-%{--                    dialog.modal('hide');--}%
-%{--                    var parts = msg.split("_");--}%
-%{--                    if(parts[0] === 'ok'){--}%
-%{--                        log(parts[1], "success");--}%
-%{--                        setTimeout(function () {--}%
-%{--                            if(tipo === '1'){--}%
-%{--                                recargarMateriales();--}%
-%{--                            }else if(tipo === '2'){--}%
-%{--                                recargaMano();--}%
-%{--                            }else{--}%
-%{--                                recargaEquipo();--}%
-%{--                            }--}%
-%{--                        }, 1000);--}%
-%{--                    }else{--}%
-%{--                        bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');--}%
-%{--                        return false;--}%
-%{--                    }--}%
-%{--                }--}%
-%{--            });--}%
-%{--        } else {--}%
-%{--            return false;--}%
-%{--        }--}%
-%{--    }--}%
+        $.ajax({
+            type    : "POST",
+            url     : "${createLink( action:'formIt_ajax')}",
+            data    : data,
+            success : function (msg) {
+                var b = bootbox.dialog({
+                    id    : "dlgCreateEditIT",
+                    title : title + " item",
+                    class : "modal-lg",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        },
+                        guardar  : {
+                            id        : "btnSave",
+                            label     : "<i class='fa fa-save'></i> Guardar",
+                            className : "btn-success",
+                            callback  : function () {
+                                return submitFormItem();
+                            } //callback
+                        } //guardar
+                    } //buttons
+                }); //dialog
+                setTimeout(function () {
+                    b.find(".form-control").first().focus()
+                }, 500);
+            } //success
+        }); //ajax
+    } //createEdit
 
-%{--    function createEditItem(id, parentId) {--}%
-%{--        var title = id ? "Editar" : "Crear";--}%
-%{--        var data = id ? {id : id} : {};--}%
-%{--        if (parentId) {--}%
-%{--            data.departamento = parentId;--}%
-%{--        }--}%
+    function submitFormItem() {
+        var $form = $("#frmSave");
+        var $btn = $("#dlgCreateEditIT").find("#btnSave");
+        if ($form.valid()) {
+            var data = $form.serialize();
+            $btn.replaceWith(spinner);
+            var dialog = cargarLoader("Guardando...");
+            $.ajax({
+                type    : "POST",
+                url     : $form.attr("action"),
+                data    : data,
+                success : function (msg) {
+                    dialog.modal('hide');
+                    var parts = msg.split("_");
+                    if(parts[0] === 'ok'){
+                        log(parts[1], "success");
+                        setTimeout(function () {
+                            if(parts[2] === '1'){
+                                recargarMateriales();
+                            }else if(parts[2] === '2'){
+                                recargaMano();
+                            }else{
+                                recargaEquipo();
+                            }
+                        }, 1000);
+                    }else{
+                        bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
+                        return false;
+                    }
+                }
+            });
+        } else {
+            return false;
+        }
+    }
 
-%{--        data.grupo = tipoSeleccionado;--}%
+    $("#criterio").keydown(function (ev) {
+        if (ev.keyCode === 13) {
+            cargarTablaItems();
+            return false;
+        }
+        return true;
+    });
 
-%{--        $.ajax({--}%
-%{--            type    : "POST",--}%
-%{--            url     : "${createLink( action:'formIt_ajax')}",--}%
-%{--            data    : data,--}%
-%{--            success : function (msg) {--}%
-%{--                var b = bootbox.dialog({--}%
-%{--                    id    : "dlgCreateEditIT",--}%
-%{--                    title : title + " item",--}%
-%{--                    class : "modal-lg",--}%
-%{--                    message : msg,--}%
-%{--                    buttons : {--}%
-%{--                        cancelar : {--}%
-%{--                            label     : "Cancelar",--}%
-%{--                            className : "btn-primary",--}%
-%{--                            callback  : function () {--}%
-%{--                            }--}%
-%{--                        },--}%
-%{--                        guardar  : {--}%
-%{--                            id        : "btnSave",--}%
-%{--                            label     : "<i class='fa fa-save'></i> Guardar",--}%
-%{--                            className : "btn-success",--}%
-%{--                            callback  : function () {--}%
-%{--                                return submitFormItem();--}%
-%{--                            } //callback--}%
-%{--                        } //guardar--}%
-%{--                    } //buttons--}%
-%{--                }); //dialog--}%
-%{--                setTimeout(function () {--}%
-%{--                    b.find(".form-control").first().focus()--}%
-%{--                }, 500);--}%
-%{--            } //success--}%
-%{--        }); //ajax--}%
-%{--    } //createEdit--}%
-
-%{--    function submitFormItem() {--}%
-%{--        var $form = $("#frmSave");--}%
-%{--        var $btn = $("#dlgCreateEditIT").find("#btnSave");--}%
-%{--        if ($form.valid()) {--}%
-%{--            var data = $form.serialize();--}%
-%{--            $btn.replaceWith(spinner);--}%
-%{--            var dialog = cargarLoader("Guardando...");--}%
-%{--            $.ajax({--}%
-%{--                type    : "POST",--}%
-%{--                url     : $form.attr("action"),--}%
-%{--                data    : data,--}%
-%{--                success : function (msg) {--}%
-%{--                    dialog.modal('hide');--}%
-%{--                    var parts = msg.split("_");--}%
-%{--                    if(parts[0] === 'ok'){--}%
-%{--                        log(parts[1], "success");--}%
-%{--                        setTimeout(function () {--}%
-%{--                            if(parts[2] === '1'){--}%
-%{--                                recargarMateriales();--}%
-%{--                            }else if(parts[2] === '2'){--}%
-%{--                                recargaMano();--}%
-%{--                            }else{--}%
-%{--                                recargaEquipo();--}%
-%{--                            }--}%
-%{--                        }, 1000);--}%
-%{--                    }else{--}%
-%{--                        bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');--}%
-%{--                        return false;--}%
-%{--                    }--}%
-%{--                }--}%
-%{--            });--}%
-%{--        } else {--}%
-%{--            return false;--}%
-%{--        }--}%
-%{--    }--}%
 
 </script>
 

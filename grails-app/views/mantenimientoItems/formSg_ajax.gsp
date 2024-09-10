@@ -7,7 +7,7 @@
     <div class="form-group ${hasErrors(bean: subgrupoItemsInstance, field: 'grupo', 'error')} ">
         <span class="grupo">
             <label for="grupoName" class="col-md-2 control-label text-info">
-                Grupo
+                Tipo
             </label>
             <span class="col-md-8">
                 <g:textField name="grupoName" class="form-control" value="${grupo?.descripcion}" readonly="" />
@@ -40,21 +40,58 @@
 
 <script type="text/javascript">
 
+    function validarNumDec(ev) {
+        /*
+         48-57      -> numeros
+         96-105     -> teclado numerico
+         188        -> , (coma)
+         190        -> . (punto) teclado
+         110        -> . (punto) teclado numerico
+         8          -> backspace
+         46         -> delete
+         9          -> tab
+         37         -> flecha izq
+         39         -> flecha der
+         */
+        return ((ev.keyCode >= 48 && ev.keyCode <= 57) ||
+            (ev.keyCode >= 96 && ev.keyCode <= 105) ||
+            ev.keyCode === 8 || ev.keyCode === 46 || ev.keyCode === 9 ||
+            ev.keyCode === 37 || ev.keyCode === 39);
+    }
+
+    $("#codigo").keydown(function (ev) {
+        return validarNumDec(ev)
+    });
+
     var validator = $("#frmSave").validate({
         rules          : {
             codigo : {
                 remote : {
+                    url  : "${createLink(action:'checkCodigoGrupo_ajax')}",
+                    type : "POST",
+                    data : {
+                        id : "${subgrupoItemsInstance?.id}",
+                        grupo: '${grupo?.id}'
+                    }
+                }
+            },
+            descripcion : {
+                remote : {
                     url  : "${createLink(action:'checkDsSg_ajax')}",
                     type : "POST",
                     data : {
-                        id : "${subgrupoItemsInstance?.id}"
+                        id : "${subgrupoItemsInstance?.id}",
+                        grupo: '${grupo?.id}'
                     }
                 }
             }
         },
         messages       : {
+            descripcion : {
+                remote : "La descripción se encuentra duplicada"
+            },
             codigo : {
-                remote : "La descripción ya se ha ingresado para otro item"
+                remote : "El código se encuentra duplicado"
             }
         },
         errorClass     : "help-block",
