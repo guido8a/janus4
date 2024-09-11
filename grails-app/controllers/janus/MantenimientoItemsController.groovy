@@ -1211,8 +1211,6 @@ class MantenimientoItemsController {
     }
 
     def formDp_ajax() {
-//        def mos = SubgrupoItems.findAllByGrupo(Grupo.get(2), [sort: 'codigo']).id
-
         def grupo = Grupo.get(params.grupo)
         def subgrupos = SubgrupoItems.findAllByGrupo(grupo, [sort: 'descripcion'])
         def departamentoItemInstance
@@ -1225,59 +1223,38 @@ class MantenimientoItemsController {
         return [subgrupos: subgrupos, departamentoItemInstance: departamentoItemInstance, grupo: grupo]
     }
 
-    def checkCdDp_ajax() {
+    def checkCdDp_ajax(id, codigo, subgrupoId) {
 
-        println("--> " + params)
+        def subgrupo = SubgrupoItems.get(subgrupoId)
+        def departamentos = DepartamentoItem.findAllByCodigoAndSubgrupo(codigo, subgrupo)
 
-        def departamentos = DepartamentoItem.findAllByCodigoAndSubgrupo(params.codigo, SubgrupoItems.get(params.sg))
+        if (id) {
+            def departamento = DepartamentoItem.get(id)
 
-        if (params.id) {
-            def departamento = DepartamentoItem.get(params.id)
-
-            if (params.codigo == departamento.codigo.toString()) {
-                render true
+            if (codigo == departamento.codigo.toString()) {
+                return true
             } else {
-                if (departamentos.size() == 0) {
-                    render true
-                } else {
-                    render false
-                }
+                return departamentos.size() == 0
             }
         } else {
-            if (departamentos.size() == 0) {
-                render true
-            } else {
-                render false
-            }
+            return departamentos.size() == 0
         }
     }
 
-    def checkDsDp_ajax() {
+    def checkDsDp_ajax(id, descripcion, subgrupoId) {
 
-        if (params.descripcion) {
-            params.descripcion = params.descripcion.toString().toUpperCase()
-        }
+        def subgrupo = SubgrupoItems.get(subgrupoId)
+        def departamentos = DepartamentoItem.findAllByDescripcionAndSubgrupo(descripcion, subgrupo)
 
-        def subgrupo = SubgrupoItems.get(params.subgrupo)
-        def departamentos = DepartamentoItem.findAllByDescripcionAndSubgrupo(params.descripcion, subgrupo)
-
-        if (params.id) {
-            def departamento = DepartamentoItem.get(params.id)
-            if (params.descripcion == departamento.descripcion) {
-                render true
+        if (id) {
+            def departamento = DepartamentoItem.get(id)
+            if (descripcion == departamento.descripcion) {
+                return true
             } else {
-                if (departamentos.size() == 0) {
-                    render true
-                } else {
-                    render false
-                }
+                return departamentos.size() == 0
             }
         } else {
-            if (departamentos.size() == 0) {
-                render true
-            } else {
-                render false
-            }
+            return departamentos.size() == 0
         }
     }
 
@@ -1294,8 +1271,26 @@ class MantenimientoItemsController {
 
         if (params.id) {
             departamento = DepartamentoItem.get(params.id)
+            if(!checkCdDp_ajax(departamento?.id, params.codigo, params.subgrupo)){
+                render "no_El código ingresado se encuentra duplicado"
+                return
+            }else{
+                if(!checkDsDp_ajax(departamento?.id, params.descripcion, params.subgrupo)){
+                    render "no_La descripción ingresada se encuentra duplicada"
+                    return
+                }
+            }
         }else{
             departamento = new DepartamentoItem()
+            if(!checkCdDp_ajax(null, params.codigo, params.subgrupo)){
+                render "no_El código ingresado se encuentra duplicado"
+                return
+            }else{
+                if(!checkDsDp_ajax(null, params.descripcion, params.subgrupo)){
+                    render "no_La descripción ingresada se encuentra duplicada"
+                    return
+                }
+            }
         }
 
         departamento.properties = params
@@ -1306,17 +1301,19 @@ class MantenimientoItemsController {
             println("error al guardar el subgrupo " + departamento.errors)
             render "no_Error al guardar el subgrupo"
         }
+
     }
 
     def deleteDp_ajax() {
         def departamento = DepartamentoItem.get(params.id)
+
         try {
             departamento.delete(flush: true)
-            render "OK"
+            render "ok_Borrado correctamente"
         }
         catch (DataIntegrityViolationException e) {
-            println "mantenimiento items controller l 630: " + e
-            render "NO"
+            println "Error al borrar" + e
+            render "no_Error al borrar"
         }
     }
 
@@ -2326,7 +2323,6 @@ itemId: item.id
     }
 
     def tablaMateriales_ajax(){
-
         def grupo = Grupo.get(params.buscarPor)
         def grupos = SubgrupoItems.findAllByGrupo(grupo)
         def subgrupos = DepartamentoItem.findAllBySubgrupoInList(grupos)
@@ -2337,6 +2333,18 @@ itemId: item.id
     def codigoGrupo_ajax(){
         def grupo = SubgrupoItems.get(params.id)
         return [grupo:grupo]
+    }
+
+    def estructuraGrupo_ajax(){
+        def subgrupo = SubgrupoItems.get(params.id)
+        def departamentos = DepartamentoItem.findAllBySubgrupo(subgrupo)
+        return [departamentos: departamentos, subgrupo: subgrupo]
+    }
+
+    def estructuraSubgrupo_ajax(){
+        def departamento = DepartamentoItem.get(params.id)
+        def materiales = Item.findAllByDepartamento(departamento, [sort: 'nombre'])
+        return [materiales: materiales, departamento: departamento]
     }
 
 }

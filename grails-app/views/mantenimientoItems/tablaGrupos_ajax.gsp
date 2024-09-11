@@ -40,6 +40,9 @@
                     <a href="#" class="btn btn-xs btn-success btnEditarGrupo" data-id="${grupo?.id}" title="Editar">
                         <i class="fas fa-edit"></i>
                     </a>
+                    <a href="#" class="btn btn-xs btn-warning btnEstructuraGrupo" data-id="${grupo?.id}" title="Estructura">
+                        <i class="fas fa-list-alt"></i>
+                    </a>
                     <a href="#" class="btn btn-xs btn-danger btnEliminarGrupo" data-id="${grupo?.id}" title="Eliminar">
                         <i class="fas fa-trash"></i>
                     </a>
@@ -53,6 +56,11 @@
 <script type="text/javascript">
 
     var dfg;
+
+    $(".btnEstructuraGrupo").click(function () {
+        var id = $(this).data("id");
+        verEstructuraGrupo(id)
+    });
 
     $(".btnNuevoGrupo").click(function () {
         createEditGrupo();
@@ -171,6 +179,32 @@
             }
         });
     }
+
+    function verEstructuraGrupo(id) {
+        $.ajax({
+            type    : "POST",
+            url     : "${createLink(controller: 'mantenimientoItems', action:'estructuraGrupo_ajax')}",
+            data    : {
+                id: id
+            },
+            success : function (msg) {
+                var e = bootbox.dialog({
+                    id    : "dlgVerEstructuraGrupo",
+                    title : "Estructura del grupo",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        }
+                    } //buttons
+                }); //dialog
+            } //success
+        }); //ajax
+    } //createEdit
+
 
     function cerrarFormGrupo(){
         dfg.modal("hide");

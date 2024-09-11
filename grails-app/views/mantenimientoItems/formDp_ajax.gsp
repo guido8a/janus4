@@ -1,6 +1,6 @@
 <%@ page import="janus.DepartamentoItem" %>
 
-<g:form class="form-horizontal" name="frmSave" action="saveDp_ajax">
+<g:form class="form-horizontal" name="frmSaveDp" action="saveDp_ajax">
     <g:hiddenField name="id" value="${departamentoItemInstance?.id}"/>
 
     <div class="form-group ${hasErrors(bean: departamentoItemInstance, field: 'grupo', 'error')} ">
@@ -97,39 +97,38 @@
         return validarNumDec(ev)
     });
 
-    var sub = $("#subgrupo option:selected").val()
-
-    var validator = $("#frmSave").validate({
-        rules          : {
-            codigo      : {
-                remote : {
-                    url  : "${createLink(action:'checkCdDp_ajax')}",
-                    type : "POST",
-                    data : {
-                        id : "${departamentoItemInstance?.id}",
-                        sg : sub
-                    }
-                }
-            },
-            descripcion : {
-                remote : {
-                    url  : "${createLink(action:'checkDsDp_ajax')}",
-                    type : "POST",
-                    data : {
-                        id : "${departamentoItemInstance?.id}",
-                        subgrupo : $("#subgrupo option:selected").val()
-                    }
-                }
-            }
-        },
-        messages       : {
-            codigo      : {
-                remote : "El código se encuentra duplicado"
-            },
-            descripcion : {
-                remote : "La descripción se encuentra duplicada"
-            }
-        },
+    var validator = $("#frmSaveDp").validate({
+        %{--rules          : {--}%
+        %{--    codigo      : {--}%
+        %{--        remote : {--}%
+        %{--            url  : "${createLink(action:'checkCdDp_ajax')}",--}%
+        %{--            type : "POST",--}%
+        %{--            data : {--}%
+        %{--                id : "${departamentoItemInstance?.id}",--}%
+        %{--                // sg : $("#subgrupo option:selected").val()--}%
+        %{--                sg : s--}%
+        %{--            }--}%
+        %{--        }--}%
+        %{--    },--}%
+        %{--    descripcion : {--}%
+        %{--        remote : {--}%
+        %{--            url  : "${createLink(action:'checkDsDp_ajax')}",--}%
+        %{--            type : "POST",--}%
+        %{--            data : {--}%
+        %{--                id : "${departamentoItemInstance?.id}",--}%
+        %{--                subgrupo : $("#subgrupo option:selected").val()--}%
+        %{--            }--}%
+        %{--        }--}%
+        %{--    }--}%
+        %{--},--}%
+        %{--messages       : {--}%
+        %{--    codigo      : {--}%
+        %{--        remote : "El código se encuentra duplicado"--}%
+        %{--    },--}%
+        %{--    descripcion : {--}%
+        %{--        remote : "La descripción se encuentra duplicada"--}%
+        %{--    }--}%
+        %{--},--}%
         errorClass     : "help-block",
         errorPlacement : function (error, element) {
             if (element.parent().hasClass("input-group")) {

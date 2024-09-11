@@ -45,6 +45,9 @@
                     <a href="#" class="btn btn-xs btn-success btnEditarSubgrupo" data-id="${subgrupo?.id}" title="Editar">
                         <i class="fas fa-edit"></i>
                     </a>
+                    <a href="#" class="btn btn-xs btn-warning btnEstructuraSubgrupo" data-id="${subgrupo?.id}" title="Estructura">
+                        <i class="fas fa-list-alt"></i>
+                    </a>
                     <a href="#" class="btn btn-xs btn-danger btnEliminarSubgrupo" data-id="${subgrupo?.id}" title="Eliminar">
                         <i class="fas fa-trash"></i>
                     </a>
@@ -59,6 +62,11 @@
 
     var dfs;
 
+    $(".btnEstructuraSubgrupo").click(function () {
+        var id = $(this).data("id");
+        verEstructura(id);
+    });
+
     $(".btnNuevoSubgrupo").click(function () {
         createEditSubgrupo();
     });
@@ -70,7 +78,7 @@
 
     $(".btnEliminarSubgrupo").click(function () {
         var id = $(this).data("id");
-        // deleteRow(id);
+        deleteSubGrupo(id);
     });
 
     function createEditSubgrupo(id) {
@@ -109,7 +117,7 @@
     } //createEdit
 
     function submitFormSubgrupo() {
-        var $form = $("#frmSave");
+        var $form = $("#frmSaveDp");
         if ($form.valid()) {
             var data = $form.serialize();
             var dialog = cargarLoader("Guardando...");
@@ -135,6 +143,71 @@
             return false;
         }
     }
+
+    function deleteSubGrupo(id){
+        bootbox.confirm({
+            title: "Eliminar Subgrupo",
+            message: '<i class="fa fa-trash text-danger fa-3x"></i>' + '<strong style="font-size: 14px">' + "Está seguro de borrar este subgrupo? Esta acción no puede deshacerse. " + '</strong>' ,
+            buttons: {
+                cancel: {
+                    label: '<i class="fa fa-times"></i> Cancelar',
+                    className: 'btn-primary'
+                },
+                confirm: {
+                    label: '<i class="fa fa-trash"></i> Borrar',
+                    className: 'btn-danger'
+                }
+            },
+            callback: function (result) {
+                if(result){
+                    var dialog = cargarLoader("Borrando...");
+                    $.ajax({
+                        type: 'POST',
+                        url: '${createLink(action: 'deleteDp_ajax')}',
+                        data:{
+                            id: id
+                        },
+                        success: function (msg) {
+                            dialog.modal('hide');
+                            var parts = msg.split("_");
+                            if(parts[0] === 'ok'){
+                                log(parts[1],"success");
+                                cargarTablaItems();
+                            }else{
+                                log(parts[1], "error")
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+    function verEstructura(id) {
+         $.ajax({
+            type    : "POST",
+            url     : "${createLink(controller: 'mantenimientoItems', action:'estructuraSubgrupo_ajax')}",
+            data    : {
+                id: id
+            },
+            success : function (msg) {
+                var e = bootbox.dialog({
+                    id    : "dlgVerEstructura",
+                    title : "Estructura del subgrupo",
+                    // class : "modal-lg",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        }
+                    } //buttons
+                }); //dialog
+            } //success
+        }); //ajax
+    } //createEdit
 
     function cerrarFormSubgrupo(){
         dfs.modal("hide");
