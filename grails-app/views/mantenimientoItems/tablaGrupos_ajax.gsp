@@ -40,7 +40,7 @@
                     <a href="#" class="btn btn-xs btn-success btnEditarGrupo" data-id="${grupo?.id}" title="Editar">
                         <i class="fas fa-edit"></i>
                     </a>
-                    <a href="#" class="btn btn-xs btn-warning btnEstructuraGrupo" data-id="${grupo?.id}" title="Estructura">
+                    <a href="#" class="btn btn-xs btn-warning btnEstructuraGrupo" data-id="${grupo?.id}" title="Subgrupos">
                         <i class="fas fa-list-alt"></i>
                     </a>
                     <a href="#" class="btn btn-xs btn-danger btnEliminarGrupo" data-id="${grupo?.id}" title="Eliminar">
