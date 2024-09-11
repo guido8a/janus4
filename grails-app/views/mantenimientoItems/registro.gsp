@@ -47,6 +47,8 @@
 
 <script type="text/javascript">
 
+    var dfi;
+
     $("#btnLimpiar").click(function () {
         $("#buscarPor, #tipo").val(1);
         $("#criterio").val('');
@@ -545,22 +547,16 @@
     %{--    return items;--}%
     %{--}--}%
 
-
     function createEditItem(id, parentId) {
         var title = id ? "Editar" : "Crear";
         var data = id ? {id : id} : {};
-        if (parentId) {
-            data.departamento = parentId;
-        }
-
-        data.grupo = tipoSeleccionado;
-
+        data.departamento = parentId;
         $.ajax({
             type    : "POST",
             url     : "${createLink( action:'formIt_ajax')}",
             data    : data,
             success : function (msg) {
-                var b = bootbox.dialog({
+                dfi= bootbox.dialog({
                     id    : "dlgCreateEditIT",
                     title : title + " item",
                     class : "modal-lg",
@@ -582,19 +578,14 @@
                         } //guardar
                     } //buttons
                 }); //dialog
-                setTimeout(function () {
-                    b.find(".form-control").first().focus()
-                }, 500);
             } //success
         }); //ajax
     } //createEdit
 
     function submitFormItem() {
         var $form = $("#frmSave");
-        var $btn = $("#dlgCreateEditIT").find("#btnSave");
         if ($form.valid()) {
             var data = $form.serialize();
-            $btn.replaceWith(spinner);
             var dialog = cargarLoader("Guardando...");
             $.ajax({
                 type    : "POST",
@@ -605,25 +596,25 @@
                     var parts = msg.split("_");
                     if(parts[0] === 'ok'){
                         log(parts[1], "success");
-                        setTimeout(function () {
-                            if(parts[2] === '1'){
-                                recargarMateriales();
-                            }else if(parts[2] === '2'){
-                                recargaMano();
-                            }else{
-                                recargaEquipo();
-                            }
-                        }, 1000);
+                        cerrarFormItem();
+                        $("#tipo").val(3);
+                        cargarTablaItems(parts[2]);
                     }else{
                         bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
                         return false;
                     }
                 }
             });
+            return false;
         } else {
             return false;
         }
     }
+
+    function cerrarFormItem(){
+        dfi.modal("hide");
+    }
+
 
     $("#criterio").keydown(function (ev) {
         if (ev.keyCode === 13) {

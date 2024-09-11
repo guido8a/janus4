@@ -2344,7 +2344,7 @@ itemId: item.id
             materiales = Item.findAllByDepartamentoInListAndNombreIlike(subgrupos, '%' + params.criterio + '%').sort{a,b -> a.departamento.descripcion <=> b.departamento.descripcion ?: a.codigo <=> b.codigo }.take(50)
         }
 
-        return [materiales: materiales, grupo: grupo]
+        return [materiales: materiales, grupo: grupo, id: params.id]
     }
 
     def codigoGrupo_ajax(){

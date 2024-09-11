@@ -12,11 +12,11 @@
             <li class="active">MATERIALES</li>
         </ol>
     </div>
-%{--    <div class="col-md-2">--}%
-%{--        <a href="#" class="btn btn-sm btn-success btnNuevoMaterial" title="Crear nuevo material">--}%
-%{--            <i class="fas fa-file"></i> Nuevo Material--}%
-%{--        </a>--}%
-%{--    </div>--}%
+    %{--    <div class="col-md-2">--}%
+    %{--        <a href="#" class="btn btn-sm btn-success btnNuevoMaterial" title="Crear nuevo material">--}%
+    %{--            <i class="fas fa-file"></i> Nuevo Material--}%
+    %{--        </a>--}%
+    %{--    </div>--}%
     <div class="col-md-2">
         <a href="#" class="btn btn-sm btn-success btnRegresarMaterial" title="Regresar">
             <i class="fas fa-arrow-left"></i>
@@ -70,10 +70,20 @@
 
 <script type="text/javascript">
 
+    $(".btnVerMaterial").click(function () {
+        var id = $(this).data("id");
+        verMaterial(id);
+    });
+
     $(".btnRegresarMaterial").click(function () {
         $("#buscarPor").val(${grupo?.id});
         $("#tipo").val(2);
-        $("#criterio").val('${materiales?.first()?.departamento?.descripcion}');
+        if('${id}'){
+            $("#criterio").val('${materiales?.first()?.departamento?.descripcion}');
+        }else{
+            $("#criterio").val('');
+        }
+
         cargarTablaItems();
     });
 
@@ -126,5 +136,30 @@
             }
         });
     }
+
+    function verMaterial(id) {
+        $.ajax({
+            type    : "POST",
+            url     : "${createLink(controller: 'mantenimientoItems', action:'showIt_ajax')}",
+            data    : {
+                id: id
+            },
+            success : function (msg) {
+                var e = bootbox.dialog({
+                    id    : "dlgVerMaterial",
+                    title : "Datos del material",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        }
+                    } //buttons
+                }); //dialog
+            } //success
+        }); //ajax
+    } //createEdit
 
 </script>

@@ -181,31 +181,6 @@
         });
     }
 
-    function verEstructuraGrupo(id) {
-        $.ajax({
-            type    : "POST",
-            url     : "${createLink(controller: 'mantenimientoItems', action:'estructuraGrupo_ajax')}",
-            data    : {
-                id: id
-            },
-            success : function (msg) {
-                var e = bootbox.dialog({
-                    id    : "dlgVerEstructuraGrupo",
-                    title : "Estructura del grupo",
-                    message : msg,
-                    buttons : {
-                        cancelar : {
-                            label     : "Cancelar",
-                            className : "btn-primary",
-                            callback  : function () {
-                            }
-                        }
-                    } //buttons
-                }); //dialog
-            } //success
-        }); //ajax
-    } //createEdit
-
 
     function cerrarFormGrupo(){
         dfg.modal("hide");

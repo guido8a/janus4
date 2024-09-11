@@ -1,15 +1,24 @@
 <%@ page import="janus.Item" %>
 
+<style>
+
+    .negrita{
+        font-weight: bold;
+    }
+
+</style>
+
 <div class="" style="border: solid; border: 1px">
     <fieldset class="borde">
-        <legend>${itemInstance.nombre}</legend>
+
+        <div class="alert alert-info" style="text-align: center; font-size: 14px; font-weight: bold"> ${itemInstance.nombre}</div>
 
         <g:if test="${itemInstance?.departamento}">
             <div class="row">
                 <div class="col-md-3 text-info">
                     Subgrupo
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-6 negrita">
                     ${itemInstance?.departamento?.descripcion}
                 </div>
             </div>
@@ -20,7 +29,7 @@
                 <div class="col-md-3 text-info">
                     Código
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-6 negrita">
                     ${itemInstance?.codigo}
                 </div>
             </div>
@@ -30,7 +39,7 @@
                 <div class="col-md-3 text-info">
                     Unidad
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-6 negrita">
                     ${itemInstance?.unidad}
                 </div>
             </div>
@@ -40,7 +49,7 @@
                 <div class="col-md-3 text-info">
                     ${(itemInstance?.tipoLista?.codigo[0] == 'P') ? 'Peso' : 'Volumen'}
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-6 negrita">
                     <g:formatNumber number="${itemInstance.peso}" maxFractionDigits="6" minFractionDigits="6" format='##,######0' locale='ec'/>
                     ${itemInstance?.tipoLista?.unidad}
                 </div>
@@ -51,7 +60,7 @@
                 <div class="col-md-3 text-info">
                     Unidad
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-6 negrita">
                     ${itemInstance.estado == 'A' ? 'ACTIVO' : itemInstance.estado == 'B' ? 'DADO DE BAJA' : ''}
                 </div>
             </div>
@@ -61,7 +70,7 @@
                 <div class="col-md-3 text-info">
                     Fecha de creación
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-6 negrita">
                     <g:formatDate date="${itemInstance?.fecha}" format="dd-MM-yyyy"/>
                 </div>
             </div>
@@ -71,7 +80,7 @@
                 <div class="col-md-3 text-info">
                     Fecha de modificación
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-6 negrita">
                     <g:formatDate date="${itemInstance?.fechaModificacion}" format="dd-MM-yyyy"/>
                 </div>
             </div>
@@ -81,7 +90,7 @@
                 <div class="col-md-3 text-info">
                     Código CPC
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-6 negrita">
                     ${itemInstance?.codigoComprasPublicas?.numero}
                 </div>
             </div>
@@ -91,7 +100,7 @@
                 <div class="col-md-3 text-info">
                     Transporte Peso
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-6 negrita">
                     ${itemInstance?.transportePeso}
                 </div>
             </div>
@@ -101,7 +110,7 @@
                 <div class="col-md-3 text-info">
                     Transporte Volumen
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-6 negrita">
                     ${itemInstance?.transporteVolumen}
                 </div>
             </div>
@@ -111,7 +120,7 @@
                 <div class="col-md-3 text-info">
                     Padre
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-6 negrita">
                     ${itemInstance?.padre}
                 </div>
             </div>
@@ -121,7 +130,7 @@
                 <div class="col-md-3 text-info">
                     Inec
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-6 negrita">
                     ${itemInstance?.inec}
                 </div>
             </div>
@@ -131,7 +140,7 @@
                 <div class="col-md-3 text-info">
                     Rendimiento
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-6 negrita">
                     ${itemInstance?.rendimiento}
                 </div>
             </div>
@@ -141,7 +150,7 @@
                 <div class="col-md-3 text-info">
                     Tipo
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-6 negrita">
                     ${itemInstance?.tipo}
                 </div>
             </div>
@@ -151,7 +160,7 @@
                 <div class="col-md-3 text-info">
                     Registro
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-6 negrita">
                     ${itemInstance?.registro}
                 </div>
             </div>
@@ -186,7 +195,7 @@
                 <div class="col-md-3 text-info">
                     Combustible
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-6 negrita">
                     ${itemInstance.combustible == 'S' ? 'SI' : itemInstance.combustible == 'N' ? 'NO' : ''}
                 </div>
             </div>
@@ -196,7 +205,7 @@
                 <div class="col-md-3 text-info">
                     Observaciones
                 </div>
-                <div class="col-md-8">
+                <div class="col-md-8 negrita">
                     ${itemInstance.observaciones}
                 </div>
             </div>
