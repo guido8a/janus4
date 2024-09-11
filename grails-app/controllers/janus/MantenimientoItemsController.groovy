@@ -1502,7 +1502,7 @@ class MantenimientoItemsController {
     }
 
     def saveIt_ajax() {
-        println 'SAVE ITEM: ' + params
+//        println 'SAVE ITEM: ' + params
         def item
         def persona = Persona.get(session.usuario.id)
         def dep = DepartamentoItem.get(params.departamento)
@@ -1545,22 +1545,23 @@ class MantenimientoItemsController {
         item.properties = params
 
         if (item.save(flush: true)) {
-            render "ok_Item guardado correctamente_" + item?.departamento?.subgrupo?.grupo?.id
+            render "ok_Item guardado correctamente_" + item?.departamento?.id
         }else {
-            println "mantenimiento items controller l 784: " + item.errors
+            println "Error al guardar el item" + item.errors
             render "no_Error al guardar el item"
         }
     }
 
     def deleteIt_ajax() {
         def item = Item.get(params.id)
+        def id = item.departamento.id
         try {
             item.delete(flush: true)
-            render "OK"
+            render "ok_Borrado correctamente_" + id
         }
         catch (DataIntegrityViolationException e) {
-            println "mantenimiento items controller l 797: " + e
-            render "NO"
+            println "Error al borrar " + item.errors
+            render "no_Error al borrar"
         }
     }
 
@@ -2334,25 +2335,21 @@ itemId: item.id
         def grupo = Grupo.get(params.buscarPor)
         def grupos = SubgrupoItems.findAllByGrupo(grupo)
         def subgrupos = DepartamentoItem.findAllBySubgrupoInList(grupos)
-        def materiales = Item.findAllByDepartamentoInListAndNombreIlike(subgrupos, '%' + params.criterio + '%', [sort: 'codigo', order: 'asc']).take(50)
+        def materiales = []
+
+        if(params.id){
+            def subgrupoBuscar = DepartamentoItem.get(params.id)
+            materiales = Item.findAllByDepartamento(subgrupoBuscar).sort{a,b -> a.departamento.descripcion <=> b.departamento.descripcion ?: a.codigo <=> b.codigo }.take(50)
+        }else{
+            materiales = Item.findAllByDepartamentoInListAndNombreIlike(subgrupos, '%' + params.criterio + '%').sort{a,b -> a.departamento.descripcion <=> b.departamento.descripcion ?: a.codigo <=> b.codigo }.take(50)
+        }
+
         return [materiales: materiales, grupo: grupo]
     }
 
     def codigoGrupo_ajax(){
         def grupo = SubgrupoItems.get(params.id)
         return [grupo:grupo]
-    }
-
-    def estructuraGrupo_ajax(){
-        def subgrupo = SubgrupoItems.get(params.id)
-        def departamentos = DepartamentoItem.findAllBySubgrupo(subgrupo)
-        return [departamentos: departamentos, subgrupo: subgrupo]
-    }
-
-    def estructuraSubgrupo_ajax(){
-        def departamento = DepartamentoItem.get(params.id)
-        def materiales = Item.findAllByDepartamento(departamento, [sort: 'nombre'])
-        return [materiales: materiales, departamento: departamento]
     }
 
 }

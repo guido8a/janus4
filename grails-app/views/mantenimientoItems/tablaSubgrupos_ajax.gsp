@@ -25,8 +25,9 @@
             <th style="width: 10%">Código Grupo</th>
             <th style="width: 20%">Grupo</th>
             <th style="width: 10%">Código</th>
-            <th style="width: 50%">Descripción</th>
+            <th style="width: 45%">Descripción</th>
             <th style="width: 10%">Acciones</th>
+            <th style="width: 5%">Material</th>
         </tr>
         </thead>
     </table>
@@ -40,16 +41,21 @@
                 <td style="width: 10%">${subgrupo?.subgrupo?.codigo}</td>
                 <td style="width: 20%">${subgrupo?.subgrupo?.descripcion}</td>
                 <td style="width: 10%">${subgrupo?.codigo}</td>
-                <td style="width: 50%">${subgrupo?.descripcion}</td>
+                <td style="width: 45%">${subgrupo?.descripcion}</td>
                 <td style="width: 10%; text-align: center">
                     <a href="#" class="btn btn-xs btn-success btnEditarSubgrupo" data-id="${subgrupo?.id}" title="Editar">
                         <i class="fas fa-edit"></i>
                     </a>
-                    <a href="#" class="btn btn-xs btn-warning btnEstructuraSubgrupo" data-id="${subgrupo?.id}" title="Estructura">
-                        <i class="fas fa-list-alt"></i>
+                    <a href="#" class="btn btn-xs btn-warning btnEstructuraSubgrupo" data-id="${subgrupo?.id}" title="Materiales">
+                        <i class="fas fa-list"></i>
                     </a>
                     <a href="#" class="btn btn-xs btn-danger btnEliminarSubgrupo" data-id="${subgrupo?.id}" title="Eliminar">
                         <i class="fas fa-trash"></i>
+                    </a>
+                </td>
+                <td style="width: 5%; text-align: center">
+                    <a href="#" class="btn btn-xs btn-success btnCrearMaterial" data-id="${subgrupo?.id}" title="Nuevo material">
+                        <i class="fas fa-cube"></i>
                     </a>
                 </td>
             </tr>
@@ -60,11 +66,17 @@
 
 <script type="text/javascript">
 
-    var dfs;
+    var dfs, dfi;
+
+    $(".btnCrearMaterial").click(function () {
+        var id = $(this).data("id");
+        createEditItem(null,id)
+    });
 
     $(".btnEstructuraSubgrupo").click(function () {
         var id = $(this).data("id");
-        verEstructura(id);
+        $("#tipo").val(3);
+        cargarTablaItems(id);
     });
 
     $(".btnNuevoSubgrupo").click(function () {
@@ -208,6 +220,75 @@
             } //success
         }); //ajax
     } //createEdit
+
+    function createEditItem(id, parentId) {
+        var title = id ? "Editar" : "Crear";
+        var data = id ? {id : id} : {};
+        data.departamento = parentId;
+        $.ajax({
+            type    : "POST",
+            url     : "${createLink( action:'formIt_ajax')}",
+            data    : data,
+            success : function (msg) {
+                dfi= bootbox.dialog({
+                    id    : "dlgCreateEditIT",
+                    title : title + " item",
+                    class : "modal-lg",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        },
+                        guardar  : {
+                            id        : "btnSave",
+                            label     : "<i class='fa fa-save'></i> Guardar",
+                            className : "btn-success",
+                            callback  : function () {
+                                return submitFormItem();
+                            } //callback
+                        } //guardar
+                    } //buttons
+                }); //dialog
+            } //success
+        }); //ajax
+    } //createEdit
+
+    function submitFormItem() {
+        var $form = $("#frmSave");
+        if ($form.valid()) {
+            var data = $form.serialize();
+            var dialog = cargarLoader("Guardando...");
+            $.ajax({
+                type    : "POST",
+                url     : $form.attr("action"),
+                data    : data,
+                success : function (msg) {
+                    dialog.modal('hide');
+                    var parts = msg.split("_");
+                    if(parts[0] === 'ok'){
+                        log(parts[1], "success");
+                        cerrarFormItem();
+                        $("#tipo").val(3);
+                        cargarTablaItems(parts[2]);
+                    }else{
+                        bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
+                        return false;
+                    }
+                }
+            });
+            return false;
+        } else {
+            return false;
+        }
+    }
+
+    function cerrarFormItem(){
+        dfi.modal("hide");
+    }
+
 
     function cerrarFormSubgrupo(){
         dfs.modal("hide");

@@ -12,11 +12,11 @@
             <li class="active">MATERIALES</li>
         </ol>
     </div>
-    <div class="col-md-2">
-        <a href="#" class="btn btn-sm btn-success btnNuevoMaterial" title="Crear nuevo material">
-            <i class="fas fa-file"></i> Nuevo Material
-        </a>
-    </div>
+%{--    <div class="col-md-2">--}%
+%{--        <a href="#" class="btn btn-sm btn-success btnNuevoMaterial" title="Crear nuevo material">--}%
+%{--            <i class="fas fa-file"></i> Nuevo Material--}%
+%{--        </a>--}%
+%{--    </div>--}%
 </div>
 
 <div role="main" style="margin-top: 5px;">
@@ -50,7 +50,7 @@
                     <a href="#" class="btn btn-xs btn-info btnVerMaterial" data-id="${material?.id}" title="Ver">
                         <i class="fas fa-search"></i>
                     </a>
-                    <a href="#" class="btn btn-xs btn-success btnEditarMaterial" data-id="${material?.id}" title="Editar">
+                    <a href="#" class="btn btn-xs btn-success btnEditarMaterial" data-id="${material?.id}" data-sub="${material?.departamento?.id}" title="Editar">
                         <i class="fas fa-edit"></i>
                     </a>
                     <a href="#" class="btn btn-xs btn-danger btnEliminarMaterial" data-id="${material?.id}" title="Eliminar">
@@ -67,75 +67,52 @@
 
     $(".btnEditarMaterial").click(function () {
         var id = $(this).data("id");
-        // createEditRow(id);
+        var sub =$(this).data("sub");
+        createEditItem(id, sub)
     });
 
     $(".btnEliminarMaterial").click(function () {
         var id = $(this).data("id");
-        // deleteRow(id);
+        deleteMaterial(id);
     });
 
-    function createEditItem(id, parentId) {
-        var title = id ? "Editar" : "Crear";
-        var data = id ? {id : id} : {};
-        data.departamento = parentId;
-        data.grupo = tipoSeleccionado;
-
-        $.ajax({
-            type    : "POST",
-            url     : "${createLink( action:'formIt_ajax')}",
-            data    : data,
-            success : function (msg) {
-                var b = bootbox.dialog({
-                    id    : "dlgCreateEditIT",
-                    title : title + " item",
-                    class : "modal-lg",
-                    message : msg,
-                    buttons : {
-                        cancelar : {
-                            label     : "Cancelar",
-                            className : "btn-primary",
-                            callback  : function () {
-                            }
-                        },
-                        guardar  : {
-                            id        : "btnSave",
-                            label     : "<i class='fa fa-save'></i> Guardar",
-                            className : "btn-success",
-                            callback  : function () {
-                                return submitFormItem();
-                            } //callback
-                        } //guardar
-                    } //buttons
-                }); //dialog
-            } //success
-        }); //ajax
-    } //createEdit
-
-    function submitFormItem() {
-        var $form = $("#frmSave");
-        if ($form.valid()) {
-            var data = $form.serialize();
-            var dialog = cargarLoader("Guardando...");
-            $.ajax({
-                type    : "POST",
-                url     : $form.attr("action"),
-                data    : data,
-                success : function (msg) {
-                    dialog.modal('hide');
-                    var parts = msg.split("_");
-                    if(parts[0] === 'ok'){
-                        log(parts[1], "success");
-                    }else{
-                        bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
-                        return false;
-                    }
+    function deleteMaterial(id){
+        bootbox.confirm({
+            title: "Eliminar Grupo",
+            message: '<i class="fa fa-trash text-danger fa-3x"></i>' + '<strong style="font-size: 14px">' + "Está seguro de borrar este material? Esta acción no puede deshacerse. " + '</strong>' ,
+            buttons: {
+                cancel: {
+                    label: '<i class="fa fa-times"></i> Cancelar',
+                    className: 'btn-primary'
+                },
+                confirm: {
+                    label: '<i class="fa fa-trash"></i> Borrar',
+                    className: 'btn-danger'
                 }
-            });
-            return false;
-        } else {
-            return false;
-        }
+            },
+            callback: function (result) {
+                if(result){
+                    var dialog = cargarLoader("Borrando...");
+                    $.ajax({
+                        type: 'POST',
+                        url: '${createLink(action: 'deleteIt_ajax')}',
+                        data:{
+                            id: id
+                        },
+                        success: function (msg) {
+                            dialog.modal('hide');
+                            var parts = msg.split("_");
+                            if(parts[0] === 'ok'){
+                                log(parts[1],"success");
+                                cargarTablaItems(parts[2]);
+                            }else{
+                                log(parts[1], "error")
+                            }
+                        }
+                    });
+                }
+            }
+        });
     }
 
 </script>
