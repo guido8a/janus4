@@ -17,6 +17,11 @@
 %{--            <i class="fas fa-file"></i> Nuevo Material--}%
 %{--        </a>--}%
 %{--    </div>--}%
+    <div class="col-md-2">
+        <a href="#" class="btn btn-sm btn-success btnRegresarMaterial" title="Regresar">
+            <i class="fas fa-arrow-left"></i>
+        </a>
+    </div>
 </div>
 
 <div role="main" style="margin-top: 5px;">
@@ -64,6 +69,13 @@
 </div>
 
 <script type="text/javascript">
+
+    $(".btnRegresarMaterial").click(function () {
+        $("#buscarPor").val(${grupo?.id});
+        $("#tipo").val(2);
+        $("#criterio").val('${materiales?.first()?.departamento?.descripcion}');
+        cargarTablaItems();
+    });
 
     $(".btnEditarMaterial").click(function () {
         var id = $(this).data("id");
