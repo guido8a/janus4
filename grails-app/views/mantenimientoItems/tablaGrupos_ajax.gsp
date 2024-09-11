@@ -41,7 +41,7 @@
                         <i class="fas fa-edit"></i>
                     </a>
                     <a href="#" class="btn btn-xs btn-warning btnEstructuraGrupo" data-id="${grupo?.id}" title="Subgrupos">
-                        <i class="fas fa-list-alt"></i>
+                        <i class="fas fa-list"></i>
                     </a>
                     <a href="#" class="btn btn-xs btn-danger btnEliminarGrupo" data-id="${grupo?.id}" title="Eliminar">
                         <i class="fas fa-trash"></i>
