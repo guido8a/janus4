@@ -2318,7 +2318,15 @@ itemId: item.id
     def tablaSubgrupos_ajax(){
         def grupo = Grupo.get(params.buscarPor)
         def grupos = SubgrupoItems.findAllByGrupo(grupo, [sort: 'codigo'])
-        def subgrupos = DepartamentoItem.findAllBySubgrupoInListAndDescripcionIlike(grupos, '%' + params.criterio + '%').sort{a,b -> a.subgrupo.descripcion <=> b.subgrupo.descripcion ?: a.codigo <=> b.codigo }.take(50)
+        def subgrupos = []
+
+        if(params.id){
+            def grupoBuscar = SubgrupoItems.get(params.id)
+            subgrupos = DepartamentoItem.findAllBySubgrupo(grupoBuscar).sort{a,b -> a.subgrupo.descripcion <=> b.subgrupo.descripcion ?: a.codigo <=> b.codigo }.take(50)
+        }else{
+            subgrupos = DepartamentoItem.findAllBySubgrupoInListAndDescripcionIlike(grupos, '%' + params.criterio + '%').sort{a,b -> a.subgrupo.descripcion <=> b.subgrupo.descripcion ?: a.codigo <=> b.codigo }.take(50)
+        }
+
         return [subgrupos: subgrupos, grupo: grupo]
     }
 

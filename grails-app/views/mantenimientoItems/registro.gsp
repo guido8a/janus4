@@ -63,7 +63,7 @@
 
     cargarTablaItems();
 
-    function cargarTablaItems() {
+    function cargarTablaItems(id) {
         var d = cargarLoader("Cargando...");
         var buscarPor = $("#buscarPor option:selected").val();
         var tipo = $("#tipo option:selected").val();
@@ -88,7 +88,8 @@
             data:{
                 buscarPor: buscarPor,
                 tipo: tipo,
-                criterio: criterio
+                criterio: criterio,
+                id: id
             },
             success: function (msg){
                 d.modal("hide");

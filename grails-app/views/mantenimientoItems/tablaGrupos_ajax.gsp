@@ -59,7 +59,9 @@
 
     $(".btnEstructuraGrupo").click(function () {
         var id = $(this).data("id");
-        verEstructuraGrupo(id)
+        $("#tipo").val(2);
+        cargarTablaItems(id);
+        // verEstructuraGrupo(id)
     });
 
     $(".btnNuevoGrupo").click(function () {
