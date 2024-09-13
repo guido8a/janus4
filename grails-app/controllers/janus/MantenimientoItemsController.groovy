@@ -1,9 +1,13 @@
 package janus
 
+import janus.apus.ArchivoEspecificacion
 import janus.pac.CodigoComprasPublicas
 
 import org.springframework.dao.DataIntegrityViolationException
 import seguridad.Persona
+
+import javax.imageio.ImageIO
+import java.awt.image.BufferedImage
 
 class MantenimientoItemsController {
 
@@ -2352,4 +2356,206 @@ itemId: item.id
         return [grupo:grupo]
     }
 
+    def especificaciones_ajax(){
+        def item = Item.get(params.id)
+        def ares = ArchivoEspecificacion.findByItem(item)
+        return [item: item, ares: ares]
+    }
+
+    def uploadFileIlustracion() {
+        println ("subir iamgen " + params)
+
+        def rubro = Item.get(params.item)
+        def acceptedExt = ["jpg", "png", "gif", "jpeg"]
+
+        def path = "/var/janus/" + "item/" + rubro?.id + "/"
+        new File(path).mkdirs()
+
+        def f = request.getFile('file')  //archivo = name del input type file
+        if (f && !f.empty) {
+            def fileName = f.getOriginalFilename() //nombre original del archivo
+            def ext
+            def parts = fileName.split("\\.")
+            fileName = ""
+            parts.eachWithIndex { obj, i ->
+                if (i < parts.size() - 1) {
+                    fileName += obj
+                } else {
+                    ext = obj
+                }
+            }
+            if (acceptedExt.contains(ext.toLowerCase())) {
+                def ahora = new Date()
+                fileName = "r_" + "il" + "_" + rubro.id + "_" + ahora.format("dd_MM_yyyy_hh_mm_ss")
+                fileName = fileName + "." + ext
+                def pathFile = path + fileName
+                def file = new File(pathFile)
+
+                f.transferTo(file)
+
+                def old = rubro.foto
+                if (old && old.trim() != "") {
+                    def oldPath = servletContext.getRealPath("/") + "item/" + old
+                    def oldFile = new File(oldPath)
+                    if (oldFile.exists()) {
+                        oldFile.delete()
+                    }
+                }
+
+                rubro.foto = fileName
+                rubro.save(flush: true)
+
+            } else {
+                flash.clase = "alert-error"
+                flash.message = "Error: Los formatos permitidos son: JPG, JPEG, GIF, PNG"
+            }
+        } else {
+            flash.clase = "alert-error"
+            flash.message = "Error: Seleccione un archivo JPG, JPEG, GIF, PNG"
+        }
+
+        redirect(action: "especificaciones_ajax", id: rubro.id)
+        return
+    }
+
+    def getFoto(){
+//        println "getFoto: $params"
+        def path = "/var/janus/item/${params.ruta}"
+        def fileext = path.substring(path.indexOf(".")+1, path.length())
+
+//        println "ruta: $path"
+
+        BufferedImage imagen = ImageIO.read(new File(path));
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ImageIO.write( imagen, fileext, baos );
+        baos.flush();
+        byte[] img = baos.toByteArray();
+        baos.close();
+        response.setHeader('Content-length', img.length.toString())
+        response.contentType = "image/"+fileext // or the appropriate image content type
+        response.outputStream << img
+        response.outputStream.flush()
+    }
+
+    def downloadFile() {
+
+        def item = Item.get(params.id)
+        def tipo = params.tipo
+        def filePath
+
+        switch (tipo) {
+            case "il":
+                filePath = item?.foto
+                break;
+            case "dt":
+                filePath = ArchivoEspecificacion.findByItem(item)?.especificacion
+                break;
+        }
+
+        def ext = filePath.split("\\.")
+        ext = ext[ext.size() - 1]
+        def path = "/var/janus/" + "item" + File.separatorChar + filePath
+        println "path "+path
+        def file = new File(path)
+        if(file.exists()){
+            def b = file.getBytes()
+            response.setContentType(ext == 'pdf' ? "application/pdf" : "image/" + ext)
+            response.setHeader("Content-disposition", "attachment; filename=" + filePath)
+            response.setContentLength(b.length)
+            response.getOutputStream().write(b)
+        }else{
+            flash.message="El archivo seleccionado no se encuentra en el servidor."
+            redirect(action: "especificaciones_ajax",params: [id:item.id])
+        }
+    }
+
+    def uploadFileEspecificacion() {
+        println "upload "+params
+
+        def rubro = Item.get(params.item)
+        def acceptedExt = ['pdf', 'doc', 'docx']
+
+        def path = "/var/janus/" + "item/" + rubro?.id + "/"   //web-app/rubros
+        new File(path).mkdirs()
+
+        def archivEsp
+        def tipo = params.tipo
+
+        def existe = ArchivoEspecificacion.findByCodigo(rubro.codigoEspecificacion)
+
+        if(existe) {
+            println("entro")
+            archivEsp = existe
+        } else {
+            println("entro 2")
+            archivEsp = new ArchivoEspecificacion()
+            archivEsp.item = rubro
+            archivEsp.codigo = rubro.codigoEspecificacion
+        }
+
+        def f = request.getFile('file')  //archivo = name del input type file
+        if (f && !f.empty) {
+            def fileName = f.getOriginalFilename() //nombre original del archivo
+            def ext
+            def parts = fileName.split("\\.")
+            fileName = ""
+            parts.eachWithIndex { obj, i ->
+                if (i < parts.size() - 1) {
+                    fileName += obj
+                } else {
+                    ext = obj
+                }
+            }
+
+            if (acceptedExt.contains(ext?.toLowerCase())) {
+
+
+                def ahora = new Date()
+                fileName = "r_" + "dt" + "_" + rubro.id + "_" + ahora.format("dd_MM_yyyy_hh_mm_ss")
+                fileName = fileName + "." + ext
+                def pathFile = path + fileName
+                def file = new File(pathFile)
+
+                f.transferTo(file)
+
+                def old
+
+                if(tipo == 'pdf'){
+                    old = archivEsp?.ruta
+                }else{
+                    old = archivEsp?.especificacion
+                }
+
+                if (old && old.trim() != "") {
+                    def oldPath = servletContext.getRealPath("/") + "item/" + old
+                    def oldFile = new File(oldPath)
+                    if (oldFile.exists()) {
+                        oldFile.delete()
+                    }
+                }
+
+                switch (tipo) {
+                    case "pdf":
+                        archivEsp?.ruta =  fileName
+                        break;
+                    case "word":
+                        archivEsp?.especificacion =  fileName
+                        break;
+                }
+
+                if(archivEsp.save(flush: true)){
+                    rubro.especificaciones = archivEsp?.ruta
+                    rubro.save(flush: true)
+                }
+            } else {
+                flash.clase = "alert-error"
+                flash.message = "Error: Los formatos permitidos son: PDF, DOC, DOCX"
+            }
+        } else {
+            flash.clase = "alert-error"
+            flash.message = "Error: Seleccione un archivo PDF, DOC, DOCX"
+        }
+
+        redirect(action: "especificaciones_ajax", id: rubro.id, params: [tipo: tipo])
+    }
 }

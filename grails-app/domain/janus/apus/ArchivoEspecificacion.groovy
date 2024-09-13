@@ -7,6 +7,8 @@ class ArchivoEspecificacion implements Auditable {
     Item item
     String codigo
     String ruta
+    String especificacion
+
     static auditable = true
     static mapping = {
         table 'ares'
@@ -19,12 +21,14 @@ class ArchivoEspecificacion implements Auditable {
             item column: 'item__id'
             codigo column: 'itemcdes'
             ruta column: 'aresruta'
+            especificacion column: 'aresespe'
         }
     }
     static constraints = {
         item(blank: false, nullable: false, attributes: [title: 'item'])
         codigo(size: 1..30, blank: false, nullable: false, attributes: [title: 'código de la especifiación'])
         ruta(size: 1..255, blank: false, nullable: false, attributes: [title: 'ruta del archivo'])
+        especificacion(size: 1..255, blank: true, nullable: true, attributes: [title: 'especificacion del archivo'])
     }
     String toString(){
         "${item.codigo} archivo: ${ruta}"

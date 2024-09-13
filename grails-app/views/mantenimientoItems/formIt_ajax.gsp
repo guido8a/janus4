@@ -115,6 +115,17 @@
         <g:hiddenField name="peso" value="${0}"/>
     </g:else>
 
+    <div class="form-group ${hasErrors(bean: itemInstance, field: 'codigoEspecificacion', 'error')} ">
+        <span class="grupo">
+            <label class="col-md-2 control-label text-info">
+                Código especificación
+            </label>
+            <span class="col-md-6">
+                <g:textField name="codigoEspecificacion" class="form-control" value="${itemInstance?.codigoEspecificacion}" />
+            </span>
+        </span>
+    </div>
+
     <div class="form-group ${hasErrors(bean: itemInstance, field: 'fecha', 'error')} ">
         <span class="grupo">
             <label class="col-md-2 control-label text-info">
@@ -171,7 +182,6 @@
         </span>
     </div>
 
-%{--    <g:if test="${grupo.toString() == '3'}">--}%
     <g:if test="${departamento?.subgrupo?.grupo?.id == 3}">
         <div class="form-group ${hasErrors(bean: itemInstance, field: 'combustible', 'error')} ">
             <span class="grupo">
