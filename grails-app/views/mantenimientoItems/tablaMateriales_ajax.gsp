@@ -55,9 +55,11 @@
                     <a href="#" class="btn btn-xs btn-info btnVerMaterial" data-id="${material?.id}" title="Ver">
                         <i class="fas fa-search"></i>
                     </a>
-                    <a href="#" class="btn btn-xs btn-warning btnEspecificacionesMaterial" data-id="${material?.id}" title="Especificaciones e Ilustración">
-                        <i class="fas fa-book"></i>
-                    </a>
+                    <g:if test="${material?.codigoEspecificacion}">
+                        <a href="#" class="btn btn-xs btn-warning btnEspecificacionesMaterial" data-id="${material?.id}" title="Especificaciones e Ilustración">
+                            <i class="fas fa-book"></i>
+                        </a>
+                    </g:if>
                     <a href="#" class="btn btn-xs btn-success btnEditarMaterial" data-id="${material?.id}" data-sub="${material?.departamento?.id}" title="Editar">
                         <i class="fas fa-edit"></i>
                     </a>

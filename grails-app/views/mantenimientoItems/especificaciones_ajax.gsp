@@ -41,7 +41,7 @@
         <g:hiddenField name="tipo" value="pdf"/>
         <div class="fieldcontain required">
             <b>Cargar archivo:</b>
-            <input type="file" id="fileEspePDF" name="file" class=""/>
+            <input type="file" id="fileEspePDF" name="file" class="" multiple accept=".pdf"/>
 
             <div class="btn-group" style="margin-top: 20px;">
                 <a href="#" id="salir" class="btn btn-primary">
@@ -56,7 +56,7 @@
 
             <div class="btn-group" style="margin-top: 20px;">
                 <g:if test="${ares?.especificacion}">
-                    <g:link action="downloadFile" id="${item.id}" params="[tipo: 'dt']" class="btn btn-info">
+                    <g:link action="downloadFile" id="${item.id}" params="[tipo: 'pdf']" class="btn btn-info">
                         <i class="fa fa-download"></i> Descargar
                     </g:link>
                 </g:if>
@@ -69,7 +69,7 @@
             <p style="color: #800; font-size: 14px"><i class="fa fa-exclamation-triangle fa-2x"></i>  No se ha cargado ninguna especificación PDF para este material</p>
         </g:if>
         <g:else>
-            Especificación actual: <strong style="font-size: 14px"> ${ares?.ruta} </strong>
+            <i class="fa fa-file-pdf fa-2x"></i>  Especificación actual PDF: <strong style="font-size: 14px"> ${ares?.ruta} </strong>
         </g:else>
     </div>
 </div>
@@ -84,7 +84,7 @@
         <g:hiddenField name="tipo" value="word"/>
         <div class="fieldcontain required">
             <b>Cargar archivo:</b>
-            <input type="file" id="fileEspe" name="file" class=""/>
+            <input type="file" id="fileEspe" name="file" class=""  multiple accept=".doc, .docx"/>
 
             <div class="btn-group" style="margin-top: 20px;">
                 <a href="#" id="submitWord" class="btn btn-success">
@@ -94,7 +94,7 @@
 
             <div class="btn-group" style="margin-top: 20px;">
                 <g:if test="${ares?.especificacion}">
-                    <g:link action="downloadFile" id="${item.id}" params="[tipo: 'dt']" class="btn btn-info">
+                    <g:link action="downloadFile" id="${item.id}" params="[tipo: 'wd']" class="btn btn-info">
                         <i class="fa fa-download"></i> Descargar
                     </g:link>
                 </g:if>
@@ -107,7 +107,7 @@
             <p style="color: #800; font-size: 14px"><i class="fa fa-exclamation-triangle fa-2x"></i>  No se ha cargado ninguna especificación WORD para este material</p>
         </g:if>
         <g:else>
-            Especificación actual: <strong style="font-size: 14px"> ${ares?.especificacion} </strong>
+            <i class="fa fa-file-word fa-2x"></i> Especificación actual WORD: <strong style="font-size: 14px"> ${ares?.especificacion} </strong>
         </g:else>
     </div>
 </div>
@@ -121,7 +121,7 @@
         <g:hiddenField name="item" value="${item?.id}"/>
         <div class="fieldcontain required">
             <b>Cargar archivo:</b>
-            <input type="file" id="file" name="file" class=""/>
+            <input type="file" id="file" name="file" class="" multiple accept=".jpg, .jpeg, .png, .gif"/>
 
             <div class="btn-group" style="margin-top: 20px;">
                 %{--                <a href="#" id="salir" class="btn btn-primary">--}%
@@ -139,12 +139,6 @@
                     <g:link action="downloadFile" id="${item.id}" params="[tipo: 'il']" class="btn btn-info">
                         <i class="fa fa-download"></i> Descargar
                     </g:link>
-                %{--                    </g:if>--}%
-                %{--                    <g:if test="${tipo == 'dt'}">--}%
-                %{--                        <g:link action="downloadFileAres" id="${ares}" params="[tipo: tipo, rubro: rubro.id]" class="btn btn-info">--}%
-                %{--                            <i class="fa fa-arrow-down"></i> Descargar--}%
-                %{--                        </g:link>--}%
-                %{--                    </g:if>--}%
                 </g:if>
             </div>
         </div>
@@ -160,7 +154,7 @@
     </div>
 
     <g:if test="${item?.foto}">
-        <img src="${request.contextPath}/mantenimientoItems/getFoto?ruta=${item?.foto}" style="width: 400px; height: 400px"/>
+        <img src="${request.contextPath}/mantenimientoItems/getFoto?id=${item?.id}" style="width: 400px; height: 400px"/>
     </g:if>
 
 </fieldset>

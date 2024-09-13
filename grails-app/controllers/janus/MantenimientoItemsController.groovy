@@ -2363,7 +2363,7 @@ itemId: item.id
     }
 
     def uploadFileIlustracion() {
-        println ("subir iamgen " + params)
+//        println ("subir iamgen " + params)
 
         def rubro = Item.get(params.item)
         def acceptedExt = ["jpg", "png", "gif", "jpeg"]
@@ -2385,22 +2385,21 @@ itemId: item.id
                 }
             }
             if (acceptedExt.contains(ext.toLowerCase())) {
-                def ahora = new Date()
-                fileName = "r_" + "il" + "_" + rubro.id + "_" + ahora.format("dd_MM_yyyy_hh_mm_ss")
-                fileName = fileName + "." + ext
-                def pathFile = path + fileName
-                def file = new File(pathFile)
 
-                f.transferTo(file)
-
-                def old = rubro.foto
-                if (old && old.trim() != "") {
-                    def oldPath = servletContext.getRealPath("/") + "item/" + old
+                def old = rubro?.foto
+                if (old) {
+                    def oldPath = "/var/janus/" + "item/" + rubro?.id + "/" + old
                     def oldFile = new File(oldPath)
                     if (oldFile.exists()) {
                         oldFile.delete()
                     }
                 }
+
+                fileName = "r_" + "il" + "_" + rubro.id
+                fileName = fileName + "." + ext
+                def pathFile = path + fileName
+                def file = new File(pathFile)
+                f.transferTo(file)
 
                 rubro.foto = fileName
                 rubro.save(flush: true)
@@ -2420,10 +2419,9 @@ itemId: item.id
 
     def getFoto(){
 //        println "getFoto: $params"
-        def path = "/var/janus/item/${params.ruta}"
+        def item = Item.get(params.id)
+        def path = "/var/janus/item/" + item?.id + "/" +  item?.foto
         def fileext = path.substring(path.indexOf(".")+1, path.length())
-
-//        println "ruta: $path"
 
         BufferedImage imagen = ImageIO.read(new File(path));
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -2447,14 +2445,17 @@ itemId: item.id
             case "il":
                 filePath = item?.foto
                 break;
-            case "dt":
+            case "pdf":
+                filePath = ArchivoEspecificacion.findByItem(item)?.ruta
+                break;
+            case "wd":
                 filePath = ArchivoEspecificacion.findByItem(item)?.especificacion
                 break;
         }
 
         def ext = filePath.split("\\.")
         ext = ext[ext.size() - 1]
-        def path = "/var/janus/" + "item" + File.separatorChar + filePath
+        def path = "/var/janus/" + "item/" + item.id + File.separatorChar + filePath
         println "path "+path
         def file = new File(path)
         if(file.exists()){
@@ -2470,10 +2471,11 @@ itemId: item.id
     }
 
     def uploadFileEspecificacion() {
-        println "upload "+params
+//        println "upload "+params
 
         def rubro = Item.get(params.item)
-        def acceptedExt = ['pdf', 'doc', 'docx']
+        def acceptedWord = ['doc', 'docx']
+        def acceptedPdf = ['pdf']
 
         def path = "/var/janus/" + "item/" + rubro?.id + "/"   //web-app/rubros
         new File(path).mkdirs()
@@ -2484,10 +2486,8 @@ itemId: item.id
         def existe = ArchivoEspecificacion.findByCodigo(rubro.codigoEspecificacion)
 
         if(existe) {
-            println("entro")
             archivEsp = existe
         } else {
-            println("entro 2")
             archivEsp = new ArchivoEspecificacion()
             archivEsp.item = rubro
             archivEsp.codigo = rubro.codigoEspecificacion
@@ -2507,16 +2507,7 @@ itemId: item.id
                 }
             }
 
-            if (acceptedExt.contains(ext?.toLowerCase())) {
-
-
-                def ahora = new Date()
-                fileName = "r_" + "dt" + "_" + rubro.id + "_" + ahora.format("dd_MM_yyyy_hh_mm_ss")
-                fileName = fileName + "." + ext
-                def pathFile = path + fileName
-                def file = new File(pathFile)
-
-                f.transferTo(file)
+            if ( params.tipo == 'pdf' ?  acceptedPdf.contains(ext?.toLowerCase()) : acceptedWord.contains(ext?.toLowerCase())) {
 
                 def old
 
@@ -2526,13 +2517,19 @@ itemId: item.id
                     old = archivEsp?.especificacion
                 }
 
-                if (old && old.trim() != "") {
-                    def oldPath = servletContext.getRealPath("/") + "item/" + old
+                if (old) {
+                    def oldPath =  "/var/janus/" + "item/" + rubro?.id + "/" + old
                     def oldFile = new File(oldPath)
                     if (oldFile.exists()) {
                         oldFile.delete()
                     }
                 }
+
+                fileName = "r_" + "dt" + "_" + rubro.id
+                fileName = fileName + "." + ext
+                def pathFile = path + fileName
+                def file = new File(pathFile)
+                f.transferTo(file)
 
                 switch (tipo) {
                     case "pdf":
@@ -2549,11 +2546,11 @@ itemId: item.id
                 }
             } else {
                 flash.clase = "alert-error"
-                flash.message = "Error: Los formatos permitidos son: PDF, DOC, DOCX"
+                flash.message = params.tipo == 'pdf' ? ("Error: Los formatos permitidos son: PDF") : ("Error: Los formatos permitidos son: DOC, DOCX")
             }
         } else {
             flash.clase = "alert-error"
-            flash.message = "Error: Seleccione un archivo PDF, DOC, DOCX"
+            flash.message =  params.tipo == 'pdf' ? "Error: Seleccione un archivo PDF" : "Error: Seleccione un archivo DOC, DOCX"
         }
 
         redirect(action: "especificaciones_ajax", id: rubro.id, params: [tipo: tipo])
