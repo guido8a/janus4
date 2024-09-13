@@ -31,9 +31,9 @@
     Código: ${item?.codigo} - Especificación: ${item?.codigoEspecificacion}
 </div>
 
-<div class="alert alert-success col-md-12" style="font-size: 14px; font-weight: bold">
-    <i class="fa fa-file-pdf fa-2x"></i> Especificación PDF
-</div>
+%{--<div class="alert alert-success col-md-12" style="font-size: 14px; font-weight: bold">--}%
+%{--    <i class="fa fa-file-pdf fa-2x"></i> Especificación PDF--}%
+%{--</div>--}%
 
 <div class="col-md-6">
     <g:uploadForm action="uploadFileEspecificacion" method="post" name="frmUploadEspe" enctype="multipart/form-data">
@@ -74,9 +74,9 @@
     </div>
 </div>
 
-<div class="alert alert-success col-md-12" style="font-size: 14px; font-weight: bold">
-    <i class="fa fa-file-word fa-2x"></i> Especificación WORD
-</div>
+%{--<div class="alert alert-success col-md-12" style="font-size: 14px; font-weight: bold">--}%
+%{--    <i class="fa fa-file-word fa-2x"></i> Especificación WORD--}%
+%{--</div>--}%
 
 <div class="col-md-6">
     <g:uploadForm action="uploadFileEspecificacion" method="post" name="frmUploadWord" enctype="multipart/form-data">

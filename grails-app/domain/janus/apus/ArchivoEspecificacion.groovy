@@ -27,7 +27,7 @@ class ArchivoEspecificacion implements Auditable {
     static constraints = {
         item(blank: false, nullable: false, attributes: [title: 'item'])
         codigo(size: 1..30, blank: false, nullable: false, attributes: [title: 'código de la especifiación'])
-        ruta(size: 1..255, blank: false, nullable: false, attributes: [title: 'ruta del archivo'])
+        ruta(size: 1..255, blank: true, nullable: true, attributes: [title: 'ruta del archivo'])
         especificacion(size: 1..255, blank: true, nullable: true, attributes: [title: 'especificacion del archivo'])
     }
     String toString(){
