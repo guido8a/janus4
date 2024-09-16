@@ -2359,7 +2359,13 @@ itemId: item.id
     def especificaciones_ajax(){
         def item = Item.get(params.id)
         def ares = ArchivoEspecificacion.findByItem(item)
-        return [item: item, ares: ares]
+        def usuario = Persona.get(session.usuario.id)
+        def existeUtfpu = false
+        if(usuario.departamento?.codigo == 'UTFPU'){
+            existeUtfpu = true
+        }
+
+        return [item: item, ares: ares, existe: existeUtfpu]
     }
 
     def uploadFileIlustracion() {

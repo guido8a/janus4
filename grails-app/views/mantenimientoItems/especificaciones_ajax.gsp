@@ -78,39 +78,42 @@
 %{--    <i class="fa fa-file-word fa-2x"></i> Especificación WORD--}%
 %{--</div>--}%
 
-<div class="col-md-6">
-    <g:uploadForm action="uploadFileEspecificacion" method="post" name="frmUploadWord" enctype="multipart/form-data">
-        <g:hiddenField name="item" value="${item?.id}"/>
-        <g:hiddenField name="tipo" value="word"/>
-        <div class="fieldcontain required">
-            <b>Cargar archivo:</b>
-            <input type="file" id="fileEspe" name="file" class=""  multiple accept=".doc, .docx"/>
+<g:if test="${existe}">
+    <div class="col-md-6">
+        <g:uploadForm action="uploadFileEspecificacion" method="post" name="frmUploadWord" enctype="multipart/form-data">
+            <g:hiddenField name="item" value="${item?.id}"/>
+            <g:hiddenField name="tipo" value="word"/>
+            <div class="fieldcontain required">
+                <b>Cargar archivo:</b>
+                <input type="file" id="fileEspe" name="file" class=""  multiple accept=".doc, .docx"/>
 
-            <div class="btn-group" style="margin-top: 20px;">
-                <a href="#" id="submitWord" class="btn btn-success">
-                    <i class="fa fa-save"></i> Guardar
-                </a>
-            </div>
+                <div class="btn-group" style="margin-top: 20px;">
+                    <a href="#" id="submitWord" class="btn btn-success">
+                        <i class="fa fa-save"></i> Guardar
+                    </a>
+                </div>
 
-            <div class="btn-group" style="margin-top: 20px;">
-                <g:if test="${ares?.especificacion}">
-                    <g:link action="downloadFile" id="${item.id}" params="[tipo: 'wd']" class="btn btn-info">
-                        <i class="fa fa-download"></i> Descargar
-                    </g:link>
-                </g:if>
+                <div class="btn-group" style="margin-top: 20px;">
+                    <g:if test="${ares?.especificacion}">
+                        <g:link action="downloadFile" id="${item.id}" params="[tipo: 'wd']" class="btn btn-info">
+                            <i class="fa fa-download"></i> Descargar
+                        </g:link>
+                    </g:if>
+                </div>
             </div>
+        </g:uploadForm>
+
+        <div class="alert alert-warning">
+            <g:if test="${!ares?.especificacion}">
+                <p style="color: #800; font-size: 14px"><i class="fa fa-exclamation-triangle fa-2x"></i>  No se ha cargado ninguna especificación WORD para este material</p>
+            </g:if>
+            <g:else>
+                <i class="fa fa-file-word fa-2x"></i> Especificación actual WORD: <strong style="font-size: 14px"> ${ares?.especificacion} </strong>
+            </g:else>
         </div>
-    </g:uploadForm>
-
-    <div class="alert alert-warning">
-        <g:if test="${!ares?.especificacion}">
-            <p style="color: #800; font-size: 14px"><i class="fa fa-exclamation-triangle fa-2x"></i>  No se ha cargado ninguna especificación WORD para este material</p>
-        </g:if>
-        <g:else>
-            <i class="fa fa-file-word fa-2x"></i> Especificación actual WORD: <strong style="font-size: 14px"> ${ares?.especificacion} </strong>
-        </g:else>
     </div>
-</div>
+</g:if>
+
 
 <div class="alert alert-success" style="font-size: 14px; font-weight: bold">
     <i class="fa fa-image fa-2x"></i> Ilustración
