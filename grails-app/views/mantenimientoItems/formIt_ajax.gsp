@@ -1,4 +1,4 @@
-<%@ page import="janus.TipoLista; janus.pac.CodigoComprasPublicas; janus.Item" %>
+<%@ page import="janus.Fabricante; janus.TipoLista; janus.pac.CodigoComprasPublicas; janus.Item" %>
 
 <g:form class="form-horizontal" name="frmSave" action="saveIt_ajax">
     <g:hiddenField name="id" value="${itemInstance?.id}"/>
@@ -57,6 +57,17 @@
             </label>
             <span class="col-md-8">
                 <g:select name="unidad" from="${janus.Unidad.list([sort: 'descripcion'])}" optionValue="descripcion" optionKey="id" class="form-control" value="${itemInstance?.unidad?.id}" />
+                <p class="help-block ui-helper-hidden"></p>
+            </span>
+        </span>
+    </div>
+    <div class="form-group ${hasErrors(bean: itemInstance, field: 'fabricante', 'error')} ">
+        <span class="grupo">
+            <label for="fabricante" class="col-md-2 control-label text-info">
+                Fabricante
+            </label>
+            <span class="col-md-8">
+                <g:select name="fabricante" from="${janus.Fabricante.list([sort: 'nombre'])}" optionValue="nombre" optionKey="id" class="form-control" value="${itemInstance?.fabricante?.id}" noSelection="[null: 'NINGUNO']" />
                 <p class="help-block ui-helper-hidden"></p>
             </span>
         </span>
