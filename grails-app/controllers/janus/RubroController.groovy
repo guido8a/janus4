@@ -1058,7 +1058,7 @@ class RubroController {
         def select = "select item.item__id, itemcdgo, itemnmbr, item.tpls__id, unddcdgo " +
                 "from item, undd, dprt, sbgr "
         def txwh = "where tpit__id = 1 and undd.undd__id = item.undd__id and dprt.dprt__id = item.dprt__id and " +
-                "sbgr.sbgr__id = dprt.sbgr__id "
+                "sbgr.sbgr__id = dprt.sbgr__id and itemetdo = 'A'"
         def sqlTx = ""
         def bsca = listaItems[params.buscarPor.toInteger()-1]
         def ordn = listaItems[params.ordenar.toInteger()-1]
