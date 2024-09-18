@@ -10,6 +10,10 @@ import jxl.Workbook
 
 //import janus.pac.PeriodoValidez
 import jxl.WorkbookSettings
+import org.apache.poi.xssf.usermodel.XSSFCell
+import org.apache.poi.xssf.usermodel.XSSFRow
+import org.apache.poi.xssf.usermodel.XSSFSheet
+import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import org.springframework.dao.DataIntegrityViolationException
 
 class IndiceController {
@@ -57,8 +61,6 @@ class IndiceController {
     }
 
     def uploadFile() {
-//
-//        println("upload: " + params)
 
         def path = "/var/janus/xls/"   //web-app/archivos
         new File(path).mkdirs()
@@ -92,13 +94,10 @@ class IndiceController {
                 def file = new File(pathFile)
                 f.transferTo(file) // guarda el archivo subido al nuevo path
 
-                //AQUI el archivo ya esta copiado en web-app/xls/nombreArchivo.xls
-
                 def filaInicial = 5;
                 def html = "";
                 WorkbookSettings ws = new WorkbookSettings();
                 ws.setEncoding("Cp1252");
-//                Workbook workbook = Workbook.getWorkbook(new File(my_name), ws);
 
                 Workbook workbook = Workbook.getWorkbook(file, ws)
 
@@ -106,24 +105,17 @@ class IndiceController {
                 workbook.getNumberOfSheets().times { sheet ->
                     Sheet s = workbook.getSheet(sheet)
                     if (!s.getSettings().isHidden()) {
-//                        println s.getName()
                         html += "<h2>Hoja " + (sheet + 1) + ": " + s.getName() + "</h2>"
                         Cell[] row = null
                         s.getRows().times { j ->
                             row = s.getRow(j)
                             def celdas = row.length
-//                            println(row)
                             if (celdas > 0) {
                                 if (j >= filaInicial) {
-//                                    println("fila " + (j + 1) + "   " + celdas)
                                     def descripcion = row[1].getContents().toString().trim()
                                     descripcion = descripcion.replaceAll(/ {2,}/, ' ')
-//                                    descripcion = descripcion.
                                     if (descripcion != '' && !ignorar.contains(descripcion) && !descripcion.startsWith("*")) {
-//                                    def valor = row[3]
-//                                        println(descripcion)
                                         def indice = Indice.findAllByDescripcionIlike(descripcion)
-//                                        println(indice)
                                         def bandera = false;
                                         if (indice.size() == 0) {
                                             def codigo = descripcion[0..2]
@@ -160,7 +152,6 @@ class IndiceController {
                                         } else {
                                             html += 'fila ' + (j + 1) + ' Indice duplicado:' + indice.id + "<br/>"
                                         }
-//                                        println(indice)
                                         def valor
                                         if (celdas > 2) {
                                             valor = row[5].getContents();
@@ -192,24 +183,15 @@ class IndiceController {
                                                     html += 'fila ' + (j + 1) + ' ERROR valor no creado' + renderErrors(bean: valorIndice)
                                                 }
                                             } else {
-//                                                def ind =  ValorIndice.findByIndiceAndPeriodo(indice,fecha)
-//                                                ind.valor= valor
-//                                                ind.save(flush: true)
                                                 html += 'fila ' + (j + 1) + ' valor ya existe ' + '<br/>'
-//                                                println(valores)
                                             }
                                         }
                                     } //if descrcion ok
-//                                    println(valor)
-//                                    println("--------------")
                                 }  //if fila > fila inicial
                             } //if celdas>0
                         } //rows.each
                     } //hoja !hidden
                 } //hojas.each
-//                println(html)
-
-//              render html
 
                 return [html: html]
 
@@ -220,9 +202,11 @@ class IndiceController {
         } else {
             flash.message = "Seleccione un archivo para procesar"
             redirect(action: 'subirIndice')
-//            println "NO FILE"
         }
     }
+
+
+
 
 
     def grabar() {

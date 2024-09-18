@@ -55,7 +55,7 @@
 
                     <div class="col-md-6" style="margin-top: 20px">
                         <div class="col-md-2"><b>Archivo:</b></div>
-                        <input type="file" class="required" id="file" name="file"/>
+                        <input type="file" class="required" id="file" name="file" multiple accept=".xlsx"/>
                     </div>
            </div>
 
