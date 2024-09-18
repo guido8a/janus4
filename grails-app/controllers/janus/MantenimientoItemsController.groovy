@@ -2549,6 +2549,8 @@ itemId: item.id
                 if(archivEsp.save(flush: true)){
                     rubro.especificaciones = archivEsp?.ruta
                     rubro.save(flush: true)
+                } else {
+                    println "${archivEsp.errors}"
                 }
             } else {
                 flash.clase = "alert-error"
