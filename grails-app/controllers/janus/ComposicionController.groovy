@@ -519,12 +519,12 @@ class ComposicionController {
                             if (item.size() == 1) {
                                 item = item[0]
                             } else if (item.size() == 0) {
-                                errores += "<li>No se encontró item con código ${cod} (l. ${i + 1})</li>"
+                                errores += "<li>No se encontró item con código ${cod} (l. ${row.rowNum})</li>"
                                 println "No se encontró item con código ${cod}"
                                 ok = false
                             } else {
                                 println "Se encontraron ${item.size()} items con código ${cod}!! ${item.id}"
-                                errores += "<li>Se encontraron ${item.size()} items con código ${cod}!! (l. ${i + 1})</li>"
+                                errores += "<li>Se encontraron ${item.size()} items con código ${cod}!! (l. ${row.rowNum})</li>"
                                 ok = false
                             }
                             if (ok) {
@@ -543,7 +543,7 @@ class ComposicionController {
                                         doneHtml += "<li>Se ha modificado la cantidad para el item ${nombre}</li>"
                                     } else {
                                         println "No se pudo guardar comp ${comp.id}: " + comp.errors
-                                        errores += "<li>Ha ocurrido un error al guardar la cantidad para el item ${nombre} (l. ${j + 1})</li>"
+                                        errores += "<li>Ha ocurrido un error al guardar la cantidad para el item ${nombre} (l. ${row.rowNum})</li>"
                                     }
 //                                            println comp
 //                                            /** **/
@@ -555,11 +555,11 @@ class ComposicionController {
                                 } else if (comp.size() == 0) {
                                     println "No se encontró composición para el item ${nombre}"
 //                                            errores += "<li>No se encontró composición para el item ${nombre} (l. ${j + 1})</li>"
-                                    errores += "<li>No se encontró composición para el item ${nombre} (l. ${i + 1})</li>"
+                                    errores += "<li>No se encontró composición para el item ${nombre} (l. ${row.rowNum})</li>"
                                 } else {
                                     println "Se encontraron ${comp.size()} composiciones para el item ${nombre}: ${comp.id}"
 //                                            errores += "<li>Se encontraron ${comp.size()} composiciones para el item ${nombre} (l. ${j + 1})</li>"
-                                    errores += "<li>Se encontraron ${comp.size()} composiciones para el item ${nombre} (l. ${i + 1})</li>"
+                                    errores += "<li>Se encontraron ${comp.size()} composiciones para el item ${nombre} (l. ${row.rowNum})</li>"
                                 }
                             }
                         }
