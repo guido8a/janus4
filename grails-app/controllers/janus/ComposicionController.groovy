@@ -429,6 +429,7 @@ class ComposicionController {
 
     def uploadFile() {
         println "uploadFile: $params"
+        def filasNO = [0,1,2,3,4,5,6,7,8,9]
         def obra = Obra.get(params.id)
         def path = "/var/janus/" + "xlsComposicion/"   //web-app/archivos
         new File(path).mkdirs()
@@ -474,79 +475,76 @@ class ComposicionController {
                 InputStream ExcelFileToRead = new FileInputStream(pathFile);
                 XSSFWorkbook workbook = new XSSFWorkbook(ExcelFileToRead);
 
-                XSSFSheet sheet1 = wb.getSheetAt(0);
+                XSSFSheet sheet1 = workbook.getSheetAt(0);
                 XSSFRow row;
                 XSSFCell cell;
 
+                Iterator rows = sheet1.rowIterator();
 
-//                Workbook workbook = Workbook.getWorkbook(file)
+                while (rows.hasNext()) { i
 
-                workbook.getNumberOfSheets().times { sheet ->
-                    if (sheet == 0) {
-//                        Sheet s = workbook.getSheet(sheet)
-                        XSSFSheet s = workbook.getSheetAt(sheet)
-//                        if (!s.getSettings().isHidden()) {
-//                            println s.getName() + "  " + sheet
-//                            htmlInfo += "<h2>Hoja " + (sheet + 1) + ": " + s.getName() + "</h2>"
-                        htmlInfo += "<h2>Hoja " + (sheet + 1) + ": " + s.getSheetName() + "</h2>"
-//                        Cell[] row = null
+                    row = (XSSFRow) rows.next()
 
-                        Iterator rows = s.rowIterator();
+                    if(row.rowNum in filasNO){
+                        println("rows NO " + row.rowNum)
+                    }else{
+                        def ok = true
 
-//                            s.getRows().times { j ->
-                        while (rows.hasNext()) { i
+                        Iterator cells = row.cellIterator()
 
-                            row = (XSSFRow) rows.next()
+                        def rgst = []
+                        while (cells.hasNext()) {
+                            cell = (XSSFCell) cells.next()
+                            if (cell.getCellType() == XSSFCell.CELL_TYPE_NUMERIC) {
+                                rgst.add(cell.getNumericCellValue())
+                            } else if (cell.getCellType() == XSSFCell.CELL_TYPE_STRING) {
+                                rgst.add(cell.getStringCellValue())
+                            } else if(cell.getCellType() == XSSFCell.CELL_TYPE_FORMULA) {
+                                rgst.add(cell.getNumericCellValue())
+                            }
+                        }
 
-                            def ok = true
+                        def cod = rgst[0]
+                        def nombre = rgst[1]
+                        def nuevaCant = rgst[4]
 
-//                            row = s.getRow(j)
+//                        println("cod " + cod)
 
-//                            if (row.length >= 5) {
-                            if (row.size() >= 5) {
-//                                def cod = row[0].getContents()
-                                def cod = row[0].getStringCellValue()
-//                                def nombre = row[1].getContents()
-                                def nombre = row[1].getStringCellValue()
-//                                def cant = row[3].getContents()
-                                def cant = row[3].getStringCellValue()
-//                                def nuevaCant = row[4].getContents()
-                                def nuevaCant = row[4].getStringCellValue()
+                        if(nombre && nombre != 'ITEM'){
+                            htmlInfo += "<h2>Hoja : "  + sheet1.getSheetName() + " - ITEM: " +  nombre + "</h2>"
+                        }
 
-
-                                if (cod != "CODIGO") {
-                                    def item = Item.findAllByCodigo(cod)
-                                    if (item.size() == 1) {
-                                        item = item[0]
-                                    } else if (item.size() == 0) {
-//                                        errores += "<li>No se encontró item con código ${cod} (l. ${j + 1})</li>"
-                                        errores += "<li>No se encontró item con código ${cod} (l. ${i + 1})</li>"
-                                        println "No se encontró item con código ${cod}"
-                                        ok = false
-                                    } else {
-                                        println "Se encontraron ${item.size()} items con código ${cod}!! ${item.id}"
-//                                        errores += "<li>Se encontraron ${item.size()} items con código ${cod}!! (l. ${j + 1})</li>"
-                                        errores += "<li>Se encontraron ${item.size()} items con código ${cod}!! (l. ${i + 1})</li>"
-                                        ok = false
-                                    }
-                                    if (ok) {
-                                        def comp = Composicion.withCriteria {
-                                            eq("item", item)
-                                            eq("obra", obra)
-                                        }
-                                        if (comp.size() == 1) {
-                                            comp = comp[0]
+                        if (cod != '' && cod != "CODIGO") {
+                            def item = Item.findAllByCodigo(cod)
+                            if (item.size() == 1) {
+                                item = item[0]
+                            } else if (item.size() == 0) {
+                                errores += "<li>No se encontró item con código ${cod} (l. ${i + 1})</li>"
+                                println "No se encontró item con código ${cod}"
+                                ok = false
+                            } else {
+                                println "Se encontraron ${item.size()} items con código ${cod}!! ${item.id}"
+                                errores += "<li>Se encontraron ${item.size()} items con código ${cod}!! (l. ${i + 1})</li>"
+                                ok = false
+                            }
+                            if (ok) {
+                                def comp = Composicion.withCriteria {
+                                    eq("item", item)
+                                    eq("obra", obra)
+                                }
+                                if (comp.size() == 1) {
+                                    comp = comp[0]
 //                                                comp.cantidad = nuevaCant.toDouble()
-                                            comp.cantidad = nuevaCant? nuevaCant.toString().replaceAll(',', '.').toDouble() : 0
+                                    comp.cantidad = nuevaCant? nuevaCant.toString().replaceAll(',', '.').toDouble() : 0
 
-                                            if (comp.save(flush: true)) {
-                                                done++
+                                    if (comp.save(flush: true)) {
+                                        done++
 //                                                    println "Modificado comp: ${comp.id}"
-                                                doneHtml += "<li>Se ha modificado la cantidad para el item ${nombre}</li>"
-                                            } else {
-                                                println "No se pudo guardar comp ${comp.id}: " + comp.errors
-                                                errores += "<li>Ha ocurrido un error al guardar la cantidad para el item ${nombre} (l. ${j + 1})</li>"
-                                            }
+                                        doneHtml += "<li>Se ha modificado la cantidad para el item ${nombre}</li>"
+                                    } else {
+                                        println "No se pudo guardar comp ${comp.id}: " + comp.errors
+                                        errores += "<li>Ha ocurrido un error al guardar la cantidad para el item ${nombre} (l. ${j + 1})</li>"
+                                    }
 //                                            println comp
 //                                            /** **/
 //                                            row.length.times { k ->
@@ -554,22 +552,25 @@ class ComposicionController {
 //                                                    println "k:" + k + "      " + row[k].getContents()
 //                                                }// row ! hidden
 //                                            } //row.legth.each
-                                        } else if (comp.size() == 0) {
-                                            println "No se encontró composición para el item ${nombre}"
+                                } else if (comp.size() == 0) {
+                                    println "No se encontró composición para el item ${nombre}"
 //                                            errores += "<li>No se encontró composición para el item ${nombre} (l. ${j + 1})</li>"
-                                            errores += "<li>No se encontró composición para el item ${nombre} (l. ${i + 1})</li>"
-                                        } else {
-                                            println "Se encontraron ${comp.size()} composiciones para el item ${nombre}: ${comp.id}"
+                                    errores += "<li>No se encontró composición para el item ${nombre} (l. ${i + 1})</li>"
+                                } else {
+                                    println "Se encontraron ${comp.size()} composiciones para el item ${nombre}: ${comp.id}"
 //                                            errores += "<li>Se encontraron ${comp.size()} composiciones para el item ${nombre} (l. ${j + 1})</li>"
-                                            errores += "<li>Se encontraron ${comp.size()} composiciones para el item ${nombre} (l. ${i + 1})</li>"
-                                        }
-                                    }
+                                    errores += "<li>Se encontraron ${comp.size()} composiciones para el item ${nombre} (l. ${i + 1})</li>"
                                 }
-                            } //row ! empty
+                            }
+                        }
+//                            } //row ! empty
 //                                }//row > 7 (fila 9 + )
-                        } //rows.each
+//                        } //rows.each
 //                        } //sheet ! hidden
-                    }//solo sheet 0
+//                    }//solo sheet 0
+                    }
+
+
                 } //sheets.each
                 if (done > 0) {
                     doneHtml = "<div class='alert alert-success'>Se han ingresado correctamente " + done + " registros</div>"
