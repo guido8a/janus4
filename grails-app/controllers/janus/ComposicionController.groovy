@@ -273,7 +273,6 @@ class ComposicionController {
     }
 
     def formArchivo() {
-        println "formArchivo: $params"
         return [obra: params.id]
     }
 
@@ -508,8 +507,6 @@ class ComposicionController {
                         def nombre = rgst[1]
                         def nuevaCant = rgst[4]
 
-//                        println("cod " + cod)
-
                         if(nombre && nombre != 'ITEM'){
                             htmlInfo += "<h2>Hoja : "  + sheet1.getSheetName() + " - ITEM: " +  nombre + "</h2>"
                         }
@@ -534,43 +531,25 @@ class ComposicionController {
                                 }
                                 if (comp.size() == 1) {
                                     comp = comp[0]
-//                                                comp.cantidad = nuevaCant.toDouble()
                                     comp.cantidad = nuevaCant? nuevaCant.toString().replaceAll(',', '.').toDouble() : 0
 
                                     if (comp.save(flush: true)) {
                                         done++
-//                                                    println "Modificado comp: ${comp.id}"
                                         doneHtml += "<li>Se ha modificado la cantidad para el item ${nombre}</li>"
                                     } else {
                                         println "No se pudo guardar comp ${comp.id}: " + comp.errors
                                         errores += "<li>Ha ocurrido un error al guardar la cantidad para el item ${nombre} (l. ${row.rowNum + 1})</li>"
                                     }
-//                                            println comp
-//                                            /** **/
-//                                            row.length.times { k ->
-//                                                if (!row[k].isHidden()) {
-//                                                    println "k:" + k + "      " + row[k].getContents()
-//                                                }// row ! hidden
-//                                            } //row.legth.each
                                 } else if (comp.size() == 0) {
                                     println "No se encontró composición para el item ${nombre}"
-//                                            errores += "<li>No se encontró composición para el item ${nombre} (l. ${j + 1})</li>"
                                     errores += "<li>No se encontró composición para el item ${nombre} (l. ${row.rowNum + 1})</li>"
                                 } else {
                                     println "Se encontraron ${comp.size()} composiciones para el item ${nombre}: ${comp.id}"
-//                                            errores += "<li>Se encontraron ${comp.size()} composiciones para el item ${nombre} (l. ${j + 1})</li>"
                                     errores += "<li>Se encontraron ${comp.size()} composiciones para el item ${nombre} (l. ${row.rowNum + 1})</li>"
                                 }
                             }
                         }
-//                            } //row ! empty
-//                                }//row > 7 (fila 9 + )
-//                        } //rows.each
-//                        } //sheet ! hidden
-//                    }//solo sheet 0
                     }
-
-
                 } //sheets.each
                 if (done > 0) {
                     doneHtml = "<div class='alert alert-success'>Se han ingresado correctamente " + done + " registros</div>"
@@ -584,11 +563,8 @@ class ComposicionController {
                 str += doneHtml
 
                 flash.message = str
-
-                println "DONE!! ${obra?.id}"
                 redirect(controller: 'composicion', action: "mensajeUpload", id: obra?.id)
             } else {
-//                flash.message = "Seleccione un archivo Excel xls para procesar (archivos xlsx deben ser convertidos a xls primero)"
                 flash.message = "Seleccione un archivo Excel xlsx para procesar (archivos xlsx deben ser convertidos a xlsx primero)"
                 redirect(action: 'formArchivo')
             }

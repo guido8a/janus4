@@ -904,7 +904,139 @@ class CronogramaContratoController {
         return[contrato:contrato]
     }
 
+//    def uploadFile() {
+//        def obra = Obra.get(params.id)
+//        def path = "/var/janus/" + "xlsContratos/"   //web-app/archivos
+//        new File(path).mkdirs()
+//
+//        def f = request.getFile('file')  //archivo = name del input type file
+//        if (f && !f.empty) {
+//            def fileName = f.getOriginalFilename() //nombre original del archivo
+//            def ext
+//
+//            def parts = fileName.split("\\.")
+//            fileName = ""
+//            parts.eachWithIndex { obj, i ->
+//                if (i < parts.size() - 1) {
+//                    fileName += obj
+//                } else {
+//                    ext = obj
+//                }
+//            }
+//
+//            if (ext == "xls") {
+//
+//                fileName = "xlsContratado_" + new Date().format("yyyyMMdd_HHmmss")
+//
+//                def fn = fileName
+//                fileName = fileName + "." + ext
+//
+//                def pathFile = path + fileName
+//                def src = new File(pathFile)
+//
+//                def i = 1
+//                while (src.exists()) {
+//                    pathFile = path + fn + "_" + i + "." + ext
+//                    src = new File(pathFile)
+//                    i++
+//                }
+//
+//                f.transferTo(new File(pathFile)) // guarda el archivo subido al nuevo path
+//
+//                //procesar excel
+//                def htmlInfo = "", errores = "", doneHtml = "", done = 0
+//                def file = new File(pathFile)
+//
+//                WorkbookSettings ws = new WorkbookSettings();
+//                ws.setLocale(new Locale("en", "EN"));
+//                ws.setEncoding("Cp1252");
+//
+//                Workbook workbook = Workbook.getWorkbook(file)
+//                workbook.getNumberOfSheets().times { sheet ->
+//                    if (sheet == 0) {
+//                        Sheet s = workbook.getSheet(sheet)
+//                        if (!s.getSettings().isHidden()) {
+//                            htmlInfo += "<h2>Hoja " + (sheet + 1) + ": " + s.getName() + "</h2>"
+//                            Cell[] row = null
+//                            s.getRows().times { j ->
+//                                def ok = true
+//
+//                                row = s.getRow(j)
+//                                println row*.getContents()
+//                                if (row.length >= 8) {
+//                                    def cod = row[0].getContents()
+//                                    def numero = row[1].getContents()
+//                                    def rubro = row[2].getContents()
+//                                    def unidad = row[3].getContents()
+//                                    def cantidad = row[4].getContents()
+//                                    def punitario = row[5].getContents()
+//                                    def subtotal = row[6].getContents()
+//                                    def precioConst = row[7].getContents()
+//
+//                                    if (cod != "CODIGO") {
+//                                        cantidad = cantidad.replaceAll(",",".")
+//                                        precioConst = precioConst.replaceAll(",",".")
+//                                        def vc = VolumenContrato.get(cod)
+////
+//                                        if(!vc){
+//                                            errores += "<li>No se encontró volumen contrato con id ${cod} (linea: ${j + 1})</li>"
+//                                            println "No se encontró volumen contrato con id ${cod}"
+//                                            ok = false
+//                                        }else{
+//
+//                                            if(!precioConst){
+//                                                precioConst = 0
+//                                            }
+//
+//                                            if(!cantidad){
+//                                                cantidad = 0
+//                                            }
+//                                            println "precio: ${precioConst.toDouble()}"
+//                                            vc.volumenPrecio = precioConst.toDouble()
+//                                            vc.volumenCantidad = Math.round(cantidad.toDouble() * 100) / 100
+//                                            vc.volumenSubtotal = precioConst.toDouble() * (Math.round(cantidad.toDouble() * 10000) / 10000)
+//                                        }
+//
+//                                        if(!vc.save(flush:true)){
+//                                            println "No se pudo guardar valor contrato con id ${vc.id}: " + vc.errors
+//                                            errores += "<li>Ha ocurrido un error al guardar los valores para ${rubro} (l. ${j + 1})</li>"
+//                                        }else{
+//                                            done++
+//                                            doneHtml += "<li>Se ha modificado los valores para el item ${rubro}</li>"
+//                                        }
+//                                    }
+//                                } //row ! empty
+//                            } //rows.each
+//                        } //sheet ! hidden
+//                    }//solo sheet 0
+//                } //sheets.each
+//                if (done > 0) {
+//                    doneHtml = "<div class='alert alert-success'>Se han ingresado correctamente " + done + " registros</div>"
+//                }
+//
+//                def str = doneHtml
+//                str += htmlInfo
+//                if (errores != "") {
+//                    str += "<ol>" + errores + "</ol>"
+//                }
+//
+//                flash.message = str
+//
+//                println "DONE!!"
+//                redirect(action: "mensajeUploadContrato", id: params.id)
+//            } else {
+//                flash.message = "Seleccione un archivo Excel xls para procesar (archivos xlsx deben ser convertidos a xls primero)"
+//                redirect(action: 'formArchivo')
+//            }
+//        } else {
+//            flash.message = "Seleccione un archivo para procesar"
+//            redirect(action: 'subirExcel')
+//        }
+//    }
+
+
     def uploadFile() {
+        def filasNO = [0,1,2,3,4,5,6,7]
         def obra = Obra.get(params.id)
         def path = "/var/janus/" + "xlsContratos/"   //web-app/archivos
         new File(path).mkdirs()
@@ -924,8 +1056,7 @@ class CronogramaContratoController {
                 }
             }
 
-            if (ext == "xls") {
-//                fileName = fileName.tr(/áéíóúñÑÜüÁÉÍÓÚàèìòùÀÈÌÒÙÇç .!¡¿?&#°"'/, "aeiounNUuAEIOUaeiouAEIOUCc_")
+            if (ext == "xlsx") {
 
                 fileName = "xlsContratado_" + new Date().format("yyyyMMdd_HHmmss")
 
@@ -948,82 +1079,85 @@ class CronogramaContratoController {
                 def htmlInfo = "", errores = "", doneHtml = "", done = 0
                 def file = new File(pathFile)
 
-                WorkbookSettings ws = new WorkbookSettings();
-                ws.setLocale(new Locale("en", "EN"));
-                ws.setEncoding("Cp1252");
-//                ws.setEncoding("Cp1252");
-//                Workbook workbook = Workbook.getWorkbook(file, ws)
-                Workbook workbook = Workbook.getWorkbook(file)
-                workbook.getNumberOfSheets().times { sheet ->
-                    if (sheet == 0) {
-                        Sheet s = workbook.getSheet(sheet)
-                        if (!s.getSettings().isHidden()) {
-//                            println s.getName() + "  " + sheet
-                            htmlInfo += "<h2>Hoja " + (sheet + 1) + ": " + s.getName() + "</h2>"
-                            Cell[] row = null
-                            s.getRows().times { j ->
-                                def ok = true
-//                                if (j > 19) {
-//                                println ">>>>>>>>>>>>>>>" + (j + 1)
-                                row = s.getRow(j)
-                                println row*.getContents()
-//                                println row.length
-                                if (row.length >= 8) {
-                                    def cod = row[0].getContents()
-                                    def numero = row[1].getContents()
-                                    def rubro = row[2].getContents()
-                                    def unidad = row[3].getContents()
-                                    def cantidad = row[4].getContents()
-                                    def punitario = row[5].getContents()
-                                    def subtotal = row[6].getContents()
-                                    def precioConst = row[7].getContents()
+                InputStream ExcelFileToRead = new FileInputStream(pathFile);
+                XSSFWorkbook workbook = new XSSFWorkbook(ExcelFileToRead);
 
-//                                    NumberCell nc = (NumberCell) row[7]
-//                                    println "--> ${nc.getValue()}"
+                XSSFSheet sheet1 = workbook.getSheetAt(0);
+                XSSFRow row;
+                XSSFCell cell;
 
-//                                    println "\t\tcod:" + cod + "\tnumero:" + numero + "\trubro:" + rubro + "\tunidad:" + unidad
-//                                    println "\t\tcantidad:" + cantidad + "\tpunitario:" + punitario + "\tsub:" + subtotal + "\tnuevo:" + precioConst
+                Iterator rows = sheet1.rowIterator();
 
-                                    if (cod != "CODIGO") {
-                                        cantidad = cantidad.replaceAll(",",".")
-                                        precioConst = precioConst.replaceAll(",",".")
-//                                        println("cantidad " + cantidad)
-//                                        println("-->" + Math.round(cantidad.toDouble() * 100) / 100)
-                                        def vc = VolumenContrato.get(cod)
+                while (rows.hasNext()) {
+                    i
+
+                    row = (XSSFRow) rows.next()
+
+                    if(row.rowNum in filasNO){
+                        println("rows NO " + row.rowNum)
+                    }else{
+
+                        def ok = true
+
+                        Iterator cells = row.cellIterator()
+
+                        def rgst = []
+                        while (cells.hasNext()) {
+                            cell = (XSSFCell) cells.next()
+                            if (cell.getCellType() == XSSFCell.CELL_TYPE_NUMERIC) {
+                                rgst.add(cell.getNumericCellValue())
+                            } else if (cell.getCellType() == XSSFCell.CELL_TYPE_STRING) {
+                                rgst.add(cell.getStringCellValue())
+                            } else if(cell.getCellType() == XSSFCell.CELL_TYPE_FORMULA) {
+                                rgst.add(cell.getNumericCellValue())
+                            }
+                        }
+
+                        def cod = rgst[0]
+                        def numero = rgst[1]
+                        def rubro = rgst[2]
+                        def unidad = rgst[3]
+                        def cantidad = rgst[4]
+                        def punitario = rgst[5]
+                        def subtotal = rgst[6]
+                        def precioConst = rgst[7]
+
+                        htmlInfo += "<h2>Hoja : "  + sheet1.getSheetName() + " - ITEM: " +  rubro + "</h2>"
+
+
+                        if (cod != "CODIGO") {
+                            cantidad = cantidad.replaceAll(",", ".")
+                            precioConst = precioConst.replaceAll(",", ".")
+                            def vc = VolumenContrato.get(cod)
 //
-                                        if(!vc){
-                                            errores += "<li>No se encontró volumen contrato con id ${cod} (linea: ${j + 1})</li>"
-                                            println "No se encontró volumen contrato con id ${cod}"
-                                            ok = false
-                                        }else{
+                            if (!vc) {
+                                errores += "<li>No se encontró volumen contrato con id ${cod} (linea: ${row.rowNum + 1})</li>"
+                                println "No se encontró volumen contrato con id ${cod}"
+                                ok = false
+                            } else {
 
-                                            if(!precioConst){
-                                                precioConst = 0
-                                            }
+                                if (!precioConst) {
+                                    precioConst = 0
+                                }
 
-                                            if(!cantidad){
-                                                cantidad = 0
-                                            }
-                                            println "precio: ${precioConst.toDouble()}"
-                                            vc.volumenPrecio = precioConst.toDouble()
-                                            vc.volumenCantidad = Math.round(cantidad.toDouble() * 100) / 100
-                                            vc.volumenSubtotal = precioConst.toDouble() * (Math.round(cantidad.toDouble() * 10000) / 10000)
-                                        }
+                                if (!cantidad) {
+                                    cantidad = 0
+                                }
+                                println "precio: ${precioConst.toDouble()}"
+                                vc.volumenPrecio = precioConst.toDouble()
+                                vc.volumenCantidad = Math.round(cantidad.toDouble() * 100) / 100
+                                vc.volumenSubtotal = precioConst.toDouble() * (Math.round(cantidad.toDouble() * 10000) / 10000)
+                            }
 
-                                        if(!vc.save(flush:true)){
-                                            println "No se pudo guardar valor contrato con id ${vc.id}: " + vc.errors
-                                            errores += "<li>Ha ocurrido un error al guardar los valores para ${rubro} (l. ${j + 1})</li>"
-                                        }else{
-                                            done++
-//                                            println "Modificado vocr: ${vc.id}"
-                                            doneHtml += "<li>Se ha modificado los valores para el item ${rubro}</li>"
-                                        }
-                                    }
-                                } //row ! empty
-//                                }//row > 7 (fila 9 + )
-                            } //rows.each
-                        } //sheet ! hidden
-                    }//solo sheet 0
+                            if (!vc.save(flush: true)) {
+                                println "No se pudo guardar valor contrato con id ${vc.id}: " + vc.errors
+                                errores += "<li>Ha ocurrido un error al guardar los valores para ${rubro} (l. ${row.rowNum + 1})</li>"
+                            } else {
+                                done++
+                                doneHtml += "<li>Se ha modificado los valores para el item ${rubro}</li>"
+                            }
+                        }
+                    }
                 } //sheets.each
                 if (done > 0) {
                     doneHtml = "<div class='alert alert-success'>Se han ingresado correctamente " + done + " registros</div>"
@@ -1034,20 +1168,18 @@ class CronogramaContratoController {
                 if (errores != "") {
                     str += "<ol>" + errores + "</ol>"
                 }
-//                str += doneHtml
 
                 flash.message = str
 
                 println "DONE!!"
                 redirect(action: "mensajeUploadContrato", id: params.id)
             } else {
-                flash.message = "Seleccione un archivo Excel xls para procesar (archivos xlsx deben ser convertidos a xls primero)"
+                flash.message = "Seleccione un archivo Excel xlsx para procesar (archivos xls deben ser convertidos a xlsx primero)"
                 redirect(action: 'formArchivo')
             }
         } else {
             flash.message = "Seleccione un archivo para procesar"
             redirect(action: 'subirExcel')
-//            println "NO FILE"
         }
     }
 

@@ -1542,4 +1542,8 @@ class ContratoController {
         return[contrato: contrato]
     }
 
+    def subirExcelContrato(){
+
+    }
+
 } //fin controller
