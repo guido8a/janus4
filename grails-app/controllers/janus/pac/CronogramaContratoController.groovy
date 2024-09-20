@@ -1036,9 +1036,10 @@ class CronogramaContratoController {
 
 
     def uploadFile() {
-        def filasNO = [0,1,2,3,4,5,6,7]
-        def obra = Obra.get(params.id)
-        def path = "/var/janus/" + "xlsContratos/"   //web-app/archivos
+        println("params uf " + params)
+        def filasNO = [0,1,2,3]
+        def contrato = Contrato.get(params.id)
+        def path = "/var/janus/" + "xlsCronosContratos/" + contrato?.id + "/"   //web-app/archivos
         new File(path).mkdirs()
 
         def f = request.getFile('file')  //archivo = name del input type file
@@ -1088,8 +1089,7 @@ class CronogramaContratoController {
 
                 Iterator rows = sheet1.rowIterator();
 
-                while (rows.hasNext()) {
-                    i
+                while (rows.hasNext()) { i
 
                     row = (XSSFRow) rows.next()
 
@@ -1120,43 +1120,52 @@ class CronogramaContratoController {
                         def cantidad = rgst[4]
                         def punitario = rgst[5]
                         def subtotal = rgst[6]
-                        def precioConst = rgst[7]
+//                        def precioConst = rgst[7]
+
+                        println("cod " + cod)
+                        println("numero " + numero)
+                        println("unidad " + unidad)
+                        println("cantidad " + cantidad)
+                        println("punitario " + punitario)
+                        println("subtotal " + subtotal)
+//                        println("precioConst " + precioConst)
+
 
                         htmlInfo += "<h2>Hoja : "  + sheet1.getSheetName() + " - ITEM: " +  rubro + "</h2>"
 
 
-                        if (cod != "CODIGO") {
-                            cantidad = cantidad.replaceAll(",", ".")
-                            precioConst = precioConst.replaceAll(",", ".")
-                            def vc = VolumenContrato.get(cod)
+//                        if (cod != "CODIGO") {
+//                            cantidad = cantidad.replaceAll(",", ".")
+//                            precioConst = precioConst.replaceAll(",", ".")
+//                            def vc = VolumenContrato.get(cod)
 //
-                            if (!vc) {
-                                errores += "<li>No se encontró volumen contrato con id ${cod} (linea: ${row.rowNum + 1})</li>"
-                                println "No se encontró volumen contrato con id ${cod}"
-                                ok = false
-                            } else {
-
-                                if (!precioConst) {
-                                    precioConst = 0
-                                }
-
-                                if (!cantidad) {
-                                    cantidad = 0
-                                }
-                                println "precio: ${precioConst.toDouble()}"
-                                vc.volumenPrecio = precioConst.toDouble()
-                                vc.volumenCantidad = Math.round(cantidad.toDouble() * 100) / 100
-                                vc.volumenSubtotal = precioConst.toDouble() * (Math.round(cantidad.toDouble() * 10000) / 10000)
-                            }
-
-                            if (!vc.save(flush: true)) {
-                                println "No se pudo guardar valor contrato con id ${vc.id}: " + vc.errors
-                                errores += "<li>Ha ocurrido un error al guardar los valores para ${rubro} (l. ${row.rowNum + 1})</li>"
-                            } else {
-                                done++
-                                doneHtml += "<li>Se ha modificado los valores para el item ${rubro}</li>"
-                            }
-                        }
+//                            if (!vc) {
+//                                errores += "<li>No se encontró volumen contrato con id ${cod} (linea: ${row.rowNum + 1})</li>"
+//                                println "No se encontró volumen contrato con id ${cod}"
+//                                ok = false
+//                            } else {
+//
+//                                if (!precioConst) {
+//                                    precioConst = 0
+//                                }
+//
+//                                if (!cantidad) {
+//                                    cantidad = 0
+//                                }
+//                                println "precio: ${precioConst.toDouble()}"
+//                                vc.volumenPrecio = precioConst.toDouble()
+//                                vc.volumenCantidad = Math.round(cantidad.toDouble() * 100) / 100
+//                                vc.volumenSubtotal = precioConst.toDouble() * (Math.round(cantidad.toDouble() * 10000) / 10000)
+//                            }
+//
+//                            if (!vc.save(flush: true)) {
+//                                println "No se pudo guardar valor contrato con id ${vc.id}: " + vc.errors
+//                                errores += "<li>Ha ocurrido un error al guardar los valores para ${rubro} (l. ${row.rowNum + 1})</li>"
+//                            } else {
+//                                done++
+//                                doneHtml += "<li>Se ha modificado los valores para el item ${rubro}</li>"
+//                            }
+//                        }
                     }
                 } //sheets.each
                 if (done > 0) {
