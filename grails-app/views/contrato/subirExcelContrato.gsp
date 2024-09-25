@@ -25,9 +25,17 @@
             <div class="col-md-9">
                 <div class="alert alert-info">
                     <strong style="font-size: 14px"> Cronograma Valorado </strong> <br>
-                    <strong style="font-size: 14px"><i class="fa fa-exclamation-triangle fa-2x text-warning"></i>   El archivo debe contener al menos 5 columnas (los nombres de las columnas no son importantes):</strong>
+                    <strong style="font-size: 14px"><i class="fa fa-exclamation-triangle fa-2x text-warning"></i>   El archivo debe contener al menos 6 columnas (los nombres de las columnas no son importantes):</strong>
                 </div>
-                <table class="table" style="background-color: #5a7ab2; color: #fff">
+
+%{--                <div class="col-md-2" >--}%
+%{--                    <label> Cantidad de Meses </label>--}%
+%{--                </div>--}%
+%{--                <div class="col-md-2" align="center">--}%
+%{--                    <g:textField name="meses" class="form-control" value="0" />--}%
+%{--                </div>--}%
+
+                <table class="table" style="background-color: #5a7ab2; color: #fff; margin-top: 70px">
                     <tr>
                         <th style="border: 1px solid #ddd; text-align: center">
                             A - NÚMERO
@@ -76,10 +84,9 @@
 
     $("#btnSubmitCrono").click(function () {
         if ($("#frmUpload").valid()) {
-            $(this).replaceWith(spinner);
             $("#frmUpload").submit();
         }
-    });
+     });
 
 </script>
 </body>

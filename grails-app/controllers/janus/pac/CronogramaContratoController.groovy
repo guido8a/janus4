@@ -1037,7 +1037,7 @@ class CronogramaContratoController {
 
     def uploadFile() {
         println("params uf " + params)
-        def filasNO = [0,1,2,3]
+        def filasNO = [0,1,2]
         def contrato = Contrato.get(params.id)
         def path = "/var/janus/" + "xlsCronosContratos/" + contrato?.id + "/"   //web-app/archivos
         new File(path).mkdirs()
@@ -1102,14 +1102,30 @@ class CronogramaContratoController {
                         Iterator cells = row.cellIterator()
 
                         def rgst = []
+                        def meses = []
+
                         while (cells.hasNext()) {
                             cell = (XSSFCell) cells.next()
-                            if (cell.getCellType() == XSSFCell.CELL_TYPE_NUMERIC) {
-                                rgst.add(cell.getNumericCellValue())
-                            } else if (cell.getCellType() == XSSFCell.CELL_TYPE_STRING) {
-                                rgst.add(cell.getStringCellValue())
-                            } else if(cell.getCellType() == XSSFCell.CELL_TYPE_FORMULA) {
-                                rgst.add(cell.getNumericCellValue())
+
+//                            println("cell " + cell.columnIndex)
+
+                            if(cell.columnIndex <= 5){
+                                if (cell.getCellType() == XSSFCell.CELL_TYPE_NUMERIC) {
+                                    rgst.add(cell.getNumericCellValue())
+                                } else if (cell.getCellType() == XSSFCell.CELL_TYPE_STRING) {
+                                    rgst.add(cell.getStringCellValue())
+                                } else if(cell.getCellType() == XSSFCell.CELL_TYPE_FORMULA) {
+                                    rgst.add(cell.getNumericCellValue())
+                                }
+
+                            }else{
+                                if (cell.getCellType() == XSSFCell.CELL_TYPE_NUMERIC) {
+                                    meses.add(cell.getNumericCellValue())
+                                } else if (cell.getCellType() == XSSFCell.CELL_TYPE_STRING) {
+                                    meses.add(cell.getStringCellValue())
+                                } else if(cell.getCellType() == XSSFCell.CELL_TYPE_FORMULA) {
+                                    meses.add(cell.getNumericCellValue())
+                                }
                             }
                         }
 
@@ -1120,7 +1136,6 @@ class CronogramaContratoController {
                         def cantidad = rgst[4]
                         def punitario = rgst[5]
                         def subtotal = rgst[6]
-//                        def precioConst = rgst[7]
 
                         println("cod " + cod)
                         println("numero " + numero)
@@ -1128,7 +1143,8 @@ class CronogramaContratoController {
                         println("cantidad " + cantidad)
                         println("punitario " + punitario)
                         println("subtotal " + subtotal)
-//                        println("precioConst " + precioConst)
+
+                        println("meses " + meses)
 
 
                         htmlInfo += "<h2>Hoja : "  + sheet1.getSheetName() + " - ITEM: " +  rubro + "</h2>"
