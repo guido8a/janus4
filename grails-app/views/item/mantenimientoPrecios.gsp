@@ -45,9 +45,10 @@
                           optionValue="descripcion" noSelection="['-1': 'Todos']"/>
             </div>
 
-            <div class="btn-group col-md-2" style=" width: 200px;">
+            <div class="btn-group col-md-3" style=" width: 300px;">
                 <a href="#" class="btn btn-consultar btn-info"><i class="fa fa-search"></i>Consultar</a>
-                <a href="#" class="btn btn-actualizar btn-success"><i class="fa fa-save"></i>Guardar</a>
+                <a href="#" class="btn btn-actualizar btn-success"><i class="fa fa-save"></i> Guardar</a>
+                <a href="${createLink(controller: 'item', action: 'subirExcelMP')}" class="btn btnSubirExcel btn-info"><i class="fa fa-upload"></i> Subir excel</a>
             </div>
         </div>
     </fieldset>

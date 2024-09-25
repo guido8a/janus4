@@ -1,6 +1,9 @@
 package janus
 
-
+import org.apache.poi.xssf.usermodel.XSSFCell
+import org.apache.poi.xssf.usermodel.XSSFRow
+import org.apache.poi.xssf.usermodel.XSSFSheet
+import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import org.springframework.dao.DataIntegrityViolationException
 
 class ItemController {
@@ -489,9 +492,9 @@ class ItemController {
                     }
 
                     if(rubroPrecio == []){
-                       totalCount = 0
+                        totalCount = 0
                     }else {
-                      cn.eachRow(sql2.toString()) { row ->
+                        cn.eachRow(sql2.toString()) { row ->
 //                            println("row" + (row))
                             totalCount= row[0]
                         }
@@ -636,9 +639,9 @@ class ItemController {
 
             def rubroPrecioInstanceOld = PrecioRubrosItems.get(rubroId);
             def precios = PrecioRubrosItems.withCriteria {
-                  eq("fecha", nuevaFecha)
-                  eq("lugar", rubroPrecioInstanceOld.lugar)
-                  eq("item", rubroPrecioInstanceOld.item)
+                eq("fecha", nuevaFecha)
+                eq("lugar", rubroPrecioInstanceOld.lugar)
+                eq("item", rubroPrecioInstanceOld.item)
             }.size()
 
             def rubroPrecioInstance
@@ -760,4 +763,221 @@ class ItemController {
             redirect(action: "list")
         }
     } //delete
+
+    def subirExcelMP(){
+
+    }
+
+    def uploadFileMP() {
+        println("subir excel " + params)
+
+        def lista = Lugar.get(params.listaPrecio)
+        def fecha = new Date().parse("dd-MM-yyyy", params.fecha)
+
+        def filasNO = [0,1,2,3]
+        def path = "/var/janus/" + "xlsMP/"   //web-app/archivos
+        new File(path).mkdirs()
+
+        def f = request.getFile('file')  //archivo = name del input type file
+        if (f && !f.empty) {
+            def fileName = f.getOriginalFilename() //nombre original del archivo
+            def ext
+
+            def parts = fileName.split("\\.")
+            fileName = ""
+            parts.eachWithIndex { obj, i ->
+                if (i < parts.size() - 1) {
+                    fileName += obj
+                } else {
+                    ext = obj
+                }
+            }
+
+            if (ext == "xlsx") {
+
+                fileName = "xlsMP_" + new Date().format("yyyyMMdd_HHmmss")
+
+                def fn = fileName
+                fileName = fileName + "." + ext
+
+                def pathFile = path + fileName
+                def src = new File(pathFile)
+
+                def i = 1
+                while (src.exists()) {
+                    pathFile = path + fn + "_" + i + "." + ext
+                    src = new File(pathFile)
+                    i++
+                }
+
+                f.transferTo(new File(pathFile)) // guarda el archivo subido al nuevo path
+
+                //procesar excel
+                def htmlInfo = "", errores = "", doneHtml = "", done = 0, creados = 0, modificados = 0, bandera, creadoshtml= ''
+                def file = new File(pathFile)
+
+                InputStream ExcelFileToRead = new FileInputStream(pathFile);
+                XSSFWorkbook workbook = new XSSFWorkbook(ExcelFileToRead);
+
+                XSSFSheet sheet1 = workbook.getSheetAt(0);
+                XSSFRow row;
+                XSSFCell cell;
+
+                Iterator rows = sheet1.rowIterator();
+
+                while (rows.hasNext()) { i
+
+                    row = (XSSFRow) rows.next()
+
+                    if(row.rowNum in filasNO){
+                        println("rows NO " + row.rowNum)
+                    }else{
+                        def ok = true
+
+                        Iterator cells = row.cellIterator()
+
+                        def rgst = []
+                        while (cells.hasNext()) {
+                            cell = (XSSFCell) cells.next()
+                            if (cell.getCellType() == XSSFCell.CELL_TYPE_NUMERIC) {
+                                rgst.add(cell.getNumericCellValue())
+                            } else if (cell.getCellType() == XSSFCell.CELL_TYPE_STRING) {
+                                rgst.add(cell.getStringCellValue())
+                            } else if(cell.getCellType() == XSSFCell.CELL_TYPE_FORMULA) {
+                                rgst.add(cell.getNumericCellValue())
+                            }
+                        }
+
+                        def cod = rgst[0]
+                        def nombre = rgst[1]
+                        def precio = rgst[2]
+                        def nuevoPrecio = rgst[3]
+
+//                        if(nombre && nombre != 'ITEM'){
+//                            htmlInfo += "<h2>Hoja : "  + sheet1.getSheetName() + " - ITEM: " +  nombre + "</h2>"
+//                        }
+
+                        def band = ''
+
+                        if (cod != '' && cod != "CODIGO") {
+                            def item = Item.findAllByCodigo(cod)
+                            def itemSel
+
+                            if (item.size() == 1) {
+                                itemSel = item[0]
+                            } else if (item.size() == 0) {
+                                errores += "<li>No se encontró item con código ${cod} (l. ${row.rowNum + 1})</li>"
+                                println "No se encontró item con código ${cod}"
+                                ok = false
+                            } else {
+                                println "Se encontraron ${item.size()} items con código ${cod}!! ${item.id}"
+                                errores += "<li>Se encontraron ${item.size()} items con código ${cod}!! (l. ${row.rowNum + 1})</li>"
+                                ok = false
+                            }
+                            if (ok) {
+
+                                def registro
+                                def existe = PrecioRubrosItems.findByFechaAndLugarAndItem(fecha, lista, itemSel)
+
+                                println("existe " + existe)
+
+                                if(existe){
+                                    registro = existe
+                                    registro.precioUnitario = nuevoPrecio ? nuevoPrecio.toString().replaceAll(',', '.').toDouble() : 0
+
+                                    band = "<li>Se ha modificado la cantidad para el item: ${nombre}</li>"
+                                    bandera = 1
+
+                                }else{
+
+                                    registro = new PrecioRubrosItems()
+                                    registro.precioUnitario = precio ? precio.toString().replaceAll(',', '.').toDouble() : 0
+                                    registro.item =itemSel
+                                    registro.fecha = fecha
+                                    registro.lugar = lista
+
+                                    band = "<li>Se ha creado el item: ${nombre}</li>"
+                                    bandera = 0
+
+//                                    println "No se encontró registro para el item ${nombre}"
+//                                    errores += "<li>No se encontró composición para el item ${nombre} (l. ${row.rowNum + 1})</li>"
+                                }
+
+                                if (registro.save(flush: true)) {
+
+                                    if(bandera == 1){
+                                        modificados++
+                                        htmlInfo += "<h2>Hoja : "  + sheet1.getSheetName() + " - ITEM MODIFICADO: " +  band + "</h2>"
+                                    }else{
+                                        creados++
+                                        htmlInfo += "<h2>Hoja : "  + sheet1.getSheetName() + " - ITEM CREADO: " +  band + "</h2>"
+                                    }
+
+//                                    done++
+//                                    doneHtml += band
+                                } else {
+                                    println "No se pudo guardar el registro ${registro.id}: " + registro.errors
+                                    errores += "<li>Ha ocurrido un error al guardar el item ${nombre} (l. ${row.rowNum + 1})</li>"
+                                }
+
+
+
+//                                if (comp.size() == 1) {
+//                                    comp = comp[0]
+//                                    comp.cantidad = nuevaCant? nuevaCant.toString().replaceAll(',', '.').toDouble() : 0
+//
+//                                    if (comp.save(flush: true)) {
+//                                        done++
+//                                        doneHtml += "<li>Se ha modificado la cantidad para el item ${nombre}</li>"
+//                                    } else {
+//                                        println "No se pudo guardar comp ${comp.id}: " + comp.errors
+//                                        errores += "<li>Ha ocurrido un error al guardar la cantidad para el item ${nombre} (l. ${row.rowNum + 1})</li>"
+//                                    }
+//                                } else if (comp.size() == 0) {
+//                                    println "No se encontró composición para el item ${nombre}"
+//                                    errores += "<li>No se encontró composición para el item ${nombre} (l. ${row.rowNum + 1})</li>"
+//                                } else {
+//                                    println "Se encontraron ${comp.size()} composiciones para el item ${nombre}: ${comp.id}"
+//                                    errores += "<li>Se encontraron ${comp.size()} composiciones para el item ${nombre} (l. ${row.rowNum + 1})</li>"
+//                                }
+                            }
+                        }
+                    }
+                } //sheets.each
+//                if (done > 0) {
+//                    doneHtml = "<div class='alert alert-success'>Se han ingresado correctamente " + done + " registros</div>"
+//                }
+
+                if (modificados > 0) {
+                    doneHtml = "<div class='alert alert-success' style='font-size: 16px; font-weight: bold'><i class='fa fa-check'></i> Se han modificado correctamente " + modificados + " registros</div>"
+                }
+
+                if (creados > 0) {
+                    creadoshtml = "<div class='alert alert-success' style='font-size: 16px; font-weight: bold'><i class='fa fa-check'></i> Se han ingresado correctamente " + creados + " registros</div>"
+                }
+
+                def str = ''
+                str += htmlInfo
+//                if (errores != "") {
+//                    str += "<ol>" + errores + "</ol>"
+//                }
+                str += doneHtml
+                str += creadoshtml
+
+                flash.message = str
+                redirect(controller: 'item', action: "resultadoExcelMP")
+            } else {
+                flash.message = "Seleccione un archivo Excel xlsx para procesar (archivos xlsx deben ser convertidos a xlsx primero)"
+                redirect(action: 'subirExcelMP')
+            }
+        } else {
+            flash.message = "Seleccione un archivo para procesar"
+            redirect(controller: 'item', action: 'subirExcelMP')
+        }
+    }
+
+    def resultadoExcelMP(){
+
+    }
+
 } //fin controller
