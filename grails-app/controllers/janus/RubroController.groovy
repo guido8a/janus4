@@ -75,6 +75,7 @@ class RubroController {
 
     def rubroPrincipal() {
         println "rubroPrincipal params: $params"
+        def contrato = Contrato.get(params.id)
         def rubro
         def campos = ["codigo": ["Código", "string"], "nombre": ["Descripción", "string"]]
         def grupos = []
@@ -1085,6 +1086,41 @@ class RubroController {
         }
 
         render "" + precio + "_" + vae
+    }
+
+    def buscarRubro(){
+        println("paramns " + params)
+        def rubro = Rubro.get(params.id)
+        return [rubro: rubro]
+    }
+
+    def tablaBusqueda_ajax(){
+        println "listaItem" + params
+        def listaItems = ['itemnmbr', 'itemcdgo']
+        def datos;
+        def usuario = Persona.get(session.usuario.id)
+        def empresa = Parametros.get('1').empresa
+
+        def select = "select item.item__id, itemcdgo, itemnmbr, item.tpls__id, unddcdgo " +
+                "from item, undd, dprt, sbgr "
+        def txwh = "where tpit__id = 1 and undd.undd__id = item.undd__id and dprt.dprt__id = item.dprt__id and " +
+                "sbgr.sbgr__id = dprt.sbgr__id and itemetdo = 'A'"
+        def sqlTx = ""
+        def bsca = listaItems[params.buscarPor.toInteger()-1]
+        def ordn = listaItems[params.ordenar.toInteger()-1]
+        txwh += " and $bsca ilike '%${params.criterio}%' and grpo__id = ${params.grupo}"
+
+        sqlTx = "${select} ${txwh} order by ${ordn} limit 100 ".toString()
+        println "sql: $sqlTx"
+
+        def cn = dbConnectionService.getConnection()
+        datos = cn.rows(sqlTx)
+        println "data: ${datos[0]}"
+        [data: datos]
+    }
+
+    def tablaSeleccionados_ajax(){
+
     }
 
 } //fin controller

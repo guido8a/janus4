@@ -752,9 +752,35 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
     });
 
     $("#btnRubro").click(function () {
-        $("#busqueda").dialog("open");
-        $(".ui-dialog-titlebar-close").html("x");
-        return false;
+        // $("#busqueda").dialog("open");
+        // $(".ui-dialog-titlebar-close").html("x");
+        // return false;
+
+
+        location.href="${createLink(controller: 'rubro', action: 'buscarRubro')}/" + '${rubro?.id}';
+
+        %{--$.ajax({--}%
+        %{--    type    : "POST",--}%
+        %{--    url: "${createLink(controller: 'rubro', action:'buscarRubro')}",--}%
+        %{--    data    : {},--}%
+        %{--    success : function (msg) {--}%
+        %{--        dp = bootbox.dialog({--}%
+        %{--            id      : "dlgBuscarRubro",--}%
+        %{--            title   : "Buscar Item",--}%
+        %{--            class: "modal-lg",--}%
+        %{--            message : msg,--}%
+        %{--            buttons : {--}%
+        %{--                cancelar : {--}%
+        %{--                    label     : "Cancelar",--}%
+        %{--                    className : "btn-primary",--}%
+        %{--                    callback  : function () {--}%
+        %{--                    }--}%
+        %{--                }--}%
+        %{--            } //buttons--}%
+        %{--        }); //dialog--}%
+        %{--    } //success--}%
+        %{--}); //ajax--}%
+
     });
 
     $("#busqueda").dialog({
