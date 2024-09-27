@@ -348,77 +348,77 @@ class RubroController {
     def copiarComposicion() {
 //        println "copiar!!! " + params + "  " + request.method
 //        if (request.method == "POST") {
-            def rubro = Item.get(params.rubro)
-            def copiar = Item.get(params.copiar)
-            def detalles = Rubro.findAllByRubro(copiar)
+        def rubro = Item.get(params.rubro)
+        def copiar = Item.get(params.copiar)
+        def detalles = Rubro.findAllByRubro(copiar)
 
-            def factor
-            if (!params.factor)
-                params.factor = "1"
-            factor = params.factor?.toDouble()
-            detalles.each {
-                println ""+it.item.departamento.subgrupo.grupo.descripcion+"  "+it.item.departamento.subgrupo.grupo.codigo
-                def tmp = Rubro.findByRubroAndItem(rubro, it.item)
-                if (!tmp) {
+        def factor
+        if (!params.factor)
+            params.factor = "1"
+        factor = params.factor?.toDouble()
+        detalles.each {
+            println ""+it.item.departamento.subgrupo.grupo.descripcion+"  "+it.item.departamento.subgrupo.grupo.codigo
+            def tmp = Rubro.findByRubroAndItem(rubro, it.item)
+            if (!tmp) {
 //                    println "no temnp "
-                    def nuevo = new Rubro()
-                    nuevo.rubro = rubro
-                    nuevo.item = it.item
+                def nuevo = new Rubro()
+                nuevo.rubro = rubro
+                nuevo.item = it.item
 //                    println " asd "  +it.item.nombre
 
-                    if(it.item.departamento.subgrupo.grupo.id.toInteger()==1){
-                        nuevo.cantidad = it.cantidad * factor
-                    }else{
-                        if (!(it.item.nombre =~ "HERRAMIENTA MENOR")) {
-                            nuevo.rendimiento = it.rendimiento * factor
-                            nuevo.cantidad=it.cantidad
-                        }
-                    }
-
-                    nuevo.fecha = new Date()
-                    if (!nuevo.save(flush: true)) {
-                        println "Error: copiar composicion " + nuevo.errors
-                    }
-                    rubro.fecha = new Date()
-                    rubro.save(flush: true)
-
-                } else {
-//                    println "else si hay "
+                if(it.item.departamento.subgrupo.grupo.id.toInteger()==1){
+                    nuevo.cantidad = it.cantidad * factor
+                }else{
                     if (!(it.item.nombre =~ "HERRAMIENTA MENOR")) {
+                        nuevo.rendimiento = it.rendimiento * factor
+                        nuevo.cantidad=it.cantidad
+                    }
+                }
+
+                nuevo.fecha = new Date()
+                if (!nuevo.save(flush: true)) {
+                    println "Error: copiar composicion " + nuevo.errors
+                }
+                rubro.fecha = new Date()
+                rubro.save(flush: true)
+
+            } else {
+//                    println "else si hay "
+                if (!(it.item.nombre =~ "HERRAMIENTA MENOR")) {
 //                        println "entro 2 "+factor
-                        if(it.item.departamento.subgrupo.grupo.id.toInteger()==2){
+                    if(it.item.departamento.subgrupo.grupo.id.toInteger()==2){
+                        //println "es mano de obra"
+                        def maxCant = Math.max(tmp.cantidad,it.cantidad)
+                        def sum = tmp.cantidad*tmp.rendimiento+(it.cantidad*factor*it.rendimiento)
+                        //println "maxcant "+maxCant+" sum "+sum
+                        def rend = sum/maxCant
+                        tmp.cantidad = maxCant
+                        tmp.rendimiento=rend
+                        tmp.fecha = new Date()
+                        tmp.save(flush: true)
+
+
+                    }else{
+                        if(it.item.departamento.subgrupo.grupo.id.toInteger()==3){
                             //println "es mano de obra"
                             def maxCant = Math.max(tmp.cantidad,it.cantidad)
-                            def sum = tmp.cantidad*tmp.rendimiento+(it.cantidad*factor*it.rendimiento)
+                            def sum = tmp.cantidad*tmp.rendimiento+(it.cantidad*it.rendimiento)
                             //println "maxcant "+maxCant+" sum "+sum
                             def rend = sum/maxCant
                             tmp.cantidad = maxCant
                             tmp.rendimiento=rend
                             tmp.fecha = new Date()
                             tmp.save(flush: true)
-
-
                         }else{
-                            if(it.item.departamento.subgrupo.grupo.id.toInteger()==3){
-                                //println "es mano de obra"
-                                def maxCant = Math.max(tmp.cantidad,it.cantidad)
-                                def sum = tmp.cantidad*tmp.rendimiento+(it.cantidad*it.rendimiento)
-                                //println "maxcant "+maxCant+" sum "+sum
-                                def rend = sum/maxCant
-                                tmp.cantidad = maxCant
-                                tmp.rendimiento=rend
-                                tmp.fecha = new Date()
-                                tmp.save(flush: true)
-                            }else{
-                                tmp.cantidad = tmp.cantidad + it.cantidad * factor
-                                tmp.fecha = new Date()
-                                tmp.save(flush: true)
-                            }
+                            tmp.cantidad = tmp.cantidad + it.cantidad * factor
+                            tmp.fecha = new Date()
+                            tmp.save(flush: true)
                         }
                     }
                 }
             }
-            render "ok"
+        }
+        render "ok"
 //        } else {
 //            response.sendError(403)
 //        }
@@ -942,19 +942,19 @@ class RubroController {
 //        def obras = volumenes.obra.nombre.unique()
         def respuesta = "<ul>"
 
-       def volumenes = VolumenesObra.withCriteria{
-         eq("item",rubro)
-           obra{
-               distinct("nombre")
-               resultTransformer org.hibernate.Criteria.DISTINCT_ROOT_ENTITY
-           }
-       }
+        def volumenes = VolumenesObra.withCriteria{
+            eq("item",rubro)
+            obra{
+                distinct("nombre")
+                resultTransformer org.hibernate.Criteria.DISTINCT_ROOT_ENTITY
+            }
+        }
 
         def obras = volumenes.unique{it.obra.nombre}
 
         if(volumenes.size()>0) {
             volumenes.each {
-                    respuesta += "<li>" + it.obra.codigo + " - " + it.obra.nombre + "</li>"
+                respuesta += "<li>" + it.obra.codigo + " - " + it.obra.nombre + "</li>"
             }
             respuesta += "</ul>"
             render "1_${respuesta}"
@@ -1095,6 +1095,7 @@ class RubroController {
     def tablaBusqueda_ajax(){
         println "listaItem" + params
         def listaItems = ['itemnmbr', 'itemcdgo']
+        def rubro = Item.get(params.rubro)
         def datos;
         def usuario = Persona.get(session.usuario.id)
         def empresa = Parametros.get('1').empresa
@@ -1114,13 +1115,59 @@ class RubroController {
         def cn = dbConnectionService.getConnection()
         datos = cn.rows(sqlTx)
         println "data: ${datos[0]}"
-        [data: datos]
+        [data: datos, rubro: rubro]
     }
 
     def tablaSeleccionados_ajax(){
         def rubro = Item.get(params.id)
         def items = Rubro.findAllByRubro(rubro).sort { it.item.codigo }
         return [items: items]
+    }
+
+    def agrearItem_ajax(){
+        def rubro = Item.get(params.rubro)
+        def item = Item.get(params.id)
+
+        def existe = Rubro.findAllByRubroAndItem(rubro, item)
+
+        if(existe){
+            render "err_El rubro seleccionado ya se encuentra en la composición"
+        }else{
+            def nuevoRubro = new Rubro()
+
+            nuevoRubro.rubro = rubro
+            nuevoRubro.item = item
+            nuevoRubro.fecha = new Date()
+            nuevoRubro.cantidad = 1
+            nuevoRubro.rendimiento = 1
+
+            if(!nuevoRubro.save(flush:true)){
+                println("Error al guardar el nuevo rubro " + nuevoRubro.errors)
+                render "no_Error al guardar"
+            }else{
+                render "ok_Agregado correctamente"
+            }
+        }
+    }
+
+
+    def eliminarRubro_ajax(){
+
+        def rubro = Rubro.get(params.id)
+
+        if(rubro){
+            try{
+                rubro.delete(flush:true)
+                render "ok_Borrado correctamente"
+            }catch(e){
+                println("Error al borrar el rubro " + rubro.delete(flush:true))
+                render "no_Error al borrar el rubro"
+            }
+
+        }else{
+            render "no_Error al borrar el rubro"
+        }
+
     }
 
 } //fin controller

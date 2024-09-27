@@ -144,7 +144,8 @@
                 buscarPor: buscarPor,
                 criterio: criterio,
                 ordenar: ordenar,
-                grupo: grupo
+                grupo: grupo,
+                rubro: '${rubro?.id}'
             },
             success: function (msg) {
                 d.modal("hide");
