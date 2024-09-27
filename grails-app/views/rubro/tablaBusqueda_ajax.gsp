@@ -18,11 +18,11 @@
         <g:each in="${data}" var="dt" status="i">
             <tr>
                 <td style="width: 9%">${dt.itemcdgo}</td>
-                <td style="width: 71%">${dt.itemnmbr}</td>
+                <td style="width: 72%">${dt.itemnmbr}</td>
                 <td style="width: 8%">
                     ${dt.unddcdgo}
                 </td>
-                <td style="width: 8%">
+                <td style="width: 10%">
                     <div style="text-align: center" class="selecciona" id="reg_${i}"
                          regNmbr="${dt?.itemnmbr}" regCdgo="${dt?.itemcdgo}"
                          regUn="${dt?.unddcdgo}" data-id="${dt?.item__id}" data-tpl="${dt?.tpls__id}">

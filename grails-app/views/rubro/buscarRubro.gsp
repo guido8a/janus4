@@ -81,10 +81,10 @@
         </div>
     </fieldset>
 
-    <fieldset class="borde">
-        <div id="divTabla" style="width: 70%">
+    <fieldset class="borde col-md-12">
+        <div class="col-md-7" id="divTabla">
         </div>
-        <div id="divTablaSeleccionados" >
+        <div class="col-md-5" id="divTablaSeleccionados" >
         </div>
     </fieldset>
 
@@ -128,6 +128,7 @@
     });
 
     cargarTablaBusqueda();
+    cargarTablaSeleccionados();
 
     function cargarTablaBusqueda() {
         var d = cargarLoader("Cargando...");
@@ -153,26 +154,18 @@
     }
 
     function cargarTablaSeleccionados() {
-        %{--var d = cargarLoader("Cargando...");--}%
-        %{--var grupo = $("#buscarGrupo option:selected").val();--}%
-        %{--var buscarPor = $("#buscarPor option:selected").val();--}%
-        %{--var criterio = $(".criterio").val();--}%
-        %{--var ordenar = $("#ordenar option:selected").val();--}%
-
-        %{--$.ajax({--}%
-        %{--    type: "POST",--}%
-        %{--    url: "${createLink(controller: 'rubro', action:'tablaBusqueda_ajax')}",--}%
-        %{--    data: {--}%
-        %{--        buscarPor: buscarPor,--}%
-        %{--        criterio: criterio,--}%
-        %{--        ordenar: ordenar,--}%
-        %{--        grupo: grupo--}%
-        %{--    },--}%
-        %{--    success: function (msg) {--}%
-        %{--        d.modal("hide");--}%
-        %{--        $("#divTabla").html(msg);--}%
-        %{--    }--}%
-        %{--});--}%
+        var d = cargarLoader("Cargando...");
+        $.ajax({
+            type: "POST",
+            url: "${createLink(controller: 'rubro', action:'tablaSeleccionados_ajax')}",
+            data: {
+                id: '${rubro?.id}'
+            },
+            success: function (msg) {
+                d.modal("hide");
+                $("#divTablaSeleccionados").html(msg);
+            }
+        });
     }
 
     function createEditRow(id) {

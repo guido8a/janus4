@@ -75,7 +75,6 @@ class RubroController {
 
     def rubroPrincipal() {
         println "rubroPrincipal params: $params"
-        def contrato = Contrato.get(params.id)
         def rubro
         def campos = ["codigo": ["Código", "string"], "nombre": ["Descripción", "string"]]
         def grupos = []
@@ -1089,8 +1088,7 @@ class RubroController {
     }
 
     def buscarRubro(){
-        println("paramns " + params)
-        def rubro = Rubro.get(params.id)
+        def rubro = Item.get(params.id)
         return [rubro: rubro]
     }
 
@@ -1120,7 +1118,9 @@ class RubroController {
     }
 
     def tablaSeleccionados_ajax(){
-
+        def rubro = Item.get(params.id)
+        def items = Rubro.findAllByRubro(rubro).sort { it.item.codigo }
+        return [items: items]
     }
 
 } //fin controller
