@@ -98,7 +98,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
 </div>
 
 <g:if test="${rubro}">
-    <g:if test="${items?.size() > 0}">
+    <g:if test="${volumenes}">
         <div class="col-md-3 alert alert-warning">
             <i class="fa fa-times"></i> No se puede editar la composición
         </div>
@@ -196,9 +196,11 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
         <div class="row-fluid" style="color: #248">
 
             <div class="col-md-1">
-                <a class="btn btn-xs btn-primary btn-ajax" href="#" rel="tooltip" title="Agregar item" id="btnRubro" ${rubro ?: 'disabled'}>
-                    <i class="fa fa-plus"></i> Agregar Item
-                </a>
+                <g:if test="${rubro}">
+                    <a class="btn btn-xs btn-primary btn-ajax" href="#" rel="tooltip" title="Agregar item" id="btnRubro" ${ !volumenes ?: 'disabled'}>
+                        <i class="fa fa-plus"></i> Agregar Item
+                    </a>
+                </g:if>
             </div>
 
             <div class="col-md-3" style="width: 440px; margin-left: 10px">
@@ -760,6 +762,8 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
 </div>
 
 <script type="text/javascript">
+
+
 
     $('#fecha_precios, #fecha_registro, #fecha_modificacion, #fechaCreacion, #fechaSalidaId').datetimepicker({
         locale: 'es',

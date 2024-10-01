@@ -24,7 +24,9 @@
                     <td style="width: 15%">${item.item.codigo}</td>
                     <td style="width: 70%">${item.item.nombre}</td>
                     <td style="width: 12%">
-                        <a href="#" class="btn btn-danger btn-xs btnBorrarSeleccion" data-id="${item?.id}" ><i class="fa fa-trash"></i></a>
+                        <g:if test="${!volumenes}">
+                            <a href="#" class="btn btn-danger btn-xs btnBorrarSeleccion" data-id="${item?.id}" ><i class="fa fa-trash"></i></a>
+                        </g:if>
                     </td>
                 </tr>
             </g:each>
@@ -61,7 +63,7 @@
                         type : "POST",
                         url : "${g.createLink(controller: 'rubro',action:'verificaRubro')}",
                         data     : {
-                            id : id
+                            id : '${rubro?.id}'
                         },
                         success  : function (msg) {
                             var resp = msg.split('_');
@@ -71,7 +73,7 @@
                                     type : "POST",
                                     url : "${g.createLink(controller: 'rubro',action:'listaObrasUsadas_ajax')}",
                                     data     : {
-                                        id : id
+                                        id : '${rubro?.id}'
                                     },
                                     success  : function (msg) {
                                         ou.modal("hide");

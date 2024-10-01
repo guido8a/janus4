@@ -24,7 +24,9 @@
                         ${dt.unddcdgo}
                     </td>
                     <td style="width: 9%">
-                        <a href="#" class="btn btn-success btn-xs btnSeleccionar" data-id="${dt?.item__id}"><i class="fa fa-check"></i></a>
+                        <g:if test="${!volumenes}">
+                            <a href="#" class="btn btn-success btn-xs btnSeleccionar" data-id="${dt?.item__id}"><i class="fa fa-check"></i></a>
+                        </g:if>
                     </td>
                 </tr>
             </g:each>

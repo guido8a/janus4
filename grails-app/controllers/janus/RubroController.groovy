@@ -118,15 +118,35 @@ class RubroController {
             items.sort { it.item.codigo }
             resps = rubro.responsable
 //            println "grupos: $grupos.id"
+
+            def volumenes =  verificarVolumnesXRubro(rubro?.id)
+
             [campos: campos, rubro: rubro, grupos: grupos, items: items, choferes: choferes, volquetes: volquetes,
              aux: aux, volquetes2: volquetes2, dpto: dpto, modifica: modifica, resps: resps,
-             listaRbro: listaRbro, listaItems: listaItems]
+             listaRbro: listaRbro, listaItems: listaItems, volumenes:  volumenes]
         } else {
             [campos: campos, grupos: grupos, choferes: choferes, volquetes: volquetes, aux: aux,
              volquetes2: volquetes2, dpto: dpto, modifica: modifica, resps: resps,
              listaRbro: listaRbro, listaItems: listaItems]
         }
     }
+
+    def verificarVolumnesXRubro(id){
+
+        def rubro = Item.get(id)
+
+        def volumenes = VolumenesObra.withCriteria{
+            eq("item",rubro)
+            obra{
+                distinct("nombre")
+                resultTransformer org.hibernate.Criteria.DISTINCT_ROOT_ENTITY
+            }
+        }
+        volumenes.unique{it.obra.nombre}
+
+        return volumenes?.size()
+    }
+
 
     def listaRubros(){
         println "listaRubros" + params
@@ -1092,6 +1112,7 @@ class RubroController {
         println "listaItem" + params
         def listaItems = ['itemnmbr', 'itemcdgo']
         def rubro = Item.get(params.rubro)
+        def volumenes =  verificarVolumnesXRubro(rubro?.id)
         def datos;
         def usuario = Persona.get(session.usuario.id)
         def empresa = Parametros.get('1').empresa
@@ -1111,13 +1132,14 @@ class RubroController {
         def cn = dbConnectionService.getConnection()
         datos = cn.rows(sqlTx)
         println "data: ${datos[0]}"
-        [data: datos, rubro: rubro]
+        [data: datos, rubro: rubro, volumenes: volumenes]
     }
 
     def tablaSeleccionados_ajax(){
         def rubro = Item.get(params.id)
         def items = Rubro.findAllByRubro(rubro).sort { it.item.codigo }
-        return [items: items]
+        def volumenes =  verificarVolumnesXRubro(rubro?.id)
+        return [items: items, rubro: rubro, volumenes: volumenes]
     }
 
     def agrearItem_ajax(){
