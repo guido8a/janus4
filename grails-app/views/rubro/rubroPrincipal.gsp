@@ -38,7 +38,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
 </div>
 
 
-<div class="col-md-12 btn-group" role="navigation">
+<div class="col-md-9 btn-group" role="navigation">
     <a href="#" class="btn" id="btn_lista">
         <i class="fa fa-list"></i>
         Lista
@@ -96,6 +96,19 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
         </a>
     </g:if>
 </div>
+
+<g:if test="${rubro}">
+    <g:if test="${items?.size() > 0}">
+        <div class="col-md-3 alert alert-warning">
+            <i class="fa fa-times"></i> No se puede editar la composición
+        </div>
+    </g:if>
+    <g:else>
+        <div class="col-md-3 alert alert-success">
+            <i class="fa fa-check"></i> Se puede editar la composición
+        </div>
+    </g:else>
+</g:if>
 
 <div id="list-grupo" class="col-md-12" role="main" style="margin-top: 10px;margin-left: -10px">
 
@@ -183,8 +196,8 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
         <div class="row-fluid" style="color: #248">
 
             <div class="col-md-1">
-                <a class="btn btn-xs btn-primary btn-ajax" href="#" rel="tooltip" title="Agregar rubro" id="btnRubro">
-                    <i class="fa fa-plus"></i> Agregar Rubro
+                <a class="btn btn-xs btn-primary btn-ajax" href="#" rel="tooltip" title="Agregar item" id="btnRubro" ${rubro ?: 'disabled'}>
+                    <i class="fa fa-plus"></i> Agregar Item
                 </a>
             </div>
 
@@ -1640,7 +1653,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
 
             bootbox.confirm({
                 title: "Eliminar",
-                message: "Está seguro de eliminar este registro? Esta acción no puede deshacerse.",
+                message: "<i class='fa fa-exclamation-triangle text-info fa-3x'></i> <strong style='font-size: 14px'> Está seguro de eliminar este registro?</strong> ",
                 buttons: {
                     cancel: {
                         label: '<i class="fa fa-times"></i> Cancelar',
@@ -1656,14 +1669,43 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                         $.ajax({
                             type : "POST",
                             url : "${g.createLink(controller: 'rubro',action:'verificaRubro')}",
-                            data     : "id=${rubro?.id}",
+                            data     : {
+                                id : '${rubro?.id}'
+                            },
                             success  : function (msg) {
-                                $("#dlgLoad").dialog("close");
+
+                                // $("#dlgLoad").dialog("close");
                                 var resp = msg.split('_');
                                 if(resp[0] === "1"){
-                                    bootbox.alert('<i class="fa fa-exclamation-triangle text-info fa-3x"></i> ' + '<strong style="font-size: 14px">' + "Este rubro ya forma parte de la(s) obra(s):" + resp[1]  + "</br>  * Si desea eliminar el item, necesita crear el historico del rubro" +'</strong>');
+                                    var ou = cargarLoader("Cargando...");
+                                    $.ajax({
+                                        type : "POST",
+                                        url : "${g.createLink(controller: 'rubro',action:'listaObrasUsadas_ajax')}",
+                                        data     : {
+                                            id : '${rubro?.id}'
+                                        },
+                                        success  : function (msg) {
+                                            ou.modal("hide");
+                                            var b = bootbox.dialog({
+                                                id      : "dlgLOU",
+                                                title   : "Lista de obras usadas",
+                                                message : msg,
+                                                buttons : {
+                                                    cancelar : {
+                                                        label     : "Cancelar",
+                                                        className : "btn-primary",
+                                                        callback  : function () {
+                                                        }
+                                                    }
+                                                } //buttons
+                                            }); //dialog
+                                        }
+                                    });
+
                                 }else{
-                                    $.ajax({type : "POST", url : "${g.createLink(controller: 'rubro',action:'eliminarRubroDetalle')}",
+                                    $.ajax({
+                                        type : "POST",
+                                        url : "${g.createLink(controller: 'rubro',action:'eliminarRubroDetalle')}",
                                         data     : "id=" + boton.attr("iden"),
                                         success  : function (msg) {
                                             if (msg === "Registro eliminado") {
@@ -1681,17 +1723,40 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
         });
 
         $(".infoItem").click(function () {
-            var tr = $(this).parent().parent();
-            var boton = $(this);
-
-            $("#dlgLoad").dialog("open");
-            $.ajax({type : "POST", url : "${g.createLink(controller: 'rubro',action:'verificaRubro')}",
-                data     : "id=${rubro?.id}",
+            $.ajax({
+                type : "POST",
+                url : "${g.createLink(controller: 'rubro',action:'verificaRubro')}",
+                data     : {
+                    id : '${rubro?.id}'
+                },
                 success  : function (msg) {
-                    $("#dlgLoad").dialog("close");
                     var resp = msg.split('_');
                     if(resp[0] === "1"){
-                        bootbox.alert('<i class="fa fa-exclamation-triangle text-info fa-3x"></i> ' + '<strong style="font-size: 14px">' + "Este rubro forma parte de la(s) obra(s):" + resp[1]  + '</strong>');
+                        var ou = cargarLoader("Cargando...");
+                        $.ajax({
+                            type : "POST",
+                            url : "${g.createLink(controller: 'rubro',action:'listaObrasUsadas_ajax')}",
+                            data     : {
+                                id : '${rubro?.id}',
+                                tipo: '2'
+                            },
+                            success  : function (msg) {
+                                ou.modal("hide");
+                                var b = bootbox.dialog({
+                                    id      : "dlgLOU",
+                                    title   : "Lista de obras usadas",
+                                    message : msg,
+                                    buttons : {
+                                        cancelar : {
+                                            label     : "Cancelar",
+                                            className : "btn-primary",
+                                            callback  : function () {
+                                            }
+                                        }
+                                    } //buttons
+                                }); //dialog
+                            }
+                        });
                     }else{
                         bootbox.alert('<i class="fa fa-exclamation-triangle text-info fa-3x"></i> ' + '<strong style="font-size: 14px">' + "Este rubro no forma parte de ninguna obra"  + '</strong>');
                     }

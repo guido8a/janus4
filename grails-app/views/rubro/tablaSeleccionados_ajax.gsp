@@ -1,4 +1,4 @@
-<div class="alert alert-success" style="margin-top: 10px; text-align: center">
+<div class="alert alert-info" style="margin-top: 10px; text-align: center">
        <i class="fa fa-list"></i> <strong style="font-size: 16px"> Rubros en la composición </strong>
 </div>
 
@@ -43,42 +43,74 @@
     $(".btnBorrarSeleccion").click(function () {
         var id = $(this).data("id");
         bootbox.confirm({
-            title: "Eliminar ",
-            message: "<i class='fa fa-trash  text-danger fa-3x'></i> <strong style='font-size: 14px'> Está seguro de querer eliminar el rubro?. </strong> ",
+            title: "Eliminar",
+            message: "<i class='fa fa-exclamation-triangle text-info fa-3x'></i> <strong style='font-size: 14px'> Está seguro de eliminar este registro?</strong> ",
             buttons: {
                 cancel: {
                     label: '<i class="fa fa-times"></i> Cancelar',
                     className: 'btn-primary'
                 },
                 confirm: {
-                    label: '<i class="fa fa-trash"></i> Aceptar',
-                    className: 'btn-success'
+                    label: '<i class="fa fa-trash"></i> Borrar',
+                    className: 'btn-danger'
                 }
             },
             callback: function (result) {
                 if(result){
-                    var g = cargarLoader("Cargando...");
                     $.ajax({
-                        type: "POST",
-                        url: "${createLink(controller: 'rubro', action: 'eliminarRubro_ajax')}",
-                        data: {
-                            id: id
+                        type : "POST",
+                        url : "${g.createLink(controller: 'rubro',action:'verificaRubro')}",
+                        data     : {
+                            id : id
                         },
-                        success: function (msg) {
-                            g.modal("hide");
-                            var parts = msg.split("_");
-                            if(parts[0] === 'ok'){
-                                log(parts[1], "success");
-                                cargarTablaSeleccionados();
+                        success  : function (msg) {
+                            var resp = msg.split('_');
+                            if(resp[0] === "1"){
+                                var ou = cargarLoader("Cargando...");
+                                $.ajax({
+                                    type : "POST",
+                                    url : "${g.createLink(controller: 'rubro',action:'listaObrasUsadas_ajax')}",
+                                    data     : {
+                                        id : id
+                                    },
+                                    success  : function (msg) {
+                                        ou.modal("hide");
+                                        var b = bootbox.dialog({
+                                            id      : "dlgLOU",
+                                            title   : "Lista de obras usadas",
+                                            message : msg,
+                                            buttons : {
+                                                cancelar : {
+                                                    label     : "Cancelar",
+                                                    className : "btn-primary",
+                                                    callback  : function () {
+                                                    }
+                                                }
+                                            } //buttons
+                                        }); //dialog
+                                    }
+                                });
                             }else{
-                                log(parts[1], "error")
+                                $.ajax({
+                                    type : "POST",
+                                    url : "${g.createLink(controller: 'rubro',action:'eliminarRubroDetalle')}",
+                                    data     : "id=" + boton.attr("iden"),
+                                    success  : function (msg) {
+                                        if (msg === "Registro eliminado") {
+                                            cargarTablaSeleccionados();
+                                        }else{
+                                            bootbox.alert('<i class="fa fa-exclamation-triangle text-info fa-3x"></i> ' + '<strong style="font-size: 14px">' + msg  + '</strong>');
+                                        }
+                                    }
+                                });
                             }
                         }
-                    })
+                    });
                 }
             }
         });
-
     });
+
+
 
 </script>

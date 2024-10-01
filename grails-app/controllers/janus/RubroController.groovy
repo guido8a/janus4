@@ -111,19 +111,17 @@ class RubroController {
         }
 
         grupos=Grupo.findAll("from Grupo  where id>3")
+
         if (params.id) {
             rubro = Item.get(params.id)
             def items = Rubro.findAllByRubro(rubro)
             items.sort { it.item.codigo }
             resps = rubro.responsable
-            println "grupos: $grupos.id"
+//            println "grupos: $grupos.id"
             [campos: campos, rubro: rubro, grupos: grupos, items: items, choferes: choferes, volquetes: volquetes,
              aux: aux, volquetes2: volquetes2, dpto: dpto, modifica: modifica, resps: resps,
              listaRbro: listaRbro, listaItems: listaItems]
         } else {
-
-//            println "Nuevo .... responsable: ${resps?.id} ${resps}"
-
             [campos: campos, grupos: grupos, choferes: choferes, volquetes: volquetes, aux: aux,
              volquetes2: volquetes2, dpto: dpto, modifica: modifica, resps: resps,
              listaRbro: listaRbro, listaItems: listaItems]
@@ -514,18 +512,13 @@ class RubroController {
     } //show
 
     def eliminarRubroDetalle() {
-//        println "eliminarRubroDetalle "+params
-        if (request.method == "POST") {
-            def rubro = Rubro.get(params.id)
-            try {
-                rubro.delete(flush: true)
-                render "Registro eliminado"
-            }
-            catch (DataIntegrityViolationException e) {
-                render "No se pudo eliminar el rubro"
-            }
-        } else {
-            response.sendError(403)
+        def rubro = Rubro.get(params.id)
+        try {
+            rubro.delete(flush: true)
+            render "Registro eliminado"
+        }
+        catch (DataIntegrityViolationException e) {
+            render "No se pudo eliminar el rubro"
         }
     }
 
@@ -937,9 +930,6 @@ class RubroController {
 
     def verificaRubro(){
         def rubro = Item.get(params.id)
-//        def volumenes = VolumenesObra.findAllByItem(rubro);
-//        def volumenes = VolumenesObra.findAllByItem(rubro);
-//        def obras = volumenes.obra.nombre.unique()
         def respuesta = "<ul>"
 
         def volumenes = VolumenesObra.withCriteria{
@@ -950,7 +940,7 @@ class RubroController {
             }
         }
 
-        def obras = volumenes.unique{it.obra.nombre}
+        volumenes.unique{it.obra.nombre}
 
         if(volumenes.size()>0) {
             volumenes.each {
@@ -961,16 +951,22 @@ class RubroController {
         } else {
             render "0"
         }
+    }
 
-//        if(volumenes.size()>0) {
-//            obras.each {
-//                respuesta += "<li>" + it + "</li>"
-//            }
-//            respuesta += "</ul>"
-//            render "1_${respuesta}"
-//        } else {
-//            render "0"
-//        }
+    def listaObrasUsadas_ajax(){
+        def rubro = Item.get(params.id)
+
+        def volumenes = VolumenesObra.withCriteria{
+            eq("item",rubro)
+            obra{
+                distinct("nombre")
+                resultTransformer org.hibernate.Criteria.DISTINCT_ROOT_ENTITY
+            }
+        }
+
+        volumenes.unique{it.obra.nombre}
+
+        return [volumenes: volumenes, tipo: params.tipo]
     }
 
     def copiaRubro(){
