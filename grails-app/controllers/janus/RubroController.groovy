@@ -990,7 +990,8 @@ class RubroController {
     }
 
     def copiaRubro(){
-//        println "copia rubro "+params
+        println "copia rubro "+params
+
         def rubro = Item.get(params.id)
         def nuevo = new Item()
         nuevo.properties=rubro.properties
@@ -1013,9 +1014,7 @@ class RubroController {
             println "erro copiar rubro "+nuevo.errors
             error=true
         }else{
-//            println "nuevo "+nuevo.id
             Rubro.findAllByRubro(rubro).each{
-//                println "copia comp "+it
                 def r = new Rubro()
                 r.rubro=nuevo
                 r.item=it.item
@@ -1028,8 +1027,9 @@ class RubroController {
                 }
             }
         }
-        if(error==false)
+        if(!error)
             error=nuevo.id
+
         render error
     }
 

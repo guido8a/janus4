@@ -5,9 +5,15 @@
             <i class="fa fa-list fa-2x"></i> Este rubro ya forma parte de la(s) siguientes obra(s)
         </div>
 
-        <g:if test="${tipo != '2'}">
+        <g:if test="${tipo == '1'}">
             <div class="alert alert-info" style="font-size: 14px; font-weight: bold">
                 <i class="fa fa-exclamation-triangle fa-2x"></i> Si desea eliminar el item, necesita crear el historico del rubro
+            </div>
+        </g:if>
+
+        <g:if test="${tipo == '3'}">
+            <div class="alert alert-success" style="font-size: 14px; font-weight: bold">
+                <i class="fa fa-exclamation-triangle fa-2x text-warning"></i> Desea crear una nueva versión de este rubro, y hacer una versión histórica?
             </div>
         </g:if>
 

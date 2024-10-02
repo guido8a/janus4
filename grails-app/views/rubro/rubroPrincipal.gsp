@@ -38,7 +38,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
 </div>
 
 
-<div class="col-md-9 btn-group" role="navigation">
+<div class="col-md-12 btn-group" role="navigation">
     <a href="#" class="btn" id="btn_lista">
         <i class="fa fa-list"></i>
         Lista
@@ -95,20 +95,26 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
             Ilustración
         </a>
     </g:if>
-</div>
-
-<g:if test="${rubro}">
-    <g:if test="${volumenes}">
-        <div class="col-md-3 alert alert-warning">
-            <i class="fa fa-times"></i> No se puede editar la composición
-        </div>
+    <g:if test="${rubro}">
+        <a href="#" id="btnCrearHistorico" class="btn btn-primary">
+            <i class="fa fa-book"></i>
+            Crear histórico
+        </a>
     </g:if>
-    <g:else>
-        <div class="col-md-3 alert alert-success">
-            <i class="fa fa-check"></i> Se puede editar la composición
-        </div>
-    </g:else>
-</g:if>
+
+    <g:if test="${rubro}">
+        <g:if test="${volumenes}">
+            <div class="col-md-2 alert alert-warning" style="margin-left: 5px; font-weight: bold; text-align: center">
+                <i class="fa fa-times text-danger"></i> No se puede editar
+            </div>
+        </g:if>
+        <g:else>
+            <div class="col-md-2 alert alert-success" style="margin-left: 5px; font-weight: bold; text-align: center">
+                <i class="fa fa-check"></i> Se puede editar
+            </div>
+        </g:else>
+    </g:if>
+</div>
 
 <div id="list-grupo" class="col-md-12" role="main" style="margin-top: 10px;margin-left: -10px">
 
@@ -302,6 +308,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
         <p class="css-vertical-text">Composición</p>
 
         <div class="linea" style="height: 98%;"></div>
+
         <table class="table table-bordered table-striped table-condensed table-hover" style="margin-top: 10px;">
             <thead>
             <tr>
@@ -763,8 +770,6 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
 
 <script type="text/javascript">
 
-
-
     $('#fecha_precios, #fecha_registro, #fecha_modificacion, #fechaCreacion, #fechaSalidaId').datetimepicker({
         locale: 'es',
         format: 'DD-MM-YYYY',
@@ -782,6 +787,111 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
 
     $("#codigo").keydown(function (ev) {
         return validarNumDec(ev)
+    });
+
+    $("#btnCrearHistorico").click(function () {
+        $.ajax({
+            type : "POST",
+            url : "${g.createLink(controller: 'rubro',action:'verificaRubro')}",
+            data     : {
+                id: '${rubro?.id}'
+            },
+            success  : function (msg) {
+                var resp = msg.split('_');
+                if(resp[0] === "1"){
+                    var ou = cargarLoader("Cargando...");
+                    $.ajax({
+                        type : "POST",
+                        url : "${g.createLink(controller: 'rubro',action:'listaObrasUsadas_ajax')}",
+                        data     : {
+                            id : '${rubro?.id}',
+                            tipo: '3'
+                        },
+                        success  : function (msg) {
+                            ou.modal("hide");
+                            var b = bootbox.dialog({
+                                id      : "dlgLOU",
+                                title   : "Lista de obras usadas",
+                                message : msg,
+                                buttons : {
+                                    cancelar : {
+                                        label     :'<i class="fa fa-times"></i> Cancelar',
+                                        className : "btn-primary",
+                                        callback  : function () {
+                                        }
+                                    },
+                                    copiar: {
+                                        label: '<i class="fa fa-copy"></i> Copiar',
+                                        className: 'btn-success',
+                                        callback  : function () {
+                                            var cr = cargarLoader("Creando...");
+                                            $.ajax({
+                                                type : "POST",
+                                                url : "${g.createLink(controller: 'rubro',action:'copiaRubro')}",
+                                                data     : {
+                                                    id: '${rubro?.id}'
+                                                },
+                                                success  : function (msg) {
+                                                    cr.modal("hide");
+                                                    if(msg==="true"){
+                                                        bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + "Error al generar histórico del rubro" + '</strong>');
+                                                    }else{
+                                                        // agregar(msg,"H");
+                                                        log("Histórico creado correctamente", "success");
+                                                        setTimeout(function () {
+                                                            location.href="${createLink(controller: 'rubro', action: 'rubroPrincipal')}/" + msg;
+                                                        }, 1000);
+                                                    }
+                                                }
+                                            });
+                                        } //callback
+                                    }
+                                } //buttons
+                            }); //dialog
+                        }
+                    });
+
+                    %{--bootbox.confirm({--}%
+                    %{--    title: "Alerta",--}%
+                    %{--    message: "Este rubro ya forma parte de la(s) obra(s):" + resp[1] + "Desea crear una nueva versión de este rubro, y hacer una versión histórica?",--}%
+                    %{--    buttons: {--}%
+                    %{--        cancel: {--}%
+                    %{--            label: '<i class="fa fa-times"></i> Cancelar',--}%
+                    %{--            className: 'btn-primary'--}%
+                    %{--        },--}%
+                    %{--        confirm: {--}%
+                    %{--            label: '<i class="fa fa-copy"></i> Copiar',--}%
+                    %{--            className: 'btn-success'--}%
+                    %{--        }--}%
+                    %{--    },--}%
+                    %{--    callback: function (result) {--}%
+                    %{--        if(result){--}%
+                    %{--            $("#dlgLoad").dialog("open");--}%
+                    %{--            $.ajax({--}%
+                    %{--                type : "POST",--}%
+                    %{--                url : "${g.createLink(controller: 'rubro',action:'copiaRubro')}",--}%
+                    %{--                data     : {--}%
+                    %{--                    id: '${rubro?.id}'--}%
+                    %{--                },--}%
+                    %{--                success  : function (msg) {--}%
+                    %{--                    $("#dlgLoad").dialog("close");--}%
+                    %{--                    if(msg==="true"){--}%
+                    %{--                        bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + "Error al generar histórico del rubro, comunique este error al administrador del sistema" + '</strong>');--}%
+                    %{--                    }else{--}%
+                    %{--                        $("#boxHiddenDlg").dialog("close");--}%
+                    %{--                        agregar(msg,"H");--}%
+                    %{--                    }--}%
+                    %{--                }--}%
+                    %{--            });--}%
+                    %{--        }--}%
+                    %{--    }--}%
+                    %{--});--}%
+                }else{
+                    %{--agregar('${rubro?.id}',"");--}%
+                    bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + "Ingrese items en la composición del rubro antes de crear un histórico" + '</strong>');
+                }
+            }
+        });
     });
 
     $("#btnRubro").click(function () {
@@ -1686,7 +1796,8 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                                         type : "POST",
                                         url : "${g.createLink(controller: 'rubro',action:'listaObrasUsadas_ajax')}",
                                         data     : {
-                                            id : '${rubro?.id}'
+                                            id : '${rubro?.id}',
+                                            tipo: '1'
                                         },
                                         success  : function (msg) {
                                             ou.modal("hide");
