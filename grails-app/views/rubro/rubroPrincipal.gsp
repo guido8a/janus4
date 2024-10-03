@@ -350,10 +350,17 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                         </td>
                         <td class="col_total" style="display: none;text-align: right"></td>
                         %{--                        <td class="col_total" style="text-align: right"></td>--}%
-                        <td style="width: 50px;text-align: center" class="col_delete">
-                            <a class="btn btn-xs btn-danger borrarItem" href="#" rel="tooltip" title="Eliminar" iden="${rub.id}">
-                                <i class="fa fa-trash"></i>
-                            </a>
+                        <td style="width: 100px;text-align: center" class="col_delete">
+                            <g:if test="${rubro}">
+                                <g:if test="${!volumenes}">
+                                    <a class="btn btn-xs btn-success editarItem" href="#" rel="tooltip" title="Editar" data-id="${rub.id}">
+                                        <i class="fa fa-edit"></i>
+                                    </a>
+                                    <a class="btn btn-xs btn-danger borrarItem" href="#" rel="tooltip" title="Eliminar" iden="${rub.id}">
+                                        <i class="fa fa-trash"></i>
+                                    </a>
+                                </g:if>
+                            </g:if>
                         </td>
                     </tr>
                 </g:if>
@@ -396,10 +403,17 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                             <g:formatNumber number="${rub.rendimiento}" format="##,#####0" minFractionDigits="5" maxFractionDigits="5" locale="ec"/>
                         </td>
                         <td class="col_total" style="display: none;text-align: right"></td>
-                        <td style="width: 50px;text-align: center" class="col_delete">
-                            <a class="btn btn-xs btn-danger borrarItem" href="#" rel="tooltip" title="Eliminar" iden="${rub.id}">
-                                <i class="fa fa-trash"></i>
-                            </a>
+                        <td style="width: 100px;text-align: center" class="col_delete">
+                            <g:if test="${rubro}">
+                                <g:if test="${!volumenes}">
+                                    <a class="btn btn-xs btn-success editarItem" href="#" rel="tooltip" title="Editar" data-id="${rub.id}">
+                                        <i class="fa fa-edit"></i>
+                                    </a>
+                                    <a class="btn btn-xs btn-danger borrarItem" href="#" rel="tooltip" title="Eliminar" iden="${rub.id}">
+                                        <i class="fa fa-trash"></i>
+                                    </a>
+                                </g:if>
+                            </g:if>
                         </td>
                     </tr>
                 </g:if>
@@ -440,10 +454,17 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                         <td class="col_precioUnit" style="display: none;text-align: right" id="i_${rub.item.id}"></td>
 
                         <td class="col_total" style="display: none;text-align: right"></td>
-                        <td style="width: 50px;text-align: center" class="col_delete">
-                            <a class="btn btn-xs btn-danger borrarItem" href="#" rel="tooltip" title="Eliminar" iden="${rub.id}">
-                                <i class="fa fa-trash"></i>
-                            </a>
+                        <td style="width: 100px;text-align: center" class="col_delete">
+                            <g:if test="${rubro}">
+                                <g:if test="${!volumenes}">
+                                    <a class="btn btn-xs btn-success editarItem" href="#" rel="tooltip" title="Editar" data-id="${rub.id}">
+                                        <i class="fa fa-edit"></i>
+                                    </a>
+                                    <a class="btn btn-xs btn-danger borrarItem" href="#" rel="tooltip" title="Eliminar" iden="${rub.id}">
+                                        <i class="fa fa-trash"></i>
+                                    </a>
+                                </g:if>
+                            </g:if>
                         </td>
                     </tr>
                 </g:if>
@@ -495,14 +516,12 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
 </div>
 
 <div id="modal-detalle" style=";overflow: hidden;">
-
     <div class="modal-body" id="modalBody-detalle">
         Especificaciones:<br>
         <textarea id="especificaciones" style="width: 700px;height: 150px;resize: none;margin-top: 10px">
             ${rubro?.especificaciones}
         </textarea>
     </div>
-
     <div class="modal-footer" id="modalFooter-detalle">
         <a href="#" id="save-espc" class="btn btn-info">Guardar</a>
     </div>
@@ -770,6 +789,8 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
 
 <script type="text/javascript">
 
+
+
     $('#fecha_precios, #fecha_registro, #fecha_modificacion, #fechaCreacion, #fechaSalidaId').datetimepicker({
         locale: 'es',
         format: 'DD-MM-YYYY',
@@ -888,7 +909,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                     %{--});--}%
                 }else{
                     %{--agregar('${rubro?.id}',"");--}%
-                    bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + "Ingrese items en la composición del rubro antes de crear un histórico" + '</strong>');
+                    bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + "No se puede crear un histórico de este rubro" + '</strong>');
                 }
             }
         });
@@ -2174,6 +2195,76 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                 }
             }
         });
+
+        $(".editarItem").click(function () {
+            var id = $(this).data("id");
+            editarFormItem(id)
+        });
+
+        function editarFormItem(id) {
+            $.ajax({
+                type    : "POST",
+                url: "${createLink(controller: 'rubro', action:'editarRubro_ajax')}",
+                data    : {
+                    id: id
+                },
+                success : function (msg) {
+                    var er = bootbox.dialog({
+                        id      : "dlgCreateEditRubro",
+                        title   : "Editar cantidad y rendimiento",
+                        message : msg,
+                        buttons : {
+                            cancelar : {
+                                label     : "Cancelar",
+                                className : "btn-primary",
+                                callback  : function () {
+                                }
+                            },
+                            guardar  : {
+                                id        : "btnSave",
+                                label     : "<i class='fa fa-save'></i> Guardar",
+                                className : "btn-success",
+                                callback  : function () {
+                                    return submitFormEditarItem();
+                                } //callback
+                            } //guardar
+                        } //buttons
+                    }); //dialog
+                } //success
+            }); //ajax
+        } //createEdit
+
+        function submitFormEditarItem() {
+            var $form = $("#frmEditarRubro");
+            if ($form.valid()) {
+                var data = $form.serialize();
+                var dialog = cargarLoader("Guardando...");
+                $.ajax({
+                    type    : "POST",
+                    url     : $form.attr("action"),
+                    data    : data,
+                    success : function (msg) {
+                        dialog.modal('hide');
+                        var parts = msg.split("_");
+                        if(parts[0] === 'ok'){
+                            log(parts[1], "success");
+                            location.reload();
+                        }else{
+                            if(parts[0] === 'err'){
+                                bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
+                                return false;
+                            }else{
+                                log(parts[1], "error");
+                                return false;
+                            }
+                        }
+                    }
+                });
+            } else {
+                return false;
+            }
+        }
+
     });
 </script>
 </body>

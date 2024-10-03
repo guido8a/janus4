@@ -1168,7 +1168,6 @@ class RubroController {
         }
     }
 
-
     def eliminarRubro_ajax(){
 
         def rubro = Rubro.get(params.id)
@@ -1181,11 +1180,47 @@ class RubroController {
                 println("Error al borrar el rubro " + rubro.delete(flush:true))
                 render "no_Error al borrar el rubro"
             }
-
         }else{
             render "no_Error al borrar el rubro"
         }
+    }
 
+    def editarRubro_ajax(){
+        def rubro = Rubro.get(params.id)
+        return [rubro: rubro]
+    }
+
+    def saveRubro_ajax(){
+
+        println("params sr" + params)
+
+        def rubro = Rubro.get(params.id)
+
+        if(rubro){
+            if(params.cantidad){
+                if(params.rendimiento){
+
+                    params.cantidad = params.cantidad.toDouble()
+                    params.rendimiento = params.rendimiento.toDouble()
+
+                    rubro.properties = params
+
+                    if(!rubro.save(flush:true)){
+                        println("error al guardar la cantidad y el rendimiento " + rubro.errors)
+                        render "no_Error al guardar"
+                    }else{
+                        render"ok_Guardado correctamente"
+                    }
+                }else{
+                    "err_Ingrese el rendimiento"
+                }
+            }else{
+                render "err_Ingrese la cantidad"
+            }
+
+        }else{
+            render "err_No se encontró el registro"
+        }
     }
 
 } //fin controller
