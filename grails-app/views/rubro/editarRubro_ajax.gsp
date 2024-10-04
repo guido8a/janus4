@@ -34,6 +34,10 @@
 
 <script type="text/javascript">
 
+    $(".btnRendimientoDefecto").click(function () {
+        $("#rendimiento").val(${rendimiento})
+    });
+
     function validarNum(ev) {
         /*
          48-57      -> numeros

@@ -37,7 +37,6 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
     <p>Cargando...Por favor espere</p>
 </div>
 
-
 <div class="col-md-12 btn-group" role="navigation">
     <a href="#" class="btn" id="btn_lista">
         <i class="fa fa-list"></i>
@@ -194,73 +193,74 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
         </g:form>
     </div>
 
-    <div style="border-bottom: 1px solid black;padding-left: 50px;margin-top: 10px;position: relative; height: 50px">
+    <div style="border-bottom: 1px solid black;padding-left: 50px;margin-top: 10px;position: relative; height: 60px">
         <p class="css-vertical-text">Items</p>
 
-        <div class="linea" style="height: 100px;"></div>
+        <div class="linea" style="height: 80px;"></div>
 
-        <div class="row-fluid" style="color: #248">
+        <div class="row" style="color: #248">
 
-            <div class="col-md-1">
-                <g:if test="${rubro}">
-                    <a class="btn btn-xs btn-primary btn-ajax" href="#" rel="tooltip" title="Agregar item" id="btnRubro" ${ !volumenes ?: 'disabled'}>
-                        <i class="fa fa-plus"></i> Agregar Item
-                    </a>
-                </g:if>
-            </div>
+            <div class="col-md-12">
+                <div class="col-md-1">
+                    <g:if test="${rubro}">
+                        <a class="btn btn-xs btn-primary btn-ajax" href="#" rel="tooltip" title="Agregar item" id="btnRubro" ${ !volumenes ?: 'disabled'}>
+                            <i class="fa fa-plus"></i> Agregar Item
+                        </a>
+                    </g:if>
+                </div>
 
-            <div class="col-md-3" style="width: 440px; margin-left: 10px">
-                Lista de precios: <strong> MO y Equipos </strong>
-                <g:select name="item.ciudad.id" from="${janus.Lugar.findAllByTipoLista(janus.TipoLista.get(6))}"
-                          optionKey="id" optionValue="descripcion" id="ciudad" style="width: 250px"/>
-            </div>
+                <div class="col-md-3">
+                    <label> Lista de precios: <strong> MO y Equipos </strong> </label>
+                    <g:select name="item.ciudad.id" from="${janus.Lugar.findAllByTipoLista(janus.TipoLista.get(6))}"
+                              optionKey="id" optionValue="descripcion" id="ciudad" style="width: 250px"/>
+                </div>
 
-            <div class="col-md-3" style="width: 180px;">
-                % costos indirectos
-                <g:textField style="width: 40px;" name="costo_indi" value="22.5"/>
-            </div>
 
-            <div class="form-group ${hasErrors(bean: administracionInstance, field: 'fechaInicio', 'error')} ">
-                <span class="grupo">
-                    <label class="col-md-1 control-label text-info">
+                <div class="col-md-2">
+                    <label>  % costos indirectos </label>
+                    <br>
+                    <g:textField style="width: 40px;" name="costo_indi" value="22.5"/>
+                </div>
+
+
+                <div class="col-md-2">
+                    <label>
                         Fecha
                     </label>
-                    <span class="col-md-2" style="width: 120px; margin-left: -40px">
-                        <input aria-label="" name="item.fecha" id='fecha_precios' type='text' class="required input-small"
-                               value="${new java.util.Date().format('dd-MM-yyyy')}" style="width: 100px"/>
-                    </span>
-                </span>
-            </div>
+                    <br>
+                    <input aria-label="" name="item.fecha" id='fecha_precios' type='text' class="required input-small"
+                           value="${new java.util.Date().format('dd-MM-yyyy')}" style="width: 100px"/>
+                </div>
 
-            <g:if test="${rubro}">
-                <div class="col-md-2" style="margin-left: 15px">
-                    <a class="btn btn-xs btn-warning " href="#" rel="tooltip" title="Copiar " id="btn_copiarComp">
-                        <i class="fa fa-copy"></i> Copiar composición
-                    </a>
+                <div class="col-md-1">
+                    <label> Rendimiento </label>
+                    <br>
+                    <g:textField style="width: 60px;" name="rendimientoValorDefecto" value="${1}"/>
                 </div>
-                <div class="col-md-1" style="margin-left: -50px; width: 40px">
-                    <a class="btn btn-xs btn-info infoItem" href="#" rel="tooltip" title="Información">
-                        <i class="fa fa-book"></i> Info</a>
-                </div>
-            </g:if>
-            <g:else>
-                <div class="col-md-2" style="margin-left: 30px">
-                    <a class="btn btn-xs btn-warning " href="#" rel="tooltip" title="Copiar " disabled>
-                        <i class="fa fa-copy"></i> Copiar composición
-                    </a>
-                </div>
-                <div class="col-md-1" style="margin-left: -50px; width: 40px">
-                    <a class="btn btn-xs btn-info infoItem" href="#" rel="tooltip" title="Información" disabled>
-                        <i class="fa fa-book"></i> Info</a>
-                </div>
-            </g:else>
-            <div class="col-md-1" style="margin-left: 5px; width: 40px">
-                <a class="btn btn-xs btn-success btnRendimiento" href="#" rel="tooltip" title="Rendimiento por defecto">
-                    <i class="fa fa-file"></i> Rend</a>
+
+                <g:if test="${rubro}">
+                    <div class="col-md-2 btn-group" style="margin-top: 10px">
+                        <a class="btn btn-xs btn-warning " href="#" rel="tooltip" title="Copiar " id="btn_copiarComp">
+                            <i class="fa fa-copy"></i> Copiar composición
+                        </a>
+                        <a class="btn btn-xs btn-info infoItem" href="#" rel="tooltip" title="Información">
+                            <i class="fa fa-book"></i> Info
+                        </a>
+                    </div>
+                </g:if>
+                <g:else>
+                    <div class="col-md-2 btn-group" style="margin-top: 10px">
+                        <a class="btn btn-xs btn-warning " href="#" rel="tooltip" title="Copiar " disabled>
+                            <i class="fa fa-copy"></i> Copiar composición
+                        </a>
+                        <a class="btn btn-xs btn-info infoItem" href="#" rel="tooltip" title="Información" disabled>
+                            <i class="fa fa-book"></i> Info
+                        </a>
+                    </div>
+                </g:else>
+
             </div>
         </div>
-
-
 
 
         %{--        <div class="row-fluid" style="margin-bottom: 5px">--}%
@@ -810,34 +810,36 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
             ev.keyCode === 37 || ev.keyCode === 39);
     }
 
+    function validarNum(ev) {
+        /*
+         48-57      -> numeros
+         96-105     -> teclado numerico
+         188        -> , (coma)
+         190        -> . (punto) teclado
+         110        -> . (punto) teclado numerico
+         8          -> backspace
+         46         -> delete
+         9          -> tab
+         37         -> flecha izq
+         39         -> flecha der
+         */
+        return ((ev.keyCode >= 48 && ev.keyCode <= 57) ||
+            (ev.keyCode >= 96 && ev.keyCode <= 105) ||
+            ev.keyCode === 190 || ev.keyCode === 110 ||
+            ev.keyCode === 8 || ev.keyCode === 46 || ev.keyCode === 9 ||
+            ev.keyCode === 37 || ev.keyCode === 39);
+    }
+
+
+    $("#rendimientoValorDefecto").keydown(function (ev) {
+        return validarNum(ev);
+    });
+
+
     $("#codigo").keydown(function (ev) {
         return validarNumDec(ev)
     });
 
-
-    $(".btnRendimiento").click(function () {
-        $.ajax({
-            type    : "POST",
-            url: "${createLink(controller: 'rubro', action:'rendimientoDefecto_ajax')}",
-            data    : {
-            },
-            success : function (msg) {
-                var er = bootbox.dialog({
-                    id      : "dlgRendimiento",
-                    title   : "Rendimiento por defecto",
-                    message : msg,
-                    buttons : {
-                        cancelar : {
-                            label     : "Cancelar",
-                            className : "btn-primary",
-                            callback  : function () {
-                            }
-                        }
-                    } //buttons
-                }); //dialog
-            } //success
-        }); //ajax
-    });
 
     $("#btnCrearHistorico").click(function () {
         $.ajax({
@@ -2235,7 +2237,8 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                 type    : "POST",
                 url: "${createLink(controller: 'rubro', action:'editarRubro_ajax')}",
                 data    : {
-                    id: id
+                    id: id,
+                    rendimiento: $("#rendimientoValorDefecto").val()
                 },
                 success : function (msg) {
                     var er = bootbox.dialog({

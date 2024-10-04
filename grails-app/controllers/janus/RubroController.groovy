@@ -1183,7 +1183,8 @@ class RubroController {
 
     def editarRubro_ajax(){
         def rubro = Rubro.get(params.id)
-        return [rubro: rubro]
+        def rendimiento = params.rendimiento ? params.rendimiento.toDouble() : 1
+        return [rubro: rubro, rendimiento: rendimiento]
     }
 
     def saveRubro_ajax(){
@@ -1219,8 +1220,6 @@ class RubroController {
         }
     }
 
-    def rendimientoDefecto_ajax () {
 
-    }
 
 } //fin controller
