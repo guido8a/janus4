@@ -89,7 +89,6 @@ class RubroController {
         def listaRbro = [1: 'Materiales', 2: 'Mano de obra', 3: 'Equipos']
         def listaItems = [1: 'Nombre', 2: 'Código']
 
-//        println "depto "+dpto
         def dptoUser = Persona.get(session.usuario.id).departamento
         def modifica = false
         if (dpto.size()>0) {
@@ -97,7 +96,6 @@ class RubroController {
                 if (d.id.toInteger() == dptoUser.id.toInteger())
                     modifica = true
             }
-
         }
 
         grupoTransporte.each {
@@ -107,7 +105,6 @@ class RubroController {
                 volquetes = Item.findAllByDepartamento(it)
 
             volquetes2 += volquetes
-
         }
 
         grupos=Grupo.findAll("from Grupo  where id>3")
@@ -117,7 +114,6 @@ class RubroController {
             def items = Rubro.findAllByRubro(rubro)
             items.sort { it.item.codigo }
             resps = rubro.responsable
-//            println "grupos: $grupos.id"
 
             def volumenes =  verificarVolumnesXRubro(rubro?.id)
 
@@ -1221,6 +1217,10 @@ class RubroController {
         }else{
             render "err_No se encontró el registro"
         }
+    }
+
+    def rendimientoDefecto_ajax () {
+
     }
 
 } //fin controller

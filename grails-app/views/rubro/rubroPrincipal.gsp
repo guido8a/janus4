@@ -254,6 +254,10 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                         <i class="fa fa-book"></i> Info</a>
                 </div>
             </g:else>
+            <div class="col-md-1" style="margin-left: 5px; width: 40px">
+                <a class="btn btn-xs btn-success btnRendimiento" href="#" rel="tooltip" title="Rendimiento por defecto">
+                    <i class="fa fa-file"></i> Rend</a>
+            </div>
         </div>
 
 
@@ -808,6 +812,31 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
 
     $("#codigo").keydown(function (ev) {
         return validarNumDec(ev)
+    });
+
+
+    $(".btnRendimiento").click(function () {
+        $.ajax({
+            type    : "POST",
+            url: "${createLink(controller: 'rubro', action:'rendimientoDefecto_ajax')}",
+            data    : {
+            },
+            success : function (msg) {
+                var er = bootbox.dialog({
+                    id      : "dlgRendimiento",
+                    title   : "Rendimiento por defecto",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        }
+                    } //buttons
+                }); //dialog
+            } //success
+        }); //ajax
     });
 
     $("#btnCrearHistorico").click(function () {
@@ -1687,60 +1716,60 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                     $(this).removeClass("active")
                 } else {
                     var items = $(".item_row");
-                    if (items.size() < 1) {
-                        bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + "Añada items a la composición del rubro antes de calcular los precios" + '</strong>');
-                        $(this).removeClass("active")
-                    } else {
-                        var tipo = "C";
-                        if ($("#V").hasClass("active"))
-                            tipo = "V";
-                        var listas = "";
-                        listas += $("#lista_1").val() + "#" + $("#lista_2").val() + "#" + $("#lista_3").val() + "#" +
-                            $("#lista_4").val() + "#" + $("#lista_5").val() + "#" + $("#ciudad").val();
+                    // if (items.size() < 1) {
+                    //     bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + "Añada items a la composición del rubro antes de calcular los precios" + '</strong>');
+                    //     $(this).removeClass("active")
+                    // } else {
+                    var tipo = "C";
+                    if ($("#V").hasClass("active"))
+                        tipo = "V";
+                    var listas = "";
+                    listas += $("#lista_1").val() + "#" + $("#lista_2").val() + "#" + $("#lista_3").val() + "#" +
+                        $("#lista_4").val() + "#" + $("#lista_5").val() + "#" + $("#ciudad").val();
 
-                        var datos = "fecha=" + $("#fecha_precios").val() + "&ciudad=" + $("#ciudad").val() + "&tipo=" +
-                            tipo + "&listas=" + listas + "&ids=";
-                        $.each(items, function () {
-                            datos += $(this).attr("id") + "#"
-                        });
-                        $.ajax({
-                            type : "POST",
-                            url : "${g.createLink(controller: 'rubro',action:'getPrecios')}",
-                            data     : datos,
-                            success  : function (msg) {
-                                var precios = [];
-                                precios = msg.split("&");
-                                if (precios.length > 1)
-                                    for (i = 0; i < precios.length; i++) {
-                                        var parts = precios[i].split(";");
-                                        var celda = $("#i_" + parts[0]);
-                                        celda.html(number_format(parts[1], 5, ".", ""));
-                                        var padre = celda.parent();
-                                        var celdaRend = padre.find(".col_rend");
-                                        var celdaTotal = padre.find(".col_total");
-                                        var celdaCant = padre.find(".cant");
-                                        var celdaHora = padre.find(".col_hora");
-                                        var rend = 1;
-                                        if (celdaHora.hasClass("col_hora")) {
-                                            celdaHora.html(number_format(parseFloat(celda.html()) * parseFloat(celdaCant.html()), 5, ".", ""))
-                                        }
-                                        if (celdaRend.html()) {
-                                            rend = celdaRend.attr("valor") * 1
-                                        }
-                                        celdaTotal.html(number_format(parseFloat(celda.html()) * parseFloat(celdaCant.html()) * parseFloat(rend), 5, ".", ""))
+                    var datos = "fecha=" + $("#fecha_precios").val() + "&ciudad=" + $("#ciudad").val() + "&tipo=" +
+                        tipo + "&listas=" + listas + "&ids=";
+                    $.each(items, function () {
+                        datos += $(this).attr("id") + "#"
+                    });
+                    $.ajax({
+                        type : "POST",
+                        url : "${g.createLink(controller: 'rubro',action:'getPrecios')}",
+                        data     : datos,
+                        success  : function (msg) {
+                            var precios = [];
+                            precios = msg.split("&");
+                            if (precios.length > 1)
+                                for (i = 0; i < precios.length; i++) {
+                                    var parts = precios[i].split(";");
+                                    var celda = $("#i_" + parts[0]);
+                                    celda.html(number_format(parts[1], 5, ".", ""));
+                                    var padre = celda.parent();
+                                    var celdaRend = padre.find(".col_rend");
+                                    var celdaTotal = padre.find(".col_total");
+                                    var celdaCant = padre.find(".cant");
+                                    var celdaHora = padre.find(".col_hora");
+                                    var rend = 1;
+                                    if (celdaHora.hasClass("col_hora")) {
+                                        celdaHora.html(number_format(parseFloat(celda.html()) * parseFloat(celdaCant.html()), 5, ".", ""))
                                     }
-                                calcularTotales()
-                            }
-                        });
+                                    if (celdaRend.html()) {
+                                        rend = celdaRend.attr("valor") * 1
+                                    }
+                                    celdaTotal.html(number_format(parseFloat(celda.html()) * parseFloat(celdaCant.html()) * parseFloat(rend), 5, ".", ""))
+                                }
+                            calcularTotales()
+                        }
+                    });
 
-                        // $(".col_delete").hide();
-                        $(".col_tarifa").show();
-                        $(".col_hora").show();
-                        $(".col_total").show();
-                        $(".col_jornal").show();
-                        $(".col_precioUnit").show();
-                        $(".col_vacio").show()
-                    }
+                    // $(".col_delete").hide();
+                    $(".col_tarifa").show();
+                    $(".col_hora").show();
+                    $(".col_total").show();
+                    $(".col_jornal").show();
+                    $(".col_precioUnit").show();
+                    $(".col_vacio").show()
+                    // }
                 }
             }
         }
