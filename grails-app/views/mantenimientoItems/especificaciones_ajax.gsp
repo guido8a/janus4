@@ -31,16 +31,16 @@
     Código: ${item?.codigo} - Especificación: ${item?.codigoEspecificacion}
 </div>
 
-%{--<div class="alert alert-success col-md-12" style="font-size: 14px; font-weight: bold">--}%
-%{--    <i class="fa fa-file-pdf fa-2x"></i> Especificación PDF--}%
-%{--</div>--}%
+<div class="alert alert-success col-md-12" style="font-size: 14px; font-weight: bold">
+    <i class="fa fa-file-pdf fa-2x"></i> Especificación PDF
+</div>
 
 <div class="col-md-6">
     <g:uploadForm action="uploadFileEspecificacion" method="post" name="frmUploadEspe" enctype="multipart/form-data">
         <g:hiddenField name="item" value="${item?.id}"/>
         <g:hiddenField name="tipo" value="pdf"/>
         <div class="fieldcontain required">
-            <b>Cargar archivo:</b>
+            <b>Cargar archivo PDF:</b>
             <input type="file" id="fileEspePDF" name="file" class="" multiple accept=".pdf"/>
 
             <div class="btn-group" style="margin-top: 20px;">
@@ -74,9 +74,9 @@
     </div>
 </div>
 
-%{--<div class="alert alert-success col-md-12" style="font-size: 14px; font-weight: bold">--}%
-%{--    <i class="fa fa-file-word fa-2x"></i> Especificación WORD--}%
-%{--</div>--}%
+<div class="alert alert-success col-md-12" style="font-size: 14px; font-weight: bold">
+    <i class="fa fa-file-word fa-2x"></i> Especificación WORD
+</div>
 
 <g:if test="${existe}">
     <div class="col-md-6">
@@ -84,7 +84,7 @@
             <g:hiddenField name="item" value="${item?.id}"/>
             <g:hiddenField name="tipo" value="word"/>
             <div class="fieldcontain required">
-                <b>Cargar archivo:</b>
+                <b>Cargar archivo WORD:</b>
                 <input type="file" id="fileEspe" name="file" class=""  multiple accept=".doc, .docx"/>
 
                 <div class="btn-group" style="margin-top: 20px;">

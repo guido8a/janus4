@@ -2,14 +2,14 @@
     <div class="col-md-4"></div>
     <div class="col-md-2" role="alert">
         <ol class="breadcrumb" style="font-weight: bold">
-            <li class="active"><i class="fa fa-${grupo?.descripcion == 'MATERIALES' ? 'box' : (grupo?.descripcion == 'MANO DE OBRA' ? 'users' : 'truck') } text-warning"></i> ${grupo?.descripcion}</li>
+            <li class="active"><i class="fa fa-${grupo?.descripcion == 'OBRAS VIALES' ? 'car' : (grupo?.descripcion == 'OBRAS DE RIEGO' ? 'water' : 'hammer') } text-warning"></i> ${grupo?.descripcion}</li>
         </ol>
     </div>
     <div class="col-md-4" role="alert">
         <ol class="breadcrumb" style="font-weight: bold">
             <li class="active">GRUPO</li>
             <li class="active">SUBGRUPO</li>
-            <li class="active">MATERIALES</li>
+            <li class="active">RUBROS</li>
         </ol>
     </div>
     %{--    <div class="col-md-2">--}%
@@ -58,9 +58,9 @@
                     <a href="#" class="btn btn-xs btn-warning btnEspecificacionesMaterial" data-id="${material?.id}" title="Especificaciones e Ilustración" ${material?.codigoEspecificacion ?: 'disabled'}>
                         <i class="fas fa-book"></i>
                     </a>
-                    <a href="#" class="btn btn-xs btn-success btnEditarMaterial" data-id="${material?.id}" data-sub="${material?.departamento?.id}" title="Editar">
-                        <i class="fas fa-edit"></i>
-                    </a>
+%{--                    <a href="#" class="btn btn-xs btn-success btnEditarMaterial" data-id="${material?.id}" data-sub="${material?.departamento?.id}" title="Editar">--}%
+%{--                        <i class="fas fa-edit"></i>--}%
+%{--                    </a>--}%
                     <a href="#" class="btn btn-xs btn-danger btnEliminarMaterial" data-id="${material?.id}" title="Eliminar">
                         <i class="fas fa-trash"></i>
                     </a>
@@ -99,7 +99,7 @@
             $("#criterio").val('');
         }
 
-        cargarTablaItems();
+        cargarTablaGrupoRubros();
     });
 
     $(".btnEditarMaterial").click(function () {
@@ -132,7 +132,7 @@
                     var dialog = cargarLoader("Borrando...");
                     $.ajax({
                         type: 'POST',
-                        url: '${createLink(action: 'deleteIt_ajax')}',
+                        url: '${createLink(controller: 'mantenimientoItems', action: 'deleteIt_ajax')}',
                         data:{
                             id: id
                         },
@@ -141,7 +141,7 @@
                             var parts = msg.split("_");
                             if(parts[0] === 'ok'){
                                 log(parts[1],"success");
-                                cargarTablaItems(parts[2]);
+                                cargarTablaGrupoRubros(parts[2]);
                             }else{
                                 log(parts[1], "error")
                             }
@@ -155,14 +155,15 @@
     function verMaterial(id) {
         $.ajax({
             type    : "POST",
-            url     : "${createLink(controller: 'mantenimientoItems', action:'showIt_ajax')}",
+            %{--url     : "${createLink(controller: 'mantenimientoItems', action:'showIt_ajax')}",--}%
+            url     : "${createLink(controller: 'grupo', action:'showRb_ajax')}",
             data    : {
                 id: id
             },
             success : function (msg) {
                 var e = bootbox.dialog({
                     id    : "dlgVerMaterial",
-                    title : "Datos del material",
+                    title : "Datos del rubro",
                     message : msg,
                     buttons : {
                         cancelar : {

@@ -719,4 +719,41 @@ class GrupoController {
         }
     }
 
+    def tablaGrupos_ajax(){
+        def grupo = Grupo.get(params.buscarPor)
+        def grupos = SubgrupoItems.findAllByGrupoAndDescripcionIlike(grupo, '%' + params.criterio + '%', [sort: 'codigo', order: 'asc']).take(50)
+        return [grupos: grupos, grupo: grupo]
+    }
+
+    def tablaSubgrupos_ajax(){
+        def grupo = Grupo.get(params.buscarPor)
+        def grupos = SubgrupoItems.findAllByGrupo(grupo, [sort: 'codigo'])
+        def subgrupos = []
+
+        if(params.id){
+            def grupoBuscar = SubgrupoItems.get(params.id)
+            subgrupos = DepartamentoItem.findAllBySubgrupo(grupoBuscar).sort{a,b -> a.subgrupo.descripcion <=> b.subgrupo.descripcion ?: a.codigo <=> b.codigo }.take(50)
+        }else{
+            subgrupos = DepartamentoItem.findAllBySubgrupoInListAndDescripcionIlike(grupos, '%' + params.criterio + '%').sort{a,b -> a.subgrupo.descripcion <=> b.subgrupo.descripcion ?: a.codigo <=> b.codigo }.take(50)
+        }
+
+        return [subgrupos: subgrupos, grupo: grupo]
+    }
+
+    def tablaRubros_ajax(){
+        def grupo = Grupo.get(params.buscarPor)
+        def grupos = SubgrupoItems.findAllByGrupo(grupo)
+        def subgrupos = DepartamentoItem.findAllBySubgrupoInList(grupos)
+        def materiales = []
+
+        if(params.id){
+            def subgrupoBuscar = DepartamentoItem.get(params.id)
+            materiales = Item.findAllByDepartamento(subgrupoBuscar).sort{a,b -> a.departamento.descripcion <=> b.departamento.descripcion ?: a.codigo <=> b.codigo }.take(50)
+        }else{
+            materiales = Item.findAllByDepartamentoInListAndNombreIlike(subgrupos, '%' + params.criterio + '%').sort{a,b -> a.departamento.descripcion <=> b.departamento.descripcion ?: a.codigo <=> b.codigo }.take(50)
+        }
+
+        return [materiales: materiales, grupo: grupo, id: params.id]
+    }
+
 } //fin controller

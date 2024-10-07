@@ -80,20 +80,20 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
         </a>
     </g:if>
 
-    <g:if test="${rubro}">
-        <g:if test="${rubro?.codigoEspecificacion}">
-            <a href="#" id="detalle" class="btn btn-ajax btn-new">
+%{--    <g:if test="${rubro}">--}%
+%{--        <g:if test="${rubro?.codigoEspecificacion}">--}%
+            <a href="#" id="detalle" class="btn btn-ajax btn-new" ${rubro?.codigoEspecificacion ?: 'disabled'}>
                 <i class="fa fa-book"></i>
                 Especificaciones
             </a>
-        </g:if>
-    </g:if>
-    <g:if test="${rubro}">
-        <a href="#" id="foto" class="btn btn-ajax btn-new">
-            <i class="fa fa-image"></i>
-            Ilustración
-        </a>
-    </g:if>
+%{--        </g:if>--}%
+%{--    </g:if>--}%
+%{--    <g:if test="${rubro}">--}%
+%{--        <a href="#" id="foto" class="btn btn-ajax btn-new">--}%
+%{--            <i class="fa fa-image"></i>--}%
+%{--            Ilustración--}%
+%{--        </a>--}%
+%{--    </g:if>--}%
     <g:if test="${rubro}">
         <a href="#" id="btnCrearHistorico" class="btn btn-primary">
             <i class="fa fa-book"></i>
@@ -235,7 +235,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                 <div class="col-md-1">
                     <label> Rendimiento </label>
                     <br>
-                    <g:textField style="width: 60px;" name="rendimientoValorDefecto" value="${1}"/>
+                    <g:textField style="width: 70px;" name="rendimientoValorDefecto" value="${1}"/>
                 </div>
 
                 <g:if test="${rubro}">
@@ -319,7 +319,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                 <th style="width: 80px;">
                     CÓDIGO
                 </th>
-                <th style="width: 600px;">
+                <th style="width: 550px;">
                     EQUIPO
                 </th>
                 <th style="width: 80px;">
@@ -377,7 +377,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                 <th style="width: 80px;">
                     CÓDIGO
                 </th>
-                <th style="width: 600px;">
+                <th style="width: 550px;">
                     MANO DE OBRA
                 </th>
                 <th style="width: 80px">
@@ -1401,6 +1401,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
         $("#tabla_costos").append(tabla).show("slide");
     }
 
+
     $(function () {
         $("#save-espc").click(function () {
             if ($("#especificaciones").val().trim().length < 1024) {
@@ -1473,15 +1474,27 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
             window.menubar.visible = false;
         });
 
+        %{--$("#detalle").click(function () {--}%
+        %{--    var child = window.open('${createLink(controller:"rubro",action:"showFoto",id: rubro?.id, params:[tipo:"dt"])}',--}%
+        %{--        'Mies', 'width=850,height=800,toolbar=0,resizable=0,menubar=0,scrollbars=1,status=0');--}%
+
+        %{--    if (child.opener == null)--}%
+        %{--        child.opener = self;--}%
+        %{--    window.toolbar.visible = false;--}%
+        %{--    window.menubar.visible = false;--}%
+        %{--});--}%
+
         $("#detalle").click(function () {
-            var child = window.open('${createLink(controller:"rubro",action:"showFoto",id: rubro?.id, params:[tipo:"dt"])}',
-                'Mies', 'width=850,height=800,toolbar=0,resizable=0,menubar=0,scrollbars=1,status=0');
+            var id = '${rubro?.id}';
+            var child = window.open('${createLink(controller:"mantenimientoItems",action:"especificaciones_ajax")}?id=' + id,
+                'janus4', 'width=850,height=800,toolbar=0,resizable=0,menubar=0,scrollbars=1,status=0');
 
             if (child.opener == null)
                 child.opener = self;
             window.toolbar.visible = false;
             window.menubar.visible = false;
         });
+
 
         $("#borrar").click(function () {
             <g:if test="${rubro}">
