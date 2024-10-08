@@ -27,7 +27,7 @@
             <th style="width: 10%">Código</th>
             <th style="width: 45%">Descripción</th>
             <th style="width: 10%">Acciones</th>
-            <th style="width: 5%">Material</th>
+%{--            <th style="width: 5%">Material</th>--}%
         </tr>
         </thead>
     </table>
@@ -53,11 +53,11 @@
                         <i class="fas fa-trash"></i>
                     </a>
                 </td>
-                <td style="width: 5%; text-align: center">
-                    <a href="#" class="btn btn-xs btn-success btnCrearMaterial" data-id="${subgrupo?.id}" title="Nuevo material">
-                        <i class="fas fa-cube"></i>
-                    </a>
-                </td>
+%{--                <td style="width: 5%; text-align: center">--}%
+%{--                    <a href="#" class="btn btn-xs btn-success btnCrearMaterial" data-id="${subgrupo?.id}" title="Nuevo material">--}%
+%{--                        <i class="fas fa-cube"></i>--}%
+%{--                    </a>--}%
+%{--                </td>--}%
             </tr>
         </g:each>
         </tbody>

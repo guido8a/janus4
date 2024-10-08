@@ -1,40 +1,42 @@
 <div class="row">
     <div class="col-md-12">
-
-
-
         <div style="margin-bottom: 5px">
             <div class="row">
                 <div class="col-md-2 text-info">
                     Rubro
                 </div>
-                <div class="col-md-9">
+                <div class="col-md-9 alert alert-info" style="color: #000000">
                     ${rubro.codigo} - ${rubro.nombre} (${rubro?.unidad?.encodeAsHTML()?.trim()})
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-5 text-info">
+                <div class="col-md-3 text-info">
                     Fecha creación:
                 </div>
-                <div class="col-md-5">
+                <div class="col-md-3">
                     <g:formatDate date="${rubro?.fecha}" format="dd-MM-yyyy"/>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-md-5 text-info">
+                <div class="col-md-3 text-info">
                     Fecha modificación:
                 </div>
-                <div class="col-md-5">
+                <div class="col-md-3">
                     <g:formatDate date="${rubro?.fechaModificacion}" format="dd-MM-yyyy hh:mm"/>
                 </div>
             </div>
         </div>
 
-        <a href="#" id="btnEditarRubro" class="btn btn-success btn-xs">
-            <i class="fa fa-edit"></i> Editar
-        </a>
+        <div class="row">
+            <div class="col-md-2">
+                <a href="#" id="btnEditarRubro" class="btn btn-success btn-xs">
+                    <i class="fa fa-edit"></i> Editar
+                </a>
+            </div>
+            <div class="col-md-7" style="text-align: center">
+                <legend>Composición</legend>
+            </div>
+        </div>
 
-        <legend style="text-align: center">Composición</legend>
+
 
         <div id="tablas" style="width: 99.7%;height: 400px; overflow-y: auto;float: right; margin-top: -20px">
             <table class="table table-bordered table-striped table-condensed table-hover" style="margin-top: 10px;">

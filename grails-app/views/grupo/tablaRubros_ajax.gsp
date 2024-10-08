@@ -61,9 +61,9 @@
 %{--                    <a href="#" class="btn btn-xs btn-success btnEditarMaterial" data-id="${material?.id}" data-sub="${material?.departamento?.id}" title="Editar">--}%
 %{--                        <i class="fas fa-edit"></i>--}%
 %{--                    </a>--}%
-                    <a href="#" class="btn btn-xs btn-danger btnEliminarMaterial" data-id="${material?.id}" title="Eliminar">
-                        <i class="fas fa-trash"></i>
-                    </a>
+%{--                    <a href="#" class="btn btn-xs btn-danger btnEliminarMaterial" data-id="${material?.id}" title="Eliminar">--}%
+%{--                        <i class="fas fa-trash"></i>--}%
+%{--                    </a>--}%
                 </td>
             </tr>
         </g:each>
