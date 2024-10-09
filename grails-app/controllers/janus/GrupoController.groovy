@@ -741,6 +741,8 @@ class GrupoController {
     }
 
     def tablaRubros_ajax(){
+        println("tr " + params)
+
         def grupo = Grupo.get(params.buscarPor)
         def grupos = SubgrupoItems.findAllByGrupo(grupo)
         def subgrupos = DepartamentoItem.findAllBySubgrupoInList(grupos)

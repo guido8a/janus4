@@ -172,6 +172,33 @@
         return true;
     });
 
+    function imprimirRubrosGrupo(id, tipo) {
+        $.ajax({
+            type    : "POST",
+            url: "${createLink(action:'imprimirRubros_ajax')}",
+            data    : {
+                id: id,
+                tipo: tipo
+            },
+            success : function (msg) {
+                var b = bootbox.dialog({
+                    id      : "dlgImprimir",
+                    title   : "Variables de transporte para el grupo",
+                    class : "modal-lg",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        }
+                    } //buttons
+                }); //dialog
+            } //success
+        }); //ajax
+    } //createEdit
+
 </script>
 
 </body>

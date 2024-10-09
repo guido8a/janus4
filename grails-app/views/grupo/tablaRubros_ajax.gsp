@@ -55,15 +55,18 @@
                     <a href="#" class="btn btn-xs btn-info btnVerMaterial" data-id="${material?.id}" title="Ver">
                         <i class="fas fa-search"></i>
                     </a>
-                    <a href="#" class="btn btn-xs btn-warning btnEspecificacionesMaterial" data-id="${material?.id}" title="Especificaciones e Ilustración" ${material?.codigoEspecificacion ?: 'disabled'}>
-                        <i class="fas fa-book"></i>
+                    <a href="#" class="btn btn-xs btn-primary btnImprimirRubro" data-id="${material?.id}" title="Imprimir rubro">
+                        <i class="fas fa-print"></i>
                     </a>
-%{--                    <a href="#" class="btn btn-xs btn-success btnEditarMaterial" data-id="${material?.id}" data-sub="${material?.departamento?.id}" title="Editar">--}%
-%{--                        <i class="fas fa-edit"></i>--}%
-%{--                    </a>--}%
-%{--                    <a href="#" class="btn btn-xs btn-danger btnEliminarMaterial" data-id="${material?.id}" title="Eliminar">--}%
-%{--                        <i class="fas fa-trash"></i>--}%
-%{--                    </a>--}%
+                    %{--                    <a href="#" class="btn btn-xs btn-warning btnEspecificacionesMaterial" data-id="${material?.id}" title="Especificaciones e Ilustración" ${material?.codigoEspecificacion ?: 'disabled'}>--}%
+                    %{--                        <i class="fas fa-book"></i>--}%
+                    %{--                    </a>--}%
+                    %{--                    <a href="#" class="btn btn-xs btn-success btnEditarMaterial" data-id="${material?.id}" data-sub="${material?.departamento?.id}" title="Editar">--}%
+                    %{--                        <i class="fas fa-edit"></i>--}%
+                    %{--                    </a>--}%
+                    %{--                    <a href="#" class="btn btn-xs btn-danger btnEliminarMaterial" data-id="${material?.id}" title="Eliminar">--}%
+                    %{--                        <i class="fas fa-trash"></i>--}%
+                    %{--                    </a>--}%
                 </td>
             </tr>
         </g:each>
@@ -94,7 +97,7 @@
         $("#buscarPor").val(${grupo?.id});
         $("#tipo").val(2);
         if('${id}'){
-            $("#criterio").val('${materiales?.first()?.departamento?.descripcion}');
+            $("#criterio").val('${materiales?.size() > 0 ? materiales?.first()?.departamento?.descripcion : ''}');
         }else{
             $("#criterio").val('');
         }
@@ -155,7 +158,6 @@
     function verMaterial(id) {
         $.ajax({
             type    : "POST",
-            %{--url     : "${createLink(controller: 'mantenimientoItems', action:'showIt_ajax')}",--}%
             url     : "${createLink(controller: 'grupo', action:'showRb_ajax')}",
             data    : {
                 id: id
@@ -177,5 +179,11 @@
             } //success
         }); //ajax
     } //createEdit
+
+
+    $(".btnImprimirRubro").click(function () {
+        var id = $(this).data("id");
+        imprimirRubrosGrupo(id, 'rb');
+    });
 
 </script>

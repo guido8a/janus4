@@ -49,6 +49,9 @@
                     <a href="#" class="btn btn-xs btn-warning btnEstructuraSubgrupo" data-id="${subgrupo?.id}" title="Materiales">
                         <i class="fas fa-list"></i>
                     </a>
+                    <a href="#" class="btn btn-xs btn-primary btnImprimirSubgrupo" data-id="${subgrupo?.id}" title="Imprimir capítulo">
+                        <i class="fas fa-print"></i>
+                    </a>
                     <a href="#" class="btn btn-xs btn-danger btnEliminarSubgrupo" data-id="${subgrupo?.id}" title="Eliminar">
                         <i class="fas fa-trash"></i>
                     </a>
@@ -198,5 +201,10 @@
     function cerrarFormSubgrupo(){
         dfs.modal("hide");
     }
+
+    $(".btnImprimirSubgrupo").click(function () {
+        var id = $(this).data("id");
+        imprimirRubrosGrupo(id, 'dp');
+    });
 
 </script>

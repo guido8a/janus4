@@ -43,6 +43,9 @@
                     <a href="#" class="btn btn-xs btn-warning btnEstructuraGrupo" data-id="${grupo?.id}" title="Subgrupos">
                         <i class="fas fa-list"></i>
                     </a>
+                    <a href="#" class="btn btn-xs btn-primary btnImprimirGrupo" data-id="${grupo?.id}" title="Imprimir rubros del subgrupo">
+                        <i class="fas fa-print"></i>
+                    </a>
                     <a href="#" class="btn btn-xs btn-danger btnEliminarGrupo" data-id="${grupo?.id}" title="Eliminar">
                         <i class="fas fa-trash"></i>
                     </a>
@@ -185,5 +188,10 @@
     function cerrarFormGrupo(){
         dfg.modal("hide");
     }
+
+    $(".btnImprimirGrupo").click(function () {
+        var id = $(this).data("id");
+        imprimirRubrosGrupo(id, 'sg');
+    });
 
 </script>
