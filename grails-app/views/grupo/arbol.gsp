@@ -26,14 +26,20 @@
                     <g:textField name="criterio" id="criterio" class="form-control"/>
                 </span>
             </span>
+
             <div class="col-md-2" style="margin-top: 20px">
                 <button class="btn btn-info" id="btnBuscar"><i class="fa fa-search"></i>Buscar</button>
                 <button class="btn btn-warning" id="btnLimpiar" title="Limpiar Búsqueda"><i class="fa fa-eraser"></i>Limpiar</button>
             </div>
+
+            <span class="col-md-2" style="margin-top: 20px">
+                <button class="btn btn-primary btnImprimirPrincipal" title="Imprimir rubros del grupo"><i class="fa fa-print"></i> Imprimir rubros del grupo</button>
+            </span>
+
         </div>
     </fieldset>
 
-    <fieldset class="borde" style="border-radius: 4px">
+    <fieldset class="borde" style="border-radius: 4px;">
         <div id="divTablaGrupoRubros" >
         </div>
     </fieldset>
@@ -198,6 +204,11 @@
             } //success
         }); //ajax
     } //createEdit
+
+    $(".btnImprimirPrincipal").click(function () {
+        var id = $("#buscarPor option:selected").val();
+        imprimirRubrosGrupo(id, 'gr')
+    });
 
 </script>
 
