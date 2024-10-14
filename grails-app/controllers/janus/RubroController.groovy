@@ -1008,8 +1008,8 @@ class RubroController {
                 }
             }
 
-            rubro.codigo = codigo+rubro.codigo;
             rubro.codigoHistorico = rubro.codigo
+            rubro.codigo = codigo+rubro.codigo
             rubro.fechaModificacion = new Date()
             rubro.save(flush: true)
 
