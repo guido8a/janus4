@@ -18,6 +18,8 @@ class GrupoController {
     } //list
 
     def arbol() {
+        def listaIDs = [5,8,4]
+        def listaSolicitantes = Grupo.findAllByIdInList(listaIDs, [sort: 'descripcion'])
         def aux = Parametros.get(1)
         def volquetes = []
         def volquetes2 = []
@@ -32,7 +34,7 @@ class GrupoController {
             }
             volquetes2 += volquetes
         }
-        return [volquetes2: volquetes2, choferes: choferes, aux: aux]
+        return [volquetes2: volquetes2, choferes: choferes, aux: aux, solicitantes: listaSolicitantes]
     }
 
     def showRb_ajax() {

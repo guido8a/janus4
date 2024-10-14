@@ -11,17 +11,26 @@
     <fieldset class="borde" style="border-radius: 4px; margin-bottom: 10px">
         <div class="row-fluid" style="margin-left: 10px">
             <span class="grupo">
+
+                <span class="col-md-1" style="margin-top: 20px">
+                    <button class="btn btn-success btnEditarSolicitante" title="Editar solicitante"><i class="fa fa-edit"></i> </button>
+                </span>
+
                 <span class="col-md-2">
                     <label class="control-label text-info">Buscar Por</label>
-                    <g:select name="buscarPor" class="buscarPor col-md-12 form-control btn-success" from="${[5: 'Obras Viales', 8: 'Obras de Riego', 4: 'Obras Civiles']}" optionKey="key"
-                              optionValue="value"/>
+                    %{--                    <g:select name="buscarPor" class="buscarPor col-md-12 form-control btn-success" from="${solicitantes}" optionKey="id"--}%
+                    %{--                              optionValue="descripcion" att="descripcion" onchange="jsFunction(this)" />--}%
+
+                    <g:select name="buscarPor" class="buscarPor col-md-12 form-control btn-success" from="${solicitantes}" optionKey="id"
+                              optionValue="descripcion" att="descripcion" />
                 </span>
+
                 <span class="col-md-2">
                     <label class="control-label text-info">Tipo</label>
                     <g:select name="tipo" class="tipo col-md-12 form-control btn-info" from="${[1: 'Grupo', 2: 'Subgrupo', 3: 'Rubros']}" optionKey="key"
                               optionValue="value"/>
                 </span>
-                <span class="col-md-4">
+                <span class="col-md-3">
                     <label class="control-label text-info">Criterio</label>
                     <g:textField name="criterio" id="criterio" class="form-control"/>
                 </span>
@@ -33,7 +42,7 @@
             </div>
 
             <span class="col-md-2" style="margin-top: 20px">
-                <button class="btn btn-primary btnImprimirPrincipal" title="Imprimir rubros del grupo"><i class="fa fa-print"></i> Imprimir rubros del grupo</button>
+                <button class="btn btn-primary btnImprimirPrincipal" title="Imprimir rubros del grupo"><i class="fa fa-print"></i> Imprimir rubros <strong class="pNombre"></strong>  </button>
             </span>
 
         </div>
@@ -48,7 +57,22 @@
 
 <script type="text/javascript">
 
-    var dfi;
+    var dfi, cfs;
+
+    colocarNombre();
+
+    $(".buscarPor").change(function () {
+        colocarNombre();
+    });
+
+    function colocarNombre(){
+        var n = $(".buscarPor option:selected").text();
+        $(".pNombre").html(n)
+    }
+
+    $(".btnEditarSolicitante").click(function () {
+        editarSolicitante();
+    });
 
     $("#btnLimpiar").click(function () {
         $("#buscarPor").val(5);
@@ -209,6 +233,75 @@
         var id = $("#buscarPor option:selected").val();
         imprimirRubrosGrupo(id, 'gr')
     });
+
+    function editarSolicitante() {
+        var id = $("#buscarPor option:selected").val();
+        $.ajax({
+            type    : "POST",
+            url     : "${createLink(controller: 'grupo', action:'formGr_ajax')}",
+            data    : {
+                id: id
+            },
+            success : function (msg) {
+                cfs = bootbox.dialog({
+                    id    : "dlgEditSolicitante",
+                    title : "Editar solicitante",
+                    class : "modal-lg",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        },
+                        guardar  : {
+                            id        : "btnSave",
+                            label     : "<i class='fa fa-save'></i> Guardar",
+                            className : "btn-success",
+                            callback  : function () {
+                                return submitFormSolicitante();
+                            } //callback
+                        } //guardar
+                    } //buttons
+                }); //dialog
+            } //success
+        }); //ajax
+    } //createEdit
+
+    function submitFormSolicitante() {
+        var $form = $("#frmSave");
+        if ($form.valid()) {
+            var data = $form.serialize();
+            var dialog = cargarLoader("Guardando...");
+            $.ajax({
+                type    : "POST",
+                url     : $form.attr("action"),
+                data    : data,
+                success : function (msg) {
+                    dialog.modal('hide');
+                    var parts = msg.split("_");
+                    if(parts[0] === 'ok'){
+                        log(parts[1], "success");
+                        cerrarFormSol();
+                        setTimeout(function () {
+                            location.reload()
+                        }, 1000);
+                    }else{
+                        bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
+                        return false;
+                    }
+                }
+            });
+            return false;
+        } else {
+            return false;
+        }
+    }
+
+    function cerrarFormSol(){
+        cfs.modal("hide");
+    }
 
 </script>
 
