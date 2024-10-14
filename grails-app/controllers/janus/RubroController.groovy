@@ -989,44 +989,62 @@ class RubroController {
         println "copia rubro "+params
 
         def rubro = Item.get(params.id)
+        def error = false
+        def textoError = ''
         def nuevo = new Item()
-        nuevo.properties=rubro.properties
-        def codigo ="H"
-        def copias = Item.findAllByCodigo(codigo+rubro.codigo)
-        def error =false
-        if(copias.size() > 0){
-            while(copias.size()!= 0){
-                codigo=codigo+"H"
-                copias = Item.findAllByCodigo(codigo+rubro.codigo)
-            }
-        }
 
-        rubro.codigo=codigo+rubro.codigo;
-        rubro.fechaModificacion=new Date()
-        rubro.save(flush: true)
-        nuevo.fecha=new Date()
-        nuevo.fechaModificacion=null
-        if(!nuevo.save(flush: true)){
-            println "erro copiar rubro "+nuevo.errors
-            error=true
-        }else{
-            Rubro.findAllByRubro(rubro).each{
-                def r = new Rubro()
-                r.rubro=nuevo
-                r.item=it.item
-                r.cantidad=it.cantidad
-                r.fecha=it.fecha
-                r.rendimiento=it.rendimiento
-                if(!r.save(flush: true)){
-                    println "error copiar comp "+r.errors
-                    error=true
+        if(!rubro?.codigoHistorico){
+
+            nuevo.properties=rubro.properties
+            def codigo ="H"
+            def copias = Item.findAllByCodigo(codigo+rubro.codigo)
+
+            if(copias.size() > 0){
+                while(copias.size()!= 0){
+                    codigo=codigo+"H"
+                    copias = Item.findAllByCodigo(codigo+rubro.codigo)
                 }
             }
-        }
-        if(!error)
-            error=nuevo.id
 
-        render error
+            rubro.codigo=codigo+rubro.codigo;
+            rubro.fechaModificacion=new Date()
+            rubro.save(flush: true)
+
+            nuevo.fecha=new Date()
+            nuevo.fechaModificacion=null
+
+            if(!nuevo.save(flush: true)){
+                println "erro copiar rubro "+nuevo.errors
+                error=true
+                textoError = 'Error al generar histórico del rubro'
+            }else{
+                Rubro.findAllByRubro(rubro).each{
+                    def r = new Rubro()
+                    r.rubro=nuevo
+                    r.item=it.item
+                    r.cantidad=it.cantidad
+                    r.fecha=it.fecha
+                    r.rendimiento=it.rendimiento
+                    if(!r.save(flush: true)){
+                        println "error copiar comp "+r.errors
+                        error=true
+                        textoError = 'Error al generar histórico del rubro'
+                    }
+                }
+            }
+        }else{
+            error = true
+            textoError = 'No se puede crear un histórico del rubro, ya tiene un histórico creado'
+        }
+
+        if(!error){
+            render "ok_" + nuevo?.id
+        }else{
+            render "no_" + textoError
+        }
+//            error=nuevo.id
+
+//        render error
     }
 
     def registrar_ajax () {
