@@ -20,7 +20,7 @@ class Item implements Auditable {
     String estado
     double transportePeso
     double transporteVolumen
-    String padre
+    Item padre
     String inec
     String transporte
     double rendimiento = 0
@@ -102,7 +102,7 @@ class Item implements Auditable {
         fechaModificacion(blank: true, nullable: true, attributes: [title: 'fecha de ultima modificacion'])
         transportePeso(blank: true, nullable: true, attributes: [title: 'transportePeso'])
         transporteVolumen(blank: true, nullable: true, attributes: [title: 'transporteVolumen'])
-        padre(size: 1..15, blank: true, nullable: true, attributes: [title: 'padre'])
+        padre(blank: true, nullable: true, attributes: [title: 'padre'])
         inec(size: 1..1, blank: true, nullable: true, attributes: [title: 'inec'])
         rendimiento(blank: true, nullable: true, attributes: [title: 'rendimiento'])
         tipo(size: 1..1, blank: true, nullable: true, attributes: [title: 'tipo'])
