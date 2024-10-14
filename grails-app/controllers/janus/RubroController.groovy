@@ -995,16 +995,18 @@ class RubroController {
 
         /** todo: actualizar el campo codigoHistorico de todos los rubros H */
 
+        println "codigoHist: ${rubro.codigoHistorico}"
         if(!rubro?.codigoHistorico){
 
             nuevo.properties=rubro.properties
             def codigo ="H"
             def copias = Item.findAllByCodigoIlike(codigo+'%'+rubro.codigo)
 
+            println "copias: ${copias?.size()}"
             if(copias.size() > 0){
                 while(copias.size()!= 0){
                     codigo=codigo+"H"
-//                    copias = Item.findAllByCodigo(codigo+rubro.codigo)
+                    copias = Item.findAllByCodigo(codigo+rubro.codigo)
                 }
             }
 
