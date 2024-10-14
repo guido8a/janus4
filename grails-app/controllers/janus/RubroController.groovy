@@ -999,7 +999,7 @@ class RubroController {
 
             nuevo.properties=rubro.properties
             def codigo ="H"
-            def copias = Item.findAllByCodigoIlike(codigo+rubro.codigo+'%')
+            def copias = Item.findAllByCodigoIlike(codigo+'%'+rubro.codigo)
 
             if(copias.size() > 0){
                 while(copias.size()!= 0){
