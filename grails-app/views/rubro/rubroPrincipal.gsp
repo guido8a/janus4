@@ -885,13 +885,15 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                                                 },
                                                 success  : function (msg) {
                                                     cr.modal("hide");
-                                                    if(msg==="true"){
-                                                        bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + "Error al generar histórico del rubro" + '</strong>');
+                                                    var parts = msg.split("_");
+                                                    if(parts[0]=== 'no'){
+                                                        bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
                                                     }else{
                                                         // agregar(msg,"H");
                                                         log("Histórico creado correctamente", "success");
                                                         setTimeout(function () {
-                                                            location.href="${createLink(controller: 'rubro', action: 'rubroPrincipal')}/" + msg;
+                                                            %{--location.href="${createLink(controller: 'rubro', action: 'rubroPrincipal')}/" + msg;--}%
+                                                            location.href="${createLink(controller: 'rubro', action: 'rubroPrincipal')}/" + parts[1];
                                                         }, 1000);
                                                     }
                                                 }
