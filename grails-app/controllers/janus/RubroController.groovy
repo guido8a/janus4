@@ -993,24 +993,28 @@ class RubroController {
         def textoError = ''
         def nuevo = new Item()
 
+        /** todo: actualizar el campo codigoHistorico de todos los rubros H */
+
         if(!rubro?.codigoHistorico){
 
             nuevo.properties=rubro.properties
             def codigo ="H"
-            def copias = Item.findAllByCodigo(codigo+rubro.codigo)
+            def copias = Item.findAllByCodigoIlike(codigo+rubro.codigo+'%')
 
             if(copias.size() > 0){
                 while(copias.size()!= 0){
                     codigo=codigo+"H"
-                    copias = Item.findAllByCodigo(codigo+rubro.codigo)
+//                    copias = Item.findAllByCodigo(codigo+rubro.codigo)
                 }
             }
 
-            rubro.codigo=codigo+rubro.codigo;
-            rubro.fechaModificacion=new Date()
+            rubro.codigo = codigo+rubro.codigo;
+            rubro.codigoHistorico = rubro.codigo
+            rubro.fechaModificacion = new Date()
             rubro.save(flush: true)
 
-            nuevo.fecha=new Date()
+            nuevo.fecha = new Date()
+            nuevo.padre = rubro
             nuevo.fechaModificacion=null
 
             if(!nuevo.save(flush: true)){
