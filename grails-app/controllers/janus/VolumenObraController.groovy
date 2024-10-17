@@ -59,13 +59,10 @@ class VolumenObraController {
     }
 
     def cargarSubpres() {
-//        println("params" + params)
         def grupo = Grupo.get(params.grupo)
         def subs = SubPresupuesto.findAllByGrupo(grupo,[sort:"descripcion"])
         [subs: subs]
     }
-
-
 
     def setMontoObra() {
         def tot = params.monto
@@ -387,9 +384,8 @@ class VolumenObraController {
     }
 
     def listaRubros(){
-        println "listaItems" + params
+//        println "listaItems" + params
         def datos;
-//        def listaRbro = ['grpo__id', 'grpo__id', 'grpo__id']
         def listaRbro = ['itemnmbr', 'itemcdgo']
         def listaItems = ['itemnmbr', 'itemcdgo']
 
@@ -398,16 +394,22 @@ class VolumenObraController {
         def txwh = "where tpit__id = 2 and undd.undd__id = item.undd__id and dprt.dprt__id = item.dprt__id and " +
                 "sbgr.sbgr__id = dprt.sbgr__id "
         def sqlTx = ""
-//        def item = listaRbro[params.buscarTipo.toInteger()-1]
         def bsca = listaItems[params.buscarPor.toInteger()-1]
         def ordn = listaRbro[params.ordenar.toInteger()-1]
 
         txwh += " and $bsca ilike '%${params.criterio}%'"
         sqlTx = "${select} ${txwh} order by ${ordn} limit 100 ".toString()
-        println "sql: $sqlTx"
+//        println "sql: $sqlTx"
 
         def cn = dbConnectionService.getConnection()
         datos = cn.rows(sqlTx)
         [data: datos]
     }
+
+    def buscarRubro(){
+        def obra = Obra.get(params.id)
+        def subPresupuestos = VolumenesObra.findAllByObra(obra, [sort: "orden"]).subPresupuesto.unique()
+        return [obra: obra, subPresupuestos: subPresupuestos]
+    }
+
 }

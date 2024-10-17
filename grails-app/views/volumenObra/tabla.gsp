@@ -9,7 +9,7 @@
     <div class="span-6" style="margin-bottom: 5px">
         <b>Subpresupuesto:</b>
         <g:select name="subpresupuesto" from="${subPres}" optionKey="id" optionValue="descripcion"
-                  style="width: 260px;font-size: 10px" id="subPres_desc" value="${subPre}"
+                  style="width: 240px;font-size: 10px" id="subPres_desc" value="${subPre}"
                   noSelection="['-1': 'TODOS']" class="selector"/>
 
         <a href="#" class="btn btn-xs btn-ajax btn-new" id="ordenarAsc" title="Ordenar Ascendentemente">
