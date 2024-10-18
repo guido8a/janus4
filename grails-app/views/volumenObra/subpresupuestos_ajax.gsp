@@ -1,0 +1,1 @@
+<g:select name="subpresupuestoBusqueda" class="form-control" from="${subpresupuestos}" optionKey="id" optionValue="descripcion" />

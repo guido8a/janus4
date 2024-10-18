@@ -10,7 +10,7 @@ class VolumenObraController {
 
     def volObra() {
 
-        def grupoFiltrado = Grupo.findAllByCodigoNotIlikeAndCodigoNotIlikeAndCodigoNotIlike('1', '2', '3');
+        def grupoFiltrado = Grupo.findAllByCodigoNotIlikeAndCodigoNotIlikeAndCodigoNotIlike('1', '2', '3').sort{it.descripcion};
         def subpreFiltrado = []
         def var
         def listaRbro = [1: 'Materiales', 2: 'Mano de obra', 3: 'Equipos']
@@ -409,7 +409,14 @@ class VolumenObraController {
     def buscarRubro(){
         def obra = Obra.get(params.id)
         def subPresupuestos = VolumenesObra.findAllByObra(obra, [sort: "orden"]).subPresupuesto.unique()
-        return [obra: obra, subPresupuestos: subPresupuestos]
+        def tipos = Grupo.findAllByCodigoNotIlikeAndCodigoNotIlikeAndCodigoNotIlike('1', '2', '3').sort{it.descripcion};
+        return [obra: obra, subPresupuestos: subPresupuestos, tipos: tipos]
+    }
+
+    def subpresupuestos_ajax() {
+        def grupo = Grupo.get(params.id)
+        def subpresupuestos = SubPresupuesto.findAllByGrupo(grupo,[sort:"descripcion"])
+        [subpresupuestos: subpresupuestos]
     }
 
 }
