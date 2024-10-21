@@ -30,7 +30,7 @@
             <div class="col-md-12">
                 <div class="col-md-1"> <label> Tipo de Obra: </label> </div>
                 <div class="col-md-2">
-                    <g:select name="tipoName" id="tipo" class="form-control" from="${tipos}" optionKey="id" optionValue="descripcion" />
+                    <g:select name="tipoName" id="tipo" class="form-control btn-success" from="${tipos}" optionKey="id" optionValue="descripcion" />
                 </div>
 
                 <div class="col-md-1"> <label> Subpresupuesto </label> </div>
@@ -86,7 +86,8 @@
             type    : "POST",
             url : "${g.createLink(controller: 'volumenObra',action:'subpresupuestos_ajax')}",
             data    : {
-                id: tipo
+                id: tipo,
+                obra: '${obra?.id}'
             },
             success : function (msg) {
                 $("#divSubpresupuesto").html(msg)
@@ -98,67 +99,67 @@
         cargarSubpresupuestoBusqueda();
     });
 
-    %{--$("#btnBuscar").click(function () {--}%
-    %{--    cargarTablaBusqueda();--}%
-    %{--});--}%
+    $("#btnBuscar").click(function () {
+        cargarTablaBusqueda();
+    });
 
-    %{--$("#btnLimpiar").click(function  () {--}%
-    %{--    $("#buscarGrupo").val(1);--}%
-    %{--    $("#buscarPor").val(1);--}%
-    %{--    $("#criterio").val('');--}%
-    %{--    $("#ordenar").val(1);--}%
-    %{--    cargarTablaBusqueda();--}%
-    %{--});--}%
+    $("#btnLimpiar").click(function  () {
+        $("#buscarPor").val(1);
+        $("#criterio").val('');
+        $("#ordenar").val(1);
+        cargarTablaBusqueda();
+    });
 
-    %{--$("#criterio").keydown(function (ev) {--}%
-    %{--    if (ev.keyCode === 13) {--}%
-    %{--        cargarTablaBusqueda();--}%
-    %{--        return false;--}%
-    %{--    }--}%
-    %{--    return true;--}%
-    %{--});--}%
+    $("#criterio").keydown(function (ev) {
+        if (ev.keyCode === 13) {
+            cargarTablaBusqueda();
+            return false;
+        }
+        return true;
+    });
 
-    %{--cargarTablaBusqueda();--}%
-    %{--cargarTablaSeleccionados();--}%
+    cargarTablaBusqueda();
+    cargarTablaSeleccionados();
 
-    %{--function cargarTablaBusqueda() {--}%
-    %{--    var d = cargarLoader("Cargando...");--}%
-    %{--    var grupo = $("#buscarGrupo option:selected").val();--}%
-    %{--    var buscarPor = $("#buscarPor option:selected").val();--}%
-    %{--    var criterio = $(".criterio").val();--}%
-    %{--    var ordenar = $("#ordenar option:selected").val();--}%
+    function cargarTablaBusqueda() {
+        var d = cargarLoader("Cargando...");
+        var buscarPor = $("#buscarPor option:selected").val();
+        var criterio = $(".criterio").val();
+        var ordenar = $("#ordenar option:selected").val();
 
-    %{--    $.ajax({--}%
-    %{--        type: "POST",--}%
-    %{--        url: "${createLink(controller: 'rubro', action:'tablaBusqueda_ajax')}",--}%
-    %{--        data: {--}%
-    %{--            buscarPor: buscarPor,--}%
-    %{--            criterio: criterio,--}%
-    %{--            ordenar: ordenar,--}%
-    %{--            grupo: grupo,--}%
-    %{--            rubro: '${rubro?.id}'--}%
-    %{--        },--}%
-    %{--        success: function (msg) {--}%
-    %{--            d.modal("hide");--}%
-    %{--            $("#divTabla").html(msg);--}%
-    %{--        }--}%
-    %{--    });--}%
-    %{--}--}%
+        $.ajax({
+            type: "POST",
+            url: "${createLink(controller: 'volumenObra', action:'tablaBusqueda_ajax')}",
+            data: {
+                buscarPor: buscarPor,
+                criterio: criterio,
+                ordenar: ordenar
+            },
+            success: function (msg) {
+                d.modal("hide");
+                $("#divTabla").html(msg);
+            }
+        });
+    }
 
-    %{--function cargarTablaSeleccionados() {--}%
-    %{--    var d = cargarLoader("Cargando...");--}%
-    %{--    $.ajax({--}%
-    %{--        type: "POST",--}%
-    %{--        url: "${createLink(controller: 'rubro', action:'tablaSeleccionados_ajax')}",--}%
-    %{--        data: {--}%
-    %{--            id: '${rubro?.id}'--}%
-    %{--        },--}%
-    %{--        success: function (msg) {--}%
-    %{--            d.modal("hide");--}%
-    %{--            $("#divTablaSeleccionados").html(msg);--}%
-    %{--        }--}%
-    %{--    });--}%
-    %{--}--}%
+    function cargarTablaSeleccionados() {
+        // var grupo = $("#tipo option:selected").val();
+        var subpresupuesto = $("#subpresupuestoBusqueda option:selected").val();
+        var d = cargarLoader("Cargando...");
+        $.ajax({
+            type: "POST",
+            url: "${createLink(controller: 'volumenObra', action:'tablaSeleccionados_ajax')}",
+            data: {
+                // grupo: grupo,
+                subpresupuesto:subpresupuesto,
+                obra: '${obra?.id}'
+            },
+            success: function (msg) {
+                d.modal("hide");
+                $("#divTablaSeleccionados").html(msg);
+            }
+        });
+    }
 
 </script>
 

@@ -173,14 +173,14 @@ class VolumenObraController {
         def cont = 10000
 //        def volu = VolumenesObra.list()
 
-            if (itemVolumenDest) {
-                render "no_No se puede copiar el rubro, ya existe en el subpresupuesto de destino"
-                return true
-            } else {
-                volumen = VolumenesObra.findByObraAndItemAndSubPresupuesto(obra, rubro, sbprDest)
-                if (volumen == null)
-                    volumen = new VolumenesObra()
-            }
+        if (itemVolumenDest) {
+            render "no_No se puede copiar el rubro, ya existe en el subpresupuesto de destino"
+            return true
+        } else {
+            volumen = VolumenesObra.findByObraAndItemAndSubPresupuesto(obra, rubro, sbprDest)
+            if (volumen == null)
+                volumen = new VolumenesObra()
+        }
 
 
         if(params.canti){
@@ -415,8 +415,81 @@ class VolumenObraController {
 
     def subpresupuestos_ajax() {
         def grupo = Grupo.get(params.id)
-        def subpresupuestos = SubPresupuesto.findAllByGrupo(grupo,[sort:"descripcion"])
+        def obra = Obra.get(params.obra)
+        def listaSubpresupuestos = SubPresupuesto.findAllByGrupo(grupo,[sort:"descripcion"])
+        def subpresupuestos = VolumenesObra.findAllByObraAndSubPresupuestoInList(obra, listaSubpresupuestos, [sort: "orden"]).subPresupuesto.unique()
         [subpresupuestos: subpresupuestos]
+    }
+
+    def tablaBusqueda_ajax(){
+
+        def datos;
+        def listaRbro = ['itemnmbr', 'itemcdgo']
+        def listaItems = ['itemnmbr', 'itemcdgo']
+
+        def select = "select item__id, itemnmbr, itemcdgo, unddcdgo " +
+                "from item, undd, dprt, sbgr "
+        def txwh = "where tpit__id = 2 and undd.undd__id = item.undd__id and dprt.dprt__id = item.dprt__id and " +
+                "sbgr.sbgr__id = dprt.sbgr__id "
+        def sqlTx = ""
+        def bsca = listaItems[params.buscarPor.toInteger()-1]
+        def ordn = listaRbro[params.ordenar.toInteger()-1]
+
+        txwh += " and $bsca ilike '%${params.criterio}%'"
+        sqlTx = "${select} ${txwh} order by ${ordn} limit 100 ".toString()
+//        println "sql: $sqlTx"
+
+        def cn = dbConnectionService.getConnection()
+        datos = cn.rows(sqlTx)
+        [data: datos]
+
+    }
+
+    def tablaSeleccionados_ajax(){
+        println("params ts " + params )
+
+//        def usuario = session.usuario.id
+//        def persona = Persona.get(usuario)
+//        def direccion = Direccion.get(persona?.departamento?.direccion?.id)
+//        def grupo = Grupo.get(params.grupo)
+        def obra = Obra.get(params.obra)
+        def subpresupuesto = SubPresupuesto.get(params.subpresupuesto)
+//        def subPresupuesto1 = []
+//        if(grupo) subPresupuesto1 = SubPresupuesto.findAllByGrupoInList(grupo)
+//        def obra = Obra.get(params.obra)
+
+//        def duenoObra = 0
+//        def valores
+//        def orden
+
+//        if (params.ord == '1') {
+//            orden = 'asc'
+//        } else {
+//            orden = 'desc'
+//        }
+
+//        if(obra.estado != 'R') {
+//            preciosService.ac_transporteDesalojo(obra.id)
+//            preciosService.ac_rbroObra(obra.id)
+//        }
+
+//        if (params.sub && params.sub != "-1") {
+//            valores = preciosService.rbro_pcun_v5(obra.id, params.sub, orden)
+        def valores = preciosService.rbro_pcun_v5(obra.id,subpresupuesto?.id, "asc")
+//        } else {
+//            valores = preciosService.rbro_pcun_v4(obra.id, orden)
+//        }
+
+//        def subPres = VolumenesObra.findAllByObra(obra, [sort: "orden"]).subPresupuesto.unique()
+//        def volumenes = VolumenesObra.findAllBySubPresupuesto(subpresupuesto)
+//        def estado = obra.estado
+//        duenoObra = esDuenoObra(obra)? 1 : 0
+
+//        [subPres: subPres, subPre: params.sub, obra: obra, valores: valores,
+//         subPresupuesto1: subPresupuesto1, estado: estado, msg: params.msg, persona: persona, duenoObra: duenoObra]
+
+        return [valores: valores]
+
     }
 
 }
