@@ -110,21 +110,15 @@ class VolumenObraController {
     def addItem() {
 //        println "addItem " + params
         def obra = Obra.get(params.obra)
-//        def rubro2 = Item.get(params.rubro)
-//        def rubro = Item.get(params.id)
         def rubro = Item.findByCodigoIlike(params.cod)
         def sbpr = SubPresupuesto.get(params.sub)
         def volumen
         def msg = ""
-//        if (params.vlob_id)
         if (params.id)
             volumen = VolumenesObra.get(params.id)
         else {
-
             volumen = new VolumenesObra()
-//            def v=VolumenesObra.findByItemAndObra(rubro,obra)
-            println "from VolumenesObra where obra=${obra.id} and item=${rubro.id} and subPresupuesto=${sbpr.id}"
-//            def v = VolumenesObra.findAll("from VolumenesObra where obra=${obra.id} and item=${rubro.id} and subPresupuesto=${sbpr.id}")
+//            println "from VolumenesObra where obra=${obra.id} and item=${rubro.id} and subPresupuesto=${sbpr.id}"
             def v = VolumenesObra.findAllByObraAndItemAndSubPresupuesto(obra, rubro, sbpr)
             println "----v "+v
             if (v.size() > 0) {
@@ -141,8 +135,6 @@ class VolumenObraController {
                 }
             }
         }
-//        println "volumn :" + volumen
-
         volumen.cantidad = params.cantidad.toDouble()
         volumen.orden = params.orden.toInteger()
         volumen.subPresupuesto = SubPresupuesto.get(params.sub)
@@ -446,49 +438,16 @@ class VolumenObraController {
     }
 
     def tablaSeleccionados_ajax(){
-        println("params ts " + params )
-
-//        def usuario = session.usuario.id
-//        def persona = Persona.get(usuario)
-//        def direccion = Direccion.get(persona?.departamento?.direccion?.id)
-//        def grupo = Grupo.get(params.grupo)
+//        println("params ts " + params )
         def obra = Obra.get(params.obra)
         def subpresupuesto = SubPresupuesto.get(params.subpresupuesto)
-//        def subPresupuesto1 = []
-//        if(grupo) subPresupuesto1 = SubPresupuesto.findAllByGrupoInList(grupo)
-//        def obra = Obra.get(params.obra)
-
-//        def duenoObra = 0
-//        def valores
-//        def orden
-
-//        if (params.ord == '1') {
-//            orden = 'asc'
-//        } else {
-//            orden = 'desc'
-//        }
-
-//        if(obra.estado != 'R') {
-//            preciosService.ac_transporteDesalojo(obra.id)
-//            preciosService.ac_rbroObra(obra.id)
-//        }
-
-//        if (params.sub && params.sub != "-1") {
-//            valores = preciosService.rbro_pcun_v5(obra.id, params.sub, orden)
         def valores = preciosService.rbro_pcun_v5(obra.id,subpresupuesto?.id, "asc")
-//        } else {
-//            valores = preciosService.rbro_pcun_v4(obra.id, orden)
-//        }
-
-//        def subPres = VolumenesObra.findAllByObra(obra, [sort: "orden"]).subPresupuesto.unique()
-//        def volumenes = VolumenesObra.findAllBySubPresupuesto(subpresupuesto)
-//        def estado = obra.estado
-//        duenoObra = esDuenoObra(obra)? 1 : 0
-
-//        [subPres: subPres, subPre: params.sub, obra: obra, valores: valores,
-//         subPresupuesto1: subPresupuesto1, estado: estado, msg: params.msg, persona: persona, duenoObra: duenoObra]
 
         return [valores: valores]
+    }
+
+
+    def formRubroVolObra_ajax(){
 
     }
 

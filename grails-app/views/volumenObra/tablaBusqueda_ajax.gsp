@@ -41,50 +41,46 @@
 
 <script type="text/javascript">
 
-    %{--$(".btnSeleccionar").click(function () {--}%
-    %{--    var id = $(this).data("id");--}%
-    %{--    bootbox.confirm({--}%
-    %{--        title: "Agregar rubro ",--}%
-    %{--        message: "<i class='fa fa-exclamation-triangle text-info fa-3x'></i> <strong style='font-size: 14px'> Está seguro de agregar este rubro a la composición?. </strong> ",--}%
-    %{--        buttons: {--}%
-    %{--            cancel: {--}%
-    %{--                label: '<i class="fa fa-times"></i> Cancelar',--}%
-    %{--                className: 'btn-primary'--}%
-    %{--            },--}%
-    %{--            confirm: {--}%
-    %{--                label: '<i class="fa fa-check"></i> Aceptar',--}%
-    %{--                className: 'btn-success'--}%
-    %{--            }--}%
-    %{--        },--}%
-    %{--        callback: function (result) {--}%
-    %{--            if(result){--}%
-    %{--                var g = cargarLoader("Guardando...");--}%
-    %{--                $.ajax({--}%
-    %{--                    type: "POST",--}%
-    %{--                    url: "${createLink(controller: 'rubro', action:'agrearItem_ajax')}",--}%
-    %{--                    data: {--}%
-    %{--                        id: id,--}%
-    %{--                        rubro: '${rubro?.id}'--}%
-    %{--                    },--}%
-    %{--                    success: function (msg) {--}%
-    %{--                        g.modal("hide");--}%
-    %{--                        var parts = msg.split("_");--}%
-    %{--                        if(parts[0] === 'ok'){--}%
-    %{--                            log(parts[1], "success");--}%
-    %{--                            cargarTablaSeleccionados();--}%
-    %{--                        }else{--}%
-    %{--                            if(parts[0] === 'err'){--}%
-    %{--                                bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');--}%
-    %{--                                return false;--}%
-    %{--                            }else{--}%
-    %{--                                log(parts[1], "error")--}%
-    %{--                            }--}%
-    %{--                        }--}%
-    %{--                    }--}%
-    %{--                });--}%
-    %{--            }--}%
-    %{--        }--}%
-    %{--    });--}%
-    %{--})--}%
+
+    $(".btnSeleccionar").click(function () {
+        var id = $(this).data("id");
+        editarFormVolObra(id);
+    });
+
+    function editarFormVolObra(id) {
+        $.ajax({
+            type    : "POST",
+            url: "${createLink(controller: 'volumenObra', action:'formRubroVolObra_ajax')}",
+            data    : {
+                id: id,
+                obra: '${}'
+            },
+            success : function (msg) {
+                var er = bootbox.dialog({
+                    id      : "dlgCreateEditRubroVO",
+                    title   : "Agregar rubro",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        },
+                        guardar  : {
+                            id        : "btnSave",
+                            label     : "<i class='fa fa-save'></i> Guardar",
+                            className : "btn-success",
+                            callback  : function () {
+                                return submitFormRubroVolObra();
+                            } //callback
+                        } //guardar
+                    } //buttons
+                }); //dialog
+            } //success
+        }); //ajax
+    } //createEdit
+
+
 
 </script>
