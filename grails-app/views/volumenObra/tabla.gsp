@@ -102,7 +102,7 @@
             <td class="col_total total" style="display: none;text-align: right">
                 <g:formatNumber number="${val.totl}" format="##,##0" minFractionDigits="4"  maxFractionDigits="4" locale="ec"/>
             </td>
-%{--            <g:if test="${obra.estado!='R' && duenoObra == 1}">--}%
+            <g:if test="${obra.estado!='R' && duenoObra == 1}">
                 <td style="width: 10%;text-align: center" class="col_delete">
                     <a class="btn btn-xs btn-primary editarItem" href="#" rel="tooltip" title="Editar" iden="${val.vlob__id}"
                        data-orden="${val.vlobordn}" data-nom="${val.rbronmbr}" data-can="${val.vlobcntd}"
@@ -114,7 +114,7 @@
                         <i class="fa fa-trash"></i>
                     </a>
                 </td>
-%{--            </g:if>--}%
+            </g:if>
         </tr>
     </g:each>
 
