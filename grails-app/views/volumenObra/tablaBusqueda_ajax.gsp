@@ -41,12 +41,8 @@
 
 <script type="text/javascript">
 
-    $(".btnSeleccionar").click(function () {
-        var rubro = $(this).data("id");
-        editarFormVolObra(null, rubro);
-    });
-
     function editarFormVolObra(id, rubro) {
+
         var subpresupuesto = $("#subpresupuestoBusqueda option:selected").val();
         $.ajax({
             type    : "POST",
@@ -114,5 +110,76 @@
             return false;
         }
     }
+
+    function verificarEstadoVO(rubro){
+        var valor = false;
+        var subpresupuesto = $("#subpresupuestoBusqueda option:selected").val();
+        $.ajax({
+            type    : "POST",
+            async : false,
+            url: "${createLink(controller: 'volumenObra', action:'verificarEstado_ajax')}",
+            data    : {
+                rubro: rubro,
+                subpresupuesto: subpresupuesto,
+                obra: '${obra?.id}'
+            },
+            success : function (msg) {
+                if(msg === 'si'){
+                    valor = true
+                }else{
+                    valor = false
+                }
+            } //success
+        }); //ajax
+
+        return valor
+    }
+
+    function formVolObraExistente(rubro) {
+        var subpresupuesto = $("#subpresupuestoBusqueda option:selected").val();
+        $.ajax({
+            type    : "POST",
+            url: "${createLink(controller: 'volumenObra', action:'formVolObraExistente_ajax')}",
+            data    : {
+                rubro: rubro,
+                subpresupuesto: subpresupuesto,
+                obra: '${obra?.id}'
+            },
+            success : function (msg) {
+                var er = bootbox.dialog({
+                    id      : "dlgCreateEditVOExistente",
+                    title   : "Modificar cantidad",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        },
+                        guardar  : {
+                            id        : "btnSave",
+                            label     : "<i class='fa fa-save'></i> Guardar",
+                            className : "btn-success",
+                            callback  : function () {
+                                return submitFormRubroVolObra();
+                            } //callback
+                        } //guardar
+                    } //buttons
+                }); //dialog
+            } //success
+        }); //ajax
+    } //createEdit
+
+    $(".btnSeleccionar").click(function () {
+        var rubro = $(this).data("id");
+        var existe = verificarEstadoVO(rubro);
+
+        if(existe){
+            formVolObraExistente(rubro)
+        }else{
+            editarFormVolObra(null, rubro);
+        }
+    });
 
 </script>

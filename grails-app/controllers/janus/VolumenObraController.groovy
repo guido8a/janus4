@@ -120,19 +120,28 @@ class VolumenObraController {
             volumen = new VolumenesObra()
 //            println "from VolumenesObra where obra=${obra.id} and item=${rubro.id} and subPresupuesto=${sbpr.id}"
             def v = VolumenesObra.findAllByObraAndItemAndSubPresupuesto(obra, rubro, sbpr)
-            println "----v "+v
+//            println "----v "+v
             if (v.size() > 0) {
                 v = v.pop()
-                if (params.override == "1") {
-                    v.cantidad += params.cantidad.toDouble()
-                    v.save(flush: true)
-                    redirect(action: "tabla", params: [obra: obra.id, sub: v.subPresupuesto.id, ord: 1])
+//                if (params.override == "1") {
+                v.cantidad += params.cantidad.toDouble()
+//                    v.save(flush: true)
+                if(!v.save(flush:true)){
+                    println("error al guardar " + v.errors)
+                    render "no_Error al guardar"
                     return
-                } else {
-                    msg = "error"
-                    render msg
+                }else{
+                    render "ok_Guardado correctamente"
                     return
                 }
+
+//                    redirect(action: "tabla", params: [obra: obra.id, sub: v.subPresupuesto.id, ord: 1])
+//                    return
+//                } else {
+//                    msg = "error"
+//                    render msg
+//                    return
+//                }
             }
         }
         volumen.cantidad = params.cantidad.toDouble()
@@ -466,8 +475,30 @@ class VolumenObraController {
             rubro = Item.get(params.rubro)
         }
 
-//        def rubro = params.rubro ?  Item.get(params.rubro) : volumenObra.item
+        return [volumenObra: volumenObra, obra: obra, subpresupuesto: subpresupuesto, rubro: rubro]
+    }
 
+    def verificarEstado_ajax(){
+        println("pve " + params)
+
+        def obra = Obra.get(params.obra)
+        def rubro = Item.get(params.rubro)
+        def subpresupuesto = SubPresupuesto.get(params.subpresupuesto)
+
+        def existe = VolumenesObra.findAllByObraAndItemAndSubPresupuesto(obra, rubro, subpresupuesto)
+
+        if(existe.size() > 0){
+            render "si"
+        }else{
+            render "no"
+        }
+    }
+
+    def formVolObraExistente_ajax(){
+        def subpresupuesto = SubPresupuesto.get(params.subpresupuesto)
+        def obra = Obra.get(params.obra)
+        def rubro = Item.get(params.rubro)
+        def volumenObra = VolumenesObra.findByObraAndSubPresupuestoAndItem(obra,subpresupuesto,rubro)
         return [volumenObra: volumenObra, obra: obra, subpresupuesto: subpresupuesto, rubro: rubro]
     }
 

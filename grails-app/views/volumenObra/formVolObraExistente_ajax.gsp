@@ -1,5 +1,11 @@
 <g:form class="form-horizontal" name="frmRubroVolObra" role="form" controller="volumenObra" action="addItem" method="POST">
-    <g:hiddenField name="id" value="${volumenObra?.id}" />
+
+    <div class="alert alert-success">
+    <i class="fa fa-exclamation-triangle text-warning fa-2x"></i><strong style="font-size: 14px"> El rubro seleccionado ya se encuentra en el subpresupuesto, desea modificar la cantidad? </strong>
+    </div>
+
+
+    <g:hiddenField name="id" value="${null}" />
     <g:hiddenField name="obra" value="${obra?.id}" />
     <g:hiddenField name="sub" value="${subpresupuesto?.id}" />
     <g:hiddenField name="item" value="${rubro?.id}" />
@@ -15,29 +21,6 @@
             </span>
         </span>
     </div>
-
-    <div class="form-group ${hasErrors(bean: volumenObra, field: 'orden', 'error')} required">
-        <span class="grupo">
-            <label for="orden" class="col-md-2 control-label text-info">
-                Orden
-            </label>
-            <span class="col-md-3">
-                <g:textField name="orden" required="" class="form-control required" value="${volumenObra?.orden ?: 1}"/>
-            </span>
-        </span>
-    </div>
-
-    <div class="form-group ${hasErrors(bean: volumenObra, field: 'descripcion', 'error')} ">
-        <span class="grupo">
-            <label for="dscr" class="col-md-2 control-label text-info">
-                Descripción
-            </label>
-            <span class="col-md-10">
-                <g:textField name="dscr" required="" class="form-control" value="${volumenObra?.descripcion}"/>
-            </span>
-        </span>
-    </div>
-
 </g:form>
 
 <script type="text/javascript">
@@ -64,17 +47,6 @@
 
     $("#cantidad").keydown(function (ev) {
         return validarNum(ev);
-    });
-
-    function validarNumEntero(ev) {
-        return ((ev.keyCode >= 48 && ev.keyCode <= 57) ||
-            (ev.keyCode >= 96 && ev.keyCode <= 105) ||
-            ev.keyCode === 8 || ev.keyCode === 46 || ev.keyCode === 9 ||
-            ev.keyCode === 37 || ev.keyCode === 39);
-    }
-
-    $("#orden").keydown(function (ev) {
-        return validarNumEntero(ev);
     });
 
     $("#frmRubro").validate({
