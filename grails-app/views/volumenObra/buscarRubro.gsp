@@ -133,7 +133,8 @@
             data: {
                 buscarPor: buscarPor,
                 criterio: criterio,
-                ordenar: ordenar
+                ordenar: ordenar,
+                obra: '${obra?.id}'
             },
             success: function (msg) {
                 d.modal("hide");

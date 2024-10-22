@@ -144,10 +144,12 @@ class VolumenObraController {
 
         if (!volumen.save(flush: true)) {
             println "error volumen obra " + volumen.errors
-            render "error"
+//            render "error"
+            render "no_Error al guardar"
         } else {
             preciosService.actualizaOrden(volumen, "insert")
-            redirect(action: "tabla", params: [obra: obra.id, sub: volumen.subPresupuesto.id, ord: 1])
+//            redirect(action: "tabla", params: [obra: obra.id, sub: volumen.subPresupuesto.id, ord: 1])
+            render "ok_Guardado correctamente"
         }
     }
 
@@ -407,14 +409,16 @@ class VolumenObraController {
 
     def subpresupuestos_ajax() {
         def grupo = Grupo.get(params.id)
-        def obra = Obra.get(params.obra)
-        def listaSubpresupuestos = SubPresupuesto.findAllByGrupo(grupo,[sort:"descripcion"])
-        def subpresupuestos = VolumenesObra.findAllByObraAndSubPresupuestoInList(obra, listaSubpresupuestos, [sort: "orden"]).subPresupuesto.unique()
+//        def obra = Obra.get(params.obra)
+//        def listaSubpresupuestos = SubPresupuesto.findAllByGrupo(grupo,[sort:"descripcion"])
+        def subpresupuestos = SubPresupuesto.findAllByGrupo(grupo,[sort:"descripcion"])
+//        def subpresupuestos = VolumenesObra.findAllByObraAndSubPresupuestoInList(obra, listaSubpresupuestos, [sort: "orden"]).subPresupuesto.unique()
         [subpresupuestos: subpresupuestos]
     }
 
     def tablaBusqueda_ajax(){
 
+        def obra = Obra.get(params.obra)
         def datos;
         def listaRbro = ['itemnmbr', 'itemcdgo']
         def listaItems = ['itemnmbr', 'itemcdgo']
@@ -433,7 +437,7 @@ class VolumenObraController {
 
         def cn = dbConnectionService.getConnection()
         datos = cn.rows(sqlTx)
-        [data: datos]
+        [data: datos, obra: obra]
 
     }
 
@@ -448,7 +452,23 @@ class VolumenObraController {
 
 
     def formRubroVolObra_ajax(){
+        println("params fvo " + params)
+        def subpresupuesto = SubPresupuesto.get(params.subpresupuesto)
+        def obra = Obra.get(params.obra)
+        def volumenObra
+        def rubro
 
+        if(params.id){
+            volumenObra = VolumenesObra.get(params.id)
+            rubro = volumenObra?.item
+        }else{
+            volumenObra = new VolumenesObra()
+            rubro = Item.get(params.rubro)
+        }
+
+//        def rubro = params.rubro ?  Item.get(params.rubro) : volumenObra.item
+
+        return [volumenObra: volumenObra, obra: obra, subpresupuesto: subpresupuesto, rubro: rubro]
     }
 
 }

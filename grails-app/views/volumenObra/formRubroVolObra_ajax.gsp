@@ -1,42 +1,46 @@
 <g:form class="form-horizontal" name="frmRubroVolObra" role="form" controller="volumenObra" action="addItem" method="POST">
-    <g:hiddenField name="id" value="${rubro?.id}" />
+    <g:hiddenField name="id" value="${volumenObra?.id}" />
+    <g:hiddenField name="obra" value="${obra?.id}" />
+    <g:hiddenField name="sub" value="${subpresupuesto?.id}" />
+    <g:hiddenField name="item" value="${rubro?.id}" />
+    <g:hiddenField name="cod" value="${rubro?.codigo}" />
 
-    <div class="form-group ${hasErrors(bean: rubro, field: 'cantidad', 'error')} required">
+    <div class="form-group ${hasErrors(bean: volumenObra, field: 'cantidad', 'error')} required">
         <span class="grupo">
             <label for="cantidad" class="col-md-2 control-label text-info">
                 Cantidad
             </label>
-            <span class="col-md-4">
-                <g:textField name="cantidad" required="" class="form-control required" value="${rubro?.cantidad}"/>
+            <span class="col-md-3">
+                <g:textField name="cantidad" required="" class="form-control required" value="${volumenObra?.cantidad}"/>
             </span>
         </span>
     </div>
 
-    <div class="form-group ${hasErrors(bean: rubro, field: 'rendimiento', 'error')} required">
+    <div class="form-group ${hasErrors(bean: volumenObra, field: 'orden', 'error')} required">
         <span class="grupo">
-            <label for="rendimiento" class="col-md-2 control-label text-info">
-                Rendimiento
+            <label for="orden" class="col-md-2 control-label text-info">
+                Orden
             </label>
-            <span class="col-md-4">
-                <g:textField name="rendimiento" required="" class="form-control required" value="${rubro?.rendimiento}"/>
+            <span class="col-md-3">
+                <g:textField name="orden" required="" class="form-control required" value="${volumenObra?.orden}"/>
             </span>
         </span>
+    </div>
 
-        <span class="col-md-2">
-            <a href="#" class="btn btn-info btnRendimientoDefecto">
-                <i class="fa fa-info"></i>
-                Rendimiento por defecto
-            </a>
+    <div class="form-group ${hasErrors(bean: volumenObra, field: 'descripcion', 'error')} ">
+        <span class="grupo">
+            <label for="dscr" class="col-md-2 control-label text-info">
+                Descripción
+            </label>
+            <span class="col-md-10">
+                <g:textField name="dscr" required="" class="form-control" value="${volumenObra?.descripcion}"/>
+            </span>
         </span>
     </div>
 
 </g:form>
 
 <script type="text/javascript">
-
-    $(".btnRendimientoDefecto").click(function () {
-        $("#rendimiento").val(${rendimiento})
-    });
 
     function validarNum(ev) {
         /*
@@ -58,11 +62,20 @@
             ev.keyCode === 37 || ev.keyCode === 39);
     }
 
-
-    $("#cantidad, #rendimiento").keydown(function (ev) {
+    $("#cantidad").keydown(function (ev) {
         return validarNum(ev);
     });
 
+    function validarNumEntero(ev) {
+        return ((ev.keyCode >= 48 && ev.keyCode <= 57) ||
+            (ev.keyCode >= 96 && ev.keyCode <= 105) ||
+            ev.keyCode === 8 || ev.keyCode === 46 || ev.keyCode === 9 ||
+            ev.keyCode === 37 || ev.keyCode === 39);
+    }
+
+    $("#orden").keydown(function (ev) {
+        return validarNumEntero(ev);
+    });
 
     $("#frmRubro").validate({
         errorClass     : "help-block",
@@ -81,7 +94,7 @@
 
     $(".form-control").keydown(function (ev) {
         if (ev.keyCode === 13) {
-            submitFormEditarItem();
+            submitFormRubroVolObra();
             return false;
         }
         return true;

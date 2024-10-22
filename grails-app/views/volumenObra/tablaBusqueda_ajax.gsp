@@ -41,19 +41,21 @@
 
 <script type="text/javascript">
 
-
     $(".btnSeleccionar").click(function () {
-        var id = $(this).data("id");
-        editarFormVolObra(id);
+        var rubro = $(this).data("id");
+        editarFormVolObra(null, rubro);
     });
 
-    function editarFormVolObra(id) {
+    function editarFormVolObra(id, rubro) {
+        var subpresupuesto = $("#subpresupuestoBusqueda option:selected").val();
         $.ajax({
             type    : "POST",
             url: "${createLink(controller: 'volumenObra', action:'formRubroVolObra_ajax')}",
             data    : {
                 id: id,
-                obra: '${}'
+                rubro: rubro,
+                subpresupuesto: subpresupuesto,
+                obra: '${obra?.id}'
             },
             success : function (msg) {
                 var er = bootbox.dialog({
@@ -81,6 +83,36 @@
         }); //ajax
     } //createEdit
 
-
+    function submitFormRubroVolObra() {
+        var $form = $("#frmRubroVolObra");
+        if ($form.valid()) {
+            var data = $form.serialize();
+            var dialog = cargarLoader("Guardando...");
+            $.ajax({
+                type    : "POST",
+                url     : $form.attr("action"),
+                data    : data,
+                success : function (msg) {
+                    dialog.modal('hide');
+                    var parts = msg.split("_");
+                    if(parts[0] === 'ok'){
+                        log(parts[1], "success");
+                        cargarTablaBusqueda();
+                        cargarTablaSeleccionados();
+                    }else{
+                        if(parts[0] === 'err'){
+                            bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
+                            return false;
+                        }else{
+                            log(parts[1], "error");
+                            return false;
+                        }
+                    }
+                }
+            });
+        } else {
+            return false;
+        }
+    }
 
 </script>
