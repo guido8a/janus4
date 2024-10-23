@@ -33,7 +33,7 @@
                 Descripción
             </label>
             <span class="col-md-10">
-                <g:textField name="dscr" required="" class="form-control" value="${volumenObra?.descripcion}"/>
+                <g:textArea name="dscr" class="form-control" value="${volumenObra?.descripcion}" style="resize: none" />
             </span>
         </span>
     </div>
@@ -92,11 +92,4 @@
         }
     });
 
-    $(".form-control").keydown(function (ev) {
-        if (ev.keyCode === 13) {
-            submitFormRubroVolObra();
-            return false;
-        }
-        return true;
-    });
 </script>

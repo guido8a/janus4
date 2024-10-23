@@ -66,8 +66,28 @@
     <fieldset class="borde col-md-12">
         <div class="col-md-7" id="divTabla">
         </div>
-        <div class="col-md-5" id="divTablaSeleccionados" >
+
+        <div class="col-md-5">
+
+            <div class="alert alert-info" style="margin-top: 10px; text-align: center">
+                <i class="fa fa-list"></i> <strong style="font-size: 16px"> Rubros en volúmenes de obra</strong>
+            </div>
+
+            <div class="row-fluid">
+                <div class="col-md-12">
+                    <div class="col-md-3"> <label> Subpresupuesto </label> </div>
+                    <div class="col-md-9">
+                        <g:select name="subpresupuestoSeleccionado" class="form-control" from="${subPresupuestos}" optionKey="${{it.id}}" optionValue="${{it.descripcion}}" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12" id="divTablaSeleccionados" >
+
+            </div>
         </div>
+
+
     </fieldset>
 </div>
 
@@ -144,15 +164,13 @@
     }
 
     function cargarTablaSeleccionados() {
-        // var grupo = $("#tipo option:selected").val();
-        var subpresupuesto = $("#subpresupuestoBusqueda option:selected").val();
         var d = cargarLoader("Cargando...");
+        var subpresupuesto = $("#subpresupuestoSeleccionado option:selected").val();
         $.ajax({
             type: "POST",
             url: "${createLink(controller: 'volumenObra', action:'tablaSeleccionados_ajax')}",
             data: {
-                // grupo: grupo,
-                subpresupuesto:subpresupuesto,
+                subpresupuesto: subpresupuesto,
                 obra: '${obra?.id}'
             },
             success: function (msg) {
@@ -161,6 +179,10 @@
             }
         });
     }
+
+    $("#subpresupuestoSeleccionado").change(function () {
+        cargarTablaSeleccionados();
+    });
 
 </script>
 

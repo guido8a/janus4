@@ -1,7 +1,3 @@
-<div class="alert alert-info" style="margin-top: 10px; text-align: center">
-    <i class="fa fa-list"></i> <strong style="font-size: 16px"> Rubros en volúmenes de obra</strong>
-</div>
-
 <div role="main" style="margin-top: 10px;">
     <table class="table table-bordered table-striped table-condensed table-hover">
         <thead>
@@ -17,7 +13,7 @@
     </table>
 </div>
 
-<div class="" style="width: 99.7%;height: 525px; overflow-y: auto;float: right; margin-top: -20px">
+<div class="" style="width: 99.7%;height: 475px; overflow-y: auto;float: right; margin-top: -20px">
     <table class="table-bordered table-striped table-condensed table-hover" style="width: 100%">
         <tbody>
         <g:if test="${valores}">
@@ -45,77 +41,43 @@
 
 <script type="text/javascript">
 
-    %{--$(".btnBorrarSeleccion").click(function () {--}%
-    %{--    var id = $(this).data("id");--}%
-    %{--    bootbox.confirm({--}%
-    %{--        title: "Eliminar",--}%
-    %{--        message: "<i class='fa fa-exclamation-triangle text-info fa-3x'></i> <strong style='font-size: 14px'> Está seguro de eliminar este registro?</strong> ",--}%
-    %{--        buttons: {--}%
-    %{--            cancel: {--}%
-    %{--                label: '<i class="fa fa-times"></i> Cancelar',--}%
-    %{--                className: 'btn-primary'--}%
-    %{--            },--}%
-    %{--            confirm: {--}%
-    %{--                label: '<i class="fa fa-trash"></i> Borrar',--}%
-    %{--                className: 'btn-danger'--}%
-    %{--            }--}%
-    %{--        },--}%
-    %{--        callback: function (result) {--}%
-    %{--            if(result){--}%
-    %{--                $.ajax({--}%
-    %{--                    type : "POST",--}%
-    %{--                    url : "${g.createLink(controller: 'rubro',action:'verificaRubro')}",--}%
-    %{--                    data     : {--}%
-    %{--                        id : '${rubro?.id}'--}%
-    %{--                    },--}%
-    %{--                    success  : function (msg) {--}%
-    %{--                        var resp = msg.split('_');--}%
-    %{--                        if(resp[0] === "1"){--}%
-    %{--                            var ou = cargarLoader("Cargando...");--}%
-    %{--                            $.ajax({--}%
-    %{--                                type : "POST",--}%
-    %{--                                url : "${g.createLink(controller: 'rubro',action:'listaObrasUsadas_ajax')}",--}%
-    %{--                                data     : {--}%
-    %{--                                    id : '${rubro?.id}'--}%
-    %{--                                },--}%
-    %{--                                success  : function (msg) {--}%
-    %{--                                    ou.modal("hide");--}%
-    %{--                                    var b = bootbox.dialog({--}%
-    %{--                                        id      : "dlgLOU",--}%
-    %{--                                        title   : "Lista de obras usadas",--}%
-    %{--                                        message : msg,--}%
-    %{--                                        buttons : {--}%
-    %{--                                            cancelar : {--}%
-    %{--                                                label     : "Cancelar",--}%
-    %{--                                                className : "btn-primary",--}%
-    %{--                                                callback  : function () {--}%
-    %{--                                                }--}%
-    %{--                                            }--}%
-    %{--                                        } //buttons--}%
-    %{--                                    }); //dialog--}%
-    %{--                                }--}%
-    %{--                            });--}%
-    %{--                        }else{--}%
-    %{--                            $.ajax({--}%
-    %{--                                type : "POST",--}%
-    %{--                                url : "${g.createLink(controller: 'rubro',action:'eliminarRubroDetalle')}",--}%
-    %{--                                data     : "id=" + boton.attr("iden"),--}%
-    %{--                                success  : function (msg) {--}%
-    %{--                                    if (msg === "Registro eliminado") {--}%
-    %{--                                        cargarTablaSeleccionados();--}%
-    %{--                                    }else{--}%
-    %{--                                        bootbox.alert('<i class="fa fa-exclamation-triangle text-info fa-3x"></i> ' + '<strong style="font-size: 14px">' + msg  + '</strong>');--}%
-    %{--                                    }--}%
-    %{--                                }--}%
-    %{--                            });--}%
-    %{--                        }--}%
-    %{--                    }--}%
-    %{--                });--}%
-    %{--            }--}%
-    %{--        }--}%
-    %{--    });--}%
-    %{--});--}%
-
-
+    $(".btnBorrarSeleccion").click(function () {
+        var id = $(this).data("id");
+        bootbox.confirm({
+            title: "Eliminar",
+            message: "<i class='fa fa-exclamation-triangle text-info fa-3x'></i> <strong style='font-size: 14px'> Está seguro de eliminar este rubro?</strong> ",
+            buttons: {
+                cancel: {
+                    label: '<i class="fa fa-times"></i> Cancelar',
+                    className: 'btn-primary'
+                },
+                confirm: {
+                    label: '<i class="fa fa-trash"></i> Borrar',
+                    className: 'btn-danger'
+                }
+            },
+            callback: function (result) {
+                if(result){
+                    var d = cargarLoader("Borrando...");
+                    $.ajax({
+                        type : "POST",
+                        url : "${g.createLink(controller: 'volumenObra',action:'eliminarRubro')}",
+                        data     : {
+                            id: id
+                        },
+                        success  : function (msg) {
+                            d.modal("hide");
+                            if(msg === "ok"){
+                                log("Rubro borrado correctamente", "success");
+                                cargarTablaSeleccionados();
+                            }else{
+                                bootbox.alert('<i class="fa fa-exclamation-triangle text-info fa-3x"></i> ' + '<strong style="font-size: 14px">' + msg +'</strong>');
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    });
 
 </script>

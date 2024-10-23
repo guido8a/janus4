@@ -1,9 +1,8 @@
 <g:form class="form-horizontal" name="frmRubroVolObra" role="form" controller="volumenObra" action="addItem" method="POST">
 
-    <div class="alert alert-success">
-    <i class="fa fa-exclamation-triangle text-warning fa-2x"></i><strong style="font-size: 14px"> El rubro seleccionado ya se encuentra en el subpresupuesto, desea modificar la cantidad? </strong>
+    <div class="alert alert-info">
+        <i class="fa fa-exclamation-triangle text-warning fa-3x"></i><strong style="font-size: 14px"> El rubro seleccionado ya se encuentra en el subpresupuesto, desea modificar la cantidad? </strong>
     </div>
-
 
     <g:hiddenField name="id" value="${null}" />
     <g:hiddenField name="obra" value="${obra?.id}" />
@@ -64,11 +63,4 @@
         }
     });
 
-    $(".form-control").keydown(function (ev) {
-        if (ev.keyCode === 13) {
-            submitFormRubroVolObra();
-            return false;
-        }
-        return true;
-    });
 </script>

@@ -2,10 +2,10 @@
 
 <script type="text/javascript">
 
-    cargarTablaSeleccionados();
-
-    $("#subpresupuestoBusqueda").change(function () {
-        cargarTablaSeleccionados();
-    });
+    // cargarTablaSeleccionados();
+    //
+    // $("#subpresupuestoBusqueda").change(function () {
+    //     cargarTablaSeleccionados();
+    // });
 
 </script>

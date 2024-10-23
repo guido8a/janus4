@@ -294,9 +294,6 @@ class VolumenObraController {
         }
 
         render msg
-//        redirect(action: "tabla", params: [obra: obra.id, sub: vol.subPresupuesto.id, ord: 1, msg: msg])
-
-
     }
 
     def copiarRubros() {
