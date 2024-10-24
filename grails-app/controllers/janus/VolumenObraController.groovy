@@ -425,6 +425,7 @@ class VolumenObraController {
     def tablaBusqueda_ajax(){
 
         def obra = Obra.get(params.obra)
+        def duenoObra = esDuenoObra(obra)? 1 : 0
         def datos;
         def listaRbro = ['itemnmbr', 'itemcdgo']
         def listaItems = ['itemnmbr', 'itemcdgo']
@@ -443,7 +444,7 @@ class VolumenObraController {
 
         def cn = dbConnectionService.getConnection()
         datos = cn.rows(sqlTx)
-        [data: datos, obra: obra]
+        [data: datos, obra: obra, duenoObra: duenoObra,]
 
     }
 
@@ -452,8 +453,8 @@ class VolumenObraController {
         def obra = Obra.get(params.obra)
         def subpresupuesto = SubPresupuesto.get(params.subpresupuesto)
         def valores = preciosService.rbro_pcun_v5(obra.id,subpresupuesto?.id, "asc")
-
-        return [valores: valores]
+        def duenoObra = esDuenoObra(obra)? 1 : 0
+        return [valores: valores, duenoObra: duenoObra, obra: obra]
     }
 
 
@@ -498,5 +499,11 @@ class VolumenObraController {
         def volumenObra = VolumenesObra.findByObraAndSubPresupuestoAndItem(obra,subpresupuesto,rubro)
         return [volumenObra: volumenObra, obra: obra, subpresupuesto: subpresupuesto, rubro: rubro]
     }
+
+   def subpresupuestosObra_ajax () {
+       def obra = Obra.get(params.obra)
+       def subPresupuestos = VolumenesObra.findAllByObra(obra, [sort: "orden"]).subPresupuesto.unique()
+       return [subPresupuestos: subPresupuestos]
+   }
 
 }

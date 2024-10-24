@@ -142,14 +142,15 @@
             </g:if>
         </div>
 
-        <div class="col-md-2" style="margin-top: 20px;">
+        <div class="col-md-4" style="margin-top: 20px;">
+%{--            <a href="#" class="btn btn-info" id="calcular" title="Calcular precios">--}%
+%{--                <i class="fa fa-table"></i>--}%
+%{--                Calcular--}%
+%{--            </a>--}%
             <a href="#" class="btn btn-success" id="btnAgregarRubros" title="Agregar rubros">
                 <i class="fa fa-plus-square"></i>
                 Agregar rubros
             </a>
-        </div>
-
-        <div class="col-md-2" style="margin-top: 20px; float: right">
             <a href="#" class="btn btn-info btn-new" id="reporteGrupos" title="Reporte Grupos/Subgrupos" style="display: none">
                 <i class="fa fa-print"></i>
                 Reporte Grupos/Subgrupos
@@ -337,6 +338,39 @@
         return interval
     }
 
+    function calcularSiempre(){
+
+        if ($(this).hasClass("active")) {
+            $(this).removeClass("active");
+            $(".col_delete").show();
+            $(".col_precio").hide();
+            $(".col_total").hide();
+            $("#divTotal").html("")
+        } else {
+            $(this).addClass("active");
+            // $(".col_delete").hide();
+            $(".col_precio").show();
+            $(".col_total").show();
+            var total = 0;
+
+            $(".total").each(function () {
+                total += parseFloat(str_replace(",", "", $(this).html()))
+            });
+
+            if ($("#subPres_desc").val() === "-1") {
+                $.ajax({
+                    type    : "POST",
+                    url : "${g.createLink(controller: 'volumenObra', action:'setMontoObra')}",
+                    data    : "obra=${obra?.id}&monto=" + total,
+                    success : function (msg) {
+                    }
+                });
+            }
+            $("#divTotal").html(number_format(total, 4, ".", ","))
+        }
+    }
+
+
     function cargarTabla() {
         var d = cargarLoader("Cargando...");
         var datos = "";
@@ -369,37 +403,13 @@
         });
 
         cargarTabla();
+
         $("#vol_id").val("");
-        $("#calcular").click(function () {
-            if ($(this).hasClass("active")) {
-                $(this).removeClass("active");
-                $(".col_delete").show();
-                $(".col_precio").hide();
-                $(".col_total").hide();
-                $("#divTotal").html("")
-            } else {
-                $(this).addClass("active");
-                $(".col_delete").hide();
-                $(".col_precio").show();
-                $(".col_total").show();
-                var total = 0;
 
-                $(".total").each(function () {
-                    total += parseFloat(str_replace(",", "", $(this).html()))
-                });
 
-                if ($("#subPres_desc").val() === "-1") {
-                    $.ajax({
-                        type    : "POST",
-                        url : "${g.createLink(controller: 'volumenObra', action:'setMontoObra')}",
-                        data    : "obra=${obra?.id}&monto=" + total,
-                        success : function (msg) {
-                        }
-                    });
-                }
-                $("#divTotal").html(number_format(total, 4, ".", ","))
-            }
-        });
+        // $("#calcular").click(function () {
+        //     calcularSiempre();
+        // });
 
         $("#listaRbro").dialog({
             autoOpen: false,

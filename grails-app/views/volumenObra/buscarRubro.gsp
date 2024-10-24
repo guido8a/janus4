@@ -76,8 +76,8 @@
             <div class="row-fluid">
                 <div class="col-md-12">
                     <div class="col-md-3"> <label> Subpresupuesto </label> </div>
-                    <div class="col-md-9">
-                        <g:select name="subpresupuestoSeleccionado" class="form-control" from="${subPresupuestos}" optionKey="${{it.id}}" optionValue="${{it.descripcion}}" />
+                    <div class="col-md-9" id="divSubpresupuestoSeleccionado">
+
                     </div>
                 </div>
             </div>
@@ -183,6 +183,21 @@
     $("#subpresupuestoSeleccionado").change(function () {
         cargarTablaSeleccionados();
     });
+
+    cargarSubpresuspuestosObra();
+
+    function cargarSubpresuspuestosObra(){
+        $.ajax({
+            type: "POST",
+            url: "${createLink(controller: 'volumenObra', action:'subpresupuestosObra_ajax')}",
+            data: {
+                obra: '${obra?.id}'
+            },
+            success: function (msg) {
+                $("#divSubpresupuestoSeleccionado").html(msg);
+            }
+        });
+    }
 
 </script>
 

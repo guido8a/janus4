@@ -24,7 +24,9 @@
                     <td style="width: 40%; font-size: 12px">${val.rbronmbr}</td>
                     <td style="width: 10%"><g:formatNumber number="${val.vlobcntd}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/></td>
                     <td style="width: 9%">
-                        <a href="#" class="btn btn-danger btn-xs btnBorrarSeleccion" data-id="${val.vlob__id}" ><i class="fa fa-trash"></i></a>
+                        <g:if test="${obra.estado!='R' && duenoObra == 1}">
+                            <a href="#" class="btn btn-danger btn-xs btnBorrarSeleccion" data-id="${val.vlob__id}" ><i class="fa fa-trash"></i></a>
+                        </g:if>
                     </td>
                     <td style="width: 1%"></td>
                 </tr>
@@ -69,7 +71,10 @@
                             d.modal("hide");
                             if(msg === "ok"){
                                 log("Rubro borrado correctamente", "success");
-                                cargarTablaSeleccionados();
+                                cargarSubpresuspuestosObra();
+                                setTimeout(function () {
+                                    cargarTablaSeleccionados();
+                                }, 800);
                             }else{
                                 bootbox.alert('<i class="fa fa-exclamation-triangle text-info fa-3x"></i> ' + '<strong style="font-size: 14px">' + msg +'</strong>');
                             }

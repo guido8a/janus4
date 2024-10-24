@@ -24,7 +24,9 @@
                         ${dt.unddcdgo}
                     </td>
                     <td style="width: 9%">
-                        <a href="#" class="btn btn-success btn-xs btnSeleccionar" data-id="${dt?.item__id}"><i class="fa fa-check"></i></a>
+                        <g:if test="${obra.estado!='R' && duenoObra == 1}">
+                            <a href="#" class="btn btn-success btn-xs btnSeleccionar" data-id="${dt?.item__id}"><i class="fa fa-check"></i></a>
+                        </g:if>
                     </td>
                 </tr>
             </g:each>
@@ -94,7 +96,10 @@
                     if(parts[0] === 'ok'){
                         log(parts[1], "success");
                         cargarTablaBusqueda();
-                        cargarTablaSeleccionados();
+                        cargarSubpresuspuestosObra();
+                        setTimeout(function () {
+                            cargarTablaSeleccionados();
+                        }, 800);
                     }else{
                         if(parts[0] === 'err'){
                             bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');

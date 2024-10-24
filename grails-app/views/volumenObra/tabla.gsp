@@ -52,74 +52,78 @@
         </a>
     </div>
 </div>
-<table class="table table-bordered table-striped table-condensed table-hover">
-    <thead>
-    <tr>
-        <th style="width: 5%;">
-            #
-        </th>
-        <th style="width: 15%;">
-            Subpresupuesto
-        </th>
-        <th style="width: 11%;">
-            Código
-        </th>
-        <th style="width: 6%">
-            Especificación
-        </th>
-        <th style="width: 40%;">
-            Rubro
-        </th>
-        <th style="width: 5%" class="col_unidad">
-            Unidad
-        </th>
-        <th style="width: 8%">
-            Cantidad
-        </th>
-        <th class="col_precio" style="display: none;">Unitario</th>
-        <th class="col_total" style="display: none;">C.Total</th>
-        <g:if test="${obra.estado!='R' && duenoObra == 1}">
-            <th style="width: 10%" class="col_delete"></th>
-        </g:if>
-    </tr>
-    </thead>
-    <tbody id="tabla_material">
-
-    <g:each in="${valores}" var="val" status="j">
-        <tr class="item_row ${val.rbrocdgo[0..1] == 'TR'? 'desalojo':''}" id="${val.vlob__id}"  item="${val}"
-            dscr="${val.vlobdscr}" sub="${val.sbpr__id}" cdgo="${val.item__id}" title="${val.vlobdscr}">
-            <td style="width: 5%" class="orden">${val.vlobordn}</td>
-            <td style="width: 15%" class="sub">${val.sbprdscr.trim()}</td>
-            <td class="cdgo" style="width: 11%">${val.rbrocdgo.trim()}</td>
-            <td class="cdes" style="width: 6%">${val.itemcdes?.trim()}</td>
-            <td class="nombre" style="width: 40%">${val.rbronmbr.trim()}</td>
-            <td style="width: 5%;text-align: center" class="col_unidad" >${val.unddcdgo.trim()}</td>
-            <td style="width: 8%; text-align: right" class="cant">
-                <g:formatNumber number="${val.vlobcntd}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/>
-            </td>
-            <td class="col_precio" style="display: none;text-align: right" id="i_${val.item__id}"><g:formatNumber
-                    number="${val.pcun}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/></td>
-            <td class="col_total total" style="display: none;text-align: right">
-                <g:formatNumber number="${val.totl}" format="##,##0" minFractionDigits="4"  maxFractionDigits="4" locale="ec"/>
-            </td>
+<div role="main" style="margin-top: 5px;">
+    <table class="table table-bordered table-striped table-condensed table-hover">
+        <thead>
+        <tr>
+            <th style="width: 5%;">
+                #
+            </th>
+            <th style="width: 15%;">
+                Subpresupuesto
+            </th>
+            <th style="width: 11%;">
+                Código
+            </th>
+            <th style="width: 6%">
+                Especificación
+            </th>
+            <th style="width: 40%;">
+                Rubro
+            </th>
+            <th style="width: 5%" class="col_unidad">
+                Unidad
+            </th>
+            <th style="width: 8%">
+                Cantidad
+            </th>
+            <th class="col_precio" style="display: none;">Unitario</th>
+            <th class="col_total" style="display: none;">C.Total</th>
             <g:if test="${obra.estado!='R' && duenoObra == 1}">
-                <td style="width: 10%;text-align: center" class="col_delete">
-                    <a class="btn btn-xs btn-primary editarItem" href="#" rel="tooltip" title="Editar" iden="${val.vlob__id}"
-                       data-orden="${val.vlobordn}" data-nom="${val.rbronmbr}" data-can="${val.vlobcntd}"
-                       data-cod="${val.rbrocdgo}" item="${val}"  dscr="${val.vlobdscr}" sub="${val.sbpr__id}"
-                       cdgo="${val.item__id}" title="${val.vlobdscr}">
-                        <i class="fa fa-edit"></i>
-                    </a>
-                    <a class="btn btn-xs btn-danger borrarItem" href="#" rel="tooltip" title="Eliminar" iden="${val.vlob__id}">
-                        <i class="fa fa-trash"></i>
-                    </a>
-                </td>
+                <th style="width: 10%" class="col_delete">Acciones</th>
             </g:if>
         </tr>
-    </g:each>
-
-    </tbody>
-</table>
+        </thead>
+    </table>
+</div>
+<div class="" style="width: 99.7%;height: 500px; overflow-y: auto;float: right; margin-top: -20px">
+    <table class="table-bordered table-striped table-condensed table-hover">
+        <tbody>
+        <g:each in="${valores}" var="val" status="j">
+            <tr class="item_row ${val.rbrocdgo[0..1] == 'TR'? 'desalojo':''}" id="${val.vlob__id}"  item="${val}"
+                dscr="${val.vlobdscr}" sub="${val.sbpr__id}" cdgo="${val.item__id}" title="${val.vlobdscr}">
+                <td style="width: 5%" class="orden">${val.vlobordn}</td>
+                <td style="width: 15%" class="sub">${val.sbprdscr.trim()}</td>
+                <td class="cdgo" style="width: 11%">${val.rbrocdgo.trim()}</td>
+                <td class="cdes" style="width: 6%">${val.itemcdes?.trim()}</td>
+                <td class="nombre" style="width: 40%">${val.rbronmbr.trim()}</td>
+                <td style="width: 5%;text-align: center" class="col_unidad" >${val.unddcdgo.trim()}</td>
+                <td style="width: 8%; text-align: right" class="cant">
+                    <g:formatNumber number="${val.vlobcntd}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/>
+                </td>
+                <td class="col_precio" style="display: none;text-align: right" id="i_${val.item__id}"><g:formatNumber
+                        number="${val.pcun}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/></td>
+                <td class="col_total total" style="display: none;text-align: right">
+                    <g:formatNumber number="${val.totl}" format="##,##0" minFractionDigits="4"  maxFractionDigits="4" locale="ec"/>
+                </td>
+                <g:if test="${obra.estado!='R' && duenoObra == 1}">
+                    <td style="width: 10%;text-align: center" class="col_delete">
+                        <a class="btn btn-xs btn-success editarItem" href="#" rel="tooltip" title="Editar" iden="${val.vlob__id}"
+                           data-orden="${val.vlobordn}" data-nom="${val.rbronmbr}" data-can="${val.vlobcntd}"
+                           data-cod="${val.rbrocdgo}" item="${val}"  dscr="${val.vlobdscr}" sub="${val.sbpr__id}"
+                           cdgo="${val.item__id}" title="${val.vlobdscr}">
+                            <i class="fa fa-edit"></i>
+                        </a>
+                        <a class="btn btn-xs btn-danger borrarItem" href="#" rel="tooltip" title="Eliminar" iden="${val.vlob__id}">
+                            <i class="fa fa-trash"></i>
+                        </a>
+                    </td>
+                </g:if>
+            </tr>
+        </g:each>
+        </tbody>
+    </table>
+</div>
 
 <div id="borrarDialog">
     <fieldset>
@@ -326,7 +330,7 @@
                             id: id
                         },
                         success  : function (msg) {
-                           d.modal("hide");
+                            d.modal("hide");
                             if(msg === "ok"){
                                 bootbox.alert('<i class="fa fa-exclamation-triangle text-info fa-3x"></i> ' + '<strong style="font-size: 14px">' + "Rubro borrado correctamente" +'</strong>');
                                 cargarTabla();
@@ -569,6 +573,8 @@
             borrarSupresupuesto();
         }
     });
+
+    calcularSiempre();
 
 
 </script>
