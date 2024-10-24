@@ -124,7 +124,8 @@ class VolumenObraController {
             if (v.size() > 0) {
                 v = v.pop()
 //                if (params.override == "1") {
-                v.cantidad += params.cantidad.toDouble()
+//                v.cantidad += params.cantidad.toDouble()
+                v.cantidad = params.cantidad.toDouble()
 //                    v.save(flush: true)
                 if(!v.save(flush:true)){
                     println("error al guardar " + v.errors)
@@ -460,17 +461,21 @@ class VolumenObraController {
 
     def formRubroVolObra_ajax(){
         println("params fvo " + params)
-        def subpresupuesto = SubPresupuesto.get(params.subpresupuesto)
-        def obra = Obra.get(params.obra)
+        def subpresupuesto
+        def obra
         def volumenObra
         def rubro
 
         if(params.id){
             volumenObra = VolumenesObra.get(params.id)
             rubro = volumenObra?.item
+            subpresupuesto = volumenObra?.subPresupuesto
+            obra = volumenObra?.obra
         }else{
             volumenObra = new VolumenesObra()
             rubro = Item.get(params.rubro)
+            subpresupuesto = SubPresupuesto.get(params.subpresupuesto)
+            obra = Obra.get(params.obra)
         }
 
         return [volumenObra: volumenObra, obra: obra, subpresupuesto: subpresupuesto, rubro: rubro]

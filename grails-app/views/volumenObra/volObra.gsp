@@ -143,10 +143,10 @@
         </div>
 
         <div class="col-md-4" style="margin-top: 20px;">
-%{--            <a href="#" class="btn btn-info" id="calcular" title="Calcular precios">--}%
-%{--                <i class="fa fa-table"></i>--}%
-%{--                Calcular--}%
-%{--            </a>--}%
+            %{--            <a href="#" class="btn btn-info" id="calcular" title="Calcular precios">--}%
+            %{--                <i class="fa fa-table"></i>--}%
+            %{--                Calcular--}%
+            %{--            </a>--}%
             <a href="#" class="btn btn-success" id="btnAgregarRubros" title="Agregar rubros">
                 <i class="fa fa-plus-square"></i>
                 Agregar rubros
@@ -260,10 +260,13 @@
 
             <div style="width: 99.7%;height: 600px;overflow-y: auto;float: right;" id="detalle"></div>
 
-            <div style="width: 99.7%;height: 30px;overflow-y: auto;float: right;text-align: right" id="total">
-                <b>TOTAL:</b>
-
-                <div id="divTotal" style="width: 150px;float: right;height: 30px;font-weight: bold;font-size: 12px;margin-right: 20px"></div>
+            <div class="col-md-12 breadcrumb" style="height: 35px;overflow-y: auto;float: right;text-align: right; font-size: 14px" id="total">
+                <div class="col-md-10">
+                    <b>TOTAL:</b>
+                </div>
+                <div class="col-md-2" >
+                    <div id="divTotal" style="float: left;height: 30px;font-weight: bold;font-size: 14px;margin-right: 20px"></div>
+                </div>
             </div>
         </div>
     </div>

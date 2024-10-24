@@ -8,7 +8,8 @@
     </g:if>
     <div class="span-6" style="margin-bottom: 5px">
         <b>Subpresupuesto:</b>
-        <g:select name="subpresupuesto" from="${subPres}" optionKey="id" optionValue="descripcion"
+        %{--        <g:select name="subpresupuesto" from="${subPres}" optionKey="id" optionValue="descripcion"--}%
+        <g:select name="subpresupuesto" from="${subPres}" optionKey="${{it.id}}" optionValue="${{it.descripcion}}"
                   style="width: 240px;font-size: 10px" id="subPres_desc" value="${subPre}"
                   noSelection="['-1': 'TODOS']" class="selector"/>
 
@@ -68,20 +69,18 @@
             <th style="width: 6%">
                 Especificación
             </th>
-            <th style="width: 40%;">
+            <th style="width: 24%;">
                 Rubro
             </th>
             <th style="width: 5%" class="col_unidad">
                 Unidad
             </th>
-            <th style="width: 8%">
+            <th style="width: 7%">
                 Cantidad
             </th>
-            <th class="col_precio" style="display: none;">Unitario</th>
-            <th class="col_total" style="display: none;">C.Total</th>
-            <g:if test="${obra.estado!='R' && duenoObra == 1}">
-                <th style="width: 10%" class="col_delete">Acciones</th>
-            </g:if>
+            <th class="col_precio" style="display: none; width: 7%">Unitario</th>
+            <th class="col_total" style="display: none; width: 10%">C.Total</th>
+            <th style="width: 10%" class="col_delete">Acciones</th>
         </tr>
         </thead>
     </table>
@@ -96,18 +95,19 @@
                 <td style="width: 15%" class="sub">${val.sbprdscr.trim()}</td>
                 <td class="cdgo" style="width: 11%">${val.rbrocdgo.trim()}</td>
                 <td class="cdes" style="width: 6%">${val.itemcdes?.trim()}</td>
-                <td class="nombre" style="width: 40%">${val.rbronmbr.trim()}</td>
+                <td class="nombre" style="width: 24%">${val.rbronmbr.trim()}</td>
                 <td style="width: 5%;text-align: center" class="col_unidad" >${val.unddcdgo.trim()}</td>
-                <td style="width: 8%; text-align: right" class="cant">
+                <td style="width: 7%; text-align: right" class="cant">
                     <g:formatNumber number="${val.vlobcntd}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/>
                 </td>
-                <td class="col_precio" style="display: none;text-align: right" id="i_${val.item__id}"><g:formatNumber
+                <td class="col_precio" style="display: none;text-align: right;width: 7%" id="i_${val.item__id}"><g:formatNumber
                         number="${val.pcun}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/></td>
-                <td class="col_total total" style="display: none;text-align: right">
+                <td class="col_total total" style="display: none;text-align: right; width: 10%">
                     <g:formatNumber number="${val.totl}" format="##,##0" minFractionDigits="4"  maxFractionDigits="4" locale="ec"/>
                 </td>
-                <g:if test="${obra.estado!='R' && duenoObra == 1}">
-                    <td style="width: 10%;text-align: center" class="col_delete">
+
+                <td style="width: 10%;text-align: center" class="col_delete">
+                    <g:if test="${obra.estado!='R' && duenoObra == 1}">
                         <a class="btn btn-xs btn-success editarItem" href="#" rel="tooltip" title="Editar" iden="${val.vlob__id}"
                            data-orden="${val.vlobordn}" data-nom="${val.rbronmbr}" data-can="${val.vlobcntd}"
                            data-cod="${val.rbrocdgo}" item="${val}"  dscr="${val.vlobdscr}" sub="${val.sbpr__id}"
@@ -117,21 +117,21 @@
                         <a class="btn btn-xs btn-danger borrarItem" href="#" rel="tooltip" title="Eliminar" iden="${val.vlob__id}">
                             <i class="fa fa-trash"></i>
                         </a>
-                    </td>
-                </g:if>
+                    </g:if>
+                </td>
             </tr>
         </g:each>
         </tbody>
     </table>
 </div>
 
-<div id="borrarDialog">
-    <fieldset>
-        <div class="span3">
-            Está seguro que desea borrar este rubro?
-        </div>
-    </fieldset>
-</div>
+%{--<div id="borrarDialog">--}%
+%{--    <fieldset>--}%
+%{--        <div class="span3">--}%
+%{--            Está seguro que desea borrar este rubro?--}%
+%{--        </div>--}%
+%{--    </fieldset>--}%
+%{--</div>--}%
 
 <div id="borrarSubpreDialog">
     <fieldset>
@@ -147,11 +147,10 @@
         selector: '.item_row',
         callback: function (key, options) {
             var m = "clicked: " + $(this).attr("id");
-            if (key == "print") {
-
+            if (key === "print") {
             }
 
-            if (key == "foto") {
+            if (key === "foto") {
                 var child = window.open('${createLink(controller:"rubro", action:"showFoto")}/' + $(this).attr("cdgo") +
                     '?tipo=il', 'GADLR', 'width=850,height=800,toolbar=0,resizable=0,menubar=0,scrollbars=1,status=0');
                 if (child.opener == null)
@@ -160,7 +159,7 @@
                 window.menubar.visible = false;
             }
 
-            if (key == "espc") {
+            if (key === "espc") {
                 var child = window.open('${createLink(controller:"rubro", action:"showFoto")}/' + $(this).attr("cdgo") +
                     '?tipo=dt', 'GADLR', 'width=850,height=800,toolbar=0,resizable=0,menubar=0,scrollbars=1,status=0');
                 if (child.opener == null)
@@ -169,7 +168,7 @@
                 window.menubar.visible = false;
             }
 
-            if (key == 'print-key1') {
+            if (key === 'print-key1') {
                 var dsps =
                 ${obra.distanciaPeso}
                 var dsvs =
@@ -180,7 +179,7 @@
                 location.href = "${g.createLink(controller: 'reportesRubros',action: 'reporteRubrosVolumen')}?" + datos;
             }
 
-            if (key == 'print-key2') {
+            if (key === 'print-key2') {
                 var dsps =
                 ${obra.distanciaPeso}
                 var dsvs =
@@ -191,7 +190,7 @@
                 location.href = "${g.createLink(controller: 'reportesRubros',action: 'reporteRubrosVolumen')}?" + datos;
             }
 
-            if (key == 'print-key3') {
+            if (key === 'print-key3') {
                 var dsps =
                 ${obra.distanciaPeso}
                 var dsvs =
@@ -202,11 +201,9 @@
                 location.href = "${g.createLink(controller: 'reportesRubros',action: 'reporteRubrosVaeVolumen')}?" + datos;
             }
 
-            if (key == 'print-key4') {
-                var dsps =
-                ${obra.distanciaPeso}
-                var dsvs =
-                ${obra.distanciaVolumen}
+            if (key === 'print-key4') {
+                var dsps = ${obra.distanciaPeso}
+                var dsvs = ${obra.distanciaVolumen}
                 var clickImprimir = $(this).attr("id");
                 var fechaSalida2 = '${obra?.fechaOficioSalida?.format('dd-MM-yyyy')}';
                 var datos = "fecha=${obra.fechaPreciosRubros?.format('dd-MM-yyyy')}&id=" + clickImprimir + "&obra=${obra.id}" + "&fechaSalida=" + fechaSalida2 + "&desglose=" + '1';
@@ -279,29 +276,97 @@
 
     var datos = "?fecha=${obra.fechaPreciosRubros?.format('dd-MM-yyyy')}Wid=" + $(".item_row").attr("id") + "Wobra=${obra.id}";
 
-    $(".editarItem").click(function () {
-        $("#calcular").removeClass("active");
-        $(".col_delete").show();
-        $(".col_precio").hide();
-        $(".col_total").hide();
-        $("#divTotal").html("");
-        $("#vol_id").val($(this).attr("iden"));   /* gdo: id del registro a editar */
-        $("#item_codigo").val($(this).data("cod"));
-        $("#item_id").val($(this).attr("item"));
-        $("#subPres").val($(this).data("idSub"));
-        $("#item_descripcion").val($(this).attr("dscr"));
-        $("#item_orden").val($(this).data("orden"));
-        $("#item_nombre").val($(this).data("nom"));
-        $("#item_cantidad").val($(this).data("can"));
-
+    function editarFormRubro(id) {
         $.ajax({
-            type: "POST",
-            url: "${g.createLink(controller: 'volumenObra',action:'cargaCombosEditar')}",
-            data: "id=" + $(this).attr("sub"),
-            success: function (msg) {
-                $("#div_cmb_sub").html(msg)
-            }
-        });
+            type    : "POST",
+            url: "${createLink(controller: 'volumenObra', action:'formRubroVolObra_ajax')}",
+            data    : {
+                id: id
+            },
+            success : function (msg) {
+                var er = bootbox.dialog({
+                    id      : "dlgEditRubroVO",
+                    title   : "Editar rubro",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        },
+                        guardar  : {
+                            id        : "btnSave",
+                            label     : "<i class='fa fa-save'></i> Guardar",
+                            className : "btn-success",
+                            callback  : function () {
+                                return submitFormRubro();
+                            } //callback
+                        } //guardar
+                    } //buttons
+                }); //dialog
+            } //success
+        }); //ajax
+    } //createEdit
+
+    function submitFormRubro() {
+        var $form = $("#frmRubroVolObra");
+        if ($form.valid()) {
+            var data = $form.serialize();
+            var dialog = cargarLoader("Guardando...");
+            $.ajax({
+                type    : "POST",
+                url     : $form.attr("action"),
+                data    : data,
+                success : function (msg) {
+                    dialog.modal('hide');
+                    var parts = msg.split("_");
+                    if(parts[0] === 'ok'){
+                        log(parts[1], "success");
+                        cargarTabla();
+                    }else{
+                        if(parts[0] === 'err'){
+                            bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
+                            return false;
+                        }else{
+                            log(parts[1], "error");
+                            return false;
+                        }
+                    }
+                }
+            });
+        } else {
+            return false;
+        }
+    }
+
+    $(".editarItem").click(function () {
+
+        var id = $(this).attr("iden");
+        editarFormRubro(id);
+
+        %{--$("#calcular").removeClass("active");--}%
+        %{--$(".col_delete").show();--}%
+        %{--$(".col_precio").hide();--}%
+        %{--$(".col_total").hide();--}%
+        %{--$("#divTotal").html("");--}%
+        %{--$("#vol_id").val($(this).attr("iden"));   /* gdo: id del registro a editar */--}%
+        %{--$("#item_codigo").val($(this).data("cod"));--}%
+        %{--$("#item_id").val($(this).attr("item"));--}%
+        %{--$("#subPres").val($(this).data("idSub"));--}%
+        %{--$("#item_descripcion").val($(this).attr("dscr"));--}%
+        %{--$("#item_orden").val($(this).data("orden"));--}%
+        %{--$("#item_nombre").val($(this).data("nom"));--}%
+        %{--$("#item_cantidad").val($(this).data("can"));--}%
+
+        %{--$.ajax({--}%
+        %{--    type: "POST",--}%
+        %{--    url: "${g.createLink(controller: 'volumenObra',action:'cargaCombosEditar')}",--}%
+        %{--    data: "id=" + $(this).attr("sub"),--}%
+        %{--    success: function (msg) {--}%
+        %{--        $("#div_cmb_sub").html(msg)--}%
+        %{--    }--}%
+        %{--});--}%
     });
 
     $(".borrarItem").click(function () {
@@ -309,7 +374,7 @@
 
         bootbox.confirm({
             title: "Eliminar",
-            message: "Está seguro de eliminar este rubro? Esta acción no puede deshacerse.",
+            message: "<i class='fa fa-exclamation-triangle text-info fa-3x'></i> <strong style='font-size: 14px'> Está seguro de eliminar este rubro?</strong> ",
             buttons: {
                 cancel: {
                     label: '<i class="fa fa-times"></i> Cancelar',
@@ -332,8 +397,8 @@
                         success  : function (msg) {
                             d.modal("hide");
                             if(msg === "ok"){
-                                bootbox.alert('<i class="fa fa-exclamation-triangle text-info fa-3x"></i> ' + '<strong style="font-size: 14px">' + "Rubro borrado correctamente" +'</strong>');
-                                cargarTabla();
+                                log("Rubro borrado correctamente", "success");
+                                cargarTabla()
                             }else{
                                 bootbox.alert('<i class="fa fa-exclamation-triangle text-info fa-3x"></i> ' + '<strong style="font-size: 14px">' + msg +'</strong>');
                             }
@@ -342,6 +407,42 @@
                 }
             }
         });
+
+        %{--bootbox.confirm({--}%
+        %{--    title: "Eliminar",--}%
+        %{--    message: "Está seguro de eliminar este rubro? Esta acción no puede deshacerse.",--}%
+        %{--    buttons: {--}%
+        %{--        cancel: {--}%
+        %{--            label: '<i class="fa fa-times"></i> Cancelar',--}%
+        %{--            className: 'btn-primary'--}%
+        %{--        },--}%
+        %{--        confirm: {--}%
+        %{--            label: '<i class="fa fa-trash"></i> Borrar',--}%
+        %{--            className: 'btn-danger'--}%
+        %{--        }--}%
+        %{--    },--}%
+        %{--    callback: function (result) {--}%
+        %{--        if(result){--}%
+        %{--            var d = cargarLoader("Borrando...");--}%
+        %{--            $.ajax({--}%
+        %{--                type : "POST",--}%
+        %{--                url : "${g.createLink(controller: 'volumenObra',action:'eliminarRubro')}",--}%
+        %{--                data     : {--}%
+        %{--                    id: id--}%
+        %{--                },--}%
+        %{--                success  : function (msg) {--}%
+        %{--                    d.modal("hide");--}%
+        %{--                    if(msg === "ok"){--}%
+        %{--                        bootbox.alert('<i class="fa fa-exclamation-triangle text-info fa-3x"></i> ' + '<strong style="font-size: 14px">' + "Rubro borrado correctamente" +'</strong>');--}%
+        %{--                        cargarTabla();--}%
+        %{--                    }else{--}%
+        %{--                        bootbox.alert('<i class="fa fa-exclamation-triangle text-info fa-3x"></i> ' + '<strong style="font-size: 14px">' + msg +'</strong>');--}%
+        %{--                    }--}%
+        %{--                }--}%
+        %{--            });--}%
+        %{--        }--}%
+        %{--    }--}%
+        %{--});--}%
 
 
 
@@ -440,33 +541,32 @@
         });
     });
 
-    $("#borrarDialog").dialog({
-        autoOpen: false,
-        resizable: false,
-        modal: true,
-        draggable: false,
-        width: 350,
-        height: 200,
-        position: 'center',
-        title: 'Borrar',
-        buttons: {
-            "Aceptar": function () {
-//                   console.log("-->>" + $(this).attr("iden"));
-                $.ajax({type: "POST", url: "${g.createLink(controller: 'volumenObra',action:'eliminarRubro')}",
-                    data: "id=" + $(this).attr("iden"),
-                    success: function (msg) {
-                        clearInterval(interval)
-                        $("#detalle").html(msg)
-                    }
-                });
-                $("#borrarDialog").dialog("close");
-            },
+    %{--$("#borrarDialog").dialog({--}%
+    %{--    autoOpen: false,--}%
+    %{--    resizable: false,--}%
+    %{--    modal: true,--}%
+    %{--    draggable: false,--}%
+    %{--    width: 350,--}%
+    %{--    height: 200,--}%
+    %{--    position: 'center',--}%
+    %{--    title: 'Borrar',--}%
+    %{--    buttons: {--}%
+    %{--        "Aceptar": function () {--}%
+    %{--            $.ajax({type: "POST", url: "${g.createLink(controller: 'volumenObra',action:'eliminarRubro')}",--}%
+    %{--                data: "id=" + $(this).attr("iden"),--}%
+    %{--                success: function (msg) {--}%
+    %{--                    clearInterval(interval);--}%
+    %{--                    $("#detalle").html(msg)--}%
+    %{--                }--}%
+    %{--            });--}%
+    %{--            $("#borrarDialog").dialog("close");--}%
+    %{--        },--}%
 
-            "Cancelar" : function () {
-                $("#borrarDialog").dialog("close");
-            }
-        }
-    });
+    %{--        "Cancelar" : function () {--}%
+    %{--            $("#borrarDialog").dialog("close");--}%
+    %{--        }--}%
+    %{--    }--}%
+    %{--});--}%
 
     var url = "${resource(dir:'images', file:'spinner_24.gif')}";
     var spinner = $("<img style='margin-left:15px;' src='" + url + "' alt='Cargando...'/>");
@@ -482,8 +582,7 @@
         title: 'Borrar Subpresupuesto',
         buttons: {
             "Aceptar": function () {
-//                $("#spinner").show();
-                $(this).replaceWith(spinner)
+                $(this).replaceWith(spinner);
                 var seleccionado = $(".selector option:selected").val();
                 $.ajax({
                     type: "POST",
@@ -494,33 +593,29 @@
                     },
                     success: function (msg) {
                         var parts = msg.split("_");
-                        if(parts[0] == 'OK'){
+                        if(parts[0] === 'OK'){
                             $("#spinner").hide();
                             $("#borrarSubpreDialog").dialog("close");
                             $("#divError").hide();
                             $("#spanOk").html(parts[1]);
                             $("#divOk").show();
-
                             setTimeout(function() {
-                                location.reload(true);
+                                location.reload();
                             }, 1000);
                         }else{
                             $("#spinner").hide();
                             $("#borrarSubpreDialog").dialog("close");
                             $("#spanError").html(parts[1]);
                             $("#divError").show()
-
                         }
                     }
                 });
-
             },
             "Cancelar" : function () {
                 $("#borrarSubpreDialog").dialog("close");
             }
         }
     });
-
 
     function borrarSupresupuesto () {
         bootbox.confirm({
@@ -551,7 +646,6 @@
                             var parts = msg.split("_");
                             if(parts[0] === 'OK'){
                                 log(parts[1], "success");
-                                // cargarTabla();
                                 setTimeout(function() {
                                     location.reload();
                                 }, 1000);
@@ -575,6 +669,5 @@
     });
 
     calcularSiempre();
-
 
 </script>
