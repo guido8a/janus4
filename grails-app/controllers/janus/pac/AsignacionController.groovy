@@ -40,23 +40,26 @@ class AsignacionController {
     } //form_ajax
 
     def tabla(){
-//        println "tabla "+params
-        def anio
+        println("tabla ba " + params)
+
+        def anio = Anio.get(params.anio)
         def asignaciones
 
-        if(params.anio){
-            anio = Anio.findByAnio(params.anio)
-        }else{
-            anio = Anio.findByAnio(new Date().format("yyyy"))
-        }
+        def datos;
+        def sqlTx = ""
+        def listaItems = ['prsp.prspnmro', 'prsp.prspdscr']
+        def bsca = listaItems[params.buscarPor.toInteger()-1]
 
-        if(anio){
-            asignaciones = Asignacion.findAllByAnio(anio)
-        }else{
-            asignaciones = []
-        }
+        def select = "select prspdscr, prspnmro, prspproy, prspprgm, prspsbpr, asgnvlor, asgn__id from asgn, prsp"
+        def txwh = " where asgn.prsp__id = prsp.prsp__id and $bsca ilike '%${params.criterio}%' and asgn.anio__id = ${anio?.id}"
+        sqlTx = "${select} ${txwh} order by prsp.prspproy limit 30 ".toString()
 
-        [asignaciones:asignaciones, anio: anio]
+        println "sql: $sqlTx"
+
+        def cn = dbConnectionService.getConnection()
+        datos = cn.rows(sqlTx)
+
+        [asignaciones:datos, anio: anio]
     }
 
     def buscaPrsp(){

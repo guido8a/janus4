@@ -1,39 +1,37 @@
-<div class="col-md-12" style="margin-bottom: 8px" >
-    <h3> <span class="col-md-2 badge badge-info">Asignaciones del año</span></h3>
-    <div class="col-md-3">
-        <g:select class="form-control" name="anios" id="tabla_anio" from="${janus.pac.Anio.list(sort: 'anio')}" value="${anio?.anio ?: new Date().format("yyyy")}" optionKey="anio" optionValue="anio" style="width: 100px;"/>
-    </div>
-</div>
-
 <table class="table table-bordered table-striped table-condensed table-hover">
     <thead>
     <tr>
-        <th style="width:320px;">Partida</th>
-        <th style="width:90px;">Fuente</th>
-        <th style="width:180px;">Programa</th>
-        <th style="width:180px;">Subprograma</th>
-        <th style="width:220px;">Proyecto</th>
-        <th style="width:30px;">Año</th>
-        <th style="width:80px;">Valor</th>
+        <th style="width:5%;">Año</th>
+        <th style="width:15%;">Proyecto</th>
+        <th style="width:32%;">Partida</th>
+        <th style="width:15%;">Programa</th>
+        <th style="width: 15%;">Subprograma</th>
+        <th style="width: 10%;">Valor</th>
+        <th style="width: 7%;">Acciones</th>
+        <th style="width: 1%;"></th>
     </tr>
     </thead>
 </table>
 
-<div class="" style="width: 99.7%;height: 400px; overflow-y: auto;float: right; margin-top: -20px">
-    <table class="table-bordered table-condensed table-hover" style="width: 100%">
+<div class="" style="width: 100%;height: 550px; overflow-y: auto;float: right; margin-top: -20px">
+    <table class="table-bordered table-condensed table-hover table-striped" style="width: 100%">
         <tbody>
         <g:if test="${asignaciones.size() > 0}">
-            <g:each in="${asignaciones}" var="asg">
+            <g:each in="${asignaciones}" var="asignacion">
                 <tr>
-                    <td style="width:320px;">${asg?.prespuesto?.descripcion} <strong style="color: #0d7bdc">(${asg.prespuesto.numero})</strong> </td>
-                    <td style="width:90px;">${asg.prespuesto.fuente}</td>
-                    <td style="width:180px;">${asg.prespuesto.programa}</td>
-                    <td style="width:180px;">${asg.prespuesto.subPrograma}</td>
-                    <td style="width:220px;">${asg.prespuesto.proyecto}</td>
-                    <td style="text-align: center; width:30px">${asg.anio.anio}</td>
-                    <td style="text-align: right; width:80px">
-                        <g:formatNumber number="${asg.valor}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/>
+                    <td style="text-align: center; width:5%">${anio?.anio}</td>
+                    <td style="width:15%;">${asignacion?.prspproy}</td>
+                    <td style="width:32%;">${asignacion?.prspdscr} <strong style="color: #0d7bdc">(${asignacion?.prspnmro})</strong> </td>
+                    <td style="width:15%;">${asignacion?.prspprgm}</td>
+                    <td style="width:15%;">${asignacion?.prspsbpr}</td>
+                    <td style="text-align: right; font-weight: bold; font-size: 14px;  width:10%">
+                        <g:formatNumber number="${asignacion?.asgnvlor}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/>
                     </td>
+                    <td style="width: 7%; text-align: center">
+                        <a href="#" class="btn btn-success btn-xs btnEditarAsignacion" data-id="${asignacion?.asgn__id}" ><i class="fa fa-edit"></i></a>
+                        <a href="#" class="btn btn-danger btn-xs btnBorrarAsignacion" data-id="${asignacion?.asgn__id}" ><i class="fa fa-trash"></i></a>
+                    </td>
+                    <td style="width: 1%"></td>
                 </tr>
             </g:each>
         </g:if>
@@ -48,14 +46,5 @@
 
 
 <script type="text/javascript">
-    $("#tabla_anio").change(function(){
-        $.ajax({
-            type : "POST",
-            url : "${g.createLink(controller: 'asignacion',action:'tabla')}",
-            data     :   "anio="+$("#tabla_anio").val(),
-            success  : function (msg) {
-                $("#list-Asignacion").html(msg)
-            }
-        });
-    })
+
 </script>
