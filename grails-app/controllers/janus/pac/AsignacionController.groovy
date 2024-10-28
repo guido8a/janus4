@@ -204,7 +204,8 @@ class AsignacionController {
     }
 
     def tablaPresupuesto_ajax(){
-//        println("tabla pre " + params)
+        println("tabla pre " + params)
+
         def anio = Anio.get(params.anio)
         def datos;
         def sqlTx = ""

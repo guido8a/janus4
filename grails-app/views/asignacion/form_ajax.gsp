@@ -36,61 +36,41 @@
     <h3>Asignación de techos anuales a partidas presupuestarias</h3>
 </div>
 
+<div class="row" id="busqueda" style="overflow: hidden">
+    <fieldset class="borde" style="border-radius: 4px">
+        <div class="row-fluid">
+            <div class="col-md-2">
+                Año
+                <g:select class="form-control" name="anios" from="${janus.pac.Anio.list(sort: 'anio')}" value="${new Date().format("yyyy")}" optionKey="id" optionValue="anio"/>
+            </div>
+            <div class="col-md-2">
+                Buscar Por
+                <g:select name="buscarPor" class="buscarPor form-control" from="${[1: 'Código', 2: 'Descripción']}" style="width: 100%" optionKey="key" optionValue="value"/>
+            </div>
+            <div class="col-md-4">
+                Criterio
+                <g:textField name="criterio" class="criterio form-control"/>
+            </div>
+            <div class="col-md-2 btn-group" style="margin-top: 20px">
+                <button class="btn btn-info" id="btnBuscarPartida"><i class="fa fa-search"></i></button>
+                <button class="btn btn-warning" id="btnLimpiar" title="Limpiar Búsqueda"><i class="fa fa-eraser"></i></button>
+            </div>
+        </div>
+    </fieldset>
+
+    <fieldset class="borde col-md-12" style="margin-top: 10px">
+        <div class="col-md-12" id="divTablaPartidas">
+        </div>
+    </fieldset>
+</div>
+
 <div id="list-grupo" class="col-md-12" role="main" style="margin-top: 10px;">
 
-    <div id="create-Asignacion" style="border-bottom: 1px solid black;margin-bottom: 10px">
-        <g:form class="form-horizontal frm_asgn" name="frmSave-Asignacion" action="save">
-            <g:hiddenField name="id" value="${asignacionInstance?.id}"/>
+%{--    <div id="create-Asignacion" style="border-bottom: 1px solid black;margin-bottom: 10px">--}%
+%{--        <g:form class="form-horizontal frm_asgn" name="frmSave-Asignacion" action="save">--}%
+%{--            <g:hiddenField name="id" value="${asignacionInstance?.id}"/>--}%
 
-            <div class="col-md-12 control-group">
-                <h3> <span class="col-md-2 badge badge-secondary">Año</span></h3>
-
-                <div class="col-md-3 controls" style="width: 120px;">
-                    <g:select id="anio" name="anio.id" from="${janus.pac.Anio.list()}" optionKey="id" optionValue="anio"
-                              class="form-control required" value="${actual.id}" style="width: 100px;"/>
-                    <p class="help-block ui-helper-hidden"></p>
-                </div>
-            </div>
-
-            <div class="col-md-12 control-group">
-
-                <h3> <span class="col-md-2 badge badge-secondary">Partida</span></h3>
-
-                <div style="width: 1000px; margin-left: 190px;">
-
-                    <input class="col-md-3 form-control" type="text" style="width: 300px;font-size: 12px" id="item_presupuesto">
-
-                    <input type="hidden" id="item_prsp" name="prespuesto.id">
-
-                    <input class="col-md-4 form-control" type="text" style="width: 400px; font-size: 12px; margin-right: 5px" id="item_desc" disabled>
-
-                    <a href="#" class="btn btn-success" title="Crear nueva partida" id="item_agregar_prsp">
-                        <i class="fa fa-file"></i>
-                        Nueva partida
-                    </a>
-                    <a href="#" class="btn btn-warning" title="Crear nueva partida" id="prsp_editar" disabled>
-                        <i class="fa fa-edit"></i>
-                        Editar
-                    </a>
-                    <div class="col-md-12"></div>
-
-                    <div class="col-md-1 dato" >Fuente:</div>
-                    <input class="form-control col-md-4 dato" type="text" style="width: 510px;font-size: 12px;" id="item_fuente" disabled> <div class="col-md-12"></div>
-
-                    <div class="col-md-1 dato" >Programa:</div>
-                    <input class="form-control col-md-4 dato" type="text" style="width: 510px;font-size: 12px;" id="item_prog" disabled> <div class="col-md-12"></div>
-
-                    <div class="col-md-1 dato" >Subprograma:</div>
-                    <input class="form-control col-md-4 dato" type="text" style="width: 510px;;font-size: 12px;" id="item_spro" disabled> <div class="col-md-12"></div>
-
-                    <div class="col-md-1 dato" >Proyecto:</div>
-                    <input class="form-control col-md-4 dato" type="text" style="width: 510px;;font-size: 12px;" id="item_proy" disabled>  <div class="col-md-12"></div>
-
-                </div>
-            </div>
-
-
-            <div class="col-md-12 control-group">
+%{--            <div class="col-md-12 control-group">--}%
 %{--                <h3> <span class="col-md-2 badge badge-secondary">Año</span></h3>--}%
 
 %{--                <div class="col-md-3 controls" style="width: 120px;">--}%
@@ -98,22 +78,61 @@
 %{--                              class="form-control required" value="${actual.id}" style="width: 100px;"/>--}%
 %{--                    <p class="help-block ui-helper-hidden"></p>--}%
 %{--                </div>--}%
+%{--            </div>--}%
 
-                <h3> <span class="col-md-2 badge badge-secondary">Valor</span></h3>
+%{--            <div class="col-md-12 control-group">--}%
 
-                <div class="col-md-2 controls">
-                    <g:textField name="valor" id="valor" class="form-control number required" value="0.00" style="width: 150px;"/>
-                    <p class="help-block ui-helper-hidden"></p>
-                </div>
+%{--                <h3> <span class="col-md-2 badge badge-secondary">Partida</span></h3>--}%
 
-                <div class="col-md-2" >
-                    <span>
-                        <a href="#" id="guardar" class="btn btn-success"><i class="fa fa-save"></i> Guardar</a>
-                    </span>
-                </div>
-            </div>
-        </g:form>
-    </div>
+%{--                <div style="width: 1000px; margin-left: 190px;">--}%
+
+%{--                    <input class="col-md-3 form-control" type="text" style="width: 300px;font-size: 12px" id="item_presupuesto">--}%
+
+%{--                    <input type="hidden" id="item_prsp" name="prespuesto.id">--}%
+
+%{--                    <input class="col-md-4 form-control" type="text" style="width: 400px; font-size: 12px; margin-right: 5px" id="item_desc" disabled>--}%
+
+%{--                    <a href="#" class="btn btn-success" title="Crear nueva partida" id="item_agregar_prsp">--}%
+%{--                        <i class="fa fa-file"></i>--}%
+%{--                        Nueva partida--}%
+%{--                    </a>--}%
+%{--                    <a href="#" class="btn btn-warning" title="Crear nueva partida" id="prsp_editar" disabled>--}%
+%{--                        <i class="fa fa-edit"></i>--}%
+%{--                        Editar--}%
+%{--                    </a>--}%
+%{--                    <div class="col-md-12"></div>--}%
+
+%{--                    <div class="col-md-1 dato" >Fuente:</div>--}%
+%{--                    <input class="form-control col-md-4 dato" type="text" style="width: 510px;font-size: 12px;" id="item_fuente" disabled> <div class="col-md-12"></div>--}%
+
+%{--                    <div class="col-md-1 dato" >Programa:</div>--}%
+%{--                    <input class="form-control col-md-4 dato" type="text" style="width: 510px;font-size: 12px;" id="item_prog" disabled> <div class="col-md-12"></div>--}%
+
+%{--                    <div class="col-md-1 dato" >Subprograma:</div>--}%
+%{--                    <input class="form-control col-md-4 dato" type="text" style="width: 510px;;font-size: 12px;" id="item_spro" disabled> <div class="col-md-12"></div>--}%
+
+%{--                    <div class="col-md-1 dato" >Proyecto:</div>--}%
+%{--                    <input class="form-control col-md-4 dato" type="text" style="width: 510px;;font-size: 12px;" id="item_proy" disabled>  <div class="col-md-12"></div>--}%
+
+%{--                </div>--}%
+%{--            </div>--}%
+
+%{--            <div class="col-md-12 control-group">--}%
+%{--                <h3> <span class="col-md-2 badge badge-secondary">Valor</span></h3>--}%
+
+%{--                <div class="col-md-2 controls">--}%
+%{--                    <g:textField name="valor" id="valor" class="form-control number required" value="0.00" style="width: 150px;"/>--}%
+%{--                    <p class="help-block ui-helper-hidden"></p>--}%
+%{--                </div>--}%
+
+%{--                <div class="col-md-2" >--}%
+%{--                    <span>--}%
+%{--                        <a href="#" id="guardar" class="btn btn-success"><i class="fa fa-save"></i> Guardar</a>--}%
+%{--                    </span>--}%
+%{--                </div>--}%
+%{--            </div>--}%
+%{--        </g:form>--}%
+%{--    </div>--}%
 
     <div id="list-Asignacion" class="col-md-12" style="border-top: 1px solid black; margin-top: 15px">
 
@@ -124,6 +143,39 @@
 <script type="text/javascript">
 
     var bcpc;
+
+    buscarPartida();
+
+    $("#btnBuscarPartida").click(function () {
+        buscarPartida();
+    });
+
+    function buscarPartida() {
+        var anio = $("#anios option:selected").val();
+        var buscarPor = $("#buscarPor option:selected").val();
+        var criterio = $("#criterio").val();
+        $.ajax({
+            type: "POST",
+            url: "${createLink(controller: 'asignacion', action:'tablaPresupuesto_ajax')}",
+            data: {
+                buscarPor: buscarPor,
+                criterio: criterio,
+                anio: anio
+            },
+            success: function (msg) {
+                $("#divTablaPartidas").html(msg);
+            }
+        });
+    }
+
+    $("#criterioCriterio").keydown(function (ev) {
+        if (ev.keyCode === 13) {
+            ev.preventDefault();
+            buscarPartida();
+            return false;
+        }
+    });
+
 
     $("#item_presupuesto").dblclick(function () {
         var anio = $("#anio").val();
