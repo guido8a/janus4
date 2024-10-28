@@ -215,7 +215,7 @@ class AsignacionController {
         def select = "select * from prsp"
         def txwh = " where $bsca ilike '%${params.criterio}%' and anio__id = ${anio?.id}"
         sqlTx = "${select} ${txwh} order by prspdscr limit 30 ".toString()
-//        println "sql: $sqlTx"
+        println "sql: $sqlTx"
 
         def cn = dbConnectionService.getConnection()
         datos = cn.rows(sqlTx)
