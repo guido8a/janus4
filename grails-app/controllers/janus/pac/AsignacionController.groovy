@@ -103,9 +103,9 @@ class AsignacionController {
                 def anchos = [15, 50, 70, 20, 20, 20]
                 /*anchos para el set column view en excel (no son porcentajes)*/
                 redirect(controller: "reportes", action: "reporteBuscadorExcel", params: [listaCampos: listaCampos,
-                    listaTitulos: listaTitulos, tabla: "Presupuesto", orden: params.orden, ordenado: params.ordenado,
-                    criterios: params.criterios, operadores: params.operadores, campos: params.campos,
-                    titulo: "Presupuesto", anchos: anchos, extras: extras, landscape: true])
+                                                                                          listaTitulos: listaTitulos, tabla: "Presupuesto", orden: params.orden, ordenado: params.ordenado,
+                                                                                          criterios: params.criterios, operadores: params.operadores, campos: params.campos,
+                                                                                          titulo: "Presupuesto", anchos: anchos, extras: extras, landscape: true])
             }else{
                 /* Dominio, nombre del dominio , excluyente o incluyente ,params tal cual llegan de la interfaz del buscador, ignore case */
                 def lista = buscadorService.buscar(janus.Presupuesto, "Presupuesto", "excluyente", params, true, extras)
@@ -117,8 +117,8 @@ class AsignacionController {
                     funcionJs: funcionJs])
 */
                 render(view: '../tablaBuscador', model: [listaTitulos: listaTitulos, listaCampos: listaCampos,
-                    lista: lista, funciones: funciones, url: url, controller: "llamada", numRegistros: numRegistros,
-                    funcionJs: funcionJs, width: 1800, paginas: 12])
+                                                         lista: lista, funciones: funciones, url: url, controller: "llamada", numRegistros: numRegistros,
+                                                         funcionJs: funcionJs, width: 1800, paginas: 12])
 
             }
         } else {
@@ -127,9 +127,9 @@ class AsignacionController {
             session.funciones = funciones
             def anchos = [20, 20,20,10,10,10] /*el ancho de las columnas en porcentajes... solo enteros*/
             redirect(controller: "reportes", action: "reporteBuscador", params: [listaCampos: listaCampos,
-               listaTitulos: listaTitulos, tabla: "Presupuesto", orden: params.orden, ordenado: params.ordenado,
-               criterios: params.criterios, operadores: params.operadores, campos: params.campos,
-               titulo: "Partidas presupuestarias", anchos: anchos, extras: extras, landscape: false])
+                                                                                 listaTitulos: listaTitulos, tabla: "Presupuesto", orden: params.orden, ordenado: params.ordenado,
+                                                                                 criterios: params.criterios, operadores: params.operadores, campos: params.campos,
+                                                                                 titulo: "Partidas presupuestarias", anchos: anchos, extras: extras, landscape: false])
         }
 
 
@@ -225,6 +225,44 @@ class AsignacionController {
 
 //        println("data " + datos)
         return[presupuestos: datos, anioSeleccionado: anio.anio]
+    }
+
+    def formAsignacion_ajax(){
+
+        def asignacion
+        def anio = new Date().format("yyyy")
+        def actual = Anio.findByAnio(anio.toString())
+        if(!actual){
+            actual=Anio.list([sort: "id"])?.pop()
+        }
+
+        if(params.id){
+            asignacion = Asignacion.get(params.id)
+        }else{
+            asignacion = new Asignacion()
+        }
+
+        return [asignacion:asignacion, actual: actual]
+    }
+
+    def saveAsignacion_ajax(){
+        println("params sa " + params)
+
+        def asignacion
+
+        if(params.id){
+            asignacion = Asignacion.get(params.id)
+        }else{
+            asignacion = new Asignacion()
+        }
+
+        asignacion.properties = params
+
+
+
+
+        render "ok"
+
     }
 
 

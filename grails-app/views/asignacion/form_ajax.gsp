@@ -36,7 +36,7 @@
             </div>
 
             <div class="col-md-1" style="margin-top: 20px">
-                <a href="#" class="btn btn-success btnEditarAsignacion"><i class="fa fa-file"></i> Nueva Asignación</a>
+                <a href="#" class="btn btn-success btnNuevaAsignacion"><i class="fa fa-file"></i> Nueva Asignación</a>
             </div>
 
         </div>
@@ -164,59 +164,59 @@
         }
     });
 
-    $("#item_presupuesto").dblclick(function () {
-        var anio = $("#anio").val();
-        $.ajax({
-            type    : "POST",
-            url: "${createLink(action:'buscarPresupuesto')}",
-            data    : {
-                anio: anio
-            },
-            success : function (msg) {
-                bcpc = bootbox.dialog({
-                    id      : "dlgBuscarPR",
-                    title   : "Buscar Partida",
-                    class: 'modal-lg',
-                    message : msg,
-                    buttons : {
-                        cancelar : {
-                            label     : "Cancelar",
-                            className : "btn-primary",
-                            callback  : function () {
-                            }
-                        }
-                    } //buttons
-                }); //dialog
-            } //success
-        }); //ajax
-    });
+    %{--$("#item_presupuesto").dblclick(function () {--}%
+    %{--    var anio = $("#anio").val();--}%
+    %{--    $.ajax({--}%
+    %{--        type    : "POST",--}%
+    %{--        url: "${createLink(action:'buscarPresupuesto')}",--}%
+    %{--        data    : {--}%
+    %{--            anio: anio--}%
+    %{--        },--}%
+    %{--        success : function (msg) {--}%
+    %{--            bcpc = bootbox.dialog({--}%
+    %{--                id      : "dlgBuscarPR",--}%
+    %{--                title   : "Buscar Partida",--}%
+    %{--                class: 'modal-lg',--}%
+    %{--                message : msg,--}%
+    %{--                buttons : {--}%
+    %{--                    cancelar : {--}%
+    %{--                        label     : "Cancelar",--}%
+    %{--                        className : "btn-primary",--}%
+    %{--                        callback  : function () {--}%
+    %{--                        }--}%
+    %{--                    }--}%
+    %{--                } //buttons--}%
+    %{--            }); //dialog--}%
+    %{--        } //success--}%
+    %{--    }); //ajax--}%
+    %{--});--}%
 
     function cerrarBuscadorPartida(){
         bcpc.modal("hide")
     }
 
-    $("#valor").keydown(function (ev) {
-        return validarNum(ev);
-    });
-
-    function validarNum(ev) {
-        /*
-         48-57      -> numeros
-         96-105     -> teclado numerico
-         188        -> , (coma)
-         190        -> . (punto) teclado
-         110        -> . (punto) teclado numerico
-         8          -> backspace
-         46         -> delete
-         9          -> tab
-         37         -> flecha izq
-         39         -> flecha der
-         */
-        return ((ev.keyCode >= 48 && ev.keyCode <= 57) ||
-            (ev.keyCode >= 96 && ev.keyCode <= 105) ||
-            ev.keyCode === 8 || ev.keyCode === 46 || ev.keyCode === 9 ||
-            ev.keyCode === 37 || ev.keyCode === 39 || ev.keyCode === 190 || ev.keyCode === 110 ) ;
-    }
+    // $("#valor").keydown(function (ev) {
+    //     return validarNum(ev);
+    // });
+    //
+    // function validarNum(ev) {
+    //     /*
+    //      48-57      -> numeros
+    //      96-105     -> teclado numerico
+    //      188        -> , (coma)
+    //      190        -> . (punto) teclado
+    //      110        -> . (punto) teclado numerico
+    //      8          -> backspace
+    //      46         -> delete
+    //      9          -> tab
+    //      37         -> flecha izq
+    //      39         -> flecha der
+    //      */
+    //     return ((ev.keyCode >= 48 && ev.keyCode <= 57) ||
+    //         (ev.keyCode >= 96 && ev.keyCode <= 105) ||
+    //         ev.keyCode === 8 || ev.keyCode === 46 || ev.keyCode === 9 ||
+    //         ev.keyCode === 37 || ev.keyCode === 39 || ev.keyCode === 190 || ev.keyCode === 110 ) ;
+    // }
 
     function cargarTecho() {
         if ($("#item_prsp").val() * 1 > 0) {
@@ -347,9 +347,71 @@
     %{--    });--}%
     %{--}--}%
 
+    function createEditAsignacion(id) {
+        var title = id ? "Editar " : "Crear ";
+        var data = id ? {id : id} : {};
+
+        $.ajax({
+            type    : "POST",
+            url: "${createLink(controller: 'asignacion', action:'formAsignacion_ajax')}",
+            data    : data,
+            success : function (msg) {
+                var b = bootbox.dialog({
+                    id      : "dlgCreateEditAsignacion",
+                    title   : title + " Asignación",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        },
+                        guardar  : {
+                            id        : "btnSave",
+                            label     : "<i class='fa fa-save'></i> Guardar",
+                            className : "btn-success",
+                            callback  : function () {
+                                return submitFormAsignacion();
+                            } //callback
+                        } //guardar
+                    } //buttons
+                }); //dialog
+            } //success
+        }); //ajax
+    } //createEdit
+
+    function submitFormAsignacion() {
+        var $form = $("#frmAsignacion");
+        if ($form.valid()) {
+            var data = $form.serialize();
+            var dialog = cargarLoader("Guardando...");
+            $.ajax({
+                type    : "POST",
+                url     : $form.attr("action"),
+                data    : data,
+                success : function (msg) {
+                    dialog.modal('hide');
+                    var parts = msg.split("_");
+                    if(parts[0] === 'ok'){
+                        log(parts[1], "success");
+                        cargarAsignaciones();
+                    }else{
+                        bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
+                        return false;
+                    }
+                }
+            });
+        } else {
+            return false;
+        }
+    }
+
+    $(".btnNuevaAsignacion").click(function () {
+        createEditAsignacion();
+    })
 
 </script>
 
 </body>
 </html>
-

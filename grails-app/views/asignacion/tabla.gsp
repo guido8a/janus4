@@ -47,4 +47,9 @@
 
 <script type="text/javascript">
 
+    $(".btnEditarAsignacion").click(function () {
+        var id = $(this).data("id");
+        createEditAsignacion(id)
+    });
+
 </script>
