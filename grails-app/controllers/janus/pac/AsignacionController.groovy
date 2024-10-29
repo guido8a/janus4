@@ -246,23 +246,58 @@ class AsignacionController {
     }
 
     def saveAsignacion_ajax(){
-        println("params sa " + params)
+//        println("params sa " + params)
 
         def asignacion
+        def anio = Anio.get(params.anio)
+        def presupuesto = Presupuesto.get(params.prespuesto)
+        def existe = Asignacion.findByAnioAndPrespuesto(anio, presupuesto)
 
         if(params.id){
             asignacion = Asignacion.get(params.id)
+
+            if(existe){
+                if(existe?.id != asignacion?.id){
+                    render "err_Ya existe una asignación con esa partida"
+                    return
+                }
+            }
         }else{
+
+            if(existe){
+                    render "err_Ya existe una asignación con esa partida"
+                    return
+            }
+
             asignacion = new Asignacion()
         }
 
         asignacion.properties = params
 
+        if(!asignacion.save(flush:true)){
+            println("error al guardar la asignacion " + asignacion.errors)
+            render "no_Error al guardar la asignación"
+        }else{
+            render "ok_Guardado correctamente"
+        }
+    }
 
+    def borrarAsignacion_ajax(){
+        def asignacion = Asignacion.get(params.id)
 
+        if(asignacion){
 
-        render "ok"
+            try{
+                asignacion.delete(flush:true)
+                render "ok_Borrado correctamente"
+            }catch(e){
+                println("_Error al borrar la asignacion " + asignacion.errors)
+                render "no_Error al borrar la asignacion"
+            }
 
+        }else{
+            render "no_Error al borrar la asignación"
+        }
     }
 
 

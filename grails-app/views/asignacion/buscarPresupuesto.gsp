@@ -6,7 +6,7 @@
                     Buscar Por
                 </label>
                 <span class="col-md-3">
-                    <g:select name="buscarPor" class="buscarPor col-md-12 form-control" from="${['1' : 'Código', '2' : 'Descripción']}" optionKey="key"
+                    <g:select name="buscarPorPartida" class="buscarPor col-md-12 form-control" from="${[1 : 'Código', 2 : 'Descripción']}" optionKey="key"
                               optionValue="value"/>
                 </span>
                 <label class="col-md-1 control-label text-info">
@@ -37,7 +37,7 @@
     });
 
     function buscarPartida() {
-        var buscarPor = $("#buscarPor").val();
+        var buscarPor = $("#buscarPorPartida").val();
         var criterio = $("#criterioCriterio").val();
         $.ajax({
             type: "POST",

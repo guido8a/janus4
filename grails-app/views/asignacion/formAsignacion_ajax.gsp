@@ -18,12 +18,23 @@
                 Partida
             </label>
             <span class="col-md-8">
-                <g:hiddenField name="presupuesto" value="${asignacion?.prespuesto?.id}" />
-                <g:textArea name="presupuestoName" required="" class="form-control required" value="${asignacion?.prespuesto?.descripcion}" style="height: 150px; resize: none"/>
+                <g:hiddenField name="prespuesto" value="${asignacion?.prespuesto?.id}" required="" />
+                <g:textArea name="presupuestoName" required="" readonly="" class="form-control required" value="${asignacion?.prespuesto?.descripcion}" style="height: 150px; resize: none"/>
             </span>
 
             <span class="col-md-1">
                 <a href="#" class="btn btn-info btnPartida" ><i class="fa fa-search"></i></a>
+            </span>
+        </span>
+    </div>
+
+    <div class="form-group ${hasErrors(bean: asignacion, field: 'codigo', 'error')}">
+        <span class="grupo">
+            <label for="presupuestoCodigo" class="col-md-2 control-label text-info">
+                Código
+            </label>
+            <span class="col-md-8">
+                <g:textField name="presupuestoCodigo" readonly="" class="form-control" value="${asignacion?.prespuesto?.numero}"/>
             </span>
         </span>
     </div>
@@ -72,6 +83,10 @@
             } //success
         }); //ajax
     });
+
+    function cerrarBuscarPartida(){
+        bpc.modal("hide");
+    }
 
     function validarNum(ev) {
         /*

@@ -52,4 +52,49 @@
         createEditAsignacion(id)
     });
 
+    $(".btnBorrarAsignacion").click(function () {
+        var id = $(this).data("id");
+        bootbox.confirm({
+            title: "Eliminar asignación",
+            message: "<i class='fa fa-exclamation-triangle text-info fa-3x'></i> <strong style='font-size: 14px'> Está seguro de eliminar esta asignación?</strong> ",
+            buttons: {
+                cancel: {
+                    label: '<i class="fa fa-times"></i> Cancelar',
+                    className: 'btn-primary'
+                },
+                confirm: {
+                    label: '<i class="fa fa-trash"></i> Borrar',
+                    className: 'btn-danger'
+                }
+            },
+            callback: function (result) {
+                if(result){
+                    var dialog = cargarLoader("Guardando...");
+                    $.ajax({
+                        type : "POST",
+                        url : "${g.createLink(controller: 'asignacion',action:'borrarAsignacion_ajax')}",
+                        data     : {
+                            id : id
+                        },
+                        success  : function (msg) {
+                            dialog.modal('hide');
+                            var parts = msg.split("_");
+                            if(parts[0] === 'ok'){
+                                log(parts[1], "success");
+                                cargarAsignaciones();
+                            }else{
+                                if(parts[0] === 'err'){
+                                    bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
+                                    return false;
+                                }else{
+                                    log(parts[1], "error");
+                                }
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    });
+
 </script>

@@ -128,6 +128,13 @@
 
     var bcpc;
 
+    $("#btnLimpiar").click(function () {
+        $("#buscarPor").val(1);
+        $("#criterio").val('');
+        $("#anios").val('${actual?.id}');
+        cargarAsignaciones();
+    });
+
     $("#anios").change(function () {
         cargarAsignaciones();
     });
@@ -397,8 +404,12 @@
                         log(parts[1], "success");
                         cargarAsignaciones();
                     }else{
-                        bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
-                        return false;
+                        if(parts[0] === 'err'){
+                            bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
+                            return false;
+                        }else{
+                            log(parts[1], "error");
+                        }
                     }
                 }
             });
