@@ -272,6 +272,7 @@ class AsignacionController {
             asignacion = new Asignacion()
         }
 
+        params.valor = params.valor.toDouble();
         asignacion.properties = params
 
         if(!asignacion.save(flush:true)){
