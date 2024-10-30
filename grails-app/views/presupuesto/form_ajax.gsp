@@ -23,7 +23,7 @@
                 Año
             </label>
             <span class="col-md-4">
-                <g:select name="anio.id" from="${janus.pac.Anio.list([sort: "anio"])}" optionKey="id" optionValue="anio" class="form-control required" value="${presupuestoInstance?.anio?.id}"/>
+                <g:select name="anio.id" from="${janus.pac.Anio.list([sort: "anio"])}" optionKey="id" optionValue="anio" class="form-control required" value="${presupuestoInstance?.anio?.id ?:  actual?.id}"/>
                 <p class="help-block ui-helper-hidden"></p>
             </span>
         </span>
@@ -58,7 +58,7 @@
                 Programa
             </label>
             <span class="col-md-8">
-                <g:textField name="programa" maxlength="255" class="form-control required" value="${presupuestoInstance?.programa}" />
+                <g:textArea name="programa" maxlength="255" class="form-control required" value="${presupuestoInstance?.programa}" />
                 <p class="help-block ui-helper-hidden"></p>
             </span>
         </span>
@@ -70,7 +70,7 @@
                 SubPrograma
             </label>
             <span class="col-md-8">
-                <g:textField name="subPrograma" maxlength="255" class="form-control required" value="${presupuestoInstance?.subPrograma}" />
+                <g:textArea name="subPrograma" maxlength="255" class="form-control required" value="${presupuestoInstance?.subPrograma}" />
                 <p class="help-block ui-helper-hidden"></p>
             </span>
         </span>
@@ -82,7 +82,7 @@
                 Proyecto
             </label>
             <span class="col-md-8">
-                <g:textField name="proyecto" maxlength="255" class="form-control required" value="${presupuestoInstance?.proyecto}" />
+                <g:textArea name="proyecto" maxlength="255" class="form-control required" value="${presupuestoInstance?.proyecto}" />
                 <p class="help-block ui-helper-hidden"></p>
             </span>
         </span>

@@ -1,200 +1,174 @@
-
-<%@ page import="janus.Presupuesto" %>
+<%@ page import="janus.pac.Asignacion" %>
+<%@ page import="janus.Grupo" %>
 <!doctype html>
 <html>
-    <head>
-        <meta name="layout" content="main">
-        <title>
-            Lista de Partidas
-        </title>
-        <script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'jquery.validate.min.js')}"></script>
-        <script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'messages_es.js')}"></script>
-    </head>
-    <body>
+<head>
+    <meta name="layout" content="main">
+    <title>
+        Partidas Presupuestarias
+    </title>
+</head>
 
-        <div class="span12">
-            <g:if test="${flash.message}">
-                <div class="alert ${flash.clase ?: 'alert-info'}" role="status">
-                    <a class="close" data-dismiss="alert" href="#">×</a>
-                    ${flash.message}
-                </div>
-            </g:if>
-        </div>
+<body>
 
-        <div class="span12 btn-group" role="navigation">
-            <a href="#" class="btn btn-ajax btn-new">
-                <i class="icon-file"></i>
-                Nueva Partida
-            </a>
-        </div>
+<div class="col-md-12 breadcrumb" style="font-size: 18px; text-align: center">
+    <h3>Lista de partidas presupuestarias por año</h3>
+</div>
 
-        <g:form action="delete" name="frmDelete-presupuestoInstance">
-            <g:hiddenField name="id"/>
-        </g:form>
-
-        <div id="list-presupuesto" class="span12" role="main" style="margin-top: 10px;">
-
-            <table class="table table-bordered table-striped table-condensed table-hover">
-                <thead>
-                    <tr>
-                    
-                        <g:sortableColumn property="numero" title="Número" />
-                    
-                        <g:sortableColumn property="nivel" title="Nivel" />
-                    
-                        <g:sortableColumn property="descripcion" title="Descripción" />
-                    
-                        <th width="150">Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                <g:each in="${presupuestoInstanceList}" status="i" var="presupuestoInstance">
-                    <tr>
-                    
-                        <td>${fieldValue(bean: presupuestoInstance, field: "numero")}</td>
-                    
-                        <td>${fieldValue(bean: presupuestoInstance, field: "nivel")}</td>
-                    
-                        <td>${fieldValue(bean: presupuestoInstance, field: "descripcion")}</td>
-                    
-                        <td>
-                            <a class="btn btn-small btn-show btn-ajax" href="#" rel="tooltip" title="Ver" data-id="${presupuestoInstance.id}">
-                                <i class="icon-zoom-in"></i>
-                            </a>
-                            <a class="btn btn-small btn-edit btn-ajax" href="#" rel="tooltip" title="Editar" data-id="${presupuestoInstance.id}">
-                                <i class="icon-pencil"></i>
-                            </a>
-
-                            <a class="btn btn-small btn-delete" href="#" rel="tooltip" title="Eliminar" data-id="${presupuestoInstance.id}">
-                                <i class="icon-trash"></i>
-                            </a>
-                        </td>
-                    </tr>
-                </g:each>
-                </tbody>
-            </table>
-            <div class="pagination">
-                <elm:paginate total="${presupuestoInstanceTotal}" params="${params}" />
+<div class="row" id="busqueda" style="overflow: hidden">
+    <fieldset class="borde" style="border-radius: 4px">
+        <div class="row-fluid">
+            <div class="col-md-2">
+                Año
+                <g:select class="form-control" name="anios" from="${janus.pac.Anio.list(sort: 'anio')}" value="${actual?.id}" optionKey="id" optionValue="anio"/>
             </div>
-        </div>
-
-        <div class="modal hide fade" id="modal-presupuesto">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">×</button>
-
-                <h3 id="modalTitle"></h3>
+            <div class="col-md-2">
+                Buscar Por
+                <g:select name="buscarPor" class="buscarPor form-control" from="${[2: 'Descripción' , 1: 'Código']}" style="width: 100%" optionKey="key" optionValue="value"/>
+            </div>
+            <div class="col-md-4">
+                Criterio
+                <g:textField name="criterio" class="criterio form-control"/>
+            </div>
+            <div class="col-md-2 btn-group" style="margin-top: 20px">
+                <button class="btn btn-info" id="btnBuscarPartida"><i class="fa fa-search"></i></button>
+                <button class="btn btn-warning" id="btnLimpiarPartida" title="Limpiar Búsqueda"><i class="fa fa-eraser"></i></button>
             </div>
 
-            <div class="modal-body" id="modalBody">
+            <div class="col-md-1" style="margin-top: 20px">
+                <a href="#" class="btn btn-success btnNuevaPartida"><i class="fa fa-file"></i> Nueva Partida</a>
             </div>
 
-            <div class="modal-footer" id="modalFooter">
-            </div>
         </div>
+    </fieldset>
 
-        <script type="text/javascript">
-            var url = "${resource(dir:'images', file:'spinner_24.gif')}";
-            var spinner = $("<img style='margin-left:15px;' src='" + url + "' alt='Cargando...'/>");
+    <fieldset class="borde col-md-12" style="margin-top: 10px">
+        <div class="col-md-12" id="divTablaPartidas">
+        </div>
+    </fieldset>
+</div>
 
+<script type="text/javascript">
 
-            $(function () {
-                $('[rel=tooltip]').tooltip();
+    var bcpc;
 
-                $(".btn-new").click(function () {
-                    $.ajax({
-                        type    : "POST",
-                        url     : "${createLink(action:'form_ajax')}",
-                        success : function (msg) {
-                            var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');
-                            var btnSave = $('<a href="#"  class="btn btn-success"><i class="icon-ok"></i> Guardar</a>');
+    $("#btnLimpiarPartida").click(function () {
+        $("#buscarPor").val(2);
+        $("#criterio").val('');
+        $("#anios").val('${actual?.id}');
+        cargarPartidas();
+    });
 
-                            btnSave.click(function () {
-                                if ($("#frmSave-presupuestoInstance").valid()) {
-                                    btnSave.replaceWith(spinner);
-                                }
-                                $("#frmSave-presupuestoInstance").submit();
-                                return false;
-                            });
+    $("#anios").change(function () {
+        cargarPartidas();
+    });
 
-                            $("#modalTitle").html("Crear Presupuesto");
-                            $("#modalBody").html(msg);
-                            $("#modalFooter").html("").append(btnOk).append(btnSave);
-                            $("#modal-presupuesto").modal("show");
-                        }
-                    });
-                    return false;
-                }); //click btn new
+    cargarPartidas();
 
-                $(".btn-edit").click(function () {
-                    var id = $(this).data("id");
-                    $.ajax({
-                        type    : "POST",
-                        url     : "${createLink(action:'form_ajax')}",
-                        data    : {
-                            id : id
+    $("#btnBuscarAsignacion").click(function () {
+        cargarPartidas();
+    });
+
+    function cargarPartidas() {
+        var anio = $("#anios option:selected").val();
+        var buscarPor = $("#buscarPor option:selected").val();
+        var criterio = $("#criterio").val();
+        $.ajax({
+            type: "POST",
+            url: "${createLink(controller: 'presupuesto', action:'tablaPresupuesto_ajax')}",
+            data: {
+                buscarPor: buscarPor,
+                criterio: criterio,
+                anio: anio
+            },
+            success: function (msg) {
+                $("#divTablaPartidas").html(msg);
+            }
+        });
+    }
+
+    $("#criterio").keydown(function (ev) {
+        if (ev.keyCode === 13) {
+            ev.preventDefault();
+            cargarPartidas();
+            return false;
+        }
+    });
+
+    function cerrarBuscadorPartida(){
+        bcpc.modal("hide")
+    }
+
+    function createEditPresupuesto(id) {
+        var title = id ? "Editar " : "Crear ";
+        var data = id ? {id : id} : {};
+
+        $.ajax({
+            type    : "POST",
+            url: "${createLink(controller: 'presupuesto', action:'form_ajax')}",
+            data    : data,
+            success : function (msg) {
+                var b = bootbox.dialog({
+                    id      : "dlgCreateEditPartida",
+                    title   : title + " Partida",
+                    class : "modal-lg",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
                         },
-                        success : function (msg) {
-                            var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');
-                            var btnSave = $('<a href="#"  class="btn btn-success"><i class="icon-ok"></i> Guardar</a>');
+                        guardar  : {
+                            id        : "btnSave",
+                            label     : "<i class='fa fa-save'></i> Guardar",
+                            className : "btn-success",
+                            callback  : function () {
+                                return submitFormPresupuesto();
+                            } //callback
+                        } //guardar
+                    } //buttons
+                }); //dialog
+            } //success
+        }); //ajax
+    } //createEdit
 
-                            btnSave.click(function () {
-                                if ($("#frmSave-presupuestoInstance").valid()) {
-                                    btnSave.replaceWith(spinner);
-                                }
-                                $("#frmSave-presupuestoInstance").submit();
-                                return false;
-                            });
-
-                            $("#modalTitle").html("Editar Presupuesto");
-                            $("#modalBody").html(msg);
-                            $("#modalFooter").html("").append(btnOk).append(btnSave);
-                            $("#modal-presupuesto").modal("show");
+    function submitFormPresupuesto() {
+        var $form = $("#frmPartida");
+        if ($form.valid()) {
+            var data = $form.serialize();
+            var dialog = cargarLoader("Guardando...");
+            $.ajax({
+                type    : "POST",
+                url     : $form.attr("action"),
+                data    : data,
+                success : function (msg) {
+                    dialog.modal('hide');
+                    var parts = msg.split("_");
+                    if(parts[0] === 'ok'){
+                        log(parts[1], "success");
+                        cargarPartidas();
+                    }else{
+                        if(parts[0] === 'err'){
+                            bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
+                            return false;
+                        }else{
+                            log(parts[1], "error");
                         }
-                    });
-                    return false;
-                }); //click btn edit
-
-                $(".btn-show").click(function () {
-                    var id = $(this).data("id");
-                    $.ajax({
-                        type    : "POST",
-                        url     : "${createLink(action:'show_ajax')}",
-                        data    : {
-                            id : id
-                        },
-                        success : function (msg) {
-                            var btnOk = $('<a href="#" data-dismiss="modal" class="btn btn-primary">Aceptar</a>');
-                            $("#modalTitle").html("Ver Presupuesto");
-                            $("#modalBody").html(msg);
-                            $("#modalFooter").html("").append(btnOk);
-                            $("#modal-presupuesto").modal("show");
-                        }
-                    });
-                    return false;
-                }); //click btn show
-
-                $(".btn-delete").click(function () {
-                    var id = $(this).data("id");
-                    $("#id").val(id);
-                    var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');
-                    var btnDelete = $('<a href="#" class="btn btn-danger"><i class="icon-trash"></i> Eliminar</a>');
-
-                    btnDelete.click(function () {
-                        btnDelete.replaceWith(spinner);
-                        $("#frmDelete-presupuestoInstance").submit();
-                        return false;
-                    });
-
-                    $("#modalTitle").html("Eliminar Presupuesto");
-                    $("#modalBody").html("<p>¿Está seguro de querer eliminar este presupuesto?</p>");
-                    $("#modalFooter").html("").append(btnOk).append(btnDelete);
-                    $("#modal-presupuesto").modal("show");
-                    return false;
-                });
-
+                    }
+                }
             });
+        } else {
+            return false;
+        }
+    }
 
-        </script>
+    $(".btnNuevaPartida").click(function () {
+        createEditPresupuesto();
+    })
 
-    </body>
+</script>
+
+</body>
 </html>

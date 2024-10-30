@@ -1,154 +1,61 @@
 package janus
 
-
-import org.springframework.dao.DataIntegrityViolationException
+import janus.pac.Anio
 
 class PresupuestoController {
 
-    static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
+    def dbConnectionService
 
-    def index() {
-        redirect(action: "list", params: params)
-    } //index
+    def list(){
+        def anio = new Date().format("yyyy")
+        def actual = Anio.findByAnio(anio.toString())
+        if(!actual){
+            actual=Anio.list([sort: "id"])?.pop()
+        }
+        return [actual: actual]
+    }
 
-    def list() {
-        params.max = Math.min(params.max ? params.int('max') : 15, 100)
-        [presupuestoInstanceList: Presupuesto.list(params), presupuestoInstanceTotal: Presupuesto.count(), params: params]
-    } //list
+    def form_ajax(){
 
-    def form_ajax() {
-        def presupuestoInstance = new Presupuesto(params)
-        if (params.id) {
-            presupuestoInstance = Presupuesto.get(params.id)
-            if (!presupuestoInstance) {
-                flash.clase = "alert-error"
-                flash.message = "No se encontró Presupuesto con id " + params.id
-                redirect(action: "list")
-                return
-            } //no existe el objeto
-        } //es edit
-        return [presupuestoInstance: presupuestoInstance]
-    } //form_ajax
+        def anio = new Date().format("yyyy")
+        def actual = Anio.findByAnio(anio.toString())
+        if(!actual){
+            actual=Anio.list([sort: "id"])?.pop()
+        }
 
-    def saveAjax() {
-       println "save prsp "+params
-        def presupuestoInstance
+        def presupuesto
 
-        if (params.id) {
-            presupuestoInstance = Presupuesto.get(params.id)
-            if (!presupuestoInstance) {
-                render "no_No existe el presupuesto"
-                return
-            }//no existe el objeto
-
-        }//es edit
-        else {
-            presupuestoInstance = new Presupuesto()
-        } //es create
-
-        presupuestoInstance.properties = params
-
-
-        if (!presupuestoInstance.save(flush: true)) {
-            flash.clase = "alert-error"
-            def str = "<h4>No se pudo guardar Presupuesto " + (presupuestoInstance.id ? presupuestoInstance.id : "") + "</h4>"
-
-            str += "<ul>"
-            presupuestoInstance.errors.allErrors.each { err ->
-                def msg = err.defaultMessage
-                err.arguments.eachWithIndex {  arg, i ->
-                    msg = msg.replaceAll("\\{" + i + "}", arg.toString())
-                }
-                str += "<li>" + msg + "</li>"
-            }
-            str += "</ul>"
-
-            render "no_" + str
+        if(params.id){
+            presupuesto = Presupuesto.get(params.id)
         }else{
-
-            render "ok_Presupuesto guardado correctamente_${presupuestoInstance.id}_${presupuestoInstance.numero}_${presupuestoInstance.descripcion}_" +
-                    "${presupuestoInstance.fuente}_${presupuestoInstance.programa}_${presupuestoInstance.subPrograma}_" +
-                    "${presupuestoInstance.proyecto}"
+            presupuesto = new Presupuesto()
         }
 
-    } //save
+        return [presupuestoInstance: presupuesto, actual: actual]
+    }
 
-    def save() {
 
-        def presupuestoInstance
-        if (params.id) {
-            presupuestoInstance = Presupuesto.get(params.id)
-            if (!presupuestoInstance) {
-                flash.clase = "alert-error"
-                flash.message = "No se encontró Presupuesto con id " + params.id
-                redirect(action: 'list')
-                return
-            }//no existe el objeto
-            presupuestoInstance.properties = params
-        }//es edit
-        else {
-            presupuestoInstance = new Presupuesto(params)
-        } //es create
-        if (!presupuestoInstance.save(flush: true)) {
+    def tablaPresupuesto_ajax(){
 
-            flash.clase = "alert-error"
-            def str = "<h4>No se pudo guardar Presupuesto " + (presupuestoInstance.id ? presupuestoInstance.id : "") + "</h4>"
+        println("tabla pre " + params)
 
-            str += "<ul>"
-            presupuestoInstance.errors.allErrors.each { err ->
-                def msg = err.defaultMessage
-                err.arguments.eachWithIndex {  arg, i ->
-                    msg = msg.replaceAll("\\{" + i + "}", arg.toString())
-                }
-                str += "<li>" + msg + "</li>"
-            }
-            str += "</ul>"
+        def anio = Anio.get(params.anio)
+        def datos;
+        def sqlTx = ""
+        def listaItems = ['prspnmro', 'prspdscr']
+        def bsca = listaItems[params.buscarPor.toInteger()-1]
 
-            flash.message = str
-            redirect(action: 'list')
-            return
-        }
+        def select = "select * from prsp"
+        def txwh = " where $bsca ilike '%${params.criterio}%' and anio__id = ${anio?.id}"
+        sqlTx = "${select} ${txwh} order by prspproy limit 30 ".toString()
+        println "sql: $sqlTx"
 
-        if (params.id) {
-            flash.clase = "alert-success"
-            flash.message = "Se ha actualizado correctamente Presupuesto " + presupuestoInstance.id
-        } else {
-            flash.clase = "alert-success"
-            flash.message = "Se ha creado correctamente Presupuesto " + presupuestoInstance.id
-        }
-        redirect(action: 'list')
-    } //save
+        def cn = dbConnectionService.getConnection()
+        datos = cn.rows(sqlTx)
 
-    def show_ajax() {
-        def presupuestoInstance = Presupuesto.get(params.id)
-        if (!presupuestoInstance) {
-            flash.clase = "alert-error"
-            flash.message = "No se encontró Presupuesto con id " + params.id
-            redirect(action: "list")
-            return
-        }
-        [presupuestoInstance: presupuestoInstance]
-    } //show
+//        println("data " + datos)
+        return[presupuestos: datos, anio: anio]
 
-    def delete() {
-        def presupuestoInstance = Presupuesto.get(params.id)
-        if (!presupuestoInstance) {
-            flash.clase = "alert-error"
-            flash.message = "No se encontró Presupuesto con id " + params.id
-            redirect(action: "list")
-            return
-        }
+    }
 
-        try {
-            presupuestoInstance.delete(flush: true)
-            flash.clase = "alert-success"
-            flash.message = "Se ha eliminado correctamente Presupuesto " + presupuestoInstance.id
-            redirect(action: "list")
-        }
-        catch (DataIntegrityViolationException e) {
-            flash.clase = "alert-error"
-            flash.message = "No se pudo eliminar Presupuesto " + (presupuestoInstance.id ? presupuestoInstance.id : "")
-            redirect(action: "list")
-        }
-    } //delete
 } //fin controller

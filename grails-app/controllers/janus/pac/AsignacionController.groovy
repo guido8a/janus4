@@ -10,14 +10,6 @@ class AsignacionController {
     def buscadorService
     def dbConnectionService
 
-    def index() {
-        redirect(action: "form_ajax", params: params)
-    } //index
-
-    def list() {
-        [asignacionInstanceList: Asignacion.list(params), params: params]
-    } //list
-
     def form_ajax() {
         def campos = ["numero": ["Código", "string"], "descripcion": ["Descripción", "string"]]
         def anio = new Date().format("yyyy")

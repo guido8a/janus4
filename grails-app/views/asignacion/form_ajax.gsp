@@ -24,15 +24,19 @@
             </div>
             <div class="col-md-2">
                 Buscar Por
-                <g:select name="buscarPor" class="buscarPor form-control" from="${[1: 'Código', 2: 'Descripción']}" style="width: 100%" optionKey="key" optionValue="value"/>
+                <g:select name="buscarPor" class="buscarPor form-control" from="${[2: 'Descripción' , 1: 'Código']}" style="width: 100%" optionKey="key" optionValue="value"/>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
                 Criterio
                 <g:textField name="criterio" class="criterio form-control"/>
             </div>
             <div class="col-md-2 btn-group" style="margin-top: 20px">
                 <button class="btn btn-info" id="btnBuscarAsignacion"><i class="fa fa-search"></i></button>
                 <button class="btn btn-warning" id="btnLimpiar" title="Limpiar Búsqueda"><i class="fa fa-eraser"></i></button>
+            </div>
+
+            <div class="col-md-1" style="margin-top: 20px">
+                <a href="${createLink(controller: 'presupuesto', action: 'list')}" class="btn btn-info"><i class="fa fa-book"></i> Partidas</a>
             </div>
 
             <div class="col-md-1" style="margin-top: 20px">
@@ -129,7 +133,7 @@
     var bcpc;
 
     $("#btnLimpiar").click(function () {
-        $("#buscarPor").val(1);
+        $("#buscarPor").val(2);
         $("#criterio").val('');
         $("#anios").val('${actual?.id}');
         cargarAsignaciones();
