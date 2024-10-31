@@ -37,7 +37,7 @@ class PresupuestoController {
 
     def tablaPresupuesto_ajax(){
 
-        println("tabla pre " + params)
+//        println("tabla pre " + params)
 
         def anio = Anio.get(params.anio)
         def datos;
@@ -55,6 +55,62 @@ class PresupuestoController {
 
 //        println("data " + datos)
         return[presupuestos: datos, anio: anio]
+
+    }
+
+    def savePartida_ajax(){
+
+        def presupuesto
+        def existe = Presupuesto.findByNumero(params.numero)
+
+        if(params.id){
+            presupuesto = Presupuesto.get(params.id)
+
+            if(existe){
+                if(existe.id != presupuesto?.id){
+                    render "err_Ya existe una partida con ese código"
+                    return
+                }
+            }
+
+        }else{
+            presupuesto = new Presupuesto()
+
+            if(existe){
+                render "err_Ya existe una partida con ese código"
+                return
+            }
+
+        }
+
+        presupuesto.properties = params
+
+        if(!presupuesto.save(flush:true)){
+            println("Error al guardar la partida " + presupuesto.errors)
+            render "no_Error al guardar la partida"
+        }else{
+            render "ok_Guardado correctamente"
+        }
+    }
+
+    def borrarPartida_ajax(){
+
+        def presupuesto = Presupuesto.get(params.id)
+
+        if(presupuesto){
+
+            try{
+               presupuesto.delete(flush:true)
+                render "ok_Borrado correctamente"
+            }catch(e){
+                println("Error al borrar la partida " + presupuesto.errors)
+                render "no_Error al borrar la partida"
+            }
+
+        }else{
+            render "err_No existe la partida"
+        }
+
 
     }
 

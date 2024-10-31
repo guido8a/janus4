@@ -26,13 +26,17 @@
                 Buscar Por
                 <g:select name="buscarPor" class="buscarPor form-control" from="${[2: 'Descripción' , 1: 'Código']}" style="width: 100%" optionKey="key" optionValue="value"/>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
                 Criterio
                 <g:textField name="criterio" class="criterio form-control"/>
             </div>
             <div class="col-md-2 btn-group" style="margin-top: 20px">
                 <button class="btn btn-info" id="btnBuscarPartida"><i class="fa fa-search"></i></button>
                 <button class="btn btn-warning" id="btnLimpiarPartida" title="Limpiar Búsqueda"><i class="fa fa-eraser"></i></button>
+            </div>
+
+            <div class="col-md-1" style="margin-top: 20px">
+                <a href="${createLink(controller: 'asignacion', action: 'form_ajax')}" class="btn btn-info"><i class="fa fa-book"></i> Asignaciones</a>
             </div>
 
             <div class="col-md-1" style="margin-top: 20px">
@@ -50,7 +54,7 @@
 
 <script type="text/javascript">
 
-    var bcpc;
+    // var bcpc;
 
     $("#btnLimpiarPartida").click(function () {
         $("#buscarPor").val(2);
@@ -95,9 +99,9 @@
         }
     });
 
-    function cerrarBuscadorPartida(){
-        bcpc.modal("hide")
-    }
+    // function cerrarBuscadorPartida(){
+    //     bcpc.modal("hide")
+    // }
 
     function createEditPresupuesto(id) {
         var title = id ? "Editar " : "Crear ";

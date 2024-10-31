@@ -24,8 +24,8 @@
                     <td style="width:15%;">${presupuesto?.prspprgm}</td>
                     <td style="width:15%;">${presupuesto?.prspsbpr}</td>
                     <td style="width: 7%; text-align: center">
-                        <a href="#" class="btn btn-success btn-xs btnEditarAsignacion" data-id="${presupuesto?.prsp__id}" ><i class="fa fa-edit"></i></a>
-                        <a href="#" class="btn btn-danger btn-xs btnBorrarAsignacion" data-id="${presupuesto?.prsp__id}" ><i class="fa fa-trash"></i></a>
+                        <a href="#" class="btn btn-success btn-xs btnEditarPartida" data-id="${presupuesto?.prsp__id}" ><i class="fa fa-edit"></i></a>
+                        <a href="#" class="btn btn-danger btn-xs btnBorrarPartida" data-id="${presupuesto?.prsp__id}" ><i class="fa fa-trash"></i></a>
                     </td>
                     <td style="width: 1%"></td>
                 </tr>
@@ -39,3 +39,57 @@
         </tbody>
     </table>
 </div>
+
+<script type="text/javascript">
+
+    $(".btnEditarPartida").click(function () {
+        var id = $(this).data("id");
+        createEditPresupuesto(id);
+    });
+
+    $(".btnBorrarPartida").click(function () {
+        var id = $(this).data("id");
+        bootbox.confirm({
+            title: "Eliminar partida",
+            message: "<i class='fa fa-exclamation-triangle text-info fa-3x'></i> <strong style='font-size: 14px'> Está seguro de eliminar esta partida?</strong> ",
+            buttons: {
+                cancel: {
+                    label: '<i class="fa fa-times"></i> Cancelar',
+                    className: 'btn-primary'
+                },
+                confirm: {
+                    label: '<i class="fa fa-trash"></i> Borrar',
+                    className: 'btn-danger'
+                }
+            },
+            callback: function (result) {
+                if(result){
+                    var dialog = cargarLoader("Borrando...");
+                    $.ajax({
+                        type : "POST",
+                        url : "${g.createLink(controller: 'presupuesto',action:'borrarPartida_ajax')}",
+                        data     : {
+                            id : id
+                        },
+                        success  : function (msg) {
+                            dialog.modal('hide');
+                            var parts = msg.split("_");
+                            if(parts[0] === 'ok'){
+                                log(parts[1], "success");
+                                cargarPartidas();
+                            }else{
+                                if(parts[0] === 'err'){
+                                    bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
+                                    return false;
+                                }else{
+                                    log(parts[1], "error");
+                                }
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    });
+
+</script>
