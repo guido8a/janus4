@@ -69,7 +69,7 @@
 
     cargarPartidas();
 
-    $("#btnBuscarAsignacion").click(function () {
+    $("#btnBuscarPartida").click(function () {
         cargarPartidas();
     });
 

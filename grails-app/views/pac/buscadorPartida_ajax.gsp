@@ -6,7 +6,7 @@
                     Buscar Por
                 </label>
                 <span class="col-md-3">
-                    <g:select name="buscarPor" class="buscarPor col-md-12 form-control" from="${[1: 'Descripción', 2: 'Código']}" optionKey="key"
+                    <g:select name="buscarPorPartida" class="buscarPor col-md-12 form-control" from="${[2 : 'Descripción', 1 : 'Código']}" optionKey="key"
                               optionValue="value"/>
                 </span>
                 <label class="col-md-1 control-label text-info">
@@ -16,38 +16,46 @@
                     <g:textField name="buscarCriterio" id="criterioCriterio" class="form-control"/>
                 </span>
             </span>
-            <div class="col-md-1" style="margin-top: 1px">
-                <button class="btn btn-info" id="btnBuscarPP"><i class="fa fa-search"></i></button>
+            <div class="col-md-2" style="margin-top: 1px">
+                <button class="btn btn-info" id="btnBuscarPartida"><i class="fa fa-search"></i></button>
+                <button class="btn btn-warning" id="btnLimpiarBuscarPartida" title="Limpiar Búsqueda"><i class="fa fa-eraser"></i></button>
             </div>
         </div>
     </fieldset>
 
     <fieldset class="borde" style="border-radius: 4px">
-        <div id="divTablaPP" style="height: 460px; overflow: auto; margin-top: 5px">
+        <div id="divTablaPartida" style="height: 460px; overflow: auto; margin-top: 5px">
         </div>
     </fieldset>
 </div>
 
 <script type="text/javascript">
 
-    buscarPP();
-
-    $("#btnBuscarPP").click(function () {
-        buscarPP();
+    $("#btnLimpiarBuscarPartida").click(function () {
+        $("#buscarPorPartida").val(2);
+        $("#criterioCriterio").val('');
+        buscarPartida();
     });
 
-    function buscarPP() {
-        var buscarPor = $("#buscarPor option:selected").val();
+    buscarPartida();
+
+    $("#btnBuscarPartida").click(function () {
+        buscarPartida();
+    });
+
+    function buscarPartida() {
+        var buscarPor = $("#buscarPorPartida").val();
         var criterio = $("#criterioCriterio").val();
         $.ajax({
             type: "POST",
-            url: "${createLink(controller: 'pac', action:'tablaPartida_ajax')}",
+            url: "${createLink(action:'tablaPartida_ajax')}",
             data: {
                 buscarPor: buscarPor,
-                criterio: criterio
+                criterio: criterio,
+                anio: '${anio}'
             },
             success: function (msg) {
-                $("#divTablaPP").html(msg);
+                $("#divTablaPartida").html(msg);
             }
         });
     }
@@ -55,7 +63,7 @@
     $("#criterioCriterio").keydown(function (ev) {
         if (ev.keyCode === 13) {
             ev.preventDefault();
-            buscarPP();
+            buscarPartida();
             return false;
         }
     });

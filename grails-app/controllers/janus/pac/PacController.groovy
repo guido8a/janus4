@@ -487,28 +487,72 @@ class PacController {
     }
 
     def buscadorPartida_ajax(){
-
+        def anio = params.anio
+        return[anio: anio]
     }
 
     def tablaPartida_ajax(){
-        println("params " + params)
+        println("tabla pre " + params)
+
+        def anio = Anio.get(params.anio)
         def datos;
         def sqlTx = ""
-        def listaItems = ['prspdscr', 'prspnmro']
-        def bsca
-        if(params.buscarPor){
-            bsca = listaItems[params.buscarPor?.toInteger()-1]
-        }else{
-            bsca = listaItems[0]
-        }
+        def listaItems = ['prspnmro', 'prspdscr']
+        def bsca = listaItems[params.buscarPor.toInteger()-1]
 
         def select = "select * from prsp"
-        def txwh = " where $bsca ilike '%${params.criterio}%'"
+        def txwh = " where $bsca ilike '%${params.criterio}%' and anio__id = ${anio?.id}"
         sqlTx = "${select} ${txwh} order by prspdscr limit 30 ".toString()
+        println "sql: $sqlTx"
 
         def cn = dbConnectionService.getConnection()
         datos = cn.rows(sqlTx)
-        [data: datos, tipo: params.tipo]
+
+//        println("data " + datos)
+        return[presupuestos: datos, anioSeleccionado: anio.anio]
+    }
+    
+    
+    def tablaPac_ajax(){
+
+//        println("tabla pac " + params)
+
+        def anio = Anio.get(params.anio)
+        def datos;
+        def sqlTx = ""
+        def listaItems = ['pacp.pacpdscr', 'prsp.prspdscr']
+        def bsca = listaItems[params.buscarPor.toInteger()-1]
+
+        def select = "select pacp__id from pacp, prsp"
+        def txwh = " where pacp.prsp__id = prsp.prsp__id and $bsca ilike '%${params.criterio}%' and pacp.anio__id = ${anio?.id}"
+        sqlTx = "${select} ${txwh} order by pacp.pacpdscr limit 30 ".toString()
+
+        def cn = dbConnectionService.getConnection()
+        datos = cn.rows(sqlTx)
+
+        return[pacs: datos, anio: anio]
+    }
+
+    def form_ajax(){
+
+        def anio = new Date().format("yyyy")
+        def actual = Anio.findByAnio(anio.toString())
+        if(!actual){
+            actual=Anio.list([sort: "id"])?.pop()
+        }
+
+        def pac
+
+        if(params.id){
+            pac = Pac.get(params.id)
+        }else{
+            pac= new Pac()
+        }
+
+        return [pac: pac, actual: actual]
+    }
+
+    def savePac_ajax(){
 
     }
 
