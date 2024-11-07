@@ -56,8 +56,6 @@
 
 <script type="text/javascript">
 
-    // var bcpc;
-
     $("#btnLimpiarPac").click(function () {
         $("#buscarPor").val(2);
         $("#criterio").val('');
@@ -101,10 +99,6 @@
         }
     });
 
-    // function cerrarBuscadorPartida(){
-    //     bcpc.modal("hide")
-    // }
-
     function createEditPac(id) {
         var title = id ? "Editar " : "Crear ";
         var data = id ? {id : id} : {};
@@ -131,7 +125,7 @@
                             label     : "<i class='fa fa-save'></i> Guardar",
                             className : "btn-success",
                             callback  : function () {
-                                return submitFormPresupuesto();
+                                return submitFormPac();
                             } //callback
                         } //guardar
                     } //buttons
@@ -140,8 +134,8 @@
         }); //ajax
     } //createEdit
 
-    function submitFormPresupuesto() {
-        var $form = $("#frmPartida");
+    function submitFormPac() {
+        var $form = $("#frmPac");
         if ($form.valid()) {
             var data = $form.serialize();
             var dialog = cargarLoader("Guardando...");
@@ -154,7 +148,7 @@
                     var parts = msg.split("_");
                     if(parts[0] === 'ok'){
                         log(parts[1], "success");
-                        cargarPartidas();
+                        cargarPacs();
                     }else{
                         if(parts[0] === 'err'){
                             bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
@@ -170,8 +164,8 @@
         }
     }
 
-    $(".btnNuevaPartida").click(function () {
-        createEditPresupuesto();
+    $(".btnNuevoPac").click(function () {
+        createEditPac();
     })
 
 </script>

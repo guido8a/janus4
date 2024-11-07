@@ -411,10 +411,8 @@ class PacController {
     }
 
 
-
-
     def cargarTecho() {
-        println "cargarTecho params: $params"
+//        println "cargarTecho params: $params"
         def prsp = janus.Presupuesto.get(params.id)
         def anio = Anio.get(params.anio)
         def techo = Asignacion.findByAnioAndPrespuesto(anio, prsp)
@@ -423,19 +421,16 @@ class PacController {
         else
             techo = techo.valor
         def pacs = Pac.findAllByPresupuestoAndAnio(prsp, anio)
-        println "uso de asignación: $pacs.costo"
+//        println "uso de asignación: $pacs.costo"
         def usado = 0
         pacs.each {
-//            println "procesa $it"
-//            println "procesa: ${it.id}, ${it.costo} con ${params?.pac_id}"
             if(it.id != (params?.pac_id? params?.pac_id?.toInteger() : 0)) {
                 usado += it.costo * it.cantidad
             }
         }
-        println "techo: $techo, usado: $usado"
+//        println "techo: $techo, usado: $usado"
         render "" + techo + ";" + usado
     }
-
 
     def tabla() {
 
@@ -511,8 +506,8 @@ class PacController {
 //        println("data " + datos)
         return[presupuestos: datos, anioSeleccionado: anio.anio]
     }
-    
-    
+
+
     def tablaPac_ajax(){
 
 //        println("tabla pac " + params)
@@ -520,7 +515,7 @@ class PacController {
         def anio = Anio.get(params.anio)
         def datos;
         def sqlTx = ""
-        def listaItems = ['pacp.pacpdscr', 'prsp.prspdscr']
+        def listaItems = ['pacp.pacpdscr', 'prsp.prspnmro']
         def bsca = listaItems[params.buscarPor.toInteger()-1]
 
         def select = "select pacp__id from pacp, prsp"
@@ -553,6 +548,24 @@ class PacController {
     }
 
     def savePac_ajax(){
+
+        def pac
+
+        if(params.id){
+            pac = Pac.get(params.id)
+        }else{
+            pac= new Pac()
+        }
+
+        pac.properties = params
+
+        if(!pac.save(flush:true)){
+            println("Error al guardar el pac " + pac.errors)
+            render "no_Error al guardar el PAC"
+        }else{
+            render "ok_Guardado correctamente"
+        }
+
 
     }
 

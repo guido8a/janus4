@@ -6,14 +6,14 @@
                     Buscar Por
                 </label>
                 <span class="col-md-3">
-                    <g:select name="buscarPor" class="buscarPor col-md-12 form-control" from="${[1: 'Descripción', 2: 'Código']}" optionKey="key"
+                    <g:select name="buscarPorCPP" class="col-md-12 form-control" from="${[1: 'Descripción', 2: 'Código']}" optionKey="key"
                               optionValue="value"/>
                 </span>
                 <label class="col-md-1 control-label text-info">
                     Criterio
                 </label>
                 <span class="col-md-4">
-                    <g:textField name="buscarCriterio" id="criterioCriterio" class="form-control"/>
+                    <g:textField name="buscarCriterioCPP" id="criterioCriterioCPP" class="form-control"/>
                 </span>
             </span>
             <div class="col-md-1" style="margin-top: 1px">
@@ -37,8 +37,8 @@
     });
 
     function buscarCPC() {
-        var buscarPor = $("#buscarPor option:selected").val();
-        var criterio = $("#criterioCriterio").val();
+        var buscarPor = $("#buscarPorCPP option:selected").val();
+        var criterio = $("#criterioCriterioCPP").val();
         $.ajax({
             type: "POST",
             url: "${createLink(controller: 'mantenimientoItems', action:'tablaCPC')}",

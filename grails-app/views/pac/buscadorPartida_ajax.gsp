@@ -6,7 +6,7 @@
                     Buscar Por
                 </label>
                 <span class="col-md-3">
-                    <g:select name="buscarPorPartida" class="buscarPor col-md-12 form-control" from="${[2 : 'Descripción', 1 : 'Código']}" optionKey="key"
+                    <g:select name="buscarPorPartida" class="col-md-12 form-control" from="${[2 : 'Descripción', 1 : 'Código']}" optionKey="key"
                               optionValue="value"/>
                 </span>
                 <label class="col-md-1 control-label text-info">

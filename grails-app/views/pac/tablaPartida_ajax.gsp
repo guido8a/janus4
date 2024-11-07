@@ -29,12 +29,14 @@
 
 <script type="text/javascript">
     $(".btnSeleccionar").click(function () {
-        var idPP= $(this).data("id");
+        var id= $(this).data("id");
+        var nombre = $(this).data("nombre");
         var codigo = $(this).data("codigo");
-        var nombre = $(this).data("desc");
 
-        $("#item_prsp").val(idPP);
-        $("#item_presupuesto").val(codigo).attr("title", nombre);
+        $("#presupuesto").val(id);
+        $("#presupuestoName").val(nombre);
+        $("#presupuestoCodigo").val(codigo);
+
         cargarTecho();
         cerrarBuscarPartida();
     });

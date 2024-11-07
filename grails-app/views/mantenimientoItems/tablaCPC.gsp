@@ -30,6 +30,13 @@
         var idCPC = $(this).data("id");
         var codigo = $(this).data("codigo");
         var nombre = $(this).data("desc");
+
+        <g:if test="${params.tipo == '1'}">
+            $("#cpp").val(idCPC);
+            $("#cppCodigo").val(codigo);
+            $("#cppName").val(nombre);
+        </g:if>
+        <g:else>
         $("#codigoComprasPublicas").val(idCPC);
         $("#item_codigo").val(codigo);
         <g:if test="${tipo == '1'}">
@@ -38,6 +45,8 @@
         <g:else>
         $("#item_desc").val(nombre);
         </g:else>
+        </g:else>
+
         cerrarBuscadorCPC();
     });
 </script>
