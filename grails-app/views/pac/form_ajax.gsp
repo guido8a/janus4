@@ -31,7 +31,7 @@
     <div class="form-group ${hasErrors(bean: pac, field: 'codigo', 'error')}">
         <span class="grupo">
             <label for="presupuestoCodigo" class="col-md-2 control-label text-info">
-                Código
+                Número
             </label>
             <span class="col-md-8">
                 <g:textField name="presupuestoCodigo" readonly="" class="form-control" value="${pac?.presupuesto?.numero}"/>
@@ -171,22 +171,22 @@
             <label class="col-md-2 control-label text-info">
                 Cuatrimestre 1
             </label>
-            <span class="col-md-2">
-                <g:select name="c1" from="${['': 'NO', 'S' : 'SI']}" optionKey="key" optionValue="value" class="form-control" value="${pac?.c1}" />
+            <span class="col-md-1">
+                <g:select name="c1" from="${['': 'NO', 'S' : 'SI']}" optionKey="key" optionValue="value" class="form-control" value="${pac?.c1}" style="width: 50px" />
             </span>
 
-            <label class="col-md-1 control-label text-info">
+            <label class="col-md-2 control-label text-info">
                 Cuatrimestre 2
             </label>
-            <span class="col-md-2">
-                <g:select name="c2" from="${['': 'NO', 'S' : 'SI']}" optionKey="key" optionValue="value" class="form-control" value="${pac?.c2}" />
+            <span class="col-md-1">
+                <g:select name="c2" from="${['': 'NO', 'S' : 'SI']}" optionKey="key" optionValue="value" class="form-control" value="${pac?.c2}" style="width: 50px" />
             </span>
 
-            <label class="col-md-1 control-label text-info">
+            <label class="col-md-2 control-label text-info">
                 Cuatrimestre 3
             </label>
-            <span class="col-md-2">
-                <g:select name="c3" from="${['': 'NO', 'S' : 'SI']}" optionKey="key" optionValue="value" class="form-control" value="${pac?.c3}" />
+            <span class="col-md-1">
+                <g:select name="c3" from="${['': 'NO', 'S' : 'SI']}" optionKey="key" optionValue="value" class="form-control" value="${pac?.c3}" style="width: 50px" />
             </span>
         </span>
     </div>
