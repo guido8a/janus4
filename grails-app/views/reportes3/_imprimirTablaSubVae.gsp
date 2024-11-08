@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: fabricio
-  Date: 28/01/15
-  Time: 11:14 AM
---%>
-
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
@@ -21,7 +14,6 @@
     <link href="../css/font-awesome.css" rel="stylesheet" type="text/css"/>
     <style type="text/css">
     @page {
-        /*size   : 21cm 29.7cm;  *//*width height */
         size   : 28.7cm 21cm;
         margin : 1.5cm;
         margin-left: 2.0cm;
@@ -46,8 +38,6 @@
         text-align    : center;
         margin-bottom : 5px;
         width         : 95%;
-        /*font-family       : 'Tulpen One', cursive !important;*/
-        /*font-family : "Open Sans Condensed" !important;*/
     }
 
     .totales {
@@ -59,10 +49,8 @@
     }
 
     .theader{
-
         border-bottom: 1px solid #000000 !important;
         border-top: 1px solid #000000 !important;
-
     }
 
     .theaderBot th, .theaderBot td {
@@ -79,7 +67,6 @@
     }
 
     thead th{
-
         background : #FFFFFF !important;
         color: #000000 !important;
     }
@@ -94,11 +81,7 @@
         color      : #AAAAAA;
     }
 
-
-
     .total {
-        /*background : #000000 !important;*/
-        /*color      : #FFFFFF !important;*/
     }
 
     thead tr {
@@ -189,8 +172,6 @@
             </div>
         </div>
 
-
-
         <div class="row-fluid">
             <div class="span12" style="margin-right: 100px !important;">
                 <b>Nombre:</b> ${obra?.nombre}
@@ -218,7 +199,6 @@
 
         </div>
     </div>
-
 
     <g:set var="total1" value="${0}"/>
     <g:set var="total2" value="${0}"/>
@@ -273,7 +253,6 @@
         <g:each in="${subPres}" var="sp" status="sub">
             <table class="table table-bordered table-striped table-condensed table-hover" style="width: 900px !important">
                 <thead >
-
                 <tr>
                     <th colspan="12" style="font-size: 14px; font-weight: bold; text-align: left">
                         ${sp.descripcion}
@@ -310,16 +289,16 @@
                             <td style="text-align: right; width: 60px" class="cant">
                                 <g:formatNumber number="${val.vlobcntd}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/>
                             </td>
-                            <td class="col_precio" style="text-align: right; width: 60px" id="i_${val.item__id}"><g:formatNumber number="${val.pcun}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/></td>
-                            <td class="col_total total" style="text-align: right; width: 60px"><g:formatNumber number="${val.totl}" format="##,##0"  minFractionDigits="2" maxFractionDigits="2" locale="ec"/></td>
+                            <td class="col_precio" style="text-align: right; width: 60px" id="i_${val.item__id}"><g:formatNumber number="${val.pcun}" format="##,##0" minFractionDigits="4" maxFractionDigits="4" locale="ec"/></td>
+                            <td class="col_total total" style="text-align: right; width: 60px"><g:formatNumber number="${val.totl}" format="##,##0"  minFractionDigits="4" maxFractionDigits="4" locale="ec"/></td>
                             <td style="text-align: right; width: 60px" class="relativo">
-                                <g:formatNumber number="${val.relativo}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/>
+                                <g:formatNumber number="${val.relativo}" format="##,##0" minFractionDigits="4" maxFractionDigits="4" locale="ec"/>
                             </td>
                             <td style="text-align: right; width: 60px" class="vaeRubro">
-                                <g:formatNumber number="${val.vae_rbro}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/>
+                                <g:formatNumber number="${val.vae_rbro}" format="##,##0" minFractionDigits="4" maxFractionDigits="4" locale="ec"/>
                             </td>
                             <td style="text-align: right; width: 60px" class="vaeTotal">
-                                <g:formatNumber number="${val.vae_totl}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/>
+                                <g:formatNumber number="${val.vae_totl}" format="##,##0" minFractionDigits="4" maxFractionDigits="4" locale="ec"/>
                             </td>
                             <g:set var="total" value="${total.toDouble() + val.totl}"/>
 
@@ -343,42 +322,33 @@
                         <g:else>
                             <g:hiddenField name="totalesVae" value="${totalesVae = 0}"/>
                         </g:else>
-
-
-
                             <g:hiddenField name="finalVae" value="${finalVae = subTotalVae += totalesVae}"/>
-                            
                             <g:hiddenField name="totalesRelativo" value="${totalesRelativo = val.relativo}"/>
                             <g:hiddenField name="finalRelativo" value="${finalRelativo = subRelativo += totalesRelativo}"/>
-
-
                         </tr>
                     </g:if>
                 </g:each>
                 <tr>
                     <td style="text-align: right" colspan="8"><b>SUBTOTAL: </b></td>
-                    <td style="text-align: right"><b><g:formatNumber number="${total}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/></b></td>
+                    <td style="text-align: right"><b><g:formatNumber number="${total}" format="##,##0" minFractionDigits="4" maxFractionDigits="4" locale="ec"/></b></td>
                     <td style="text-align: right" colspan="2"><b>SUBTOTAL: </b></td>
-                    <td style="text-align: right"><b><g:formatNumber number="${totalVae}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/></b></td>
+                    <td style="text-align: right"><b><g:formatNumber number="${totalVae}" format="##,##0" minFractionDigits="4" maxFractionDigits="4" locale="ec"/></b></td>
                 </tr>
-
                 </tbody>
             </table>
         </g:each>
         <table style="margin-top: 10px; font-size: 12px !important; width: 900px!important">
             <thead>
-
             </thead>
             <tbody>
             <tr class="theaderBot theaderup padTopBot" >
                 <td style="text-align: right; width: 400px;"><b>TOTAL PRESUPUESTO:  </b></td>
-                <td style="text-align: right; width: 70px"><b><g:formatNumber number="${totalPresupuesto}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/></b></td>
-                <td style="text-align: right; width: 35px"><b><g:formatNumber number="${finalRelativo}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/></b></td>
-                <td style="text-align: right; width: 80px;"><b><g:formatNumber number="${finalVae}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/></b></td>
+                <td style="text-align: right; width: 70px"><b><g:formatNumber number="${totalPresupuesto}" format="##,##0" minFractionDigits="4" maxFractionDigits="4" locale="ec"/></b></td>
+                <td style="text-align: right; width: 35px"><b><g:formatNumber number="${finalRelativo}" format="##,##0" minFractionDigits="4" maxFractionDigits="4" locale="ec"/></b></td>
+                <td style="text-align: right; width: 80px;"><b><g:formatNumber number="${finalVae}" format="##,##0" minFractionDigits="4" maxFractionDigits="4" locale="ec"/></b></td>
             </tr>
             </tbody>
         </table>
-
 
         <div style="margin-top: 20px">
             <div class="row-fluid">
@@ -386,13 +356,11 @@
                     <b>  CONDICIONES DEL CONTRATO </b>
                 </div>
             </div>
-
             <div class="row-fluid">
                 <div class="span6" style="margin-right: 100px !important;">
                     <b>  Plazo de Ejecución: </b> <g:formatNumber number="${obra?.plazoEjecucionMeses}" format="##" locale="ec"/> mes(es)
                 </div>
             </div>
-
             <div class="row-fluid">
                 <div class="span6" style="margin-right: 195px !important;">
                     <b> Anticipo: </b> <g:formatNumber number="${obra?.porcentajeAnticipo}" format="##,##0" locale="ec"/> %
@@ -467,16 +435,16 @@
                     <td style="text-align: right; width: 60px" class="cant">
                         <g:formatNumber number="${val.vlobcntd}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/>
                     </td>
-                    <td class="col_precio" style="text-align: right; width: 60px" id="i_${val.item__id}"><g:formatNumber number="${val.pcun}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/></td>
-                    <td class="col_total total" style="text-align: right; width: 60px"><g:formatNumber number="${val.totl}" format="##,##0"  minFractionDigits="2" maxFractionDigits="2" locale="ec"/></td>
+                    <td class="col_precio" style="text-align: right; width: 60px" id="i_${val.item__id}"><g:formatNumber number="${val.pcun}" format="##,##0" minFractionDigits="4" maxFractionDigits="4" locale="ec"/></td>
+                    <td class="col_total total" style="text-align: right; width: 60px"><g:formatNumber number="${val.totl}" format="##,##0"  minFractionDigits="4" maxFractionDigits="4" locale="ec"/></td>
                     <td style="text-align: right; width: 60px" class="relativo">
-                        <g:formatNumber number="${val.relativo}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/>
+                        <g:formatNumber number="${val.relativo}" format="##,##0" minFractionDigits="4" maxFractionDigits="4" locale="ec"/>
                     </td>
                     <td style="text-align: right; width: 60px" class="vaeRubro">
-                        <g:formatNumber number="${val.vae_rbro}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/>
+                        <g:formatNumber number="${val.vae_rbro}" format="##,##0" minFractionDigits="4" maxFractionDigits="4" locale="ec"/>
                     </td>
                     <td style="text-align: right; width: 60px" class="vaeTotal">
-                        <g:formatNumber number="${val.vae_totl}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/>
+                        <g:formatNumber number="${val.vae_totl}" format="##,##0" minFractionDigits="4" maxFractionDigits="4" locale="ec"/>
                     </td>
                     <g:set var="total" value="${total.toDouble() + val.totl}"/>
                     <g:set var="totalVae" value="${totalVae.toDouble() + val.vae_totl}"/>
@@ -490,22 +458,13 @@
             <tbody>
             <tr class="theaderBot theaderup padTopBot">
                 <td style="text-align: right; width: 400px"><b>TOTAL PRESUPUESTO:</b></td>
-                <td style="text-align: right; width: 70px "><b><g:formatNumber number="${total}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/></b></td>
-                <td style="text-align: right; width: 35px"><b><g:formatNumber number="${totalVae}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/></b></td>
-                <td style="text-align: right; width: 80px "><b><g:formatNumber number="${totalVae}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/></b></td>
+                <td style="text-align: right; width: 70px "><b><g:formatNumber number="${total}" format="##,##0" minFractionDigits="4" maxFractionDigits="4" locale="ec"/></b></td>
+                <td style="text-align: right; width: 35px"><b><g:formatNumber number="${totalVae}" format="##,##0" minFractionDigits="4" maxFractionDigits="4" locale="ec"/></b></td>
+                <td style="text-align: right; width: 80px "><b><g:formatNumber number="${totalVae}" format="##,##0" minFractionDigits="4" maxFractionDigits="4" locale="ec"/></b></td>
             </tr>
             </tbody>
         </table>
     </g:else>
 </div>
-
-<script type="text/javascript">
-    %{--console.log(${valores.rbrocdgo});--}%
-    //        cadena = 'pedro@hotmail.com';
-    //        cadena = cadena.split('@');
-    //        document.write(cadena[0]+'<br/>@'+cadena[1]);
-
-</script>
-
 </body>
 </html>

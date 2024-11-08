@@ -9,6 +9,9 @@ import org.apache.poi.xssf.usermodel.XSSFFont
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import seguridad.Persona
 
+import java.text.DecimalFormat
+import java.text.DecimalFormatSymbols
+
 class ReportesExcel2Controller {
 
     def dbConnectionService
@@ -112,6 +115,17 @@ class ReportesExcel2Controller {
         rowC1.setRowStyle(style)
         fila++
 
+        char decimalSeparator = '.';
+        DecimalFormatSymbols simbolos = new DecimalFormatSymbols();
+        simbolos.setDecimalSeparator(decimalSeparator);
+        DecimalFormat fmt = new DecimalFormat ("####.####", simbolos);
+        fmt.setMinimumFractionDigits(2)
+        fmt.setMaximumFractionDigits(2)
+
+        DecimalFormat fmt4 = new DecimalFormat ("####.####", simbolos);
+        fmt4.setMinimumFractionDigits(4)
+        fmt4.setMaximumFractionDigits(4)
+
         valores.eachWithIndex { p, i->
             Row rowF1 = sheet.createRow(fila)
             rowF1.createCell(0).setCellValue("${i + 1}")
@@ -119,9 +133,9 @@ class ReportesExcel2Controller {
             rowF1.createCell(2).setCellValue(p.sbprdscr ?: '')
             rowF1.createCell(3).setCellValue(p.rbronmbr ?: '')
             rowF1.createCell(4).setCellValue(p.unddcdgo ?: '')
-            rowF1.createCell(5).setCellValue(p.vlobcntd ?: 0)
-            rowF1.createCell(6).setCellValue(p.pcun ?: 0)
-            rowF1.createCell(7).setCellValue(p.totl ?: 0)
+            rowF1.createCell(5).setCellValue(fmt.format(p.vlobcntd ?: 0))
+            rowF1.createCell(6).setCellValue(fmt4.format(p.pcun ?: 0))
+            rowF1.createCell(7).setCellValue(fmt4.format(p.totl ?: 0))
             fila++
             totales = p.totl
             totalPresupuesto = (total1 += totales);
@@ -130,7 +144,7 @@ class ReportesExcel2Controller {
 
         Row rowT = sheet.createRow(fila)
         rowT.createCell(6).setCellValue("TOTAL")
-        rowT.createCell(7).setCellValue(totalPresupuesto)
+        rowT.createCell(7).setCellValue(fmt4.format(totalPresupuesto))
         rowT.setRowStyle(style)
         fila++
 
@@ -139,6 +153,15 @@ class ReportesExcel2Controller {
         response.setContentType("application/octet-stream")
         response.setHeader("Content-Disposition", header);
         wb.write(output)
+    }
+
+    public static String generateNumberSigns(int n) {
+
+        String s = "";
+        for (int i = 0; i < n; i++) {
+            s += "#";
+        }
+        return s;
     }
 
     def reporteVaeExcel () {
@@ -273,6 +296,17 @@ class ReportesExcel2Controller {
         rowC1.setRowStyle(style)
         fila++
 
+        char decimalSeparator = '.';
+        DecimalFormatSymbols simbolos = new DecimalFormatSymbols();
+        simbolos.setDecimalSeparator(decimalSeparator);
+        DecimalFormat fmt = new DecimalFormat ("####.####", simbolos);
+        fmt.setMinimumFractionDigits(2)
+        fmt.setMaximumFractionDigits(2)
+
+        DecimalFormat fmt4 = new DecimalFormat ("####.####", simbolos);
+        fmt4.setMinimumFractionDigits(4)
+        fmt4.setMaximumFractionDigits(4)
+
         subPres.each {sp->
 
             Row rowC2 = sheet.createRow(fila)
@@ -290,12 +324,12 @@ class ReportesExcel2Controller {
                     rowF1.createCell(3).setCellValue(val.rbronmbr.toString() ?: '')
                     rowF1.createCell(4).setCellValue(val?.vlobdscr?.toString() ?: '')
                     rowF1.createCell(5).setCellValue(val.unddcdgo.toString() ?: '')
-                    rowF1.createCell(6).setCellValue(val.vlobcntd ?: 0)
-                    rowF1.createCell(7).setCellValue(val.pcun ?: 0)
-                    rowF1.createCell(8).setCellValue(val.totl ?: 0)
-                    rowF1.createCell(9).setCellValue(val.relativo ?: 0)
-                    rowF1.createCell(10).setCellValue(val.vae_rbro != null ? val.vae_rbro : 0)
-                    rowF1.createCell(11).setCellValue(val.vae_totl != null ? val.vae_totl : 0)
+                    rowF1.createCell(6).setCellValue(fmt.format(val.vlobcntd ?: 0))
+                    rowF1.createCell(7).setCellValue(fmt4.format(val.pcun?.toDouble() ?: 0))
+                    rowF1.createCell(8).setCellValue(fmt4.format(val.totl?.toDouble() ?: 0))
+                    rowF1.createCell(9).setCellValue(fmt4.format(val.relativo?.toDouble() ?: 0))
+                    rowF1.createCell(10).setCellValue(fmt4.format(val.vae_rbro != null ? val.vae_rbro?.toDouble() : 0))
+                    rowF1.createCell(11).setCellValue(fmt4.format(val.vae_totl != null ? val.vae_totl?.toDouble() : 0))
 
                     fila++
                     filaSub++
@@ -318,9 +352,9 @@ class ReportesExcel2Controller {
 
         Row rowT = sheet.createRow(ultimaFila)
         rowT.createCell(7).setCellValue("TOTAL")
-        rowT.createCell(8).setCellValue(totalPresupuesto)
+        rowT.createCell(8).setCellValue(fmt4.format(totalPresupuesto?.toDouble()))
         rowT.createCell(9).setCellValue(100)
-        rowT.createCell(11).setCellValue(totalVae)
+        rowT.createCell(11).setCellValue(fmt4.format(totalVae?.toDouble()))
         rowT.setRowStyle(style)
 
         Row rowT2 = sheet.createRow(ultimaFila + 2)
@@ -491,6 +525,17 @@ class ReportesExcel2Controller {
         rowC1.setRowStyle(style)
         fila++
 
+        char decimalSeparator = '.';
+        DecimalFormatSymbols simbolos = new DecimalFormatSymbols();
+        simbolos.setDecimalSeparator(decimalSeparator);
+        DecimalFormat fmt = new DecimalFormat ("####.####", simbolos);
+        fmt.setMinimumFractionDigits(2)
+        fmt.setMaximumFractionDigits(2)
+
+        DecimalFormat fmt4 = new DecimalFormat ("####.####", simbolos);
+        fmt4.setMinimumFractionDigits(4)
+        fmt4.setMaximumFractionDigits(4)
+
         valores.each {
 
             Row rowF1 = sheet.createRow(fila)
@@ -499,7 +544,7 @@ class ReportesExcel2Controller {
             rowF1.createCell(2).setCellValue(it.sbprdscr.toString() ?: '')
             rowF1.createCell(3).setCellValue(it.rbronmbr.toString() ?: '')
             rowF1.createCell(4).setCellValue(it.unddcdgo.toString() ?: '')
-            rowF1.createCell(5).setCellValue(it.vlobcntd ?: '')
+            rowF1.createCell(5).setCellValue(fmt.format(it.vlobcntd ?: ''))
 
             parcialMano = 0
             parcialEquipo = 0
@@ -526,32 +571,32 @@ class ReportesExcel2Controller {
             }
 
             // mano obra
-            rowF1.createCell(7).setCellValue(parcialMano)
-            rowF1.createCell(8).setCellValue((parcialMano * it.vlobcntd) ?: '')
+            rowF1.createCell(7).setCellValue(fmt4.format(parcialMano))
+            rowF1.createCell(8).setCellValue(fmt4.format((parcialMano * it.vlobcntd) ?: 0))
 
             //equipos
-            rowF1.createCell(10).setCellValue(parcialEquipo)
-            rowF1.createCell(11).setCellValue((parcialEquipo * it.vlobcntd) ?: '')
+            rowF1.createCell(10).setCellValue(fmt4.format(parcialEquipo))
+            rowF1.createCell(11).setCellValue(fmt4.format((parcialEquipo * it.vlobcntd) ?: 0))
 
             //materiales
-            rowF1.createCell(13).setCellValue(parcialMateriales)
-            rowF1.createCell(14).setCellValue((parcialMateriales * it.vlobcntd) ?: '')
+            rowF1.createCell(13).setCellValue(fmt4.format(parcialMateriales))
+            rowF1.createCell(14).setCellValue(fmt4.format((parcialMateriales * it.vlobcntd) ?: 0))
 
             //transporte
-            rowF1.createCell(16).setCellValue(parcialTransporte)
-            rowF1.createCell(17).setCellValue((parcialTransporte * it.vlobcntd) ?: '')
+            rowF1.createCell(16).setCellValue(fmt4.format(parcialTransporte))
+            rowF1.createCell(17).setCellValue(fmt4.format((parcialTransporte * it.vlobcntd) ?: 0))
 
             //indirectos
 
             indirectos = parcialMano + parcialEquipo + parcialMateriales + parcialTransporte
             def totalIndirectos = indirectos?.toDouble() * valorIndirectoObra?.toDouble() / 100
-            rowF1.createCell(19).setCellValue(totalIndirectos)
+            rowF1.createCell(19).setCellValue(fmt4.format(totalIndirectos))
 
             //totales
 
             def parcialCuTotal = indirectos + totalIndirectos
-            rowF1.createCell(21).setCellValue(parcialCuTotal)
-            rowF1.createCell(22).setCellValue(it.totl)
+            rowF1.createCell(21).setCellValue(fmt4.format(parcialCuTotal))
+            rowF1.createCell(22).setCellValue(fmt4.format(it.totl))
 
             fila++
             totales = it.totl

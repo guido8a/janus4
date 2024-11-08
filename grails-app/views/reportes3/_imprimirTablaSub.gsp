@@ -24,7 +24,6 @@
     }
 
     .hoja {
-        /*background  : #e6e6fa;*/
         height      : 24.7cm; /*29.7-(1.5*2)*/
         font-family : serif;
         font-size   : 10px;
@@ -34,12 +33,9 @@
     .tituloPdf {
         height        : 100px;
         font-size     : 11px;
-        /*font-weight   : bold;*/
         text-align    : center;
         margin-bottom : 5px;
         width         : 95%;
-        /*font-family       : 'Tulpen One', cursive !important;*/
-        /*font-family : "Open Sans Condensed" !important;*/
     }
 
     .totales {
@@ -51,10 +47,8 @@
     }
 
     .theader{
-
         border-bottom: 1px solid #000000 !important;
         border-top: 1px solid #000000 !important;
-
     }
 
     .theaderBot th, .theaderBot td {
@@ -76,7 +70,6 @@
         color: #000000 !important;
     }
 
-
     .num {
         text-align : right;
     }
@@ -92,7 +85,6 @@
 
     th, td {
         font-size : 10px !important;
-        /*float: left;*/
     }
 
     .row-fluid {
@@ -139,12 +131,7 @@
             <b>${auxiliar?.memo1 ?: ''}</b>
         </p>
         <p style="font-size: 14px;margin-top: -15px">
-        %{--        <g:if test="${subPre == -1}">--}%
-                    <b>PRESUPUESTO</b>
-        %{--        </g:if>--}%
-        %{--        <g:else>--}%
-        %{--            <b>SUBPRESUPUESTO: ${subPre.toUpperCase()}</b>--}%
-        %{--        </g:else>--}%
+            <b>PRESUPUESTO</b>
         </p>
     </div>
 
@@ -190,9 +177,7 @@
         <div class="row-fluid">
 
         </div>
-
     </div>
-
 
     <g:set var="total1" value="${0}"></g:set>
     <g:set var="total2" value="${0}"></g:set>
@@ -203,8 +188,6 @@
         <table class="table table-bordered table-striped table-condensed table-hover" style="width: 600px !important">
             <thead >
             <tr class="theaderBot theaderup padTopBot">
-                %{--<th colspan="7">--}%
-
                 <th style="width: 20px; text-align: center">
                     N°
                 </th>
@@ -223,11 +206,9 @@
                 </th>
                 <th class="col_precio " style="width:80px ; text-align: right">P. U.</th>
                 <th class="col_total " style="width:80px; text-align: right">C.TOTAL</th>
-                %{--</th>--}%
             </tr>
             </thead>
         </table>
-
 
         <g:each in="${subPres}" var="sp" status="sub">
             <table class="table table-bordered table-striped table-condensed table-hover" style="width: 600px !important">
@@ -247,7 +228,6 @@
                     <g:if test="${val.sbpr__id == sp.id}">
                         <tr class="item_row" id="${val.item__id}" item="${val}" sub="${val.sbpr__id}">
 
-                            %{--<td colspan="7">--}%
                             <td style="width: 20px; text-align: left" class="orden">${val.vlobordn}</td>
 
                             <td class="cdgo" style="width: 90px; text-align: left">
@@ -259,20 +239,14 @@
                                 </g:else>
                             </td>
 
-                            %{--<g:set var="nombre" value="${val?.rbronmbr?.trim()?.replaceAll('<', '(menor)')}"/>--}%
-
-                            %{--<td>${nombre}</td>--}%
-
                             <td class="nombre">${val.rbronmbr}</td>
 
                             <td style="width: 40px;text-align: right" class="col_unidad">${val.unddcdgo.trim()}</td>
                             <td style="text-align: right; width: 80px" class="cant">
                                 <g:formatNumber number="${val.vlobcntd}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/>
                             </td>
-                            <td class="col_precio" style="text-align: right; width: 80px" id="i_${val.item__id}"><g:formatNumber number="${val.pcun}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/></td>
-                            <td class="col_total total" style="text-align: right; width: 80px"><g:formatNumber number="${val.totl}" format="##,##0"  minFractionDigits="2" maxFractionDigits="2" locale="ec"/></td>
-                            %{--</td>--}%
-
+                            <td class="col_precio" style="text-align: right; width: 80px" id="i_${val.item__id}"><g:formatNumber number="${val.pcun}" format="##,##0" minFractionDigits="4" maxFractionDigits="4" locale="ec"/></td>
+                            <td class="col_total total" style="text-align: right; width: 80px"><g:formatNumber number="${val.totl}" format="##,##0"  minFractionDigits="4" maxFractionDigits="4" locale="ec"/></td>
 
                             <g:set var="total" value="${total.toDouble() + val.totl}"></g:set>
 
@@ -285,7 +259,7 @@
                 </g:each>
                 <tr>
                     <td style="text-align: right" colspan="6"><b>SUBTOTAL: </b></td>
-                    <td style="text-align: right"><b><g:formatNumber number="${total}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/></b></td>
+                    <td style="text-align: right"><b><g:formatNumber number="${total}" format="##,##0" minFractionDigits="4" maxFractionDigits="4" locale="ec"/></b></td>
                 </tr>
 
                 </tbody>
@@ -299,7 +273,7 @@
             <tr>
                 <td colspan="7" class="theaderBot theaderup padTopBot">
                 <td style="text-align: right; width: 500px"><b>TOTAL PRESUPUESTO:  </b></td>
-                <td style="text-align: right; width: 100px "><b><g:formatNumber number="${totalPresupuesto}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/></b></td>
+                <td style="text-align: right; width: 100px "><b><g:formatNumber number="${totalPresupuesto}" format="##,##0" minFractionDigits="4" maxFractionDigits="4" locale="ec"/></b></td>
             </td>
 
             </tr>
@@ -332,18 +306,12 @@
                 </div>
             </div>
         </div>
-
-
-
-
     </g:if>
 
     <g:else>
-
         <table class="table table-bordered table-striped table-condensed table-hover">
             <thead>
             <tr class="theaderBot theaderup padTopBot">
-                %{--<th colspan="7" >--}%
                 <th style="width: 20px;">
                     N°
                 </th>
@@ -359,9 +327,8 @@
                 <th style="width: 80px;">
                     CANTIDAD
                 </th>
-                <th class="col_precio %{--theaderBot theaderup padTopBot--}%" style="width:80px ; text-align: right">P. U.</th>
-                <th class="col_total %{-- theaderBot theaderup padTopBot--}%" style="width:80px; text-align: right">C.Total</th>
-                %{--</th>--}%
+                <th class="col_precio" style="width:80px ; text-align: right">P. U.</th>
+                <th class="col_total" style="width:80px; text-align: right">C.Total</th>
             </tr>
             </thead>
 
@@ -374,57 +341,30 @@
             <tbody id="tabla_material">
             <g:set var="total" value="${0}"></g:set>
             <g:each in="${valores}" var="val" status="j">
-
                 <tr class="item_row" id="${val.item__id}" item="${val}" sub="${val.sbpr__id}">
-
                     <td style="width: 20px" class="orden">${val.vlobordn}</td>
-                    %{--<td></td>--}%
-                    %{--<td style="width: 200px" class="sub">${val.sbprdscr.trim()}</td>--}%
                     <td class="cdgo">${val.rbrocdgo.trim()}</td>
-
-                    %{--<g:set var="nombre" value="${val?.rbronmbr?.trim()?.replaceAll('<', '(menor)')}"/>--}%
-
-                    %{--<td>${nombre}</td>--}%
-
                     <td class="nombre">${val.rbronmbr}</td>
-
                     <td style="width: 60px !important;text-align: center" class="col_unidad">${val.unddcdgo.trim()}</td>
                     <td style="text-align: right" class="cant">
                         <g:formatNumber number="${val.vlobcntd}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/>
                     </td>
-                    <td class="col_precio" style="text-align: right; width: 80px" id="i_${val.item__id}"><g:formatNumber number="${val.pcun}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/></td>
-                    <td class="col_total total" style="text-align: right; width: 80px"><g:formatNumber number="${val.totl}" format="##,##0"  minFractionDigits="2" maxFractionDigits="2" locale="ec"/></td>
+                    <td class="col_precio" style="text-align: right; width: 80px" id="i_${val.item__id}"><g:formatNumber number="${val.pcun}" format="##,##0" minFractionDigits="4" maxFractionDigits="4" locale="ec"/></td>
+                    <td class="col_total total" style="text-align: right; width: 80px"><g:formatNumber number="${val.totl}" format="##,##0"  minFractionDigits="4" maxFractionDigits="4" locale="ec"/></td>
 
                     <g:set var="total" value="${total.toDouble() + val.totl}"/>
                 </tr>
-
             </g:each>
 
             <tr>
                 <td colspan="5"></td>
                 <td style="text-align: right"><b>TOTAL PRESUPUESTO:</b></td>
-                <td style="text-align: right"><b><g:formatNumber number="${total}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/></b></td>
+                <td style="text-align: right"><b><g:formatNumber number="${total}" format="##,##0" minFractionDigits="4" maxFractionDigits="4" locale="ec"/></b></td>
             </tr>
             </tbody>
         </table>
-
-
     </g:else>
 </div>
-
-<script type="text/javascript">
-
-    %{--console.log(${valores.rbrocdgo});--}%
-
-    //        cadena = 'pedro@hotmail.com';
-    //        cadena = cadena.split('@');
-    //        document.write(cadena[0]+'<br/>@'+cadena[1]);
-
-
-
-
-
-</script>
 
 </body>
 </html>
