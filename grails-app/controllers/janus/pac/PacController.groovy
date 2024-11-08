@@ -565,8 +565,25 @@ class PacController {
         }else{
             render "ok_Guardado correctamente"
         }
+    }
 
+    def borrarPac_ajax (){
 
+        def pac = Pac.get(params.id)
+
+        if(pac){
+
+            try{
+                pac.delete(flush:true)
+                render "ok_Borrado correctamente"
+            }catch(e){
+                println("Error al borrar el PAC " +  pac.errors)
+                render "no_Error al borrar el PAC"
+            }
+
+        }else{
+            render "err_No se encontró el PAC"
+        }
     }
 
 
