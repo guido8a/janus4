@@ -1492,30 +1492,21 @@ class ReportesController {
         addCellTabla(tablaVolObra, new Paragraph("N° Memo SAD", times8bold), prmsCellHead)
         addCellTabla(tablaVolObra, new Paragraph("Estado", times8bold), prmsCellHead)
 
-
         tramites.each {
 
             addCellTabla(tablaVolObra, new Paragraph(it?.tipoTramite?.descripcion, times8normal), prmsCellCenter)
-
             addCellTabla(tablaVolObra, new Paragraph(PersonasTramite.findByRolTramiteAndTramite(RolTramite.findByCodigo('DE'), it).persona.nombre + " " + PersonasTramite.findByRolTramiteAndTramite(RolTramite.findByCodigo('DE'), it).persona.apellido, times8normal), prmsCellLeft)
-
             addCellTabla(tablaVolObra, new Paragraph(PersonasTramite.findByRolTramiteAndTramite(RolTramite.findByCodigo('PARA'), it).persona.nombre + " " + PersonasTramite.findByRolTramiteAndTramite(RolTramite.findByCodigo('PARA'), it).persona.apellido, times8normal), prmsCellLeft)
-
             addCellTabla(tablaVolObra, new Paragraph(it?.descripcion, times8normal), prmsCellCenter)
-
             addCellTabla(tablaVolObra, new Paragraph(formatDate(date: it?.fecha, format: "dd-MM-yyyy"), times8normal), prmsCellCenter)
-
             addCellTabla(tablaVolObra, new Paragraph(it?.documentosAdjuntos, times8normal), prmsCellCenter)
-
             addCellTabla(tablaVolObra, new Paragraph(it?.memo, times8normal), prmsCellCenter)
-
             addCellTabla(tablaVolObra, new Paragraph(it?.estado?.codigo, times8normal), prmsCellCenter)
 
         }
 
         document.add(headers)
         document.add(tablaVolObra)
-
 
         document.close();
         pdfw.close()
@@ -1524,11 +1515,7 @@ class ReportesController {
         response.setHeader("Content-disposition", "attachment; filename=" + name)
         response.setContentLength(b.length)
         response.getOutputStream().write(b)
-
-
     }
-
-    ///////
 
     //reporte registroTramite
 
@@ -1557,8 +1544,6 @@ class ReportesController {
 
         def prms = [prmsHeaderHoja: prmsHeaderHoja, prmsHeader: prmsHeader, prmsHeader2: prmsHeader2,
                     prmsCellHead: prmsCellHead, prmsCell: prmsCellCenter, prmsCellLeft: prmsCellLeft, prmsSubtotal: prmsSubtotal, prmsNum: prmsNum, prmsHeaderHoja2: prmsHeaderHoja2, prmsCellRight: prmsCellRight, prmsCellHeadRight: prmsCellHeadRight]
-
-
 
         def baos = new ByteArrayOutputStream()
         def name = "registroTramite_" + new Date().format("ddMMyyyy_hhmm") + ".pdf";
@@ -1595,7 +1580,6 @@ class ReportesController {
         headers.add(new Paragraph("Quito, " + formatDate(date: new Date(), format: "dd-MM-yyyy"), times10bold));
 //        headers.add(new Paragraph(" ", times10bold));
 
-
         Paragraph txtObra = new Paragraph();
         addEmptyLine(txtObra, 1);
         txtObra.setAlignment(Element.ALIGN_LEFT);
@@ -1621,7 +1605,6 @@ class ReportesController {
         addCellTabla(tablaVolObra, new Paragraph("N° Memo SAD", times8bold), prmsCellHead)
         addCellTabla(tablaVolObra, new Paragraph("Estado", times8bold), prmsCellHead)
 
-
         tramites.each {
             addCellTabla(tablaVolObra, new Paragraph(it?.tipoTramite?.descripcion, times8normal), prmsCellCenter)
             addCellTabla(tablaVolObra, new Paragraph(PersonasTramite.findByRolTramiteAndTramite(RolTramite.findByCodigo('DE'), it).persona.nombre + " " + PersonasTramite.findByRolTramiteAndTramite(RolTramite.findByCodigo('DE'), it).persona.apellido, times8normal), prmsCellLeft)
@@ -1637,8 +1620,6 @@ class ReportesController {
         document.add(txtObra)
         document.add(tablaVolObra)
 
-
-
         document.close();
         pdfw.close()
         byte[] b = baos.toByteArray();
@@ -1646,10 +1627,7 @@ class ReportesController {
         response.setHeader("Content-disposition", "attachment; filename=" + name)
         response.setContentLength(b.length)
         response.getOutputStream().write(b)
-
-
     }
-
 
     def reporteDocumentosObra() {
         println "*****--->reporteDocumentosObra: $params"
@@ -1764,7 +1742,8 @@ class ReportesController {
         }else{
             headers.add(new Paragraph(auxiliar?.memo1, times12bold));
         }
-            headers.add(new Paragraph(obra?.codigo, times12bold));
+
+        headers.add(new Paragraph(obra?.codigo + (obra?.estado == 'R' ? '' : ' - Presupuesto borrador') , times12bold));
 
         Paragraph headerFecha = new Paragraph();
         headerFecha.setAlignment(Element.ALIGN_RIGHT);

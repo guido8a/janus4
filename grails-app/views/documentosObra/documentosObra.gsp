@@ -5,8 +5,6 @@
     <asset:stylesheet src="/summernote-0.8.18-dist/summernote.min.css"/>
     <asset:javascript src="/summernote-0.8.18-dist/summernote.min.js"/>
 
-
-
     <style type="text/css">
 
     .texto {
@@ -30,7 +28,7 @@
 
 <body>
 <g:if test="${flash.message}">
-    <div class="col-md-12" style="z-index: 1000; margin-top: 0">
+    <div class="col-md-8" style="z-index: 1000; margin-top: 0">
         <div class="alert ${flash.clase ?: 'alert-info'}" role="status" style="margin-bottom: 0px; margin-left: -15px;">
             <a class="close" data-dismiss="alert" href="#">×</a>
             ${raw(flash.message)}

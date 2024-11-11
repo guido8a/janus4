@@ -1185,7 +1185,6 @@
         var buscarPor = $("#buscarPor").val();
         var tipo = $("#buscarTipo").val();
         var criterio = $("#criterioCriterio").val();
-        console.log('criterio', criterio)
         var ordenar = $("#ordenar").val();
         $.ajax({
             type: "POST",
@@ -1227,25 +1226,81 @@
     });
 
     $("#btn-registrar").click(function () {
-        var $btn = $(this).clone(true);
-        $(this).replaceWith(spinner);
         $.ajax({
             type    : "POST",
-            url     : "${createLink(action: 'saveRegistrar')}",
-            data    : "id=${contrato?.id}",
+            url     : "${createLink(contrato: 'contrato', action: 'verificarFormula_ajax')}",
+            data    : {
+                id: '${contrato?.id}'
+            },
             success : function (msg) {
                 var parts = msg.split("_");
                 if (parts[0] === "ok") {
-                    bootbox.alert("<i class='fa fa-check fa-3x text-success'></i> Contrato registrado");
-                    setTimeout(function () {
-                        location.href = "${g.createLink(controller: 'contrato', action: 'registroContrato')}" + "?contrato=" + "${contrato?.id}";
-                    }, 800);
+
+                    bootbox.confirm({
+                        title: "Registrar obra",
+                        message: "<i class='fa fa-exclamation-triangle text-warning fa-3x'></i> La obra no tiene fórmula polinómica. Está seguro de querer registrarla?.",
+                        buttons: {
+                            cancel: {
+                                label: '<i class="fa fa-times"></i> Cancelar',
+                                className: 'btn-primary'
+                            },
+                            confirm: {
+                                label: '<i class="fa fa-check"></i> Aceptar',
+                                className: 'btn-success'
+                            }
+                        },
+                        callback: function (result) {
+                            if(result){
+                                var g = cargarLoader("Registrando...");
+
+                                $.ajax({
+                                    type    : "POST",
+                                    url     : "${createLink(action: 'saveRegistrar')}",
+                                    data    : "id=${contrato?.id}",
+                                    success : function (msg) {
+                                        g.modal("hide");
+                                        var parts = msg.split("_");
+                                        if (parts[0] === "ok") {
+                                            bootbox.alert("<i class='fa fa-check fa-3x text-success'></i> Contrato registrado");
+                                            setTimeout(function () {
+                                                location.href = "${g.createLink(controller: 'contrato', action: 'registroContrato')}" + "?contrato=" + "${contrato?.id}";
+                                            }, 800);
+                                        } else {
+                                            spinner.replaceWith($btn);
+                                            bootbox.alert("<i class='fa fa-exclamation-triangle fa-3x text-warning'></i>" + parts[1])
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                    });
                 } else {
-                    spinner.replaceWith($btn);
-                    bootbox.alert("<i class='fa fa-exclamation-triangle fa-3x text-warning'></i>" + parts[1])
+                    var g = cargarLoader("Registrando...");
+
+                    $.ajax({
+                        type    : "POST",
+                        url     : "${createLink(action: 'saveRegistrar')}",
+                        data    : "id=${contrato?.id}",
+                        success : function (msg) {
+                            g.modal("hide");
+                            var parts = msg.split("_");
+                            if (parts[0] === "ok") {
+                                bootbox.alert("<i class='fa fa-check fa-3x text-success'></i> Contrato registrado");
+                                setTimeout(function () {
+                                    location.href = "${g.createLink(controller: 'contrato', action: 'registroContrato')}" + "?contrato=" + "${contrato?.id}";
+                                }, 800);
+                            } else {
+                                spinner.replaceWith($btn);
+                                bootbox.alert("<i class='fa fa-exclamation-triangle fa-3x text-warning'></i>" + parts[1])
+                            }
+                        }
+                    });
                 }
             }
         });
+
+
+
     });
 
     $("#btn-desregistrar").click(function () {

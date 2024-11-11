@@ -192,16 +192,11 @@ class ContratoController {
                 order("numero", "asc")
             }
         }
-/*
-        if (cronos.size() == 0 || pcs.size() == 0) {
-            if (cronos.size() == 0) {
-                errores += "<li>No ha generado el cronograma de contrato.</li>"
-            }
-            if (pcs.size() == 0) {
-                errores += "<li>No ha generado la fórmula polinómica contractual.</li>"
-            }
-        }
-*/
+
+//        if (pcs.size() == 0) {
+//            errores += "<li>No ha generado la fórmula polinómica contractual.</li>"
+//        }
+
         if (cronos.size() == 0) {
             errores += "<li>No ha generado el cronograma de contrato.</li>"
         }
@@ -1545,6 +1540,33 @@ class ContratoController {
     def subirExcelContrato(){
         def contrato = Contrato.get(params.id)
         return [contrato: contrato]
+    }
+
+    def verificarFormula_ajax(){
+
+        def contrato = Contrato.get(params.id)
+
+        def formulas = FormulaPolinomicaContractual.withCriteria {
+            and {
+                eq("contrato", contrato)
+                or {
+                    ilike("numero", "c%")
+                    and {
+                        ne("numero", "P0")
+                        ne("numero", "p01")
+                        ilike("numero", "p%")
+                    }
+                }
+                order("numero", "asc")
+            }
+        }
+
+
+        if(formulas?.size() > 0){
+            render "no"
+        }else{
+            render "ok"
+        }
     }
 
 } //fin controller
