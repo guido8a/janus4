@@ -1236,44 +1236,47 @@
                 var parts = msg.split("_");
                 if (parts[0] === "ok") {
 
-                    bootbox.confirm({
-                        title: "Registrar obra",
-                        message: "<i class='fa fa-exclamation-triangle text-warning fa-3x'></i> La obra no tiene fórmula polinómica. Está seguro de querer registrarla?.",
-                        buttons: {
-                            cancel: {
-                                label: '<i class="fa fa-times"></i> Cancelar',
-                                className: 'btn-primary'
-                            },
-                            confirm: {
-                                label: '<i class="fa fa-check"></i> Aceptar',
-                                className: 'btn-success'
-                            }
-                        },
-                        callback: function (result) {
-                            if(result){
-                                var g = cargarLoader("Registrando...");
 
-                                $.ajax({
-                                    type    : "POST",
-                                    url     : "${createLink(action: 'saveRegistrar')}",
-                                    data    : "id=${contrato?.id}",
-                                    success : function (msg) {
-                                        g.modal("hide");
-                                        var parts = msg.split("_");
-                                        if (parts[0] === "ok") {
-                                            bootbox.alert("<i class='fa fa-check fa-3x text-success'></i> Contrato registrado");
-                                            setTimeout(function () {
-                                                location.href = "${g.createLink(controller: 'contrato', action: 'registroContrato')}" + "?contrato=" + "${contrato?.id}";
-                                            }, 800);
-                                        } else {
-                                            spinner.replaceWith($btn);
-                                            bootbox.alert("<i class='fa fa-exclamation-triangle fa-3x text-warning'></i>" + parts[1])
-                                        }
-                                    }
-                                });
-                            }
-                        }
-                    });
+                    bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' +  "La obra no puede ser registrada, no tiene fórmula polinómica" + '</strong>');
+
+                    %{--bootbox.confirm({--}%
+                    %{--    title: "Registrar obra",--}%
+                    %{--    message: "<i class='fa fa-exclamation-triangle text-warning fa-3x'></i> La obra no tiene fórmula polinómica. Está seguro de querer registrarla?.",--}%
+                    %{--    buttons: {--}%
+                    %{--        cancel: {--}%
+                    %{--            label: '<i class="fa fa-times"></i> Cancelar',--}%
+                    %{--            className: 'btn-primary'--}%
+                    %{--        },--}%
+                    %{--        confirm: {--}%
+                    %{--            label: '<i class="fa fa-check"></i> Aceptar',--}%
+                    %{--            className: 'btn-success'--}%
+                    %{--        }--}%
+                    %{--    },--}%
+                    %{--    callback: function (result) {--}%
+                    %{--        if(result){--}%
+                    %{--            var g = cargarLoader("Registrando...");--}%
+
+                    %{--            $.ajax({--}%
+                    %{--                type    : "POST",--}%
+                    %{--                url     : "${createLink(action: 'saveRegistrar')}",--}%
+                    %{--                data    : "id=${contrato?.id}",--}%
+                    %{--                success : function (msg) {--}%
+                    %{--                    g.modal("hide");--}%
+                    %{--                    var parts = msg.split("_");--}%
+                    %{--                    if (parts[0] === "ok") {--}%
+                    %{--                        bootbox.alert("<i class='fa fa-check fa-3x text-success'></i> Contrato registrado");--}%
+                    %{--                        setTimeout(function () {--}%
+                    %{--                            location.href = "${g.createLink(controller: 'contrato', action: 'registroContrato')}" + "?contrato=" + "${contrato?.id}";--}%
+                    %{--                        }, 800);--}%
+                    %{--                    } else {--}%
+                    %{--                        spinner.replaceWith($btn);--}%
+                    %{--                        bootbox.alert("<i class='fa fa-exclamation-triangle fa-3x text-warning'></i>" + parts[1])--}%
+                    %{--                    }--}%
+                    %{--                }--}%
+                    %{--            });--}%
+                    %{--        }--}%
+                    %{--    }--}%
+                    %{--});--}%
                 } else {
                     var g = cargarLoader("Registrando...");
 
@@ -1285,12 +1288,11 @@
                             g.modal("hide");
                             var parts = msg.split("_");
                             if (parts[0] === "ok") {
-                                bootbox.alert("<i class='fa fa-check fa-3x text-success'></i> Contrato registrado");
+                                bootbox.alert("<i class='fa fa-check fa-3x text-success'></i> Contrato registrado correctamente");
                                 setTimeout(function () {
                                     location.href = "${g.createLink(controller: 'contrato', action: 'registroContrato')}" + "?contrato=" + "${contrato?.id}";
-                                }, 800);
+                                }, 1000);
                             } else {
-                                spinner.replaceWith($btn);
                                 bootbox.alert("<i class='fa fa-exclamation-triangle fa-3x text-warning'></i>" + parts[1])
                             }
                         }

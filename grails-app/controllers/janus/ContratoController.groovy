@@ -1546,26 +1546,29 @@ class ContratoController {
 
         def contrato = Contrato.get(params.id)
 
-        def formulas = FormulaPolinomicaContractual.withCriteria {
-            and {
-                eq("contrato", contrato)
-                or {
-                    ilike("numero", "c%")
-                    and {
-                        ne("numero", "P0")
-                        ne("numero", "p01")
-                        ilike("numero", "p%")
+        if(contrato?.aplicaReajuste == 1){
+            def formulas = FormulaPolinomicaContractual.withCriteria {
+                and {
+                    eq("contrato", contrato)
+                    or {
+                        ilike("numero", "c%")
+                        and {
+                            ne("numero", "P0")
+                            ne("numero", "p01")
+                            ilike("numero", "p%")
+                        }
                     }
+                    order("numero", "asc")
                 }
-                order("numero", "asc")
             }
-        }
 
-
-        if(formulas?.size() > 0){
-            render "no"
+            if(formulas?.size() > 0){
+                render "no"
+            }else{
+                render "ok"
+            }
         }else{
-            render "ok"
+            render "no"
         }
     }
 
