@@ -4,8 +4,14 @@
             Indice
         </label>
         <span class="col-md-8">
-            <g:select name="indice" class="form-control" from="${indices}" optionKey="${{it.id}}"
-                      optionValue="${{it.codigo + ' - ' + it.descripcion }}" value="${indiceActual?.indice?.id}" style="width:400px;"/>
+            <g:if test="${indiceActual?.indice?.id == 143}">
+                <g:hiddenField name="indice" value="${indiceActual?.indice?.id}"/>
+                <g:textField name="indiceName" value="${"Mano de Obra"}" class="form-control" readonly=""/>
+            </g:if>
+            <g:else>
+                <g:select name="indice" class="form-control" from="${indices}" optionKey="${{it.id}}"
+                          optionValue="${{(it.codigo ? (it.codigo + ' - ') : '') + it.descripcion }}" value="${indiceActual?.indice?.id}" style="width:400px;"/>
+            </g:else>
         </span>
     </div>
     <div class="col-md-8"></div>

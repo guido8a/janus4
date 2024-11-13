@@ -43,11 +43,11 @@
                             </g:else>
                             <g:if test="${editar != 'no'}">
                                 <td style="text-align: center">
-                                    <g:if test="${i.indice.id != 143}">
+%{--                                    <g:if test="${i.indice.id != 143}">--}%
                                         <a href="#" data-id="${i.id}" class="btn btn-xs btn-success btnEditarIndice" title="Editar índice">
                                             <i class="fa fa-edit"></i>
                                         </a>
-                                    </g:if>
+%{--                                    </g:if>--}%
                                 </td>
                             </g:if>
 
@@ -192,7 +192,6 @@
 
     $(".btnEditarIndice").click(function () {
         var id = $(this).data("id");
-
         $.ajax({
             type    : "POST",
             url     : "${createLink(controller: 'contrato', action: 'editarIndice_ajax')}",
