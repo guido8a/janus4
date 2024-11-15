@@ -507,10 +507,13 @@
                             </span>
                         </div>
 
-                        <div class="controls col-md-8">
+                        <div class="controls col-md-4">
                             <input aria-label="" name="fechaLimiteEntregaOfertas" id='fecha9' type='text' class="input-small" value="${concursoInstance?.fechaLimiteEntregaOfertas?.format("dd-MM-yyyy HH:mm")}" />
-
                             <p class="help-block ui-helper-hidden"></p>
+                        </div>
+
+                        <div class="col-md-4 text-info">
+                         <i class="fa fa-arrow-left"></i>  <strong>  Necesario para migrar de obras a oferentes </strong>
                         </div>
                     </div>
                     <div class="control-group col-md-6">
