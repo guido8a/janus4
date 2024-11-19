@@ -3597,14 +3597,20 @@ class PlanillaController {
         params.montoIva = params.montoIva.toDouble();
         params.montoIndirectos = params.montoIndirectos.toDouble();
 
-        detalle.properties = params
-        if (detalle.save(flush: true)) {
-            def planilla = Planilla.get(params.planilla.id)
-            updatePlanilla(planilla)
-            render "OK_" + detalle.id
-        } else {
-            println "ERROR: " + detalle.errors
-            render "NO_Ha ocurrido un error al guardar el rubro"
+
+        if(params.rubro.contains("\"")){
+            println("error")
+            render "no_La descripción del rubro contiene caracteres no soportados"
+        }else{
+            detalle.properties = params
+            if (detalle.save(flush: true)) {
+                def planilla = Planilla.get(params.planilla.id)
+                updatePlanilla(planilla)
+                render "OK_" + detalle.id
+            } else {
+                println "ERROR: " + detalle.errors
+                render "NO_Ha ocurrido un error al guardar el rubro"
+            }
         }
     }
 

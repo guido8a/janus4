@@ -692,7 +692,7 @@
                 id: $("#item_id").val()
             },
             success  : function (msg) {
-                $("#item_precio").val(number_format(msg.split('_')[0], 2, ".", ""));
+                $("#item_precio").val(number_format(msg.split('_')[0], 5, ".", ""));
                 $("#item_vae").val(number_format(msg.split('_')[1], 2, ".", ""));
             }
         });
