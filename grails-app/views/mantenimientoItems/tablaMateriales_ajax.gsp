@@ -43,30 +43,36 @@
 <div class="" style="width: 99.7%;height: 600px; overflow-y: auto;float: right; margin-top: -20px">
     <table class="table-bordered table-striped table-condensed table-hover" style="width: 100%">
         <tbody>
-        <g:each in="${materiales}" status="i" var="material">
-            <tr data-id="${material?.id}">
-                <td style="width: 7%">${material?.departamento?.subgrupo?.codigo}</td>
-                <td style="width: 15%">${material?.departamento?.subgrupo?.descripcion}</td>
-                <td style="width: 7%">${material?.departamento?.codigo}</td>
-                <td style="width: 15%">${material?.departamento?.descripcion}</td>
-                <td style="width: 10%">${material?.codigo}</td>
-                <td style="width: 35%">${material?.nombre}</td>
-                <td style="width: 12%; text-align: center">
-                    <a href="#" class="btn btn-xs btn-info btnVerMaterial" data-id="${material?.id}" title="Ver">
-                        <i class="fas fa-search"></i>
-                    </a>
-                    <a href="#" class="btn btn-xs btn-warning btnEspecificacionesMaterial" data-id="${material?.id}" title="Especificaciones e Ilustración" ${material?.codigoEspecificacion ?: 'disabled'}>
-                        <i class="fas fa-book"></i>
-                    </a>
-                    <a href="#" class="btn btn-xs btn-success btnEditarMaterial" data-id="${material?.id}" data-sub="${material?.departamento?.id}" title="Editar">
-                        <i class="fas fa-edit"></i>
-                    </a>
-                    <a href="#" class="btn btn-xs btn-danger btnEliminarMaterial" data-id="${material?.id}" title="Eliminar">
-                        <i class="fas fa-trash"></i>
-                    </a>
-                </td>
-            </tr>
-        </g:each>
+        <g:if test="${materiales}">
+            <g:each in="${materiales}" status="i" var="material">
+                <tr data-id="${material?.id}">
+                    <td style="width: 7%">${material?.departamento?.subgrupo?.codigo}</td>
+                    <td style="width: 15%">${material?.departamento?.subgrupo?.descripcion}</td>
+                    <td style="width: 7%">${material?.departamento?.codigo}</td>
+                    <td style="width: 15%">${material?.departamento?.descripcion}</td>
+                    <td style="width: 10%">${material?.codigo}</td>
+                    <td style="width: 35%">${material?.nombre}</td>
+                    <td style="width: 12%; text-align: center">
+                        <a href="#" class="btn btn-xs btn-info btnVerMaterial" data-id="${material?.id}" title="Ver">
+                            <i class="fas fa-search"></i>
+                        </a>
+                        <a href="#" class="btn btn-xs btn-warning btnEspecificacionesMaterial" data-id="${material?.id}" title="Especificaciones e Ilustración" ${material?.codigoEspecificacion ?: 'disabled'}>
+                            <i class="fas fa-book"></i>
+                        </a>
+                        <a href="#" class="btn btn-xs btn-success btnEditarMaterial" data-id="${material?.id}" data-sub="${material?.departamento?.id}" title="Editar">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        <a href="#" class="btn btn-xs btn-danger btnEliminarMaterial" data-id="${material?.id}" title="Eliminar">
+                            <i class="fas fa-trash"></i>
+                        </a>
+                    </td>
+                </tr>
+            </g:each>
+        </g:if>
+        <g:else>
+            Nada
+        </g:else>
+
         </tbody>
     </table>
 </div>
@@ -93,8 +99,9 @@
     $(".btnRegresarMaterial").click(function () {
         $("#buscarPor").val(${grupo?.id});
         $("#tipo").val(2);
-        if('${id}'){
-            $("#criterio").val('${materiales?.first()?.departamento?.descripcion}');
+        %{--if('${id}'){--}%
+        if('${departamento}'){
+            $("#criterio").val('${departamento?.descripcion}');
         }else{
             $("#criterio").val('');
         }
