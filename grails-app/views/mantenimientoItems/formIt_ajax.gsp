@@ -2,15 +2,15 @@
 
 <g:form class="form-horizontal" name="frmSave" action="saveIt_ajax">
     <g:hiddenField name="id" value="${itemInstance?.id}"/>
-    <g:hiddenField name="departamento" value="${departamento.id}"/>
 
     <div class="form-group ${hasErrors(bean: itemInstance, field: 'departamento', 'error')} ">
         <span class="grupo">
-            <label for="departamentoName" class="col-md-2 control-label text-info">
+            <label for="departamento" class="col-md-2 control-label text-info">
                 Subgrupo
             </label>
             <span class="col-md-8">
-                <g:textField name="departamentoName" class="form-control" value="${departamento?.descripcion}" readonly="" />
+%{--                <g:select name="departamento" from="${janus.DepartamentoItem.list([sort: 'descripcion'])}" required="" optionValue="descripcion" optionKey="id" class="form-control required " value="${departamento?.id ?: itemInstance?.departamento?.id}" />--}%
+                <g:select name="departamento" from="${listaDepartamentos}" required="" optionValue="descripcion" optionKey="id" class="form-control required " value="${departamento?.id ?: itemInstance?.departamento?.id}" />
             </span>
         </span>
     </div>
@@ -26,14 +26,10 @@
                 </span>
             </g:if>
             <g:else>
-                <span class="col-md-2">
-                    <g:textField name="codigoSubgrupo" class="form-control" value="${departamento?.subgrupo?.codigo ?: ''}" readonly=""/>
+                <span class="col-md-4" id="divCodigos">
                 </span>
                 <span class="col-md-2">
-                    <g:textField name="codigoDepartamento" class="form-control" value="${departamento?.codigo ?: ''}" readonly=""/>
-                </span>
-                <span class="col-md-2">
-                    <g:textField name="codigo" maxlength="20" minlength="3" class="form-control allCaps number required" value="${itemInstance?.codigo ?: ''}" />
+                    <g:textField name="codigo" maxlength="20" minlength="3" required="" class="form-control allCaps number required" value="${itemInstance?.codigo ?: ''}" />
                     <p class="help-block ui-helper-hidden"></p>
                 </span>
             </g:else>
@@ -225,8 +221,28 @@
     var bcpc;
     var bcpct;
 
+    cargarCodigos();
 
+    $("#departamento").change(function () {
+        cargarCodigos();
+        $("#codigo").val('')
+    });
 
+    function cargarCodigos () {
+        var d = cargarLoader("Cargando...");
+        var departamento = $("#departamento option:selected").val();
+        $.ajax({
+            type : "POST",
+            url : "${g.createLink(controller: 'mantenimientoItems',action:'codigos_ajax')}",
+            data     : {
+                id: departamento
+            },
+            success  : function (msg) {
+                d.modal("hide");
+                $("#divCodigos").html(msg)
+            }
+        });
+    }
 
     $("#btnBuscarCPCTransporte").click(function () {
         $.ajax({
@@ -382,7 +398,7 @@
                     type : "post",
                     data : {
                         id  : "${itemInstance?.id}",
-                        dep : "${departamento.id}"
+                        dep : "${itemInstance?.departamento?.id ?: departamento?.id}"
                     }
                 }
             },

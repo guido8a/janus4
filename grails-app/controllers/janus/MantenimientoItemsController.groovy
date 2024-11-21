@@ -1352,15 +1352,26 @@ class MantenimientoItemsController {
 //    }
 
     def formIt_ajax() {
-        def departamento = DepartamentoItem.get(params.departamento)
-        def itemInstance = new Item()
+
+        def itemInstance
+        def departamento = null
+        def listaDepartamentos = []
+
         if (params.id) {
             itemInstance = Item.get(params.id)
+            listaDepartamentos = DepartamentoItem.findAllById(itemInstance?.departamento?.id)
+        }else{
+            itemInstance = new Item()
+
+            if(params.departamento){
+                departamento = DepartamentoItem.get(params.departamento)
+                listaDepartamentos = DepartamentoItem.findAllById(departamento?.id)
+            }else{
+                listaDepartamentos = DepartamentoItem.list([sort: 'descripcion'])
+            }
         }
 
-        def campos = ["numero": ["Código", "string"], "descripcion": ["Descripción", "string"]]
-
-        return [departamento: departamento, itemInstance: itemInstance, grupo: params.grupo, campos: campos]
+        return [itemInstance: itemInstance, grupo: params.grupo, departamento: departamento, listaDepartamentos: listaDepartamentos]
     }
 
     def buscaCpac() {
@@ -2337,6 +2348,8 @@ itemId: item.id
 
     def tablaMateriales_ajax(){
 
+        println("params " + params)
+
         def grupo = Grupo.get(params.buscarPor)
         def grupos = SubgrupoItems.findAllByGrupo(grupo)
         def subgrupos = DepartamentoItem.findAllBySubgrupoInList(grupos)
@@ -2564,5 +2577,11 @@ itemId: item.id
         }
 
         redirect(action: "especificaciones_ajax", id: rubro.id, params: [tipo: tipo])
+    }
+
+
+    def codigos_ajax () {
+        def departamento = DepartamentoItem.get(params.id)
+        return [departamento: departamento]
     }
 }

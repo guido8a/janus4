@@ -12,14 +12,13 @@
             <li class="active">MATERIALES</li>
         </ol>
     </div>
-    %{--    <div class="col-md-2">--}%
-    %{--        <a href="#" class="btn btn-sm btn-success btnNuevoMaterial" title="Crear nuevo material">--}%
-    %{--            <i class="fas fa-file"></i> Nuevo Material--}%
-    %{--        </a>--}%
-    %{--    </div>--}%
     <div class="col-md-2">
         <a href="#" class="btn btn-sm btn-success btnRegresarMaterial" title="Regresar">
             <i class="fas fa-arrow-left"></i>
+        </a>
+
+        <a href="#" class="btn btn-sm btn-success btnNuevoMaterial" title="Crear nuevo material">
+            <i class="fas fa-file"></i> Nuevo Material
         </a>
     </div>
 </div>
@@ -70,7 +69,9 @@
             </g:each>
         </g:if>
         <g:else>
-            Nada
+            <tr style="text-align: center">
+                <td class="alert alert-warning"><i class="fa fa-exclamation-triangle fa-2x text-info"></i> <strong style="font-size: 16px"> No existen registros </strong></td>
+            </tr>
         </g:else>
 
         </tbody>
@@ -107,6 +108,10 @@
         }
 
         cargarTablaItems();
+    });
+
+    $(".btnNuevoMaterial").click(function () {
+        createEditItem(null, ${id})
     });
 
     $(".btnEditarMaterial").click(function () {

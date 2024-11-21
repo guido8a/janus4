@@ -36,30 +36,37 @@
 <div class="" style="width: 99.7%;height: 600px; overflow-y: auto;float: right; margin-top: -20px">
     <table class="table-bordered table-striped table-condensed table-hover" style="width: 100%">
         <tbody>
-        <g:each in="${subgrupos}" status="i" var="subgrupo">
-            <tr data-id="${subgrupo?.id}">
-                <td style="width: 10%">${subgrupo?.subgrupo?.codigo}</td>
-                <td style="width: 20%">${subgrupo?.subgrupo?.descripcion}</td>
-                <td style="width: 10%">${subgrupo?.codigo}</td>
-                <td style="width: 45%">${subgrupo?.descripcion}</td>
-                <td style="width: 10%; text-align: center">
-                    <a href="#" class="btn btn-xs btn-success btnEditarSubgrupo" data-id="${subgrupo?.id}" title="Editar">
-                        <i class="fas fa-edit"></i>
-                    </a>
-                    <a href="#" class="btn btn-xs btn-warning btnEstructuraSubgrupo" data-id="${subgrupo?.id}" title="Materiales">
-                        <i class="fas fa-list"></i>
-                    </a>
-                    <a href="#" class="btn btn-xs btn-danger btnEliminarSubgrupo" data-id="${subgrupo?.id}" title="Eliminar">
-                        <i class="fas fa-trash"></i>
-                    </a>
-                </td>
-                <td style="width: 5%; text-align: center">
-                    <a href="#" class="btn btn-xs btn-success btnCrearMaterial" data-id="${subgrupo?.id}" title="Nuevo material">
-                        <i class="fas fa-cube"></i>
-                    </a>
-                </td>
+        <g:if test="${subgrupos}">
+            <g:each in="${subgrupos}" status="i" var="subgrupo">
+                <tr data-id="${subgrupo?.id}">
+                    <td style="width: 10%">${subgrupo?.subgrupo?.codigo}</td>
+                    <td style="width: 20%">${subgrupo?.subgrupo?.descripcion}</td>
+                    <td style="width: 10%">${subgrupo?.codigo}</td>
+                    <td style="width: 45%">${subgrupo?.descripcion}</td>
+                    <td style="width: 10%; text-align: center">
+                        <a href="#" class="btn btn-xs btn-success btnEditarSubgrupo" data-id="${subgrupo?.id}" title="Editar">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        <a href="#" class="btn btn-xs btn-warning btnEstructuraSubgrupo" data-id="${subgrupo?.id}" title="Materiales">
+                            <i class="fas fa-list"></i>
+                        </a>
+                        <a href="#" class="btn btn-xs btn-danger btnEliminarSubgrupo" data-id="${subgrupo?.id}" title="Eliminar">
+                            <i class="fas fa-trash"></i>
+                        </a>
+                    </td>
+                    <td style="width: 5%; text-align: center">
+                        <a href="#" class="btn btn-xs btn-success btnCrearMaterial" data-id="${subgrupo?.id}" title="Nuevo material">
+                            <i class="fas fa-cube"></i>
+                        </a>
+                    </td>
+                </tr>
+            </g:each>
+        </g:if>
+        <g:else>
+            <tr style="text-align: center">
+                <td class="alert alert-warning"><i class="fa fa-exclamation-triangle fa-2x text-info"></i> <strong style="font-size: 16px"> No existen registros </strong></td>
             </tr>
-        </g:each>
+        </g:else>
         </tbody>
     </table>
 </div>
@@ -196,7 +203,7 @@
     }
 
     function verEstructura(id) {
-         $.ajax({
+        $.ajax({
             type    : "POST",
             url     : "${createLink(controller: 'mantenimientoItems', action:'estructuraSubgrupo_ajax')}",
             data    : {
