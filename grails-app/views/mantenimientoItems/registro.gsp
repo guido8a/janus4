@@ -13,6 +13,8 @@
 <body>
 
 <div>
+
+
     <fieldset class="borde" style="border-radius: 4px; margin-bottom: 10px">
         <div class="row-fluid" style="margin-left: 10px">
             <span class="grupo">
@@ -26,7 +28,7 @@
                     <g:select name="tipo" class="tipo col-md-12 form-control btn-info" from="${[1: 'Grupo', 2: 'Subgrupo', 3: 'Materiales']}" optionKey="key"
                               optionValue="value"/>
                 </span>
-                <span class="col-md-4">
+                <span class="col-md-3">
                     <label class="control-label text-info">Criterio</label>
                     <g:textField name="criterio" id="criterio" class="form-control"/>
                 </span>
@@ -35,6 +37,15 @@
                 <button class="btn btn-info" id="btnBuscar"><i class="fa fa-search"></i>Buscar</button>
                 <button class="btn btn-warning" id="btnLimpiar" title="Limpiar Búsqueda"><i class="fa fa-eraser"></i>Limpiar</button>
             </div>
+            <div class="col-md-2" style="width: 260px; margin-top: 21px">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#" id="bc_grpo">Home</a></li>
+                    %{--<li class="breadcrumb-item"><a href="#" id="bc_sbgr">Library</a></li>--}%
+                    <li class="breadcrumb-item" id="li_sbgr"></li>
+                    <li class="breadcrumb-item" aria-current="page" id="bc_item">Data</li>
+                </ol>
+            </div>
+
         </div>
     </fieldset>
 
@@ -95,7 +106,35 @@
             },
             success: function (msg){
                 d.modal("hide");
-                $("#divTablaItems").html(msg)
+                $("#divTablaItems").html(msg);
+                console.log('tpo:', tipo);
+                switch (tipo) {
+                    case "1":
+                        $('#bc_grpo').html('Grupo');
+                        $('#bc_sbgr').hide();
+                        $('#bc_item').hide();
+                        break;
+                    case "2":
+                        $('#bc_grpo').html('Grupo');
+                        var li = $('#li_sbgr')
+                        var elemento = document.createElement('a');
+                        elemento.id = 'bc_sbgr';
+                        elemento.href = url + '?id=' + "${id_grupo}";
+                        elemento.id_grpo = '#';
+                        li.append(elemento);
+                        console.log('li', elemento, id);
+                        $('#bc_sbgr').show();
+                        $('#bc_sbgr').html('Subgrupo');
+                        $('#bc_item').hide();
+                        break;
+                    case "3":
+                        $('#bc_grpo').html('Grupo');
+                        $('#bc_sbgr').show();
+                        $('#bc_sbgr').html('Subgrupo');
+                        $('#bc_item').show();
+                        $('#bc_item').html('Materiales');
+                        break;
+                }
             }
         })
     }
@@ -175,6 +214,19 @@
         }
         return true;
     });
+
+    $("#bc_grpo").click(function () {
+        $("#tipo").val(1);
+        $("#criterio").val('');
+        cargarTablaItems();
+    });
+
+    $("#bc_sbgr").click(function () {
+        $("#tipo").val(2);
+        $("#criterio").val('');
+        cargarTablaItems();
+    });
+
 
 </script>
 

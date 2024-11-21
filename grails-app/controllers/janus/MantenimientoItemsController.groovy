@@ -2326,12 +2326,18 @@ itemId: item.id
 
 
     def tablaGrupos_ajax(){
+        def cn = dbConnectionService.getConnection()
         def grupo = Grupo.get(params.buscarPor)
-        def grupos = SubgrupoItems.findAllByGrupoAndDescripcionIlike(grupo, '%' + params.criterio + '%', [sort: 'codigo', order: 'asc']).take(50)
+//        def grupos = SubgrupoItems.findAllByGrupoAndDescripcionIlike(grupo, '%' + params.criterio + '%', [sort: 'codigo',
+//                     order: 'asc']).take(50)
+        def sql = "select * from sbgr where grpo__id = ${grupo?.id} and " +
+                "sbgrdscr ilike '%${params.criterio}%' order by sbgrcdgo"
+        def grupos = cn.rows(sql.toString());
         return [grupos: grupos, grupo: grupo]
     }
 
     def tablaSubgrupos_ajax(){
+        println "tablaSubgrupos_ajax $params"
         def grupo = Grupo.get(params.buscarPor)
         def grupos = SubgrupoItems.findAllByGrupo(grupo, [sort: 'codigo'])
         def subgrupos = []
@@ -2343,7 +2349,7 @@ itemId: item.id
             subgrupos = DepartamentoItem.findAllBySubgrupoInListAndDescripcionIlike(grupos, '%' + params.criterio + '%').sort{a,b -> a.subgrupo.descripcion <=> b.subgrupo.descripcion ?: a.codigo <=> b.codigo }.take(50)
         }
 
-        return [subgrupos: subgrupos, grupo: grupo]
+        return [subgrupos: subgrupos, grupo: grupo, id_grupo: subgrupos.id ]
     }
 
     def tablaMateriales_ajax(){
