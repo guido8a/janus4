@@ -35,14 +35,13 @@
             </span>
             <div class="col-md-2" style="margin-top: 20px">
                 <button class="btn btn-info" id="btnBuscar"><i class="fa fa-search"></i>Buscar</button>
-                <button class="btn btn-warning" id="btnLimpiar" title="Limpiar Búsqueda"><i class="fa fa-eraser"></i>Limpiar</button>
+                <button class="btn btn-warning" id="btnLimpiar" title="Limpiar Búsqueda"><i class="fa fa-eraser"></i>Limpiar/Todo</button>
             </div>
             <div class="col-md-2" style="width: 260px; margin-top: 21px">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="#" id="bc_grpo">Home</a></li>
-                    %{--<li class="breadcrumb-item"><a href="#" id="bc_sbgr">Library</a></li>--}%
-                    <li class="breadcrumb-item" id="li_sbgr"></li>
-                    <li class="breadcrumb-item" aria-current="page" id="bc_item">Data</li>
+                    <li class="breadcrumb-item"><a href="#" id="bc_grpo">Grupo</a></li>
+                    <li class="breadcrumb-item"><a href="#" id="bc_sbgr">Subgrupo</a></li>
+                    <li class="breadcrumb-item" aria-current="page" id="bc_item">Items</li>
                 </ol>
             </div>
 
@@ -119,7 +118,8 @@
                         var li = $('#li_sbgr')
                         var elemento = document.createElement('a');
                         elemento.id = 'bc_sbgr';
-                        elemento.href = url + '?id=' + "${id_grupo}";
+                        %{--elemento.href = url + '?id=' + "${id_grupo}";--}%
+                        elemento.href = url
                         elemento.id_grpo = '#';
                         li.append(elemento);
                         console.log('li', elemento, id);

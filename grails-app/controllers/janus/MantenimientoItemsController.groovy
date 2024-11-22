@@ -1908,7 +1908,7 @@ itemId: item.id
         cn.eachRow(sql.toString()) {row->
             codigos += row[0]
         }
-
+        cn.close()
         def ultimo = codigos.last()
 
         return [lugarInstance: lugarInstance, all: params.all, tipo: tipo, ultimo: ultimo, id: params.id]
@@ -2186,6 +2186,7 @@ itemId: item.id
 
         def cn = dbConnectionService.getConnection()
         datos = cn.rows(sqlTx)
+        cn.close()
         [data: datos, tipo: params.tipo]
     }
 
@@ -2212,6 +2213,7 @@ itemId: item.id
 
         def cn = dbConnectionService.getConnection()
         datos = cn.rows(sqlTx)
+        cn.close()
         [data: datos, tipo: params.tipo]
     }
 
@@ -2224,7 +2226,7 @@ itemId: item.id
         def sql = "select * from item_uso()"
         def cn = dbConnectionService.getConnection()
         def res = cn.rows(sql.toString())
-
+        cn.close()
         return[items: res]
     }
 
@@ -2261,6 +2263,7 @@ itemId: item.id
                 flash.message = "No se puede borrar el item"
             }
         }
+        cn.close()
         render "ok_"
     }
 
@@ -2307,7 +2310,7 @@ itemId: item.id
         catch (e) {
             mnsj = "no_Error al actualizar los precios"
         }
-
+        cn.close()
         render mnsj
     }
 
@@ -2321,35 +2324,50 @@ itemId: item.id
                 "itemnmbr ilike '%${params.criterio}%' order by itemnmbr "
         def cn = dbConnectionService.getConnection()
         def res = cn.rows(sql.toString());
+        cn.close()
         return[res: res]
     }
 
 
     def tablaGrupos_ajax(){
         def cn = dbConnectionService.getConnection()
+        println "tablaGrupos_ajax $params"
         def grupo = Grupo.get(params.buscarPor)
 //        def grupos = SubgrupoItems.findAllByGrupoAndDescripcionIlike(grupo, '%' + params.criterio + '%', [sort: 'codigo',
 //                     order: 'asc']).take(50)
         def sql = "select * from sbgr where grpo__id = ${grupo?.id} and " +
                 "sbgrdscr ilike '%${params.criterio}%' order by sbgrcdgo"
         def grupos = cn.rows(sql.toString());
+        cn.close()
         return [grupos: grupos, grupo: grupo]
     }
 
     def tablaSubgrupos_ajax(){
+        def cn = dbConnectionService.getConnection()
         println "tablaSubgrupos_ajax $params"
         def grupo = Grupo.get(params.buscarPor)
         def grupos = SubgrupoItems.findAllByGrupo(grupo, [sort: 'codigo'])
         def subgrupos = []
-
-        if(params.id){
-            def grupoBuscar = SubgrupoItems.get(params.id)
-            subgrupos = DepartamentoItem.findAllBySubgrupo(grupoBuscar).sort{a,b -> a.subgrupo.descripcion <=> b.subgrupo.descripcion ?: a.codigo <=> b.codigo }.take(50)
-        }else{
-            subgrupos = DepartamentoItem.findAllBySubgrupoInListAndDescripcionIlike(grupos, '%' + params.criterio + '%').sort{a,b -> a.subgrupo.descripcion <=> b.subgrupo.descripcion ?: a.codigo <=> b.codigo }.take(50)
+        def sql = "select sbgrcdgo, sbgrdscr, dprtcdgo, dprtdscr, dprt.dprt__id, sbgr.sbgr__id from dprt, sbgr where grpo__id = ${params.buscarPor} and " +
+                "dprt.sbgr__id = sbgr.sbgr__id and " +
+                "dprtdscr ilike '%${params.criterio}%' or (sbgr.sbgr__id = ${params.id}) order by sbgrcdgo"
+        if(params.id) {
+            sql = "select sbgrcdgo, sbgrdscr, dprtcdgo, dprtdscr, dprt.dprt__id, sbgr.sbgr__id from dprt, sbgr where grpo__id = ${params.buscarPor} and " +
+                    "dprt.sbgr__id = sbgr.sbgr__id and sbgr.sbgr__id = ${params.id} and " +
+                    "dprtdscr ilike '%${params.criterio}%' or (sbgr.sbgr__id = ${params.id}) order by sbgrcdgo"
         }
+//        if(params.id){
+//            def grupoBuscar = SubgrupoItems.get(params.id)
+//            subgrupos = DepartamentoItem.findAllBySubgrupo(grupoBuscar).sort{a,b -> a.subgrupo.descripcion <=> b.subgrupo.descripcion ?: a.codigo <=> b.codigo }.take(50)
+//        }else{
+//            subgrupos = DepartamentoItem.findAllBySubgrupoInListAndDescripcionIlike(grupos, '%' + params.criterio + '%').sort{a,b -> a.subgrupo.descripcion <=> b.subgrupo.descripcion ?: a.codigo <=> b.codigo }.take(50)
+//        }
+        println "sql: $sql"
+        subgrupos = cn.rows(sql.toString());
 
-        return [subgrupos: subgrupos, grupo: grupo, id_grupo: subgrupos.id ]
+        cn.close()
+
+        return [subgrupos: subgrupos, grupo: grupo, id_grupo: subgrupos.sbgr__id ]
     }
 
     def tablaMateriales_ajax(){

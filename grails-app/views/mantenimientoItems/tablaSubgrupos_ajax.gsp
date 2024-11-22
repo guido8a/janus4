@@ -37,25 +37,25 @@
     <table class="table-bordered table-striped table-condensed table-hover" style="width: 100%">
         <tbody>
         <g:if test="${subgrupos}">
-            <g:each in="${subgrupos}" status="i" var="subgrupo">
-                <tr data-id="${subgrupo?.id}">
-                    <td style="width: 10%">${subgrupo?.subgrupo?.codigo}</td>
-                    <td style="width: 20%">${subgrupo?.subgrupo?.descripcion}</td>
-                    <td style="width: 10%">${subgrupo?.codigo}</td>
-                    <td style="width: 45%">${subgrupo?.descripcion}</td>
+            <g:each in="${subgrupos}" status="i" var="sbgr">
+                <tr data-id="${sbgr?.dprt__id}">
+                    <td style="width: 10%">${sbgr?.sbgrcdgo}</td>
+                    <td style="width: 20%">${sbgr?.sbgrdscr}</td>
+                    <td style="width: 10%">${sbgr?.dprtcdgo}</td>
+                    <td style="width: 45%">${sbgr?.dprtdscr}</td>
                     <td style="width: 10%; text-align: center">
-                        <a href="#" class="btn btn-xs btn-success btnEditarSubgrupo" data-id="${subgrupo?.id}" title="Editar">
+                        <a href="#" class="btn btn-xs btn-success btnEditarSubgrupo" data-id="${sbgr?.dprt__id}" title="Editar">
                             <i class="fas fa-edit"></i>
                         </a>
-                        <a href="#" class="btn btn-xs btn-warning btnEstructuraSubgrupo" data-id="${subgrupo?.id}" title="Materiales">
+                        <a href="#" class="btn btn-xs btn-warning btnEstructuraSubgrupo" data-id="${sbgr?.dprt__id}" title="Materiales">
                             <i class="fas fa-list"></i>
                         </a>
-                        <a href="#" class="btn btn-xs btn-danger btnEliminarSubgrupo" data-id="${subgrupo?.id}" title="Eliminar">
+                        <a href="#" class="btn btn-xs btn-danger btnEliminarSubgrupo" data-id="${sbgr?.dprt__id}" title="Eliminar">
                             <i class="fas fa-trash"></i>
                         </a>
                     </td>
                     <td style="width: 5%; text-align: center">
-                        <a href="#" class="btn btn-xs btn-success btnCrearMaterial" data-id="${subgrupo?.id}" title="Nuevo material">
+                        <a href="#" class="btn btn-xs btn-success btnCrearMaterial" data-id="${sbgr?.dprt__id}" title="Nuevo material">
                             <i class="fas fa-cube"></i>
                         </a>
                     </td>
