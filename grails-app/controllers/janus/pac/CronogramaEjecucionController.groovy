@@ -3399,6 +3399,105 @@ class CronogramaEjecucionController {
 
     }
 
+    def tabla_jx() {
+        println "params: $params"
+        def cn = dbConnectionService.getConnection()
+        def cn1 = dbConnectionService.getConnection()
+        def cnp = dbConnectionService.getConnection()
+        def cne = dbConnectionService.getConnection()
+        def titulo1 = []
+        def titulo2 = []
+        def columnas = []
+        def sql1 = ""
+        def sqlp = ""
+        def sqle = ""
+        def sql = "select prej__id, prejfcin, prejfcfn, prejtipo, case when prejtipo = 'P' then 'Periodo' " +
+                "when prejtipo = 'S' then 'Suspensión' when prejtipo = 'A' then 'Ampliación' " +
+                "when prejtipo = 'C' then 'Complement.' end tipo, prejnmro, '<br>('||prejfcfn-prejfcin+1||' días)' dias " +
+                "from prej where cntr__id = ${params.id} order by prejfcin"
+//        println "sql: $sql"
+
+        cn.eachRow(sql.toString()) { d ->
+            titulo1.add(["${d.prejfcin.format('dd-MM-yyyy')} a ${d.prejfcfn.format('dd-MM-yyyy')}", d.prejtipo])
+            titulo2.add(["${d.tipo} ${d.prejtipo == 'P' ? d.prejnmro + ' ' + d.dias : d.dias} ", d.prejtipo])
+
+        }
+
+        sql = "select count(*) cuenta from prej where cntr__id = ${params.id}"
+//        println "sql: $sql"
+        def nmro = cn.rows(sql.toString())[0].cuenta.toInteger()
+//        println "cuenta: $nmro"
+
+        def rubros = []
+        def val = []
+        def totales = [], total_ac = [], total_pc = [], total_pa = []
+        def cont = 0, suma = 0, sumaprco = 0, sumaprct = 0, sumacntd = 0, contrato = 0
+
+        sql = "select itemcdgo, itemnmbr, unddcdgo, vocr__id, vocrsbtt, vocrpcun, vocrcntd, vocr__id " +
+                "from item, undd, vocr " +
+                "where item.item__id = vocr.item__id and " +
+                "undd.undd__id = item.undd__id and cntr__id = ${params.id} order by vocrordn limit 3"
+//        println "sql: $sql"
+
+        cn.eachRow(sql.toString()) { d ->
+            val = []
+            val.add(d.vocr__id)
+            val.add(d.itemcdgo)
+            val.add("${d.itemnmbr}<br><strong>Unidad: ${d.unddcdgo}</strong>")
+            val.add("Subtt.<br>P.U.<br>Cant.")
+            val.add("${d.vocrsbtt}<br>${d.vocrpcun}<br>${d.vocrcntd}")
+
+            val.add("\$<br>%<br>F")
+
+            sqlp = "select prej__id from prej where cntr__id = ${params.id} order by prejfcin"
+            println "sql: $sqlp"
+            sumaprco = 0; sumaprct = 0; sumacntd = 0
+            cnp.eachRow(sqlp.toString()) { pr ->
+                sql1 = "select creoprco, creoprct, creocntd, prej__id from creo where vocr__id = ${d.vocr__id} and prej__id = ${pr.prej__id}"
+                sqle = "select count(*) cuenta from creo where vocr__id = ${d.vocr__id} and prej__id = ${pr.prej__id}"
+                cont = cne.rows(sqle.toString())[0].cuenta
+//                println "sql1: $sql1"
+                if(cont > 0) {
+                    cnp.eachRow(sql1.toString()) { p ->
+                        val.add("${p.creoprco}<br>${p.creoprct}<br>${p.creocntd}")
+                        sumaprco += p.creoprco; sumaprct += p.creoprct; sumacntd += p.creocntd
+                    }
+                } else {
+                    val.add("")
+                }
+            }
+            suma += d.vocrsbtt
+            val.add("<strong>${sumaprco}<br>${sumaprct}<br>${sumacntd}</strong>")
+//            println "val: $val"
+            rubros.add(val)
+        }
+
+        sqlp = "select prej__id, prejcrpa from prej where cntr__id = ${params.id} order by prejfcin"
+        sql = "select sum(vocrsbtt) suma from vocr where cntr__id = ${params.id}"
+        contrato = cne.rows(sql.toString())[0].suma
+        def i = 0, anterior = 0
+        cnp.eachRow(sqlp.toString()) { pr ->
+            totales[i] = pr.prejcrpa
+            anterior = (i > 0 ? total_ac[i - 1] : 0)
+            total_ac[i] = totales[i] + anterior
+            total_pc[i] = "${Math.round(totales[i] / contrato * 10000) /100} %"
+            total_pa[i] = "${Math.round(total_ac[i] / contrato *10000)/100} %"
+            i++
+        }
+
+//        println "--> $rubros"
+//        println "--> $totales"
+//        println "--> $total_ac"
+
+        cn.close()
+        cn1.close()
+        cnp.close()
+        cne.close()
+        [titulo1: titulo1, titulo2: titulo2, rubros: rubros, totales: totales, suma: suma, total_ac: total_ac,
+         ttpc: total_pc, ttpa: total_pa, contrato: params.id]
+
+    }
+
     def calcularDias_ajax (){
 
         def dias = 0
@@ -3416,5 +3515,155 @@ class CronogramaEjecucionController {
     }
 
 
+    def index_jx() {
+        println "indexNuevo: $params"
+        def desde = params.desde ?: 1
+        def hasta = params.hasta?.toInteger() ?: 10
+
+        def contrato = Contrato.get(params.id)
+        if (!contrato) {
+            flash.message = "No se encontró el contrato"
+            flash.clase = "alert-error"
+            redirect(action: "errores", params: [contrato: params.id])
+            return
+        }
+        def obra = contrato?.obra
+
+        if (!obra) {
+            flash.message = "No se encontró la obra"
+            flash.clase = "alert-error"
+            redirect(action: "errores", params: [contrato: params.id])
+            return
+        }
+
+        if (!obra.fechaInicio) {
+            flash.message = "La obra no tiene fecha de inicio. Por favor solucione el problema. " + obra.id
+            flash.clase = "alert-error"
+            redirect(action: "errores", params: [contrato: params.id])
+            return
+        }
+
+        def suspensiones = Modificaciones.withCriteria {
+            eq("obra", obra)
+            eq("tipo", "S")
+            isNull("fechaFin")
+        }
+
+        println "obra: ${obra.id}, suspensiones: ${suspensiones}"
+
+        def ini = Modificaciones.withCriteria {
+            eq("obra", obra)
+            eq("tipo", "S")
+            isNull("fechaFin")
+            projections {
+                min("fechaInicio")
+            }
+        }
+        println "--suspensiones+: ${ini}"
+
+        def comp = Contrato.findByPadreAndTipoContrato(contrato, TipoContrato.findByCodigo('C'))
+
+        return [obra : obra, contrato: contrato, suspensiones: suspensiones, ini: ini.last(), desde: desde.toInteger(),
+                hasta: hasta.toInteger(), maximo: 100, complementario: comp?.id ?: 0]
+    }
+
+
+    def tabla_jx_rubro() {
+        println "tabla_jx_rubro params: $params"
+        //debe enviarse el id del vocr: ej: 8709
+        def id_vocr = 8709
+        def cn = dbConnectionService.getConnection()
+        def cn1 = dbConnectionService.getConnection()
+        def cnp = dbConnectionService.getConnection()
+        def cne = dbConnectionService.getConnection()
+        def titulo1 = []
+        def titulo2 = []
+        def columnas = []
+        def sql1 = ""
+        def sqlp = ""
+        def sqle = ""
+        def sql = ""
+//        def sql = "select prej__id, prejfcin, prejfcfn, prejtipo, case when prejtipo = 'P' then 'Periodo' " +
+//                "when prejtipo = 'S' then 'Suspensión' when prejtipo = 'A' then 'Ampliación' " +
+//                "when prejtipo = 'C' then 'Complement.' end tipo, prejnmro, '<br>('||prejfcfn-prejfcin+1||' días)' dias " +
+//                "from prej where cntr__id = ${params.id} order by prejfcin"
+//
+//        cn.eachRow(sql.toString()) { d ->
+//            titulo1.add(["${d.prejfcin.format('dd-MM-yyyy')} a ${d.prejfcfn.format('dd-MM-yyyy')}", d.prejtipo])
+//            titulo2.add(["${d.tipo} ${d.prejtipo == 'P' ? d.prejnmro + ' ' + d.dias : d.dias} ", d.prejtipo])
+//
+//        }
+
+        def rubros = []
+        def val = []
+        def totales = [], total_ac = [], total_pc = [], total_pa = []
+        def cont = 0, suma = 0, sumaprco = 0, sumaprct = 0, sumacntd = 0, contrato = 0
+
+        sql = "select itemcdgo, itemnmbr, unddcdgo, vocr__id, vocrsbtt, vocrpcun, vocrcntd, vocr__id " +
+                "from item, undd, vocr " +
+                "where item.item__id = vocr.item__id and vocr.vocr__id = ${id_vocr} and " +
+                "undd.undd__id = item.undd__id and cntr__id = ${params.id} order by vocrordn limit 3"
+//        println "sql: $sql"
+
+        cn.eachRow(sql.toString()) { d ->
+            val = []
+            val.add(d.vocr__id)
+            val.add(d.itemcdgo)
+            val.add("${d.itemnmbr}<br><strong>Unidad: ${d.unddcdgo}</strong>")
+            val.add("Subtt.<br>P.U.<br>Cant.")
+            val.add("${d.vocrsbtt}<br>${d.vocrpcun}<br>${d.vocrcntd}")
+
+            val.add("\$<br>%<br>F")
+
+            sqlp = "select prej__id from prej where cntr__id = ${params.id} order by prejfcin"
+            println "sql: $sqlp"
+            sumaprco = 0; sumaprct = 0; sumacntd = 0
+            cnp.eachRow(sqlp.toString()) { pr ->
+                sql1 = "select creoprco, creoprct, creocntd, prej__id from creo where vocr__id = ${d.vocr__id} and prej__id = ${pr.prej__id}"
+                sqle = "select count(*) cuenta from creo where vocr__id = ${d.vocr__id} and prej__id = ${pr.prej__id}"
+                cont = cne.rows(sqle.toString())[0].cuenta
+                println "sql1: $sql1"
+                if(cont > 0) {
+                    cnp.eachRow(sql1.toString()) { p ->
+                        val.add("${p.creoprco}<br>${p.creoprct}<br>${p.creocntd}")
+                        sumaprco += p.creoprco; sumaprct += p.creoprct; sumacntd += p.creocntd
+                    }
+                } else {
+                    val.add("")
+                }
+            }
+            suma += d.vocrsbtt
+            val.add("<strong>${sumaprco}<br>${sumaprct}<br>${sumacntd}</strong>")
+//            println "val: $val"
+            rubros.add(val)
+        }
+
+        sqlp = "select prej__id, prejcrpa from prej where cntr__id = ${params.id} order by prejfcin"
+        sql = "select sum(vocrsbtt) suma from vocr where cntr__id = ${params.id}"
+        contrato = cne.rows(sql.toString())[0].suma
+        def i = 0, anterior = 0
+        cnp.eachRow(sqlp.toString()) { pr ->
+            totales[i] = pr.prejcrpa
+            anterior = (i > 0 ? total_ac[i - 1] : 0)
+            total_ac[i] = totales[i] + anterior
+            total_pc[i] = "${Math.round(totales[i] / contrato * 10000) /100} %"
+            total_pa[i] = "${Math.round(total_ac[i] / contrato *10000)/100} %"
+            i++
+        }
+
+//        println "--> $rubros"
+//        println "--> $totales"
+//        println "--> $total_ac"
+
+        cn.close()
+        cn1.close()
+        cnp.close()
+        cne.close()
+        [titulo1: titulo1, titulo2: titulo2, rubros: rubros, totales: totales, suma: suma, total_ac: total_ac,
+         ttpc: total_pc, ttpa: total_pa, contrato: params.id]
+
+
+        render("<tr><td colspan='10'>nadassss</td></tr>")
+    }
 
 } //fin controller
