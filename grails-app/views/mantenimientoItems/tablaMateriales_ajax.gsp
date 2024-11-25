@@ -1,5 +1,5 @@
 <div class="col-md-12" style="text-align: center; font-size: 14px; font-weight: bold">
-    <div class="col-md-4"></div>
+    <div class="col-md-3"></div>
     <div class="col-md-2" role="alert">
         <ol class="breadcrumb" style="font-weight: bold">
             <li class="active"><i class="fa fa-${grupo?.descripcion == 'MATERIALES' ? 'box' : (grupo?.descripcion == 'MANO DE OBRA' ? 'users' : 'truck') } text-warning"></i> ${grupo?.descripcion}</li>
@@ -12,13 +12,15 @@
             <li class="active">MATERIALES</li>
         </ol>
     </div>
-    <div class="col-md-2">
+    <div class="col-md-3">
         <a href="#" class="btn btn-sm btn-success btnRegresarMaterial" title="Regresar">
             <i class="fas fa-arrow-left"></i>
         </a>
-
         <a href="#" class="btn btn-sm btn-success btnNuevoMaterial" title="Crear nuevo material">
             <i class="fas fa-file"></i> Nuevo Material
+        </a>
+        <a href="#" class="btn btn-sm btn-info btnFabricante" title="Fabricante">
+            <i class="fas fa-bookmark"></i> Fabricante
         </a>
     </div>
 </div>
@@ -55,9 +57,11 @@
                         <a href="#" class="btn btn-xs btn-info btnVerMaterial" data-id="${material?.id}" title="Ver">
                             <i class="fas fa-search"></i>
                         </a>
-                        <a href="#" class="btn btn-xs btn-warning btnEspecificacionesMaterial" data-id="${material?.id}" title="Especificaciones e Ilustración" ${material?.codigoEspecificacion ?: 'disabled'}>
-                            <i class="fas fa-book"></i>
-                        </a>
+                        <g:if test="${perfil}">
+                            <a href="#" class="btn btn-xs btn-warning btnEspecificacionesMaterial" data-id="${material?.id}" title="Especificaciones e Ilustración" ${material?.codigoEspecificacion ?: 'disabled'}>
+                                <i class="fas fa-book"></i>
+                            </a>
+                        </g:if>
                         <a href="#" class="btn btn-xs btn-success btnEditarMaterial" data-id="${material?.id}" data-sub="${material?.departamento?.id}" title="Editar">
                             <i class="fas fa-edit"></i>
                         </a>
@@ -80,6 +84,9 @@
 
 <script type="text/javascript">
 
+    $(".btnFabricante").click(function () {
+        location.href="${createLink(controller: 'fabricante', action: 'list')}?tipo=" + 1
+    });
 
     $(".btnEspecificacionesMaterial").click(function () {
         var id = $(this).data("id");

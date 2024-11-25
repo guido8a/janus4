@@ -2372,13 +2372,14 @@ itemId: item.id
 
     def tablaMateriales_ajax(){
 
-        println("params " + params)
+//        println("params " + params)
 
         def grupo = Grupo.get(params.buscarPor)
         def grupos = SubgrupoItems.findAllByGrupo(grupo)
         def subgrupos = DepartamentoItem.findAllBySubgrupoInList(grupos)
         def materiales = []
         def subgrupoBuscar = null
+        def perfil = Persona.get(session.usuario.id).departamento?.codigo == 'UTFPU'
 
         if(params.id){
             subgrupoBuscar = DepartamentoItem.get(params.id)
@@ -2387,7 +2388,7 @@ itemId: item.id
             materiales = Item.findAllByDepartamentoInListAndNombreIlike(subgrupos, '%' + params.criterio + '%').sort{a,b -> a.departamento.descripcion <=> b.departamento.descripcion ?: a.codigo <=> b.codigo }.take(50)
         }
 
-        return [materiales: materiales, grupo: grupo, id: params.id, departamento: subgrupoBuscar]
+        return [materiales: materiales, grupo: grupo, id: params.id, departamento: subgrupoBuscar, perfil: perfil]
     }
 
     def codigoGrupo_ajax(){

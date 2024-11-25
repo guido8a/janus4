@@ -3,7 +3,8 @@ package janus
 class FabricanteController {
 
     def list(){
-
+        def tipo = params.tipo
+        return [tipo: tipo]
     }
 
     def form_ajax(){

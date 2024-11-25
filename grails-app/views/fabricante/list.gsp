@@ -10,9 +10,16 @@
 <!-- botones -->
 <div class="btn-toolbar toolbar" style="margin-bottom: 15px">
     <div class="btn-group">
-        <g:link controller="inicio" action="parametros" class="btn btn-primary">
-            <i class="fa fa-arrow-left"></i> Regresar
-        </g:link>
+        <g:if test="${tipo == '1'}">
+            <g:link controller="mantenimientoItems" action="registro" class="btn btn-primary">
+                <i class="fa fa-arrow-left"></i> Regresar
+            </g:link>
+        </g:if>
+        <g:else>
+            <g:link controller="inicio" action="parametros" class="btn btn-primary">
+                <i class="fa fa-arrow-left"></i> Regresar
+            </g:link>
+        </g:else>
     </div>
     <div class="btn-group">
         <g:link action="form" class="btn btn-success btnCrear">

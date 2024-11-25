@@ -1,5 +1,5 @@
 <div class="col-md-12" style="text-align: center; font-size: 14px; font-weight: bold">
-    <div class="col-md-4"></div>
+    <div class="col-md-3"></div>
     <div class="col-md-2" role="alert">
         <ol class="breadcrumb" style="font-weight: bold">
             <li class="active"><i class="fa fa-${grupo?.descripcion == 'MATERIALES' ? 'box' : (grupo?.descripcion == 'MANO DE OBRA' ? 'users' : 'truck') } text-warning"></i> ${grupo?.descripcion}</li>

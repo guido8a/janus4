@@ -106,7 +106,7 @@
             success: function (msg){
                 d.modal("hide");
                 $("#divTablaItems").html(msg);
-                console.log('tpo:', tipo);
+                // console.log('tpo:', tipo);
                 switch (tipo) {
                     case "1":
                         $('#bc_grpo').html('Grupo');
@@ -115,14 +115,14 @@
                         break;
                     case "2":
                         $('#bc_grpo').html('Grupo');
-                        var li = $('#li_sbgr')
+                        var li = $('#li_sbgr');
                         var elemento = document.createElement('a');
                         elemento.id = 'bc_sbgr';
                         %{--elemento.href = url + '?id=' + "${id_grupo}";--}%
-                        elemento.href = url
+                        elemento.href = url;
                         elemento.id_grpo = '#';
                         li.append(elemento);
-                        console.log('li', elemento, id);
+                        // console.log('li', elemento, id);
                         $('#bc_sbgr').show();
                         $('#bc_sbgr').html('Subgrupo');
                         $('#bc_item').hide();
