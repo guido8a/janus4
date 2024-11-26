@@ -3593,7 +3593,8 @@ class CronogramaEjecucionController {
         sql = "select itemcdgo, itemnmbr, unddcdgo, vocr__id, vocrsbtt, vocrpcun, vocrcntd, vocr__id " +
                 "from item, undd, vocr " +
                 "where item.item__id = vocr.item__id and vocr.vocr__id = ${id_vocr} and " +
-                "undd.undd__id = item.undd__id and cntr__id = ${params.id} order by vocrordn limit 3"
+                "undd.undd__id = item.undd__id and cntr__id = ${params.contrato} and vocr__id = ${params.vol} " +
+                "order by vocrordn limit 3"
 
         cn.eachRow(sql.toString()) { d ->
             val = []
