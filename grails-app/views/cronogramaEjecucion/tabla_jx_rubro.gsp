@@ -18,62 +18,60 @@
 %{--    </tr>--}%
 </g:each>
 
-aaaaaa
-
 <script type="text/javascript">
 
-    function editarFila(vol){
-        $.ajax({
-            type: "POST",
-            url: "${createLink(action: 'modificacionNuevo_ajax')}",
-            data: {
-                contrato: "${contrato}",
-                vol: vol
-            },
-            success: function (msg) {
+    %{--function editarFila(vol){--}%
+    %{--    $.ajax({--}%
+    %{--        type: "POST",--}%
+    %{--        url: "${createLink(action: 'modificacionNuevo_ajax')}",--}%
+    %{--        data: {--}%
+    %{--            contrato: "${contrato}",--}%
+    %{--            vol: vol--}%
+    %{--        },--}%
+    %{--        success: function (msg) {--}%
 
-                var b = bootbox.dialog({
-                    id      : "dlgCreateEditModif",
-                    title   : "Modificación",
-                    message : msg,
-                    class: 'modal-lg',
-                    buttons : {
-                        cancelar : {
-                            label     : "Cancelar",
-                            className : "btn-primary",
-                            callback  : function () {
-                            }
-                        },
-                        guardar  : {
-                            id        : "btnSave",
-                            label     : "<i class='fa fa-save'></i> Guardar",
-                            className : "btn-success",
-                            callback  : function () {
-                                var data = "obra=${janus.Contrato.get(contrato)?.obra?.id}";
-                                $(".tiny").each(function () {
-                                    var tipo = $(this).data("tipo");
-                                    var val = parseFloat($(this).val());
-                                    var crono = $(this).data("id");
-                                    var periodo = $(this).data("id2");
-                                    var vol = $(this).data("id3");
-                                    data += "&" + (tipo + "=" + val + "_" + periodo + "_" + vol + "_" + crono);
-                                });
-                                $.ajax({
-                                    type: "POST",
-                                    url: "${createLink(action:'modificacionNuevo')}",
-                                    data: data,
-                                    success: function (msg) {
-                                        b.modal("hide");
-                                        updateTabla();
-                                    }
-                                });
-                            } //callback
-                        } //guardar
-                    } //buttons
-                }); //dialog
-            }
-        });
-    }
+    %{--            var b = bootbox.dialog({--}%
+    %{--                id      : "dlgCreateEditModif",--}%
+    %{--                title   : "Modificación",--}%
+    %{--                message : msg,--}%
+    %{--                class: 'modal-lg',--}%
+    %{--                buttons : {--}%
+    %{--                    cancelar : {--}%
+    %{--                        label     : "Cancelar",--}%
+    %{--                        className : "btn-primary",--}%
+    %{--                        callback  : function () {--}%
+    %{--                        }--}%
+    %{--                    },--}%
+    %{--                    guardar  : {--}%
+    %{--                        id        : "btnSave",--}%
+    %{--                        label     : "<i class='fa fa-save'></i> Guardar",--}%
+    %{--                        className : "btn-success",--}%
+    %{--                        callback  : function () {--}%
+    %{--                            var data = "obra=${janus.Contrato.get(contrato)?.obra?.id}";--}%
+    %{--                            $(".tiny").each(function () {--}%
+    %{--                                var tipo = $(this).data("tipo");--}%
+    %{--                                var val = parseFloat($(this).val());--}%
+    %{--                                var crono = $(this).data("id");--}%
+    %{--                                var periodo = $(this).data("id2");--}%
+    %{--                                var vol = $(this).data("id3");--}%
+    %{--                                data += "&" + (tipo + "=" + val + "_" + periodo + "_" + vol + "_" + crono);--}%
+    %{--                            });--}%
+    %{--                            $.ajax({--}%
+    %{--                                type: "POST",--}%
+    %{--                                url: "${createLink(action:'modificacionNuevo')}",--}%
+    %{--                                data: data,--}%
+    %{--                                success: function (msg) {--}%
+    %{--                                    b.modal("hide");--}%
+    %{--                                    updateTabla();--}%
+    %{--                                }--}%
+    %{--                            });--}%
+    %{--                        } //callback--}%
+    %{--                    } //guardar--}%
+    %{--                } //buttons--}%
+    %{--            }); //dialog--}%
+    %{--        }--}%
+    %{--    });--}%
+    %{--}--}%
 
 
 
@@ -95,17 +93,18 @@ aaaaaa
                 editarFila(id);
             }
         };
-        var cargar = {
-            label: "Cargar",
-            icon: "fa fa-check",
-            action : function ($element) {
-                cargarFila(id);
-            }
-        };
+        // var cargar = {
+        //     label: "Cargar",
+        //     icon: "fa fa-check",
+        //     action : function ($element) {
+        //         cargarFila(id);
+        //     }
+        // };
 
-        if(${janus.Contrato.get(contrato)?.fiscalizador?.id == session.usuario.id}){
+        %{--if(${janus.Contrato.get(contrato)?.fiscalizador?.id == session.usuario.id}){--}%
+        if(${contratoObjeto?.fiscalizador?.id == session.usuario.id}){
             items.editar = editar;
-            items.cargar = cargar;
+            // items.cargar = cargar;
         }
 
         return items

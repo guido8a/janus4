@@ -64,7 +64,7 @@
     <g:each in="${rubros}" var="rubro">
 
 
-        <tr id="rubro_${rubro[0]}">
+        <tr id="rubro_${rubro[0]}" data-vol="${rubro[1]}" data-vocr="${rubro[0]}">
             %{--        <tr id="rubro_8709" onclick="cargarFila(${rubro[0]})">--}%
 %{--            <td colspan="10">${rubro[0]}</td>--}%
 %{--            <td colspan="10"></td>--}%
@@ -127,26 +127,6 @@
     document.getElementById("rubro_${rubro[0]}").addEventListener("load", cargarFila(${rubro[0]}));
     </g:each>
 
-
-
-    // $( document ).ready(function() {
-    //     document.addEventListener("DOMContentLoaded", function() {
-    //         var divs = document.querySelectorAll('div'); // all divs
-    //         // var mydiv = document.getElementById('myDiv'); // only div#myDiv
-    //         var mydiv = document.getElementById('rubro_8709'); // only div#myDiv
-    //
-    //         console.log("--> " + mydiv)
-    //
-    //         // divs.forEach( div => {
-    //         // });
-    //         // do_something_with_mydiv(mydiv);
-    //         cargarFila()
-    //     });
-    //
-    // });
-
-
-
     function editarFila(vol){
         $.ajax({
             type: "POST",
@@ -189,7 +169,8 @@
                                     data: data,
                                     success: function (msg) {
                                         b.modal("hide");
-                                        updateTabla();
+                                        // updateTabla();
+                                        cargarFila(vol);
                                     }
                                 });
                             } //callback
@@ -209,56 +190,55 @@
                 vol: vol
             },
             success: function (msg) {
-                console.log('ok', msg);
                 // $("#rubro_8709").replaceWith(msg)
                 $("#rubro_" + vol).html(msg)
             }
         });
     }
 
-    function createContextMenu(node) {
-        var $tr = $(node);
-        var items = {
-            header: {
-                label: "Acciones",
-                header: true
-            }
-        };
+    %{--function createContextMenu(node) {--}%
+    %{--    var $tr = $(node);--}%
+    %{--    var items = {--}%
+    %{--        header: {--}%
+    %{--            label: "Acciones",--}%
+    %{--            header: true--}%
+    %{--        }--}%
+    %{--    };--}%
 
-        var id = $tr.data("vocr");
+    %{--    var id = $tr.data("vocr");--}%
 
-        var editar = {
-            label: "Modificación",
-            icon: "fa fa-edit",
-            action : function ($element) {
-                editarFila(id);
-            }
-        };
-        var cargar = {
-            label: "Cargar",
-            icon: "fa fa-check",
-            action : function ($element) {
-                cargarFila(id);
-            }
-        };
+    %{--    var editar = {--}%
+    %{--        label: "Modificación",--}%
+    %{--        icon: "fa fa-edit",--}%
+    %{--        action : function ($element) {--}%
+    %{--            editarFila(id);--}%
+    %{--        }--}%
+    %{--    };--}%
+    %{--    var cargar = {--}%
+    %{--        label: "Cargar",--}%
+    %{--        icon: "fa fa-check",--}%
+    %{--        action : function ($element) {--}%
+    %{--            cargarFila(id);--}%
+    %{--        }--}%
+    %{--    };--}%
 
-        if(${janus.Contrato.get(contrato)?.fiscalizador?.id == session.usuario.id}){
-            items.editar = editar;
-            items.cargar = cargar;
-        }
+    %{--    if(${janus.Contrato.get(contrato)?.fiscalizador?.id == session.usuario.id}){--}%
+    %{--        items.editar = editar;--}%
+    %{--        items.cargar = cargar;--}%
+    %{--    }--}%
 
-        return items
-    }
+    %{--    return items--}%
+    %{--}--}%
 
-    $("tr").contextMenu({
-        items  : createContextMenu,
-        onShow : function ($element) {
-            $element.addClass("trHighlight");
-        },
-        onHide : function ($element) {
-            $(".trHighlight").removeClass("trHighlight");
-        }
-    });
+    %{--$("tr").contextMenu({--}%
+    %{--    items  : createContextMenu,--}%
+    %{--    onShow : function ($element) {--}%
+    %{--        $element.addClass("trHighlight");--}%
+    %{--    },--}%
+    %{--    onHide : function ($element) {--}%
+    %{--        $(".trHighlight").removeClass("trHighlight");--}%
+    %{--    }--}%
+    %{--});--}%
 
 
 </script>

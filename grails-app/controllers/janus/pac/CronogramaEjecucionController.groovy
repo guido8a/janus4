@@ -3576,6 +3576,7 @@ class CronogramaEjecucionController {
 
 //        def id_vocr = 8709
         def id_vocr = params.vol
+        def contratoObjeto = Contrato.get(params.contrato)
         def cn = dbConnectionService.getConnection()
         def cn1 = dbConnectionService.getConnection()
         def cnp = dbConnectionService.getConnection()
@@ -3653,7 +3654,7 @@ class CronogramaEjecucionController {
         println("-->"  + rubros)
 
         [titulo1: titulo1, titulo2: titulo2, rubros: rubros, totales: totales, suma: suma, total_ac: total_ac,
-         ttpc: total_pc, ttpa: total_pa, contrato: params.id]
+         ttpc: total_pc, ttpa: total_pa, contrato: params.id, contratoObjeto: contratoObjeto]
 
 
 
