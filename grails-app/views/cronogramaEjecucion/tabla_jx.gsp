@@ -67,7 +67,7 @@
         <tr id="rubro_${rubro[0]}">
             %{--        <tr id="rubro_8709" onclick="cargarFila(${rubro[0]})">--}%
 %{--            <td colspan="10">${rubro[0]}</td>--}%
-            <td colspan="10"></td>
+%{--            <td colspan="10"></td>--}%
         </tr>
     %{--        <tr class="click item_row   rowSelected" data-vol="${rubro[1]}" data-vocr="${rubro[0]}">--}%
     %{--            <g:each in="${rubro}" var="val" status="i">--}%
