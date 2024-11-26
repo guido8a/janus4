@@ -3394,6 +3394,9 @@ class CronogramaEjecucionController {
         cn1.close()
         cnp.close()
         cne.close()
+
+        println("N-->"  + rubros)
+
         [titulo1: titulo1, titulo2: titulo2, rubros: rubros, totales: totales, suma: suma, total_ac: total_ac,
          ttpc: total_pc, ttpa: total_pa, contrato: params.id]
 
@@ -3606,7 +3609,7 @@ class CronogramaEjecucionController {
 
             val.add("\$<br>%<br>F")
 
-            sqlp = "select prej__id from prej where cntr__id = ${params.id} order by prejfcin"
+            sqlp = "select prej__id from prej where cntr__id = ${params.contrato} order by prejfcin"
             println "sql: $sqlp"
             sumaprco = 0; sumaprct = 0; sumacntd = 0
             cnp.eachRow(sqlp.toString()) { pr ->
