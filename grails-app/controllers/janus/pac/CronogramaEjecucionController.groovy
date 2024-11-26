@@ -3570,8 +3570,9 @@ class CronogramaEjecucionController {
 
     def tabla_jx_rubro() {
         println "tabla_jx_rubro params: $params"
-        //debe enviarse el id del vocr: ej: 8709
-        def id_vocr = 8709
+
+//        def id_vocr = 8709
+        def id_vocr = params.vol
         def cn = dbConnectionService.getConnection()
         def cn1 = dbConnectionService.getConnection()
         def cnp = dbConnectionService.getConnection()
@@ -3583,16 +3584,6 @@ class CronogramaEjecucionController {
         def sqlp = ""
         def sqle = ""
         def sql = ""
-//        def sql = "select prej__id, prejfcin, prejfcfn, prejtipo, case when prejtipo = 'P' then 'Periodo' " +
-//                "when prejtipo = 'S' then 'Suspensión' when prejtipo = 'A' then 'Ampliación' " +
-//                "when prejtipo = 'C' then 'Complement.' end tipo, prejnmro, '<br>('||prejfcfn-prejfcin+1||' días)' dias " +
-//                "from prej where cntr__id = ${params.id} order by prejfcin"
-//
-//        cn.eachRow(sql.toString()) { d ->
-//            titulo1.add(["${d.prejfcin.format('dd-MM-yyyy')} a ${d.prejfcfn.format('dd-MM-yyyy')}", d.prejtipo])
-//            titulo2.add(["${d.tipo} ${d.prejtipo == 'P' ? d.prejnmro + ' ' + d.dias : d.dias} ", d.prejtipo])
-//
-//        }
 
         def rubros = []
         def val = []
@@ -3603,7 +3594,6 @@ class CronogramaEjecucionController {
                 "from item, undd, vocr " +
                 "where item.item__id = vocr.item__id and vocr.vocr__id = ${id_vocr} and " +
                 "undd.undd__id = item.undd__id and cntr__id = ${params.id} order by vocrordn limit 3"
-//        println "sql: $sql"
 
         cn.eachRow(sql.toString()) { d ->
             val = []
@@ -3651,19 +3641,20 @@ class CronogramaEjecucionController {
             i++
         }
 
-//        println "--> $rubros"
-//        println "--> $totales"
-//        println "--> $total_ac"
-
         cn.close()
         cn1.close()
         cnp.close()
         cne.close()
+
+        println("-->"  + rubros)
+
         [titulo1: titulo1, titulo2: titulo2, rubros: rubros, totales: totales, suma: suma, total_ac: total_ac,
          ttpc: total_pc, ttpa: total_pa, contrato: params.id]
 
 
-        render("<tr><td colspan='10'>nadassss</td></tr>")
+
+
+//        render("<tr><td colspan='10'>nadassss</td></tr>")
     }
 
 } //fin controller

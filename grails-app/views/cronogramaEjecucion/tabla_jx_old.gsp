@@ -1,11 +1,21 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
-
-    <title></title>
-
     <meta name="layout" content="mainCrono">
 
+
+    %{--<link href="${resource(dir: 'js/jquery/plugins/box/css', file: 'jquery.luz.box.css')}" rel="stylesheet">--}%
+    %{--<script src="${resource(dir: 'js/jquery/plugins/box/js', file: 'jquery.luz.box.js')}"></script>--}%
+
+    %{--<script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'jquery.validate.min.js')}"></script>--}%
+    %{--<script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'custom-methods.js')}"></script>--}%
+    %{--<script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'messages_es.js')}"></script>--}%
+
+    %{--<script src="${resource(dir: 'js/jquery/i18n', file: 'jquery.ui.datepicker-es.js')}"></script>--}%
+
+    %{--<link href="${resource(dir: 'css', file: 'cronograma.css')}" rel="stylesheet">--}%
+
+    %{-- <title>Cronograma ejecución</title>--}%
 
     <style type="text/css">
     .valor {
@@ -15,6 +25,7 @@
         color: #093760;
         text-align: right;
         font-weight: bold;
+        /*background-color: #d8dddf;*/
     }
     .suspension {
         background-color: #ffffff !important;
@@ -61,91 +72,78 @@
     </thead>
 
     <tbody>
-    <g:each in="${rubros}" var="rubro">
+        <g:each in="${rubros}" var="rubro">
+            <tr id="rubro_8709">
+                <td colspan="10">nada</td>
+            </tr>
+            <tr class="click item_row   rowSelected" data-vol="${rubro[1]}" data-vocr="${rubro[0]}">
+                %{--<g:each in="${rubro}" var="val" status="i">--}%
+                    %{--<g:if test="${i > 0}">--}%
+                        %{--<g:if test="${i == 3}">--}%
+                            %{--<td class="valor2">${raw(val)}</td>--}%
+                        %{--</g:if>--}%
+                        %{--<g:else>--}%
+                            %{--<g:if test="${i < 5}">--}%
+                                %{--<td class="valor">${raw(val)}</td>--}%
+                            %{--</g:if>--}%
+                            %{--<g:else>--}%
+                                %{--<td class="numero">${raw(val)}</td>--}%
+                            %{--</g:else>--}%
+                        %{--</g:else>--}%
+                    %{--</g:if>--}%
+                %{--</g:each>--}%
+                <g:each in="${rubro}" var="val" status="i">
+                    <g:if test="${i > 0}">
+                        <g:if test="${i == 3}">
+                            <td class="valor2">${raw(val)}</td>
+                        </g:if>
+                        <g:else>
+                            <g:if test="${i < 5}">
+                                <td class="valor">${raw(val)}</td>
+                            </g:if>
+                            <g:else>
+                                <td class="numero">${raw(val)}</td>
+                            </g:else>
+                        </g:else>
+                    </g:if>
+                </g:each>
+            </tr>
+        </g:each>
 
-
-        <tr id="rubro_${rubro[0]}">
-            %{--        <tr id="rubro_8709" onclick="cargarFila(${rubro[0]})">--}%
-%{--            <td colspan="10">${rubro[0]}</td>--}%
-            <td colspan="10"></td>
+        <tr class="pie">
+            <td class="valor" colspan="3" style="text-align: right; font-weight: bold">TOTAL PARCIAL</td>
+            <td class="valor" colspan="2" style="text-align: right; font-weight: bold">${suma}</td>
+            <g:each in="${totales}" var="tot" status="i">
+                <td class="totales">${raw(tot)}</td>
+            </g:each>
         </tr>
-    %{--        <tr class="click item_row   rowSelected" data-vol="${rubro[1]}" data-vocr="${rubro[0]}">--}%
-    %{--            <g:each in="${rubro}" var="val" status="i">--}%
-    %{--                <g:if test="${i > 0}">--}%
-    %{--                    <g:if test="${i == 3}">--}%
-    %{--                        <td class="valor2">${raw(val)}</td>--}%
-    %{--                    </g:if>--}%
-    %{--                    <g:else>--}%
-    %{--                        <g:if test="${i < 5}">--}%
-    %{--                            <td class="valor">${raw(val)}</td>--}%
-    %{--                        </g:if>--}%
-    %{--                        <g:else>--}%
-    %{--                            <td class="numero">${raw(val)}</td>--}%
-    %{--                        </g:else>--}%
-    %{--                    </g:else>--}%
-    %{--                </g:if>--}%
-    %{--            </g:each>--}%
-    %{--        </tr>--}%
-    </g:each>
-
-    <tr class="pie">
-        <td class="valor" colspan="3" style="text-align: right; font-weight: bold">TOTAL PARCIAL</td>
-        <td class="valor" colspan="2" style="text-align: right; font-weight: bold">${suma}</td>
-        <g:each in="${totales}" var="tot" status="i">
-            <td class="totales">${raw(tot)}</td>
-        </g:each>
-    </tr>
-    <tr class="pie2">
-        <td class="valor" colspan="3" style="text-align: right; font-weight: bold">TOTAL ACUMULADO</td>
-        <td colspan="2"></td>
-        <g:each in="${total_ac}" var="tot" status="i">
-            <td class="totales">${raw(tot)}</td>
-        </g:each>
-    </tr>
-    <tr class="pie">
-        <td class="valor" colspan="3" style="text-align: right; font-weight: bold">% TOTAL PARCIAL</td>
-        <td colspan="2"></td>
-        <g:each in="${ttpc}" var="tot" status="i">
-            <td class="totales">${raw(tot)}</td>
-        </g:each>
-    </tr>
-    <tr class="pie2">
-        <td class="valor" colspan="3" style="text-align: right; font-weight: bold">% TOTAL ACUMULADO</td>
-        <td colspan="2"></td>
-        <g:each in="${ttpa}" var="tot" status="i">
-            <td class="totales">${raw(tot)}</td>
-        </g:each>
-    </tr>
+        <tr class="pie2">
+            <td class="valor" colspan="3" style="text-align: right; font-weight: bold">TOTAL ACUMULADO</td>
+            <td colspan="2"></td>
+            <g:each in="${total_ac}" var="tot" status="i">
+                <td class="totales">${raw(tot)}</td>
+            </g:each>
+        </tr>
+        <tr class="pie">
+            <td class="valor" colspan="3" style="text-align: right; font-weight: bold">% TOTAL PARCIAL</td>
+            <td colspan="2"></td>
+            <g:each in="${ttpc}" var="tot" status="i">
+                <td class="totales">${raw(tot)}</td>
+            </g:each>
+        </tr>
+        <tr class="pie2">
+            <td class="valor" colspan="3" style="text-align: right; font-weight: bold">% TOTAL ACUMULADO</td>
+            <td colspan="2"></td>
+            <g:each in="${ttpa}" var="tot" status="i">
+                <td class="totales">${raw(tot)}</td>
+            </g:each>
+        </tr>
 
     </tbody>
 </table>
 </html>
 
 <script type="text/javascript">
-
-    <g:each in="${rubros}" var="rubro">
-    document.getElementById("rubro_${rubro[0]}").addEventListener("load", cargarFila(${rubro[0]}));
-    </g:each>
-
-
-
-    // $( document ).ready(function() {
-    //     document.addEventListener("DOMContentLoaded", function() {
-    //         var divs = document.querySelectorAll('div'); // all divs
-    //         // var mydiv = document.getElementById('myDiv'); // only div#myDiv
-    //         var mydiv = document.getElementById('rubro_8709'); // only div#myDiv
-    //
-    //         console.log("--> " + mydiv)
-    //
-    //         // divs.forEach( div => {
-    //         // });
-    //         // do_something_with_mydiv(mydiv);
-    //         cargarFila()
-    //     });
-    //
-    // });
-
-
 
     function editarFila(vol){
         $.ajax({
@@ -210,11 +208,17 @@
             },
             success: function (msg) {
                 console.log('ok', msg);
-                // $("#rubro_8709").replaceWith(msg)
-                $("#rubro_" + vol).html(msg)
+//                $("#rubro_8709").parent().replaceWith(msg)
+                $("#rubro_8709").replaceWith(msg)
+
+//                var new_row = '<tr class="new_row"><td>3</td><td>4</td><td>Save</td></tr>'
+//                $("#rubro_8709").parent().replaceWith(new_row);
+                
             }
         });
     }
+
+
 
     function createContextMenu(node) {
         var $tr = $(node);
