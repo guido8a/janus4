@@ -100,7 +100,7 @@ class CronogramaEjecucionController {
 //            flash.message = "ERROR: La fecha ingresada corresponde a un periodo planillado con la planilla: ${plnl.numero} del " +
 //                    "periodo: " + plnl[0].fechaInicio.format("dd-MM-yyyy") + " al " + plnl[0].fechaFin.format("dd-MM-yyyy")
             render "Error_" + "La fecha ingresada corresponde a un periodo planillado con la planilla: ${plnl.numero} del " +
-            "periodo: " + plnl[0].fechaInicio.format("dd-MM-yyyy") + " al " + plnl[0].fechaFin.format("dd-MM-yyyy")
+                    "periodo: " + plnl[0].fechaInicio.format("dd-MM-yyyy") + " al " + plnl[0].fechaFin.format("dd-MM-yyyy")
         } else {
 
             if (params.fin) {
@@ -141,7 +141,7 @@ class CronogramaEjecucionController {
                     }
 
                 } else
-                render "OK"
+                    render "OK"
             }
         }
     }
@@ -805,7 +805,7 @@ class CronogramaEjecucionController {
 
         render error
     }
-    
+
 
     def periodoAmpliacion(obra, nmro, fcin, fcfn, cntr){
         def periodo = new PeriodoEjecucion([
@@ -822,7 +822,7 @@ class CronogramaEjecucionController {
             return "OK_periodo creado"
         }
     }
-    
+
 
     private String numero(num, decimales, cero) {
         if (num == 0 && cero.toString().toLowerCase() == "hide") {
@@ -1918,7 +1918,7 @@ class CronogramaEjecucionController {
             }
         }
 
-         def cronogramas = CrngEjecucionObra.countByVolumenObraInList(detalle)
+        def cronogramas = CrngEjecucionObra.countByVolumenObraInList(detalle)
 //        println "datos de cronograma $cronogramas"
 
         if (cronogramas == 0) {
@@ -3570,11 +3570,9 @@ class CronogramaEjecucionController {
                 hasta: hasta.toInteger(), maximo: 100, complementario: comp?.id ?: 0]
     }
 
-
     def tabla_jx_rubro() {
-        println "tabla_jx_rubro params: $params"
+//        println "tabla_jx_rubro params: $params"
 
-//        def id_vocr = 8709
         def id_vocr = params.vol
         def contratoObjeto = Contrato.get(params.contrato)
         def cn = dbConnectionService.getConnection()
@@ -3629,7 +3627,6 @@ class CronogramaEjecucionController {
             }
             suma += d.vocrsbtt
             val.add("<strong>${sumaprco}<br>${sumaprct}<br>${sumacntd}</strong>")
-//            println "val: $val"
             rubros.add(val)
         }
 
@@ -3651,15 +3648,123 @@ class CronogramaEjecucionController {
         cnp.close()
         cne.close()
 
-        println("-->"  + rubros)
-
         [titulo1: titulo1, titulo2: titulo2, rubros: rubros, totales: totales, suma: suma, total_ac: total_ac,
          ttpc: total_pc, ttpa: total_pa, contrato: params.id, contratoObjeto: contratoObjeto]
+    }
+
+    def totales_ajax() {
+
+        println("ct " + params)
+
+        def cn = dbConnectionService.getConnection()
+        def cn1 = dbConnectionService.getConnection()
+        def cnp = dbConnectionService.getConnection()
+        def cne = dbConnectionService.getConnection()
+        def titulo1 = []
+        def titulo2 = []
+        def columnas = []
+        def sql1 = ""
+        def sqlp = ""
+        def sqle = ""
+        def sql = "select prej__id, prejfcin, prejfcfn, prejtipo, case when prejtipo = 'P' then 'Periodo' " +
+                "when prejtipo = 'S' then 'Suspensión' when prejtipo = 'A' then 'Ampliación' " +
+                "when prejtipo = 'C' then 'Complement.' end tipo, prejnmro, '<br>('||prejfcfn-prejfcin+1||' días)' dias " +
+                "from prej where cntr__id = ${params.id} order by prejfcin"
+
+        cn.eachRow(sql.toString()) { d ->
+            titulo1.add(["${d.prejfcin.format('dd-MM-yyyy')} a ${d.prejfcfn.format('dd-MM-yyyy')}", d.prejtipo])
+            titulo2.add(["${d.tipo} ${d.prejtipo == 'P' ? d.prejnmro + ' ' + d.dias : d.dias} ", d.prejtipo])
+
+        }
+
+        sql = "select count(*) cuenta from prej where cntr__id = ${params.id}"
+        def nmro = cn.rows(sql.toString())[0].cuenta.toInteger()
+
+        def rubros = []
+        def val = []
+        def totales = [], total_ac = [], total_pc = [], total_pa = []
+        def cont = 0, suma = 0, sumaprco = 0, sumaprct = 0, sumacntd = 0, contrato = 0
+
+        sql = "select itemcdgo, itemnmbr, unddcdgo, vocr__id, vocrsbtt, vocrpcun, vocrcntd, vocr__id " +
+                "from item, undd, vocr " +
+                "where item.item__id = vocr.item__id and " +
+                "undd.undd__id = item.undd__id and cntr__id = ${params.id} order by vocrordn limit 3"
+
+        cn.eachRow(sql.toString()) { d ->
+            val = []
+            val.add(d.vocr__id)
+            val.add(d.itemcdgo)
+            val.add("${d.itemnmbr}<br><strong>Unidad: ${d.unddcdgo}</strong>")
+            val.add("Subtt.<br>P.U.<br>Cant.")
+            val.add("${d.vocrsbtt}<br>${d.vocrpcun}<br>${d.vocrcntd}")
+
+            val.add("\$<br>%<br>F")
+
+            sqlp = "select prej__id from prej where cntr__id = ${params.id} order by prejfcin"
+            sumaprco = 0; sumaprct = 0; sumacntd = 0
+            cnp.eachRow(sqlp.toString()) { pr ->
+                sql1 = "select creoprco, creoprct, creocntd, prej__id from creo where vocr__id = ${d.vocr__id} and prej__id = ${pr.prej__id}"
+                sqle = "select count(*) cuenta from creo where vocr__id = ${d.vocr__id} and prej__id = ${pr.prej__id}"
+                cont = cne.rows(sqle.toString())[0].cuenta
+//                println "sql1: $sql1"
+                if(cont > 0) {
+                    cnp.eachRow(sql1.toString()) { p ->
+                        val.add("${p.creoprco}<br>${p.creoprct}<br>${p.creocntd}")
+                        sumaprco += p.creoprco; sumaprct += p.creoprct; sumacntd += p.creocntd
+                    }
+                } else {
+                    val.add("")
+                }
+            }
+            suma += d.vocrsbtt
+            val.add("<strong>${sumaprco}<br>${sumaprct}<br>${sumacntd}</strong>")
+            rubros.add(val)
+        }
+
+        sqlp = "select prej__id, prejcrpa from prej where cntr__id = ${params.id} order by prejfcin"
+        sql = "select sum(vocrsbtt) suma from vocr where cntr__id = ${params.id}"
+        contrato = cne.rows(sql.toString())[0].suma
+        def i = 0, anterior = 0
+        cnp.eachRow(sqlp.toString()) { pr ->
+            totales[i] = pr.prejcrpa
+            anterior = (i > 0 ? total_ac[i - 1] : 0)
+            total_ac[i] = totales[i] + anterior
+            total_pc[i] = "${Math.round(totales[i] / contrato * 10000) /100} %"
+            total_pa[i] = "${Math.round(total_ac[i] / contrato *10000)/100} %"
+            i++
+        }
+
+        cn.close()
+        cn1.close()
+        cnp.close()
+        cne.close()
 
 
+        //actualizar períodos
 
+        def cntr = Contrato.get(params.id)
+        def cn2 = dbConnectionService.getConnection()
+        def prej = PeriodoEjecucion.findAllByContratoAndTipoNotEqual(cntr, 'S')
+        def vlor
+        def cmpl = Contrato.findByPadre(cntr)
+        def sql2 = "update prej set prejcrpa = (select coalesce(sum(creoprco),0) from creo " +
+                "where creo.prej__id = prej.prej__id) where cntr__id = ${params.id} and prejtipo <> 'S'"
+        cn2.execute(sql2.toString())
 
-//        render("<tr><td colspan='10'>nadassss</td></tr>")
+        sql2 = "update prej set prejcntr = (select coalesce(sum(creoprco),0) from creo " +
+                "where creo.prej__id = prej.prej__id and vocr__id in (select vocr__id from vocr " +
+                "where cntr__id = ${params.id} and cntrcmpl is null)) where cntr__id = ${params.id} and prejtipo <> 'S'"
+        def cnta = cn2.executeUpdate(sql2.toString())
+        if (cmpl) {
+            sql2 = "update prej set prejcmpl = (select coalesce(sum(creoprco),0) from creo " +
+                    "where creo.prej__id = prej.prej__id and vocr__id in (select vocr__id from vocr " +
+                    "where cntr__id = ${cntr.id} and cntrcmpl is not null)) where cntr__id = ${params.id} and " +
+                    "prejtipo <> 'S'"
+            cn2.execute(sql2.toString())
+        }
+
+        return [totales: totales, suma: suma, ttpc: total_pc, ttpa: total_pa, total_ac: total_ac]
+
     }
 
 } //fin controller

@@ -88,37 +88,44 @@
     %{--        </tr>--}%
     </g:each>
 
-    <tr class="pie">
-        <td class="valor" colspan="3" style="text-align: right; font-weight: bold">TOTAL PARCIAL</td>
-        <td class="valor" colspan="2" style="text-align: right; font-weight: bold">${suma}</td>
-        <g:each in="${totales}" var="tot" status="i">
-            <td class="totales">${raw(tot)}</td>
-        </g:each>
-    </tr>
-    <tr class="pie2">
-        <td class="valor" colspan="3" style="text-align: right; font-weight: bold">TOTAL ACUMULADO</td>
-        <td colspan="2"></td>
-        <g:each in="${total_ac}" var="tot" status="i">
-            <td class="totales">${raw(tot)}</td>
-        </g:each>
-    </tr>
-    <tr class="pie">
-        <td class="valor" colspan="3" style="text-align: right; font-weight: bold">% TOTAL PARCIAL</td>
-        <td colspan="2"></td>
-        <g:each in="${ttpc}" var="tot" status="i">
-            <td class="totales">${raw(tot)}</td>
-        </g:each>
-    </tr>
-    <tr class="pie2">
-        <td class="valor" colspan="3" style="text-align: right; font-weight: bold">% TOTAL ACUMULADO</td>
-        <td colspan="2"></td>
-        <g:each in="${ttpa}" var="tot" status="i">
-            <td class="totales">${raw(tot)}</td>
-        </g:each>
-    </tr>
+
+
+%{--    <tr class="pie">--}%
+%{--        <td class="valor" colspan="3" style="text-align: right; font-weight: bold">TOTAL PARCIAL</td>--}%
+%{--        <td class="valor" colspan="2" style="text-align: right; font-weight: bold">${suma}</td>--}%
+%{--        <g:each in="${totales}" var="tot" status="i">--}%
+%{--            <td class="totales">${raw(tot)}</td>--}%
+%{--        </g:each>--}%
+%{--    </tr>--}%
+%{--    <tr class="pie2">--}%
+%{--        <td class="valor" colspan="3" style="text-align: right; font-weight: bold">TOTAL ACUMULADO</td>--}%
+%{--        <td colspan="2"></td>--}%
+%{--        <g:each in="${total_ac}" var="tot" status="i">--}%
+%{--            <td class="totales">${raw(tot)}</td>--}%
+%{--        </g:each>--}%
+%{--    </tr>--}%
+%{--    <tr class="pie">--}%
+%{--        <td class="valor" colspan="3" style="text-align: right; font-weight: bold">% TOTAL PARCIAL</td>--}%
+%{--        <td colspan="2"></td>--}%
+%{--        <g:each in="${ttpc}" var="tot" status="i">--}%
+%{--            <td class="totales">${raw(tot)}</td>--}%
+%{--        </g:each>--}%
+%{--    </tr>--}%
+%{--    <tr class="pie2">--}%
+%{--        <td class="valor" colspan="3" style="text-align: right; font-weight: bold">% TOTAL ACUMULADO</td>--}%
+%{--        <td colspan="2"></td>--}%
+%{--        <g:each in="${ttpa}" var="tot" status="i">--}%
+%{--            <td class="totales">${raw(tot)}</td>--}%
+%{--        </g:each>--}%
+%{--    </tr>--}%
 
     </tbody>
 </table>
+
+<div class="row" id="divTotalesTabla" style="margin-top: -10px">
+
+</div>
+
 </html>
 
 <script type="text/javascript">
@@ -171,6 +178,7 @@
                                         b.modal("hide");
                                         // updateTabla();
                                         cargarFila(vol);
+                                        cargarTotalesTabla();
                                     }
                                 });
                             } //callback
@@ -190,55 +198,25 @@
                 vol: vol
             },
             success: function (msg) {
-                // $("#rubro_8709").replaceWith(msg)
-                $("#rubro_" + vol).html(msg)
+                $("#rubro_" + vol).html(msg);
+                cargarTotalesTabla();
             }
         });
     }
 
-    %{--function createContextMenu(node) {--}%
-    %{--    var $tr = $(node);--}%
-    %{--    var items = {--}%
-    %{--        header: {--}%
-    %{--            label: "Acciones",--}%
-    %{--            header: true--}%
-    %{--        }--}%
-    %{--    };--}%
+    cargarTotalesTabla();
 
-    %{--    var id = $tr.data("vocr");--}%
-
-    %{--    var editar = {--}%
-    %{--        label: "Modificación",--}%
-    %{--        icon: "fa fa-edit",--}%
-    %{--        action : function ($element) {--}%
-    %{--            editarFila(id);--}%
-    %{--        }--}%
-    %{--    };--}%
-    %{--    var cargar = {--}%
-    %{--        label: "Cargar",--}%
-    %{--        icon: "fa fa-check",--}%
-    %{--        action : function ($element) {--}%
-    %{--            cargarFila(id);--}%
-    %{--        }--}%
-    %{--    };--}%
-
-    %{--    if(${janus.Contrato.get(contrato)?.fiscalizador?.id == session.usuario.id}){--}%
-    %{--        items.editar = editar;--}%
-    %{--        items.cargar = cargar;--}%
-    %{--    }--}%
-
-    %{--    return items--}%
-    %{--}--}%
-
-    %{--$("tr").contextMenu({--}%
-    %{--    items  : createContextMenu,--}%
-    %{--    onShow : function ($element) {--}%
-    %{--        $element.addClass("trHighlight");--}%
-    %{--    },--}%
-    %{--    onHide : function ($element) {--}%
-    %{--        $(".trHighlight").removeClass("trHighlight");--}%
-    %{--    }--}%
-    %{--});--}%
-
+    function cargarTotalesTabla () {
+        $.ajax({
+            type: "POST",
+            url: "${createLink(action: 'totales_ajax')}",
+            data: {
+                id: "${contrato}"
+            },
+            success: function (msg) {
+                $("#divTotalesTabla").html(msg)
+            }
+        });
+    }
 
 </script>
