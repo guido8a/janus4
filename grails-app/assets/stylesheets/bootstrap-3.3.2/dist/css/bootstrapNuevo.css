@@ -6607,7 +6607,7 @@ button.close {
 .navbar .navbar-nav > .open > a,
 .navbar .navbar-nav > .open > a:hover,
 .navbar .navbar-nav > .open > a:focus {
-  border-top: 3px solid #86a8ff;
+  border-top: 3px solid #98c8ff;
   border-right: solid 1px #b3b3b3;
   border-left: solid 1px #b3b3b3;
 }
