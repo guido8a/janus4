@@ -1,17 +1,17 @@
-<div class="col-md-12" style="text-align: center; font-size: 14px; font-weight: bold">
-    <div class="col-md-3"></div>
-    <div class="col-md-2" role="alert">
-        <ol class="breadcrumb" style="font-weight: bold">
-            <li class="active"><i class="fa fa-${grupo?.descripcion == 'MATERIALES' ? 'box' : (grupo?.descripcion == 'MANO DE OBRA' ? 'users' : 'truck') } text-warning"></i> ${grupo?.descripcion}</li>
-        </ol>
-    </div>
-    <div class="col-md-4" role="alert">
-        <ol class="breadcrumb" style="font-weight: bold">
-            <li class="active">GRUPO</li>
-            <li class="active">SUBGRUPO</li>
-        </ol>
-    </div>
-    <div class="col-md-2">
+<div class="col-md-12" style="text-align: center; font-size: 14px; font-weight: bold; margin-top: -30px">
+    <div class="col-md-6"></div>
+%{--    <div class="col-md-2" role="alert">--}%
+%{--        <ol class="breadcrumb" style="font-weight: bold">--}%
+%{--            <li class="active"><i class="fa fa-${grupo?.descripcion == 'MATERIALES' ? 'box' : (grupo?.descripcion == 'MANO DE OBRA' ? 'users' : 'truck') } text-warning"></i> ${grupo?.descripcion}</li>--}%
+%{--        </ol>--}%
+%{--    </div>--}%
+%{--    <div class="col-md-4" role="alert">--}%
+%{--        <ol class="breadcrumb" style="font-weight: bold">--}%
+%{--            <li class="active">GRUPO</li>--}%
+%{--            <li class="active">SUBGRUPO</li>--}%
+%{--        </ol>--}%
+%{--    </div>--}%
+    <div class="col-md-2" style="float: right">
         <a href="#" class="btn btn-sm btn-success btnNuevoSubgrupo" title="Crear nuevo subgrupo">
             <i class="fas fa-file"></i> Nuevo Subgrupo
         </a>

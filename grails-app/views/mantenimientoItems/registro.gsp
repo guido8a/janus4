@@ -13,8 +13,6 @@
 <body>
 
 <div>
-
-
     <fieldset class="borde" style="border-radius: 4px; margin-bottom: 10px">
         <div class="row-fluid" style="margin-left: 10px">
             <span class="grupo">
@@ -34,8 +32,8 @@
                 </span>
             </span>
             <div class="col-md-2" style="margin-top: 20px">
-                <button class="btn btn-info" id="btnBuscar"><i class="fa fa-search"></i>Buscar</button>
-                <button class="btn btn-warning" id="btnLimpiar" title="Limpiar Búsqueda"><i class="fa fa-eraser"></i>Limpiar/Todo</button>
+                <button class="btn btn-info" id="btnBuscar"><i class="fa fa-search"></i></button>
+                <button class="btn btn-warning" id="btnLimpiar" title="Limpiar Búsqueda"><i class="fa fa-eraser"></i></button>
             </div>
             <div class="col-md-2" style="width: 260px; margin-top: 21px">
                 <ol class="breadcrumb">

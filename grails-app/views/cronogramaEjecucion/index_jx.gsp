@@ -68,9 +68,6 @@
             <a href="#" id="btnReporte" class="btn btn-success" title="Imprimir">
                 <i class="fa fa-print"></i> Imprimir
             </a>
-            <a href="#" id="btnRubro" class="btn btn-success" title="Rubro">
-                <i class="fa fa-print"></i> Cargar un Rubro
-            </a>
         </g:if>
     </g:if>
 </div>
