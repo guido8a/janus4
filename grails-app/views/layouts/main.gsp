@@ -14,7 +14,7 @@
         <asset:stylesheet src="/bootstrap-3.3.2/dist/css/bootstrapCon.css"/>
     </g:if>
     <g:else>
-        <asset:stylesheet src="/bootstrap-3.3.2/dist/css/bootstrap.css"/>
+        <asset:stylesheet src="/bootstrap-3.3.2/dist/css/bootstrapNuevo.css"/>
     </g:else>
 
     <asset:stylesheet src="/bootstrap-3.3.2/dist/css/bootstrap-theme.css"/>
@@ -74,7 +74,7 @@
 
 </head>
 
-<body style="background-color: #dfdfdf">
+<body style="background-color: #d0d0d0">
 
 
 %{--<div id="modalTableGray"></div>--}%
