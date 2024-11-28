@@ -40,7 +40,7 @@
 
 </head>
 
-<body>
+<body style="background-color: #ddd">
 
 %{--<g:layoutBody/>--}%
 

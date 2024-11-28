@@ -9,7 +9,7 @@
 
     <body>
 
-    <div style="background-repeat: no-repeat;background-position: right; text-align: center; margin-top: 20px; height: ${(flash.message) ? '650' : '580'}px;" class="well">
+    <div style="text-align: center; margin-top: 20px; height: ${(flash.message) ? '650' : '580'}px; background-color: #ddd" class="well">
 %{--        <h1 class="titl" style="font-size: 24px; color: #06a">...Ingreso al Sistema</h1>--}%
         <elm:flashMessage tipo="${flash.tipo}" icon="${flash.icon}"
                           clase="${flash.clase}">${flash.message}</elm:flashMessage>
