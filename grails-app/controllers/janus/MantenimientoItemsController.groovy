@@ -2609,4 +2609,51 @@ itemId: item.id
         def departamento = DepartamentoItem.get(params.id)
         return [departamento: departamento]
     }
+
+    def tablaGruposPrecios_ajax() {
+        def cn = dbConnectionService.getConnection()
+        def grupo = Grupo.get(params.buscarPor)
+        def sql = "select * from sbgr where grpo__id = ${grupo?.id} and " +
+                "sbgrdscr ilike '%${params.criterio}%' order by sbgrcdgo"
+        def grupos = cn.rows(sql.toString());
+        cn.close()
+        return [grupos: grupos, grupo: grupo]
+    }
+
+    def tablaSubgruposPrecios_ajax() {
+        def cn = dbConnectionService.getConnection()
+        def grupo = Grupo.get(params.buscarPor)
+        def grupos = SubgrupoItems.findAllByGrupo(grupo, [sort: 'codigo'])
+        def subgrupos = []
+        def sql = "select sbgrcdgo, sbgrdscr, dprtcdgo, dprtdscr, dprt.dprt__id, sbgr.sbgr__id from dprt, sbgr where grpo__id = ${params.buscarPor} and " +
+                "dprt.sbgr__id = sbgr.sbgr__id and " +
+                "dprtdscr ilike '%${params.criterio}%' or (sbgr.sbgr__id = ${params.id}) order by sbgrcdgo"
+        if(params.id) {
+            sql = "select sbgrcdgo, sbgrdscr, dprtcdgo, dprtdscr, dprt.dprt__id, sbgr.sbgr__id from dprt, sbgr where grpo__id = ${params.buscarPor} and " +
+                    "dprt.sbgr__id = sbgr.sbgr__id and sbgr.sbgr__id = ${params.id} and " +
+                    "dprtdscr ilike '%${params.criterio}%' or (sbgr.sbgr__id = ${params.id}) order by sbgrcdgo"
+        }
+        subgrupos = cn.rows(sql.toString());
+        cn.close()
+        return [subgrupos: subgrupos, grupo: grupo, id_grupo: subgrupos.sbgr__id ]
+    }
+
+    def tablaMaterialesPrecios_ajax(){
+        def grupo = Grupo.get(params.buscarPor)
+        def grupos = SubgrupoItems.findAllByGrupo(grupo)
+        def subgrupos = DepartamentoItem.findAllBySubgrupoInList(grupos)
+        def materiales = []
+        def subgrupoBuscar = null
+        def perfil = Persona.get(session.usuario.id).departamento?.codigo == 'UTFPU'
+
+        if(params.id){
+            subgrupoBuscar = DepartamentoItem.get(params.id)
+            materiales = Item.findAllByDepartamento(subgrupoBuscar).sort{a,b -> a.departamento.descripcion <=> b.departamento.descripcion ?: a.codigo <=> b.codigo }.take(50)
+        }else{
+            materiales = Item.findAllByDepartamentoInListAndNombreIlike(subgrupos, '%' + params.criterio + '%').sort{a,b -> a.departamento.descripcion <=> b.departamento.descripcion ?: a.codigo <=> b.codigo }.take(50)
+        }
+
+        return [materiales: materiales, grupo: grupo, id: params.id, departamento: subgrupoBuscar, perfil: perfil]
+    }
+
 }
