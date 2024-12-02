@@ -1244,6 +1244,29 @@ class RubroController {
         }
     }
 
+        def rendimientoTodos_ajax(){
+
+            def rubro = Item.get(params.id)
+            def items = Rubro.findAllByRubro(rubro)
+            def errores = ''
+
+            items.each {
+
+                it.rendimiento = params.rendimiento.toDouble()
+                if(!it.save(flush:true)){
+                    errores += it.errors
+                }else{
+                    errores += ''
+                }
+            }
+
+            if(errores != ''){
+                render "no_Error al guardar el rendimiento"
+            }else{
+                render "ok_Guardado correctamente"
+            }
+
+        }
 
 
 } //fin controller

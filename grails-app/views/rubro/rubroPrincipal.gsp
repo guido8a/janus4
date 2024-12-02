@@ -82,10 +82,10 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
 
 %{--    <g:if test="${rubro}">--}%
 %{--        <g:if test="${rubro?.codigoEspecificacion}">--}%
-            <a href="#" id="detalle" class="btn btn-ajax btn-new" ${rubro?.codigoEspecificacion ?: 'disabled'}>
-                <i class="fa fa-book"></i>
-                Especificaciones
-            </a>
+    <a href="#" id="detalle" class="btn btn-ajax btn-new" ${rubro?.codigoEspecificacion ?: 'disabled'}>
+        <i class="fa fa-book"></i>
+        Especificaciones
+    </a>
 %{--        </g:if>--}%
 %{--    </g:if>--}%
 %{--    <g:if test="${rubro}">--}%
@@ -222,7 +222,6 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                     <g:textField style="width: 40px;" name="costo_indi" value="22.5"/>
                 </div>
 
-
                 <div class="col-md-2">
                     <label>
                         Fecha
@@ -232,10 +231,13 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                            value="${new java.util.Date().format('dd-MM-yyyy')}" style="width: 100px"/>
                 </div>
 
-                <div class="col-md-1">
+                <div class="col-md-2">
                     <label> Rendimiento </label>
                     <br>
                     <g:textField style="width: 70px;" name="rendimientoValorDefecto" value="${1}"/>
+                    <a class="btn btn-xs btn-success btnRendimientoTodos" href="#" rel="tooltip" title="Aplicar rendimiento a todos">
+                        <i class="fa fa-check"></i>
+                    </a>
                 </div>
 
                 <g:if test="${rubro}">
@@ -793,6 +795,48 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
 
 <script type="text/javascript">
 
+    $(".btnRendimientoTodos").click(function () {
+        bootbox.confirm({
+            title: "Rendimiento",
+            message: "<i class='fa fa-exclamation-triangle text-info fa-3x'></i> <strong style='font-size: 14px'> Está seguro de colocar este rendimiento a TODOS los rubros?</strong> ",
+            buttons: {
+                cancel: {
+                    label: '<i class="fa fa-times"></i> Cancelar',
+                    className: 'btn-primary'
+                },
+                confirm: {
+                    label: '<i class="fa fa-check"></i> Aceptar',
+                    className: 'btn-success'
+                }
+            },
+            callback: function (result) {
+                if(result){
+                    var ou = cargarLoader("Guardando...");
+                    $.ajax({
+                        type : "POST",
+                        url : "${g.createLink(controller: 'rubro',action:'rendimientoTodos_ajax')}",
+                        data     : {
+                            id: '${rubro?.id}',
+                            rendimiento: $("#rendimientoValorDefecto").val()
+                        },
+                        success  : function (msg) {
+                            ou.modal("hide");
+                            var parts = msg.split("_");
+                            if(parts[0]=== 'ok'){
+                                log("Guardado correctamente", "success");
+                                setTimeout(function () {
+                                    %{--location.href="${createLink(controller: 'rubro', action: 'rubroPrincipal')}/" + parts[1];--}%
+                                    location.reload();
+                                }, 1000);
+                            }else{
+                                bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    });
 
 
     $('#fecha_precios, #fecha_registro, #fecha_modificacion, #fechaCreacion, #fechaSalidaId').datetimepicker({
@@ -904,44 +948,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                             }); //dialog
                         }
                     });
-
-                    %{--bootbox.confirm({--}%
-                    %{--    title: "Alerta",--}%
-                    %{--    message: "Este rubro ya forma parte de la(s) obra(s):" + resp[1] + "Desea crear una nueva versión de este rubro, y hacer una versión histórica?",--}%
-                    %{--    buttons: {--}%
-                    %{--        cancel: {--}%
-                    %{--            label: '<i class="fa fa-times"></i> Cancelar',--}%
-                    %{--            className: 'btn-primary'--}%
-                    %{--        },--}%
-                    %{--        confirm: {--}%
-                    %{--            label: '<i class="fa fa-copy"></i> Copiar',--}%
-                    %{--            className: 'btn-success'--}%
-                    %{--        }--}%
-                    %{--    },--}%
-                    %{--    callback: function (result) {--}%
-                    %{--        if(result){--}%
-                    %{--            $("#dlgLoad").dialog("open");--}%
-                    %{--            $.ajax({--}%
-                    %{--                type : "POST",--}%
-                    %{--                url : "${g.createLink(controller: 'rubro',action:'copiaRubro')}",--}%
-                    %{--                data     : {--}%
-                    %{--                    id: '${rubro?.id}'--}%
-                    %{--                },--}%
-                    %{--                success  : function (msg) {--}%
-                    %{--                    $("#dlgLoad").dialog("close");--}%
-                    %{--                    if(msg==="true"){--}%
-                    %{--                        bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + "Error al generar histórico del rubro, comunique este error al administrador del sistema" + '</strong>');--}%
-                    %{--                    }else{--}%
-                    %{--                        $("#boxHiddenDlg").dialog("close");--}%
-                    %{--                        agregar(msg,"H");--}%
-                    %{--                    }--}%
-                    %{--                }--}%
-                    %{--            });--}%
-                    %{--        }--}%
-                    %{--    }--}%
-                    %{--});--}%
                 }else{
-                    %{--agregar('${rubro?.id}',"");--}%
                     bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + "No se puede crear un histórico de este rubro" + '</strong>');
                 }
             }
@@ -949,35 +956,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
     });
 
     $("#btnRubro").click(function () {
-        // $("#busqueda").dialog("open");
-        // $(".ui-dialog-titlebar-close").html("x");
-        // return false;
-
-
         location.href="${createLink(controller: 'rubro', action: 'buscarRubro')}/" + '${rubro?.id}';
-
-        %{--$.ajax({--}%
-        %{--    type    : "POST",--}%
-        %{--    url: "${createLink(controller: 'rubro', action:'buscarRubro')}",--}%
-        %{--    data    : {},--}%
-        %{--    success : function (msg) {--}%
-        %{--        dp = bootbox.dialog({--}%
-        %{--            id      : "dlgBuscarRubro",--}%
-        %{--            title   : "Buscar Item",--}%
-        %{--            class: "modal-lg",--}%
-        %{--            message : msg,--}%
-        %{--            buttons : {--}%
-        %{--                cancelar : {--}%
-        %{--                    label     : "Cancelar",--}%
-        %{--                    className : "btn-primary",--}%
-        %{--                    callback  : function () {--}%
-        %{--                    }--}%
-        %{--                }--}%
-        %{--            } //buttons--}%
-        %{--        }); //dialog--}%
-        %{--    } //success--}%
-        %{--}); //ajax--}%
-
     });
 
     $("#busqueda").dialog({
@@ -990,7 +969,6 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
         position: 'center',
         title: 'Items'
     });
-
 
     $("#modal-rubro").dialog({
         autoOpen: false,
@@ -1403,7 +1381,6 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
         $("#tabla_costos").append(tabla).show("slide");
     }
 
-
     $(function () {
         $("#save-espc").click(function () {
             if ($("#especificaciones").val().trim().length < 1024) {
@@ -1475,16 +1452,6 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
             window.toolbar.visible = false;
             window.menubar.visible = false;
         });
-
-        %{--$("#detalle").click(function () {--}%
-        %{--    var child = window.open('${createLink(controller:"rubro",action:"showFoto",id: rubro?.id, params:[tipo:"dt"])}',--}%
-        %{--        'Mies', 'width=850,height=800,toolbar=0,resizable=0,menubar=0,scrollbars=1,status=0');--}%
-
-        %{--    if (child.opener == null)--}%
-        %{--        child.opener = self;--}%
-        %{--    window.toolbar.visible = false;--}%
-        %{--    window.menubar.visible = false;--}%
-        %{--});--}%
 
         $("#detalle").click(function () {
             var id = '${rubro?.id}';
@@ -1631,7 +1598,6 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
             } else {
                 $("#costo_chofer").val("0.00")
             }
-
         });
 
         $("#cmb_chof").change();
