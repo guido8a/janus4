@@ -74,7 +74,7 @@
 
 </head>
 
-<body style="background-color: #d0d0d0">
+<body style="background-color: #d8d8df">
 
 
 %{--<div id="modalTableGray"></div>--}%
