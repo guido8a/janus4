@@ -1,17 +1,17 @@
 <div class="col-md-12" style="text-align: center; font-size: 14px; font-weight: bold; margin-top: -30px">
     <div class="col-md-6"></div>
-%{--    <div class="col-md-2" role="alert">--}%
-%{--        <ol class="breadcrumb" style="font-weight: bold">--}%
-%{--            <li class="active"><i class="fa fa-${grupo?.descripcion == 'MATERIALES' ? 'box' : (grupo?.descripcion == 'MANO DE OBRA' ? 'users' : 'truck') } text-warning"></i> ${grupo?.descripcion}</li>--}%
-%{--        </ol>--}%
-%{--    </div>--}%
-%{--    <div class="col-md-4" role="alert">--}%
-%{--        <ol class="breadcrumb" style="font-weight: bold">--}%
-%{--            <li class="active">GRUPO</li>--}%
-%{--            <li class="active">SUBGRUPO</li>--}%
-%{--            <li class="active">MATERIALES</li>--}%
-%{--        </ol>--}%
-%{--    </div>--}%
+    %{--    <div class="col-md-2" role="alert">--}%
+    %{--        <ol class="breadcrumb" style="font-weight: bold">--}%
+    %{--            <li class="active"><i class="fa fa-${grupo?.descripcion == 'MATERIALES' ? 'box' : (grupo?.descripcion == 'MANO DE OBRA' ? 'users' : 'truck') } text-warning"></i> ${grupo?.descripcion}</li>--}%
+    %{--        </ol>--}%
+    %{--    </div>--}%
+    %{--    <div class="col-md-4" role="alert">--}%
+    %{--        <ol class="breadcrumb" style="font-weight: bold">--}%
+    %{--            <li class="active">GRUPO</li>--}%
+    %{--            <li class="active">SUBGRUPO</li>--}%
+    %{--            <li class="active">MATERIALES</li>--}%
+    %{--        </ol>--}%
+    %{--    </div>--}%
     <div class="col-md-3" style="float: right">
         <a href="#" class="btn btn-sm btn-success btnRegresarMaterial" title="Regresar">
             <i class="fas fa-arrow-left"></i>
@@ -58,9 +58,20 @@
                             <i class="fas fa-search"></i>
                         </a>
                         <g:if test="${perfil}">
-                            <a href="#" class="btn btn-xs btn-warning btnEspecificacionesMaterial" data-id="${material?.id}" title="Especificaciones e Ilustración" ${material?.codigoEspecificacion ?: 'disabled'}>
-                                <i class="fas fa-book"></i>
-                            </a>
+                        %{--                            <a href="#" class="btn btn-xs btn-warning btnEspecificacionesMaterial" data-id="${material?.id}" title="Especificaciones e Ilustración" ${material?.codigoEspecificacion ?: 'disabled'}>--}%
+                        %{--                                <i class="fas fa-book"></i>--}%
+                        %{--                            </a>--}%
+                            <g:if test="${material?.codigoEspecificacion}">
+                                <a href="#" class="btn btn-xs btn-warning btnEspecificacionesMaterial" data-id="${material?.id}" title="Especificaciones e Ilustración" ${material?.codigoEspecificacion ?: 'disabled'}>
+                                    <i class="fas fa-book"></i>
+                                </a>
+                            </g:if>
+                            <g:else>
+                                <a href="#" class="btn btn-xs btn-info btnEspecificacionesMaterial" data-id="${material?.id}" title="Especificaciones e Ilustración" ${material?.codigoEspecificacion ?: 'disabled'}>
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                </a>
+                            </g:else>
+
                         </g:if>
                         <a href="#" class="btn btn-xs btn-success btnEditarMaterial" data-id="${material?.id}" data-sub="${material?.departamento?.id}" title="Editar">
                             <i class="fas fa-edit"></i>
