@@ -1,3 +1,4 @@
+<%@ page import="janus.Item" %>
 <div class="col-md-12" style="text-align: center; font-size: 14px; font-weight: bold; margin-top: -30px">
     <div class="col-md-6"></div>
     %{--    <div class="col-md-2" role="alert">--}%
@@ -34,7 +35,8 @@
             <th style="width: 7%">Código Subgrupo</th>
             <th style="width: 15%">Subgrupo</th>
             <th style="width: 10%">Código</th>
-            <th style="width: 35%">Descripción</th>
+            <th style="width: 30%">Descripción</th>
+            <th style="width: 5%">PDF</th>
             <th style="width: 12%">Acciones</th>
         </tr>
         </thead>
@@ -52,26 +54,23 @@
                     <td style="width: 7%">${material?.departamento?.codigo}</td>
                     <td style="width: 15%">${material?.departamento?.descripcion}</td>
                     <td style="width: 10%">${material?.codigo}</td>
-                    <td style="width: 35%">${material?.nombre}</td>
+                    <td style="width: 30%">${material?.nombre}</td>
+                    <td style="width: 5%; text-align: center">
+                        <g:if test="${janus.apus.ArchivoEspecificacion.findByItem(janus.Item.get(material?.id))?.ruta}">
+                            <i class="fa fa-check text-success"></i>
+                        </g:if>
+                        <g:else>
+                            <i class="fa fa-times text-danger"></i>
+                        </g:else>
+                    </td>
                     <td style="width: 12%; text-align: center">
                         <a href="#" class="btn btn-xs btn-info btnVerMaterial" data-id="${material?.id}" title="Ver">
                             <i class="fas fa-search"></i>
                         </a>
                         <g:if test="${perfil}">
-                        %{--                            <a href="#" class="btn btn-xs btn-warning btnEspecificacionesMaterial" data-id="${material?.id}" title="Especificaciones e Ilustración" ${material?.codigoEspecificacion ?: 'disabled'}>--}%
-                        %{--                                <i class="fas fa-book"></i>--}%
-                        %{--                            </a>--}%
-                            <g:if test="${material?.codigoEspecificacion}">
-                                <a href="#" class="btn btn-xs btn-warning btnEspecificacionesMaterial" data-id="${material?.id}" title="Especificaciones e Ilustración" ${material?.codigoEspecificacion ?: 'disabled'}>
-                                    <i class="fas fa-book"></i>
-                                </a>
-                            </g:if>
-                            <g:else>
-                                <a href="#" class="btn btn-xs btn-info btnEspecificacionesMaterial" data-id="${material?.id}" title="Especificaciones e Ilustración" ${material?.codigoEspecificacion ?: 'disabled'}>
-                                    <i class="fas fa-exclamation-triangle"></i>
-                                </a>
-                            </g:else>
-
+                            <a href="#" class="btn btn-xs btn-warning btnEspecificacionesMaterial" data-id="${material?.id}" title="Especificaciones e Ilustración" ${material?.codigoEspecificacion ?: 'disabled'}>
+                                <i class="fas fa-book"></i>
+                            </a>
                         </g:if>
                         <a href="#" class="btn btn-xs btn-success btnEditarMaterial" data-id="${material?.id}" data-sub="${material?.departamento?.id}" title="Editar">
                             <i class="fas fa-edit"></i>

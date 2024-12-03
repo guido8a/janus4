@@ -2362,7 +2362,7 @@ itemId: item.id
 //        }else{
 //            subgrupos = DepartamentoItem.findAllBySubgrupoInListAndDescripcionIlike(grupos, '%' + params.criterio + '%').sort{a,b -> a.subgrupo.descripcion <=> b.subgrupo.descripcion ?: a.codigo <=> b.codigo }.take(50)
 //        }
-        println "sql: $sql"
+//        println "sql: $sql"
         subgrupos = cn.rows(sql.toString());
 
         cn.close()
