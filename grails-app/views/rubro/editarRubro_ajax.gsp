@@ -7,7 +7,7 @@
                 Cantidad
             </label>
             <span class="col-md-4">
-                <g:textField name="cantidad" required="" class="form-control required" value="${rubro?.cantidad}"/>
+                <g:field name="cantidad" type="number" required="" class="number form-control required" value="${rubro?.cantidad}"/>
             </span>
         </span>
     </div>

@@ -334,7 +334,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                 <th class="col_rend" style="width: 50px">RENDIMIENTO</th>
                 <th class="col_total" style="display: none;"><C class="TOTAL"></C>C.TOTAL($)<br>($/hora)</th>
                 %{--                <th class="col_total" style=""><C class="TOTAL"></C>C.TOTAL($)<br>($/hora)</th>--}%
-                <th style="width: 40px" class="col_delete"></th>
+                <th style="width: 100px" class="col_delete"></th>
             </tr>
             </thead>
             <tbody id="tabla_equipo">
@@ -390,7 +390,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                 <th class="col_hora" style="display: none;">COSTO($)</th>
                 <th class="col_rend" style="width: 50px;">RENDIMIENTO</th>
                 <th class="col_total" style="display: none;">C.TOTAL($)</th>
-                <th style="width: 40px" class="col_delete"></th>
+                <th style="width: 100px" class="col_delete"></th>
             </tr>
             </thead>
             <tbody id="tabla_mano">
@@ -444,7 +444,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                 %{--                <th style="width: 40px" class="col_delete"></th>--}%
                 <th class="col_precioUnit" style="display: none;">UNITARIO</th>
                 <th class="col_total" style="display: none;">C.TOTAL($)</th>
-                <th style="width: 40px" class="col_delete"></th>
+                <th style="width: 100px" class="col_delete"></th>
             </tr>
             </thead>
             <tbody id="tabla_material">
@@ -1856,10 +1856,10 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                                         url : "${g.createLink(controller: 'rubro',action:'eliminarRubroDetalle')}",
                                         data     : "id=" + boton.attr("iden"),
                                         success  : function (msg) {
-                                            if (msg === "Registro eliminado") {
-                                                tr.remove()
-                                            }
-                                            bootbox.alert('<i class="fa fa-exclamation-triangle text-info fa-3x"></i> ' + '<strong style="font-size: 14px">' + msg  + '</strong>');
+                                            log("Borrado correctamente", "success");
+                                            setTimeout(function () {
+                                                location.reload();
+                                            }, 1000);
                                         }
                                     });
                                 }

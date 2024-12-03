@@ -11,7 +11,6 @@
     <asset:stylesheet src="/apli/font-awesome.min.css"/>
     <asset:javascript src="/apli/functions.js"/>
     <asset:stylesheet src="/jquery/jquery-ui-1.10.3.custom.min.css"/>
-    %{--    <asset:stylesheet src="/apli/custom.css"/>--}%
 
 </head>
 
@@ -31,8 +30,19 @@
     Código: ${item?.codigo} - Especificación: ${item?.codigoEspecificacion}
 </div>
 
-<div class="alert alert-success col-md-12" style="font-size: 14px; font-weight: bold">
-    <i class="fa fa-file-pdf fa-2x"></i> Especificación PDF
+<div class="alert alert-warning col-md-12" style="font-size: 14px; font-weight: bold">
+    <div class="col-md-12">
+        <i class="fa fa-file-pdf fa-2x"></i> Especificación PDF
+    </div>
+
+    <div class="col-md-12">
+        <g:if test="${!ares?.ruta}">
+            No se ha cargado ninguna especificación PDF para este material
+        </g:if>
+        <g:else>
+            Especificación actual PDF: <strong style="font-size: 14px"> ${ares?.ruta} </strong>
+        </g:else>
+    </div>
 </div>
 
 <div class="col-md-6">
@@ -63,19 +73,21 @@
             </div>
         </div>
     </g:uploadForm>
-
-    <div class="alert alert-warning">
-        <g:if test="${!ares?.ruta}">
-            <p style="color: #800; font-size: 14px"><i class="fa fa-exclamation-triangle fa-2x"></i>  No se ha cargado ninguna especificación PDF para este material</p>
-        </g:if>
-        <g:else>
-            <i class="fa fa-file-pdf fa-2x"></i>  Especificación actual PDF: <strong style="font-size: 14px"> ${ares?.ruta} </strong>
-        </g:else>
-    </div>
 </div>
 
-<div class="alert alert-success col-md-12" style="font-size: 14px; font-weight: bold">
-    <i class="fa fa-file-word fa-2x"></i> Especificación WORD
+<div class="alert alert-info col-md-12" style="font-size: 14px; font-weight: bold">
+    <div class="col-md-12">
+        <i class="fa fa-file-word fa-2x"></i> Especificación WORD
+    </div>
+
+    <div class="col-md-12">
+        <g:if test="${!ares?.especificacion}">
+            No se ha cargado ninguna especificación WORD para este material
+        </g:if>
+        <g:else>
+            Especificación actual WORD: <strong style="font-size: 14px"> ${ares?.especificacion} </strong>
+        </g:else>
+    </div>
 </div>
 
 <g:if test="${existe}">
@@ -102,21 +114,21 @@
                 </div>
             </div>
         </g:uploadForm>
-
-        <div class="alert alert-warning">
-            <g:if test="${!ares?.especificacion}">
-                <p style="color: #800; font-size: 14px"><i class="fa fa-exclamation-triangle fa-2x"></i>  No se ha cargado ninguna especificación WORD para este material</p>
-            </g:if>
-            <g:else>
-                <i class="fa fa-file-word fa-2x"></i> Especificación actual WORD: <strong style="font-size: 14px"> ${ares?.especificacion} </strong>
-            </g:else>
-        </div>
     </div>
 </g:if>
 
-
 <div class="alert alert-success" style="font-size: 14px; font-weight: bold">
-    <i class="fa fa-image fa-2x"></i> Ilustración
+    <div class="col-md-12">
+        <i class="fa fa-image fa-2x"></i>  Ilustración
+    </div>
+    <div class="col-md-12">
+        <g:if test="${!item?.foto}">
+             No se ha cargado ninguna ilustración para este material
+        </g:if>
+        <g:else>
+            Ilustración actual: <strong style="font-size: 14px"> ${item?.foto} </strong>
+        </g:else>
+    </div>
 </div>
 
 <fieldset class="borde_abajo" style="position: relative;width: 670px;padding-left: 50px;">
@@ -125,12 +137,6 @@
         <div class="fieldcontain required">
             <b>Cargar archivo:</b>
             <input type="file" id="file" name="file" class="" multiple accept=".jpg, .jpeg, .png, .gif"/>
-
-            <div class="btn-group" style="margin-top: 20px;">
-                %{--                <a href="#" id="salir" class="btn btn-primary">--}%
-                %{--                    <i class="fa fa-times"></i> Salir--}%
-                %{--                </a>--}%
-            </div>
             <div class="btn-group" style="margin-top: 20px;">
                 <a href="#" id="submit" class="btn btn-success">
                     <i class="fa fa-save"></i> Guardar
@@ -146,15 +152,6 @@
             </div>
         </div>
     </g:uploadForm>
-
-    <div class="alert alert-warning">
-        <g:if test="${!item?.foto}">
-            <p style="color: #800; font-size: 14px"><i class="fa fa-exclamation-triangle fa-2x"></i>  No se ha cargado ninguna ilustración para este material</p>
-        </g:if>
-        <g:else>
-            Ilustración actual: <strong style="font-size: 14px"> ${item?.foto} </strong>
-        </g:else>
-    </div>
 
     <g:if test="${item?.foto}">
         <img src="${request.contextPath}/mantenimientoItems/getFoto?id=${item?.id}" style="width: 400px; height: 400px"/>
