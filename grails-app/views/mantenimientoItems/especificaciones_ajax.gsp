@@ -55,7 +55,7 @@
             </div>
 
             <div class="btn-group" style="margin-top: 20px;">
-                <g:if test="${ares?.especificacion}">
+                <g:if test="${ares?.ruta}">
                     <g:link action="downloadFile" id="${item.id}" params="[tipo: 'pdf']" class="btn btn-info">
                         <i class="fa fa-download"></i> Descargar
                     </g:link>
