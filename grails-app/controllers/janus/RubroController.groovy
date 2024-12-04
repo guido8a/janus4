@@ -1157,7 +1157,7 @@ class RubroController {
 
     def tablaSeleccionados_ajax(){
         def rubro = Item.get(params.id)
-        def items = Rubro.findAllByRubro(rubro).sort { it.item.codigo }
+        def items = Rubro.findAllByRubro(rubro).sort { it.item.departamento.subgrupo.grupo.id }
         def volumenes =  verificarVolumnesXRubro(rubro?.id)
         return [items: items, rubro: rubro, volumenes: volumenes]
     }
