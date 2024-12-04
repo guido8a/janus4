@@ -2,6 +2,14 @@
        <i class="fa fa-list"></i> <strong style="font-size: 16px"> Rubros en la composición </strong>
 </div>
 
+<div class="col-md-12" style="margin-bottom: 5px">
+    <div class="col-md-3 alert-info">Materiales</div>
+    <div class="col-md-1"></div>
+    <div class="col-md-3 alert-success">Mano Obra</div>
+    <div class="col-md-1"></div>
+    <div class="col-md-3 alert-warning">Equipos</div>
+</div>
+
 <div role="main" style="margin-top: 10px;">
     <table class="table table-bordered table-striped table-condensed table-hover">
         <thead>
@@ -20,7 +28,7 @@
         <tbody>
         <g:if test="${items}">
             <g:each in="${items}" var="item" status="i">
-                <tr>
+                <tr class="${item?.item?.departamento?.subgrupo?.grupo?.id == 1 ? 'alert alert-info' : (item?.item?.departamento?.subgrupo?.grupo?.id == 2 ? 'alert alert-success' : 'alert alert-warning')}">
                     <td style="width: 15%">${item.item.codigo}</td>
                     <td style="width: 70%">${item.item.nombre}</td>
                     <td style="width: 12%">
