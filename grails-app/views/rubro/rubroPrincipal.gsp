@@ -46,10 +46,12 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
         <i class="fa fa-file"></i>
         Nuevo
     </a>
-    <a href="#" class="btn btn-ajax btn-new btn-primary" id="guardar">
-        <i class="fa fa-save"></i>
-        Guardar
-    </a>
+    <g:if test="${!volumenes}">
+        <a href="#" class="btn btn-ajax btn-new btn-primary" id="guardar">
+            <i class="fa fa-save"></i>
+            Guardar
+        </a>
+    </g:if>
     <a href="#" class="btn btn-ajax btn-new" id="borrar">
         <i class="fa fa-trash"></i>
         Borrar
@@ -80,20 +82,10 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
         </a>
     </g:if>
 
-%{--    <g:if test="${rubro}">--}%
-%{--        <g:if test="${rubro?.codigoEspecificacion}">--}%
     <a href="#" id="detalle" class="btn btn-ajax btn-new" ${rubro?.codigoEspecificacion ?: 'disabled'}>
         <i class="fa fa-book"></i>
         Especificaciones
     </a>
-%{--        </g:if>--}%
-%{--    </g:if>--}%
-%{--    <g:if test="${rubro}">--}%
-%{--        <a href="#" id="foto" class="btn btn-ajax btn-new">--}%
-%{--            <i class="fa fa-image"></i>--}%
-%{--            Ilustración--}%
-%{--        </a>--}%
-%{--    </g:if>--}%
     <g:if test="${rubro}">
         <a href="#" id="btnCrearHistorico" class="btn btn-primary">
             <i class="fa fa-book"></i>
@@ -131,7 +123,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                     Código
                     <g:textField name="rubro.codigo" id="input_codigo" class="allCaps required input-small"
                                  value="${rubro?.codigo ?: ''}"
-                                 maxlength="30" minlength="2"/>
+                                 maxlength="30" minlength="2" readonly="${volumenes ? true : false}" />
                     <p class="help-block ui-helper-hidden"></p>
 
                 </div>
@@ -139,28 +131,25 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                 <div class="col-md-2" style="margin-left: 20px">
                     Código Especificación
                     <g:textField name="rubro.codigoEspecificacion" class="allCaps required input-small"
-                                 value="${rubro?.codigoEspecificacion}" id="input_codigo_es" maxlength="30"/>
+                                 value="${rubro?.codigoEspecificacion}" id="input_codigo_es" maxlength="30" readonly="${volumenes ? true : false}"/>
 
                     <p class="help-block ui-helper-hidden"></p>
                 </div>
 
                 <div class="col-md-5" style="margin-left: -10px">
                     Descripción
-                    <g:textField name="rubro.nombre" class="col-md-12" value="${rubro?.nombre}" id="input_descripcion"/>
+                    <g:textField name="rubro.nombre" class="col-md-12" value="${rubro?.nombre}" id="input_descripcion" readonly="${volumenes ? true : false}"/>
                 </div>
 
                 <div class="col-md-2" style="margin-left: -10px">
                     Fecha Creación
                     <g:textField name="rubroFC" class="" value="${rubro?.fecha?.format("dd-MM-yyyy")}" style="width: 100px" readonly="true"/>
-                    %{--                    <input aria-label="" name="rubro.fechaReg" id='fecha_registro' type='text' class="required input-small" value="${rubro?.fecha ?: new java.util.Date().format('dd-MM-yyyy')}" style="width: 100px"/>--}%
                 </div>
 
                 <div class="col-md-1"  style="width: 170px; margin-left: -60px">
                     Fecha Modificación
                     <g:textField name="rubroFM" class="" value="${rubro?.fechaModificacion?.format("dd-MM-yyyy")}" style="width: 100px" readonly="true"/>
-                    %{--                    <input aria-label="" name="rubro.fechaMod" id='fecha_modificacion' type='text' class="required input-small" value="${rubro?.fechaModificacion ?: new java.util.Date().format('dd-MM-yyyy')}" style="width: 100px"/>--}%
                 </div>
-
             </div>
 
             <div class="row-fluid">
@@ -235,9 +224,11 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                     <label> Rendimiento </label>
                     <br>
                     <g:textField style="width: 70px;" name="rendimientoValorDefecto" value="${1}"/>
-                    <a class="btn btn-xs btn-success btnRendimientoTodos" href="#" rel="tooltip" title="Aplicar rendimiento a todos">
-                        <i class="fa fa-check"></i>
-                    </a>
+                    <g:if test="${!volumenes}">
+                        <a class="btn btn-xs btn-success btnRendimientoTodos" href="#" rel="tooltip" title="Aplicar rendimiento a todos">
+                            <i class="fa fa-check"></i>
+                        </a>
+                    </g:if>
                 </div>
 
                 <g:if test="${rubro}">

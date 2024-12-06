@@ -9,8 +9,12 @@
                 Subgrupo
             </label>
             <span class="col-md-8">
-%{--                <g:select name="departamento" from="${janus.DepartamentoItem.list([sort: 'descripcion'])}" required="" optionValue="descripcion" optionKey="id" class="form-control required " value="${departamento?.id ?: itemInstance?.departamento?.id}" />--}%
-                <g:select name="departamento" from="${listaDepartamentos}" required="" optionValue="descripcion" optionKey="id" class="form-control required " value="${departamento?.id ?: itemInstance?.departamento?.id}" />
+                <g:if test="${itemInstance?.id}">
+                    <g:select name="departamento" from="${listaDepartamentos}" required="" optionValue="descripcion" optionKey="id" class="form-control required " value="${departamento?.id ?: itemInstance?.departamento?.id}" />
+                </g:if>
+                <g:else>
+                    <g:select name="departamento" from="${janus.DepartamentoItem.list([sort: 'descripcion'])}" required="" optionValue="descripcion" optionKey="id" class="form-control required " value="${departamento?.id ?: itemInstance?.departamento?.id}" />
+                </g:else>
             </span>
         </span>
     </div>
