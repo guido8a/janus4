@@ -2639,42 +2639,43 @@ itemId: item.id
     }
 
     def tablaMaterialesPrecios_ajax(){
+
+        println("--> " + params)
+        def cn = dbConnectionService.getConnection()
         def grupo = Grupo.get(params.buscarPor)
         def grupos = SubgrupoItems.findAllByGrupo(grupo)
         def subgrupos = DepartamentoItem.findAllBySubgrupoInList(grupos)
         def materiales = []
         def subgrupoBuscar = null
+        def sql = ""
         def perfil = Persona.get(session.usuario.id).departamento?.codigo == 'UTFPU'
 
-        if(params.id){
-            subgrupoBuscar = DepartamentoItem.get(params.id)
-            materiales = Item.findAllByDepartamento(subgrupoBuscar).sort{a,b -> a.departamento.descripcion <=> b.departamento.descripcion ?: a.codigo <=> b.codigo }.take(50)
-        }else{
-            materiales = Item.findAllByDepartamentoInListAndNombreIlike(subgrupos, '%' + params.criterio + '%').sort{a,b -> a.departamento.descripcion <=> b.departamento.descripcion ?: a.codigo <=> b.codigo }.take(50)
-        }
+       if(params.id){
+           subgrupoBuscar = DepartamentoItem.get(params.id)
 
-        return [materiales: materiales, grupo: grupo, id: params.id, departamento: subgrupoBuscar, perfil: perfil]
+            sql = "select item.item__id, itemcdgo, itemnmbr, p.rbpcfcha, rbpcpcun, lgardscr from item, rbpc p, lgar where p.item__id = item.item__id and p.rbpcfcha = (select max(rbpcfcha) " +
+                   "from rbpc r where r.item__id = p.item__id) and lgar.lgar__id = p.lgar__id and item.dprt__id = ${subgrupoBuscar?.id} and item.itemnmbr ilike '%${params.criterio}%' order by item.itemcdgo, lgardscr limit 100";
+
+//           materiales = Item.findAllByDepartamento(subgrupoBuscar).sort{a,b -> a.departamento.descripcion <=> b.departamento.descripcion ?: a.codigo <=> b.codigo }.take(50)
+        }else{
+
+//           sql = "select item.item__id, itemcdgo, itemnmbr, p.rbpcfcha, rbpcpcun, lgardscr from item, rbpc p, lgar where p.item__id = item.item__id and p.rbpcfcha = (select max(rbpcfcha) " +
+//                   "from rbpc r where r.item__id = p.item__id) and lgar.lgar__id = p.lgar__id and item.itemnmbr ilike '%${params.criterio}%' order by item.itemcdgo, lgardscr limit 100"
+
+           sql = "select item.item__id, itemcdgo, itemnmbr, p.rbpcfcha, rbpcpcun, lgardscr from item, dprt, sbgr, grpo, rbpc p, lgar where p.item__id = item.item__id and p.rbpcfcha = (select max(rbpcfcha) " +
+                   "from rbpc r where r.item__id = p.item__id) and lgar.lgar__id = p.lgar__id and item.dprt__id = dprt.dprt__id and dprt.sbgr__id = sbgr.sbgr__id and sbgr.grpo__id = grpo.grpo__id and grpo.grpo__id = ${grupo?.id} and item.itemnmbr ilike '%${params.criterio}%' order by item.itemcdgo, lgardscr limit 100"
+
+//            materiales = Item.findAllByDepartamentoInListAndNombreIlike(subgrupos, '%' + params.criterio + '%').sort{a,b -> a.departamento.descripcion <=> b.departamento.descripcion ?: a.codigo <=> b.codigo }.take(50)
+      }
+
+        println("sql " + sql)
+
+        def items = cn.rows(sql.toString());
+        cn.close()
+
+        return [materiales: materiales, grupo: grupo, id: params.id, departamento: subgrupoBuscar, perfil: perfil, items: items]
     }
 
-    def tablaPrecios_ajax(){
 
-        println("params " + params)
-
-        def grupo = Grupo.get(params.buscarPor)
-        def grupos = SubgrupoItems.findAllByGrupo(grupo)
-        def subgrupos = DepartamentoItem.findAllBySubgrupoInList(grupos)
-        def materiales = []
-        def subgrupoBuscar = null
-        def perfil = Persona.get(session.usuario.id).departamento?.codigo == 'UTFPU'
-
-        if(params.id){
-            subgrupoBuscar = DepartamentoItem.get(params.id)
-            materiales = Item.findAllByDepartamento(subgrupoBuscar).sort{a,b -> a.departamento.descripcion <=> b.departamento.descripcion ?: a.codigo <=> b.codigo }.take(50)
-        }else{
-            materiales = Item.findAllByDepartamentoInListAndNombreIlike(subgrupos, '%' + params.criterio + '%').sort{a,b -> a.departamento.descripcion <=> b.departamento.descripcion ?: a.codigo <=> b.codigo }.take(50)
-        }
-
-        return [materiales: materiales, grupo: grupo, id: params.id, departamento: subgrupoBuscar, perfil: perfil]
-    }
 
 }

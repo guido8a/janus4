@@ -2,13 +2,17 @@
     <table class="table table-bordered table-striped table-condensed table-hover">
         <thead>
         <tr>
-            <th style="width: 7%">Código Grupo</th>
-            <th style="width: 15%">Grupo</th>
-            <th style="width: 7%">Código Subgrupo</th>
-            <th style="width: 15%">Subgrupo</th>
             <th style="width: 10%">Código</th>
-            <th style="width: 35%">Descripción</th>
-            <th style="width: 12%">Acciones</th>
+            <th style="width: 24%">Descripción</th>
+            <th style="width: 7%">Lugar 1</th>
+            <th style="width: 7%">Lugar 2</th>
+            <th style="width: 7%">Lugar 3</th>
+            <th style="width: 7%">Lugar 4</th>
+            <th style="width: 7%">Lugar 5</th>
+            <th style="width: 7%">Lugar 6</th>
+            <th style="width: 7%">Lugar 7</th>
+            <th style="width: 7%">Lugar 8</th>
+            <th style="width: 10%">Acciones</th>
         </tr>
         </thead>
     </table>
@@ -17,35 +21,42 @@
 <div class="" style="width: 99.7%;height: 600px; overflow-y: auto;float: right; margin-top: -20px">
     <table class="table-bordered table-striped table-condensed table-hover" style="width: 100%">
         <tbody>
-        <g:if test="${materiales}">
-            <g:each in="${materiales}" status="i" var="material">
-                <tr data-id="${material?.id}">
-                    <td style="width: 7%">${material?.departamento?.subgrupo?.codigo}</td>
-                    <td style="width: 15%">${material?.departamento?.subgrupo?.descripcion}</td>
-                    <td style="width: 7%">${material?.departamento?.codigo}</td>
-                    <td style="width: 15%">${material?.departamento?.descripcion}</td>
-                    <td style="width: 10%">${material?.codigo}</td>
-                    <td style="width: 35%">${material?.nombre}</td>
-                    <td style="width: 12%; text-align: center">
-                        <a href="#" class="btn btn-xs btn-info btnVerMaterial" data-id="${material?.id}" title="Ver">
+        <g:if test="${items}">
+            <g:each in="${items}" status="i" var="item">
+                <g:set var="itemIDActual" value="${item.item__id}"/>
+                <tr data-id="${item?.item__id}">
+                    <td style="width: 10%">${item.itemcdgo}</td>
+                    <td style="width: 24%">${item.itemnmbr}</td>
+                    <td style="width: 7%">${item.lgardscr == 'CAYAMBE' ? item.rbpcpcun : ''}</td>
+                    <td style="width: 7%">${100}</td>
+                    <td style="width: 7%">${100}</td>
+                    <td style="width: 7%">${100}</td>
+                    <td style="width: 7%">${100}</td>
+                    <td style="width: 7%">${100}</td>
+                    <td style="width: 7%">${100}</td>
+                    <td style="width: 7%">${100}</td>
+                    <td style="width: 10%; text-align: center">
+                        <a href="#" class="btn btn-xs btn-info btnVerMaterial" data-id="${item?.item__id}" title="Ver">
                             <i class="fas fa-search"></i>
                         </a>
-                        <a href="#" class="btn btn-xs btn-success btnPrecios" data-id="${material?.id}" title="Precios">
-                            <i class="fas fa-dollar-sign"></i> Precios
+                        <a href="#" class="btn btn-xs btn-success btnEditarMaterial" data-id="${item?.item__id}" title="Editar precios">
+                            <i class="fas fa-edit"></i>
                         </a>
-%{--                        <g:if test="${perfil}">--}%
-%{--                            <a href="#" class="btn btn-xs btn-warning btnEspecificacionesMaterial" data-id="${material?.id}" title="Especificaciones e Ilustración" ${material?.codigoEspecificacion ?: 'disabled'}>--}%
-%{--                                <i class="fas fa-book"></i>--}%
-%{--                            </a>--}%
-%{--                        </g:if>--}%
-%{--                        <a href="#" class="btn btn-xs btn-success btnEditarMaterial" data-id="${material?.id}" data-sub="${material?.departamento?.id}" title="Editar">--}%
-%{--                            <i class="fas fa-edit"></i>--}%
-%{--                        </a>--}%
-%{--                        <a href="#" class="btn btn-xs btn-danger btnEliminarMaterial" data-id="${material?.id}" title="Eliminar">--}%
-%{--                            <i class="fas fa-trash"></i>--}%
-%{--                        </a>--}%
+                        <a href="#" class="btn btn-xs btn-info btnHistorico" data-id="${item?.item__id}" title="Histórico de Precios">
+                            <i class="fas fa-dollar-sign"></i>
+                        </a>
+                        %{--                        <g:if test="${perfil}">--}%
+                        %{--                            <a href="#" class="btn btn-xs btn-warning btnEspecificacionesMaterial" data-id="${material?.id}" title="Especificaciones e Ilustración" ${material?.codigoEspecificacion ?: 'disabled'}>--}%
+                        %{--                                <i class="fas fa-book"></i>--}%
+                        %{--                            </a>--}%
+                        %{--                        </g:if>--}%
+
+                        %{--                        <a href="#" class="btn btn-xs btn-danger btnEliminarMaterial" data-id="${material?.id}" title="Eliminar">--}%
+                        %{--                            <i class="fas fa-trash"></i>--}%
+                        %{--                        </a>--}%
                     </td>
                 </tr>
+                <g:set var="itemIDAnterior" value="${item.item__id}"/>
             </g:each>
         </g:if>
         <g:else>
