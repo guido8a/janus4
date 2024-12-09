@@ -2656,4 +2656,25 @@ itemId: item.id
         return [materiales: materiales, grupo: grupo, id: params.id, departamento: subgrupoBuscar, perfil: perfil]
     }
 
+    def tablaPrecios_ajax(){
+
+        println("params " + params)
+
+        def grupo = Grupo.get(params.buscarPor)
+        def grupos = SubgrupoItems.findAllByGrupo(grupo)
+        def subgrupos = DepartamentoItem.findAllBySubgrupoInList(grupos)
+        def materiales = []
+        def subgrupoBuscar = null
+        def perfil = Persona.get(session.usuario.id).departamento?.codigo == 'UTFPU'
+
+        if(params.id){
+            subgrupoBuscar = DepartamentoItem.get(params.id)
+            materiales = Item.findAllByDepartamento(subgrupoBuscar).sort{a,b -> a.departamento.descripcion <=> b.departamento.descripcion ?: a.codigo <=> b.codigo }.take(50)
+        }else{
+            materiales = Item.findAllByDepartamentoInListAndNombreIlike(subgrupos, '%' + params.criterio + '%').sort{a,b -> a.departamento.descripcion <=> b.departamento.descripcion ?: a.codigo <=> b.codigo }.take(50)
+        }
+
+        return [materiales: materiales, grupo: grupo, id: params.id, departamento: subgrupoBuscar, perfil: perfil]
+    }
+
 }

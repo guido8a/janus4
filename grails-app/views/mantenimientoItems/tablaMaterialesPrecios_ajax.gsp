@@ -30,6 +30,9 @@
                         <a href="#" class="btn btn-xs btn-info btnVerMaterial" data-id="${material?.id}" title="Ver">
                             <i class="fas fa-search"></i>
                         </a>
+                        <a href="#" class="btn btn-xs btn-success btnPrecios" data-id="${material?.id}" title="Precios">
+                            <i class="fas fa-dollar-sign"></i> Precios
+                        </a>
 %{--                        <g:if test="${perfil}">--}%
 %{--                            <a href="#" class="btn btn-xs btn-warning btnEspecificacionesMaterial" data-id="${material?.id}" title="Especificaciones e Ilustración" ${material?.codigoEspecificacion ?: 'disabled'}>--}%
 %{--                                <i class="fas fa-book"></i>--}%
