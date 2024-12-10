@@ -1582,27 +1582,24 @@ class MantenimientoItemsController {
 
     def formPrecio_ajax() {
         println "formPrecio_ajax" + params
-        def fd = new Date().parse("dd-MM-yyyy", params.fd)
-        def item = Item.get(params.item)
-        def lugar = null
 
-        if (params.lugar != "all") {
-            lugar = Lugar.get(params.lugar)
-        }
+        def fd = new Date().parse("dd-MM-yyyy", params.fd)
 
         def precioRubrosItemsInstance
+        def lugar
 
         if(params.id){
             precioRubrosItemsInstance = PrecioRubrosItems.get(params.id)
+            lugar = precioRubrosItemsInstance?.lugar
         }else{
             precioRubrosItemsInstance = new PrecioRubrosItems()
+            def item = Item.get(params.item)
+            lugar = Lugar.get(params.lugar)
             precioRubrosItemsInstance.item = item
-            if (lugar) {
-                precioRubrosItemsInstance.lugar = lugar
-            }
+            precioRubrosItemsInstance.lugar = lugar
         }
 
-        return [precioRubrosItemsInstance: precioRubrosItemsInstance, lugar: lugar, lugarNombre: params.nombreLugar, fecha: params.fecha, params: params, fd: fd]
+        return [precioRubrosItemsInstance: precioRubrosItemsInstance, lugar: lugar, fecha: params.fecha, params: params, fd: fd]
     }
 
     def checkFcPr_ajax() {
@@ -1834,26 +1831,13 @@ class MantenimientoItemsController {
             params.todasLasFechas = "true"
         } else {
             params.todasLasFechas = "false"
-//            println(g.formatDate(date: params.fecha, format: 'dd-MM-yyyy'))
             params.fecha = new Date().parse("dd-MM-yyyy", params.fecha)
-//            params.fecha = new Date()
         }
 
-//        params.fecha = new Date().format("yyyy-MM-dd")
-//        params.fecha = new Date()
-
-//        def parts = params.id.split("_")
-//        def itemId = parts[0]
-//        def lugarId = parts[1]
-
-//        def item = Item.get(itemId)
         def item = Item.get(params.item)
         def lugar = Lugar.get(params.id)
-
         def operador = params.operador
-//        def operador = "="
         def fecha = params.fecha
-
         def lugarNombre
 
         if (params.todasLasFechas == "true") {
@@ -1883,7 +1867,7 @@ itemId: item.id
 //                params: params, precioRef: r.precioRef, anioRef: r.anioRef]
 
         return [item: item, lugarNombre: lugarNombre, lugarId: lugar?.id ?: 'all', precios: r.precios, lgar: params.id == "all", fecha: operador == "=" ? fecha.format("dd-MM-yyyy") : null,
-                params: params, precioRef: r.precioRef, anioRef: r.anioRef]
+                params: params, precioRef: r.precioRef, anioRef: r.anioRef, lugar: lugar]
 
 //        return [item: item, lugarNombre: lugarNombre, lugarId: lugar.id, precios: r.precios, lgar: false, fecha: operador == "=" ? fecha.format("dd-MM-yyyy") : null,
 //                params: params, precioRef: r.precioRef, anioRef: r.anioRef]
@@ -2639,8 +2623,7 @@ itemId: item.id
     }
 
     def tablaMaterialesPrecios_ajax(){
-
-        println("--> " + params)
+//        println("--> " + params)
         def cn = dbConnectionService.getConnection()
         def grupo = Grupo.get(params.buscarPor)
         def grupos = SubgrupoItems.findAllByGrupo(grupo)
@@ -2650,26 +2633,16 @@ itemId: item.id
         def sql = ""
         def perfil = Persona.get(session.usuario.id).departamento?.codigo == 'UTFPU'
 
-       if(params.id){
-           subgrupoBuscar = DepartamentoItem.get(params.id)
-
-            sql = "select item.item__id, itemcdgo, itemnmbr, p.rbpcfcha, rbpcpcun, lgardscr from item, rbpc p, lgar where p.item__id = item.item__id and p.rbpcfcha = (select max(rbpcfcha) " +
-                   "from rbpc r where r.item__id = p.item__id) and lgar.lgar__id = p.lgar__id and item.dprt__id = ${subgrupoBuscar?.id} and item.itemnmbr ilike '%${params.criterio}%' order by item.itemcdgo, lgardscr limit 100";
-
-//           materiales = Item.findAllByDepartamento(subgrupoBuscar).sort{a,b -> a.departamento.descripcion <=> b.departamento.descripcion ?: a.codigo <=> b.codigo }.take(50)
+        if(params.id){
+            subgrupoBuscar = DepartamentoItem.get(params.id)
+            sql = "select item.item__id, itemcdgo, itemnmbr, p.rbpcfcha, rbpcpcun, rbpc__id,  lgardscr, p.lgar__id from item, rbpc p, lgar where p.item__id = item.item__id and p.rbpcfcha = (select max(rbpcfcha) " +
+                    "from rbpc r where r.item__id = p.item__id) and lgar.lgar__id = p.lgar__id and item.dprt__id = ${subgrupoBuscar?.id} and item.itemnmbr ilike '%${params.criterio}%' order by item.itemcdgo, lgardscr limit 100";
         }else{
+            sql = "select item.item__id, itemcdgo, itemnmbr, p.rbpcfcha, rbpcpcun,  rbpc__id, lgardscr,  p.lgar__id from item, dprt, sbgr, grpo, rbpc p, lgar where p.item__id = item.item__id and p.rbpcfcha = (select max(rbpcfcha) " +
+                    "from rbpc r where r.item__id = p.item__id) and lgar.lgar__id = p.lgar__id and item.dprt__id = dprt.dprt__id and dprt.sbgr__id = sbgr.sbgr__id and sbgr.grpo__id = grpo.grpo__id and grpo.grpo__id = ${grupo?.id} and item.itemnmbr ilike '%${params.criterio}%' order by item.itemcdgo, lgardscr limit 100"
+        }
 
-//           sql = "select item.item__id, itemcdgo, itemnmbr, p.rbpcfcha, rbpcpcun, lgardscr from item, rbpc p, lgar where p.item__id = item.item__id and p.rbpcfcha = (select max(rbpcfcha) " +
-//                   "from rbpc r where r.item__id = p.item__id) and lgar.lgar__id = p.lgar__id and item.itemnmbr ilike '%${params.criterio}%' order by item.itemcdgo, lgardscr limit 100"
-
-           sql = "select item.item__id, itemcdgo, itemnmbr, p.rbpcfcha, rbpcpcun, lgardscr from item, dprt, sbgr, grpo, rbpc p, lgar where p.item__id = item.item__id and p.rbpcfcha = (select max(rbpcfcha) " +
-                   "from rbpc r where r.item__id = p.item__id) and lgar.lgar__id = p.lgar__id and item.dprt__id = dprt.dprt__id and dprt.sbgr__id = sbgr.sbgr__id and sbgr.grpo__id = grpo.grpo__id and grpo.grpo__id = ${grupo?.id} and item.itemnmbr ilike '%${params.criterio}%' order by item.itemcdgo, lgardscr limit 100"
-
-//            materiales = Item.findAllByDepartamentoInListAndNombreIlike(subgrupos, '%' + params.criterio + '%').sort{a,b -> a.departamento.descripcion <=> b.departamento.descripcion ?: a.codigo <=> b.codigo }.take(50)
-      }
-
-        println("sql " + sql)
-
+//        println("sql " + sql)
         def items = cn.rows(sql.toString());
         cn.close()
 

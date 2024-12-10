@@ -196,7 +196,73 @@
         location.href="${createLink(controller: 'item', action: 'registrarPrecios')}"
     });
 
+    function createEditPrecio(id, item, lugar) {
+        var fechaDefecto = $("#datetimepicker2").val();
+        var title = id ? "Editar" : "Nuevo";
+        $.ajax({
+            type    : "POST",
+            url     : "${createLink( action:'formPrecio_ajax')}",
+            data    : {
+                item        : item,
+                lugar       : lugar,
+                %{--nombreLugar : "${lugarNombre}",--}%
+                %{--fecha       : "${fecha}",--}%
+                %{--all         : "${params.all}",--}%
+                %{--ignore      : "${params.ignore}",--}%
+                id: id,
+                fd: fechaDefecto
+            },
+            success : function (msg) {
+                var b = bootbox.dialog({
+                    id    : "dlgCreateEditP",
+                    title : title + " precio",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        },
+                        guardar  : {
+                            id        : "btnSave",
+                            label     : "<i class='fa fa-save'></i> Guardar",
+                            className : "btn-success",
+                            callback  : function () {
+                                return submitFormPrecio();
+                            } //callback
+                        } //guardar
+                    } //buttons
+                }); //dialog
+            } //success
+        }); //ajax
+    } //createEdit
 
+    function submitFormPrecio() {
+        var $form = $("#frmSave");
+        if ($form.valid()) {
+            var data = $form.serialize();
+            var dialog = cargarLoader("Guardando...");
+            $.ajax({
+                type    : "POST",
+                url     : $form.attr("action"),
+                data    : data,
+                success : function (msg) {
+                    dialog.modal('hide');
+                    var parts = msg.split("_");
+                    if(parts[0] === 'OK'){
+                        log(parts[1], "success");
+                        cargarTablaItemsPrecios();
+                    }else{
+                        bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
+                        return false;
+                    }
+                }
+            });
+        } else {
+            return false;
+        }
+    }
 
     %{--function createContextMenu(node) {--}%
 

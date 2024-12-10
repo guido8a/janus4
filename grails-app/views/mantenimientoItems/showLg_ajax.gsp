@@ -1,10 +1,31 @@
-<legend>Precios de: ${item.nombre} (${item.unidad?.codigo?.trim()}) <br> Lista: ${lugarNombre}</legend>
+%{--<legend>Precios de: ${item.nombre} (${item.unidad?.codigo?.trim()}) <br> Lista: ${lugarNombre}</legend>--}%
+
+<div class="col-md-12 breadcrumb" style="margin-top: -10px; font-size: 14px">
+    <div class="col-md-2">
+        <label>
+            Item:
+        </label>
+    </div>
+    <div class="col-md-8">
+        ${item.nombre} (${item.unidad?.codigo?.trim()})
+    </div>
+</div>
+<div class="col-md-12 breadcrumb" style="margin-top: -10px; font-size: 14px">
+    <div class="col-md-2">
+        <label>
+            Lista:
+        </label>
+    </div>
+    <div class="col-md-8">
+        ${lugarNombre}
+    </div>
+</div>
 
 <div style="height: 35px; width: 100%;">
     <div class="btn-group pull-left">
         <g:if test="${session.perfil.codigo in ['CSTO', 'RBRO']}">
             <a href="#" class="btn btn-primary" id="btnNew">
-                <i class="fa fa-money-bill"></i>
+                <i class="fa fa-file"></i>
                 Nuevo Precio
             </a>
             <g:if test="${item.departamento.subgrupo.grupoId == 2 || item.departamento.subgrupo.grupoId == 3}">
@@ -32,7 +53,7 @@
     </g:if>
 </div>
 
-<div id="divTabla" style="height: 630px; width: 100%; overflow-x: hidden; overflow-y: auto;">
+<div id="divTabla" style="height: 400px; width: 100%; overflow-x: hidden; overflow-y: auto;">
     <table class="table table-striped table-bordered table-hover table-condensed" id="tablaPrecios">
         <thead>
         <tr style="width: 100%">
@@ -41,7 +62,7 @@
             </g:if>
             <th style="width: 20%">Fecha</th>
             <th class="precio" style="width: 20%">Precio</th>
-            <th class="delete" style="width: 30%"></th>
+            <th class="delete" style="width: 30%">Acciones</th>
             <th style="width: 1%"></th>
         </tr>
         </thead>
@@ -57,17 +78,17 @@
                     <g:formatDate date="${precio.fecha}" format="dd-MM-yyyy"/>
                 </td>
                 <g:if test="${session.perfil.codigo == 'CSTO'}">
-                    <td class="precio textRight " style="width: 20%" data-original="${precio.precioUnitario}" data-valor="${precio.precioUnitario}" id="${precio.id}" >
+                    <td class="precio textRight " style="width: 20%; text-align: right" data-original="${precio.precioUnitario}" data-valor="${precio.precioUnitario}" id="${precio.id}" >
                         <g:formatNumber number="${precio.precioUnitario}" maxFractionDigits="5" minFractionDigits="5" format="##,#####0" locale='ec'/>
                     </td>
-                    <td class="delete" style="width: 30%">
+                    <td class="delete" style="width: 30%; text-align: center">
                         <g:if test="${precio?.registrado != 'R'}">
-                            <a href="#" class="btn btn-info btn-xs btnEditar" title="Editar valor" data-id="${precio.id}">
+                            <a href="#" class="btn btn-success btn-xs btnEditar" title="Editar valor" data-id="${precio.id}">
                                 <i class="fa fa-edit"></i>
                             </a>
                         </g:if>
                         <g:if test="${precio?.registrado != 'R'}">
-                            <a href="#" class="btn btn-success btn-xs btnEditarCantones" title="Editar valor para todos los cantones" data-id="${precio.id}">
+                            <a href="#" class="btn btn-info btn-xs btnEditarCantones" title="Editar valor para todos los cantones" data-id="${precio.id}">
                                 <i class="fa fa-list-ul"></i>
                             </a>
                         </g:if>
@@ -90,49 +111,49 @@
     </table>
 </div>
 
-<div class="modal hide fade" id="modal_lugar">
-    <div class="modal-header" id="modal-header_lugar">
-        <button type="button" class="close" data-dismiss="modal">×</button>
+%{--<div class="modal hide fade" id="modal_lugar">--}%
+%{--    <div class="modal-header" id="modal-header_lugar">--}%
+%{--        <button type="button" class="close" data-dismiss="modal">×</button>--}%
 
-        <h3 id="modalTitle_lugar"></h3>
-    </div>
+%{--        <h3 id="modalTitle_lugar"></h3>--}%
+%{--    </div>--}%
 
-    <div class="modal-body" id="modalBody_lugar">
-    </div>
+%{--    <div class="modal-body" id="modalBody_lugar">--}%
+%{--    </div>--}%
 
-    <div class="modal-footer" id="modalFooter_lugar">
-    </div>
-</div>
+%{--    <div class="modal-footer" id="modalFooter_lugar">--}%
+%{--    </div>--}%
+%{--</div>--}%
 
-<div class="modal hide fade" id="modal-tree1">
+%{--<div class="modal hide fade" id="modal-tree1">--}%
 
-    <div class="modal-body" id="modalBody-tree1">
-    </div>
+%{--    <div class="modal-body" id="modalBody-tree1">--}%
+%{--    </div>--}%
 
-    <div class="modal-footer" id="modalFooter-tree1">
-    </div>
-</div>
+%{--    <div class="modal-footer" id="modalFooter-tree1">--}%
+%{--    </div>--}%
+%{--</div>--}%
 
-<div id="modal-tree2">
+%{--<div id="modal-tree2">--}%
 
-    <div class="modal-body" id="modalBody-tree2" style="width: 970px;">
-    </div>
+%{--    <div class="modal-body" id="modalBody-tree2" style="width: 970px;">--}%
+%{--    </div>--}%
 
-    <div class="modal-footer" id="modalFooter-tree2">
-    </div>
-</div>
+%{--    <div class="modal-footer" id="modalFooter-tree2">--}%
+%{--    </div>--}%
+%{--</div>--}%
 
-<div id="imprimirDialog">
-    <fieldset>
-        <div class="span3">
-            Elija la fecha de validez del cálculo:
-            <div class="span2" style="margin-top: 20px; margin-left: 50px">
-                <elm:datepicker name="fechaCalculo" class="span24" id="fechaCalculoId" value="${new java.util.Date()}" style="width: 100px" minDate="new Date(${new Date().format('yyyy')},0,1)" maxDate="new Date(${new Date().format('yyyy')},11,31)"
-                                readonly="true" />
-            </div>
-        </div>
-    </fieldset>
-</div>
+%{--<div id="imprimirDialog">--}%
+%{--    <fieldset>--}%
+%{--        <div class="span3">--}%
+%{--            Elija la fecha de validez del cálculo:--}%
+%{--            <div class="span2" style="margin-top: 20px; margin-left: 50px">--}%
+%{--                <elm:datepicker name="fechaCalculo" class="span24" id="fechaCalculoId" value="${new java.util.Date()}" style="width: 100px" minDate="new Date(${new Date().format('yyyy')},0,1)" maxDate="new Date(${new Date().format('yyyy')},11,31)"--}%
+%{--                                readonly="true" />--}%
+%{--            </div>--}%
+%{--        </div>--}%
+%{--    </fieldset>--}%
+%{--</div>--}%
 
 <script type="text/javascript">
 
@@ -206,6 +227,8 @@
     } //createEdit
 
     function submitFormPrecio() {
+        var lugar = '${lugar?.id}';
+        var item = '${item?.id}';
         var $form = $("#frmSave");
         if ($form.valid()) {
             var data = $form.serialize();
@@ -219,18 +242,9 @@
                     var parts = msg.split("_");
                     if(parts[0] === 'OK'){
                         log(parts[1], "success");
-                        setTimeout(function () {
-                            if(tipoSeleccionado === 1){
-                                cargarMateriales();
-                                recargarMateriales();
-                            }else if(tipoSeleccionado === 2){
-                                cargarMano();
-                                recargaMano();
-                            }else{
-                                cargarEquipo();
-                                recargaEquipo();
-                            }
-                        }, 1000);
+                        cargarTablaItemsPrecios();
+                        cerrarTablaHistoricos();
+                        cargarTablaHistoricoPrecios(item, lugar)
                     }else{
                         bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
                         return false;
@@ -292,7 +306,7 @@
             var data = $form.serialize();
             var lugares = chequeados();
 
-            if(lugares == ''){
+            if(lugares === ''){
                 bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + "Seleccione al menos un lugar" + '</strong>');
                 return false;
             }else{
@@ -399,16 +413,16 @@
 
     });
 
-    $("#modal-tree1").dialog({
-        autoOpen: false,
-        resizable: false,
-        modal: true,
-        draggable: false,
-        width: 950,
-        height: 700,
-        position: 'center',
-        title: 'Datos de Situación Geográfica'
-    });
+    // $("#modal-tree1").dialog({
+    //     autoOpen: false,
+    //     resizable: false,
+    //     modal: true,
+    //     draggable: false,
+    //     width: 950,
+    //     height: 700,
+    //     position: 'center',
+    //     title: 'Datos de Situación Geográfica'
+    // });
 
 
     function borrarPrecio(id) {

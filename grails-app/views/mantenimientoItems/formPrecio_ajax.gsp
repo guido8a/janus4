@@ -7,37 +7,55 @@
     <g:hiddenField name="all" value="${params.all}"/>
     <g:hiddenField name="ignore" value="${params.ignore}"/>
 
-    <legend>
-        Item:  ${precioRubrosItemsInstance.item.nombre} <br>
-        Lista: ${lugarNombre}
-    </legend>
+    <div class="col-md-12 breadcrumb" style="margin-top: -10px; font-size: 14px">
+        <div class="col-md-2">
+            <label>
+                Item:
+            </label>
+        </div>
+        <div class="col-md-8">
+            ${precioRubrosItemsInstance.item.nombre}
+        </div>
+    </div>
+    <div class="col-md-12 breadcrumb" style="margin-top: -10px; font-size: 14px">
+        <div class="col-md-2">
+            <label>
+                Lista:
+            </label>
+        </div>
+        <div class="col-md-8">
+            ${lugar?.descripcion}
+        </div>
+    </div>
 
     <div class="form-group ${hasErrors(bean: precioRubrosItemsInstance, field: 'precioUnitario', 'error')} ">
         <span class="grupo">
-            <label for="precioUnitario" class="col-md-2 control-label text-info">
+            <label for="precioUnitario" class="col-md-3 control-label text-info">
                 Precio Unitario
             </label>
-            <span class="col-md-6">
+            <span class="col-md-4">
                 <g:textField name="precioUnitario" class="form-control number required" value="${precioRubrosItemsInstance?.precioUnitario}"/>
                 <p class="help-block ui-helper-hidden"></p>
             </span>
-            Unidad: <span style="font-weight: bold"> ${precioRubrosItemsInstance.item.unidad.codigo} </span>
+            <span class="col-md-3" style="font-size: 14px">
+                Unidad: <span style="font-weight: bold"> ${precioRubrosItemsInstance.item.unidad.codigo} </span>
+            </span>
         </span>
     </div>
 
     <div class="form-group ${hasErrors(bean: precioRubrosItemsInstance, field: 'fecha', 'error')} ">
         <span class="grupo">
-            <label class="col-md-2 control-label text-info">
+            <label class="col-md-3 control-label text-info">
                 Fecha
             </label>
-            <span class="col-md-6">
+            <span class="col-md-4">
                 <g:if test="${fecha}">
-                    ${fecha}
+                    <g:textField name="fechaNombre" class="form-control" disabled="" value="${fecha}" readonly=""/>
                     <g:hiddenField name="fecha" value="${fecha}"/>
                 </g:if>
                 <g:else>
                     <g:if test="${precioRubrosItemsInstance?.id}">
-                        ${precioRubrosItemsInstance?.fecha?.format("dd-MM-yyyy")}
+                        <g:textField name="fechaNombre" class="form-control" value= "${precioRubrosItemsInstance?.fecha?.format("dd-MM-yyyy")}" disabled=""/>
                         <g:hiddenField name="fecha" value="${precioRubrosItemsInstance?.fecha}"/>
                     </g:if>
                     <g:else>
@@ -75,7 +93,6 @@
     $("#precioUnitario").keydown(function (ev) {
         return validarNum(ev);
     });
-
 
     $('#datetimepicker3').datetimepicker({
         locale: 'es',
