@@ -17,13 +17,13 @@
                 <td style="width: 30%">${lista?.tipoLista?.descripcion}</td>
                 <td style="width: 10%">${lista?.codigo}</td>
                 <td style="width: 48%">${lista?.descripcion}</td>
-                <td style="width: 12%">
+                <td style="width: 12%; text-align: center">
                     <a href="#" class="btn btn-success btn-xs btnEditarLista" title="Editar lista" data-id="${lista.id}">
                         <i class="fa fa-edit"></i>
                     </a>
-                    <a href="#" class="btn btn-danger btn-xs btnBorrarLista" title="Borrar lista" data-id="${lista.id}">
-                        <i class="fa fa-trash"></i>
-                    </a>
+%{--                    <a href="#" class="btn btn-danger btn-xs btnBorrarLista" title="Borrar lista" data-id="${lista.id}">--}%
+%{--                        <i class="fa fa-trash"></i>--}%
+%{--                    </a>--}%
                 </td>
                 <td style="width: 1%"></td>
             </tr>
