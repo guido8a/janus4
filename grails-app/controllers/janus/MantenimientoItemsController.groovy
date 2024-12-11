@@ -2623,7 +2623,7 @@ itemId: item.id
     }
 
     def tablaMaterialesPrecios_ajax(){
-//        println("--> " + params)
+        println("--> " + params)
         def cn = dbConnectionService.getConnection()
         def grupo = Grupo.get(params.buscarPor)
         def grupos = SubgrupoItems.findAllByGrupo(grupo)
@@ -2635,11 +2635,20 @@ itemId: item.id
 
         if(params.id){
             subgrupoBuscar = DepartamentoItem.get(params.id)
-            sql = "select item.item__id, itemcdgo, itemnmbr, p.rbpcfcha, rbpcpcun, rbpc__id,  lgardscr, p.lgar__id from item, rbpc p, lgar where p.item__id = item.item__id and p.rbpcfcha = (select max(rbpcfcha) " +
-                    "from rbpc r where r.item__id = p.item__id) and lgar.lgar__id = p.lgar__id and item.dprt__id = ${subgrupoBuscar?.id} and item.itemnmbr ilike '%${params.criterio}%' order by item.itemcdgo, lgardscr limit 100";
+            sql = "select item.item__id, itemcdgo, itemnmbr, p.rbpcfcha, rbpcpcun, rbpc__id,  lgardscr, p.lgar__id " +
+                    "from item, rbpc p, lgar where p.item__id = item.item__id and p.rbpcfcha = (select max(rbpcfcha) " +
+                    "from rbpc r where r.item__id = p.item__id and r.lgar__id = p.lgar__id) and lgar.lgar__id = p.lgar__id and " +
+                    "item.dprt__id = ${subgrupoBuscar?.id} and item.itemnmbr ilike '%${params.criterio}%' " +
+                    "order by item.itemcdgo, lgardscr limit 100";
         }else{
-            sql = "select item.item__id, itemcdgo, itemnmbr, p.rbpcfcha, rbpcpcun,  rbpc__id, lgardscr,  p.lgar__id from item, dprt, sbgr, grpo, rbpc p, lgar where p.item__id = item.item__id and p.rbpcfcha = (select max(rbpcfcha) " +
-                    "from rbpc r where r.item__id = p.item__id) and lgar.lgar__id = p.lgar__id and item.dprt__id = dprt.dprt__id and dprt.sbgr__id = sbgr.sbgr__id and sbgr.grpo__id = grpo.grpo__id and grpo.grpo__id = ${grupo?.id} and item.itemnmbr ilike '%${params.criterio}%' order by item.itemcdgo, lgardscr limit 100"
+            sql = "select item.item__id, itemcdgo, itemnmbr, p.rbpcfcha, rbpcpcun,  rbpc__id, lgardscr,  p.lgar__id " +
+                    "from item, dprt, sbgr, grpo, rbpc p, lgar where p.item__id = item.item__id and p.rbpcfcha = " +
+                    "(select max(rbpcfcha) " +
+                    "from rbpc r where r.item__id = p.item__id and r.lgar__id = p.lgar__id) and lgar.lgar__id = p.lgar__id and " +
+                    "item.dprt__id = dprt.dprt__id and dprt.sbgr__id = sbgr.sbgr__id and " +
+                    "sbgr.grpo__id = grpo.grpo__id and grpo.grpo__id = ${grupo?.id} and " +
+                    "item.itemnmbr ilike '%${params.criterio}%' " +
+                    "order by item.itemcdgo, lgardscr limit 100"
         }
 
 //        println("sql " + sql)
