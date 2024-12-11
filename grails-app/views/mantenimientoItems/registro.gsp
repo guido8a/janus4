@@ -116,7 +116,7 @@
                         var li = $('#li_sbgr');
                         var elemento = document.createElement('a');
                         elemento.id = 'bc_sbgr';
-                        %{--elemento.href = url + '?id=' + "${id_grupo}";--}%
+                    %{--elemento.href = url + '?id=' + "${id_grupo}";--}%
                         elemento.href = url;
                         elemento.id_grpo = '#';
                         li.append(elemento);
@@ -138,9 +138,11 @@
     }
 
     function createEditItem(id, parentId) {
+        var grupo = $("#buscarPor option:selected").val();
         var title = id ? "Editar" : "Crear";
         var data = id ? {id : id} : {};
         data.departamento = parentId;
+        data.grupo = grupo;
         $.ajax({
             type    : "POST",
             url     : "${createLink( action:'formIt_ajax')}",

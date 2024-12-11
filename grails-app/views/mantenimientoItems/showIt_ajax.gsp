@@ -65,6 +65,16 @@
                 </div>
             </div>
         </g:if>
+        <g:if test="${itemInstance.departamento.subgrupo.grupo.id == 1}">
+            <div class="row">
+                <div class="col-md-3 text-warning">
+                   Lista de precios
+                </div>
+                <div class="col-md-6 negrita">
+                    ${itemInstance?.tipoLista?.descripcion}
+                </div>
+            </div>
+        </g:if>
         <g:if test="${itemInstance?.fecha}">
             <div class="row">
                 <div class="col-md-3 text-info">

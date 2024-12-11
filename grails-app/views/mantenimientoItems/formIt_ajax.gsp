@@ -93,8 +93,7 @@
         </span>
     </div>
 
-%{--    <g:if test="${grupo == '1'}">--}%
-    <g:if test="${departamento?.subgrupo?.grupo?.id == 1}">
+    <g:if test="${grupo == 1}">
         <div class="form-group ${hasErrors(bean: itemInstance, field: 'tipoLista', 'error')} ">
             <span class="grupo">
                 <label for="tipoLista" class="col-md-2 control-label text-info">

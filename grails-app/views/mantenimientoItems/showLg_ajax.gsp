@@ -28,6 +28,11 @@
                 <i class="fa fa-file"></i>
                 Nuevo Precio
             </a>
+        </g:if>
+    </div>
+
+    <div class="btn-group pull-left">
+        <g:if test="${session.perfil.codigo in ['CSTO', 'RBRO']}">
             <g:if test="${item.departamento.subgrupo.grupoId == 2 || item.departamento.subgrupo.grupoId == 3}">
                 <a href="#" class="btn btn-warning" id="btnCalc${item.departamento.subgrupo.grupoId}">
                     <i class="fa fa-cog"></i>
@@ -301,6 +306,8 @@
     } //createEdit
 
     function submitFormPrecioC() {
+        var lugar = '${lugar?.id}';
+        var item = '${item?.id}';
         var $form = $("#frmSaveCantones");
         if ($form.valid()) {
             var data = $form.serialize();
@@ -320,18 +327,9 @@
                         var parts = msg.split("_");
                         if(parts[0] === 'ok'){
                             log(parts[1], "success");
-                            setTimeout(function () {
-                                if(tipoSeleccionado === 1){
-                                    cargarMateriales();
-                                    recargarMateriales();
-                                }else if(tipoSeleccionado === 2){
-                                    cargarMano();
-                                    recargaMano();
-                                }else{
-                                    cargarEquipo();
-                                    recargaEquipo();
-                                }
-                            }, 1000);
+                            cargarTablaItemsPrecios();
+                            cerrarTablaHistoricos();
+                            cargarTablaHistoricoPrecios(item, lugar)
                         }else{
                             bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
                             return false;
@@ -353,13 +351,12 @@
     var id2;
 
     $("#btnCalc2").click(function () {
-
         bootbox.prompt({
             class: 'modal-sm',
             title: 'Por favor ingrese el sueldo básico para el Obrero del año:  ${new Date().getYear()}.',
             callback: function(result) {
                 if(result){
-                    if(result == ''){
+                    if(result === ''){
                         bootbox.alert('<i class="fa fa-exclamation-triangle text-warning fa-3x"></i> ' + '<strong style="font-size: 14px">' + "Ingrese un valor numérico" + '</strong>');
                         return false
                     }else{
@@ -372,10 +369,10 @@
                             },
                             success : function (msg) {
                                 v.modal("hide");
-                                if(msg == 'error'){
+                                if(msg === 'error'){
                                     bootbox.alert('<i class="fa fa-exclamation-triangle text-warning fa-3x"></i> ' + '<strong style="font-size: 14px">' + "Ingrese un valor numérico" + '</strong>');
                                 }else{
-                                    $("#spanRef").text("Precio ref: " + msg)
+                                    $("#spanRef").html('<i class="fa fa-exclamation-triangle text-info fa-2x"></i> ' + '<strong style="font-size: 14px">' + "Precio referencial:  " + msg + '</strong>')
                                 }
                             }
                         });
@@ -405,7 +402,7 @@
                             className : "btn-primary",
                             callback  : function () {
                             }
-                        },
+                        }
                     } //buttons
                 }); //dialog
             } //success
@@ -426,6 +423,8 @@
 
 
     function borrarPrecio(id) {
+        var lugar = '${lugar?.id}';
+        var item = '${item?.id}';
         bootbox.dialog({
             title   : "Alerta",
             message : "<i class='fa fa-trash fa-2x pull-left text-danger text-shadow'></i><p style='font-weight: bold'> Está seguro que desea eliminar este precio? Esta acción no se puede deshacer.</p>",
@@ -452,18 +451,9 @@
                                 var parts = msg.split("_");
                                 if(parts[0] === 'OK'){
                                     log(parts[1],"success");
-                                    setTimeout(function () {
-                                        if(tipoSeleccionado === 1){
-                                            cargarMateriales();
-                                            recargarMateriales();
-                                        }else if(tipoSeleccionado === 2){
-                                            cargarMano();
-                                            recargaMano();
-                                        }else{
-                                            cargarEquipo();
-                                            recargaEquipo();
-                                        }
-                                    }, 1000);
+                                    cargarTablaItemsPrecios();
+                                    cerrarTablaHistoricos();
+                                    cargarTablaHistoricoPrecios(item, lugar)
                                 }else{
                                     log(parts[1],"error")
                                 }
@@ -476,6 +466,8 @@
     }
 
     function borrarPrecioRegistrado(id) {
+        var lugar = '${lugar?.id}';
+        var item = '${item?.id}';
         bootbox.dialog({
             title   : "Alerta",
             message : "<i class='fa fa-trash fa-2x pull-left text-danger text-shadow'></i><p style='font-weight: bold'> Está seguro que desea eliminar este precio? Esta acción no se puede deshacer.</p>",
@@ -496,7 +488,7 @@
                             title: 'Este precio está registrado. Para eliminarlo necesita ingresar su clave de autorización.',
                             callback: function(result) {
                                 if(result){
-                                    if(result == ''){
+                                    if(result === ''){
                                         bootbox.alert('<i class="fa fa-exclamation-triangle text-warning fa-3x"></i> ' + '<strong style="font-size: 14px">' + "Ingrese su código de autorización" + '</strong>');
                                         return false
                                     }else{
@@ -513,18 +505,9 @@
                                                 var parts = msg.split("_");
                                                 if(parts[0] === 'ok'){
                                                     log(parts[1],"success");
-                                                    setTimeout(function () {
-                                                        if(tipoSeleccionado === 1){
-                                                            cargarMateriales();
-                                                            recargarMateriales();
-                                                        }else if(tipoSeleccionado === 2){
-                                                            cargarMano();
-                                                            recargaMano();
-                                                        }else{
-                                                            cargarEquipo();
-                                                            recargaEquipo();
-                                                        }
-                                                    }, 1000);
+                                                    cargarTablaItemsPrecios();
+                                                    cerrarTablaHistoricos();
+                                                    cargarTablaHistoricoPrecios(item, lugar)
                                                 }else{
                                                     log(parts[1],"error")
                                                 }

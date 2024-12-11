@@ -4,9 +4,9 @@
         <tr>
             <th style="width: 10%">Código</th>
             <th style="width: 40%">Descripción</th>
+            <th style="width: 15%">Lugar</th>
             <th style="width: 10%">Fecha</th>
             <th style="width: 10%">Precio</th>
-            <th style="width: 15%">Lugar</th>
             <th style="width: 15%">Acciones</th>
         </tr>
         </thead>
@@ -21,23 +21,16 @@
                 <tr data-id="${item?.rbpc__id}">
                     <td style="width: 10%">${item.itemcdgo}</td>
                     <td style="width: 40%">${item.itemnmbr}</td>
+                    <td style="width: 15%">${item.lgardscr}</td>
                     <td style="width: 10%">${item.rbpcfcha}</td>
                     <td style="width: 10%">${item.rbpcpcun ?: ''}</td>
-                    <td style="width: 15%">${item.lgardscr}</td>
                     <td style="width: 15%; text-align: center">
                         <a href="#" class="btn btn-xs btn-info btnVerMaterial" data-id="${item?.item__id}" title="Ver">
                             <i class="fas fa-search"></i>
                         </a>
-%{--                        <a href="#" class="btn btn-xs btn-success btnEditarPrecio" data-id="${item?.rbpc__id}" title="Editar precios">--}%
-%{--                            <i class="fas fa-edit"></i>--}%
-%{--                        </a>--}%
                         <a href="#" class="btn btn-xs btn-success btnHistorico" data-item="${item?.item__id}" data-lugar="${item?.lgar__id}" title="Histórico de Precios">
-%{--                            <i class="fas fa-dollar-sign"></i>--}%
                             <i class="fas fa-edit"></i>
                         </a>
-%{--                        <a href="#" class="btn btn-xs btn-danger btnEliminarPrecio" data-id="${item?.item__id}" title="Eliminar">--}%
-%{--                            <i class="fas fa-trash"></i>--}%
-%{--                        </a>--}%
                     </td>
                 </tr>
                 <g:set var="itemIDAnterior" value="${item.item__id}"/>

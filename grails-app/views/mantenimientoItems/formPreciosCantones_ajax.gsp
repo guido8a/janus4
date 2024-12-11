@@ -7,10 +7,27 @@
     <g:hiddenField name="all" value="${params.all}"/>
     <g:hiddenField name="ignore" value="${params.ignore}"/>
 
-    <legend>
-        Item:  ${precioRubrosItemsInstance.item.nombre} <br>
-        Lista: ${lugarNombre}
-    </legend>
+    <div class="col-md-12 breadcrumb" style="margin-top: -10px; font-size: 14px">
+        <div class="col-md-2">
+            <label>
+                Item:
+            </label>
+        </div>
+        <div class="col-md-8">
+            ${precioRubrosItemsInstance.item.nombre}
+        </div>
+    </div>
+    <div class="col-md-12 breadcrumb" style="margin-top: -10px; font-size: 14px">
+        <div class="col-md-2">
+            <label>
+                Lista:
+            </label>
+        </div>
+        <div class="col-md-8">
+            ${lugarNombre}
+        </div>
+    </div>
+
 
     <div class="form-group ${hasErrors(bean: precioRubrosItemsInstance, field: 'precioUnitario', 'error')} ">
         <span class="grupo col-md-12">

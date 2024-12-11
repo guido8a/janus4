@@ -9,12 +9,11 @@
 <body>
 
 <div class="span12 btn-group" >
-
-
-
     <div class="col-md-12 btn-group"  style="margin-bottom: 5px; margin-top: 10px">
-
         <div class="btn-group">
+            <a href="#" id="btnNuevaLista" class="btn btn-info">
+                <i class="fa fa-file"></i> Listas
+            </a>
             <a href="#" id="btnItems" class="btn">
                 <i class="fa fa-list-ul"></i> Items
             </a>
@@ -37,7 +36,7 @@
             </a>
         </div>
 
-        <span class="col-md-2">
+        <span class="col-md-2" style="text-align: center">
             Fecha por
             defecto:
         </span>
@@ -264,6 +263,35 @@
         }
     }
 
+    $("#btnNuevaLista").click(function ( ) {
+        cargarListas();
+    });
+
+    function cargarListas(){
+        var d = cargarLoader("Cargando...");
+        $.ajax({
+            type    : "POST",
+            url: "${createLink(action:'listas_ajax')}",
+            data    : {},
+            success : function (msg) {
+                d.modal("hide");
+                var lis = bootbox.dialog({
+                    id      : "dlgListas",
+                    title   : "Listas",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        }
+                    } //buttons
+                }); //dialog
+            } //success
+        }); //ajax
+    }
+
     %{--function createContextMenu(node) {--}%
 
     %{--    var nodeStrId = node.id;--}%
@@ -317,80 +345,8 @@
     %{--    return items;--}%
     %{--}--}%
 
-    %{--function createEditLista(id, parentId) {--}%
-    %{--    var title = id ? "Editar" : "Crear";--}%
-    %{--    var data = id ? {id : id} : {};--}%
-    %{--    data.grupo = parentId;--}%
-    %{--    $.ajax({--}%
-    %{--        type    : "POST",--}%
-    %{--        --}%%{--url     : "${createLink( action:'formSg_ajax')}",--}%
-    %{--        url     : "${createLink( action:'formLg_ajax')}",--}%
-    %{--        data    : data,--}%
-    %{--        success : function (msg) {--}%
-    %{--            var b = bootbox.dialog({--}%
-    %{--                id    : "dlgCreateEditLT",--}%
-    %{--                title : title + " lista",--}%
-    %{--                class : "modal-lg",--}%
-    %{--                message : msg,--}%
-    %{--                buttons : {--}%
-    %{--                    cancelar : {--}%
-    %{--                        label     : "Cancelar",--}%
-    %{--                        className : "btn-primary",--}%
-    %{--                        callback  : function () {--}%
-    %{--                        }--}%
-    %{--                    },--}%
-    %{--                    guardar  : {--}%
-    %{--                        id        : "btnSave",--}%
-    %{--                        label     : "<i class='fa fa-save'></i> Guardar",--}%
-    %{--                        className : "btn-success",--}%
-    %{--                        callback  : function () {--}%
-    %{--                            return submitFormLista(parentId);--}%
-    %{--                        } //callback--}%
-    %{--                    } //guardar--}%
-    %{--                } //buttons--}%
-    %{--            }); //dialog--}%
-    %{--            setTimeout(function () {--}%
-    %{--                b.find(".form-control").first().focus()--}%
-    %{--            }, 500);--}%
-    %{--        } //success--}%
-    %{--    }); //ajax--}%
-    %{--} //createEdit--}%
 
-    %{--function submitFormLista(tipo) {--}%
-    %{--    var $form = $("#frmSave");--}%
-    %{--    var $btn = $("#dlgCreateEditLT").find("#btnSave");--}%
-    %{--    if ($form.valid()) {--}%
-    %{--        var data = $form.serialize();--}%
-    %{--        $btn.replaceWith(spinner);--}%
-    %{--        var dialog = cargarLoader("Guardando...");--}%
-    %{--        $.ajax({--}%
-    %{--            type    : "POST",--}%
-    %{--            url     : $form.attr("action"),--}%
-    %{--            data    : data,--}%
-    %{--            success : function (msg) {--}%
-    %{--                dialog.modal('hide');--}%
-    %{--                var parts = msg.split("_");--}%
-    %{--                if(parts[0] === 'OK'){--}%
-    %{--                    log("Guardado correctamente", "success");--}%
-    %{--                    setTimeout(function () {--}%
-    %{--                        if(tipoSeleccionado === 1){--}%
-    %{--                            recargarMateriales();--}%
-    %{--                        }else if(tipoSeleccionado === 2){--}%
-    %{--                            recargaMano();--}%
-    %{--                        }else{--}%
-    %{--                            recargaEquipo();--}%
-    %{--                        }--}%
-    %{--                    }, 1000);--}%
-    %{--                }else{--}%
-    %{--                    bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');--}%
-    %{--                    return false;--}%
-    %{--                }--}%
-    %{--            }--}%
-    %{--        });--}%
-    %{--    } else {--}%
-    %{--        return false;--}%
-    %{--    }--}%
-    %{--}--}%
+
 
 
     %{--$("#btnReporte").click(function () {--}%

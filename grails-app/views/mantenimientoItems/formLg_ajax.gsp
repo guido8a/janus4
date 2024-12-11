@@ -10,7 +10,7 @@
                 <label for="tipoLista.id" class="col-md-2 control-label text-info">
                     Tipo
                 </label>
-                <span class="col-md-8">
+                <span class="col-md-6">
                     <g:select name="tipoLista.id" id="tipoListaId" class="form-control" from="${janus.TipoLista.list([sort: 'descripcion'])}" optionKey="id" optionValue="descripcion" value="${lugarInstance?.tipoLista?.id}" />
                 </span>
             </span>
@@ -21,7 +21,7 @@
                 <label for="codigo" class="col-md-2 control-label text-info">
                     Código
                 </label>
-                <span class="col-md-3">
+                <span class="col-md-4">
                     <g:if test="${id}">
                         <g:textField name="codigo" class="form-control required" readonly="true" value="${lugarInstance?.codigo}"/>
                     </g:if>
@@ -38,7 +38,7 @@
                 <label for="codigo" class="col-md-2 control-label text-info">
                     Descripción
                 </label>
-                <span class="col-md-3">
+                <span class="col-md-8">
                     <g:textField name="descripcion" maxlength="40" class="form-control required" value="${lugarInstance?.descripcion}"/>
                 </span>
             </span>

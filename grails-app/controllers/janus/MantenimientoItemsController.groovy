@@ -1356,10 +1356,12 @@ class MantenimientoItemsController {
         def itemInstance
         def departamento = null
         def listaDepartamentos = []
+        def grupo
 
         if (params.id) {
             itemInstance = Item.get(params.id)
             listaDepartamentos = DepartamentoItem.findAllById(itemInstance?.departamento?.id)
+            grupo = itemInstance?.departamento?.subgrupo?.grupo?.id
         }else{
             itemInstance = new Item()
 
@@ -1369,9 +1371,13 @@ class MantenimientoItemsController {
             }else{
                 listaDepartamentos = DepartamentoItem.list([sort: 'descripcion'])
             }
+
+            grupo = Grupo.get(params.grupo)?.id
         }
 
-        return [itemInstance: itemInstance, grupo: params.grupo, departamento: departamento, listaDepartamentos: listaDepartamentos]
+        println("grupo " + grupo)
+
+        return [itemInstance: itemInstance, grupo: grupo, departamento: departamento, listaDepartamentos: listaDepartamentos]
     }
 
     def buscaCpac() {
@@ -2623,7 +2629,7 @@ itemId: item.id
     }
 
     def tablaMaterialesPrecios_ajax(){
-        println("--> " + params)
+//        println("--> " + params)
         def cn = dbConnectionService.getConnection()
         def grupo = Grupo.get(params.buscarPor)
         def grupos = SubgrupoItems.findAllByGrupo(grupo)
@@ -2658,6 +2664,15 @@ itemId: item.id
         return [materiales: materiales, grupo: grupo, id: params.id, departamento: subgrupoBuscar, perfil: perfil, items: items]
     }
 
+
+    def listas_ajax(){
+
+    }
+
+    def tablaListas_ajax(){
+        def listas = Lugar.list([sort: 'descripcion'])
+        return [listas: listas]
+    }
 
 
 }
