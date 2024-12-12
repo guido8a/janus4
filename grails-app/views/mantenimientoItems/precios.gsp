@@ -88,15 +88,6 @@
     </fieldset>
 </div>
 
-<div id="modal-tree">
-    <div class="modal-body" id="modalBody">
-
-    </div>
-
-    <div class="modal-footer" id="modalFooter">
-    </div>
-</div>
-
 <script type="text/javascript">
 
     var dfi;
@@ -298,69 +289,6 @@
             } //success
         }); //ajax
     }
-    //
-    // $("#modal-tree").dialog({
-    //     autoOpen: false,
-    //     resizable: true,
-    //     modal: true,
-    //     draggable: false,
-    //     width: 600,
-    //     height: 600,
-    //     position: 'center',
-    //     title: 'Formato de impresión'
-    // });
-
-    %{--$("#btnReporte").click(function () {--}%
-    %{--    var tipo = $("#buscarPor option:selected").val();--}%
-    %{--    $.ajax({--}%
-    %{--        type    : "POST",--}%
-    %{--        url     : "${createLink(action:'reportePreciosUI')}",--}%
-    %{--        data    : {--}%
-    %{--            grupo : tipo--}%
-    %{--        },--}%
-    %{--        success : function (msg) {--}%
-    %{--            var btnOk = $('<a href="#" data-dismiss="modal" class="btn ">Cancelar</a>');--}%
-    %{--            var btnSave = $('<a href="#"  class="btn btn-info"><i class="fa fa-print"></i> PDF </a>');--}%
-    %{--            var btnExcel = $('<a href="#" class="btn btnExcel btn-success" ><i class="fa fa-file-excel"></i> Excel</a>');--}%
-
-    %{--            btnSave.click(function () {--}%
-    %{--                var data = "";--}%
-    %{--                data += "orden=" + $(".orden.active").attr("id");--}%
-    %{--                data += "&tipo=" + $(".tipo.active").attr("id");--}%
-    %{--                data += "&lugar=" + $("#lugarRep").val();--}%
-    %{--                data += "&fecha=" + $("#fechaRep").val();--}%
-    %{--                data += "&grupo=" + tipo;--}%
-    %{--                data += "&estado=" + $("#revisar").val();--}%
-
-    %{--                $(".col.active").each(function () {--}%
-    %{--                    data += "&col=" + $(this).attr("id");--}%
-    %{--                });--}%
-
-    %{--                location.href = "${g.createLink(controller: 'reportes2', action: '_reportePrecios')}?" + data;--}%
-    %{--            });--}%
-
-    %{--            btnExcel.click(function () {--}%
-    %{--                var fecha = $("#fechaRep").val();--}%
-    %{--                var lugar = $("#lugarRep").val();--}%
-    %{--                var grupo = tipo;--}%
-    %{--                var estadoA = $("#revisar option:selected").val();--}%
-
-    %{--                location.href = "${g.createLink(controller: 'reportesExcel2', action: 'reportePreciosExcel')}?fecha=" +--}%
-    %{--                    fecha + "&lugar=" + lugar + "&grupo=" + grupo + "&estado=" + estadoA;--}%
-    %{--            });--}%
-
-    %{--            btnOk.click(function () {--}%
-    %{--                $("#modal-tree").dialog("close");--}%
-    %{--            });--}%
-
-    %{--            $("#modalHeader").removeClass("btn-edit btn-show btn-delete");--}%
-    %{--            $("#modalTitle").html("Formato de impresión");--}%
-    %{--            $("#modalBody").html(msg);--}%
-    %{--            $("#modalFooter").html("").append(btnOk).append(btnSave).append(btnExcel);--}%
-    %{--            $("#modal-tree").dialog("open");--}%
-    %{--        }--}%
-    %{--    });--}%
-    %{--});--}%
 
     $("#btnReporte").click(function () {
         var tipo = $("#buscarPor option:selected").val();
@@ -424,7 +352,6 @@
             }
         });
     });
-
 
     $("#btnReporteMinas").click(function (){
         $.ajax({
