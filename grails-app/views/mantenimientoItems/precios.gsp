@@ -384,6 +384,18 @@
         }); //ajax
     });
 
+    $("#bc_grpo").click(function () {
+        $("#tipo").val(1);
+        $("#criterio").val('');
+        cargarTablaItemsPrecios();
+    });
+
+    $("#bc_sbgr").click(function () {
+        $("#tipo").val(2);
+        $("#criterio").val('');
+        cargarTablaItemsPrecios();
+    });
+
 </script>
 
 </body>
