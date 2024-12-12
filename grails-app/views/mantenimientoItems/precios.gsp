@@ -384,6 +384,14 @@
         }); //ajax
     });
 
+    $("#criterio").keydown(function (ev) {
+        if (ev.keyCode === 13) {
+            cargarTablaItemsPrecios();
+            return false;
+        }
+        return true;
+    });
+
     $("#bc_grpo").click(function () {
         $("#tipo").val(1);
         $("#criterio").val('');

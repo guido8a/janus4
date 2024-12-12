@@ -4,10 +4,10 @@
         <tr>
             <th style="width: 10%">Código</th>
             <th style="width: 40%">Descripción</th>
-            <th style="width: 15%">Lugar</th>
-            <th style="width: 10%">Fecha</th>
-            <th style="width: 10%">Precio</th>
-            <th style="width: 15%">Acciones</th>
+            <th style="width: 26%">Lugar</th>
+            <th style="width: 8%">Fecha</th>
+            <th style="width: 8%">Precio</th>
+            <th style="width: 8%">Acciones</th>
         </tr>
         </thead>
     </table>
@@ -21,10 +21,10 @@
                 <tr data-id="${item?.rbpc__id}">
                     <td style="width: 10%">${item.itemcdgo}</td>
                     <td style="width: 40%">${item.itemnmbr}</td>
-                    <td style="width: 15%">${item.lgardscr}</td>
-                    <td style="width: 10%">${item.rbpcfcha}</td>
-                    <td style="width: 10%">${item.rbpcpcun ?: ''}</td>
-                    <td style="width: 15%; text-align: center">
+                    <td style="width: 26%">${item.lgardscr}</td>
+                    <td style="width: 8%">${item.rbpcfcha}</td>
+                    <td style="width: 8%">${item.rbpcpcun ?: ''}</td>
+                    <td style="width: 8%; text-align: center">
                         <a href="#" class="btn btn-xs btn-info btnVerMaterial" data-id="${item?.item__id}" title="Ver">
                             <i class="fas fa-search"></i>
                         </a>
