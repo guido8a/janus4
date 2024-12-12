@@ -88,7 +88,14 @@
     </fieldset>
 </div>
 
+<div id="modal-tree">
+    <div class="modal-body" id="modalBody">
 
+    </div>
+
+    <div class="modal-footer" id="modalFooter">
+    </div>
+</div>
 
 <script type="text/javascript">
 
@@ -291,71 +298,25 @@
             } //success
         }); //ajax
     }
-
-    %{--function createContextMenu(node) {--}%
-
-    %{--    var nodeStrId = node.id;--}%
-    %{--    var $node = $("#" + nodeStrId);--}%
-    %{--    var nodeId = nodeStrId.split("_")[1];--}%
-    %{--    var parentId = $node.parent().parent().children()[1].id.split("_")[1];--}%
-    %{--    var nodeType = $node.data("jstree").type;--}%
-    %{--    var esRoot = nodeType === "root";--}%
-    %{--    var esPrincipal = nodeType === "principal";--}%
-    %{--    var esSubgrupo = nodeType.contains("subgrupo");--}%
-    %{--    var esDepartamento = nodeType.contains("departamento");--}%
-    %{--    var esItem = nodeType.contains("item");--}%
-    %{--    var esLugar = nodeType.contains("lugar");--}%
-    %{--    var tipoGrupo = $node.data("tipo");--}%
-    %{--    var nodeHasChildren = $node.hasClass("hasChildren");--}%
-    %{--    var abueloId = null;--}%
-
-    %{--    if(esDepartamento){--}%
-    %{--        abueloId = $node.parent().parent().parent().parent().children()[1].id.split("_")[1];--}%
-    %{--    }else{--}%
-    %{--        abueloId = parentId--}%
-    %{--    }--}%
-
-    %{--    var items = {};--}%
-
-    %{--    var nuevaLista = {--}%
-    %{--        label  : "Nueva Lista",--}%
-    %{--        icon   : "fa fa-underline text-success",--}%
-    %{--        action : function () {--}%
-    %{--            createEditLista(null, nodeId);--}%
-    %{--        }--}%
-    %{--    };--}%
-
-    %{--    var editarLista = {--}%
-    %{--        label  : "Editar lista",--}%
-    %{--        icon   : "fa fa-underline text-success",--}%
-    %{--        action : function () {--}%
-    %{--            createEditLista(nodeId, parentId);--}%
-    %{--        }--}%
-    %{--    };--}%
-
-    %{--    if (esItem) {--}%
-    %{--        if(!todosLugares){--}%
-    %{--            items.nuevaLista = nuevaLista--}%
-    %{--        }--}%
-    %{--    } else if(esLugar){--}%
-    %{--        if(!todosLugares){--}%
-    %{--            items.editarLista = editarLista--}%
-    %{--        }--}%
-    %{--    }--}%
-    %{--    return items;--}%
-    %{--}--}%
-
-
-
-
+    //
+    // $("#modal-tree").dialog({
+    //     autoOpen: false,
+    //     resizable: true,
+    //     modal: true,
+    //     draggable: false,
+    //     width: 600,
+    //     height: 600,
+    //     position: 'center',
+    //     title: 'Formato de impresión'
+    // });
 
     %{--$("#btnReporte").click(function () {--}%
-    %{--    var tipo = tipoSeleccionado == 1 ? 'materiales' : (tipoSeleccionado == 2 ? 'mano_obra' : 'equipos')--}%
+    %{--    var tipo = $("#buscarPor option:selected").val();--}%
     %{--    $.ajax({--}%
     %{--        type    : "POST",--}%
     %{--        url     : "${createLink(action:'reportePreciosUI')}",--}%
     %{--        data    : {--}%
-    %{--            grupo : tipoSeleccionado--}%
+    %{--            grupo : tipo--}%
     %{--        },--}%
     %{--        success : function (msg) {--}%
     %{--            var btnOk = $('<a href="#" data-dismiss="modal" class="btn ">Cancelar</a>');--}%
@@ -368,7 +329,7 @@
     %{--                data += "&tipo=" + $(".tipo.active").attr("id");--}%
     %{--                data += "&lugar=" + $("#lugarRep").val();--}%
     %{--                data += "&fecha=" + $("#fechaRep").val();--}%
-    %{--                data += "&grupo=" + tipoSeleccionado;--}%
+    %{--                data += "&grupo=" + tipo;--}%
     %{--                data += "&estado=" + $("#revisar").val();--}%
 
     %{--                $(".col.active").each(function () {--}%
@@ -381,7 +342,7 @@
     %{--            btnExcel.click(function () {--}%
     %{--                var fecha = $("#fechaRep").val();--}%
     %{--                var lugar = $("#lugarRep").val();--}%
-    %{--                var grupo = tipoSeleccionado;--}%
+    %{--                var grupo = tipo;--}%
     %{--                var estadoA = $("#revisar option:selected").val();--}%
 
     %{--                location.href = "${g.createLink(controller: 'reportesExcel2', action: 'reportePreciosExcel')}?fecha=" +--}%
@@ -401,36 +362,100 @@
     %{--    });--}%
     %{--});--}%
 
-    %{--$("#btnReporteMinas").click(function (){--}%
-    %{--    $.ajax({--}%
-    %{--        type    : "POST",--}%
-    %{--        url: "${createLink(action:'impresionMinas_ajax')}",--}%
-    %{--        data    : {},--}%
-    %{--        success : function (msg) {--}%
-    %{--            var b = bootbox.dialog({--}%
-    %{--                id      : "dlgImprimirMinas",--}%
-    %{--                title   : "Listas de Precios de materiales pétreos - minas (Excel)",--}%
-    %{--                message : msg,--}%
-    %{--                buttons : {--}%
-    %{--                    cancelar : {--}%
-    %{--                        label     : "Cancelar",--}%
-    %{--                        className : "btn-primary",--}%
-    %{--                        callback  : function () {--}%
-    %{--                        }--}%
-    %{--                    },--}%
-    %{--                    guardar  : {--}%
-    %{--                        id        : "btnSave",--}%
-    %{--                        label     : "<i class='fa fa-file-excel'></i> Excel",--}%
-    %{--                        className : "btn-success",--}%
-    %{--                        callback  : function () {--}%
-    %{--                            location.href="${createLink(controller: 'reportesExcel2', action: 'reporteExcelMinas')}?lista=" + $("#lista option:selected").val();--}%
-    %{--                        } //callback--}%
-    %{--                    } //guardar--}%
-    %{--                } //buttons--}%
-    %{--            }); //dialog--}%
-    %{--        } //success--}%
-    %{--    }); //ajax--}%
-    %{--});--}%
+    $("#btnReporte").click(function () {
+        var tipo = $("#buscarPor option:selected").val();
+        $.ajax({
+            type    : "POST",
+            url     : "${createLink(action:'reportePreciosUI')}",
+            data    : {
+                grupo : tipo
+            },
+            success : function (msg) {
+                var b = bootbox.dialog({
+                    id      : "dlgImprimir",
+                    title   : "Formato de impresión",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "<i class='fa fa-times'></i> Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        },
+                        excel  : {
+                            id        : "btnExcel",
+                            label     : "<i class='fa fa-file-excel'></i> Excel",
+                            className : "btn-success",
+                            callback  : function () {
+                                var fecha = $("#fechaRep").val();
+                                var lugar = $("#lugarRep").val();
+                                var grupo = tipo;
+                                var estadoA = $("#revisar option:selected").val();
+
+                                location.href = "${g.createLink(controller: 'reportesExcel2', action: 'reportePreciosExcel')}?fecha=" +
+                                    fecha + "&lugar=" + lugar + "&grupo=" + grupo + "&estado=" + estadoA;
+                                return false;
+                            }
+                        },
+                        pdf  : {
+                            id        : "btnPDF",
+                            label     : "<i class='fa fa-print'></i> PDF",
+                            className : "btn-info",
+                            callback  : function () {
+                                var data = "";
+                                data += "orden=" + $(".orden.active").attr("id");
+                                data += "&tipo=" + $(".tipo.active").attr("id");
+                                data += "&lugar=" + $("#lugarRep").val();
+                                data += "&fecha=" + $("#fechaRep").val();
+                                data += "&grupo=" + tipo;
+                                data += "&estado=" + $("#revisar").val();
+
+                                $(".col.active").each(function () {
+                                    data += "&col=" + $(this).attr("id");
+                                });
+
+                                location.href = "${g.createLink(controller: 'reportes2', action: '_reportePrecios')}?" + data;
+                                return false;
+                            }
+                        }
+                    } //buttons
+                }); //dialog
+
+            }
+        });
+    });
+
+
+    $("#btnReporteMinas").click(function (){
+        $.ajax({
+            type    : "POST",
+            url: "${createLink(action:'impresionMinas_ajax')}",
+            data    : {},
+            success : function (msg) {
+                var b = bootbox.dialog({
+                    id      : "dlgImprimirMinas",
+                    title   : "Listas de Precios de materiales pétreos - minas (Excel)",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        },
+                        guardar  : {
+                            id        : "btnSave",
+                            label     : "<i class='fa fa-file-excel'></i> Excel",
+                            className : "btn-success",
+                            callback  : function () {
+                                location.href="${createLink(controller: 'reportesExcel2', action: 'reporteExcelMinas')}?lista=" + $("#lista option:selected").val();
+                            } //callback
+                        } //guardar
+                    } //buttons
+                }); //dialog
+            } //success
+        }); //ajax
+    });
 
 </script>
 

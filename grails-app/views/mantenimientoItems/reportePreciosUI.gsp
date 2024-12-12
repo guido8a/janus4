@@ -2,11 +2,6 @@
 fieldset {
     margin-bottom : 15px;
 }
-/*.bootstrap-datetimepicker-widget {*/
-/*    position: static;*/
-/*    z-index: 1000 !important;*/
-
-/*}*/
 </style>
 
 <div class="tituloTree">${grupo.descripcion}</div>
@@ -48,7 +43,6 @@ fieldset {
                 <a href="#" id="n" class="orden btn">
                     Numérico
                 </a>
-                %{--            <input class="form-check-input revisar" type="checkbox" value="option1" checked="checked">--}%
             </div>
             <div class="col-md-4">
                 <g:select name="revisar" class="form-control col-md-2" from="${[true: 'Activos', false : 'Inactivos']}" optionKey="key" optionValue="value"/>
@@ -73,8 +67,6 @@ fieldset {
 </g:form>
 
 <script type="text/javascript">
-
-    // $.switcher('input[type=checkbox]');
 
     $('#fechaRep').datetimepicker({
         locale: 'es',
