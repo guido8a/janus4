@@ -1591,7 +1591,8 @@ pre code {
   margin-left: auto;
   /*background-color: #1a7031;*/
   /*color de la barra nav opciones*/
-  background-image: -webkit-linear-gradient(top, #c2d1e2, #f2f1f2);
+  /*background-image: -webkit-linear-gradient(top, #9da9b7, #f2f1f2);*/
+  background-image: -webkit-linear-gradient(top, #9da9b7, #e8eaf2);
 }
 .row {
   margin-right: -15px;
