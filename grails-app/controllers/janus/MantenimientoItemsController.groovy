@@ -2337,7 +2337,10 @@ itemId: item.id
         println "tablaSubgrupos_ajax $params"
         def grupo = Grupo.get(params.buscarPor)
         def grupos = SubgrupoItems.findAllByGrupo(grupo, [sort: 'codigo'])
+
+
         def subgrupos = []
+        def subgrupos2 = []
         def sql = "select sbgrcdgo, sbgrdscr, dprtcdgo, dprtdscr, dprt.dprt__id, sbgr.sbgr__id from dprt, sbgr where grpo__id = ${params.buscarPor} and " +
                 "dprt.sbgr__id = sbgr.sbgr__id and " +
                 "dprtdscr ilike '%${params.criterio}%' or (sbgr.sbgr__id = ${params.id}) order by sbgrcdgo"
@@ -2346,12 +2349,17 @@ itemId: item.id
                     "dprt.sbgr__id = sbgr.sbgr__id and sbgr.sbgr__id = ${params.id} and " +
                     "dprtdscr ilike '%${params.criterio}%' or (sbgr.sbgr__id = ${params.id}) order by sbgrcdgo"
         }
-//        if(params.id){
-//            def grupoBuscar = SubgrupoItems.get(params.id)
-//            subgrupos = DepartamentoItem.findAllBySubgrupo(grupoBuscar).sort{a,b -> a.subgrupo.descripcion <=> b.subgrupo.descripcion ?: a.codigo <=> b.codigo }.take(50)
-//        }else{
-//            subgrupos = DepartamentoItem.findAllBySubgrupoInListAndDescripcionIlike(grupos, '%' + params.criterio + '%').sort{a,b -> a.subgrupo.descripcion <=> b.subgrupo.descripcion ?: a.codigo <=> b.codigo }.take(50)
-//        }
+        if(params.id){
+            def grupoBuscar = SubgrupoItems.get(params.id)
+            subgrupos2 = DepartamentoItem.findAllBySubgrupo(grupoBuscar).sort{a,b -> a.subgrupo.descripcion <=> b.subgrupo.descripcion ?: a.codigo <=> b.codigo }.take(50)
+        }else{
+            subgrupos2 = DepartamentoItem.findAllBySubgrupoInListAndDescripcionIlike(grupos, '%' + params.criterio + '%').sort{a,b -> a.subgrupo.descripcion <=> b.subgrupo.descripcion ?: a.codigo <=> b.codigo }.take(50)
+        }
+
+
+        println("ss " + subgrupos2)
+
+
 //        println "sql: $sql"
         subgrupos = cn.rows(sql.toString());
 
@@ -2615,6 +2623,7 @@ itemId: item.id
         def grupo = Grupo.get(params.buscarPor)
         def grupos = SubgrupoItems.findAllByGrupo(grupo, [sort: 'codigo'])
         def subgrupos = []
+        def subgrupos2 = []
         def sql = "select sbgrcdgo, sbgrdscr, dprtcdgo, dprtdscr, dprt.dprt__id, sbgr.sbgr__id from dprt, sbgr where grpo__id = ${params.buscarPor} and " +
                 "dprt.sbgr__id = sbgr.sbgr__id and " +
                 "dprtdscr ilike '%${params.criterio}%' or (sbgr.sbgr__id = ${params.id}) order by sbgrcdgo"
@@ -2623,6 +2632,17 @@ itemId: item.id
                     "dprt.sbgr__id = sbgr.sbgr__id and sbgr.sbgr__id = ${params.id} and " +
                     "dprtdscr ilike '%${params.criterio}%' or (sbgr.sbgr__id = ${params.id}) order by sbgrcdgo"
         }
+
+        if(params.id){
+            def grupoBuscar = SubgrupoItems.get(params.id)
+            subgrupos2 = DepartamentoItem.findAllBySubgrupo(grupoBuscar).sort{a,b -> a.subgrupo.descripcion <=> b.subgrupo.descripcion ?: a.codigo <=> b.codigo }.take(50)
+        }else{
+            subgrupos2 = DepartamentoItem.findAllBySubgrupoInListAndDescripcionIlike(grupos, '%' + params.criterio + '%').sort{a,b -> a.subgrupo.descripcion <=> b.subgrupo.descripcion ?: a.codigo <=> b.codigo }.take(50)
+        }
+
+        println("--> " + subgrupos2)
+
+
         subgrupos = cn.rows(sql.toString());
         cn.close()
         return [subgrupos: subgrupos, grupo: grupo, id_grupo: subgrupos.sbgr__id ]
