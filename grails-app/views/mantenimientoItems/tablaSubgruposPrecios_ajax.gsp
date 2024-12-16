@@ -8,7 +8,6 @@
             <th style="width: 10%">Código</th>
             <th style="width: 45%">Descripción</th>
             <th style="width: 10%">Acciones</th>
-%{--            <th style="width: 5%">Material</th>--}%
         </tr>
         </thead>
     </table>
@@ -19,27 +18,27 @@
         <tbody>
         <g:if test="${subgrupos}">
             <g:each in="${subgrupos}" status="i" var="sbgr">
-                <tr data-id="${sbgr?.dprt__id}">
-                    <td style="width: 10%">${sbgr?.sbgrcdgo}</td>
-                    <td style="width: 20%">${sbgr?.sbgrdscr}</td>
-                    <td style="width: 10%">${sbgr?.dprtcdgo}</td>
-                    <td style="width: 45%">${sbgr?.dprtdscr}</td>
-                    <td style="width: 10%; text-align: center">
-%{--                        <a href="#" class="btn btn-xs btn-success btnEditarSubgrupo" data-id="${sbgr?.dprt__id}" title="Editar">--}%
-%{--                            <i class="fas fa-edit"></i>--}%
-%{--                        </a>--}%
-                        <a href="#" class="btn btn-xs btn-warning btnEstructuraSubgrupo" data-id="${sbgr?.dprt__id}" title="Materiales">
-                            <i class="fas fa-list"></i>
-                        </a>
-%{--                        <a href="#" class="btn btn-xs btn-danger btnEliminarSubgrupo" data-id="${sbgr?.dprt__id}" title="Eliminar">--}%
-%{--                            <i class="fas fa-trash"></i>--}%
-%{--                        </a>--}%
-                    </td>
-%{--                    <td style="width: 5%; text-align: center">--}%
-%{--                        <a href="#" class="btn btn-xs btn-success btnCrearMaterial" data-id="${sbgr?.dprt__id}" title="Nuevo material">--}%
-%{--                            <i class="fas fa-cube"></i>--}%
+%{--                <tr data-id="${sbgr?.dprt__id}">--}%
+                <tr data-id="${sbgr?.id}">
+%{--                    <td style="width: 10%">${sbgr?.sbgrcdgo}</td>--}%
+%{--                    <td style="width: 20%">${sbgr?.sbgrdscr}</td>--}%
+%{--                    <td style="width: 10%">${sbgr?.dprtcdgo}</td>--}%
+%{--                    <td style="width: 45%">${sbgr?.dprtdscr}</td>--}%
+%{--                    <td style="width: 10%; text-align: center">--}%
+%{--                        <a href="#" class="btn btn-xs btn-warning btnEstructuraSubgrupo" data-id="${sbgr?.dprt__id}" title="Materiales">--}%
+%{--                            <i class="fas fa-list"></i>--}%
 %{--                        </a>--}%
 %{--                    </td>--}%
+
+                    <td style="width: 10%">${sbgr?.subgrupo?.codigo}</td>
+                    <td style="width: 20%">${sbgr?.subgrupo?.descripcion}</td>
+                    <td style="width: 10%">${sbgr?.codigo}</td>
+                    <td style="width: 45%">${sbgr?.descripcion}</td>
+                    <td style="width: 10%; text-align: center">
+                        <a href="#" class="btn btn-xs btn-warning btnEstructuraSubgrupo" data-id="${sbgr?.id}" title="Materiales">
+                            <i class="fas fa-list"></i>
+                        </a>
+                    </td>
                 </tr>
             </g:each>
         </g:if>
