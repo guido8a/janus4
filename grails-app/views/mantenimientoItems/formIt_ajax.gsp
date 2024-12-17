@@ -18,7 +18,7 @@
             </span>
         </span>
     </div>
-    <div class="form-group ${hasErrors(bean: itemInstance, field: 'codigo', 'error')} ">
+    <div class="form-group ${hasErrors(bean: itemInstance, field: 'codigo', 'error')} ${hasErrors(bean: itemInstance, field: 'fecha', 'error')}  ${hasErrors(bean: itemInstance, field: 'estado', 'error')}">
         <span class="grupo">
             <label for="codigo" class="col-md-2 control-label text-info">
                 Código
@@ -38,6 +38,27 @@
                 </span>
             </g:else>
         </span>
+
+        <span class="grupo">
+            <label class="col-md-1 control-label text-info">
+                Fecha
+            </label>
+            <span class="col-md-2">
+                <input aria-label="" name="fecha" id='datetimepicker1' type='text' class="form-control"
+                       value="${itemInstance?.fecha?.format("dd-MM-yyyy")}"/>
+            </span>
+        </span>
+
+        <span class="grupo">
+            <label for="estado" class="col-md-1 control-label text-info">
+                Estado
+            </label>
+            <span class="col-md-2">
+                <g:select name="estado" from="${['A': 'Activo', 'B': 'Dado de baja']}" optionValue="value" optionKey="key" class="form-control" value="${itemInstance?.estado}" />
+                <p class="help-block ui-helper-hidden"></p>
+            </span>
+        </span>
+
     </div>
     <div class="form-group ${hasErrors(bean: itemInstance, field: 'nombre', 'error')} ">
         <span class="grupo">
@@ -136,29 +157,6 @@
         </span>
     </div>
 
-    <div class="form-group ${hasErrors(bean: itemInstance, field: 'fecha', 'error')} ">
-        <span class="grupo">
-            <label class="col-md-2 control-label text-info">
-                Fecha
-            </label>
-            <span class="col-md-2">
-                <input aria-label="" name="fecha" id='datetimepicker1' type='text' class="form-control"
-                       value="${itemInstance?.fecha?.format("dd-MM-yyyy")}"/>
-            </span>
-        </span>
-    </div>
-    <div class="form-group ${hasErrors(bean: itemInstance, field: 'estado', 'error')} ">
-        <span class="grupo">
-            <label for="estado" class="col-md-2 control-label text-info">
-                Estado
-            </label>
-            <span class="col-md-2">
-                <g:select name="estado" from="${['A': 'Activo', 'B': 'Dado de baja']}" optionValue="value" optionKey="key" class="form-control" value="${itemInstance?.estado}" />
-                <p class="help-block ui-helper-hidden"></p>
-            </span>
-        </span>
-    </div>
-
     <div class="form-group ${hasErrors(bean: itemInstance, field: 'codigoComprasPublicasTransporte', 'error')} ">
         <span class="grupo">
             <label for="codigoTransporte" class="col-md-2 control-label text-warning">
@@ -188,6 +186,21 @@
             <span class="col-md-2">
                 <g:textField name="transporteValor" class="form-control" value="${itemInstance?.transporteValor ?: 0}" />
                 <p class="help-block ui-helper-hidden"></p>
+            </span>
+        </span>
+    </div>
+
+    <div class="form-group ${hasErrors(bean: itemInstance, field: 'transporte', 'error')} ">
+        <span class="grupo">
+            <label for="transporte" class="col-md-2 control-label text-success">
+                Transporte
+            </label>
+            <span class="col-md-3">
+                <g:select name="transporte" from="${['N': 'Normal', "F" : "Fijo"]}" optionValue="value" optionKey="key" class="form-control" value="${itemInstance?.transporte}" />
+                <p class="help-block ui-helper-hidden"></p>
+            </span>
+            <span class="col-md-2" id="spanTransporte">
+                <g:textField name="transporetFijo" class="form-control hide" value="${itemInstance?.transporetFijo ?: 0}" />
             </span>
         </span>
     </div>
@@ -223,6 +236,21 @@
 
     var bcpc;
     var bcpct;
+
+    cargarSpanTransporte($("#transporte option:selected").val());
+
+    $("#transporte").change(function () {
+        var s = $(this).val();
+        cargarSpanTransporte(s)
+    });
+
+    function cargarSpanTransporte(tipo){
+        if(tipo === 'F'){
+            $("#transporetFijo").removeClass("hide").val(${itemInstance?.transporetFijo})
+        }else{
+            $("#transporetFijo").addClass("hide").val(0)
+        }
+    }
 
     cargarCodigos();
 
@@ -382,16 +410,16 @@
         this.value = this.value.toUpperCase();
     });
 
-    $("#transporte").change(function () {
-        var v = $(this).val();
-        var l = "";
-        if (v === 'P' || v === 'P1') {
-            l = "Ton";
-        } else {
-            l = "M<sup>3</sup>";
-        }
-        $("#item_unidad").val(l);
-    });
+    // $("#transporte").change(function () {
+    //     var v = $(this).val();
+    //     var l = "";
+    //     if (v === 'P' || v === 'P1') {
+    //         l = "Ton";
+    //     } else {
+    //         l = "M<sup>3</sup>";
+    //     }
+    //     $("#item_unidad").val(l);
+    // });
 
     $("#frmSave").validate({
         rules          : {
