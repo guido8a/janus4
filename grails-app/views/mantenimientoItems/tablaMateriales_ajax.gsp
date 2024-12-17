@@ -144,6 +144,7 @@
     });
 
     function verificarBorrado(id){
+        var aa = cargarLoader("Cargando...");
         $.ajax({
             type : "POST",
             url : "${g.createLink(controller: 'mantenimientoItems',action:'verificaBorrado_ajax')}",
@@ -151,6 +152,7 @@
                 id : id
             },
             success  : function (msg) {
+                aa.modal("hide");
                 var resp = msg.split('_');
                 if(resp[0] === "ok"){
                     var ou = cargarLoader("Cargando...");
