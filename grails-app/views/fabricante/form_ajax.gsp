@@ -92,23 +92,25 @@
         </div>
 
         <div class="form-group ${hasErrors(bean: fabricante, field: 'ttlr', 'error')} ">
-            <span class="grupo">
-                <label for="ttlr" class="col-md-2 control-label text-info">
-                    Ttlr
-                </label>
-                <span class="col-md-4">
-                    <g:textField name="ttlr" maxlength="4" class="form-control" value="${fabricante?.ttlr}"/>
-                </span>
-            </span>
 
             <span class="grupo">
                 <label for="estado" class="col-md-2 control-label text-info">
                     Estado
                 </label>
-                <span class="col-md-4">
+                <span class="col-md-3">
                     <g:select name="estado" from="${['I' : 'Inactivo', 'A' : 'Activo']}" optionValue="value" optionKey="key" class="form-control" value="${fabricante?.estado}"/>
                 </span>
             </span>
+
+            <span class="grupo">
+                <label for="ttlr" class="col-md-3 control-label text-info">
+                    Título (Ing - Arq)
+                </label>
+                <span class="col-md-2">
+                    <g:textField name="ttlr" maxlength="4" class="form-control" value="${fabricante?.ttlr}"/>
+                </span>
+            </span>
+
         </div>
 
         <div class="form-group ${hasErrors(bean: fabricante, field: 'observaciones', 'error')} ">
@@ -117,7 +119,7 @@
                     Observaciones
                 </label>
                 <span class="col-md-8">
-                    <g:textArea name="observaciones" maxlength="124" minlength="0" class="form-control" value="${fabricante?.observaciones}" style="resize: none; height: 120px"/>
+                    <g:textArea name="observaciones" maxlength="124" minlength="0" class="form-control" value="${fabricante?.observaciones}" style="resize: none; height: 80px"/>
                 </span>
             </span>
         </div>
