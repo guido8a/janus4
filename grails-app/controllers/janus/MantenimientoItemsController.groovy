@@ -2421,7 +2421,7 @@ itemId: item.id
         def subgrupos = DepartamentoItem.findAllBySubgrupoInList(grupos)
         def materiales = []
         def subgrupoBuscar = null
-        def perfil = Persona.get(session.usuario.id).departamento?.codigo == 'UTFPU'
+        def perfil = Persona.get(session.usuario.id).departamento?.codigo == 'CRFC'
 
         if(params.id){
             subgrupoBuscar = DepartamentoItem.get(params.id)
@@ -2443,7 +2443,7 @@ itemId: item.id
         def ares = ArchivoEspecificacion.findByItem(item)
         def usuario = Persona.get(session.usuario.id)
         def existeUtfpu = false
-        if(usuario.departamento?.codigo == 'UTFPU'){
+        if(usuario.departamento?.codigo == 'CRFC'){
             existeUtfpu = true
         }
 
@@ -2703,7 +2703,7 @@ itemId: item.id
         def materiales = []
         def subgrupoBuscar = null
         def sql = ""
-        def perfil = Persona.get(session.usuario.id).departamento?.codigo == 'UTFPU'
+        def perfil = Persona.get(session.usuario.id).departamento?.codigo == 'CRFC'
 
         if(params.id){
             subgrupoBuscar = DepartamentoItem.get(params.id)

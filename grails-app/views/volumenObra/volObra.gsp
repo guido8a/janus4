@@ -114,7 +114,7 @@
             </div>
 
             %{--            <div class="col-md-3">--}%
-            %{--                <g:if test="${persona?.departamento?.codigo == 'UTFPU'}">--}%
+            %{--                <g:if test="${persona?.departamento?.codigo == 'CRFC'}">--}%
             %{--                    <a href="#" class="btn btn-success boton" id="btnCrearSP" title="Crear subpresupuesto" style="margin-top: -10px;">--}%
             %{--                        <i class="fa fa-plus"></i>--}%
             %{--                    </a>--}%
@@ -129,7 +129,7 @@
         </div>
 
         <div class="col-md-2" style="margin-top: 30px">
-            <g:if test="${persona?.departamento?.codigo == 'UTFPU'}">
+            <g:if test="${persona?.departamento?.codigo == 'CRFC'}">
                 <a href="#" class="btn btn-success boton" id="btnCrearSP" title="Crear subpresupuesto" >
                     <i class="fa fa-plus"></i>
                 </a>
@@ -196,7 +196,7 @@
                 %{--                        </span>--}%
                 %{--                    </span>--}%
 
-                %{--                    <g:if test="${persona?.departamento?.codigo == 'UTFPU'}">--}%
+                %{--                    <g:if test="${persona?.departamento?.codigo == 'CRFC'}">--}%
                 %{--                        <a href="#" class="btn btn-success boton" id="btnCrearSP" title="Crear subpresupuesto" style="margin-top: -10px;">--}%
                 %{--                            <i class="fa fa-plus"></i>--}%
                 %{--                        </a>--}%

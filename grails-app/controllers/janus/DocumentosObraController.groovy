@@ -31,11 +31,11 @@ class DocumentosObraController {
 //    def esDuenoObra(obra) {
 //        def dueno = false
 //        def funcionElab = Funcion.findByCodigo('E')
-//        def personasUtfpu = PersonaRol.findAllByFuncionAndPersonaInList(funcionElab, Persona.findAllByDepartamento(Departamento.findByCodigo('UTFPU')))
+//        def personasUtfpu = PersonaRol.findAllByFuncionAndPersonaInList(funcionElab, Persona.findAllByDepartamento(Departamento.findByCodigo('CRFC')))
 //        def responsableRol = PersonaRol.findByPersonaAndFuncion(obra?.responsableObra, funcionElab)
 //
 //        if(responsableRol) {
-//            dueno = personasUtfpu.contains(responsableRol) && session.usuario.departamento.codigo == 'UTFPU'
+//            dueno = personasUtfpu.contains(responsableRol) && session.usuario.departamento.codigo == 'CRFC'
 //        }
 //        dueno = session.usuario.departamento.id == obra?.responsableObra?.departamento?.id || dueno
 //        dueno
@@ -180,10 +180,10 @@ class DocumentosObraController {
         def funcionCoor = Funcion.findByCodigo('O')
         def funcionDire = Funcion.findByCodigo('D')
 
-        def personasUtfpuCoor = PersonaRol.findAllByFuncionAndPersonaInList(funcionCoor, Persona.findAllByDepartamento(Departamento.findByCodigo('UTFPU')))
+        def personasUtfpuCoor = PersonaRol.findAllByFuncionAndPersonaInList(funcionCoor, Persona.findAllByDepartamento(Departamento.findByCodigo('CRFC')))
 
-//        def personas = Persona.findAllByDepartamentoInList(Departamento.findAllByDireccion(Departamento.findByCodigo('UTFPU').direccion))
-        def personasUtfpuDire = PersonaRol.findAllByFuncionAndPersonaInList(funcionDire, Persona.findAllByDepartamentoInList(Departamento.findAllByDireccion(Departamento.findByCodigo('UTFPU').direccion)))
+//        def personas = Persona.findAllByDepartamentoInList(Departamento.findAllByDireccion(Departamento.findByCodigo('CRFC').direccion))
+        def personasUtfpuDire = PersonaRol.findAllByFuncionAndPersonaInList(funcionDire, Persona.findAllByDepartamentoInList(Departamento.findAllByDireccion(Departamento.findByCodigo('CRFC').direccion)))
 //        println "personasUtfpuDire: ${personasUtfpuDire.persona.nombre}"
 
         def firmantes = []
@@ -200,11 +200,11 @@ class DocumentosObraController {
 
 //        personasUtfpuDire.add(personasUtfpuCoor)
         personasUtfpuDire += personasUtfpuCoor
-//        def personasUtfpuDire = PersonaRol.findAllByFuncionAndPersonaInList(funcionDire, Persona.findAllByDepartamentoInList(Direccion.findByDepartamento(Departamento.findByCodigo('UTFPU'))))
+//        def personasUtfpuDire = PersonaRol.findAllByFuncionAndPersonaInList(funcionDire, Persona.findAllByDepartamentoInList(Direccion.findByDepartamento(Departamento.findByCodigo('CRFC'))))
 
-//        def directorUtfpu = PersonaRol.findByFuncionAndPersonaInList(funcionDirector,Persona.findAllByDepartamento(Departamento.findByCodigo('UTFPU')))
+//        def directorUtfpu = PersonaRol.findByFuncionAndPersonaInList(funcionDirector,Persona.findAllByDepartamento(Departamento.findByCodigo('CRFC')))
 
-        def dirUtfpu = Departamento.findByCodigo('UTFPU').direccion
+        def dirUtfpu = Departamento.findByCodigo('CRFC').direccion
 
         def dptoDireccion1 = Departamento.findAllByDireccion(dirUtfpu)
 
@@ -227,7 +227,7 @@ class DocumentosObraController {
             flash.message += "<br>No se pudo conseguir los coordinadores para firmas, revise que la dirección requirente posea dependencias"
         }
 
-        def personalUtfpu =  Persona.findAllByDepartamento(Departamento.findByCodigo('UTFPU'))
+        def personalUtfpu =  Persona.findAllByDepartamento(Departamento.findByCodigo('CRFC'))
 
 //        println("-->" + personalUtfpu)
 
@@ -261,12 +261,12 @@ class DocumentosObraController {
 //
         def dueno = false
         def funcionElab = Funcion.findByCodigo('E')
-        def personasUtfpu = PersonaRol.findAllByFuncionAndPersonaInList(funcionElab, Persona.findAllByDepartamento(Departamento.findByCodigo('UTFPU')))
+        def personasUtfpu = PersonaRol.findAllByFuncionAndPersonaInList(funcionElab, Persona.findAllByDepartamento(Departamento.findByCodigo('CRFC')))
         def responsableRol = PersonaRol.findByPersonaAndFuncion(obra?.responsableObra, funcionElab)
 //
 //        if(responsableRol) {
 ////            println personasUtfpu
-//            dueno = personasUtfpu.contains(responsableRol) && session.usuario.departamento.codigo == 'UTFPU'
+//            dueno = personasUtfpu.contains(responsableRol) && session.usuario.departamento.codigo == 'CRFC'
 //        }
 
 //        println "responsable" + responsableRol + " dueño " + dueno
@@ -279,7 +279,7 @@ class DocumentosObraController {
             if (obra?.responsableObra?.departamento?.direccion?.id == Persona.get(session.usuario.id).departamento?.direccion?.id) {
                 dueno = true
             } else {
-                dueno = personasUtfpu.contains(responsableRol) && session.usuario.departamento.codigo == 'UTFPU'
+                dueno = personasUtfpu.contains(responsableRol) && session.usuario.departamento.codigo == 'CRFC'
             }
         }
 

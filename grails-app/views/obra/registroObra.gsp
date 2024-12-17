@@ -75,7 +75,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
     <button class="btn btn-info" id="lista"><i class="fa fa-list"></i> Lista</button>
     <button class="btn" id="nuevo"><i class="fa fa-plus"></i> Nuevo</button>
 
-    <g:if test="${persona?.departamento?.codigo != 'UTFPU'}">
+    <g:if test="${persona?.departamento?.codigo != 'CRFC'}">
 
         <g:if test="${obra?.estado != 'R'}">
             <g:if test="${(obra?.responsableObra?.departamento?.direccion?.id == persona?.departamento?.direccion?.id && duenoObra == 1) || obra?.id == null}">
@@ -128,7 +128,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
             </g:if>
         </g:if>
     </g:if>
-    <g:else>%{-- usuario de UTFPU --}%
+    <g:else>%{-- usuario de CRFC --}%
 
         <g:if test="${obra?.estado != 'R'}">
             <g:if test="${duenoObra == 1 || obra?.id == null}">
@@ -231,7 +231,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
             </g:if>
 
             <div class="col-md-12" style="margin-top: 20px">
-                <g:if test="${persona?.departamento?.codigo == 'UTFPU'}">
+                <g:if test="${persona?.departamento?.codigo == 'CRFC'}">
                     <div class="col-md-1 formato">Requirente</div>
 
                     <div class="col-md-3">
@@ -363,7 +363,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
             <div class="col-md-1">Programa</div>
 
             <div class="col-md-3">
-                <g:if test="${persona?.departamento?.codigo == 'UTFPU'}">
+                <g:if test="${persona?.departamento?.codigo == 'CRFC'}">
                     <g:select id="programacion" name="programacion.id" class="programacion required" from="${programa}"
                               value="${obra?.programacion?.id}" optionValue="descripcion" optionKey="id"
                               title="Programa"/>
@@ -382,7 +382,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
             <div class="col-md-1" style="margin-left: -50px;">Tipo</div>
 
             <div class="col-md-4" id="divTipoObra">
-                <g:if test="${persona?.departamento?.codigo == 'UTFPU'}">
+                <g:if test="${persona?.departamento?.codigo == 'CRFC'}">
                     <g:select id="tipoObra" name="tipoObjetivo.id" class="tipoObjetivo required" from="${tipoObra}"
                               value="${obra?.tipoObjetivo?.id}" optionValue="descripcion" optionKey="id"
                               style="margin-left: -60px; width: 290px" title="Tipo de Obra"/>
@@ -401,7 +401,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
             <div class="col-md-1" style="margin-left: -50px">Clase</div>
 
             <div class="col-md-3">
-                <g:if test="${persona?.departamento?.codigo == 'UTFPU'}">
+                <g:if test="${persona?.departamento?.codigo == 'CRFC'}">
                     <g:select id="claseObra" name="claseObra.id" class="claseObra required" from="${claseObra}"
                               value="${obra?.claseObra?.id}" optionValue="descripcion" optionKey="id"
                               style="margin-left: -40px; width: 250px" title="Clase de Obra"/>
@@ -1127,7 +1127,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
     function loadPersonas() {
         var idP;
         var idDep1;
-        <g:if test="${persona?.departamento?.codigo == 'UTFPU'}">
+        <g:if test="${persona?.departamento?.codigo == 'CRFC'}">
         <g:if test="${obra}">
         <g:if test="${duenoObra == 1}">
         idP = $("#departamento option:selected").attr("class");
@@ -1355,7 +1355,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
 
         loadPersonas();
 
-        %{--<g:if test="${persona?.departamento?.codigo == 'UTFPU'}">--}%
+        %{--<g:if test="${persona?.departamento?.codigo == 'CRFC'}">--}%
         loadSalida();
         %{--</g:if>--}%
 
@@ -1640,7 +1640,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
 
         function loadSalida() {
             var direccionEl;
-            <g:if test="${persona?.departamento?.codigo?.trim() == 'UTFPU'}">
+            <g:if test="${persona?.departamento?.codigo?.trim() == 'CRFC'}">
             <g:if test="${obra}">
             <g:if test="${duenoObra == 1}">
 //              direccionEl = $("#departamento option:selected").attr("dire");

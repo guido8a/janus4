@@ -488,7 +488,7 @@ class ObraController {
         def claseObra
         def duenoObra = 0
         def funcionElab = Funcion.findByCodigo('E')
-        def personasUtfpu1 = Persona.findAllByDepartamento(Departamento.findByCodigo('UTFPU'))
+        def personasUtfpu1 = Persona.findAllByDepartamento(Departamento.findByCodigo('CRFC'))
         def personasUtfpu = PersonaRol.findAllByFuncionAndPersonaInList(funcionElab, personasUtfpu1)
         def responsableObra
 
@@ -571,14 +571,14 @@ class ObraController {
 /*
         def dueno = false
         def funcionElab = Funcion.findByCodigo('E')
-        def personasUtfpu = PersonaRol.findAllByFuncionAndPersonaInList(funcionElab, Persona.findAllByDepartamento(Departamento.findByCodigo('UTFPU')))
+        def personasUtfpu = PersonaRol.findAllByFuncionAndPersonaInList(funcionElab, Persona.findAllByDepartamento(Departamento.findByCodigo('CRFC')))
         def responsableRol = PersonaRol.findByPersonaAndFuncion(obra?.responsableObra, funcionElab)
 
         if (responsableRol) {
             if (obra?.responsableObra?.departamento?.direccion?.id == Persona.get(session.usuario.id).departamento?.direccion?.id) {
                 dueno = true
             } else {
-                dueno = personasUtfpu.contains(responsableRol) && session.usuario.departamento.codigo == 'UTFPU'
+                dueno = personasUtfpu.contains(responsableRol) && session.usuario.departamento.codigo == 'CRFC'
             }
         }
         dueno
@@ -1072,7 +1072,7 @@ class ObraController {
         def personasRolRevi = PersonaRol.findAllByFuncionAndPersonaInList(funcionRevi, personas)
         def personasRolResp = PersonaRol.findAllByFuncionAndPersonaInList(funcionResp, personas)
         def personasRolElab = PersonaRol.findAllByFuncionAndPersonaInList(funcionElab, personas)
-        def personasUtfpu1 = Persona.findAllByDepartamento(Departamento.findByCodigo('UTFPU'))
+        def personasUtfpu1 = Persona.findAllByDepartamento(Departamento.findByCodigo('CRFC'))
         def personasUtfpu = PersonaRol.findAllByFuncionAndPersonaInList(funcionElab, personasUtfpu1)
 
         def responsableObra
@@ -1456,7 +1456,7 @@ class ObraController {
             obraInstance.fechaFin = null
 
             def persona = Persona.get(session.usuario.id)
-            if(departamento?.codigo != 'UTFPU'){
+            if(departamento?.codigo != 'CRFC'){
                 def direccion = Direccion.get(persona.departamento.direccion.id)
                 def departamentos = Departamento.findAllByDireccion(direccion)
                 def personas = Persona.findAllByDepartamentoInList(departamentos, [sort: 'nombre'])
@@ -1471,7 +1471,7 @@ class ObraController {
                 obraInstance.revisor = personasRolRevi.first().persona
                 obraInstance.responsableObra = personasRolElab.first().persona
             } else {
-                obraInstance.responsableObra = persona   // cambia de dueño al usuario que copia de la UTFPU
+                obraInstance.responsableObra = persona   // cambia de dueño al usuario que copia de la CRFC
             }
 
             if (!obraInstance.save(flush: true)) {

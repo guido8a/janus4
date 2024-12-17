@@ -144,7 +144,7 @@
                         </tr>
                         </thead>
                         <tbody id="firmasFijasPresu">
-                        <g:if test="${persona?.departamento?.codigo == 'UTFPU'}">
+                        <g:if test="${persona?.departamento?.codigo == 'CRFC'}">
                             <g:if test="${duenoObra == 1}">
                                 <tr>
                                     <td>
@@ -338,7 +338,7 @@
 
                         <tbody id="firmasFijasMemo">
 
-                        <g:if test="${persona?.departamento?.codigo == 'UTFPU'}">
+                        <g:if test="${persona?.departamento?.codigo == 'CRFC'}">
                             <g:if test="${duenoObra == 1}">
                                 <tr>
                                     <td>
@@ -512,7 +512,7 @@
 
                         <tbody id="firmasFijasPoli">
 
-                        <g:if test="${persona?.departamento?.codigo == 'UTFPU'}">
+                        <g:if test="${persona?.departamento?.codigo == 'CRFC'}">
                             <g:if test="${duenoObra == 1}">
                                 <tr>
                                     <td>

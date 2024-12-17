@@ -35,7 +35,7 @@ class VolumenObraController {
         def obra = Obra.get(params.id)
         def volumenes = VolumenesObra.findAllByObra(obra)
 
-//        def personasUtfpu = Persona.findAllByDepartamento(Departamento.findByCodigo('UTFPU'))
+//        def personasUtfpu = Persona.findAllByDepartamento(Departamento.findByCodigo('CRFC'))
 //        def responsableObra = obra?.responsableObra?.id
         def duenoObra = 0
 
@@ -252,14 +252,14 @@ class VolumenObraController {
 
         def dueno = false
         def funcionElab = Funcion.findByCodigo('E')
-        def personasUtfpu = PersonaRol.findAllByFuncionAndPersonaInList(funcionElab, Persona.findAllByDepartamento(Departamento.findByCodigo('UTFPU')))
+        def personasUtfpu = PersonaRol.findAllByFuncionAndPersonaInList(funcionElab, Persona.findAllByDepartamento(Departamento.findByCodigo('CRFC')))
         def responsableRol = PersonaRol.findByPersonaAndFuncion(obra?.responsableObra, funcionElab)
         def persona = Persona.get(session.usuario.id)
 
         if (responsableRol) {
             println "${obra?.responsableObra?.departamento?.id} ==== ${Persona.get(session.usuario.id).departamento?.id}"
 
-            if (personasUtfpu.contains(responsableRol) && persona.departamento.codigo == 'UTFPU') {
+            if (personasUtfpu.contains(responsableRol) && persona.departamento.codigo == 'CRFC') {
                 dueno = true
             } else if (obra?.responsableObra?.departamento?.direccion?.id == persona.departamento?.direccion?.id) {
                 dueno = true
