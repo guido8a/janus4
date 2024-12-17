@@ -139,8 +139,50 @@
 
     $(".btnEliminarMaterial").click(function () {
         var id = $(this).data("id");
-        deleteMaterial(id);
+        // deleteMaterial(id);
+        verificarBorrado(id);
     });
+
+    function verificarBorrado(id){
+        $.ajax({
+            type : "POST",
+            url : "${g.createLink(controller: 'mantenimientoItems',action:'verificaBorrado_ajax')}",
+            data     : {
+                id : id
+            },
+            success  : function (msg) {
+                var resp = msg.split('_');
+                if(resp[0] === "ok"){
+                    var ou = cargarLoader("Cargando...");
+                    $.ajax({
+                        type : "POST",
+                        url : "${g.createLink(controller: 'mantenimientoItems',action:'rubrosUsados_ajax')}",
+                        data     : {
+                            id : id
+                        },
+                        success  : function (msg) {
+                            ou.modal("hide");
+                            var b = bootbox.dialog({
+                                id      : "dlgLOU",
+                                title   : "Lista de obras usadas",
+                                message : msg,
+                                buttons : {
+                                    cancelar : {
+                                        label     : "Cancelar",
+                                        className : "btn-primary",
+                                        callback  : function () {
+                                        }
+                                    }
+                                } //buttons
+                            }); //dialog
+                        }
+                    });
+                }else{
+                    deleteMaterial(id);
+                }
+            }
+        });
+    }
 
     function deleteMaterial(id){
         bootbox.confirm({
@@ -172,7 +214,12 @@
                                 log(parts[1],"success");
                                 cargarTablaItems(parts[2]);
                             }else{
-                                log(parts[1], "error")
+                                if(parts[0] === 'err'){
+                                    bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
+                                    return false;
+                                }else{
+                                    log(parts[1], "error")
+                                }
                             }
                         }
                     });

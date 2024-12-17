@@ -238,6 +238,19 @@
                                             <strong style="font-size: 14px"> permite cambiar el valor del IVA.</strong>
                                         </div>
                                     </div>
+
+                                    <div class="col-md-12" style="margin-bottom: 10px">
+                                        <div class="col-md-4">
+                                            <g:link class="link btn btn-primary btn-xs" controller="fabricante" action="list">
+                                                <i class="fa fa-file fa-2x"></i>
+                                                Fabricante
+                                            </g:link>
+                                        </div>
+
+                                        <div class="col-md-8">
+                                            <strong style="font-size: 14px"> permite la administración de fabricantes.</strong>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

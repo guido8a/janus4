@@ -1573,9 +1573,47 @@ class MantenimientoItemsController {
         }
     }
 
+    def verificaBorrado_ajax(){
+        def item = Item.get(params.id)
+        def rubros = Rubro.findAllByItem(item)
+        def volumenes = []
+
+        rubros.each {
+            if(VolumenesObra.findByItem(it.rubro)){
+                volumenes +=VolumenesObra.findByItem(it.rubro)
+            }
+        }
+
+        volumenes.unique{it?.obra?.nombre}
+
+        if(volumenes.size()>0) {
+            render "ok"
+        }else{
+            render "no"
+        }
+    }
+
+    def rubrosUsados_ajax(){
+
+        def item = Item.get(params.id)
+        def rubros = Rubro.findAllByItem(item)
+        def volumenes = []
+
+        rubros.each {
+            if(VolumenesObra.findByItem(it.rubro)){
+                volumenes +=VolumenesObra.findByItem(it.rubro)
+            }
+        }
+
+        volumenes.unique{it?.obra?.nombre}
+
+        return [volumenes: volumenes]
+    }
+
     def deleteIt_ajax() {
         def item = Item.get(params.id)
         def id = item.departamento.id
+
         try {
             item.delete(flush: true)
             render "ok_Borrado correctamente_" + id
