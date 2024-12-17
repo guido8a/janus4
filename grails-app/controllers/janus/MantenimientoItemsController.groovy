@@ -1357,6 +1357,7 @@ class MantenimientoItemsController {
         def departamento = null
         def listaDepartamentos = []
         def grupo
+        def subgrupos = SubgrupoItems.findAllByGrupo(Grupo.get(params.grupo))
 
         if (params.id) {
             itemInstance = Item.get(params.id)
@@ -1369,7 +1370,7 @@ class MantenimientoItemsController {
                 departamento = DepartamentoItem.get(params.departamento)
                 listaDepartamentos = DepartamentoItem.findAllById(departamento?.id)
             }else{
-                listaDepartamentos = DepartamentoItem.list([sort: 'descripcion'])
+                listaDepartamentos = DepartamentoItem.findAllBySubgrupoInList(subgrupos, [sort: 'descripcion'])
             }
 
             grupo = Grupo.get(params.grupo)?.id
@@ -1377,7 +1378,8 @@ class MantenimientoItemsController {
 
         println("grupo " + grupo)
 
-        return [itemInstance: itemInstance, grupo: grupo, departamento: departamento, listaDepartamentos: listaDepartamentos]
+        return [itemInstance: itemInstance, grupo: grupo, departamento: departamento,
+                listaDepartamentos: listaDepartamentos, subgrupos: subgrupos]
     }
 
     def buscaCpac() {

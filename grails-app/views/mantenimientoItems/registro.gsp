@@ -6,7 +6,10 @@
 
 
     <style>
-
+    /*.bootbox-body {*/
+    /*.modal-body {*/
+        /*background-color: #e0e0e0;*/
+    /*}*/
     </style>
 </head>
 
