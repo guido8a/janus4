@@ -94,7 +94,7 @@
 <style>
 /*.bootbox-body {*/
 .modal-body {
-    background-color: #e0e0e0;
+    background-color: #e8e8e8;
 }
 </style>
 
