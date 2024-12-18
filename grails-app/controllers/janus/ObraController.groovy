@@ -79,7 +79,7 @@ class ObraController {
 
         def select = "select obra.obra__id, obracdgo, obranmbr, obraetdo, dptodscr, obrafcha " +
                 "from obra, parr, dpto "
-        def txwh = "where parr.parr__id = obra.parr__id and dpto.dpto__id = obra.dpto__id " 
+        def txwh = "where parr.parr__id = obra.parr__id and dpto.dpto__id = obra.dpto__id "
         def sqlTx = ""
         def bsca = listaObra[params.buscarPor.toInteger()-1]
         def ordn = listaObra[params.ordenar.toInteger()-1]
@@ -292,7 +292,7 @@ class ObraController {
         }
 
         println "....ok"
-        
+
 //        res = obrafp.verifica_precios(obra.id)
         res = verifica_precios(obra.id)
         if (res.size() > 0) {
@@ -1097,7 +1097,7 @@ class ObraController {
         } else {
             duenoObra = 0
         }
-        
+
 //        println "presonas utfpu: ${personasUtfpu.persona}"
 
         return [personas       : personas, personasRolInsp: personasRolInsp.persona, personasRolRevi: personasRolRevi.persona,
@@ -1197,6 +1197,8 @@ class ObraController {
 
         def usuario = session.usuario.id
         def persona = Persona.get(usuario)
+        def ultimo
+        def anioActual = new Date().format("yy")
 
         params.oficioIngreso = params.oficioIngreso.toUpperCase()
         params.memoCantidadObra = params.memoCantidadObra.toUpperCase()
@@ -1264,9 +1266,11 @@ class ObraController {
         println "obra: ${params.id} depto: ${params.departamento.id}"
 
         def obraInstance
-
+        def bandera
 
         if (params.id) {
+
+            bandera = false
 
             obraInstance = Obra.get(params.id)
 
@@ -1303,76 +1307,103 @@ class ObraController {
 
         }//es edit
         else {
+
+            switch (session.perfil.codigo) {
+                case "CSTO":
+                    ultimo = Numero.findByDescripcion('CO')
+                    params.codigo = "CO-${ultimo?.valor + 1}-CRFC-${anioActual}"
+
+                    ultimo.valor = (ultimo.valor+1)
+
+                    break;
+                case "ADDI":
+                    ultimo = Numero.findByDescripcion('PAD')
+                    params.codigo = "PAD-${ultimo?.valor + 1}-GADPP-${anioActual}"
+
+                    ultimo.valor = (ultimo.valor+1)
+                    break;
+                case "OBRA":
+                    ultimo = Numero.findByDescripcion('PB')
+                    params.codigo = "PB-${ultimo?.valor + 1}-GADPP-${anioActual}"
+
+                    ultimo.valor = (ultimo.valor+1)
+                    break;
+            }
+
+
             if(!Obra.findByCodigo(params.codigo)){
 
-                obraInstance = new Obra(params)
 
-                def departamento
 
-                if (session.perfil.codigo == 'ADDI' || session.perfil.codigo == 'COGS') {
-                    departamento = Departamento.get(persona?.departamento?.id)
-                } else {
-                    departamento = Departamento.get(params.departamento.id)
-                }
 
-                obraInstance.departamento = departamento
+            obraInstance = new Obra(params)
 
-                def par = Parametros.list()
-                if (par.size() > 0)
-                    par = par.pop()
+            bandera = true
+            def departamento
 
-                obraInstance.indiceCostosIndirectosObra = par.indiceCostosIndirectosObra
-                obraInstance.indiceCostosIndirectosPromocion = par.indiceCostosIndirectosPromocion
-                obraInstance.indiceCostosIndirectosMantenimiento = par.indiceCostosIndirectosMantenimiento
-                obraInstance.administracion = par.administracion
-                obraInstance.indiceCostosIndirectosGarantias = par.indiceCostosIndirectosGarantias
-                obraInstance.indiceCostosIndirectosCostosFinancieros = par.indiceCostosIndirectosCostosFinancieros
-                obraInstance.indiceCostosIndirectosVehiculos = par.indiceCostosIndirectosVehiculos
+            if (session.perfil.codigo == 'ADDI' || session.perfil.codigo == 'COGS') {
+                departamento = Departamento.get(persona?.departamento?.id)
+            } else {
+                departamento = Departamento.get(params.departamento.id)
+            }
 
-                obraInstance.impreso = par.impreso
-                obraInstance.indiceUtilidad = par.indiceUtilidad
-                obraInstance.indiceCostosIndirectosTimbresProvinciales = par.indiceCostosIndirectosTimbresProvinciales
+            obraInstance.departamento = departamento
 
-                obraInstance.indiceAlquiler = par.indiceAlquiler
-                obraInstance.indiceProfesionales = par.indiceProfesionales
-                obraInstance.indiceSeguros = par.indiceSeguros
-                obraInstance.indiceSeguridad = par.indiceSeguridad
-                obraInstance.indiceCampo = par.indiceCampo
-                obraInstance.indiceCampamento = par.indiceCampamento
+            def par = Parametros.list()
+            if (par.size() > 0)
+                par = par.pop()
 
-                /** variables por defecto para las nuevas obras **/
-                obraInstance.lugar = Lugar.findAll('from Lugar  where tipoLista=1')[0]
-                obraInstance.listaVolumen0 = Lugar.findAll('from Lugar  where tipoLista=3')[0]
-                obraInstance.distanciaPeso = 10
-                obraInstance.distanciaVolumen = 30
+            obraInstance.indiceCostosIndirectosObra = par.indiceCostosIndirectosObra
+            obraInstance.indiceCostosIndirectosPromocion = par.indiceCostosIndirectosPromocion
+            obraInstance.indiceCostosIndirectosMantenimiento = par.indiceCostosIndirectosMantenimiento
+            obraInstance.administracion = par.administracion
+            obraInstance.indiceCostosIndirectosGarantias = par.indiceCostosIndirectosGarantias
+            obraInstance.indiceCostosIndirectosCostosFinancieros = par.indiceCostosIndirectosCostosFinancieros
+            obraInstance.indiceCostosIndirectosVehiculos = par.indiceCostosIndirectosVehiculos
+
+            obraInstance.impreso = par.impreso
+            obraInstance.indiceUtilidad = par.indiceUtilidad
+            obraInstance.indiceCostosIndirectosTimbresProvinciales = par.indiceCostosIndirectosTimbresProvinciales
+
+            obraInstance.indiceAlquiler = par.indiceAlquiler
+            obraInstance.indiceProfesionales = par.indiceProfesionales
+            obraInstance.indiceSeguros = par.indiceSeguros
+            obraInstance.indiceSeguridad = par.indiceSeguridad
+            obraInstance.indiceCampo = par.indiceCampo
+            obraInstance.indiceCampamento = par.indiceCampamento
+
+            /** variables por defecto para las nuevas obras **/
+            obraInstance.lugar = Lugar.findAll('from Lugar  where tipoLista=1')[0]
+            obraInstance.listaVolumen0 = Lugar.findAll('from Lugar  where tipoLista=3')[0]
+            obraInstance.distanciaPeso = 10
+            obraInstance.distanciaVolumen = 30
 
 
 //                obraInstance.indiceGastosGenerales = (obraInstance.indiceCostosIndirectosObra + obraInstance.indiceCostosIndirectosPromocion + obraInstance.indiceCostosIndirectosMantenimiento +
 //                        obraInstance.administracion + obraInstance.indiceCostosIndirectosGarantias + obraInstance.indiceCostosIndirectosCostosFinancieros + obraInstance.indiceCostosIndirectosVehiculos)
 
 
-                obraInstance.indiceGastosGenerales = (obraInstance?.indiceAlquiler + obraInstance?.administracion + obraInstance?.indiceProfesionales + obraInstance?.indiceCostosIndirectosMantenimiento + obraInstance?.indiceSeguros + obraInstance?.indiceSeguridad)
+            obraInstance.indiceGastosGenerales = (obraInstance?.indiceAlquiler + obraInstance?.administracion + obraInstance?.indiceProfesionales + obraInstance?.indiceCostosIndirectosMantenimiento + obraInstance?.indiceSeguros + obraInstance?.indiceSeguridad)
 
-                obraInstance.indiceGastoObra = (obraInstance?.indiceCampo + obraInstance?.indiceCostosIndirectosCostosFinancieros + obraInstance?.indiceCostosIndirectosGarantias + obraInstance?.indiceCampamento)
+            obraInstance.indiceGastoObra = (obraInstance?.indiceCampo + obraInstance?.indiceCostosIndirectosCostosFinancieros + obraInstance?.indiceCostosIndirectosGarantias + obraInstance?.indiceCampamento)
 
 //                obraInstance.totales = (obraInstance.impreso + obraInstance.indiceUtilidad + obraInstance.indiceCostosIndirectosTimbresProvinciales + obraInstance.indiceGastosGenerales)
-                obraInstance.totales = (obraInstance.impreso + obraInstance.indiceUtilidad + obraInstance.indiceGastoObra + obraInstance.indiceGastosGenerales)
+            obraInstance.totales = (obraInstance.impreso + obraInstance.indiceUtilidad + obraInstance.indiceGastoObra + obraInstance.indiceGastosGenerales)
 
-                /* si pefiles administración directa o cogestion pone obratipo = 'D' */
-                if (session.perfil.codigo == 'ADDI' || session.perfil.codigo == 'COGS') {
-                    obraInstance.tipo = 'D'
-                }
+            /* si pefiles administración directa o cogestion pone obratipo = 'D' */
+            if (session.perfil.codigo == 'ADDI' || session.perfil.codigo == 'COGS') {
+                obraInstance.tipo = 'D'
+            }
             }else {
 
 //                println("entro codigo no")
 
                 flash.clase = "alert-error"
-                flash.message = " No se pudo guardar la obra,  código duplicado!"
+                flash.message = " No se pudo guardar la obra,  código duplicado: " + params.codigo
                 redirect(action: 'registroObra')
                 return
 
             }
-
 
 
         } //es create
@@ -1382,14 +1413,13 @@ class ObraController {
 
         if (!obraInstance.save(flush: true)) {
 
-//            println("--->>>>>>>>>>>>>>>>>>>")
             flash.clase = "alert-error"
             def str = "<h4>No se pudo guardar Obra " + (obraInstance.id ? obraInstance.id : "") + "</h4>"
 
             str += "<ul>"
 
             println "errores: ${params.fechaCreacionObra} ${obraInstance.errors} "
-            
+
             obraInstance.errors.allErrors.each { err ->
                 def msg = err.defaultMessage
                 err.arguments.eachWithIndex { arg, i ->
@@ -1402,8 +1432,17 @@ class ObraController {
             flash.message = str
             redirect(action: 'registroObra')
             return
+
+
+
         } else {
-//            println("entro")
+            println("entro")
+
+            if(bandera){
+                ultimo.save(flush: true)
+            }
+
+
         }
 
         if (params.id) {
@@ -1432,7 +1471,7 @@ class ObraController {
 
         def obraInstance
         def volumenInstance
-      //  def copiaObra
+        //  def copiaObra
         def obra = Obra.get(params.id);
         def nuevoCodigo = params.nuevoCodigo.toUpperCase()
         def volumenes = VolumenesObra.findAllByObra(obra)

@@ -341,15 +341,15 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
         <div class="col-md-12" style="margin-top: 10px">
             <div class="col-md-1">Código:</div>
 
-            <g:if test="${obra?.codigo != null}">
-                <div class="col-md-3"><g:textField name="codigo" class="codigo required allCaps"
-                                                   value="${obra?.codigo}" style="width: 160px" readonly="readonly" maxlength="20"
-                                                   title="Código de la Obra"/></div>
-            </g:if>
-            <g:else>
-                <div class="col-md-3"><g:textField name="codigo" class="codigo required allCaps" value="${obra?.codigo}"
-                                                   style="width: 160px" maxlength="20" title="Código de la Obra"/></div>
-            </g:else>
+%{--            <g:if test="${obra?.codigo != null}">--}%
+%{--                <div class="col-md-3"><g:textField name="codigo" class="codigo required allCaps"--}%
+%{--                                                   value="${obra?.codigo}" style="width: 160px" readonly="readonly" maxlength="20"--}%
+%{--                                                   title="Código de la Obra"/></div>--}%
+%{--            </g:if>--}%
+%{--            <g:else>--}%
+                <div class="col-md-3"><g:textField name="codigo" class="codigo" value="${obra?.codigo}"
+                                                   style="width: 160px" maxlength="20" title="Código de la Obra" readonly=""/></div>
+%{--            </g:else>--}%
 
             <div class="col-md-1" style="margin-left: -80px;">Nombre</div>
 
