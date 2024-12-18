@@ -188,7 +188,7 @@
 
     function deleteMaterial(id){
         bootbox.confirm({
-            title: "Eliminar Grupo",
+            title: "Eliminar material",
             message: '<i class="fa fa-trash text-danger fa-3x"></i>' + '<strong style="font-size: 14px">' + "Está seguro de borrar este material? Esta acción no puede deshacerse. " + '</strong>' ,
             buttons: {
                 cancel: {

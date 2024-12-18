@@ -30,7 +30,7 @@
                 </span>
             </g:if>
             <g:else>
-                <span class="col-md-4" id="divCodigos">
+                <span class="col-md-3" id="divCodigos">
                 </span>
                 <span class="col-md-2">
                     <g:textField name="codigo" maxlength="20" minlength="3" required="" class="form-control allCaps number required" value="${itemInstance?.codigo ?: ''}" />
@@ -48,17 +48,6 @@
                        value="${itemInstance?.fecha?.format("dd-MM-yyyy")}"/>
             </span>
         </span>
-
-        <span class="grupo">
-            <label for="estado" class="col-md-1 control-label text-info">
-                Estado
-            </label>
-            <span class="col-md-2">
-                <g:select name="estado" from="${['A': 'Activo', 'B': 'Dado de baja']}" optionValue="value" optionKey="key" class="form-control" value="${itemInstance?.estado}" />
-                <p class="help-block ui-helper-hidden"></p>
-            </span>
-        </span>
-
     </div>
     <div class="form-group ${hasErrors(bean: itemInstance, field: 'nombre', 'error')} ">
         <span class="grupo">
@@ -76,8 +65,17 @@
             <label for="unidad" class="col-md-2 control-label text-info">
                 Unidad
             </label>
-            <span class="col-md-8">
+            <span class="col-md-5">
                 <g:select name="unidad" from="${janus.Unidad.list([sort: 'descripcion'])}" optionValue="descripcion" optionKey="id" class="form-control" value="${itemInstance?.unidad?.id}" />
+                <p class="help-block ui-helper-hidden"></p>
+            </span>
+        </span>
+        <span class="grupo">
+            <label for="estado" class="col-md-1 control-label text-info">
+                Estado
+            </label>
+            <span class="col-md-2">
+                <g:select name="estado" from="${['A': 'Activo', 'B': 'Dado de baja']}" optionValue="value" optionKey="key" class="form-control" value="${itemInstance?.estado}" />
                 <p class="help-block ui-helper-hidden"></p>
             </span>
         </span>
