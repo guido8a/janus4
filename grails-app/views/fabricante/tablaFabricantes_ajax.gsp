@@ -2,10 +2,9 @@
     <table class="table table-bordered table-striped table-condensed table-hover">
         <thead>
         <tr>
-            <th style="width: 15%">RUC</th>
             <th style="width: 25%">Nombre</th>
-            <th style="width: 10%">Teléfono</th>
-            <th style="width: 10%">Email</th>
+            <th style="width: 20%">Contacto</th>
+            <th style="width: 45%">Observaciones</th>
             <th style="width: 10%">Acciones</th>
         </tr>
         </thead>

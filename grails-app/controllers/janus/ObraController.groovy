@@ -1311,7 +1311,7 @@ class ObraController {
             switch (session.perfil.codigo) {
                 case "CSTO":
                     ultimo = Numero.findByDescripcion('CO')
-                    params.codigo = "CO-${ultimo?.valor + 1}-CRFC-${anioActual}"
+                    params.codigo = "CO-${ultimo?.valor + 100}-CRFC-${anioActual}"
 
                     ultimo.valor = (ultimo.valor+1)
 
@@ -1332,9 +1332,6 @@ class ObraController {
 
 
             if(!Obra.findByCodigo(params.codigo)){
-
-
-
 
             obraInstance = new Obra(params)
 
@@ -1395,17 +1392,11 @@ class ObraController {
                 obraInstance.tipo = 'D'
             }
             }else {
-
-//                println("entro codigo no")
-
                 flash.clase = "alert-error"
                 flash.message = " No se pudo guardar la obra,  código duplicado: " + params.codigo
                 redirect(action: 'registroObra')
                 return
-
             }
-
-
         } //es create
 
         obraInstance.estado = "N"
@@ -1432,17 +1423,10 @@ class ObraController {
             flash.message = str
             redirect(action: 'registroObra')
             return
-
-
-
         } else {
-            println("entro")
-
             if(bandera){
                 ultimo.save(flush: true)
             }
-
-
         }
 
         if (params.id) {
@@ -1701,6 +1685,27 @@ class ObraController {
     def impresionesRubros_ajax(){
         def obra = Obra.get(params.id)
         return[obra: obra]
+    }
+
+    def generarCodigoFP_ajax(){
+        def obra = Obra.get(params.id)
+        def codigo
+        def anioActual = new Date().format("yy")
+
+        def ultimo = Numero.findByDescripcion('FP')
+        codigo = "FA-${ultimo?.valor + 1}-CRFC-${anioActual}"
+
+        obra.formulaPolinomica = codigo
+        ultimo.valor = (ultimo.valor+1)
+
+        if(!obra.save(flush:true)){
+            println("error al generar el código de la FP " + obra?.errors)
+            render "no_Error al generar el código de la FP"
+        }else{
+            ultimo.save(flush:true)
+            render "ok_Código creado correctamente"
+        }
+
     }
 
 } //fin controller
