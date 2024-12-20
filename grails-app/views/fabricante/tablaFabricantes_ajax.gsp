@@ -2,7 +2,7 @@
     <table class="table table-bordered table-striped table-condensed table-hover">
         <thead>
         <tr>
-            <th style="width: 30%">Nombre</th>
+            <th style="width: 30%">Fabricante - Nombre</th>
             <th style="width: 20%">Contacto</th>
             <th style="width: 40%">Observaciones</th>
             <th style="width: 10%">Acciones</th>
@@ -14,11 +14,11 @@
 <div class="" style="width: 99.7%;height: 600px; overflow-y: auto;float: right; margin-top: -20px">
     <table class="table-bordered table-striped table-condensed table-hover" style="width: 100%">
         <tbody>
-        <g:if test="${data.size() > 0}">
+        <g:if test="${data?.size() > 0}">
             <g:each in="${data}" status="i" var="fabricante">
                 <tr data-id="${fabricante?.fabr__id}">
                     <td style="width: 30%">${fabricante?.fabrnmbr}</td>
-                    <td style="width: 20%">${(fabricante?.fabrnbct ?: '') + " " + fabricante?.fabrapct?:''}</td>
+                    <td style="width: 20%">${(fabricante?.fabrnbct ?: '') + " " + (fabricante?.fabrapct?:'')}</td>
                     <td style="width: 40%">${fabricante?.fabrobsr}</td>
                     <td style="width: 10%; text-align: center">
                         <a href="#" class="btn btn-xs btn-info btnVerFabricante" data-id="${fabricante?.fabr__id}" title="Ver">

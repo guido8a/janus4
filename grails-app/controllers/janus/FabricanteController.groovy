@@ -36,7 +36,7 @@ class FabricanteController {
         def select = "select * from fabr "
         def txwh = " where fabr__id is not null and $bsca ilike '%${params.criterio}%'"
         sqlTx = "${select} ${txwh} order by fabrnmbr limit 30 ".toString()
-
+        println "sql: $sqlTx"
         def cn = dbConnectionService.getConnection()
         datos = cn.rows(sqlTx)
         cn.close()
