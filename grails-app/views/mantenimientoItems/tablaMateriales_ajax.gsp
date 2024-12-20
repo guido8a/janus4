@@ -94,20 +94,49 @@
 
 <script type="text/javascript">
 
+    var es;
+
     $(".btnFabricante").click(function () {
         location.href="${createLink(controller: 'fabricante', action: 'list')}?tipo=" + 1
     });
 
     $(".btnEspecificacionesMaterial").click(function () {
         var id = $(this).data("id");
-        var child = window.open('${createLink(controller:"mantenimientoItems",action:"especificaciones_ajax")}?id=' + id,
-            'janus4', 'width=850,height=800,toolbar=0,resizable=0,menubar=0,scrollbars=1,status=0');
+        cargarEspecificaciones(id);
+        %{--var child = window.open('${createLink(controller:"mantenimientoItems",action:"especificaciones_ajax")}?id=' + id,--}%
+        %{--    'janus4', 'width=850,height=800,toolbar=0,resizable=0,menubar=0,scrollbars=1,status=0');--}%
 
-        if (child.opener == null)
-            child.opener = self;
-        window.toolbar.visible = false;
-        window.menubar.visible = false;
+        %{--if (child.opener == null)--}%
+        %{--    child.opener = self;--}%
+        %{--window.toolbar.visible = false;--}%
+        %{--window.menubar.visible = false;--}%
     });
+
+
+    function cargarEspecificaciones(id){
+        $.ajax({
+            type    : "POST",
+            url     : "${createLink(controller: 'mantenimientoItems', action:'especificaciones_ajax')}",
+            data    : {
+                id: id
+            },
+            success : function (msg) {
+                es = bootbox.dialog({
+                    id    : "dlgEspecificacionesMaterial",
+                    title : "Especificaciones del material",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        }
+                    } //buttons
+                }); //dialog
+            } //success
+        }); //ajax
+    }
 
     $(".btnVerMaterial").click(function () {
         var id = $(this).data("id");
@@ -254,5 +283,9 @@
             } //success
         }); //ajax
     } //createEdit
+
+    function cerrarEspecificaciones(){
+        es.modal("hide");
+    }
 
 </script>

@@ -2503,8 +2503,10 @@ itemId: item.id
             flash.message = "Error: Seleccione un archivo JPG, JPEG, GIF, PNG"
         }
 
-        redirect(action: "especificaciones_ajax", id: rubro.id)
-        return
+        render "ok"
+
+//        redirect(action: "especificaciones_ajax", id: rubro.id)
+//        return
     }
 
     def getFoto(){
@@ -2732,9 +2734,7 @@ itemId: item.id
         return [materiales: materiales, grupo: grupo, id: params.id, departamento: subgrupoBuscar, perfil: perfil, items: items]
     }
 
-
     def listas_ajax(){
-
     }
 
     def tablaListas_ajax(){
@@ -2742,5 +2742,25 @@ itemId: item.id
         return [listas: listas]
     }
 
+    def borrarImagen_ajax(){
+        println("params " + params)
+
+        def rubro = Item.get(params.id)
+        def old = rubro?.foto
+        if (old) {
+            def oldPath = "/var/janus/" + "item/" + rubro?.id + "/" + old
+            def oldFile = new File(oldPath)
+            if (oldFile.exists()) {
+                oldFile.delete()
+                rubro.foto = null
+                rubro.save(flush:true)
+                render "ok_Borrada Correctamente"
+            }else{
+                render "no_Error al borrar"
+            }
+        }else{
+            render "no_Error al borrar"
+        }
+    }
 
 }

@@ -2,6 +2,8 @@ package janus
 
 class FabricanteController {
 
+    def dbConnectionService
+
     def list(){
         def tipo = params.tipo
         return [tipo: tipo]
@@ -21,8 +23,24 @@ class FabricanteController {
     }
 
     def tablaFabricantes_ajax(){
-        def fabricantes = Fabricante.list([sort: 'nombre'])
-        return [fabricantes: fabricantes]
+        def datos;
+        def sqlTx = ""
+        def listaItems = ['fabrnmbr', 'fabr_ruc']
+        def bsca
+        if(params.buscarPor){
+            bsca = listaItems[params.buscarPor?.toInteger()-1]
+        }else{
+            bsca = listaItems[0]
+        }
+
+        def select = "select * from fabr "
+        def txwh = " where fabr__id is not null and $bsca ilike '%${params.criterio}%'"
+        sqlTx = "${select} ${txwh} order by fabrnmbr limit 30 ".toString()
+
+        def cn = dbConnectionService.getConnection()
+        datos = cn.rows(sqlTx)
+        cn.close()
+        return [data: datos]
     }
 
     def save_ajax(){
@@ -63,5 +81,9 @@ class FabricanteController {
         }
     }
 
+    def show_ajax(){
+        def fabricante = Fabricante.get(params.id)
+        return [fabricante: fabricante]
+    }
 
 }

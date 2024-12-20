@@ -1693,7 +1693,7 @@ class ObraController {
         def anioActual = new Date().format("yy")
 
         def ultimo = Numero.findByDescripcion('FP')
-        codigo = "FA-${ultimo?.valor + 1}-CRFC-${anioActual}"
+        codigo = "FP-${ultimo?.valor + 1}-CRFC-${anioActual}"
 
         obra.formulaPolinomica = codigo
         ultimo.valor = (ultimo.valor+1)

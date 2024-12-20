@@ -62,14 +62,32 @@
 <script type="text/javascript">
     var id = null;
 
+    $("#buscarPor").change(function () {
+        cargarTablaFabricantes();
+    });
+
+    $("#btnLimpiar").click(function () {
+        $("#buscarPor").val(1);
+        $("#criterio").val('');
+        cargarTablaFabricantes();
+    });
+
+    $("#btnBuscar").click(function () {
+        cargarTablaFabricantes();
+    });
+
     cargarTablaFabricantes();
 
     function cargarTablaFabricantes(){
+        var buscarPor = $("#buscarPor option:selected").val();
+        var criterio = $("#criterio").val();
         var d = cargarLoader("Cargando...");
         $.ajax({
             type: 'POST',
             url: '${createLink(controller: 'fabricante', action: 'tablaFabricantes_ajax')}',
             data:{
+                buscarPor: buscarPor,
+                criterio: criterio
             },
             success: function (msg){
                 d.modal("hide");
@@ -174,10 +192,17 @@
         });
     }
 
-
     $(".btnCrear").click(function() {
         createEditRow();
         return false;
+    });
+
+    $("#criterio").keydown(function (ev) {
+        if (ev.keyCode === 13) {
+            cargarTablaFabricantes();
+            return false;
+        }
+        return true;
     });
 
 </script>
