@@ -96,12 +96,14 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
     <g:if test="${rubro}">
         %{--<g:if test="${(volumenes?.size()?: 0) > 0}">--}%
         <g:if test="${(volumenes > 0)}">
-            <div class="col-md-2 alert alert-warning" style="margin-left: 5px; font-weight: bold; text-align: center">
-                <i class="fa fa-times text-danger"></i> No se puede editar
+            <div class="col-md-2 alert alert-warning" style="margin-left: 5px; font-weight: bold; text-align: center;
+            height: 35px; padding: 10px">
+                <i class="fa fa-times text-danger"></i> &nbsp;&nbsp;&nbsp;No se puede editar
             </div>
         </g:if>
         <g:else>
-            <div class="col-md-2 alert alert-success" style="margin-left: 5px; font-weight: bold; text-align: center">
+            <div class="col-md-2 alert alert-success" style="margin-left: 5px; font-weight: bold; text-align: center;
+            height: 35px; padding: 10px">
                 <i class="fa fa-check"></i> Si se puede editar
             </div>
         </g:else>
