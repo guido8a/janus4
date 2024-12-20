@@ -155,7 +155,7 @@
                     <b>Cargar archivo:</b>
                     <input type="file" id="file" name="file" class="" multiple accept=".jpg, .jpeg, .png, .gif"/>
                     <div class="btn-group" style="margin-top: 20px;">
-                        <a href="#" id="submitImagen" class="btn btn-success">
+                        <a href="#" id="submit" class="btn btn-success">
                             <i class="fa fa-save"></i> Guardar
                         </a>
                     </div>
@@ -187,9 +187,9 @@
 
 <script type="text/javascript">
     
-    $("#submitImagen").click(function () {
-        
-    })
+    // $("#submitImagen").click(function () {
+    //
+    // });
 
     $(".btnBorrarImagen").click(function (){
         var id = $(this).data("id");
