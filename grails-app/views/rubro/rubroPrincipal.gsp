@@ -86,22 +86,23 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
         <i class="fa fa-book"></i>
         Especificaciones
     </a>
-    <g:if test="${rubro}">
-        <a href="#" id="btnCrearHistorico" class="btn btn-primary">
+    <g:if test="${rubro && volumenes > 0}">
+        <a href="#" id="btnCrearHistorico" class="btn btn-warning">
             <i class="fa fa-book"></i>
-            Crear histórico
+            Transformar a Histórico
         </a>
     </g:if>
 
     <g:if test="${rubro}">
-        <g:if test="${volumenes}">
+        %{--<g:if test="${(volumenes?.size()?: 0) > 0}">--}%
+        <g:if test="${(volumenes > 0)}">
             <div class="col-md-2 alert alert-warning" style="margin-left: 5px; font-weight: bold; text-align: center">
                 <i class="fa fa-times text-danger"></i> No se puede editar
             </div>
         </g:if>
         <g:else>
             <div class="col-md-2 alert alert-success" style="margin-left: 5px; font-weight: bold; text-align: center">
-                <i class="fa fa-check"></i> Se puede editar
+                <i class="fa fa-check"></i> Si se puede editar
             </div>
         </g:else>
     </g:if>

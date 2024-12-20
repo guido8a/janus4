@@ -128,19 +128,29 @@ class RubroController {
     }
 
     def verificarVolumnesXRubro(id){
+        def cn = dbConnectionService.getConnection()
+        def sql = "select count(*) cnta from vlob, obra where obraetdo = 'R' and vlob.obra__id = obra.obra__id and " +
+                "item__id = ${id}"
+        println "sql: $sql"
+        def existe = cn.rows(sql)[0].cnta
 
-        def rubro = Item.get(id)
+//        def rubro = Item.get(id)
+//
+//        def volumenes = VolumenesObra.withCriteria{
+//            eq("item",rubro)
+//            obra{
+//                distinct("nombre")
+//                resultTransformer org.hibernate.Criteria.DISTINCT_ROOT_ENTITY
+//            }
+//        }
+//        volumenes.unique{it.obra.nombre}
+//
+//        println "verificarVolumnesXRubro: ${volumenes?.size()}"
+//
+//        return volumenes?.size()
 
-        def volumenes = VolumenesObra.withCriteria{
-            eq("item",rubro)
-            obra{
-                distinct("nombre")
-                resultTransformer org.hibernate.Criteria.DISTINCT_ROOT_ENTITY
-            }
-        }
-        volumenes.unique{it.obra.nombre}
-
-        return volumenes?.size()
+        println "verificarVolumnesXRubro: ${existe}"
+        return existe
     }
 
 
