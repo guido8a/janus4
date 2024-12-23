@@ -1,5 +1,5 @@
 <div class="row">
-    <div class="" style="width: 99.7%;height: 500px; overflow-y: auto;float: right; margin-top: -20px">
+    <div class="" style="width: 99.7%;height: 650px; overflow-y: auto;float: right; margin-top: -20px">
 
         <g:if test="${flash.message}">
             <div class="row">

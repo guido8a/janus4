@@ -64,11 +64,11 @@
                         </g:else>
                     </td>
                     <td style="width: 14%; text-align: center">
-                        <a href="#" class="btn btn-xs btn-success btnVerMaterial" data-id="${material?.id}" title="Datos del material">
-                            <i class="fas fa-info"></i>
-                        </a>
-                        <a href="#" class="btn btn-xs btn-info btnVerInfo" data-id="${material?.id}" title="Ver información del item">
+                        <a href="#" class="btn btn-xs btn-info btnVerMaterial" data-id="${material?.id}" title="Datos del material">
                             <i class="fas fa-search"></i>
+                        </a>
+                        <a href="#" class="btn btn-xs btn-success btnVerInfo" data-id="${material?.id}" title="Ver información del item">
+                            <i class="fas fa-info"></i>
                         </a>
                         <g:if test="${perfil}">
                             <a href="#" class="btn btn-xs btn-warning btnEspecificacionesMaterial" data-id="${material?.id}" title="Especificaciones e Ilustración" ${material?.codigoEspecificacion ?: 'disabled'}>
