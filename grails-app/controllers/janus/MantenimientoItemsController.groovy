@@ -1645,7 +1645,7 @@ class MantenimientoItemsController {
             precioRubrosItemsInstance.lugar = lugar
         }
 
-        return [precioRubrosItemsInstance: precioRubrosItemsInstance, lugar: lugar, fecha: params.fecha, params: params, fd: fd]
+        return [precioRubrosItemsInstance: precioRubrosItemsInstance, lugar: lugar, fecha: params.fecha, params: params, fd: fd, all: params.all]
     }
 
     def checkFcPr_ajax() {
@@ -1684,44 +1684,101 @@ class MantenimientoItemsController {
                 render "OK_Precio guardado correctamente"
             }
         }else{
-            if (params.lugar.id != "-1") {
-                def precioRubrosItemsInstance = new PrecioRubrosItems(params)
-                precioRubrosItemsInstance.precioUnitario = params.precioUnitario.toDouble()
-                if (precioRubrosItemsInstance.save(flush: true)) {
-                    render "OK_Precio guardado correctamente"
-                } else {
-                    println "mantenimiento items controller l 846: " + precioRubrosItemsInstance.errors
-                    render "NO_Error al guardar el precio"
-                }
-            } else {
+            if(params.all){
                 def error = 0
                 Lugar.findAllByTipoLista(item.tipoLista).each { lugar ->
-                    def precios = PrecioRubrosItems.withCriteria {
-                        and {
-                            eq("lugar", lugar)
-                            eq("fecha", params.fecha)
-                            eq("item", item)
-                        }
-                    }
-                    if (precios.size() == 0) {
+//                    def precios = PrecioRubrosItems.withCriteria {
+//                        and {
+//                            eq("lugar", lugar)
+//                            eq("fecha", params.fecha)
+//                            eq("item", item)
+//                        }
+//                    }
+
+
+                    def existe = PrecioRubrosItems.findByItemAndFechaAndLugar(item, params.fecha, lugar)
+
+                    if(existe){
+                        error ++
+                    }else{
                         def precioRubrosItemsInstance = new PrecioRubrosItems()
                         precioRubrosItemsInstance.precioUnitario = params.precioUnitario.toDouble()
                         precioRubrosItemsInstance.lugar = lugar
                         precioRubrosItemsInstance.item = Item.get(params.item.id)
                         precioRubrosItemsInstance.fecha = params.fecha
-                        if (precioRubrosItemsInstance.save(flush: true)) {
-                        } else {
+
+                        if (!precioRubrosItemsInstance.save(flush: true)) {
                             println "mantenimiento items controller l 873: " + precioRubrosItemsInstance.errors
                             error++
+                        } else {
+
                         }
                     }
                 }
+
                 if (error == 0) {
                     render "OK_Precio guardado correctamente"
                 } else {
                     render "NO_Error al guardar el precio"
                 }
+            }else{
+                def lugar = Lugar.get(params."lugar.id")
+                def existe = PrecioRubrosItems.findByItemAndFechaAndLugar(item, params.fecha, lugar)
+
+                if(existe){
+                    render "NO_Ya existe un precio para esta fecha"
+                }else{
+                    def precioRubrosItemsInstance = new PrecioRubrosItems(params)
+                    precioRubrosItemsInstance.precioUnitario = params.precioUnitario.toDouble()
+                    if (precioRubrosItemsInstance.save(flush: true)) {
+                        render "OK_Precio guardado correctamente"
+                    } else {
+                        println "mantenimiento items controller l 846: " + precioRubrosItemsInstance.errors
+                        render "NO_Error al guardar el precio"
+                    }
+                }
             }
+
+//            if (params.lugar.id != "-1") {
+//                def precioRubrosItemsInstance = new PrecioRubrosItems(params)
+//                precioRubrosItemsInstance.precioUnitario = params.precioUnitario.toDouble()
+//                if (precioRubrosItemsInstance.save(flush: true)) {
+//                    render "OK_Precio guardado correctamente"
+//                } else {
+//                    println "mantenimiento items controller l 846: " + precioRubrosItemsInstance.errors
+//                    render "NO_Error al guardar el precio"
+//                }
+//            } else {
+//                println("entro ")
+//
+//                def error = 0
+//                Lugar.findAllByTipoLista(item.tipoLista).each { lugar ->
+//                    def precios = PrecioRubrosItems.withCriteria {
+//                        and {
+//                            eq("lugar", lugar)
+//                            eq("fecha", params.fecha)
+//                            eq("item", item)
+//                        }
+//                    }
+//                    if (precios.size() == 0) {
+//                        def precioRubrosItemsInstance = new PrecioRubrosItems()
+//                        precioRubrosItemsInstance.precioUnitario = params.precioUnitario.toDouble()
+//                        precioRubrosItemsInstance.lugar = lugar
+//                        precioRubrosItemsInstance.item = Item.get(params.item.id)
+//                        precioRubrosItemsInstance.fecha = params.fecha
+//                        if (precioRubrosItemsInstance.save(flush: true)) {
+//                        } else {
+//                            println "mantenimiento items controller l 873: " + precioRubrosItemsInstance.errors
+//                            error++
+//                        }
+//                    }
+//                }
+//                if (error == 0) {
+//                    render "OK_Precio guardado correctamente"
+//                } else {
+//                    render "NO_Error al guardar el precio"
+//                }
+//            }
         }
     }
 

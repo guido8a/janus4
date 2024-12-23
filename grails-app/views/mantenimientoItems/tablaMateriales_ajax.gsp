@@ -35,9 +35,9 @@
             <th style="width: 7%">Código Subgrupo</th>
             <th style="width: 15%">Subgrupo</th>
             <th style="width: 10%">Código</th>
-            <th style="width: 30%">Descripción</th>
+            <th style="width: 28%">Descripción</th>
             <th style="width: 5%">PDF</th>
-            <th style="width: 12%">Acciones</th>
+            <th style="width: 14%">Acciones</th>
         </tr>
         </thead>
     </table>
@@ -54,7 +54,7 @@
                     <td style="width: 7%">${material?.departamento?.codigo}</td>
                     <td style="width: 15%">${material?.departamento?.descripcion}</td>
                     <td style="width: 10%">${material?.codigo}</td>
-                    <td style="width: 30%">${material?.nombre}</td>
+                    <td style="width: 28%">${material?.nombre}</td>
                     <td style="width: 5%; text-align: center">
                         <g:if test="${janus.apus.ArchivoEspecificacion.findByItem(janus.Item.get(material?.id))?.ruta}">
                             <i class="fa fa-check text-success"></i>
@@ -63,8 +63,11 @@
                             <i class="fa fa-times text-danger"></i>
                         </g:else>
                     </td>
-                    <td style="width: 12%; text-align: center">
-                        <a href="#" class="btn btn-xs btn-info btnVerMaterial" data-id="${material?.id}" title="Ver">
+                    <td style="width: 14%; text-align: center">
+                        <a href="#" class="btn btn-xs btn-success btnVerMaterial" data-id="${material?.id}" title="Datos del material">
+                            <i class="fas fa-info"></i>
+                        </a>
+                        <a href="#" class="btn btn-xs btn-info btnVerInfo" data-id="${material?.id}" title="Ver información del item">
                             <i class="fas fa-search"></i>
                         </a>
                         <g:if test="${perfil}">
@@ -96,6 +99,11 @@
 
     var es;
 
+    $(".btnVerInfo").click(function () {
+        var id = $(this).data("id");
+        verInfoItem(id);
+    });
+
     $(".btnFabricante").click(function () {
         location.href="${createLink(controller: 'fabricante', action: 'list')}?tipo=" + 1
     });
@@ -103,15 +111,7 @@
     $(".btnEspecificacionesMaterial").click(function () {
         var id = $(this).data("id");
         cargarEspecificaciones(id);
-        %{--var child = window.open('${createLink(controller:"mantenimientoItems",action:"especificaciones_ajax")}?id=' + id,--}%
-        %{--    'janus4', 'width=850,height=800,toolbar=0,resizable=0,menubar=0,scrollbars=1,status=0');--}%
-
-        %{--if (child.opener == null)--}%
-        %{--    child.opener = self;--}%
-        %{--window.toolbar.visible = false;--}%
-        %{--window.menubar.visible = false;--}%
     });
-
 
     function cargarEspecificaciones(id){
         $.ajax({
@@ -270,6 +270,32 @@
                 var e = bootbox.dialog({
                     id    : "dlgVerMaterial",
                     title : "Datos del material",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        }
+                    } //buttons
+                }); //dialog
+            } //success
+        }); //ajax
+    } //createEdit
+
+    function verInfoItem(id) {
+        $.ajax({
+            type    : "POST",
+            url     : "${createLink(controller: 'mantenimientoItems', action:'infoItems')}",
+            data    : {
+                id: id
+            },
+            success : function (msg) {
+                var e = bootbox.dialog({
+                    id    : "dlgInfoMaterial",
+                    title : "Información del item",
+                    class : 'modal-lg',
                     message : msg,
                     buttons : {
                         cancelar : {

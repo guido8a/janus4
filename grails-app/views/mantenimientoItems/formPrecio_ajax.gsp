@@ -24,7 +24,7 @@
             </label>
         </div>
         <div class="col-md-8">
-            ${lugar?.descripcion}
+            ${all ? 'Todos los lugares' : lugar?.descripcion}
         </div>
     </div>
 

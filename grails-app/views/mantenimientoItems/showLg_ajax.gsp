@@ -22,15 +22,20 @@
 </div>
 
 <div style="height: 35px; width: 100%;">
-    <div class="btn-group pull-left">
-        <g:if test="${session.perfil.codigo in ['CSTO', 'RBRO']}">
-            <a href="#" class="btn btn-primary" id="btnNew">
+    <g:if test="${session.perfil.codigo in ['CSTO', 'RBRO']}">
+        <div class="btn-group pull-left">
+            <a href="#" class="btn btn-primary btnNew" >
                 <i class="fa fa-file"></i>
                 Nuevo Precio
             </a>
-        </g:if>
-    </div>
-
+        </div>
+        <div class="btn-group" style="margin-left: 5px">
+            <a href="#" class="btn btn-warning btnNewTodos">
+                <i class="fa fa-file"></i>
+                Nuevo Precio todos los lugares
+            </a>
+        </div>
+    </g:if>
     <div class="btn-group pull-left">
         <g:if test="${session.perfil.codigo in ['CSTO', 'RBRO']}">
             <g:if test="${item.departamento.subgrupo.grupoId == 2 || item.departamento.subgrupo.grupoId == 3}">
@@ -170,12 +175,16 @@
             ev.keyCode === 37 || ev.keyCode === 39);
     }
 
-    $(".btnEditar").click(function () {
-        var id = $(this).data("id");
-        createEditPrecio(id);
+    $(".btnNewTodos").click(function () {
+        createEditPrecio(null,"all")
     });
 
-    $("#btnNew").click(function () {
+    $(".btnEditar").click(function () {
+        var id = $(this).data("id");
+        createEditPrecio(id, null);
+    });
+
+    $(".btnNew").click(function () {
         createEditPrecio();
     });
 
@@ -185,7 +194,7 @@
     });
 
 
-    function createEditPrecio(precio) {
+    function createEditPrecio(precio, todo) {
         var fechaDefecto = $("#datetimepicker2").val();
         var title = precio ? "Editar" : "Nuevo";
         $.ajax({
@@ -196,7 +205,7 @@
                 lugar       : "${lugarId}",
                 nombreLugar : "${lugarNombre}",
                 fecha       : "${fecha}",
-                all         : "${params.all}",
+                all         : todo,
                 ignore      : "${params.ignore}",
                 id: precio,
                 fd: fechaDefecto
@@ -205,7 +214,6 @@
                 var b = bootbox.dialog({
                     id    : "dlgCreateEditP",
                     title : title + " precio",
-                    // class : "modal-sm",
                     message : msg,
                     buttons : {
                         cancelar : {
@@ -293,7 +301,7 @@
                             className : "btn-success",
                             callback  : function () {
                                 // chequeados();
-                               return submitFormPrecioC();
+                                return submitFormPrecioC();
                             } //callback
                         } //guardar
                     } //buttons
