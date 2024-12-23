@@ -1,24 +1,4 @@
-%{--<%@ page contentType="text/html;charset=UTF-8" %>--}%
-%{--<html>--}%
-%{--<head>--}%
-%{--    <title>Especificaciones e Ilustraciones de: ${item?.nombre}</title>--}%
-
-%{--    <asset:javascript src="/jquery/jquery-2.2.4.js"/>--}%
-%{--    <asset:javascript src="/jquery/jquery-ui-1.10.2.custom.js"/>--}%
-%{--    <asset:stylesheet src="/bootstrap-3.3.2/dist/css/bootstrap.css"/>--}%
-%{--    <asset:stylesheet src="/bootstrap-3.3.2/dist/css/bootstrap-theme.css"/>--}%
-%{--    <asset:javascript src="/apli/fontawesome.all.min.js"/>--}%
-%{--    <asset:stylesheet src="/apli/font-awesome.min.css"/>--}%
-%{--    <asset:javascript src="/apli/functions.js"/>--}%
-%{--    <asset:stylesheet src="/jquery/jquery-ui-1.10.3.custom.min.css"/>--}%
-
-%{--</head>--}%
-
-%{--<body style="padding: 20px;">--}%
-
 <div class="row">
-
-    %{--    <div class="col-md-12">--}%
     <div class="" style="width: 99.7%;height: 500px; overflow-y: auto;float: right; margin-top: -20px">
 
         <g:if test="${flash.message}">
@@ -40,16 +20,7 @@
         <div class="col-md-12" style="margin-bottom: 10px">
             <div class="alert-warning col-md-12" style="font-size: 14px; font-weight: bold">
                 <div class="col-md-12">
-                    <i class="fa fa-file-pdf fa-2x"></i> Especificación PDF
-                </div>
-
-                <div class="col-md-12">
-                    <g:if test="${!ares?.ruta}">
-                        No se ha cargado ninguna especificación PDF para este material
-                    </g:if>
-                    <g:else>
-                        Especificación actual PDF: <strong style="font-size: 14px"> ${ares?.ruta} </strong>
-                    </g:else>
+                    <i class="fa fa-file-pdf fa-2x"></i> Especificación PDF: ${!ares?.ruta ? 'No se ha cargado ninguna especificación PDF para este material' : ares?.ruta}
                 </div>
             </div>
 
@@ -61,7 +32,7 @@
                         <b>Cargar archivo PDF:</b>
                         <input type="file" id="fileEspePDF" name="file" class="" multiple accept=".pdf"/>
                         <div class="btn-group" style="margin-top: 20px;">
-                            <a href="#" class="btn btn-success submitEspe">
+                            <a href="#" class="btn btn-success submitEspe" data-id="${item?.id}">
                                 <i class="fa fa-save"></i> Guardar
                             </a>
                         </div>
@@ -73,7 +44,7 @@
                                 </g:link>
                             </div>
                             <div class="btn-group" style="margin-top: 20px;">
-                                <a href="#" id="btnBorrarPDF" class="btn btn-danger">
+                                <a href="#" class="btnBorrarPDF btn btn-danger" data-id="${item?.id}">
                                     <i class="fa fa-trash"></i> Borrar
                                 </a>
                             </div>
@@ -83,20 +54,10 @@
             </div>
         </div>
 
-
         <div class="col-md-12" style="margin-bottom: 10px">
             <div class="alert-info col-md-12" style="font-size: 14px; font-weight: bold">
                 <div class="col-md-12">
-                    <i class="fa fa-file-word fa-2x"></i> Especificación WORD
-                </div>
-
-                <div class="col-md-12">
-                    <g:if test="${!ares?.especificacion}">
-                        No se ha cargado ninguna especificación WORD para este material
-                    </g:if>
-                    <g:else>
-                        Especificación actual WORD: <strong style="font-size: 14px"> ${ares?.especificacion} </strong>
-                    </g:else>
+                    <i class="fa fa-file-word fa-2x"></i> Especificación WORD: ${!ares?.especificacion ? 'No se ha cargado ninguna especificación WORD para este material' : ares?.especificacion}
                 </div>
             </div>
 
@@ -110,7 +71,7 @@
                             <input type="file" id="fileEspe" name="file" class=""  multiple accept=".doc, .docx"/>
 
                             <div class="btn-group" style="margin-top: 20px;">
-                                <a href="#" id="submitWord" class="btn btn-success">
+                                <a href="#" class="submitWord btn btn-success" data-id="${item?.id}">
                                     <i class="fa fa-save"></i> Guardar
                                 </a>
                             </div>
@@ -123,7 +84,7 @@
                                     </g:link>
                                 </div>
                                 <div class="btn-group" style="margin-top: 20px;">
-                                    <a href="#" id="btnBorrarWord" class="btn btn-danger">
+                                    <a href="#" class=" btnBorrarWord btn btn-danger" data-id="${item?.id}">
                                         <i class="fa fa-trash"></i> Borrar
                                     </a>
                                 </div>
@@ -137,25 +98,17 @@
         <div class="col-md-12">
             <div class="alert-success col-md-12" style="font-size: 14px; font-weight: bold">
                 <div class="col-md-12">
-                    <i class="fa fa-image fa-2x"></i>  Ilustración
-                </div>
-                <div class="col-md-12">
-                    <g:if test="${!item?.foto}">
-                        No se ha cargado ninguna ilustración para este material
-                    </g:if>
-                    <g:else>
-                        Ilustración actual: <strong style="font-size: 14px"> ${item?.foto} </strong>
-                    </g:else>
+                    <i class="fa fa-image fa-2x"></i>  Ilustración: ${!item?.foto ? 'No se ha cargado ninguna ilustración para este material' : item?.foto}
                 </div>
             </div>
 
-            <g:uploadForm action="uploadFileIlustracion" method="post" name="frmUpload" enctype="multipart/form-data">
+            <g:uploadForm action="uploadFileIlustracion" method="post" name="frmUploadImagen" enctype="multipart/form-data">
                 <g:hiddenField name="item" value="${item?.id}"/>
                 <div class="fieldcontain required col-md-12">
                     <b>Cargar archivo:</b>
                     <input type="file" id="file" name="file" class="" multiple accept=".jpg, .jpeg, .png, .gif"/>
                     <div class="btn-group" style="margin-top: 20px;">
-                        <a href="#" id="submit" class="btn btn-success">
+                        <a href="#" class="submit btn btn-success" data-id="${item?.id}">
                             <i class="fa fa-save"></i> Guardar
                         </a>
                     </div>
@@ -176,8 +129,8 @@
             </g:uploadForm>
 
             <g:if test="${item?.foto}">
-                <div class="col-md-12">
-                    <img src="${request.contextPath}/mantenimientoItems/getFoto?id=${item?.id}" style="width: 400px; height: 400px"/>
+                <div class="col-md-12" id="divImagenMateriales">
+%{--                    <img src="${request.contextPath}/mantenimientoItems/getFoto?id=${item?.id}" style="width: 400px; height: 400px"/>--}%
                 </div>
             </g:if>
 
@@ -186,20 +139,111 @@
 </div>
 
 <script type="text/javascript">
-    
-    // $("#submitImagen").click(function () {
-    //
-    // });
+
+    $(".submitEspe").click(function () {
+        var id = $(this).data("id");
+        submitPdf(id);
+    });
+
+    $(".submitWord").click(function () {
+        var id = $(this).data("id");
+        submitWord(id);
+    });
+
+    $(".submit").click(function () {
+        var id = $(this).data("id");
+        submitImagen(id);
+    });
+
+    function submitPdf(id) {
+        var $form = $("#frmUploadEspe");
+        var formData = new FormData($form[0]);
+        $.ajax({
+            type    : "POST",
+            url     : $form.attr("action"),
+            data    : formData,
+            contentType: false,
+            processData: false,
+            success : function (msg) {
+                var parts = msg.split("_");
+                if(parts[0] === 'ok'){
+                    log(parts[1], "success");
+                    cerrarEspecificaciones();
+                    cargarEspecificaciones(id);
+                }else{
+                    bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
+                    return false;
+                }
+            }
+        });
+    }
+
+    function submitWord(id) {
+        var $form = $("#frmUploadWord");
+        var formData = new FormData($form[0]);
+        $.ajax({
+            type    : "POST",
+            url     : $form.attr("action"),
+            data    : formData,
+            contentType: false,
+            processData: false,
+            success : function (msg) {
+                var parts = msg.split("_");
+                if(parts[0] === 'ok'){
+                    log(parts[1], "success");
+                    cerrarEspecificaciones();
+                    cargarEspecificaciones(id);
+                }else{
+                    bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
+                    return false;
+                }
+            }
+        });
+    }
+
+    function submitImagen(id) {
+        var $form = $("#frmUploadImagen");
+        var formData = new FormData($form[0]);
+        $.ajax({
+            type    : "POST",
+            url     : $form.attr("action"),
+            data    : formData,
+            contentType: false,
+            processData: false,
+            success : function (msg) {
+                var parts = msg.split("_");
+                if(parts[0] === 'ok'){
+                    log(parts[1], "success");
+                    cerrarEspecificaciones();
+                    cargarEspecificaciones(id);
+                    cargarImagenMateriales();
+                }else{
+                    bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
+                    return false;
+                }
+            }
+        });
+    }
+
+    $(".btnBorrarPDF").click(function (){
+        var id = $(this).data("id");
+        deleteArchivo(id, 'pdf');
+    });
+
+    $(".btnBorrarWord").click(function (){
+        var id = $(this).data("id");
+        deleteArchivo(id, 'word');
+    });
 
     $(".btnBorrarImagen").click(function (){
         var id = $(this).data("id");
-        deleteImagen(id);
+        deleteArchivo(id, 'imagen');
     });
 
-    function deleteImagen(id){
+    function deleteArchivo(id, tipo){
         bootbox.confirm({
-            title: "Eliminar imagen",
-            message: '<i class="fa fa-trash text-danger fa-3x"></i>' + '<strong style="font-size: 14px">' + "Está seguro de borrar esta imagen? Esta acción no puede deshacerse. " + '</strong>' ,
+            title: "Eliminar archivo",
+            message: '<i class="fa fa-trash text-danger fa-3x"></i>' + '<strong style="font-size: 14px">' + "Está seguro de borrar este documento? Esta acción no puede deshacerse. " + '</strong>' ,
             buttons: {
                 cancel: {
                     label: '<i class="fa fa-times"></i> Cancelar',
@@ -215,9 +259,10 @@
                     var dialog = cargarLoader("Borrando...");
                     $.ajax({
                         type: 'POST',
-                        url: '${createLink(action: 'borrarImagen_ajax')}',
+                        url: '${createLink(action: 'borrarArchivo_ajax')}',
                         data:{
-                            id: id
+                            id: id,
+                            tipo: tipo
                         },
                         success: function (msg) {
                             dialog.modal('hide');
@@ -226,6 +271,7 @@
                                 log(parts[1],"success");
                                 cerrarEspecificaciones();
                                 cargarEspecificaciones(id);
+                                cargarImagenMateriales();
                             }else{
                                 log(parts[1], "error")
                             }
@@ -236,22 +282,20 @@
         });
     }
 
-    $("#submit").click(function () {
-        $("#frmUpload").submit();
-    });
+    cargarImagenMateriales();
 
-    $(".submitEspe").click(function () {
-        $("#frmUploadEspe").submit();
-    });
+    function cargarImagenMateriales() {
+        var id = '${item?.id}';
+        $.ajax({
+            type    : "POST",
+            url     : "${createLink(controller: 'mantenimientoItems', action: 'imagenMateriales_ajax')}",
+            data    : {
+                    id: id
+            },
+            success : function (msg) {
+                $("#divImagenMateriales").html(msg)
+            }
+        });
+    }
 
-    $("#submitWord").click(function () {
-        $("#frmUploadWord").submit();
-    });
-
-    // $("#salir").click(function () {
-    //     window.close()
-    // });
 </script>
-
-%{--</body>--}%
-%{--</html>--}%

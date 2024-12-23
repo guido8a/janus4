@@ -2453,7 +2453,7 @@ itemId: item.id
     }
 
     def uploadFileIlustracion() {
-//        println ("subir iamgen " + params)
+        println ("subir iamgen " + params)
 
         def rubro = Item.get(params.item)
         def acceptedExt = ["jpg", "png", "gif", "jpeg"]
@@ -2495,22 +2495,29 @@ itemId: item.id
                 rubro.save(flush: true)
 
             } else {
-                flash.clase = "alert-error"
-                flash.message = "Error: Los formatos permitidos son: JPG, JPEG, GIF, PNG"
+//                flash.clase = "alert-error"
+//                flash.message = "Error: Los formatos permitidos son: JPG, JPEG, GIF, PNG"
+//
+                render "err_Los formatos permitidos son: JPG, JPEG, GIF, PNG"
+                return
+
             }
         } else {
-            flash.clase = "alert-error"
-            flash.message = "Error: Seleccione un archivo JPG, JPEG, GIF, PNG"
+//            flash.clase = "alert-error"
+//            flash.message = "Error: Seleccione un archivo JPG, JPEG, GIF, PNG"
+
+            render "err_Seleccione un archivo JPG, JPEG, GIF, PNG"
+            return
         }
 
-        render "ok"
+        render "ok_Guardado correctamente"
 
 //        redirect(action: "especificaciones_ajax", id: rubro.id)
 //        return
     }
 
     def getFoto(){
-//        println "getFoto: $params"
+        println "getFoto: $params"
         def item = Item.get(params.id)
         def path = "/var/janus/item/" + item?.id + "/" +  item?.foto
         def fileext = path.substring(path.indexOf(".")+1, path.length())
@@ -2563,7 +2570,7 @@ itemId: item.id
     }
 
     def uploadFileEspecificacion() {
-//        println "upload "+params
+        println "upload "+params
 
         def rubro = Item.get(params.item)
         def acceptedWord = ['doc', 'docx']
@@ -2601,6 +2608,8 @@ itemId: item.id
 
             if ( params.tipo == 'pdf' ?  acceptedPdf.contains(ext?.toLowerCase()) : acceptedWord.contains(ext?.toLowerCase())) {
 
+                println("entro??")
+
                 def old
 
                 if(tipo == 'pdf'){
@@ -2635,19 +2644,25 @@ itemId: item.id
                 if(archivEsp.save(flush: true)){
                     rubro.especificaciones = archivEsp?.ruta
                     rubro.save(flush: true)
+                    render "ok_Guardado correctamente"
                 } else {
                     println "${archivEsp.errors}"
+                    render "no_Error al guardar"
                 }
             } else {
-                flash.clase = "alert-error"
-                flash.message = params.tipo == 'pdf' ? ("Error: Los formatos permitidos son: PDF") : ("Error: Los formatos permitidos son: DOC, DOCX")
+//                flash.clase = "alert-error"
+//                flash.message = params.tipo == 'pdf' ? ("Error: Los formatos permitidos son: PDF") : ("Error: Los formatos permitidos son: DOC, DOCX")
+                render "no_" + params.tipo == 'pdf' ? ("Error: Los formatos permitidos son: PDF") : ("Error: Los formatos permitidos son: DOC, DOCX")
             }
         } else {
-            flash.clase = "alert-error"
-            flash.message =  params.tipo == 'pdf' ? "Error: Seleccione un archivo PDF" : "Error: Seleccione un archivo DOC, DOCX"
+//            flash.clase = "alert-error"
+//            flash.message =  params.tipo == 'pdf' ? "Error: Seleccione un archivo PDF" : "Error: Seleccione un archivo DOC, DOCX"
+            render "no_" + params.tipo == 'pdf' ? "Error: Seleccione un archivo PDF" : "Error: Seleccione un archivo DOC, DOCX"
         }
 
-        redirect(action: "especificaciones_ajax", id: rubro.id, params: [tipo: tipo])
+
+
+//        redirect(action: "especificaciones_ajax", id: rubro.id, params: [tipo: tipo])
     }
 
 
@@ -2742,18 +2757,33 @@ itemId: item.id
         return [listas: listas]
     }
 
-    def borrarImagen_ajax(){
+    def borrarArchivo_ajax(){
         println("params " + params)
-
         def rubro = Item.get(params.id)
-        def old = rubro?.foto
+        def archivoEspe = ArchivoEspecificacion.findByCodigo(rubro.codigoEspecificacion)
+
+        def old = params.tipo == 'pdf' ?  archivoEspe?.ruta : ( params.tipo == 'word' ?  archivoEspe?.especificacion :rubro?.foto)
+
+        println("old " + old)
+
         if (old) {
             def oldPath = "/var/janus/" + "item/" + rubro?.id + "/" + old
             def oldFile = new File(oldPath)
             if (oldFile.exists()) {
                 oldFile.delete()
-                rubro.foto = null
-                rubro.save(flush:true)
+
+                if(params.tipo == 'pdf'){
+                    archivoEspe.ruta = null
+                    archivoEspe.save(flush:true)
+                }else{
+                    if(params.tipo == 'word'){
+                        archivoEspe.especificacion = null
+                        archivoEspe.save(flush:true)
+                    }else{
+                        rubro.foto = null
+                        rubro.save(flush:true)
+                    }
+                }
                 render "ok_Borrada Correctamente"
             }else{
                 render "no_Error al borrar"
@@ -2762,5 +2792,53 @@ itemId: item.id
             render "no_Error al borrar"
         }
     }
+
+
+    def imagenMateriales_ajax(){
+
+        println("params " + params)
+
+
+        def item = Item.get(params.id)
+
+//        getFoto();
+
+//        def path = "/var/janus/item/" + item?.id + "/" +  item?.foto
+//        def fileext = path.substring(path.indexOf(".")+1, path.length())
+//
+//        BufferedImage imagen = ImageIO.read(new File(path));
+//        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//        ImageIO.write( imagen, fileext, baos );
+//        baos.flush();
+//        byte[] img = baos.toByteArray();
+//        baos.close();
+//        response.setHeader('Content-length', img.length.toString())
+//        response.contentType = "image/"+fileext // or the appropriate image content type
+//        response.outputStream << img
+//        response.outputStream.flush()
+
+        return [item: item]
+    }
+
+//    def borrarImagen_ajax(){
+//        println("params " + params)
+//
+//        def rubro = Item.get(params.id)
+//        def old = rubro?.foto
+//        if (old) {
+//            def oldPath = "/var/janus/" + "item/" + rubro?.id + "/" + old
+//            def oldFile = new File(oldPath)
+//            if (oldFile.exists()) {
+//                oldFile.delete()
+//                rubro.foto = null
+//                rubro.save(flush:true)
+//                render "ok_Borrada Correctamente"
+//            }else{
+//                render "no_Error al borrar"
+//            }
+//        }else{
+//            render "no_Error al borrar"
+//        }
+//    }
 
 }
