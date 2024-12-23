@@ -1,1 +1,1 @@
-<img src="${request.contextPath}/mantenimientoItems/getFoto?id=${item?.id}" style="width: 400px; height: 400px"/>
+<img src="${request.contextPath}/mantenimientoItems/getFoto?id=${item?.id}" style="width: 100%; height: auto"/>
