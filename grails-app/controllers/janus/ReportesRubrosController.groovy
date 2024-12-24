@@ -62,7 +62,7 @@ class reportesRubrosController {
 
 
     def reporteRubrosTransporteV2(){
-        println("params " + params)
+        println("params reporteRubrosTransporteV2 " + params)
         def auxiliar = Auxiliar.get(1)
 
         def obra
@@ -405,6 +405,7 @@ class reportesRubrosController {
         document.add(tablaManoObra)
         document.add(tablaMateriales)
 
+        println "total: $total"
         if (total == 0 || params.trans == "no"){
         }else{
             document.add(tablaTransporte)
@@ -433,7 +434,7 @@ class reportesRubrosController {
 
     def reporteRubrosV2() {
 
-//        println("params " + params)
+        println("reporteRubrosV2: " + params)
         def auxiliar = Auxiliar.get(1)
         def obra
         def fecha
@@ -890,6 +891,7 @@ class reportesRubrosController {
 //        if(bandMat != 1){
 //            document.add(tablaMaterialesVacia)
 //        }
+        println "total: $total"
         if (total == 0 || params.trans == "no"){
         }else{
             document.add(tablaTransporte)
@@ -2117,7 +2119,7 @@ class reportesRubrosController {
 
 
     def reporteRubrosVolumen(){
-        println("params rrvo " + params)
+        println("params reporteRubrosVolumen " + params)
 
         def obra = Obra.get(params.obra)
         def fecha1
@@ -2153,9 +2155,9 @@ class reportesRubrosController {
         def bandTrans = params.desglose
 
         def prmsHeaderHoja = [border: Color.WHITE]
-        def prmsFila = [border: Color.WHITE, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE]
+        def prmsFila        = [border: Color.WHITE, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE]
         def prmsFilaIzquierda = [border: Color.WHITE, align: Element.ALIGN_LEFT, valign: Element.ALIGN_LEFT]
-        def prmsFilaDerecha = [border: Color.WHITE, align: Element.ALIGN_RIGHT, valign: Element.ALIGN_RIGHT]
+        def prmsFilaDerecha = [border: Color.WHITE, align: Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE]
         def prmsHeaderHoja2 = [border: Color.WHITE, colspan: 9]
         def prmsHeader = [border: Color.WHITE, colspan: 7, bg: new Color(73, 175, 205),
                           align : Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE]
@@ -2394,6 +2396,8 @@ class reportesRubrosController {
                 reportesPdfService.addCellTb(tablaTransporte, new Paragraph(numero(r["distancia"], 5)?.toString(), times8normal), prmsFila)
                 reportesPdfService.addCellTb(tablaTransporte, new Paragraph(numero(r["tarifa"], 5)?.toString(), times8normal), prmsFila)
                 reportesPdfService.addCellTb(tablaTransporte, new Paragraph(numero(r["parcial_t"], 5)?.toString(), times8normal), prmsFilaDerecha)
+//                reportesPdfService.addCellTb(tablaTransporte, new Paragraph(numero(r["parcial_t"], 5)?.toString(), times8normal), prmsFila)
+                println "imprime transporte normal o con precio fijo: ${r["parcial_t"]}"
                 total += r["parcial_t"]
             }
         }

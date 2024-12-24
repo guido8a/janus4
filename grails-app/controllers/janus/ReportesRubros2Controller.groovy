@@ -75,7 +75,7 @@ class ReportesRubros2Controller {
 
 
     def reporteRubrosTransporteV2(){
-//        println("params " + params)
+        println("reporteRubrosTransporteV2 -rubros2 " + params)
         def auxiliar = Auxiliar.get(1)
 
         def obra
@@ -902,6 +902,7 @@ class ReportesRubros2Controller {
 //        if(bandMat != 1){
 //            document.add(tablaMaterialesVacia)
 //        }
+        println "total: $total"
         if (total == 0 || params.trans == "no"){
         }else{
             document.add(tablaTransporte)

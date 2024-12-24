@@ -75,7 +75,7 @@
         background: #1a7031;
     </g:if>
     <g:else>
-        background: #7090a4;
+        background: #40525e;
     </g:else>
 
     }
