@@ -45,21 +45,21 @@
 
     $(".btnSeleccionar").click(function () {
         var id = $(this).data("id");
-        bootbox.confirm({
-            title: "Agregar rubro ",
-            message: "<i class='fa fa-exclamation-triangle text-info fa-3x'></i> <strong style='font-size: 14px'> Está seguro de agregar este rubro a la composición?. </strong> ",
-            buttons: {
-                cancel: {
-                    label: '<i class="fa fa-times"></i> Cancelar',
-                    className: 'btn-primary'
-                },
-                confirm: {
-                    label: '<i class="fa fa-check"></i> Aceptar',
-                    className: 'btn-success'
-                }
-            },
-            callback: function (result) {
-                if(result){
+        // bootbox.confirm({
+        //     title: "Agregar rubro ",
+        //     message: "<i class='fa fa-exclamation-triangle text-info fa-3x'></i> <strong style='font-size: 14px'> Está seguro de agregar este rubro a la composición?. </strong> ",
+        //     buttons: {
+        //         cancel: {
+        //             label: '<i class="fa fa-times"></i> Cancelar',
+        //             className: 'btn-primary'
+        //         },
+        //         confirm: {
+        //             label: '<i class="fa fa-check"></i> Aceptar',
+        //             className: 'btn-success'
+        //         }
+        //     },
+        //     callback: function (result) {
+        //         if(result){
                     var g = cargarLoader("Guardando...");
                     $.ajax({
                         type: "POST",
@@ -84,9 +84,9 @@
                             }
                         }
                     });
-                }
-            }
-        });
+        //         }
+        //     }
+        // });
     })
 
 </script>

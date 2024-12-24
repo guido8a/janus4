@@ -911,7 +911,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                                         }
                                     },
                                     copiar: {
-                                        label: '<i class="fa fa-copy"></i> Copiar',
+                                        label: '<i class="fa fa-copy"></i> Transformar a histótico el rubro',
                                         className: 'btn-success',
                                         callback  : function () {
                                             var cr = cargarLoader("Creando...");
@@ -930,7 +930,6 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                                                         // agregar(msg,"H");
                                                         log("Histórico creado correctamente", "success");
                                                         setTimeout(function () {
-                                                            %{--location.href="${createLink(controller: 'rubro', action: 'rubroPrincipal')}/" + msg;--}%
                                                             location.href="${createLink(controller: 'rubro', action: 'rubroPrincipal')}/" + parts[1];
                                                         }, 1000);
                                                     }
