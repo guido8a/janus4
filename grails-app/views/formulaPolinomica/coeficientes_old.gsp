@@ -170,21 +170,9 @@
     <div class="col-md-2"></div>
     <div class="col-md-2" style="font-weight: bold; font-size: 14px; color: #0c6dc4">Total: </div>
     <div class="col-md-2" style="font-weight: bold; font-size: 14px; color: #0c6dc4" id="spanTotal" data-valor='${total}'>
-        <g:formatNumber number="${total}" maxFractionDigits="3" minFractionDigits="3" locale="ec"/>
+      <g:formatNumber number="${total}" maxFractionDigits="3" minFractionDigits="3" locale="ec"/>
     </div>
 </div>
-
-<div class="col-md-12">
-    <div class="col-md-4" id="divFormula">
-
-    </div>
-    <div class="col-md-4" id="divIndices">
-
-    </div>
-</div>
-
-
-
 
 <div id="list-grupo" class="col-md-12" role="main" style="margin-top: 3px;margin-left: 0;">
 
@@ -254,39 +242,6 @@
 </div>
 
 <script type="text/javascript">
-
-    cargarFormulaPolinomica("p");
-
-
-    function cargarFormulaPolinomica(tipo){
-        $.ajax({
-            type: 'POST',
-            url: '${createLink(controller: 'formulaPolinomica', action: 'tablaFormula_ajax')}',
-            data:{
-                id: '${obra?.id}',
-                tipo: tipo,
-                subpresupuesto: '${subpre}'
-            },
-            success: function (msg) {
-                $("#divFormula").html(msg)
-            }
-        });
-    }
-
-    function cargarIndices(item){
-        $.ajax({
-            type: 'POST',
-            url: '${createLink(controller: 'formulaPolinomica', action: 'tablaIndices_ajax')}',
-            data:{
-                obra: '${obra?.id}',
-                id: item,
-                subpresupuesto: '${subpre}'
-            },
-            success: function (msg) {
-                $("#divIndices").html(msg)
-            }
-        });
-    }
 
     $("#btnBuscarItem").click(function () {
         var codigo = $("#buscaCodigo").val();
@@ -371,7 +326,6 @@
             }
         }
     }
-
 
     function treeNodeEvents($items) {
         $items.bind({

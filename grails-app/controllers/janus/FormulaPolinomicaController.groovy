@@ -611,9 +611,40 @@ class FormulaPolinomicaController {
         }else{
             render "OK"
         }
+    }
 
-//        println("fp " + fp)
 
+    def tablaFormula_ajax(){
+        println("params " + params)
+
+        def obra = Obra.get(params.id)
+        def tipo = params.tipo
+        def subpresupuesto = SubPresupuesto.get(params.subpresupuesto)
+
+        def fp = FormulaPolinomica.findAllByObraAndSubPresupuesto(obra, subpresupuesto, [sort: 'numero'])
+
+        println("fp " + fp)
+
+        def res = []
+
+        fp.each {
+            if(it.numero.charAt(0) == tipo){
+                res += it
+            }
+        }
+
+        println("res " + res)
+
+       return [res: res]
+    }
+
+    def tablaIndices_ajax(){
+        def cn = dbConnectionService.getConnection()
+        def item = Item.get(params.id)
+        def sql = "select * from indc where indc__id in (select indc__id from itin where item__id = ${item?.id}) and indcdscr not like '%NO PRINCIPAL%';"
+        def rows = cn.rows(sql.toString())
+
+        return [indices: rows]
     }
 
 } //fin controller
