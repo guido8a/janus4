@@ -635,16 +635,45 @@ class FormulaPolinomicaController {
 
         println("res " + res)
 
-       return [res: res]
+        return [res: res]
     }
 
     def tablaIndices_ajax(){
         def cn = dbConnectionService.getConnection()
-        def item = Item.get(params.id)
-        def sql = "select * from indc where indc__id in (select indc__id from itin where item__id = ${item?.id}) and indcdscr not like '%NO PRINCIPAL%';"
-        def rows = cn.rows(sql.toString())
+        def obra = Obra.get(params.obra)
+        def subpresupuesto = SubPresupuesto.get(params.subpresupuesto)
 
-        return [indices: rows]
+        def sql = "SELECT item.item__id iid, itemcdgo codigo, item.itemnmbr item, grpo__id grupo, valor aporte, 0 precio from item, dprt, sbgr, mfcl, mfvl where " +
+                "mfcl.obra__id = ${obra?.id} and mfcl.sbpr__id = ${subpresupuesto?.id} and mfcl.clmndscr = item.item__id || '_T' " +
+                "and dprt.dprt__id = item.dprt__id and sbgr.sbgr__id = dprt.sbgr__id and grpo__id <> 2 and mfvl.obra__id = mfcl.obra__id " +
+                "and mfvl.sbpr__id = mfcl.sbpr__id and mfvl.clmncdgo = mfcl.clmncdgo and mfvl.codigo " +
+                "= 'sS3' and item.item__id not in (select item__id from itfp, fpob where itfp.fpob__id = fpob.fpob__id and obra__id = ${obra?.id} and sbpr__id = 0) " +
+                "AND itemcdgo not in ('EQPO', 'REP', 'COMB', 'SLDO', '103.001.009') order by valor " +
+                "desc limit 1;"
+
+        def rows = cn.rows(sql.toString())
+        def sql1 = "select * from indc where indc__id in (select indc__id from itin where item__id = ${rows[0]?.iid}) and indcdscr not like '%NO PRINCIPAL%';"
+        def rows1 = cn.rows(sql1.toString())
+
+        return [indices: rows1, items: rows]
+    }
+
+    def tablaItemsNuevos_ajax(){
+        def cn = dbConnectionService.getConnection()
+        def obra = Obra.get(params.obra)
+        def subpresupuesto = SubPresupuesto.get(params.subpresupuesto)
+        def indice = Indice.get(params.indice)
+        def sql = "SELECT item.item__id iid, itemcdgo codigo, item.itemnmbr item, grpo__id grupo, valor aporte, 0 precio from " +
+                "item, dprt, sbgr, mfcl, mfvl where mfcl.obra__id = ${obra?.id} and mfcl.sbpr__id = ${subpresupuesto?.id} and mfcl.clmndscr = item.item__id || '_T' " +
+                "and dprt.dprt__id = item.dprt__id and sbgr.sbgr__id = dprt.sbgr__id and grpo__id <> 2 and mfvl.obra__id = mfcl.obra__id " +
+                "and mfvl.sbpr__id = mfcl.sbpr__id and mfvl.clmncdgo = mfcl.clmncdgo and mfvl.codigo = 'sS3' " +
+                "and item.item__id not in (select item__id from itfp, fpob where itfp.fpob__id = fpob.fpob__id and obra__id = ${obra?.id} " +
+                "and sbpr__id = ${subpresupuesto?.id}) AND itemcdgo not in ('EQPO', 'REP', 'COMB', 'SLDO', '103.001.009') and " +
+                "item__id in (select item__id from itin where indc__id = ${indice?.id}) " +
+                "order by valor desc;"
+
+        def rows = cn.rows(sql.toString())
+        return [items: rows]
     }
 
 } //fin controller

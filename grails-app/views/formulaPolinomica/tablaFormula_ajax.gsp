@@ -2,8 +2,8 @@
     <table class="table table-bordered table-striped table-condensed table-hover">
         <thead>
         <tr>
-            <th style="width: 15%">Coeficiente</th>
-            <th style="width: 70%">Nombre del indice</th>
+            <th style="width: 19%">Coeficiente</th>
+            <th style="width: 71%">Nombre del indice</th>
             <th style="width: 15%">Valor</th>
         </tr>
         </thead>
@@ -15,9 +15,9 @@
         <tbody>
         <g:if test="${res}">
             <g:each in="${res}" var="indice" status="i">
-                <tr>
-                    <td style="width: 15%">${indice?.numero}</td>
-                    <td style="width: 70%">${indice?.indice?.descripcion}</td>
+                <tr class="trFP" data-id="${indice?.id}">
+                    <td style="width: 19%">${indice?.numero}</td>
+                    <td style="width: 71%">${indice?.indice?.descripcion}</td>
                     <td style="width: 15%">${indice?.valor}</td>
                 </tr>
             </g:each>
@@ -33,6 +33,9 @@
 
 <script type="text/javascript">
 
-
+    $(".trFP").click(function () {
+        var id = $(this).data("id");
+        cargarIndices();
+    })
 
 </script>

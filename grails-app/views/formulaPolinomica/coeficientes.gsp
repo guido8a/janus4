@@ -166,7 +166,7 @@
 </div>
 
 <div class="col-md-1"></div>
-<div class="col-md-3 alert ${total < 1 ? 'alert-danger' : 'alert-success'} " style="margin-left: 0">
+<div class="col-md-3 ${total < 1 ? 'alert-danger' : 'alert-success'} " style="margin-left: 0">
     <div class="col-md-2"></div>
     <div class="col-md-2" style="font-weight: bold; font-size: 14px; color: #0c6dc4">Total: </div>
     <div class="col-md-2" style="font-weight: bold; font-size: 14px; color: #0c6dc4" id="spanTotal" data-valor='${total}'>
@@ -181,9 +181,10 @@
     <div class="col-md-4" id="divIndices">
 
     </div>
+    <div class="col-md-4" id="divItemsNuevos">
+
+    </div>
 </div>
-
-
 
 
 <div id="list-grupo" class="col-md-12" role="main" style="margin-top: 3px;margin-left: 0;">
@@ -257,7 +258,6 @@
 
     cargarFormulaPolinomica("p");
 
-
     function cargarFormulaPolinomica(tipo){
         $.ajax({
             type: 'POST',
@@ -273,17 +273,31 @@
         });
     }
 
-    function cargarIndices(item){
+    function cargarIndices(){
         $.ajax({
             type: 'POST',
             url: '${createLink(controller: 'formulaPolinomica', action: 'tablaIndices_ajax')}',
             data:{
                 obra: '${obra?.id}',
-                id: item,
                 subpresupuesto: '${subpre}'
             },
             success: function (msg) {
                 $("#divIndices").html(msg)
+            }
+        });
+    }
+
+    function cargarItemsNuevos(indice){
+        $.ajax({
+            type: 'POST',
+            url: '${createLink(controller: 'formulaPolinomica', action: 'tablaItemsNuevos_ajax')}',
+            data:{
+                obra: '${obra?.id}',
+                subpresupuesto: '${subpre}',
+                indice: indice
+            },
+            success: function (msg) {
+                $("#divItemsNuevos").html(msg)
             }
         });
     }
