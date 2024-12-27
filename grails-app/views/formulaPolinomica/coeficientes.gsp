@@ -256,7 +256,7 @@
 
 <script type="text/javascript">
 
-    cargarFormulaPolinomica("p");
+    cargarFormulaPolinomica('${tipo}');
 
     function cargarFormulaPolinomica(tipo){
         $.ajax({
@@ -273,28 +273,28 @@
         });
     }
 
-    function cargarIndices(){
-        $.ajax({
-            type: 'POST',
-            url: '${createLink(controller: 'formulaPolinomica', action: 'tablaIndices_ajax')}',
-            data:{
-                obra: '${obra?.id}',
-                subpresupuesto: '${subpre}'
-            },
-            success: function (msg) {
-                $("#divIndices").html(msg)
-            }
-        });
-    }
+    %{--function cargarIndices(){--}%
+    %{--    $.ajax({--}%
+    %{--        type: 'POST',--}%
+    %{--        url: '${createLink(controller: 'formulaPolinomica', action: 'tablaIndices_ajax')}',--}%
+    %{--        data:{--}%
+    %{--            obra: '${obra?.id}',--}%
+    %{--            subpresupuesto: '${subpre}'--}%
+    %{--        },--}%
+    %{--        success: function (msg) {--}%
+    %{--            $("#divIndices").html(msg)--}%
+    %{--        }--}%
+    %{--    });--}%
+    %{--}--}%
 
-    function cargarItemsNuevos(indice){
+    function cargarItemsNuevos(formula){
         $.ajax({
             type: 'POST',
             url: '${createLink(controller: 'formulaPolinomica', action: 'tablaItemsNuevos_ajax')}',
             data:{
                 obra: '${obra?.id}',
                 subpresupuesto: '${subpre}',
-                indice: indice
+                formula: formula
             },
             success: function (msg) {
                 $("#divItemsNuevos").html(msg)
