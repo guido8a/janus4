@@ -174,17 +174,17 @@
     </div>
 </div>
 
-<div class="col-md-12">
-    <div class="col-md-4" id="divFormula">
+%{--<div class="col-md-12">--}%
+%{--    <div class="col-md-4" id="divFormula">--}%
 
-    </div>
-    <div class="col-md-4" id="divIndices">
+%{--    </div>--}%
+%{--    <div class="col-md-4" id="divIndices">--}%
 
-    </div>
-    <div class="col-md-4" id="divItemsNuevos">
+%{--    </div>--}%
+%{--    <div class="col-md-4" id="divItemsNuevos">--}%
 
-    </div>
-</div>
+%{--    </div>--}%
+%{--</div>--}%
 
 
 <div id="list-grupo" class="col-md-12" role="main" style="margin-top: 3px;margin-left: 0;">
