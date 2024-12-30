@@ -191,7 +191,7 @@
 
     <div class="area ui-corner-all" id="formula">
 
-        <div id="formulaLeft" class="col-md-5 left ui-corner-left">
+        <div id="formulaLeft" class="col-md-6">
             <div id="tree">asdada</div>
         </div>
 
@@ -1168,13 +1168,13 @@
                         header : "Nombre del Indice",
                         value  : "nombre",
                         title  : "nombre",
-                        width  : 270
+                        width  : 425
                     },
                     {
                         header : "Valor",
                         value  : "valor",
                         title  : "valor",
-                        width  : 70
+                        width  : 90
                     }
                 ]
             }
