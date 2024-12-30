@@ -227,6 +227,14 @@
     </div>
 </div>
 
+<div id="modal-sugeridos">
+    <div class="modal-body" id="modalBody-sugeridos">
+    </div>
+
+    <div class="modal-footer" id="modalFooter-sugeridos">
+    </div>
+</div>
+
 <div class="modal hide fade" id="modal-indice" style="width: 640px;">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">×</button>
@@ -425,6 +433,17 @@
         title: 'Nombre del Indice'
     });
 
+    $("#modal-sugeridos").dialog({
+        autoOpen: false,
+        resizable: true,
+        modal: true,
+        draggable: false,
+        width: 500,
+        height: 280,
+        position: 'center',
+        title: 'Indices Sugeridos'
+    });
+
     function createContextmenu(node) {
 
         var parent = node.parent().parent();
@@ -436,6 +455,8 @@
         var parentTipo = parent.attr("rel");
         var parts = nodeStrId.split("_");
         var nodeId = parts[1];
+
+        var sugiere = node.attr("sgrc");
 
         parts = parentStrId.split("_");
         var parentId = parts[1];
@@ -504,7 +525,7 @@
                     });
 
                     menuItems.editar = {
-                        label            : "<i class='fa fa-edit'></i> Editar",
+                        label            : "<i class='fa fa-edit'></i> Editar índice (todos)",
                         separator_before : false,
                         separator_after  : false,
                         action           : function (obj) {
@@ -528,31 +549,38 @@
                             </g:else>
                         }
                     };
-                    menuItems.sugeridos = {
-                        label            : "<i class='fa fa-edit'></i> Sugeridos",
-                        separator_before : false,
-                        separator_after  : false,
-                        action           : function (obj) {
-                            <g:if test="${obra?.liquidacion==1 || obra?.estado!='R' || obra?.codigo[-1..-2] != 'OF'}">
-                            $.ajax({
-                                type    : "POST",
-                                url     : "${createLink(action: 'editarGrupo')}",
-                                data    : {
-                                    id : nodeId
-                                },
-                                success : function (msg) {
-                                    $("#modalTitle-formula").html("Editar grupo");
-                                    $("#modalBody-formula").html(msg);
-                                    $("#modalFooter-formula").html("").append(btnCancel).append(btnSave);
-                                    $("#modal-formula").dialog("open");
-                                }
-                            });
-                            </g:if>
-                            <g:else>
-                            bootbox.alert('<i class="fa fa-exclamation-triangle text-info fa-3x"></i> ' + '<strong style="font-size: 14px">' + "No puede modificar los coeficientes de una obra ya registrada" + '</strong>');
-                            </g:else>
-                        }
-                    };
+
+                    console.log('sugiere:', sugiere == true);
+                    if(sugiere == 'true'){
+                        menuItems.sugeridos = {
+                            label            : "<i class='fa fa-edit'></i> Índices sugeridos",
+                            separator_before : false,
+                            separator_after  : false,
+                            action           : function (obj) {
+                                <g:if test="${obra?.liquidacion==1 || obra?.estado!='R' || obra?.codigo[-1..-2] != 'OF'}">
+                                $.ajax({
+                                    type    : "POST",
+                                    url     : "${createLink(action: 'editarSugeridos')}",
+                                    data    : {
+                                        id : nodeId,
+                                        sbpr: ${subpre},
+                                        obra: ${obra.id}
+                                    },
+                                    success : function (msg) {
+                                        $("#modalTitle-sugeridos").html("Editar grupo");
+                                        $("#modalBody-sugeridos").html(msg);
+                                        $("#modalFooter-sugeridos").html("").append(btnCancel).append(btnSave);
+                                        $("#modal-sugeridos").dialog("open");
+                                    }
+                                });
+                                </g:if>
+                                <g:else>
+                                bootbox.alert('<i class="fa fa-exclamation-triangle text-info fa-3x"></i> ' + '<strong style="font-size: 14px">' + "No puede modificar los coeficientes de una obra ya registrada" + '</strong>');
+                                </g:else>
+                            }
+                        };
+
+                    }
                 }
                 break;
 
