@@ -789,6 +789,42 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
 
 <script type="text/javascript">
 
+    var es;
+
+    $("#detalle").click(function () {
+        var id = '${rubro?.id}';
+        cargarEspecificaciones(id);
+    });
+
+    function cargarEspecificaciones(id){
+        $.ajax({
+            type    : "POST",
+            url     : "${createLink(controller: 'mantenimientoItems', action:'especificaciones_ajax')}",
+            data    : {
+                id: id
+            },
+            success : function (msg) {
+                es = bootbox.dialog({
+                    id    : "dlgEspecificacionesMaterial",
+                    title : "Especificaciones del material",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        }
+                    } //buttons
+                }); //dialog
+            } //success
+        }); //ajax
+    }
+
+    function cerrarEspecificaciones(){
+        es.modal("hide");
+    }
+
     $(".btnRendimientoTodos").click(function () {
         bootbox.confirm({
             title: "Rendimiento",
@@ -1446,16 +1482,16 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
             window.menubar.visible = false;
         });
 
-        $("#detalle").click(function () {
-            var id = '${rubro?.id}';
-            var child = window.open('${createLink(controller:"mantenimientoItems",action:"especificaciones_ajax")}?id=' + id,
-                'janus4', 'width=850,height=800,toolbar=0,resizable=0,menubar=0,scrollbars=1,status=0');
+        %{--$("#detalle").click(function () {--}%
+        %{--    var id = '${rubro?.id}';--}%
+        %{--    var child = window.open('${createLink(controller:"mantenimientoItems",action:"especificaciones_ajax")}?id=' + id,--}%
+        %{--        'janus4', 'width=850,height=800,toolbar=0,resizable=0,menubar=0,scrollbars=1,status=0');--}%
 
-            if (child.opener == null)
-                child.opener = self;
-            window.toolbar.visible = false;
-            window.menubar.visible = false;
-        });
+        %{--    if (child.opener == null)--}%
+        %{--        child.opener = self;--}%
+        %{--    window.toolbar.visible = false;--}%
+        %{--    window.menubar.visible = false;--}%
+        %{--});--}%
 
 
         $("#borrar").click(function () {
@@ -2270,6 +2306,8 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                 return false;
             }
         }
+
+
 
     });
 </script>
