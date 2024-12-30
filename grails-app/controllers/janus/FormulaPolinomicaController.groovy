@@ -676,7 +676,7 @@ class FormulaPolinomicaController {
                 "order by valor desc;"
 
         def rows = cn.rows(sql.toString())
-        return [items: rows]
+        return [items: rows, formula: formula]
     }
 
     def buscarIndices_ajax(){
@@ -882,6 +882,23 @@ class FormulaPolinomicaController {
             render "no_Error al borrar el item"
         }
 
+    }
+
+    def agregarNuevoItem_ajax(){
+        def item = Item.get(params.id)
+        def formula = FormulaPolinomica.get(params.formula)
+
+        def nuevoItem = new ItemsFormulaPolinomica()
+        nuevoItem.formulaPolinomica = formula
+        nuevoItem.item = item
+        nuevoItem.valor = (params.valor ?  params.valor.toDouble() : 0)
+
+        if(!nuevoItem.save(flush:true)){
+            println("error al agregar item " + nuevoItem.errors)
+            render "no_Error al agregar el item"
+        }else{
+            render "ok_Agregado correctamente"
+        }
     }
 
 

@@ -1,3 +1,5 @@
+<div class="alert-success" style="font-size: 14px; font-weight: bold; text-align: center" >Asignados</div>
+
 <div role="main" style="margin-top: 5px;">
     <table class="table table-bordered table-striped table-condensed table-hover">
         <thead>
@@ -15,8 +17,10 @@
     <table class="table-bordered table-striped table-condensed table-hover" >
         <tbody>
         <g:if test="${asignados}">
+            <g:set var="total" value="${0}"/>
             <g:each in="${asignados}" var="asignado" >
                 <tr>
+                    <g:set var="total" value="${total += asignado?.valor}"/>
                     <td style="width: 15%">${asignado?.item?.codigo}</td>
                     <td style="width: 55%">${asignado?.item?.nombre}</td>
                     <td style="width: 15%">${asignado?.valor}</td>
@@ -25,6 +29,9 @@
                     </td>
                 </tr>
             </g:each>
+            <td colspan="2" style="text-align: right; font-weight: bold; font-size: 14px">Total</td>
+            <td class="text-info" style="text-align: right; font-weight: bold; font-size: 14px">${total}</td>
+            <td></td>
         </g:if>
         <g:else>
             <div class="alert alert-info" style="text-align: center">

@@ -1,3 +1,5 @@
+<div class="alert-info" style="font-size: 14px; font-weight: bold; text-align: center">Indices</div>
+
 <div role="main" style="margin-top: 5px;">
     <table class="table table-bordered table-striped table-condensed table-hover">
         <thead>
@@ -12,7 +14,7 @@
     </table>
 </div>
 
-<div class="" style="width: 99.7%;height: 350px; overflow-y: auto; margin-top: -20px">
+<div class="" style="width: 99.7%;height: 400px; overflow-y: auto; margin-top: -20px">
     <table class="table-bordered table-striped table-condensed table-hover" style="width: 100%;">
         <tbody>
         <g:if test="${res}">

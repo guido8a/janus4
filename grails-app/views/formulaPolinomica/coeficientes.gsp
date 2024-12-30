@@ -174,7 +174,7 @@
     </div>
 </div>
 
-<div class="col-md-12">
+<div class="col-md-12" style="margin-top: 10px">
     <div class="col-md-4" id="divFormula">
 
     </div>
@@ -187,7 +187,7 @@
 </div>
 
 
-<div id="list-grupo" class="col-md-12" role="main" style="margin-top: 3px;margin-left: 0;">
+<div id="list-grupo" class="col-md-12" role="main" style="margin-top: 50px;margin-left: 0;">
 
     <div class="area ui-corner-all" id="formula">
 
