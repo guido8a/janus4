@@ -719,6 +719,11 @@ class FormulaPolinomicaController {
     }
 
     def tablaItemsAsignados_ajax(){
+
+        def formula = FormulaPolinomica.get(params.formula)
+        def asignados = ItemsFormulaPolinomica.findAllByFormulaPolinomica(formula).sort{it.item.nombre}
+
+        return [asignados: asignados, formula: formula]
     }
 
     def coeficientesFp() {
@@ -863,6 +868,20 @@ class FormulaPolinomicaController {
 
             [obra: obra, json: json, tipo: params.tipo, rows: rows, total: total, subpre: sbpr.id, cof: cof?.numero, duenoObra: duenoObra, persona: persona]
         }
+    }
+
+    def borrarAsignado_ajax(){
+
+        def item = ItemsFormulaPolinomica.get(params.id)
+
+        try{
+            item.delete(flush: true)
+            render "ok_Borrado correctamente"
+        }catch(e){
+            println("error al borrar el item asignado " + item.errors)
+            render "no_Error al borrar el item"
+        }
+
     }
 
 

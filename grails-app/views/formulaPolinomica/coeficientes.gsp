@@ -178,7 +178,7 @@
     <div class="col-md-4" id="divFormula">
 
     </div>
-    <div class="col-md-4" id="divIndices">
+    <div class="col-md-4" id="divAsignados">
 
     </div>
     <div class="col-md-4" id="divItemsNuevos">
@@ -286,6 +286,21 @@
     %{--        }--}%
     %{--    });--}%
     %{--}--}%
+
+    function cargarItemsAsignados(formula){
+        $.ajax({
+            type: 'POST',
+            url: '${createLink(controller: 'formulaPolinomica', action: 'tablaItemsAsignados_ajax')}',
+            data:{
+                obra: '${obra?.id}',
+                subpresupuesto: '${subpre}',
+                formula: formula
+            },
+            success: function (msg) {
+                $("#divAsignados").html(msg)
+            }
+        });
+    }
 
     function cargarItemsNuevos(formula){
         $.ajax({

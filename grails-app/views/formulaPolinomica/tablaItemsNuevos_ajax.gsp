@@ -21,7 +21,7 @@
                     <td style="width: 55%">${item?.item}</td>
                     <td style="width: 15%">${item?.aporte}</td>
                     <td style="width: 15%">
-                        <g:checkBox name="aaa" value="" />
+                        <a href="#" class="btn btn-danger btn-xs btnBorrarAsignado" data-id="${asignado?.id}"><i class="fa fa-trash"></i></a>
                     </td>
                 </tr>
             </g:each>

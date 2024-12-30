@@ -45,6 +45,7 @@
     $(".trFP").click(function () {
         var id = $(this).data("id");
         cargarItemsNuevos(id);
+        cargarItemsAsignados(id);
     });
 
     var bi;
