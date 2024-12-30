@@ -570,8 +570,8 @@
                 $seleccionados.removeClass("selected");
                 node.parent().parent().children("a, .jstree-grid-cell").addClass("selected editable parent");
 
-                menuItems.delete = {
-                    label            : "<i class='fa fa-trash'></i> Eliminar",
+                menuItems.agregar = {
+                    label            : "<i class='fa fa-list'></i> agregar",
                     separator_before : false,
                     separator_after  : false,
                     action           : function (obj) {
@@ -646,8 +646,8 @@
                         </g:else>
                     }
                 };
-                menuItems.agregar = {
-                    label            : "<i class='fa fa-trash'></i> agregar",
+                menuItems.delete = {
+                    label            : "<i class='fa fa-trash'></i> Eliminar",
                     separator_before : false,
                     separator_after  : false,
                     action           : function (obj) {
