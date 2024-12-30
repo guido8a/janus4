@@ -18,7 +18,7 @@
         <div class="span">
             Modificar valor &nbsp;&nbsp;&nbsp;
             %{--<input type="number" step="0.001" pattern="#.###"/>--}%
-            <g:field type="number" name="valor" step="0.001" pattern="#.###" value="${formula.valor}" class="input-mini"/>
+            <g:field type="number" name="valorSgrc" step="0.001" pattern="#.###" value="${formula.valor}" class="input-mini"/>
             (suma <g:formatNumber number="${total}" format="##,##0.#####" locale="ec"/>)
         </div>
     </div>

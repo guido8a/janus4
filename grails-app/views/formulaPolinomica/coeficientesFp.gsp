@@ -471,10 +471,16 @@
 
                 if(num !== 'p01'){
                     var btnCancel = $('<a href="#" class="btn">Cancelar</a>');
+                    var btnCancelSgrc = $('<a href="#" class="btn">Cancelar</a>');
                     var btnSave = $('<a href="#"  class="btn btn-success"><i class="fa fa-save"></i> Guardar</a>');
+                    var btnSaveSgrc = $('<a href="#"  class="btn btn-success"><i class="fa fa-save"></i> Guardar Sgrc</a>');
 
                     btnCancel.click(function () {
                         $("#modal-formula").dialog("close");
+                    });
+
+                    btnCancelSgrc.click(function () {
+                        $("#modal-sugeridos").dialog("close");
                     });
 
                     btnSave.click(function () {
@@ -485,6 +491,8 @@
                         var cantNombre = 0;
 
                         var $spans = $("#tree").find("span:contains('" + indiceNombre + "')");
+//                        console.log('nombre:', indiceNombre);
+//                        console.log('spans:', nodeText);
                         $spans.each(function () {
                             var t = $.trim($(this).text());
                             if (t === indiceNombre) {
@@ -524,6 +532,60 @@
                         }
                     });
 
+                    btnSaveSgrc.click(function () {
+                        var indice = $("#indice").val();
+
+                        var valor = $.trim($("#valorSgrc").val());
+                        var indiceNombre = $("#indice option:selected").text();
+                        var cantNombre = 0;
+                        console.log('Compara');
+                        var $spans = $("#tree").find("span:contains('" + indiceNombre + "')");
+                        $spans.each(function () {
+                            var t = $.trim($(this).text());
+                            if (t === indiceNombre) {
+                                cantNombre++;
+                            }
+                        });
+
+                        if (indiceNombre === nodeText) {
+                            cantNombre = 0;
+                        }
+
+                        console.log('cantNombre:', cantNombre, ' Valor', valor);
+
+                        if (cantNombre === 0) {
+                            if (valor !== "") {
+                                btnSaveSgrc.replaceWith(spinner);
+                                $.ajax({
+                                    type    : "POST",
+                                    url     : "${createLink(action: 'guardarGrupoSgrc')}",
+                                    data    : {
+                                        id     : nodeId,
+                                        indice : indice,
+                                        valor  : valor,
+                                        obra: ${obra.id},
+                                        sbpr: ${subpre}
+                                    },
+                                    success : function (msg) {
+                                        if (msg === "OK") {
+                                            node.attr("nombre", indiceNombre).trigger("change_node.jstree");
+                                            node.attr("valor", valor).trigger("change_node.jstree");
+                                            $("#modal-sugeridos").dialog("close");
+                                            updateSumaTotal();
+                                            location.reload();
+                                        }
+                                    }
+                                });
+                            } else {
+                            }
+                        } else {
+                            bootbox.alert('<i class="fa fa-exclamation-triangle text-info fa-3x"></i> ' +
+                                '<strong style="font-size: 14px">' + "No puede ingresar dos coeficientes con el mismo nombre" +
+                                '</strong>');
+                            return false;
+                        }
+                    });
+
                     menuItems.editar = {
                         label            : "<i class='fa fa-edit'></i> Editar índice (todos)",
                         separator_before : false,
@@ -550,8 +612,8 @@
                         }
                     };
 
-                    console.log('sugiere:', sugiere == true);
-                    if(sugiere == 'true'){
+                    console.log('sugiere:', sugiere);
+                    if(sugiere == 'false'){
                         menuItems.sugeridos = {
                             label            : "<i class='fa fa-edit'></i> Índices sugeridos",
                             separator_before : false,
@@ -569,7 +631,7 @@
                                     success : function (msg) {
                                         $("#modalTitle-sugeridos").html("Editar grupo");
                                         $("#modalBody-sugeridos").html(msg);
-                                        $("#modalFooter-sugeridos").html("").append(btnCancel).append(btnSave);
+                                        $("#modalFooter-sugeridos").html("").append(btnCancelSgrc).append(btnSaveSgrc);
                                         $("#modal-sugeridos").dialog("open");
                                     }
                                 });
