@@ -2210,7 +2210,8 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
 
         $("#irFP").click(function () {
             var sb = $("#matriz_genFP").val();
-            location.href = "${g.createLink(controller: 'formulaPolinomica',action: 'coeficientes',id: obra?.id)}?sbpr=" + sb
+            %{--location.href = "${g.createLink(controller: 'formulaPolinomica',action: 'coeficientes',id: obra?.id)}?sbpr=" + sb--}%
+            location.href = "${g.createLink(controller: 'formulaPolinomica',action: 'coeficientesFp',id: obra?.id)}?sbpr=" + sb
         });
         $("#cancelaFP").click(function () {
             $("#modal-formula").dialog("close")
