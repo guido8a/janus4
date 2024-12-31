@@ -311,7 +311,7 @@
             </div>
         </div>
 
-        <table style="margin-top: 30px; font-size: 12px !important; width: 100%!important">
+        <table style="margin-top: 35px; font-size: 12px !important; width: 100%!important">
             <thead>
             </thead>
             <tbody>
