@@ -1166,10 +1166,19 @@ class RubroController {
     }
 
     def tablaSeleccionados_ajax(){
+        def cn = dbConnectionService.getConnection()
+        def sql = "select rbro__id, item.item__id, itemcdgo, itemnmbr, grpo__id from rbro, item, dprt, sbgr " +
+                "where rbrocdgo = ${params.id} and item.item__id = rbro.item__id and " +
+                "dprt.dprt__id = item.dprt__id and sbgr.sbgr__id = dprt.sbgr__id " +
+                "order by grpo__id desc"
+        println "sql: $sql"
         def rubro = Item.get(params.id)
-        def items = Rubro.findAllByRubro(rubro).sort { it.item.departamento.subgrupo.grupo.id }
-        def volumenes =  verificarVolumnesXRubro(rubro?.id)
-        return [items: items, rubro: rubro, volumenes: volumenes]
+//        def items = Rubro.findAllByRubro(rubro).sort { it.item.departamento.subgrupo.grupo.id}
+//        def items = Rubro.findAllByRubro(rubro, [sort: 'it.item.departamento.subgrupo.grupo.descripcion', order: 'desc'] )
+        def items = cn.rows(sql.toString())
+
+//        def volumenes =  verificarVolumnesXRubro(rubro?.id)
+        return [items: items, rubro: rubro]
     }
 
     def agrearItem_ajax(){
@@ -1199,7 +1208,7 @@ class RubroController {
     }
 
     def eliminarRubro_ajax(){
-
+        println "eliminarRubro_ajax: $params"
         def rubro = Rubro.get(params.id)
 
         if(rubro){

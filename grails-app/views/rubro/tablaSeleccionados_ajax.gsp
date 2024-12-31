@@ -3,11 +3,11 @@
 </div>
 
 <div class="col-md-12" style="margin-bottom: 5px">
-    <div class="col-md-3 alert-info">Materiales</div>
+    <div class="col-md-3 alert-warning">Equipos</div>
     <div class="col-md-1"></div>
     <div class="col-md-3 alert-success">Mano Obra</div>
     <div class="col-md-1"></div>
-    <div class="col-md-3 alert-warning">Equipos</div>
+    <div class="col-md-3 alert-info">Materiales</div>
 </div>
 
 <div role="main" style="margin-top: 10px;">
@@ -27,14 +27,26 @@
     <table class="table-bordered table-striped table-condensed table-hover" style="width: 100%">
         <tbody>
         <g:if test="${items}">
+            %{--<g:each in="${items}" var="item" status="i">--}%
+                %{--<tr class="${item?.item?.departamento?.subgrupo?.grupo?.id == 1 ? 'alert alert-info' : (item?.item?.departamento?.subgrupo?.grupo?.id == 2 ? 'alert alert-success' : 'alert alert-warning')}">--}%
+                    %{--<td style="width: 15%">${item.item.codigo}</td>--}%
+                    %{--<td style="width: 70%">${item.item.nombre}</td>--}%
+                    %{--<td style="width: 12%">--}%
+                        %{--<g:if test="${!volumenes}">--}%
+                            %{--<a href="#" class="btn btn-danger btn-xs btnBorrarSeleccion" data-id="${item?.id}" ><i class="fa fa-trash"></i></a>--}%
+                        %{--</g:if>--}%
+                    %{--</td>--}%
+                %{--</tr>--}%
+            %{--</g:each>--}%
             <g:each in="${items}" var="item" status="i">
-                <tr class="${item?.item?.departamento?.subgrupo?.grupo?.id == 1 ? 'alert alert-info' : (item?.item?.departamento?.subgrupo?.grupo?.id == 2 ? 'alert alert-success' : 'alert alert-warning')}">
-                    <td style="width: 15%">${item.item.codigo}</td>
-                    <td style="width: 70%">${item.item.nombre}</td>
+                <tr class="${item?.grpo__id == 1 ? 'alert alert-info' : (item?.grpo__id == 2 ? 'alert alert-success' : 'alert alert-warning')}">
+                    <td style="width: 15%">${item.itemcdgo}</td>
+                    <td style="width: 70%">${item.itemnmbr}</td>
                     <td style="width: 12%">
-                        <g:if test="${!volumenes}">
-                            <a href="#" class="btn btn-danger btn-xs btnBorrarSeleccion" data-id="${item?.id}" ><i class="fa fa-trash"></i></a>
-                        </g:if>
+                        %{--<g:if test="${!volumenes}">--}%
+                        <a href="#" class="btn btn-danger btn-xs btnBorrarSeleccion" data-id="${item?.rbro__id}">
+                        <i class="fa fa-trash"></i></a>
+                        %{--</g:if>--}%
                     </td>
                 </tr>
             </g:each>
@@ -54,7 +66,8 @@
         var id = $(this).data("id");
         bootbox.confirm({
             title: "Eliminar",
-            message: "<i class='fa fa-exclamation-triangle text-info fa-3x'></i> <strong style='font-size: 14px'> Está seguro de eliminar este registro?</strong> ",
+            message: "<i class='fa fa-exclamation-triangle text-info fa-3x'></i> " +
+                "<strong style='font-size: 14px'> Está seguro de eliminar este registro?</strong> ",
             buttons: {
                 cancel: {
                     label: '<i class="fa fa-times"></i> Cancelar',
@@ -69,51 +82,12 @@
                 if(result){
                     $.ajax({
                         type : "POST",
-                        url : "${g.createLink(controller: 'rubro',action:'verificaRubro')}",
+                        url : "${g.createLink(controller: 'rubro', action:'eliminarRubro_ajax')}",
                         data     : {
-                            id : '${rubro?.id}'
+                            id : id
                         },
                         success  : function (msg) {
-                            var resp = msg.split('_');
-                            if(resp[0] === "1"){
-                                var ou = cargarLoader("Cargando...");
-                                $.ajax({
-                                    type : "POST",
-                                    url : "${g.createLink(controller: 'rubro',action:'listaObrasUsadas_ajax')}",
-                                    data     : {
-                                        id : '${rubro?.id}'
-                                    },
-                                    success  : function (msg) {
-                                        ou.modal("hide");
-                                        var b = bootbox.dialog({
-                                            id      : "dlgLOU",
-                                            title   : "Lista de obras usadas",
-                                            message : msg,
-                                            buttons : {
-                                                cancelar : {
-                                                    label     : "Cancelar",
-                                                    className : "btn-primary",
-                                                    callback  : function () {
-                                                    }
-                                                }
-                                            } //buttons
-                                        }); //dialog
-                                    }
-                                });
-                            }else{
-                                $.ajax({
-                                    type : "POST",
-                                    url : "${g.createLink(controller: 'rubro',action:'eliminarRubroDetalle')}",
-                                    data     : "id=" + boton.attr("iden"),
-                                    success  : function (msg) {
-                                        if (msg === "Registro eliminado") {
-                                            cargarTablaSeleccionados();
-                                        }else{
-                                            bootbox.alert('<i class="fa fa-exclamation-triangle text-info fa-3x"></i> ' + '<strong style="font-size: 14px">' + msg  + '</strong>');
-                                        }
-                                    }
-                                });
-                            }
+                            location.reload()
                         }
                     });
                 }
