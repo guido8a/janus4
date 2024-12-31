@@ -92,6 +92,11 @@
         height : 20px;
     }
 
+    .span1 {
+        width  : 10%;
+        /*float  : left;*/
+        height : 100%;
+    }
     .span3 {
         width  : 29%;
         float  : left;
@@ -280,7 +285,6 @@
             </tbody>
         </table>
 
-
         <div style="margin-top: 20px">
             <div class="row-fluid">
                 <div class="span12" style="margin-right: 100px !important; font-size: 12px; margin-bottom: 15px">
@@ -306,6 +310,31 @@
                 </div>
             </div>
         </div>
+
+        <table style="margin-top: 30px; font-size: 12px !important; width: 100%!important">
+            <thead>
+            </thead>
+            <tbody>
+            <tr>
+                <td colspan="3" class="theaderBot theaderup padTopBot"  style="border-top: 1px solid #000000">
+                    ${obra?.inspector?.titulo ?: ''} ${obra?.inspector?.nombre ?: ''} ${obra?.inspector?.apellido ?: ''} (Inspector)
+                </td>
+                <td colspan="2" style="width: 100px">
+
+                </td>
+                <td colspan="3" class="theaderBot theaderup padTopBot" style="border-top: 1px solid #000000">
+                    ${obra?.revisor?.titulo ?: ''} ${obra?.revisor?.nombre ?: ''} ${obra?.revisor?.apellido ?: ''} (Revisor)
+                </td>
+                <td colspan="2" style="width: 100px">
+
+                </td>
+                <td colspan="3" class="theaderBot theaderup padTopBot" style="border-top: 1px solid #000000">
+                    ${obra?.responsableObra?.titulo ?: ''} ${obra?.responsableObra?.nombre ?: ''} ${obra?.responsableObra?.apellido ?: ''} (Responsable)
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
     </g:if>
 
     <g:else>
@@ -363,6 +392,31 @@
             </tr>
             </tbody>
         </table>
+
+        <table style="margin-top: 30px; font-size: 12px !important; width: 100%!important">
+            <thead>
+            </thead>
+            <tbody>
+            <tr>
+                <td colspan="3" class="theaderBot theaderup padTopBot"  style="border-top: 1px solid #000000">
+                    ${obra?.inspector?.titulo ?: ''} ${obra?.inspector?.nombre ?: ''} ${obra?.inspector?.apellido ?: ''}
+                </td>
+                <td colspan="2" style="width: 100px">
+
+                </td>
+                <td colspan="3" class="theaderBot theaderup padTopBot" style="border-top: 1px solid #000000">
+                    ${obra?.revisor?.titulo ?: ''} ${obra?.revisor?.nombre ?: ''} ${obra?.revisor?.apellido ?: ''}
+                </td>
+                <td colspan="2" style="width: 100px">
+
+                </td>
+                <td colspan="3" class="theaderBot theaderup padTopBot" style="border-top: 1px solid #000000">
+                    ${obra?.responsableObra?.titulo ?: ''} ${obra?.responsableObra?.nombre ?: ''} ${obra?.responsableObra?.apellido ?: ''}
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
     </g:else>
 </div>
 
