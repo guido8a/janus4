@@ -1102,7 +1102,7 @@ class ObraController {
 
         return [personas       : personas, personasRolInsp: personasRolInsp.persona, personasRolRevi: personasRolRevi.persona,
                 personasRolResp: personasRolResp.persona, personasRolElab: personasRolElab.persona, obra: obra,
-                persona: persona, personasUtfpu: personasUtfpu.persona, duenoObra: duenoObra]
+                persona: persona, personasUtfpu: personasUtfpu.persona, duenoObra: duenoObra, direccion: direccion, idep: params.idDep]
     }
 
     def getSalida() {
@@ -1705,7 +1705,199 @@ class ObraController {
             ultimo.save(flush:true)
             render "ok_Código creado correctamente"
         }
+    }
 
+    def seleccionarRevisor_ajax(){
+
+        def obra = Obra.get(params.obra)
+        def usuario = session.usuario.id
+        def persona = Persona.get(usuario)
+        def direccion
+        def departamentos
+
+        if(params.id){
+            direccion = Direccion.get(params.id)
+            departamentos = Departamento.findAllByDireccion(direccion)
+        } else {
+            departamentos = [Departamento.get(params.idDep)]
+        }
+
+        def personas = Persona.findAllByDepartamentoInList(departamentos, [sort: 'nombre'])
+
+        if(!personas) {
+            departamentos = Departamento.findAllByDireccion(departamentos.first().direccion)
+            personas =  Persona.findAllByDepartamentoInList(departamentos, [sort: 'nombre'])
+        }
+
+        def funcionRevi = Funcion.findByCodigo('R')
+        def personasRolRevi = PersonaRol.findAllByFuncionAndPersonaInList(funcionRevi, personas)
+
+        return [personas : personas, personasRolRevi: personasRolRevi.persona, obra: obra, persona: persona]
+
+    }
+
+    def seleccionarInspector_ajax(){
+
+        def obra = Obra.get(params.obra)
+        def usuario = session.usuario.id
+        def persona = Persona.get(usuario)
+        def direccion
+        def departamentos
+
+        if(params.id){
+            direccion = Direccion.get(params.id)
+            departamentos = Departamento.findAllByDireccion(direccion)
+        } else {
+            departamentos = [Departamento.get(params.idDep)]
+        }
+
+        def personas = Persona.findAllByDepartamentoInList(departamentos, [sort: 'nombre'])
+
+        if(!personas) {
+            departamentos = Departamento.findAllByDireccion(departamentos.first().direccion)
+            personas =  Persona.findAllByDepartamentoInList(departamentos, [sort: 'nombre'])
+        }
+
+        def funcionInsp = Funcion.findByCodigo('I')
+        def funcionResp = Funcion.findByCodigo('S')
+        def funcionElab = Funcion.findByCodigo('E')
+
+        def personasRolInsp = PersonaRol.findAllByFuncionAndPersonaInList(funcionInsp, personas)
+        def personasRolResp = PersonaRol.findAllByFuncionAndPersonaInList(funcionResp, personas)
+        def personasRolElab = PersonaRol.findAllByFuncionAndPersonaInList(funcionElab, personas)
+        def personasUtfpu1 = Persona.findAllByDepartamento(Departamento.findByCodigo('CRFC'))
+        def personasUtfpu = PersonaRol.findAllByFuncionAndPersonaInList(funcionElab, personasUtfpu1)
+
+        def responsableObra
+        def duenoObra = 0
+
+        if (obra) {
+            responsableObra = obra?.responsableObra
+
+            def responsableRol = PersonaRol.findByPersonaAndFuncion(responsableObra, funcionElab)
+
+            if (responsableRol) {
+                personasUtfpu.each {
+                    if (it.id == responsableRol.id) {
+                        duenoObra = 1
+                    } else {
+
+                    }
+                }
+            } else {
+
+            }
+        } else {
+            duenoObra = 0
+        }
+
+        return [personas       : personas, personasRolInsp: personasRolInsp.persona,
+                personasRolResp: personasRolResp.persona, personasRolElab: personasRolElab.persona, obra: obra,
+                persona: persona, personasUtfpu: personasUtfpu.persona, duenoObra: duenoObra, direccion: direccion, idep: params.idDep]
+
+    }
+
+    def seleccionarResponsable_ajax(){
+
+        def obra = Obra.get(params.obra)
+        def usuario = session.usuario.id
+        def persona = Persona.get(usuario)
+        def direccion
+        def departamentos
+
+        if(params.id){
+            direccion = Direccion.get(params.id)
+            departamentos = Departamento.findAllByDireccion(direccion)
+        } else {
+            departamentos = [Departamento.get(params.idDep)]
+        }
+
+        def personas = Persona.findAllByDepartamentoInList(departamentos, [sort: 'nombre'])
+
+        if(!personas) {
+            departamentos = Departamento.findAllByDireccion(departamentos.first().direccion)
+            personas =  Persona.findAllByDepartamentoInList(departamentos, [sort: 'nombre'])
+        }
+
+        def funcionInsp = Funcion.findByCodigo('I')
+        def funcionResp = Funcion.findByCodigo('S')
+        def funcionElab = Funcion.findByCodigo('E')
+
+        def personasRolInsp = PersonaRol.findAllByFuncionAndPersonaInList(funcionInsp, personas)
+        def personasRolResp = PersonaRol.findAllByFuncionAndPersonaInList(funcionResp, personas)
+        def personasRolElab = PersonaRol.findAllByFuncionAndPersonaInList(funcionElab, personas)
+        def personasUtfpu1 = Persona.findAllByDepartamento(Departamento.findByCodigo('CRFC'))
+        def personasUtfpu = PersonaRol.findAllByFuncionAndPersonaInList(funcionElab, personasUtfpu1)
+
+        def responsableObra
+        def duenoObra = 0
+
+        if (obra) {
+            responsableObra = obra?.responsableObra
+
+            def responsableRol = PersonaRol.findByPersonaAndFuncion(responsableObra, funcionElab)
+
+            if (responsableRol) {
+                personasUtfpu.each {
+                    if (it.id == responsableRol.id) {
+                        duenoObra = 1
+                    } else {
+
+                    }
+                }
+            } else {
+
+            }
+        } else {
+            duenoObra = 0
+        }
+
+        return [personas       : personas, personasRolInsp: personasRolInsp.persona,
+                personasRolResp: personasRolResp.persona, personasRolElab: personasRolElab.persona, obra: obra,
+                persona: persona, personasUtfpu: personasUtfpu.persona, duenoObra: duenoObra, direccion: direccion, idep: params.idDep]
+
+    }
+
+    def guardarInspector_ajax(){
+
+        def obra = Obra.get(params.obra)
+        def inspector = Persona.get(params.inspector)
+        obra.inspector = inspector
+
+        if(!obra.save(flush:true)){
+            println("error al guardar el inspector " + obra.errors)
+            render "no_Error al guardar el inspector"
+        }else{
+            render "ok_Guardado correctamente"
+        }
+    }
+
+    def guardarResponsable_ajax(){
+
+        def obra = Obra.get(params.obra)
+        def responsable = Persona.get(params.responsable)
+        obra.responsableObra = responsable
+
+        if(!obra.save(flush:true)){
+            println("error al guardar el responsable " + obra.errors)
+            render "no_Error al guardar el responsable"
+        }else{
+            render "ok_Guardado correctamente"
+        }
+    }
+
+    def guardarRevisor_ajax(){
+
+        def obra = Obra.get(params.obra)
+        def revisor = Persona.get(params.revisor)
+        obra.revisor = revisor
+
+        if(!obra.save(flush:true)){
+            println("error al guardar el revisor " + obra.errors)
+            render "no_Error al guardar el revisor"
+        }else{
+            render "ok_Guardado correctamente"
+        }
     }
 
 } //fin controller

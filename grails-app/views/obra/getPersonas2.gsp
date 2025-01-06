@@ -224,17 +224,91 @@
 
     function seleccionarInspector(){
         var id = '${obra?.id}';
+        var direccion ='${direccion?.id}';
+        var idep ='${idep}';
         $.ajax({
             type: "POST",
             url: "${createLink(controller: 'obra', action: 'seleccionarInspector_ajax')}",
             data:{
-                id : id
+                id: direccion,
+                idDep: idep,
+                obra : id
             },
             success: function (msg) {
 
                 var b = bootbox.dialog({
                     id      : "dlgBuscarInspector",
-                    title   : "Seleccionar Inspector",
+                    title   : "Seleccionar Responsable Cantidades",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        }
+                    } //buttons
+                }); //dialog
+            }
+        });
+    }
+
+    $("#btnBuscarResponsable").click(function () {
+        seleccionarResponsable()
+    });
+
+    function seleccionarResponsable(){
+        var id = '${obra?.id}';
+        var direccion ='${direccion?.id}';
+        var idep ='${idep}';
+        $.ajax({
+            type: "POST",
+            url: "${createLink(controller: 'obra', action: 'seleccionarResponsable_ajax')}",
+            data:{
+                id: direccion,
+                idDep: idep,
+                obra : id
+            },
+            success: function (msg) {
+
+                var b = bootbox.dialog({
+                    id      : "dlgBuscarResponsable",
+                    title   : "Seleccionar responsable",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        }
+                    } //buttons
+                }); //dialog
+            }
+        });
+    }
+
+    $("#btnBuscarRevisor").click(function () {
+        seleccionarRevisor()
+    });
+
+    function seleccionarRevisor(){
+        var id = '${obra?.id}';
+        var direccion ='${direccion?.id}';
+        var idep ='${idep}';
+        $.ajax({
+            type: "POST",
+            url: "${createLink(controller: 'obra', action: 'seleccionarRevisor_ajax')}",
+            data:{
+                id: direccion,
+                idDep: idep,
+                obra : id
+            },
+            success: function (msg) {
+
+                var b = bootbox.dialog({
+                    id      : "dlgBuscarReviror",
+                    title   : "Seleccionar Responsable Técnico",
                     message : msg,
                     buttons : {
                         cancelar : {

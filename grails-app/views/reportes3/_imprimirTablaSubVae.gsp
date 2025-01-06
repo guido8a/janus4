@@ -373,6 +373,31 @@
                 </div>
             </div>
         </div>
+
+        <table style="margin-top: 35px; font-size: 12px !important; width: 100%!important">
+            <thead>
+            </thead>
+            <tbody>
+            <tr>
+                <td colspan="3" class="theaderBot theaderup padTopBot"  style="border-top: 1px solid #000000">
+                    ${obra?.inspector?.titulo ?: ''} ${obra?.inspector?.nombre ?: ''} ${obra?.inspector?.apellido ?: ''} (Inspector)
+                </td>
+                <td colspan="2" style="width: 100px">
+
+                </td>
+                <td colspan="3" class="theaderBot theaderup padTopBot" style="border-top: 1px solid #000000">
+                    ${obra?.revisor?.titulo ?: ''} ${obra?.revisor?.nombre ?: ''} ${obra?.revisor?.apellido ?: ''} (Revisor)
+                </td>
+                <td colspan="2" style="width: 100px">
+
+                </td>
+                <td colspan="3" class="theaderBot theaderup padTopBot" style="border-top: 1px solid #000000">
+                    ${obra?.responsableObra?.titulo ?: ''} ${obra?.responsableObra?.nombre ?: ''} ${obra?.responsableObra?.apellido ?: ''} (Responsable)
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
     </g:if>
     <g:else>
         <table class="table table-bordered table-striped table-condensed table-hover" style="width: 900px !important">
