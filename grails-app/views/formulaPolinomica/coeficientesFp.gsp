@@ -129,12 +129,12 @@
     </div>
 
     <div class="btn-group">
-        <g:link action="coeficientes" id="${obra.id}" params="[tipo: 'p', sbpr: params.sbpr]"
+        <g:link action="coeficientesFp" id="${obra.id}" params="[tipo: 'p', sbpr: params.sbpr]"
                 class="btn btn-info ${tipo == 'p' ? 'active' : ''} btn-tab">
             <i class="fa fa-cogs"></i>
             Fórmula polinómica
         </g:link>
-        <g:link action="coeficientes" id="${obra.id}" params="[tipo: 'c', sbpr: params.sbpr]"
+        <g:link action="coeficientesFp" id="${obra.id}" params="[tipo: 'c', sbpr: params.sbpr]"
                 class="btn btn-info  ${tipo == 'c' ? 'active' : ''} btn-tab">
             <i class="fa fa-users"></i>
             Cuadrilla Tipo

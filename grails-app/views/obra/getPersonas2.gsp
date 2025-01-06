@@ -169,17 +169,72 @@
 
         <g:if test="${persona?.departamento?.direccion?.id == obra?.departamento?.direccion?.id && duenoObra != 1}">
 
-            <div class="col-md-1">Resp. de las Cantidades5</div>
-            <div class="col-md-3"><g:select name="inspector.id" class="inspector required" from="${personasRolInsp}" optionKey="id" optionValue="${{ (it?.titulo ?: '') + ' ' + it.nombre + " " + it.apellido }}" value="${obra?.inspector?.id}" title="Persona para Inspección de la Obra"/></div>
+            <div class="col-md-1">Resp. de las Cantidades</div>
+            <div class="col-md-3">
+%{--                <g:select name="inspector.id" class="inspector required" from="${personasRolInsp}" optionKey="id" optionValue="${{ (it?.titulo ?: '') + ' ' + it.nombre + " " + it.apellido }}" value="${obra?.inspector?.id}" title="Persona para Inspección de la Obra"/>--}%
+
+                <g:if test="${obra?.inspector}">
+                    <g:textField name="inspectorText" value="${obra?.inspector?.nombre + " " + obra?.inspector?.apellido}"
+                                 readonly="readonly" title="Persona para Inspección de la Obra" style="width: 230px"/>
+                    <a href="#" class="btn btn-xs btn-info" id="btnBuscarInspector" title="Seleccionar inspector"
+                       style="margin-top: -6px;">
+                        <i class="fa fa-plus-square"></i>
+                    </a>
+                </g:if>
+                <g:else>
+                    <g:select name="inspector.id" class="inspector required" from="${personasRolInsp}"
+                              optionKey="id" optionValue="${{ (it?.titulo ?: '') + ' ' + it.nombre + " " + it.apellido }}"
+                              value="${obra?.inspector?.id}" title="Persona para Inspección de la Obra"
+                              style="width: 250px"/>
+                </g:else>
+
+            </div>
 
 
             <div class="col-md-1" style="margin-left: -30px">Responsable Técnico</div>
-            <div class="col-md-3"><g:select name="revisor.id" class="revisor required" from="${personasRolRevi}" optionKey="id" optionValue="${{ (it?.titulo ?: '') + ' ' + it.nombre + ' ' + it.apellido }}"
-                                            value="${obra?.revisor?.id}" title="Persona para la revisión de la Obra"/></div>
+            <div class="col-md-3">
+%{--                <g:select name="revisor.id" class="revisor required" from="${personasRolRevi}" optionKey="id" optionValue="${{ (it?.titulo ?: '') + ' ' + it.nombre + ' ' + it.apellido }}"--}%
+%{--                                            value="${obra?.revisor?.id}" title="Persona para la revisión de la Obra"/>--}%
+
+                <g:if test="${obra?.revisor}">
+                    <g:textField name="revisorText" value="${obra?.revisor?.nombre + " " + obra?.revisor?.apellido}"
+                                 readonly="readonly" title="Persona para la revisión de la Obra" style="width: 230px"/>
+                    <a href="#" class="btn btn-xs btn-info" id="btnBuscarRevisor" title="Seleccionar revisor"
+                       style="margin-top: -6px;">
+                        <i class="fa fa-plus-square"></i>
+                    </a>
+                </g:if>
+                <g:else>
+                    <g:select name="revisor.id" class="revisor required" from="${personasRolRevi}"
+                              optionKey="id" optionValue="${{ (it?.titulo ?: '') + ' ' + it.nombre + ' ' + it.apellido }}"
+                              value="${obra?.revisor?.id}" title="Persona para la revisión de la Obra"
+                              style="width: 250px"/>
+                </g:else>
+
+
+            </div>
 
             <div class="col-md-1" style="margin-left: -10px">Elaboró presupuesto</div>
-        %{--<div class="col-md-3"><g:select name="responsableObra.id" class="responsable required" from="${personasRolResp}" optionKey="id" optionValue="${{it?.nombre + ' ' + it?.apellido }}" value="${obra?.responsableObra?.id}" title="Persona responsable de la Obra"/></div>--}%
-            <div class="col-md-3"><g:select name="responsableObra.id" class="responsable required" from="${personasRolElab}" optionKey="id" optionValue="${{(it?.titulo ?: '') + '' + it?.nombre + ' ' + it?.apellido }}" value="${obra?.responsableObra?.id}" title="Persona responsable de la Obra"/></div>
+            <div class="col-md-3">
+%{--                <g:select name="responsableObra.id" class="responsable required" from="${personasRolElab}" optionKey="id" optionValue="${{(it?.titulo ?: '') + '' + it?.nombre + ' ' + it?.apellido }}" value="${obra?.responsableObra?.id}" title="Persona responsable de la Obra"/>--}%
+
+
+                <g:if test="${obra?.responsableObra}">
+                    <g:textField name="responsableText" value="${obra?.responsableObra?.nombre + " " + obra?.responsableObra?.apellido}"
+                                 readonly="readonly" title="Persona responsable de la Obra" style="width: 230px"/>
+                    <a href="#" class="btn btn-xs btn-info" id="btnBuscarResponsable" title="Seleccionar responsable"
+                       style="margin-top: -6px;">
+                        <i class="fa fa-plus-square"></i>
+                    </a>
+                </g:if>
+                <g:else>
+                    <g:select name="responsableObra.id" class="responsable required" from="${personasUtfpu}"
+                              optionKey="id" optionValue="${{ (it?.titulo ?: '') + ' ' + it?.nombre + ' ' + it?.apellido }}"
+                              value="${obra?.responsableObra?.id}" title="Persona responsable de la Obra"
+                              style="width: 250px"/>
+                </g:else>
+
+            </div>
 
 
         </g:if>
