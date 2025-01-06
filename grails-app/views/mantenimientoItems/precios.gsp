@@ -42,7 +42,8 @@
         </span>
 
         <span class="col-md-2">
-            <input aria-label="" name="fechaPorDefecto" id='datetimepicker2' type='text' class="form-control" value="${ new Date().format("dd-MM-yyyy")}"/>
+            <input aria-label="" name="fechaPorDefecto" id='datetimepicker2' type='text' class="form-control"
+                   value="${ new Date().format("dd-MM-yyyy")}"/>
         </span>
 
     </div>
@@ -54,12 +55,14 @@
             <span class="grupo">
                 <span class="col-md-2">
                     <label class="control-label text-info">Buscar Por</label>
-                    <g:select name="buscarPor" class="buscarPor col-md-12 form-control btn-success" from="${[1: 'Materiales', 2: 'Mano de Obra', 3: 'Equipos']}" optionKey="key"
+                    <g:select name="buscarPor" class="buscarPor col-md-12 form-control btn-success"
+                              from="${[1: 'Materiales', 2: 'Mano de Obra', 3: 'Equipos']}" optionKey="key"
                               optionValue="value"/>
                 </span>
                 <span class="col-md-2">
                     <label class="control-label text-info">Tipo</label>
-                    <g:select name="tipo" class="tipo col-md-12 form-control btn-info" from="${[1: 'Grupo', 2: 'Subgrupo', 3: 'Materiales']}" optionKey="key"
+                    <g:select name="tipo" class="tipo col-md-12 form-control btn-info"
+                              from="${[1: 'Grupo', 2: 'Subgrupo', 3: 'Materiales', '4': 'Precios']}" optionKey="key"
                               optionValue="value"/>
                 </span>
                 <span class="col-md-3">
@@ -125,6 +128,9 @@
             case "3":
                 url = '${createLink(controller: 'mantenimientoItems', action: 'tablaMaterialesPrecios_ajax')}';
                 break;
+            case "4":
+                url = '${createLink(controller: 'mantenimientoItems', action: 'tablaPrecios_ajax')}';
+                break;
         }
 
         $.ajax({
@@ -158,6 +164,13 @@
                         $('#bc_item').hide();
                         break;
                     case "3":
+                        $('#bc_grpo').html('Grupo');
+                        $('#bc_sbgr').show();
+                        $('#bc_sbgr').html('Subgrupo');
+                        $('#bc_item').show();
+                        $('#bc_item').html('Materiales');
+                        break;
+                    case "4":
                         $('#bc_grpo').html('Grupo');
                         $('#bc_sbgr').show();
                         $('#bc_sbgr').html('Subgrupo');
@@ -251,7 +264,8 @@
                         log(parts[1], "success");
                         cargarTablaItemsPrecios();
                     }else{
-                        bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
+                        bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' +
+                            '<strong style="font-size: 14px">' + parts[1] + '</strong>');
                         return false;
                     }
                 }
@@ -375,7 +389,8 @@
                             label     : "<i class='fa fa-file-excel'></i> Excel",
                             className : "btn-success",
                             callback  : function () {
-                                location.href="${createLink(controller: 'reportesExcel2', action: 'reporteExcelMinas')}?lista=" + $("#lista option:selected").val();
+                                location.href="${createLink(controller: 'reportesExcel2',
+                                  action: 'reporteExcelMinas')}?lista=" + $("#lista option:selected").val();
                             } //callback
                         } //guardar
                     } //buttons

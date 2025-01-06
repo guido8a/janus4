@@ -103,7 +103,7 @@
         <div class="form-group ${hasErrors(bean: valoresAnualesInstance, field: 'inflacion', 'error')} ">
             <span class="grupo">
                 <label for="inflacion" class="col-md-4 control-label text-info">
-                    Seguro
+                    Inflación
                 </label>
                 <span class="col-md-3">
                     <g:textField name="inflacion" type="number" class="form-control required" value="${valoresAnualesInstance?.inflacion}"/> % Anual
