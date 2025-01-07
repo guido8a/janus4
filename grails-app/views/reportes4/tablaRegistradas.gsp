@@ -41,7 +41,7 @@ th, td {
 
     $("#buscar").click(function(){
         var datos = "si=${"si"}&buscador=" + $("#buscador_con").val() + "&criterio=" + $("#criterio_con").val() +
-            "&operador=" + $("#oprd").val();
+            "&operador=" + $("#oprd").val() + "&departamento=" + $("#departamento option:selected").val() + "&fechaInicio=" + $("#fechaInicio").val() + "&fechaFin=" + $("#fechaFin").val();
         $.ajax({
             type : "POST",
             url : "${g.createLink(controller: 'reportes4',action:'tablaRegistradas')}",
