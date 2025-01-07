@@ -211,16 +211,16 @@
                         </g:if>
                     </g:if>
                     <g:else>
-                        <g:elseif test="${lblBtn == -6}">
+                        <g:if test="${lblBtn == -6}">
                             Pago completado
-                        </g:elseif>
-                        <g:elseif test="${lblBtn == -7}">
-                            <g:else>
+                        </g:if>
+                        <g:else>
+                            <g:if test="${lblBtn == -7}">
                                 <a href="#" class="btn btn-pagar btn-success btn-xs pg_${lblBtn}" data-id="${planillaInstance.id}" data-tipo="4">
                                     Informar pago
                                 </a>
-                            </g:else>
-                        </g:elseif>
+                            </g:if>
+                        </g:else>
                     </g:else>
                     <g:if test="${planillaInstance.tipoPlanilla.codigo == 'A' && Math.abs(lblBtn) > 3}">
                         <g:if test="${planillaInstance?.valor > 0}">
