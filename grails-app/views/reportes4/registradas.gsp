@@ -61,12 +61,12 @@
         </div>
          <div class="col-md-2" style="align-items: center;">
         <b style="margin-left: 20px">Fecha Desde: </b>
-            <input aria-label="" name="fechaInicio_name" id='fechaInicio' type='text' class="" value="${new Date().format("dd-MM-yyyy")}" />
+            <input aria-label="" name="fechaInicio_name" id='fechaInicio' type='text' class=""  />
         </div>
 
         <div class="col-md-2" style="align-items: center;">
             <b style="margin-left: 20px">Fecha Hasta: </b>
-            <input aria-label="" name="fechaFin_name" id='fechaFin' type='text' class="" value="${new Date().format("dd-MM-yyyy")}" />
+            <input aria-label="" name="fechaFin_name" id='fechaFin' type='text' class=""  />
         </div>
 
         <a href="#" class="btn btn-success" id="buscar">
