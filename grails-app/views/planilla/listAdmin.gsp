@@ -104,12 +104,12 @@
                                     format="##,##0" locale="ec"/>
                 </td>
                 <td style="text-align: center">
-%{--                    <g:if test="${planillaInstance.tipoPlanilla.codigo == 'L'}">--}%
-%{--                        <g:link controller="planilla2" action="liquidacion" id="${planillaInstance.id}" rel="tooltip"--}%
-%{--                                title="Resumen" class="btn btn-small">--}%
-%{--                            <i class=""></i>--}%
-%{--                        </g:link>--}%
-%{--                    </g:if>--}%
+                %{--                    <g:if test="${planillaInstance.tipoPlanilla.codigo == 'L'}">--}%
+                %{--                        <g:link controller="planilla2" action="liquidacion" id="${planillaInstance.id}" rel="tooltip"--}%
+                %{--                                title="Resumen" class="btn btn-small">--}%
+                %{--                            <i class=""></i>--}%
+                %{--                        </g:link>--}%
+                %{--                    </g:if>--}%
                 %{--
                                                 <g:if test="${planillaInstance.tipoPlanilla.codigo == 'C'}">
                                                     <g:link action="detalleCosto" id="${planillaInstance.id}" params="[contrato: contrato.id]" rel="tooltip" title="Detalles" class="btn btn-small">
@@ -193,7 +193,10 @@
                             </g:if>
                         </g:if>
                         <g:if test="${lblBtn == 4}">
-                            Informar pago
+                        %{--                            Informar pago--}%
+                            <a href="#" class="btn btn-pagar btn-success btn-xs pg_${lblBtn}" data-id="${planillaInstance.id}" data-tipo="${lblBtn}">
+                                Informar pago
+                            </a>
                         </g:if>
                         <g:if test="${lblBtn == 5}">
                             <g:if test="${planillaInstance.tipoPlanilla.codigo == 'A'}">
@@ -208,9 +211,16 @@
                         </g:if>
                     </g:if>
                     <g:else>
-                        <g:if test="${lblBtn == -6}">
-                           Pago completado
-                        </g:if>
+                        <g:elseif test="${lblBtn == -6}">
+                            Pago completado
+                        </g:elseif>
+                        <g:elseif test="${lblBtn == -7}">
+                            <g:else>
+                                <a href="#" class="btn btn-pagar btn-success btn-xs pg_${lblBtn}" data-id="${planillaInstance.id}" data-tipo="4">
+                                    Informar pago
+                                </a>
+                            </g:else>
+                        </g:elseif>
                     </g:else>
                     <g:if test="${planillaInstance.tipoPlanilla.codigo == 'A' && Math.abs(lblBtn) > 3}">
                         <g:if test="${planillaInstance?.valor > 0}">
