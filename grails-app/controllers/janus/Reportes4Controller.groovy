@@ -552,7 +552,7 @@ class Reportes4Controller {
     def armaSqlRegistradas(params){
         def campos = reportesService.obrasPresupuestadas()
         def operador = reportesService.operadores()
-//        println("operador " + operador)
+        println "armaSqlRegistradas $params"
 
         def sqlSelect = "select obra.obra__id, obracdgo, obranmbr, tpobdscr, obrafcha, cntnnmbr, parrnmbr, cmndnmbr, " +
                 "dptodscr, obrarefe, obravlor, case when obraetdo = 'N' THEN 'No registrada' end estado " +
