@@ -3397,20 +3397,25 @@ class ReportePlanillas4Controller {
             addCellTabla(tablaDetalles, new Paragraph(numero(vo.cntdacml, 2, "hide"), fontTdTiny), frmtDtDrBorde2)
 
 //            addCellTabla(tablaDetalles, new Paragraph(numero(vo.vlorantr, 2, "hide"), fontTdTiny), [bwt: 0.1, bct: Color.BLACK, bwb: 0.1, bcb: Color.WHITE, height: height, border: Color.BLACK, align: Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE])
-            addCellTabla(tablaDetalles, new Paragraph(numero((vo.cntdacml * vo.vocrpcun) - (vo.vloractl ?: 0), 2, "hide"), fontTdTiny), [bwt: 0.1, bct: Color.BLACK, bwb: 0.1, bcb: Color.WHITE, height: height, border: Color.BLACK, align: Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE])
-            addCellTabla(tablaDetalles, new Paragraph(numero(vo.vloractl, 2, "hide"), fontTdTiny), [bwt: 0.1, bct: Color.BLACK, bwb: 0.1, bcb: Color.WHITE, height: height, border: Color.BLACK, align: Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE])
+            addCellTabla(tablaDetalles, new Paragraph(numero((vo.cntdacml * vo.vocrpcun) - ((vo.vocrpcun * vo.cntdactl) ?: 0), 2, "hide"), fontTdTiny), [bwt: 0.1, bct: Color.BLACK, bwb: 0.1, bcb: Color.WHITE, height: height, border: Color.BLACK, align: Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE])
+//            addCellTabla(tablaDetalles, new Paragraph(numero(vo.vloractl, 2, "hide"), fontTdTiny), [bwt: 0.1, bct: Color.BLACK, bwb: 0.1, bcb: Color.WHITE, height: height, border: Color.BLACK, align: Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE])
+            addCellTabla(tablaDetalles, new Paragraph(numero((vo.vocrpcun * vo.cntdactl), 2, "hide"), fontTdTiny), [bwt: 0.1, bct: Color.BLACK, bwb: 0.1, bcb: Color.WHITE, height: height, border: Color.BLACK, align: Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE])
 //            addCellTabla(tablaDetalles, new Paragraph(numero(vo.vloracml, 2, "hide"), fontTdTiny), [bwt: 0.1, bct: Color.BLACK, bwb: 0.1, bcb: Color.WHITE, height: height, border: Color.BLACK, align: Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE])
             addCellTabla(tablaDetalles, new Paragraph(numero((vo.cntdacml * vo.vocrpcun), 2, "hide"), fontTdTiny), [bwt: 0.1, bct: Color.BLACK, bwb: 0.1, bcb: Color.WHITE, height: height, border: Color.BLACK, align: Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE])
 
             currentRows += vo.vocrlnea
             rowsCurPag++
-            sumaTotlAntr += vo.vlorantr
-            sumaTotlActl += vo.vloractl
-            sumaTotlAcml += vo.vloracml
+//            sumaTotlAntr += vo.vlorantr
+            sumaTotlAntr += ((vo.cntdacml * vo.vocrpcun) - ((vo.vocrpcun * vo.cntdactl) ?: 0))
+//            sumaTotlActl += vo.vloractl
+            sumaTotlActl += (vo.vocrpcun * vo.cntdactl)
+//            sumaTotlAcml += vo.vloracml
+            sumaTotlAcml += (vo.cntdacml * vo.vocrpcun)
 
 //            sumaPrclAntr += vo.vlorantr
-            sumaPrclAntr += vo.vlorantr
-            sumaPrclActl += vo.vloractl
+            sumaPrclAntr += ((vo.cntdacml * vo.vocrpcun) - ((vo.vocrpcun * vo.cntdactl) ?: 0))
+//            sumaPrclActl += vo.vloractl
+            sumaPrclActl += (vo.vocrpcun * vo.cntdactl)
 //            sumaPrclAcml += vo.vloracml
             sumaPrclAcml += (vo.cntdacml * vo.vocrpcun)
 
