@@ -1857,9 +1857,8 @@ class MantenimientoItemsController {
 
 //        println precioAnt + " " + anio + " " + sbuAct + " " + sbuAnt + " " + delta + " " + nuevoCosto
 
-        def u = ValoresAnuales.findByAnio(anio).sueldoBasicoUnificado
+        def u = ValoresAnuales.findByAnio(anio)?.sueldoBasicoUnificado
         def b = precioAnt
-
         def ap = b * 12 * 0.1215
 //        ap = new DecimalFormat("#.##").format(ap).toDouble()
         def ta = 14 * b + u + ap

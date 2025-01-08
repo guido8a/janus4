@@ -21,10 +21,10 @@
                     <td style="width: 8%">${item.rbpcfcha}</td>
                     <td style="width: 8%">${item.rbpcpcun ?: ''}</td>
                     <td style="width: 8%; text-align: center">
-                        <a href="#" class="btn btn-xs btn-info btnVerMaterial" data-id="${item?.item__id}" title="Ver">
+                        <a href="#" class="btn btn-xs btn-info btnVerMaterialPcun" data-id="${item?.item__id}" title="Ver">
                             <i class="fas fa-search"></i>
                         </a>
-                        <a href="#" class="btn btn-xs btn-success btnHistorico" data-item="${item?.item__id}" data-lugar="${item?.lgar__id}" title="Histórico de Precios">
+                        <a href="#" class="btn btn-xs btn-success btnHistoricoPcun" data-item="${item?.item__id}" data-lugar="${item?.lgar__id}" title="Histórico de Precios">
                             <i class="fas fa-edit"></i>
                         </a>
                     </td>
@@ -41,3 +41,19 @@
         </tbody>
     </table>
 </div>
+
+<script type="text/javascript">
+
+
+    $(".btnVerMaterialPcun").click(function () {
+        var id = $(this).data("id");
+        verMaterial(id);
+    });
+
+    $(".btnHistoricoPcun").click(function () {
+        var item = $(this).data("item");
+        var lugar = $(this).data("lugar");
+        cargarTablaHistoricoPrecios(item, lugar)
+    });
+
+</script>
