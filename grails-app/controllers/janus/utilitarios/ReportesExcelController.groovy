@@ -2238,22 +2238,9 @@ class ReportesExcelController {
 
     def reporteListaPreciosExcel(){
 
-//        println "tabla " + params
-//        if (!params.max || params.max == 0) {
-//            params.max = 20
-//        } else {
-//            params.max = params.max.toInteger()
-//        }
-//        if (!params.pag) {
-//            params.pag = 1;
-//        } else {
-//            params.pag = params.pag.toInteger()
-//        }
-
         params.offset = 20
 
         def f = new Date().parse("dd-MM-yyyy", params.fecha)
-//        def t = params.todos
         def lugar;
         def rubroPrecio;
         def tipo;
@@ -2287,10 +2274,6 @@ class ReportesExcelController {
             }
 
             sql += " order by itemcdgo "
-//            sql += "limit ${params.max} "
-//            sql += "offset ${params.offset} "
-
-            println "SQL1:" + sql
 
             def itemsIds = ""
 
@@ -2358,28 +2341,6 @@ class ReportesExcelController {
                             totalCount= row[0]
                         }
                     }
-
-//                    params.totalRows = totalCount
-//
-//                    if(params.totalRows == 0){
-//                        params.totalPags = 0
-//                    }else {
-//                        params.totalPags = Math.ceil(params.totalRows / params.max).toInteger()
-//                    }
-//
-//                    if (params.totalPags <= 10) {
-//                        params.first = 1
-//                        params.last = params.last = params.totalPags
-//                    } else {
-//                        params.first = Math.max(1, params.pag.toInteger() - 5)
-//                        params.last = Math.min(params.totalPags, params.pag + 5)
-//
-//                        def ts = params.last - params.first
-//                        if (ts < 9) {
-//                            def r = 10 - ts
-//                            params.last = Math.min(params.totalPags, params.last + r).toInteger()
-//                        }
-//                    }
                 }
                 cn.close()
             } else {
@@ -2430,33 +2391,9 @@ class ReportesExcelController {
                             totalCount= row[0]
                         }
                     }
-
-//                    params.totalRows = totalCount
-//                    if(params.totalRows == 0){
-//                        params.totalPags = 0
-//                    }else {
-//                        params.totalPags = Math.ceil(params.totalRows / params.max).toInteger()
-//                    }
-//                    if (params.totalPags <= 10) {
-//                        params.first = 1
-//                        params.last = params.last = params.totalPags
-//                    } else {
-//                        params.first = Math.max(1, params.pag.toInteger() - 5)
-//                        params.last = Math.min(params.totalPags, params.pag + 5)
-//
-//                        def ts = params.last - params.first
-//                        if (ts < 9) {
-//                            def r = 10 - ts
-//                            params.last = Math.min(params.totalPags, params.last + r).toInteger()
-//                        }
-//                    }
                 }
                 cn.close()
             }
-
-        println("precios " + rubroPrecio)
-
-//        [rubroPrecio: rubroPrecio, params: params, lugar: lugar]
 
         XSSFWorkbook wb = new XSSFWorkbook()
         XSSFCellStyle style = wb.createCellStyle();
@@ -2476,17 +2413,11 @@ class ReportesExcelController {
         row0.createCell(1).setCellValue(Auxiliar.get(1)?.titulo ?: '')
         row0.setRowStyle(style)
         Row row1 = sheet.createRow(2)
-        row1.createCell(1).setCellValue("Lista de precios")
+        row1.createCell(1).setCellValue("Mantenimiento de precios")
         row1.setRowStyle(style)
         Row row2 = sheet.createRow(3)
         row2.createCell(1).setCellValue(lugar?.descripcion)
         row2.setRowStyle(style)
-//        Row row3 = sheet.createRow(4)
-//        row3.createCell(1).setCellValue("Departamento: ${dep}")
-//        row3.setRowStyle(style)
-//        Row row4 = sheet.createRow(5)
-//        row4.createCell(1).setCellValue("Año: ${anio}")
-//        row4.setRowStyle(style)
 
         def fila = 5
 
@@ -2495,15 +2426,6 @@ class ReportesExcelController {
         rowC1.createCell(1).setCellValue("Item")
         rowC1.createCell(2).setCellValue("Precio")
         rowC1.createCell(3).setCellValue("Nuevo Precio")
-//        rowC1.createCell(4).setCellValue("Tipo compra")
-//        rowC1.createCell(5).setCellValue("Descripción")
-//        rowC1.createCell(6).setCellValue("Cantidad")
-//        rowC1.createCell(7).setCellValue("Unidad")
-//        rowC1.createCell(8).setCellValue("Unitario")
-//        rowC1.createCell(9).setCellValue("Total")
-//        rowC1.createCell(10).setCellValue("C1")
-//        rowC1.createCell(11).setCellValue("C2")
-//        rowC1.createCell(12).setCellValue("C3")
         rowC1.setRowStyle(style)
         fila++
 
@@ -2512,28 +2434,12 @@ class ReportesExcelController {
             rowF1.createCell(0).setCellValue(p?.item?.codigo)
             rowF1.createCell(1).setCellValue(p?.item?.nombre ?: '')
             rowF1.createCell(2).setCellValue(p?.precioUnitario)
-            rowF1.createCell(3).setCellValue('')
-//            rowF1.createCell(4).setCellValue(p.tipoCompra.descripcion ?: '')
-//            rowF1.createCell(5).setCellValue( p.descripcion ?: '')
-//            rowF1.createCell(6).setCellValue(p.cantidad ?: 0)
-//            rowF1.createCell(7).setCellValue(p.unidad.codigo ?: '')
-//            rowF1.createCell(8).setCellValue(p.costo ?: 0)
-//            rowF1.createCell(9).setCellValue(p.cantidad * p.costo ?: 0)
-//            rowF1.createCell(10).setCellValue(p.c1 ?: '')
-//            rowF1.createCell(11).setCellValue(p.c2 ?: '')
-//            rowF1.createCell(12).setCellValue(p.c3 ?: '')
-//            total += p.cantidad * p.costo
+            rowF1.createCell(3).setCellValue(p?.precioUnitario)
             fila++
         }
 
-//        Row rowT = sheet.createRow(fila)
-//        rowT.createCell(8).setCellValue("TOTAL")
-//        rowT.createCell(9).setCellValue(total)
-//        rowT.setRowStyle(style)
-//        fila++
-
         def output = response.getOutputStream()
-        def header = "attachment; filename=" + "listaPrecios.xlsx";
+        def header = "attachment; filename=" + "mantenimientoPrecios.xlsx";
         response.setContentType("application/octet-stream")
         response.setHeader("Content-Disposition", header);
         wb.write(output)
