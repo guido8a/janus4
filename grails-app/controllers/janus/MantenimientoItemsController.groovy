@@ -1524,11 +1524,23 @@ class MantenimientoItemsController {
 
 
     def infoItems() {
+        def cn = dbConnectionService.getConnection()
         def item = Item.get(params.id)
-        def rubro = Rubro.findAllByItem(item)
         def precios = PrecioRubrosItems.findAllByItem(item)
         def fpItems = ItemsFormulaPolinomica.findAllByItem(item)
-        return [item: item, rubro: rubro, precios: precios, fpItems: fpItems, delete: params.delete]
+        def sql = "select r.itemcdgo, r.itemnmbr from item r, rbro " +
+                "where rbro.item__id = ${params.id} and r.item__id = rbro.rbrocdgo and " +
+                "r.itemcdgo like 'H%' order by r.itemcdgo"
+//        println "sql: $sql"
+        def rubro_hist = cn.rows(sql.toString())
+
+        sql = "select r.itemcdgo, r.itemnmbr from item r, rbro " +
+                "where rbro.item__id = ${params.id} and r.item__id = rbro.rbrocdgo and " +
+                "r.itemcdgo not like 'H%' order by r.itemcdgo"
+        def rubro = cn.rows(sql.toString())
+//        println "rh: ${rubro_hist}"
+        return [item: item, rubro: rubro, precios: precios, fpItems: fpItems, delete: params.delete,
+        rubrosHist: rubro_hist]
     }
 
     def copiarOferentes() {
