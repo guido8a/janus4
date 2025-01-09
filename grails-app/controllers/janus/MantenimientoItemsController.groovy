@@ -2955,4 +2955,25 @@ itemId: item.id
 //        }
 //    }
 
+    def comboGrupos_ajax(){
+        def cn = dbConnectionService.getConnection()
+//        def grupo = Grupo.get(params.buscarPor)
+        def grupo = Grupo.get(1)
+        def sql = "select * from sbgr where grpo__id = ${grupo?.id} order by sbgrcdgo"
+        def grupos = cn.rows(sql.toString());
+        cn.close()
+        return [grupos: grupos, tipo: params.tipo]
+    }
+
+    def comboSubgrupos_ajax(){
+        def cn = dbConnectionService.getConnection()
+        def grupo = Grupo.get(1)
+        def sql = "select sbgrcdgo, sbgrdscr, dprtcdgo, dprtdscr, dprt.dprt__id, sbgr.sbgr__id from dprt, sbgr where grpo__id = ${grupo?.id} and " +
+                "dprt.sbgr__id = sbgr.sbgr__id and " +
+                "sbgr.sbgr__id = ${params.id} order by sbgrcdgo"
+        def subgrupos = cn.rows(sql.toString());
+        cn.close()
+        return [subgrupos: subgrupos]
+    }
+
 }

@@ -15,63 +15,6 @@
     </div>
 </g:if>
 
-<div style="border-style: groove; border-color: #0d7bdc; margin-top: 10px; margin-bottom: 10px">
-    <fieldset style="margin-bottom: 10px">
-        <div class="row">
-
-            <div class="col-md-2"></div>
-
-            <div class="col-md-3">
-                <g:textField name="materialesPetreos" value="${"Materiales Pétreos"}" class="form-control" readonly=""/>
-            </div>
-
-            <div class="btn-group col-md-1">
-                <a href="#" class="btn btn-warning" id="btnCrearExcelMaterialesPetreos"><i class="fa fa-download"></i> Generar excel</a>
-            </div>
-        </div>
-    </fieldset>
-</div>
-
-<div style="border-style: groove; border-color: #0d7bdc; margin-bottom: 10px">
-    <fieldset style="margin-bottom: 10px">
-        <div class="row">
-
-            <div class="col-md-2"></div>
-
-            <div class="col-md-3" id="divGrupos_1">
-
-            </div>
-
-            <div class="btn-group col-md-1">
-                <a href="#" class="btn btn-warning" id="btnCrearExcelGrupo"><i class="fa fa-download"></i> Generar excel</a>
-            </div>
-        </div>
-    </fieldset>
-</div>
-
-
-<div style="border-style: groove; border-color: #0d7bdc">
-    <fieldset style="margin-bottom: 10px">
-        <div class="row">
-
-            <div class="col-md-2"></div>
-
-            <div class="col-md-3" id="divGrupos_2">
-
-            </div>
-
-            <div class="col-md-3" id="divSubgrupo">
-
-            </div>
-
-            <div class="btn-group col-md-1">
-                <a href="#" class="btn btn-warning" id="btnCrearExcelSubgrupo"><i class="fa fa-download"></i> Generar excel</a>
-            </div>
-        </div>
-    </fieldset>
-</div>
-
-
 <g:uploadForm action="uploadFileMP" method="post" name="frmUpload" style="padding: 10px">
     <div id="list-grupo" class="col-md-12" role="main" style="margin: 10px 0 0 0; height: 380px">
         <div class="" style="margin: 0 0 20px 0;">
@@ -81,15 +24,15 @@
                     <strong style="font-size: 14px"><i class="fa fa-exclamation-triangle fa-2x text-warning"></i>  El archivo debe contener 4 columnas (los nombres de las columnas no son importantes):</strong>
                 </div>
 
-%{--                <div class="col-md-2" >--}%
-%{--                    <label>    Lista de precios </label>--}%
-%{--                </div>--}%
-%{--                <div class="col-md-4" align="center">--}%
-%{--                    <g:select class="form-control listPrecio span2" name="listaPrecio"--}%
-%{--                              from="${janus.Lugar.list([sort: 'descripcion'])}" optionKey="id"--}%
-%{--                              optionValue="${{ it.descripcion }}"--}%
-%{--                              disabled="false" />--}%
-%{--                </div>--}%
+                <div class="col-md-2" >
+                    <label>    Lista de precios </label>
+                </div>
+                <div class="col-md-4" align="center">
+                    <g:select class="form-control listPrecio span2" name="listaPrecio"
+                              from="${janus.Lugar.list([sort: 'descripcion'])}" optionKey="id"
+                              optionValue="${{ it.descripcion }}"
+                              disabled="false" />
+                </div>
 
                 <div class="col-md-1">
                     <label> Fecha </label>
@@ -141,26 +84,10 @@
         }
     });
 
-    cargarGrupos(1);
-    cargarGrupos(2);
-
-    function cargarGrupos(tipo){
-        $.ajax({
-            type    : "POST",
-            url     : "${createLink(controller: 'mantenimientoItems',  action: 'comboGrupos_ajax')}",
-            data    : {
-                tipo: tipo
-            },
-            success : function (msg) {
-                $("#divGrupos_" + tipo).html(msg)
-            }
-        });
-    }
-
     $("#btnSubmit").click(function () {
         bootbox.confirm({
             title: "Subir archivo excel",
-            message: "<i class='fa fa-exclamation-triangle text-warning fa-3x'></i> <strong style='font-size: 14px'> Antes de subir el archivo verifique la fecha </strong> ",
+            message: "<i class='fa fa-exclamation-triangle text-warning fa-3x'></i> <strong style='font-size: 14px'> Antes de subir el archivo, verifique la lista de precios y la fecha </strong> ",
             buttons: {
                 cancel: {
                     label: '<i class="fa fa-times"></i> Cancelar',
@@ -173,12 +100,12 @@
             },
             callback: function (result) {
                 if(result){
+                    var g = cargarLoader("Cargando...");
                     if ($("#frmUpload").valid()) {
-                        var g = cargarLoader("Cargando...");
                         $("#frmUpload").submit();
                         g.modal("hide");
                     }else{
-
+                        g.modal("hide");
                     }
                 }
             }
