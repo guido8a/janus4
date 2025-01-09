@@ -45,10 +45,13 @@
                           optionValue="descripcion" noSelection="['-1': 'Todos']"/>
             </div>
 
-            <div class="btn-group col-md-3" style=" width: 300px;">
-                <a href="#" class="btn btn-consultar btn-info"><i class="fa fa-search"></i>Consultar</a>
+            <div class="btn-group col-md-3" style=" width: 290px;">
+                <a href="#" class="btn btn-consultar btn-info"><i class="fa fa-search"></i></a>
                 <a href="#" class="btn btn-actualizar btn-success"><i class="fa fa-save"></i> Guardar</a>
                 <a href="${createLink(controller: 'item', action: 'subirExcelMP')}" class="btn btnSubirExcel btn-info"><i class="fa fa-upload"></i> Subir excel</a>
+            </div>
+            <div class="btn-group col-md-1">
+                <a href="#" class="btn btn-warning" id="btnCrearExcel"><i class="fa fa-download"></i> Generar excel</a>
             </div>
         </div>
     </fieldset>
@@ -69,6 +72,30 @@
         icons: {
         }
     });
+
+    $("#btnCrearExcel").click(function () {
+        var lgar = $("#listaPrecio option:selected").val();
+        if (lgar !== '-1') {
+            var reg = "";
+            if ($("#reg").hasClass("active")) {
+                reg += "R";
+                reg += "N";
+            }
+
+            if (reg === "") {
+                $("#reg").addClass("active");
+                $("#nreg").addClass("active");
+                reg = "RN";
+            }
+
+            location.href = "${g.createLink(controller: 'reportesExcel', action:'reporteListaPreciosExcel')}?lgar=" + lgar + "&fecha=" + $("#fecha").val() + "&tipo=" + $("#tipo").val() + "&reg=" + reg;
+        }
+        else {
+            bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + "Seleccione una lista de precios" + '</strong>');
+            $("#divTabla").addClass("hidden");
+        }
+    });
+
 
     function consultar() {
         var dialog = cargarLoader("Cargando...");

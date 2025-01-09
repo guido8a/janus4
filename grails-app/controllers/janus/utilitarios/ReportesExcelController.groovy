@@ -2,8 +2,11 @@ package janus.utilitarios
 
 import janus.Auxiliar
 import janus.Departamento
+import janus.Grupo
 import janus.Item
+import janus.Lugar
 import janus.Obra
+import janus.PrecioRubrosItems
 import janus.VolumenesObra
 import org.apache.poi.ss.usermodel.HorizontalAlignment
 import org.apache.poi.ss.usermodel.Row
@@ -2228,6 +2231,310 @@ class ReportesExcelController {
         response.setContentType("application/octet-stream")
         response.setHeader("Content-Disposition", header);
         wb.write(output)
+    }
+
+    def reporteListaPreciosExcel(){
+
+//        println "tabla " + params
+//        if (!params.max || params.max == 0) {
+//            params.max = 20
+//        } else {
+//            params.max = params.max.toInteger()
+//        }
+//        if (!params.pag) {
+//            params.pag = 1;
+//        } else {
+//            params.pag = params.pag.toInteger()
+//        }
+
+        params.offset = 20
+
+        def f = new Date().parse("dd-MM-yyyy", params.fecha)
+//        def t = params.todos
+        def lugar;
+        def rubroPrecio;
+        def tipo;
+
+            lugar = Lugar.get(params.lgar)
+            def sql
+            tipo = Grupo.get(params.tipo)
+
+            sql = "select distinct rbpc.item__id, item.itemcdgo "
+            sql += "from rbpc, item"
+            if (params.tipo != "-1") {
+                sql += ", dprt, sbgr, grpo"
+            }
+            sql += " where lgar__id = ${lugar.id} "
+            sql += "and rbpc.item__id = item.item__id and itemetdo = 'A' "
+            if (params.tipo != "-1") {
+                sql += "and item.dprt__id = dprt.dprt__id "
+                sql += "and dprt.sbgr__id = sbgr.sbgr__id "
+                sql += "and sbgr.grpo__id = grpo.grpo__id "
+                sql += "and grpo.grpo__id = ${tipo.id}"
+            }
+
+            def estado = ""
+
+            if (params.reg == "R") {
+                sql += " and rbpcrgst = 'R'"
+                estado = "and r1.rbpcrgst='R'"
+            } else if (params.reg == "N") {
+                sql += " and rbpcrgst != 'R'"
+                estado = "and r1.rbpcrgst!='R'"
+            }
+
+            sql += " order by itemcdgo "
+//            sql += "limit ${params.max} "
+//            sql += "offset ${params.offset} "
+
+            println "SQL1:" + sql
+
+            def itemsIds = ""
+
+            def cn = dbConnectionService.getConnection()
+
+            cn.eachRow(sql.toString()) { row ->
+                if (itemsIds != "") {
+                    itemsIds += ","
+                }
+                itemsIds += row[0]
+            }
+
+            if (itemsIds == ""){
+                itemsIds = '-1'
+            }
+
+            def precios = preciosService.getPrecioRubroItemEstado(f, lugar, itemsIds, estado)
+
+            rubroPrecio = []
+
+            precios.each {
+                def pri = PrecioRubrosItems.get(it)
+                rubroPrecio.add(pri)
+            }
+
+            if (params.tipo == '-1') {
+
+                if (!params.totalRows) {
+                    def sql3
+
+                    sql3 = "select count(distinct rbpc.item__id) "
+                    sql3 += "from rbpc "
+                    sql3 += "where lgar__id = ${lugar.id} "
+                    if (params.reg == "R") {
+                        sql3 += " and rbpcrgst = 'R'"
+                    } else if (params.reg == "N") {
+                        sql3 += " and rbpcrgst != 'R'"
+                    }
+
+                    cn.eachRow(sql3.toString()) { row ->
+                        if (itemsIds != "") {
+                            itemsIds += ","
+                        }
+                        itemsIds += row[0]
+                    }
+
+                    if (itemsIds == ""){
+                        itemsIds = '-1'
+                    }
+
+                    def precios3 = preciosService.getPrecioRubroItemEstado(f, lugar, itemsIds, estado)
+
+                    rubroPrecio = []
+
+                    def totalCount = 0
+                    precios3.each {
+                        def pri = PrecioRubrosItems.get(it)
+                        rubroPrecio.add(pri)
+                    }
+
+                    if(rubroPrecio == []){
+                        totalCount = 0
+                    }else {
+                        cn.eachRow(sql3.toString()) { row ->
+                            totalCount= row[0]
+                        }
+                    }
+
+//                    params.totalRows = totalCount
+//
+//                    if(params.totalRows == 0){
+//                        params.totalPags = 0
+//                    }else {
+//                        params.totalPags = Math.ceil(params.totalRows / params.max).toInteger()
+//                    }
+//
+//                    if (params.totalPags <= 10) {
+//                        params.first = 1
+//                        params.last = params.last = params.totalPags
+//                    } else {
+//                        params.first = Math.max(1, params.pag.toInteger() - 5)
+//                        params.last = Math.min(params.totalPags, params.pag + 5)
+//
+//                        def ts = params.last - params.first
+//                        if (ts < 9) {
+//                            def r = 10 - ts
+//                            params.last = Math.min(params.totalPags, params.last + r).toInteger()
+//                        }
+//                    }
+                }
+                cn.close()
+            } else {
+
+                if (!params.totalRows) {
+                    def sql2
+
+                    sql2 = "select count(distinct rbpc.item__id) "
+                    sql2 += "from rbpc, item "
+                    sql2 += ", dprt, sbgr, grpo "
+                    sql2 += "where lgar__id=${lugar.id} "
+                    sql2 += "and rbpc.item__id = item.item__id "
+                    sql2 += "and item.dprt__id = dprt.dprt__id "
+                    sql2 += "and dprt.sbgr__id = sbgr.sbgr__id "
+                    sql2 += "and sbgr.grpo__id = grpo.grpo__id "
+                    sql2 += "and grpo.grpo__id =${tipo.id}"
+                    if (params.reg == "R") {
+                        sql2 += " and rbpcrgst = 'R'"
+                    } else if (params.reg == "N") {
+                        sql2 += " and rbpcrgst != 'R'"
+                    }
+
+                    cn.eachRow(sql2.toString()) { row ->
+                        if (itemsIds != "") {
+                            itemsIds += ","
+                        }
+                        itemsIds += row[0]
+                    }
+
+                    if (itemsIds == ""){
+                        itemsIds = '-1'
+                    }
+
+                    def precios2 = preciosService.getPrecioRubroItemEstado(f, lugar, itemsIds, estado)
+
+                    rubroPrecio = []
+
+                    def totalCount = 0
+                    precios2.each {
+                        def pri = PrecioRubrosItems.get(it)
+                        rubroPrecio.add(pri)
+                    }
+
+                    if(rubroPrecio == []){
+                        totalCount = 0
+                    }else {
+                        cn.eachRow(sql2.toString()) { row ->
+                            totalCount= row[0]
+                        }
+                    }
+
+//                    params.totalRows = totalCount
+//                    if(params.totalRows == 0){
+//                        params.totalPags = 0
+//                    }else {
+//                        params.totalPags = Math.ceil(params.totalRows / params.max).toInteger()
+//                    }
+//                    if (params.totalPags <= 10) {
+//                        params.first = 1
+//                        params.last = params.last = params.totalPags
+//                    } else {
+//                        params.first = Math.max(1, params.pag.toInteger() - 5)
+//                        params.last = Math.min(params.totalPags, params.pag + 5)
+//
+//                        def ts = params.last - params.first
+//                        if (ts < 9) {
+//                            def r = 10 - ts
+//                            params.last = Math.min(params.totalPags, params.last + r).toInteger()
+//                        }
+//                    }
+                }
+                cn.close()
+            }
+
+        println("precios " + rubroPrecio)
+
+//        [rubroPrecio: rubroPrecio, params: params, lugar: lugar]
+
+        XSSFWorkbook wb = new XSSFWorkbook()
+        XSSFCellStyle style = wb.createCellStyle();
+        XSSFFont font = wb.createFont();
+        font.setBold(true);
+        style.setFont(font);
+
+        Sheet sheet = wb.createSheet(lugar?.descripcion ?: '')
+        sheet.setColumnWidth(0, 15 * 256);
+        sheet.setColumnWidth(1, 40 * 256);
+        sheet.setColumnWidth(2, 15 * 256);
+        sheet.setColumnWidth(3, 15 * 256);
+
+        Row row = sheet.createRow(0)
+        row.createCell(0).setCellValue("")
+        Row row0 = sheet.createRow(1)
+        row0.createCell(1).setCellValue(Auxiliar.get(1)?.titulo ?: '')
+        row0.setRowStyle(style)
+        Row row1 = sheet.createRow(2)
+        row1.createCell(1).setCellValue("Lista de precios")
+        row1.setRowStyle(style)
+        Row row2 = sheet.createRow(3)
+        row2.createCell(1).setCellValue(lugar?.descripcion)
+        row2.setRowStyle(style)
+//        Row row3 = sheet.createRow(4)
+//        row3.createCell(1).setCellValue("Departamento: ${dep}")
+//        row3.setRowStyle(style)
+//        Row row4 = sheet.createRow(5)
+//        row4.createCell(1).setCellValue("Año: ${anio}")
+//        row4.setRowStyle(style)
+
+        def fila = 5
+
+        Row rowC1 = sheet.createRow(fila)
+        rowC1.createCell(0).setCellValue("Código")
+        rowC1.createCell(1).setCellValue("Item")
+        rowC1.createCell(2).setCellValue("Precio")
+        rowC1.createCell(3).setCellValue("Nuevo Precio")
+//        rowC1.createCell(4).setCellValue("Tipo compra")
+//        rowC1.createCell(5).setCellValue("Descripción")
+//        rowC1.createCell(6).setCellValue("Cantidad")
+//        rowC1.createCell(7).setCellValue("Unidad")
+//        rowC1.createCell(8).setCellValue("Unitario")
+//        rowC1.createCell(9).setCellValue("Total")
+//        rowC1.createCell(10).setCellValue("C1")
+//        rowC1.createCell(11).setCellValue("C2")
+//        rowC1.createCell(12).setCellValue("C3")
+        rowC1.setRowStyle(style)
+        fila++
+
+        rubroPrecio.eachWithIndex { p, i ->
+            Row rowF1 = sheet.createRow(fila)
+            rowF1.createCell(0).setCellValue(p?.item?.codigo)
+            rowF1.createCell(1).setCellValue(p?.item?.nombre ?: '')
+            rowF1.createCell(2).setCellValue(p?.precioUnitario)
+            rowF1.createCell(3).setCellValue('')
+//            rowF1.createCell(4).setCellValue(p.tipoCompra.descripcion ?: '')
+//            rowF1.createCell(5).setCellValue( p.descripcion ?: '')
+//            rowF1.createCell(6).setCellValue(p.cantidad ?: 0)
+//            rowF1.createCell(7).setCellValue(p.unidad.codigo ?: '')
+//            rowF1.createCell(8).setCellValue(p.costo ?: 0)
+//            rowF1.createCell(9).setCellValue(p.cantidad * p.costo ?: 0)
+//            rowF1.createCell(10).setCellValue(p.c1 ?: '')
+//            rowF1.createCell(11).setCellValue(p.c2 ?: '')
+//            rowF1.createCell(12).setCellValue(p.c3 ?: '')
+//            total += p.cantidad * p.costo
+            fila++
+        }
+
+//        Row rowT = sheet.createRow(fila)
+//        rowT.createCell(8).setCellValue("TOTAL")
+//        rowT.createCell(9).setCellValue(total)
+//        rowT.setRowStyle(style)
+//        fila++
+
+        def output = response.getOutputStream()
+        def header = "attachment; filename=" + "listaPrecios.xlsx";
+        response.setContentType("application/octet-stream")
+        response.setHeader("Content-Disposition", header);
+        wb.write(output)
+
     }
 
 
