@@ -30,7 +30,7 @@
         <div class="row">
             <div class="col-md-4" align="center">
                 <g:select class="form-control listPrecio span2" name="listaPrecio"
-                          from="${janus.Lugar.list([sort: 'descripcion'])}" optionKey="id"
+                          from="${lugares}" optionKey="id"
                           optionValue="${{ it.descripcion }}"
                           noSelection="['-1': 'Seleccione']"
                           disabled="false" style="width: 300px;"/>

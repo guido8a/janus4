@@ -31,7 +31,9 @@ class ItemController {
     }
 
     def mantenimientoPrecios() {
-
+        def volumen = TipoLista.findAllByCodigoIlike('V%')
+        def lugares = Lugar.findAllByTipoListaInList(volumen)
+        [lugares: lugares]
     }
 
     def tablaRegistrar() {
