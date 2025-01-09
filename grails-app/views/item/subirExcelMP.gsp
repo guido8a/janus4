@@ -32,22 +32,22 @@
     </fieldset>
 </div>
 
-<div style="border-style: groove; border-color: #0d7bdc; margin-bottom: 10px">
-    <fieldset style="margin-bottom: 10px">
-        <div class="row">
+%{--<div style="border-style: groove; border-color: #0d7bdc; margin-bottom: 10px">--}%
+%{--    <fieldset style="margin-bottom: 10px">--}%
+%{--        <div class="row">--}%
 
-            <div class="col-md-2"></div>
+%{--            <div class="col-md-2"></div>--}%
 
-            <div class="col-md-3" id="divGrupos_1">
+%{--            <div class="col-md-3" id="divGrupos_1">--}%
 
-            </div>
+%{--            </div>--}%
 
-            <div class="btn-group col-md-1">
-                <a href="#" class="btn btn-warning" id="btnCrearExcelGrupo"><i class="fa fa-download"></i> Generar excel</a>
-            </div>
-        </div>
-    </fieldset>
-</div>
+%{--            <div class="btn-group col-md-1">--}%
+%{--                <a href="#" class="btn btn-warning" id="btnCrearExcelGrupo"><i class="fa fa-download"></i> Generar excel</a>--}%
+%{--            </div>--}%
+%{--        </div>--}%
+%{--    </fieldset>--}%
+%{--</div>--}%
 
 
 <div style="border-style: groove; border-color: #0d7bdc">
@@ -141,7 +141,12 @@
         }
     });
 
-    cargarGrupos(1);
+    $("#btnCrearExcelMaterialesPetreos").click(function () {
+        location.href = "${g.createLink(controller: 'reportesExcel', action:'reportePetreosExcel')}";
+    });
+
+
+    // cargarGrupos(1);
     cargarGrupos(2);
 
     function cargarGrupos(tipo){

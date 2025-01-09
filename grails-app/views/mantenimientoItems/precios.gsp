@@ -21,6 +21,7 @@
                 <a href="#" id="btnMantenimientoPrecios" class="btn">
                     <i class="fa fa-money-bill"></i> Mantenimiento de precios
                 </a>
+                <a href="${createLink(controller: 'item', action: 'subirExcelMP')}" class="btn btn-info"><i class="fa fa-upload"></i> Subir excel</a>
                 <a href="#" id="btnPreciosVolumen" class="btn">
                     <i class="fa fa-money-bill"></i> Precios por Volumen
                 </a>
