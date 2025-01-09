@@ -2233,6 +2233,9 @@ class ReportesExcelController {
         wb.write(output)
     }
 
+
+
+
     def reporteListaPreciosExcel(){
 
 //        println "tabla " + params
