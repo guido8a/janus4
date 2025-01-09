@@ -1,0 +1,1 @@
+<g:select name="subgrupo" from="${subgrupos}" class="form-control" optionKey="${{it.dprt__id}}" optionValue="${{it.dprtcdgo + " " + it.dprtdscr}}" />
