@@ -33,9 +33,10 @@
 
 <div id="tabs">
     <ul>
-        <li><a href="#tab-rubro">Rubro</a></li>
+        <li><a href="#tab-rubro">Rubros Vigentes</a></li>
         <li><a href="#tab-precioRubro">Precio Rubros</a></li>
         <li><a href="#tab-formula">Fórmula Polinómica</a></li>
+        <li><a href="#tab-historicos">Rubros Históricos</a></li>
     </ul>
 
     <div id="tab-rubro" class="tab">
@@ -126,6 +127,36 @@
             </fieldset>
         </div>
     </div>
+
+    <div id="tab-historicos" class="tab">
+        <div class="control-group scroll">
+            <fieldset class="borde">
+                <legend>Rubro</legend>
+                <div class="span6" style="width: 700px">
+                    <table class="table table-bordered table-striped table-hover table-condensed " id="tablaRubrosHistoricos">
+                        <thead>
+                        <tr>
+                            <th style="width: 100px">Código</th>
+                            <th style="width: 300px">Nombre</th>
+                        </tr>
+
+                        </thead>
+
+                        <tbody id="bodyRubrosHistoricos">
+
+                        <g:each in="${rubro}" var="r">
+                            <tr>
+                                <td style="width: 100px">${r?.rubro?.codigo}</td>
+                                <td style="width: 300px">${r?.rubro?.nombre}</td>
+                            </tr>
+                        </g:each>
+                        </tbody>
+                    </table>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+
 </div>
 
 
