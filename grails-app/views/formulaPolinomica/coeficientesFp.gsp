@@ -648,7 +648,7 @@
                         };
                     }
 
-                    if(nodeV === '0.000'){
+                    if(nodeV === '0.000' && num.contains("c")){
                         menuItems.borrar = {
                             label            : "<i class='fa fa-trash text-danger'></i> Eliminar nodo",
                             separator_before : false,
