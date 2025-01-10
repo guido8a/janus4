@@ -976,5 +976,18 @@ class FormulaPolinomicaController {
         }
     }
 
+    def borrarNodo_ajax(){
+
+        def formula = FormulaPolinomica.get(params.id)
+
+        try{
+            formula.delete(flush:true)
+            render "ok"
+        }catch(e){
+            println("error al borrar el nodo fp " + formula.errors)
+            render "no"
+        }
+    }
+
 
 } //fin controller

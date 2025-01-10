@@ -455,6 +455,7 @@
         var parentTipo = parent.attr("rel");
         var parts = nodeStrId.split("_");
         var nodeId = parts[1];
+        var nodeV = node.attr("valor");
 
         var sugiere = node.attr("sgrc");
 
@@ -465,6 +466,8 @@
         var menuItems = {}, lbl = "", item = "";
         var num = $.trim(node.attr("numero"));
         var hijos = node.children("ul").length;
+
+        console.log("id " + nodeStrId.split("_")[1])
 
         switch (nodeTipo) {
             case "fp":
@@ -491,8 +494,6 @@
                         var cantNombre = 0;
 
                         var $spans = $("#tree").find("span:contains('" + indiceNombre + "')");
-//                        console.log('nombre:', indiceNombre);
-//                        console.log('spans:', nodeText);
                         $spans.each(function () {
                             var t = $.trim($(this).text());
                             if (t === indiceNombre) {
@@ -503,6 +504,7 @@
                         if (indiceNombre === nodeText) {
                             cantNombre = 0;
                         }
+
 
                         if (cantNombre === 0) {
                             if (valor !== "") {
@@ -521,6 +523,7 @@
                                             node.attr("valor", valor).trigger("change_node.jstree");
                                             $("#modal-formula").dialog("close");
                                             updateSumaTotal();
+                                            location.reload();
                                         }
                                     }
                                 });
@@ -540,6 +543,7 @@
                         var cantNombre = 0;
                         console.log('Compara');
                         var $spans = $("#tree").find("span:contains('" + indiceNombre + "')");
+
                         $spans.each(function () {
                             var t = $.trim($(this).text());
                             if (t === indiceNombre) {
@@ -603,6 +607,7 @@
                                     $("#modalBody-formula").html(msg);
                                     $("#modalFooter-formula").html("").append(btnCancel).append(btnSave);
                                     $("#modal-formula").dialog("open");
+
                                 }
                             });
                             </g:if>
@@ -613,7 +618,7 @@
                     };
 
                     console.log('sugiere:', sugiere);
-                    if(sugiere == 'false'){
+                    if(sugiere === 'false'){
                         menuItems.sugeridos = {
                             label            : "<i class='fa fa-edit'></i> Índices sugeridos",
                             separator_before : false,
@@ -641,8 +646,62 @@
                                 </g:else>
                             }
                         };
-
                     }
+
+                    if(nodeV === '0.000'){
+                        menuItems.borrar = {
+                            label            : "<i class='fa fa-trash text-danger'></i> Eliminar nodo",
+                            separator_before : false,
+                            separator_after  : false,
+                            action           : function (obj) {
+                                <g:if test="${obra?.liquidacion==1 || obra?.estado!='R' || obra?.codigo[-1..-2] != 'OF'}">
+                                bootbox.confirm({
+                                    title: "Alerta",
+                                    message: "<i class='fa fa-trash text-danger fa-2x'></i>" + "<strong style='font-size: 14px'>" +  "Está seguro de eliminar este nodo?"  + "</strong>",
+                                    buttons: {
+                                        cancel: {
+                                            label: '<i class="fa fa-times"></i> Cancelar',
+                                            className: 'btn-primary'
+                                        },
+                                        confirm: {
+                                            label: '<i class="fa fa-check"></i> Aceptar',
+                                            className: 'btn-success'
+                                        }
+                                    },
+                                    callback: function (result) {
+                                        if (result) {
+                                            $.ajax({
+                                                type    : "POST",
+                                                url     : "${createLink(controller: 'formulaPolinomica', action:'borrarNodo_ajax')}",
+                                                data    : {
+                                                    id   : nodeStrId.split("_")[1]
+                                                },
+                                                success : function (msg) {
+                                                    var parts = msg.split("_");
+                                                    if(parts[0] === 'ok'){
+                                                        log("Borrado correctamente", "success");
+                                                        setTimeout(function() {
+                                                            location.reload();
+                                                        }, 1000);
+                                                    }else{
+                                                        bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-2x"></i> ' + '<strong style="font-size: 12px">' + "No puede borrar la formula" + '</strong>');
+                                                    }
+                                                }
+                                            });
+                                        }
+                                    }
+                                });
+                                </g:if>
+                                <g:else>
+                                bootbox.alert('<i class="fa fa-exclamation-triangle text-info fa-3x"></i> ' + '<strong style="font-size: 14px">' + "No puede modificar los coeficientes de una obra ya registrada" + '</strong>');
+                                </g:else>
+                            }
+                        };
+                    }
+
+
+
+
                 }
                 break;
 
@@ -812,6 +871,7 @@
                         </g:else>
                     }
                 };
+
                 break;
         }
         return menuItems;
