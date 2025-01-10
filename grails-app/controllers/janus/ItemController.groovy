@@ -767,7 +767,10 @@ class ItemController {
     } //delete
 
     def subirExcelMP(){
-
+        def anio = new Date().format('yyyy')
+        def fechas = [1: '15/01/' + anio, 2: '1/05/' + anio, 3: '1/09/' + anio ]
+        println "fechas: $fechas"
+        [fechas: fechas]
     }
 
     def uploadFileMP() {

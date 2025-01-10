@@ -4075,7 +4075,7 @@ class PlanillaController {
                     fecha = preciosService.primerDiaDelMes(fecha) - 15
                     prin = PeriodosInec.findByFechaInicioLessThanAndFechaFinGreaterThan(fecha, fecha)
                     print "...1+ ${plnl?.contrato?.id}, ${prin?.id}"
-                    existe = preciosService.verificaIndicesPeriodoTodo(plnl.contrato.id, prin.id).size() == 0
+                    existe = preciosService.verificaIndicesPeriodoTodo(plnl.contrato.id, prin?.id).size() == 0
                     if (!max--) {
                         return null
                     }
