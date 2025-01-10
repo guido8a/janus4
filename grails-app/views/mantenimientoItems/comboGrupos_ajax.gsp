@@ -1,3 +1,4 @@
+<label>Grupos</label>
 <g:select name="grupo_${tipo}" from="${grupos}" class="form-control" optionKey="${{it.sbgr__id}}" optionValue="${{it.sbgrcdgo + " " + it.sbgrdscr}}" />
 
 <script type="text/javascript">

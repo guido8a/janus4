@@ -2470,12 +2470,13 @@ class ReportesExcelController {
         sheet.setColumnWidth(0, 15 * 256);
         sheet.setColumnWidth(1, 40 * 256);
         sheet.setColumnWidth(2, 40 * 256);
-        sheet.setColumnWidth(3, 10 * 256);
-        sheet.setColumnWidth(4, 10 * 256);
+        sheet.setColumnWidth(3, 20 * 256);
+        sheet.setColumnWidth(4, 20 * 256);
         sheet.setColumnWidth(5, 60 * 256);
         sheet.setColumnWidth(6, 15 * 256);
         sheet.setColumnWidth(7, 15 * 256);
         sheet.setColumnWidth(8, 15 * 256);
+        sheet.setColumnWidth(9, 15 * 256);
 
         Row row = sheet.createRow(0)
         row.createCell(0).setCellValue("")
@@ -2492,15 +2493,16 @@ class ReportesExcelController {
         def fila = 5
 
         Row rowC1 = sheet.createRow(fila)
-        rowC1.createCell(0).setCellValue("IdLugar")
-        rowC1.createCell(1).setCellValue("Lugar")
-        rowC1.createCell(2).setCellValue("Lista")
-        rowC1.createCell(3).setCellValue("IdItem")
-        rowC1.createCell(4).setCellValue("Código")
-        rowC1.createCell(5).setCellValue("Item")
-        rowC1.createCell(6).setCellValue("Fecha")
+        rowC1.createCell(0).setCellValue("Lista número")
+        rowC1.createCell(1).setCellValue("Lista")
+        rowC1.createCell(2).setCellValue("Tipo de lista")
+        rowC1.createCell(3).setCellValue("Item número")
+        rowC1.createCell(4).setCellValue("Item Código")
+        rowC1.createCell(5).setCellValue("Maeriales Pétreos")
+        rowC1.createCell(6).setCellValue("Fecha precios")
         rowC1.createCell(7).setCellValue("Precio unitario")
-        rowC1.createCell(8).setCellValue("IdPrecio")
+        rowC1.createCell(8).setCellValue("Precio número")
+        rowC1.createCell(9).setCellValue("Nuevo precio")
         rowC1.setRowStyle(style)
         fila++
 
@@ -2515,6 +2517,7 @@ class ReportesExcelController {
             rowF1.createCell(6).setCellValue(p?.rbpcfcha?.format("dd-MM-yyyy"))
             rowF1.createCell(7).setCellValue(p?.rbpcpcun)
             rowF1.createCell(8).setCellValue(p?.rbpc__id)
+            rowF1.createCell(9).setCellValue(p?.rbpcpcun)
             fila++
         }
 
