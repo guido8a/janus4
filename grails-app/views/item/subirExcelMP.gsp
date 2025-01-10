@@ -87,7 +87,6 @@
 
             </g:uploadForm>
 
-
         </div>
 
     </fieldset>
