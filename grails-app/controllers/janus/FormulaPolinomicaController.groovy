@@ -429,13 +429,11 @@ class FormulaPolinomicaController {
             def indiSldo = Indice.findByCodigo("SLDO")
             def indiMano = Indice.findByCodigo("MO")
             def indiPeon = Indice.findByCodigo("C.1")
-//            11.times {
-            14.times {
+            11.times {
                 def fpx = new FormulaPolinomica()
                 fpx.obra = obra
                 fpx.subPresupuesto = sbpr
-//                if (it < 10) {
-                if (it < 13) {
+                if (it < 10) {
                     fpx.numero = "p0" + (it + 1)
                     if (it == 0) {
                         fpx.indice = indiMano
@@ -456,8 +454,7 @@ class FormulaPolinomicaController {
                             valor = 0
                         fpx.valor = valor
                     } else {
-                        if (it >= 9)
-//                        if (it == 12)
+                        if (it == 9)
                             fpx.numero = "p" + (it + 1)
                         fpx.indice = indice21
                         fpx.valor = 0
@@ -471,7 +468,11 @@ class FormulaPolinomicaController {
                     println "erroe save fpx " + fpx.errors
                 }
 
-//                if (it < 10) {
+
+            }
+
+            14.times {
+                //                if (it < 10) {
                 if (it < 13) {
                     def cuadrilla = new FormulaPolinomica()
                     cuadrilla.obra = obra
@@ -486,6 +487,7 @@ class FormulaPolinomicaController {
                     }
                 }
             }
+
         }
         render "ok_${sbpr.id}"
     }
