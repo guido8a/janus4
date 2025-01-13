@@ -70,7 +70,7 @@
             <div class="col-md-12" style="background-color: #dadad0;
                 border-style: solid; border-color: #606060; border-radius: 4px; border-width: thin;
                 padding: 10px; margin-top: -10px">
-            <g:uploadForm action="uploadFileMP" method="post" name="frmUpload" style="margin-top: -20px">
+            <g:uploadForm action="uploadPetreos" method="post" name="frmPetreos" style="margin-top: -20px">
                 <div id="list-grupo" class="col-md-12" style="margin: 0px 0 0 0">
 
                     <div class="col-md-1" style="margin-top: 20px">
@@ -91,7 +91,7 @@
 
                     <div class="col-md-2" style="margin-top: 20px">
                         <div class="col-md-2">
-                            <a href="#" class="btn btn-success" id="btnSubmitMP">
+                            <a href="#" class="btn btn-success" id="btnPetreosMP">
                                 <i class="fa fa-upload"></i> Subir Archivo</a>
                         </div>
                     </div>
@@ -142,7 +142,7 @@
             </div>
         </div>
 
-        <g:uploadForm action="uploadFileMP" method="post" name="frmUpload" style="padding: 10px">
+        <g:uploadForm action="uploadGrupos" method="post" name="frmGrupo" style="padding: 10px">
 
             <div class="col-md-12" style="background-color: #dadad0;
                 border-style: solid; border-color: #606060; border-radius: 4px; border-width: thin;
@@ -163,7 +163,7 @@
                 </div>
 
                 <div class="col-md-2" style="margin-top: 10px">
-                    <a href="#" class="btn btn-success" id="btnSubmit"><i class="fa fa-upload"></i> Subir Archivo</a>
+                    <a href="#" class="btn btn-success" id="btnGrupos"><i class="fa fa-upload"></i> Subir Archivo</a>
                 </div>
             </div>
         </g:uploadForm>
@@ -204,7 +204,7 @@
         });
     }
 
-    $("#btnSubmit").click(function () {
+    $("#btnPetreos").click(function () {
         bootbox.confirm({
             title: "Subir archivo excel",
             message: "<i class='fa fa-exclamation-triangle text-warning fa-3x'></i> <strong style='font-size: 14px'> Antes de subir el archivo verifique la fecha </strong> ",

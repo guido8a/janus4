@@ -773,7 +773,7 @@ class ItemController {
         [fechas: fechas]
     }
 
-    def uploadFileMP() {
+    def uploadPetreos() {
         println("subir excel " + params)
 
         def lista = Lugar.get(params.listaPrecio)
