@@ -2454,7 +2454,7 @@ class ReportesExcelController {
         def sql ="select p.lgar__id, lgardscr, tplsdscr, item.item__id, itemcdgo, itemnmbr, p.rbpcfcha, rbpcpcun, " +
                 "rbpc__id from item, rbpc p, lgar, tpls where p.item__id = item.item__id and p.rbpcfcha = (select max(rbpcfcha) " +
                 "from rbpc r where r.item__id = p.item__id and r.lgar__id = p.lgar__id) and lgar.lgar__id = p.lgar__id and lgar.tpls__id in (3,4,5) " +
-                "and tpls.tpls__id = lgar.tpls__id order by lgardscr, tplsdscr, item.itemcdgo;"
+                "and tpls.tpls__id = lgar.tpls__id and itemetdo = 'A' order by lgardscr, tplsdscr, item.itemcdgo;"
 
 //        println("sql " + sql)
 

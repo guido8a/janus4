@@ -7,9 +7,11 @@
 
 <body>
 <div class="well">
-    <g:link class="btn btn-primary" controller="item" action="mantenimientoPrecios" ><i class="fa fa-arrow-left"></i> Regresar a mantenimiento items</g:link>
+    <g:link class="btn btn-primary" controller="item" action="subirExcelMP" >
+        <i class="fa fa-arrow-left"></i> Regresar a mantenimiento items</g:link>
     <elm:poneHtml textoHtml="${flash.message}"/>
-    <g:link class="btn btn-primary" controller="item" action="mantenimientoPrecios" ><i class="fa fa-arrow-left"></i> Regresar a mantenimiento items</g:link>
+    <g:link class="btn btn-primary" controller="item" action="subirExcelMP" >
+        <i class="fa fa-arrow-left"></i> Regresar a mantenimiento items</g:link>
 </div>
 </body>
 </html>

@@ -366,7 +366,7 @@ class ItemController {
                 itemsIds += row[0]
             }
 
-            if (itemsIds == ""){
+            if (itemsIds == "") {
                 itemsIds = '-1'
             }
 
@@ -403,7 +403,7 @@ class ItemController {
                         itemsIds += row[0]
                     }
 
-                    if (itemsIds == ""){
+                    if (itemsIds == "") {
                         itemsIds = '-1'
                     }
 
@@ -418,19 +418,19 @@ class ItemController {
                     }
 
 
-                    if(rubroPrecio == []){
+                    if (rubroPrecio == []) {
                         totalCount = 0
-                    }else {
+                    } else {
                         cn.eachRow(sql3.toString()) { row ->
-                            totalCount= row[0]
+                            totalCount = row[0]
                         }
                     }
 
                     params.totalRows = totalCount
 
-                    if(params.totalRows == 0){
+                    if (params.totalRows == 0) {
                         params.totalPags = 0
-                    }else {
+                    } else {
                         params.totalPags = Math.ceil(params.totalRows / params.max).toInteger()
                     }
 //
@@ -478,7 +478,7 @@ class ItemController {
                         itemsIds += row[0]
                     }
 
-                    if (itemsIds == ""){
+                    if (itemsIds == "") {
                         itemsIds = '-1'
                     }
 
@@ -493,20 +493,20 @@ class ItemController {
                         rubroPrecio.add(pri)
                     }
 
-                    if(rubroPrecio == []){
+                    if (rubroPrecio == []) {
                         totalCount = 0
-                    }else {
+                    } else {
                         cn.eachRow(sql2.toString()) { row ->
 //                            println("row" + (row))
-                            totalCount= row[0]
+                            totalCount = row[0]
                         }
                     }
 
                     params.totalRows = totalCount
 //
-                    if(params.totalRows == 0){
+                    if (params.totalRows == 0) {
                         params.totalPags = 0
-                    }else {
+                    } else {
                         params.totalPags = Math.ceil(params.totalRows / params.max).toInteger()
                     }
 //
@@ -766,20 +766,20 @@ class ItemController {
         }
     } //delete
 
-    def subirExcelMP(){
-        def anio = new Date().format('yyyy')
-        def fechas = [1: '15/01/' + anio, 2: '1/05/' + anio, 3: '1/09/' + anio ]
+    def subirExcelMP() {
+        def fechas = poneFechaPrecios()
         println "fechas: $fechas"
         [fechas: fechas]
     }
 
     def uploadPetreos() {
-        println("subir excel " + params)
+        println("uploadPetreos subir excel " + params)
 
+        def cn = dbConnectionService.getConnection()
         def lista = Lugar.get(params.listaPrecio)
-        def fecha = new Date().parse("dd-MM-yyyy", params.fecha)
-
-        def filasNO = [0,1,2,3]
+        def fecha = leeFechaPrecios(params.fechaPetreos).format('yyyy-MM-dd')
+        println "fecha: $fecha"
+        def filasNO = [0..6]
         def path = "/var/janus/" + "xlsMP/"   //web-app/archivos
         new File(path).mkdirs()
 
@@ -799,9 +799,7 @@ class ItemController {
             }
 
             if (ext == "xlsx") {
-
                 fileName = "xlsMP_" + new Date().format("yyyyMMdd_HHmmss")
-
                 def fn = fileName
                 fileName = fileName + "." + ext
 
@@ -818,7 +816,7 @@ class ItemController {
                 f.transferTo(new File(pathFile)) // guarda el archivo subido al nuevo path
 
                 //procesar excel
-                def htmlInfo = "", errores = "", doneHtml = "", done = 0, creados = 0, modificados = 0, bandera, creadoshtml= ''
+                def htmlInfo = "", errores = "", doneHtml = "", conErr = 0, creados = 0, modificados = 0, creadoshtml = ''
                 def file = new File(pathFile)
 
                 InputStream ExcelFileToRead = new FileInputStream(pathFile);
@@ -830,14 +828,14 @@ class ItemController {
 
                 Iterator rows = sheet1.rowIterator();
 
-                while (rows.hasNext()) { i
-
+                while (rows.hasNext()) {
                     row = (XSSFRow) rows.next()
 
-                    if(row.rowNum in filasNO){
+                    if (row.rowNum in filasNO) {
                         println("rows NO " + row.rowNum)
-                    }else{
+                    } else {
                         def ok = true
+                        def sql = ""
 
                         Iterator cells = row.cellIterator()
 
@@ -848,110 +846,42 @@ class ItemController {
                                 rgst.add(cell.getNumericCellValue())
                             } else if (cell.getCellType() == XSSFCell.CELL_TYPE_STRING) {
                                 rgst.add(cell.getStringCellValue())
-                            } else if(cell.getCellType() == XSSFCell.CELL_TYPE_FORMULA) {
+                            } else if (cell.getCellType() == XSSFCell.CELL_TYPE_FORMULA) {
                                 rgst.add(cell.getNumericCellValue())
                             }
                         }
 
-                        def cod = rgst[0]
-                        def nombre = rgst[1]
-                        def precio = rgst[2]
-                        def nuevoPrecio = rgst[3]
+                        println "reg: $rgst"
 
-//                        if(nombre && nombre != 'ITEM'){
-//                            htmlInfo += "<h2>Hoja : "  + sheet1.getSheetName() + " - ITEM: " +  nombre + "</h2>"
-//                        }
+                        def id_lgar = rgst[0]
+                        def id_item = rgst[3]
+                        def nombre = rgst[5]
+                        def precio = 0
+                        try {
+                            precio = rgst[9]?.toDouble()
+                        } catch (e) {
+                            precio = -999
+                        }
 
-                        def band = ''
+                        println "reg: $id_lgar $id_item $nombre $precio"
 
-                        if (cod != '' && cod != "CODIGO") {
-                            def item = Item.findAllByCodigo(cod)
-                            def itemSel
+                        if (rgst[3] && (precio != -999)) {
+                            println "pasa.."
+                            sql = "insert into rbpc(item__id, lgar__id, rbpcfcha, rbpcpcun, rbpcfcin, rbpcrgst) " +
+                                    "values(${id_item.toInteger()}, ${id_lgar.toInteger()}, '${fecha}', $precio, now(), 'N')"
+                            println "sql: $sql"
 
-                            if (item.size() == 1) {
-                                itemSel = item[0]
-                            } else if (item.size() == 0) {
-                                errores += "<li>No se encontró item con código ${cod} (l. ${row.rowNum + 1})</li>"
-                                println "No se encontró item con código ${cod}"
-                                ok = false
-                            } else {
-                                println "Se encontraron ${item.size()} items con código ${cod}!! ${item.id}"
-                                errores += "<li>Se encontraron ${item.size()} items con código ${cod}!! (l. ${row.rowNum + 1})</li>"
-                                ok = false
+                            try {
+                                cn.execute(sql.toString())
+                                creados++
+                            } catch (e) {
+                                conErr++
+                                errores += "<li>Ha ocurrido un error al guardar el item ${nombre} (línea ${row.rowNum + 1})</li>"
                             }
-                            if (ok) {
 
-                                def registro
-                                def existe = PrecioRubrosItems.findByFechaAndLugarAndItem(fecha, lista, itemSel)
-
-                                println("existe " + existe)
-
-                                if(existe){
-                                    registro = existe
-                                    registro.precioUnitario = nuevoPrecio ? nuevoPrecio.toString().replaceAll(',', '.').toDouble() : 0
-
-                                    band = "<li>Se ha modificado la cantidad para el item: ${nombre}</li>"
-                                    bandera = 1
-
-                                }else{
-
-                                    registro = new PrecioRubrosItems()
-                                    registro.precioUnitario = precio ? precio.toString().replaceAll(',', '.').toDouble() : 0
-                                    registro.item =itemSel
-                                    registro.fecha = fecha
-                                    registro.lugar = lista
-
-                                    band = "<li>Se ha creado el item: ${nombre}</li>"
-                                    bandera = 0
-
-//                                    println "No se encontró registro para el item ${nombre}"
-//                                    errores += "<li>No se encontró composición para el item ${nombre} (l. ${row.rowNum + 1})</li>"
-                                }
-
-                                if (registro.save(flush: true)) {
-
-                                    if(bandera == 1){
-                                        modificados++
-                                        htmlInfo += "<h2>Hoja : "  + sheet1.getSheetName() + " - ITEM MODIFICADO: " +  band + "</h2>"
-                                    }else{
-                                        creados++
-                                        htmlInfo += "<h2>Hoja : "  + sheet1.getSheetName() + " - ITEM CREADO: " +  band + "</h2>"
-                                    }
-
-//                                    done++
-//                                    doneHtml += band
-                                } else {
-                                    println "No se pudo guardar el registro ${registro.id}: " + registro.errors
-                                    errores += "<li>Ha ocurrido un error al guardar el item ${nombre} (l. ${row.rowNum + 1})</li>"
-                                }
-
-
-
-//                                if (comp.size() == 1) {
-//                                    comp = comp[0]
-//                                    comp.cantidad = nuevaCant? nuevaCant.toString().replaceAll(',', '.').toDouble() : 0
-//
-//                                    if (comp.save(flush: true)) {
-//                                        done++
-//                                        doneHtml += "<li>Se ha modificado la cantidad para el item ${nombre}</li>"
-//                                    } else {
-//                                        println "No se pudo guardar comp ${comp.id}: " + comp.errors
-//                                        errores += "<li>Ha ocurrido un error al guardar la cantidad para el item ${nombre} (l. ${row.rowNum + 1})</li>"
-//                                    }
-//                                } else if (comp.size() == 0) {
-//                                    println "No se encontró composición para el item ${nombre}"
-//                                    errores += "<li>No se encontró composición para el item ${nombre} (l. ${row.rowNum + 1})</li>"
-//                                } else {
-//                                    println "Se encontraron ${comp.size()} composiciones para el item ${nombre}: ${comp.id}"
-//                                    errores += "<li>Se encontraron ${comp.size()} composiciones para el item ${nombre} (l. ${row.rowNum + 1})</li>"
-//                                }
-                            }
                         }
                     }
                 } //sheets.each
-//                if (done > 0) {
-//                    doneHtml = "<div class='alert alert-success'>Se han ingresado correctamente " + done + " registros</div>"
-//                }
 
                 if (modificados > 0) {
                     doneHtml = "<div class='alert alert-success' style='font-size: 16px; font-weight: bold'><i class='fa fa-check'></i> Se han modificado correctamente " + modificados + " registros</div>"
@@ -963,9 +893,10 @@ class ItemController {
 
                 def str = ''
                 str += htmlInfo
-//                if (errores != "") {
-//                    str += "<ol>" + errores + "</ol>"
-//                }
+                if (errores != "") {
+                    str += "<ol>" + errores + "</ol>"
+                }
+
                 str += doneHtml
                 str += creadoshtml
 
@@ -981,8 +912,25 @@ class ItemController {
         }
     }
 
-    def resultadoExcelMP(){
+    def resultadoExcelMP() {
 
+    }
+
+    def poneFechaPrecios() {
+        def anio = new Date().format('yyyy')
+        def fechas = [1: '15/01/' + anio, 2: '1/05/' + anio, 3: '1/09/' + anio]
+        return fechas
+    }
+
+    def leeFechaPrecios(val) {
+//        println "llega: $val"
+        def id = val.toInteger()
+        def anio = new Date().format('yyyy')
+        def fechas = [1: '15/01/' + anio, 2: '1/05/' + anio, 3: '1/09/' + anio]
+        def tx = fechas[id]
+//        println "a convertir: $fechas --> $tx ${fechas[1]}"
+        def fecha = new Date().parse("dd/MM/yyyy", fechas[id])
+        return fecha
     }
 
 } //fin controller

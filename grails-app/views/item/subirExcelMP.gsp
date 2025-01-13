@@ -78,20 +78,20 @@
                     </div>
 
                     <div class="col-md-2" style="margin-top: 20px">
-                        <g:select name="buscarPorCnsm" class="form-control" from="${fechas}"
+                        <g:select name="fechaPetreos" class="form-control" from="${fechas}"
                                   optionKey='key' optionValue="value" style="width: 120px"/>
                     </div>
 
 
                     <div class="col-md-7" style="margin-top: 20px; margin-left: -20px">
-                        <div class="col-md-3"><b>Archivo excel modificado a subir:</b></div>
+                        <div class="col-md-3"><b>Archivo de precios excel a subir (modificado):</b></div>
                         <input type="file" class="required col-md-9" id="fileMP" name="file"
                                multiple accept=".xlsx" style="margin-top: 10px"/>
                     </div>
 
                     <div class="col-md-2" style="margin-top: 20px">
                         <div class="col-md-2">
-                            <a href="#" class="btn btn-success" id="btnPetreosMP">
+                            <a href="#" class="btn btn-success" id="btnPetreos">
                                 <i class="fa fa-upload"></i> Subir Archivo</a>
                         </div>
                     </div>
@@ -147,15 +147,23 @@
             <div class="col-md-12" style="background-color: #dadad0;
                 border-style: solid; border-color: #606060; border-radius: 4px; border-width: thin;
                 padding: 10px; margin-top: 10px">
-                <div class="col-md-1">
-                    <label> Fecha </label>
+                %{--<div class="col-md-1">--}%
+                    %{--<label> Fecha </label>--}%
+                %{--</div>--}%
+
+                %{--<div class="col-md-2">--}%
+                    %{--<input aria-label="" name="fecha" id='fecha' type='text' class="fecha form-control"--}%
+                           %{--value="${new Date().format("dd-MM-yyyy")}" />--}%
+                %{--</div>--}%
+
+                <div class="col-md-1" style="margin-top: 20px">
+                    <label style="text-align: right; width: 100%"> Fecha de precios </label>
                 </div>
 
-                <div class="col-md-2">
-                    <input aria-label="" name="fecha" id='fecha' type='text' class="fecha form-control"
-                           value="${new Date().format("dd-MM-yyyy")}" />
+                <div class="col-md-2" style="margin-top: 20px">
+                    <g:select name="buscarPorCnsm" class="form-control" from="${fechas}"
+                              optionKey='key' optionValue="value" style="width: 120px"/>
                 </div>
-
 
                 <div class="col-md-6" style="margin-top: 20px">
                     <div class="col-md-2"><b>Archivo:</b></div>
@@ -205,9 +213,12 @@
     }
 
     $("#btnPetreos").click(function () {
+        var fecha = $("#fechaPetreos").find(":selected").text();
         bootbox.confirm({
             title: "Subir archivo excel",
-            message: "<i class='fa fa-exclamation-triangle text-warning fa-3x'></i> <strong style='font-size: 14px'> Antes de subir el archivo verifique la fecha </strong> ",
+            message: "<i class='fa fa-exclamation-triangle text-warning fa-3x'></i> " +
+                "Se crearán los precios según el archivo indicado para la fecha de <strong style='font-size: 14px'> " +
+                fecha + "</strong> ",
             buttons: {
                 cancel: {
                     label: '<i class="fa fa-times"></i> Cancelar',
@@ -220,9 +231,9 @@
             },
             callback: function (result) {
                 if(result){
-                    if ($("#frmUpload").valid()) {
+                    if ($("#frmPetreos").valid()) {
                         var g = cargarLoader("Cargando...");
-                        $("#frmUpload").submit();
+                        $("#frmPetreos").submit();
                         g.modal("hide");
                     }else{
 
