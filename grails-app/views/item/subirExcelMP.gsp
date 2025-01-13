@@ -17,10 +17,10 @@
 </g:if>
 
 <div style="border-style: groove; border-color: #0d7bdc; margin-top: 10px; margin-bottom: 10px">
-    <fieldset style="margin-bottom: 10px; padding: 20px">
+    <fieldset style="margin-bottom: 10px; padding: 0px 20px 0px 20px">
         <h3 style="text-align: center">Mantenimiento de precios de Materiales Pétreos</h3>
         <h6 style="text-align: left">Formato del archivo de excel</h6>
-        <table class="table" style="background-color: #5a7ab2; color: #fff; margin-top: 0px">
+        <table class="table" style="background-color: #5a7ab2; color: #fff; margin-bottom: 30px">
             <tr>
                 <th style="border: 1px solid #ddd; text-align: center">
                     A - LISTA NUMERO
@@ -54,30 +54,42 @@
                 </th>
             </tr>
         </table>
-        <div class="row" style="margin-left: 100px">
-            <div class="col-md-1">
-                <label> Fecha </label>
-            </div>
+        <div class="row">
 
-            <div class="col-md-2">
-                <g:select name="buscarPorCnsm" class="form-control" from="${fechas}"
-                          optionKey='key' optionValue="value" />
+            <div class="btn-group col-md-6" style="margin-left: 10px; height: 65px">
+                <p> Generar el archivo excel para actualizar precios, en el archivo generado,
+                ingrese los nuevos precios (columna Nuevo Precio) y suba el archivo al sistema para
+                    que se registren en el sistema
+                </p>
             </div>
-
-            <div class="btn-group col-md-1">
+            <div class="btn-group col-md-5" style="margin-left: 10px; height: 65px">
                 <a href="#" class="btn btn-warning" id="btnCrearExcelMaterialesPetreos">
-                    <i class="fa fa-download"></i> Generar excel</a>
+                    <i class="fa fa-download"></i> Generar archivo de excel</a>
             </div>
 
+            <div class="col-md-12" style="background-color: #dadad0;
+                border-style: solid; border-color: #606060; border-radius: 4px; border-width: thin;
+                padding: 10px; margin-top: -10px">
+            <g:uploadForm action="uploadFileMP" method="post" name="frmUpload" style="margin-top: -20px">
+                <div id="list-grupo" class="col-md-12" style="margin: 0px 0 0 0">
 
-            <g:uploadForm action="uploadFileMP" method="post" name="frmUpload" style="padding: 10px">
-                <div id="list-grupo" class="col-md-12" role="main" style="margin: 10px 0 0 0">
-                    <div class="col-md-6" style="margin-top: 20px">
-                        <div class="col-md-2"><b>Archivo:</b></div>
-                        <input type="file" class="required col-md-10" id="fileMP" name="file" multiple accept=".xlsx"/>
+                    <div class="col-md-1" style="margin-top: 20px">
+                        <label style="text-align: right; width: 100%"> Fecha de precios </label>
                     </div>
 
-                    <div class="col-md-3" style="margin-top: 20px">
+                    <div class="col-md-2" style="margin-top: 20px">
+                        <g:select name="buscarPorCnsm" class="form-control" from="${fechas}"
+                                  optionKey='key' optionValue="value" style="width: 120px"/>
+                    </div>
+
+
+                    <div class="col-md-7" style="margin-top: 20px; margin-left: -20px">
+                        <div class="col-md-3"><b>Archivo excel modificado a subir:</b></div>
+                        <input type="file" class="required col-md-9" id="fileMP" name="file"
+                               multiple accept=".xlsx" style="margin-top: 10px"/>
+                    </div>
+
+                    <div class="col-md-2" style="margin-top: 20px">
                         <div class="col-md-2">
                             <a href="#" class="btn btn-success" id="btnSubmitMP">
                                 <i class="fa fa-upload"></i> Subir Archivo</a>
@@ -86,75 +98,71 @@
                 </div>
 
             </g:uploadForm>
-
+            </div>
         </div>
 
     </fieldset>
 </div>
 
-<div style="border-style: groove; border-color: #0d7bdc">
-    <fieldset style="margin-bottom: 10px">
+<div style="border-style: groove; border-color: #0d7bdc; margin-top: 10px; margin-bottom: 10px">
+    <fieldset style="margin-bottom: 10px; padding: 0px 20px 0px 20px">
+        <h3 style="text-align: center">Mantenimiento de precios por Grupos y Subgrupos</h3>
+        <h6 style="text-align: left">Formato del archivo de excel</h6>
+
+        <table class="table" style="background-color: #5a7ab2; color: #fff; margin-bottom: 30px">
+            <tr>
+                <th style="border: 1px solid #ddd; text-align: center">
+                    A - CODIGO
+                </th>
+                <th style="border: 1px solid #ddd; text-align: center">
+                    B - ITEM
+                </th>
+                <th style="border: 1px solid #ddd; text-align: center">
+                    C - PRECIO
+                </th>
+                <th style="border: 1px solid #ddd; text-align: center">
+                    D - NUEVO PRECIO
+                </th>
+            </tr>
+        </table>
+
         <div class="row">
 
-            <div class="col-md-2"></div>
-
-            <div class="col-md-3" id="divGrupos_2">
+            <div class="col-md-5" id="divGrupos_2">
 
             </div>
 
-            <div class="col-md-3" id="divSubgrupo">
+            <div class="col-md-5" id="divSubgrupo">
 
             </div>
 
             <div class="btn-group col-md-1" >
                 <a href="#" class="btn btn-warning" id="btnCrearExcelSubgrupo" style="margin-top: 20px">
-                    <i class="fa fa-download"></i> Generar excel</a>
+                    <i class="fa fa-download"></i> Generar archivo de excel</a>
             </div>
         </div>
 
         <g:uploadForm action="uploadFileMP" method="post" name="frmUpload" style="padding: 10px">
-            <div id="list-grupo" class="col-md-12" role="main" style="margin: 10px 0 0 0; height: 250px">
-                <div class="" style="margin: 0 0 20px 0;">
-                    <div class="col-md-9">
-                        <div class="alert alert-info">
-                            <strong style="font-size: 14px"><i class="fa fa-exclamation-triangle fa-2x text-warning"></i>  El archivo debe contener las siguientes columnas (los nombres de las columnas no son importantes):</strong>
-                        </div>
 
-                        <div class="col-md-1">
-                            <label> Fecha </label>
-                        </div>
-
-                        <div class="col-md-2" style="align-items: center;">
-                            <input aria-label="" name="fecha" id='fecha' type='text' class="fecha form-control" value="${new Date().format("dd-MM-yyyy")}" />
-                        </div>
-
-                        <table class="table" style="background-color: #5a7ab2; color: #fff; margin-top: 70px">
-                            <tr>
-                                <th style="border: 1px solid #ddd; text-align: center">
-                                    A - CODIGO
-                                </th>
-                                <th style="border: 1px solid #ddd; text-align: center">
-                                    B - ITEM
-                                </th>
-                                <th style="border: 1px solid #ddd; text-align: center">
-                                    C - PRECIO
-                                </th>
-                                <th style="border: 1px solid #ddd; text-align: center">
-                                    D - NUEVO PRECIO
-                                </th>
-                            </tr>
-                        </table>
-                    </div>
+            <div class="col-md-12" style="background-color: #dadad0;
+                border-style: solid; border-color: #606060; border-radius: 4px; border-width: thin;
+                padding: 10px; margin-top: 10px">
+                <div class="col-md-1">
+                    <label> Fecha </label>
                 </div>
+
+                <div class="col-md-2">
+                    <input aria-label="" name="fecha" id='fecha' type='text' class="fecha form-control"
+                           value="${new Date().format("dd-MM-yyyy")}" />
+                </div>
+
 
                 <div class="col-md-6" style="margin-top: 20px">
                     <div class="col-md-2"><b>Archivo:</b></div>
-                    <input type="file" class="required" id="file" name="file" multiple accept=".xlsx"/>
+                    <input type="file" class="required col-md-10" id="file" name="file" multiple accept=".xlsx"/>
                 </div>
-            </div>
 
-            <div class="col-md-12" style="margin-top: 20px">
-                <div class="col-md-2">
+                <div class="col-md-2" style="margin-top: 10px">
                     <a href="#" class="btn btn-success" id="btnSubmit"><i class="fa fa-upload"></i> Subir Archivo</a>
                 </div>
             </div>
