@@ -2459,7 +2459,7 @@ class ReportesExcelController {
                 "from rbpc r where r.item__id = p.item__id and r.lgar__id = p.lgar__id) and lgar.lgar__id = p.lgar__id and lgar.tpls__id in (3,4,5) " +
                 "and tpls.tpls__id = lgar.tpls__id and itemetdo = 'A' order by lgardscr, tplsdscr, item.itemcdgo;"
 
-//        println("sql " + sql)
+        println("sql " + sql)
 
         def res = cn.rows(sql.toString())
 
