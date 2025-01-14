@@ -251,4 +251,8 @@ class CodigoComprasPublicasController {
 
     }
 
+    def uploadCpc(){
+
+    }
+
 } //fin controller
