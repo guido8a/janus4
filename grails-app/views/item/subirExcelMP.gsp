@@ -192,7 +192,7 @@
                     E - ITEM CÓDIGO
                 </th>
                 <th style="border: 1px solid #ddd; text-align: center">
-                    F - MATERIALES PETREOS
+                    F - ITEM NOMBRE
                 </th>
                 <th style="border: 1px solid #ddd; text-align: center">
                     G - FECHA PRECIOS
