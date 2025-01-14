@@ -142,7 +142,7 @@
             </div>
         </div>
 
-        <g:uploadForm action="uploadGrupos" method="post" name="frmGrupo" style="padding: 10px">
+        <g:uploadForm action="uploadGrupoySubgrupo" method="post" name="frmGrupo" style="padding: 10px">
 
             <div class="col-md-12" style="background-color: #dadad0;
                 border-style: solid; border-color: #606060; border-radius: 4px; border-width: thin;
@@ -153,7 +153,7 @@
                 </div>
 
                 <div class="col-md-2" style="margin-top: 20px">
-                    <g:select name="buscarPorCnsm" class="form-control" from="${fechas}"
+                    <g:select name="fechaGrupo" class="form-control" from="${fechas}"
                               optionKey='key' optionValue="value" style="width: 120px"/>
                 </div>
 
@@ -224,7 +224,7 @@
             <div class="col-md-12" style="background-color: #dadad0;
             border-style: solid; border-color: #606060; border-radius: 4px; border-width: thin;
             padding: 10px; margin-top: -10px">
-                <g:uploadForm action="uploadPetreos" method="post" name="frmPetreos" style="margin-top: -20px">
+                <g:uploadForm action="uploadMO" method="post" name="frmMO" style="margin-top: -20px">
                     <div id="list-grupo" class="col-md-12" style="margin: 0px 0 0 0">
 
                         <div class="col-md-1" style="margin-top: 20px">
@@ -232,7 +232,7 @@
                         </div>
 
                         <div class="col-md-2" style="margin-top: 20px">
-                            <g:select name="fechaPetreos" class="form-control" from="${fechas}"
+                            <g:select name="fechaMO" class="form-control" from="${fechas}"
                                       optionKey='key' optionValue="value" style="width: 120px"/>
                         </div>
 
@@ -272,11 +272,14 @@
         location.href = "${g.createLink(controller: 'reportesExcel', action:'reportePetreosExcel')}";
     });
 
+    $("#btnCrearExcelSubgrupo").click(function () {
+        location.href = "${g.createLink(controller: 'reportesExcel', action:'reporteGruposExcel')}?grupo=" + $("#grupo_2 option:selected").val() + "&subgrupo=" + $("#subgrupo option:selected").val();
+    });
+
     $("#btnCrearExcelManoObra").click(function () {
         location.href = "${g.createLink(controller: 'reportesExcel', action:'reporteManoObraExcel')}";
     });
 
-    // cargarGrupos(1);
     cargarGrupos(2);
 
     function cargarGrupos(tipo){
@@ -322,6 +325,71 @@
             }
         });
     });
+
+
+    $("#btnSubirManoObra").click(function(){
+        var fecha = $("#fechaMO").find(":selected").text();
+        bootbox.confirm({
+            title: "Subir archivo excel",
+            message: "<i class='fa fa-exclamation-triangle text-warning fa-3x'></i> " +
+                "Se crearán los precios según el archivo indicado para la fecha de <strong style='font-size: 14px'> " +
+                fecha + "</strong> ",
+            buttons: {
+                cancel: {
+                    label: '<i class="fa fa-times"></i> Cancelar',
+                    className: 'btn-primary'
+                },
+                confirm: {
+                    label: '<i class="fa fa-upload"></i> Aceptar',
+                    className: 'btn-success'
+                }
+            },
+            callback: function (result) {
+                if(result){
+                    if ($("#frmMO").valid()) {
+                        var g = cargarLoader("Cargando...");
+                        $("#frmMO").submit();
+                        g.modal("hide");
+                    }else{
+
+                    }
+                }
+            }
+        });
+    });
+
+    $("#btnGrupos").click(function(){
+        var fecha = $("#fechaGrupo").find(":selected").text();
+        bootbox.confirm({
+            title: "Subir archivo excel",
+            message: "<i class='fa fa-exclamation-triangle text-warning fa-3x'></i> " +
+                "Se crearán los precios según el archivo indicado para la fecha de <strong style='font-size: 14px'> " +
+                fecha + "</strong> ",
+            buttons: {
+                cancel: {
+                    label: '<i class="fa fa-times"></i> Cancelar',
+                    className: 'btn-primary'
+                },
+                confirm: {
+                    label: '<i class="fa fa-upload"></i> Aceptar',
+                    className: 'btn-success'
+                }
+            },
+            callback: function (result) {
+                if(result){
+                    if ($("#frmGrupo").valid()) {
+                        var g = cargarLoader("Cargando...");
+                        $("#frmGrupo").submit();
+                        g.modal("hide");
+                    }else{
+
+                    }
+                }
+            }
+        });
+    });
+
+
 </script>
 </body>
 </html>

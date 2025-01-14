@@ -2,11 +2,14 @@ package janus.utilitarios
 
 import janus.Auxiliar
 import janus.Departamento
+import janus.DepartamentoItem
 import janus.Grupo
 import janus.Item
 import janus.Lugar
 import janus.Obra
 import janus.PrecioRubrosItems
+import janus.SubgrupoItems
+import janus.SubgrupoItemsController
 import janus.VolumenesObra
 import org.apache.poi.ss.usermodel.HorizontalAlignment
 import org.apache.poi.ss.usermodel.Row
@@ -2529,6 +2532,105 @@ class ReportesExcelController {
     }
 
 
+    def reporteGruposExcel(){
+
+//        println ("params gys " + params)
+
+        def cn = dbConnectionService.getConnection()
+
+        def grupo = SubgrupoItems.get(params.grupo)
+        def sql =""
+
+        if(params.subgrupo ==  'null'){
+            sql = "select p.lgar__id, lgardscr, tplsdscr, item.item__id, itemcdgo, itemnmbr, p.rbpcfcha, rbpcpcun, rbpc__id " +
+                    "from item, rbpc p, lgar, tpls, dprt, sbgr where p.item__id = item.item__id and p.rbpcfcha = (select max(rbpcfcha) from rbpc r where r.item__id = p.item__id and " +
+                    "r.lgar__id = p.lgar__id) and lgar.lgar__id = p.lgar__id and lgar.tpls__id = 1 and p.lgar__id = 2 and sbgr.sbgr__id = ${grupo?.id} and dprt.sbgr__id = sbgr.sbgr__id and dprt.dprt__id = item.dprt__id and " +
+                    "tpls.tpls__id = lgar.tpls__id and itemetdo = 'A' order by lgardscr, tplsdscr, item.itemcdgo;"
+        }else{
+
+            def subgrupo = DepartamentoItem.get(params.subgrupo)
+
+            sql = "select p.lgar__id, lgardscr, tplsdscr, item.item__id, itemcdgo, itemnmbr, p.rbpcfcha, rbpcpcun, rbpc__id " +
+                    "from item, rbpc p, lgar, tpls, dprt, sbgr " +
+                    "where p.item__id = item.item__id and p.rbpcfcha = (select max(rbpcfcha) from rbpc r where r.item__id = p.item__id and " +
+                    "r.lgar__id = p.lgar__id) and lgar.lgar__id = p.lgar__id and lgar.tpls__id = 1 and " +
+                    "p.lgar__id = 2 and dprt.dprt__id = ${subgrupo?.id} and dprt.sbgr__id = sbgr.sbgr__id and " +
+                    "dprt.dprt__id = item.dprt__id and tpls.tpls__id = lgar.tpls__id and itemetdo = 'A' " +
+                    "order by lgardscr, tplsdscr, item.itemcdgo;"
+        }
+
+//        println("sql " + sql)
+
+        def res = cn.rows(sql.toString())
+
+        XSSFWorkbook wb = new XSSFWorkbook()
+        XSSFCellStyle style = wb.createCellStyle();
+        XSSFFont font = wb.createFont();
+        font.setBold(true);
+        style.setFont(font);
+
+        Sheet sheet = wb.createSheet("mantenimientoPrecios_grupos" ?: '')
+        sheet.setColumnWidth(0, 15 * 256);
+        sheet.setColumnWidth(1, 40 * 256);
+        sheet.setColumnWidth(2, 40 * 256);
+        sheet.setColumnWidth(3, 20 * 256);
+        sheet.setColumnWidth(4, 20 * 256);
+        sheet.setColumnWidth(5, 60 * 256);
+        sheet.setColumnWidth(6, 15 * 256);
+        sheet.setColumnWidth(7, 15 * 256);
+        sheet.setColumnWidth(8, 15 * 256);
+        sheet.setColumnWidth(9, 15 * 256);
+
+        Row row = sheet.createRow(0)
+        row.createCell(0).setCellValue("")
+        Row row0 = sheet.createRow(1)
+        row0.createCell(1).setCellValue(Auxiliar.get(1)?.titulo ?: '')
+        row0.setRowStyle(style)
+        Row row1 = sheet.createRow(2)
+        row1.createCell(1).setCellValue("Mantenimiento de precios")
+        row1.setRowStyle(style)
+        Row row2 = sheet.createRow(3)
+        row2.createCell(1).setCellValue("Grupos y subgrupos")
+        row2.setRowStyle(style)
+
+        def fila = 5
+
+        Row rowC1 = sheet.createRow(fila)
+        rowC1.createCell(0).setCellValue("Lista número")
+        rowC1.createCell(1).setCellValue("Lista")
+        rowC1.createCell(2).setCellValue("Tipo de lista")
+        rowC1.createCell(3).setCellValue("Item número")
+        rowC1.createCell(4).setCellValue("Item Código")
+        rowC1.createCell(5).setCellValue("Item")
+        rowC1.createCell(6).setCellValue("Fecha precios")
+        rowC1.createCell(7).setCellValue("Precio unitario")
+        rowC1.createCell(8).setCellValue("Precio número")
+        rowC1.createCell(9).setCellValue("Nuevo precio")
+        rowC1.setRowStyle(style)
+        fila++
+
+        res.eachWithIndex { p, i ->
+            Row rowF1 = sheet.createRow(fila)
+            rowF1.createCell(0).setCellValue(p?.lgar__id)
+            rowF1.createCell(1).setCellValue(p?.lgardscr)
+            rowF1.createCell(2).setCellValue(p?.tplsdscr)
+            rowF1.createCell(3).setCellValue(p?.item__id)
+            rowF1.createCell(4).setCellValue(p?.itemcdgo)
+            rowF1.createCell(5).setCellValue(p?.itemnmbr)
+            rowF1.createCell(6).setCellValue(p?.rbpcfcha?.format("dd-MM-yyyy"))
+            rowF1.createCell(7).setCellValue(p?.rbpcpcun)
+            rowF1.createCell(8).setCellValue(p?.rbpc__id)
+            rowF1.createCell(9).setCellValue(p?.rbpcpcun)
+            fila++
+        }
+
+        def output = response.getOutputStream()
+        def header = "attachment; filename=" + "mantenimientoPrecios_grupos.xlsx";
+        response.setContentType("application/octet-stream")
+        response.setHeader("Content-Disposition", header);
+        wb.write(output)
+    }
+
     def reporteManoObraExcel(){
 
         def cn = dbConnectionService.getConnection()
@@ -2610,8 +2712,6 @@ class ReportesExcelController {
         response.setContentType("application/octet-stream")
         response.setHeader("Content-Disposition", header);
         wb.write(output)
-
-
     }
 
 

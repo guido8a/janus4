@@ -912,6 +912,288 @@ class ItemController {
         }
     }
 
+    def uploadMO() {
+        println("uploadMO subir excel " + params)
+
+        def cn = dbConnectionService.getConnection()
+        def lista = Lugar.get(params.listaPrecio)
+        def fecha = leeFechaPrecios(params.fechaMO).format('yyyy-MM-dd')
+        println "fecha: $fecha"
+        def filasNO = [0..6]
+        def path = "/var/janus/" + "xlsMO/"   //web-app/archivos
+        new File(path).mkdirs()
+
+        def f = request.getFile('file')  //archivo = name del input type file
+        if (f && !f.empty) {
+            def fileName = f.getOriginalFilename() //nombre original del archivo
+            def ext
+
+            def parts = fileName.split("\\.")
+            fileName = ""
+            parts.eachWithIndex { obj, i ->
+                if (i < parts.size() - 1) {
+                    fileName += obj
+                } else {
+                    ext = obj
+                }
+            }
+
+            if (ext == "xlsx") {
+                fileName = "xlsMP_" + new Date().format("yyyyMMdd_HHmmss")
+                def fn = fileName
+                fileName = fileName + "." + ext
+
+                def pathFile = path + fileName
+                def src = new File(pathFile)
+
+                def i = 1
+                while (src.exists()) {
+                    pathFile = path + fn + "_" + i + "." + ext
+                    src = new File(pathFile)
+                    i++
+                }
+
+                f.transferTo(new File(pathFile)) // guarda el archivo subido al nuevo path
+
+                //procesar excel
+                def htmlInfo = "", errores = "", doneHtml = "", conErr = 0, creados = 0, modificados = 0, creadoshtml = ''
+                def file = new File(pathFile)
+
+                InputStream ExcelFileToRead = new FileInputStream(pathFile);
+                XSSFWorkbook workbook = new XSSFWorkbook(ExcelFileToRead);
+
+                XSSFSheet sheet1 = workbook.getSheetAt(0);
+                XSSFRow row;
+                XSSFCell cell;
+
+                Iterator rows = sheet1.rowIterator();
+
+                while (rows.hasNext()) {
+                    row = (XSSFRow) rows.next()
+
+                    if (row.rowNum in filasNO) {
+                        println("rows NO " + row.rowNum)
+                    } else {
+                        def ok = true
+                        def sql = ""
+
+                        Iterator cells = row.cellIterator()
+
+                        def rgst = []
+                        while (cells.hasNext()) {
+                            cell = (XSSFCell) cells.next()
+                            if (cell.getCellType() == XSSFCell.CELL_TYPE_NUMERIC) {
+                                rgst.add(cell.getNumericCellValue())
+                            } else if (cell.getCellType() == XSSFCell.CELL_TYPE_STRING) {
+                                rgst.add(cell.getStringCellValue())
+                            } else if (cell.getCellType() == XSSFCell.CELL_TYPE_FORMULA) {
+                                rgst.add(cell.getNumericCellValue())
+                            }
+                        }
+
+                        println "reg: $rgst"
+
+                        def id_lgar = rgst[0]
+                        def id_item = rgst[3]
+                        def nombre = rgst[5]
+                        def precio = 0
+                        try {
+                            precio = rgst[9]?.toDouble()
+                        } catch (e) {
+                            precio = -999
+                        }
+
+                        println "reg: $id_lgar $id_item $nombre $precio"
+
+                        if (rgst[3] && (precio != -999)) {
+                            println "pasa.."
+                            sql = "insert into rbpc(item__id, lgar__id, rbpcfcha, rbpcpcun, rbpcfcin, rbpcrgst) " +
+                                    "values(${id_item.toInteger()}, ${id_lgar.toInteger()}, '${fecha}', $precio, now(), 'N')"
+                            println "sql: $sql"
+
+                            try {
+                                cn.execute(sql.toString())
+                                creados++
+                            } catch (e) {
+                                conErr++
+                                errores += "<li>Ha ocurrido un error al guardar el item ${nombre} (línea ${row.rowNum + 1})</li>"
+                            }
+
+                        }
+                    }
+                } //sheets.each
+
+                if (modificados > 0) {
+                    doneHtml = "<div class='alert alert-success' style='font-size: 16px; font-weight: bold'><i class='fa fa-check'></i> Se han modificado correctamente " + modificados + " registros</div>"
+                }
+
+                if (creados > 0) {
+                    creadoshtml = "<div class='alert alert-success' style='font-size: 16px; font-weight: bold'><i class='fa fa-check'></i> Se han ingresado correctamente " + creados + " registros</div>"
+                }
+
+                def str = ''
+                str += htmlInfo
+                if (errores != "") {
+                    str += "<ol>" + errores + "</ol>"
+                }
+
+                str += doneHtml
+                str += creadoshtml
+
+                flash.message = str
+                redirect(controller: 'item', action: "resultadoExcelMP")
+            } else {
+                flash.message = "Seleccione un archivo Excel xlsx para procesar (archivos xlsx deben ser convertidos a xlsx primero)"
+                redirect(action: 'subirExcelMP')
+            }
+        } else {
+            flash.message = "Seleccione un archivo para procesar"
+            redirect(controller: 'item', action: 'subirExcelMP')
+        }
+    }
+
+
+    def uploadGrupoySubgrupo() {
+//        println("uploadsyg subir excel " + params)
+
+        def cn = dbConnectionService.getConnection()
+        def lista = Lugar.get(params.listaPrecio)
+        def fecha = leeFechaPrecios(params.fechaGrupo).format('yyyy-MM-dd')
+        println "fecha: $fecha"
+        def filasNO = [0..6]
+        def path = "/var/janus/" + "xlsGrupo/"   //web-app/archivos
+        new File(path).mkdirs()
+
+        def f = request.getFile('file')  //archivo = name del input type file
+        if (f && !f.empty) {
+            def fileName = f.getOriginalFilename() //nombre original del archivo
+            def ext
+
+            def parts = fileName.split("\\.")
+            fileName = ""
+            parts.eachWithIndex { obj, i ->
+                if (i < parts.size() - 1) {
+                    fileName += obj
+                } else {
+                    ext = obj
+                }
+            }
+
+            if (ext == "xlsx") {
+                fileName = "xlsMP_" + new Date().format("yyyyMMdd_HHmmss")
+                def fn = fileName
+                fileName = fileName + "." + ext
+
+                def pathFile = path + fileName
+                def src = new File(pathFile)
+
+                def i = 1
+                while (src.exists()) {
+                    pathFile = path + fn + "_" + i + "." + ext
+                    src = new File(pathFile)
+                    i++
+                }
+
+                f.transferTo(new File(pathFile)) // guarda el archivo subido al nuevo path
+
+                //procesar excel
+                def htmlInfo = "", errores = "", doneHtml = "", conErr = 0, creados = 0, modificados = 0, creadoshtml = ''
+                def file = new File(pathFile)
+
+                InputStream ExcelFileToRead = new FileInputStream(pathFile);
+                XSSFWorkbook workbook = new XSSFWorkbook(ExcelFileToRead);
+
+                XSSFSheet sheet1 = workbook.getSheetAt(0);
+                XSSFRow row;
+                XSSFCell cell;
+
+                Iterator rows = sheet1.rowIterator();
+
+                while (rows.hasNext()) {
+                    row = (XSSFRow) rows.next()
+
+                    if (row.rowNum in filasNO) {
+                        println("rows NO " + row.rowNum)
+                    } else {
+                        def ok = true
+                        def sql = ""
+
+                        Iterator cells = row.cellIterator()
+
+                        def rgst = []
+                        while (cells.hasNext()) {
+                            cell = (XSSFCell) cells.next()
+                            if (cell.getCellType() == XSSFCell.CELL_TYPE_NUMERIC) {
+                                rgst.add(cell.getNumericCellValue())
+                            } else if (cell.getCellType() == XSSFCell.CELL_TYPE_STRING) {
+                                rgst.add(cell.getStringCellValue())
+                            } else if (cell.getCellType() == XSSFCell.CELL_TYPE_FORMULA) {
+                                rgst.add(cell.getNumericCellValue())
+                            }
+                        }
+
+                        println "reg: $rgst"
+
+                        def id_lgar = rgst[0]
+                        def id_item = rgst[3]
+                        def nombre = rgst[5]
+                        def precio = 0
+                        try {
+                            precio = rgst[9]?.toDouble()
+                        } catch (e) {
+                            precio = -999
+                        }
+
+                        println "reg: $id_lgar $id_item $nombre $precio"
+
+                        if (rgst[3] && (precio != -999)) {
+                            println "pasa.."
+                            sql = "insert into rbpc(item__id, lgar__id, rbpcfcha, rbpcpcun, rbpcfcin, rbpcrgst) " +
+                                    "values(${id_item.toInteger()}, ${id_lgar.toInteger()}, '${fecha}', $precio, now(), 'N')"
+                            println "sql: $sql"
+
+                            try {
+                                cn.execute(sql.toString())
+                                creados++
+                            } catch (e) {
+                                conErr++
+                                errores += "<li>Ha ocurrido un error al guardar el item ${nombre} (línea ${row.rowNum + 1})</li>"
+                            }
+
+                        }
+                    }
+                } //sheets.each
+
+                if (modificados > 0) {
+                    doneHtml = "<div class='alert alert-success' style='font-size: 16px; font-weight: bold'><i class='fa fa-check'></i> Se han modificado correctamente " + modificados + " registros</div>"
+                }
+
+                if (creados > 0) {
+                    creadoshtml = "<div class='alert alert-success' style='font-size: 16px; font-weight: bold'><i class='fa fa-check'></i> Se han ingresado correctamente " + creados + " registros</div>"
+                }
+
+                def str = ''
+                str += htmlInfo
+                if (errores != "") {
+                    str += "<ol>" + errores + "</ol>"
+                }
+
+                str += doneHtml
+                str += creadoshtml
+
+                flash.message = str
+                redirect(controller: 'item', action: "resultadoExcelMP")
+            } else {
+                flash.message = "Seleccione un archivo Excel xlsx para procesar (archivos xlsx deben ser convertidos a xlsx primero)"
+                redirect(action: 'subirExcelMP')
+            }
+        } else {
+            flash.message = "Seleccione un archivo para procesar"
+            redirect(controller: 'item', action: 'subirExcelMP')
+        }
+    }
+
+
     def resultadoExcelMP() {
 
     }
