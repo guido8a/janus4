@@ -244,8 +244,11 @@ class CodigoComprasPublicasController {
             }
 
         }
-
     }
 
+
+    def actualizar(){
+
+    }
 
 } //fin controller
