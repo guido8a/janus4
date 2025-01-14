@@ -18,7 +18,7 @@
 
 
 <div style="border-style: groove; border-color: #0d7bdc; margin-top: 10px; margin-bottom: 10px">
-    <fieldset style="margin-bottom: 10px; padding: 0px 20px 0px 20px">
+    <fieldset style="padding: 0px 20px 0px 20px">
         <h6 style="text-align: left">Formato del archivo de excel</h6>
         <table class="table" style="background-color: #5a7ab2; color: #fff; margin-bottom: 30px">
             <tr>
