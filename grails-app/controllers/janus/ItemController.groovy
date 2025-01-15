@@ -853,8 +853,10 @@ class ItemController {
 
                         println "reg: $rgst"
 
-                        def id_lgar = rgst[0]
-                        def id_item = rgst[3]
+//                        def id_lgar = rgst[0]
+                        def id_lgar = rgst[1]
+//                        def id_item = rgst[3]
+                        def id_item = rgst[0]
                         def nombre = rgst[5]
                         def precio = 0
                         try {
@@ -993,8 +995,8 @@ class ItemController {
 
                         println "reg: $rgst"
 
-                        def id_lgar = rgst[0]
-                        def id_item = rgst[3]
+                        def id_lgar = rgst[1]
+                        def id_item = rgst[0]
                         def nombre = rgst[5]
                         def precio = 0
                         try {
@@ -1134,8 +1136,8 @@ class ItemController {
 
                         println "reg: $rgst"
 
-                        def id_lgar = rgst[0]
-                        def id_item = rgst[3]
+                        def id_lgar = rgst[1]
+                        def id_item = rgst[0]
                         def nombre = rgst[5]
                         def precio = 0
                         try {

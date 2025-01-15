@@ -2471,15 +2471,14 @@ class ReportesExcelController {
 
         Sheet sheet = wb.createSheet("mantenimientoPrecios_petreos" ?: '')
         sheet.setColumnWidth(0, 15 * 256);
-        sheet.setColumnWidth(1, 40 * 256);
+        sheet.setColumnWidth(1, 15 * 256);
         sheet.setColumnWidth(2, 40 * 256);
-        sheet.setColumnWidth(3, 20 * 256);
+        sheet.setColumnWidth(3, 40 * 256);
         sheet.setColumnWidth(4, 20 * 256);
         sheet.setColumnWidth(5, 60 * 256);
         sheet.setColumnWidth(6, 15 * 256);
         sheet.setColumnWidth(7, 15 * 256);
         sheet.setColumnWidth(8, 15 * 256);
-        sheet.setColumnWidth(9, 15 * 256);
 
         Row row = sheet.createRow(0)
         row.createCell(0).setCellValue("")
@@ -2496,31 +2495,29 @@ class ReportesExcelController {
         def fila = 5
 
         Row rowC1 = sheet.createRow(fila)
-        rowC1.createCell(0).setCellValue("Lista número")
-        rowC1.createCell(1).setCellValue("Lista")
-        rowC1.createCell(2).setCellValue("Tipo de lista")
-        rowC1.createCell(3).setCellValue("Item número")
+        rowC1.createCell(0).setCellValue("Item número")
+        rowC1.createCell(1).setCellValue("Lista número")
+        rowC1.createCell(2).setCellValue("Lista")
+        rowC1.createCell(3).setCellValue("Tipo de lista")
         rowC1.createCell(4).setCellValue("Item Código")
         rowC1.createCell(5).setCellValue("Maeriales Pétreos")
         rowC1.createCell(6).setCellValue("Fecha precios")
         rowC1.createCell(7).setCellValue("Precio unitario")
-        rowC1.createCell(8).setCellValue("Precio número")
-        rowC1.createCell(9).setCellValue("Nuevo precio")
+        rowC1.createCell(8).setCellValue("Nuevo precio")
         rowC1.setRowStyle(style)
         fila++
 
         res.eachWithIndex { p, i ->
             Row rowF1 = sheet.createRow(fila)
-            rowF1.createCell(0).setCellValue(p?.lgar__id)
-            rowF1.createCell(1).setCellValue(p?.lgardscr)
-            rowF1.createCell(2).setCellValue(p?.tplsdscr)
-            rowF1.createCell(3).setCellValue(p?.item__id)
+            rowF1.createCell(0).setCellValue(p?.item__id)
+            rowF1.createCell(1).setCellValue(p?.lgar__id)
+            rowF1.createCell(2).setCellValue(p?.lgardscr)
+            rowF1.createCell(3).setCellValue(p?.tplsdscr)
             rowF1.createCell(4).setCellValue(p?.itemcdgo)
             rowF1.createCell(5).setCellValue(p?.itemnmbr)
             rowF1.createCell(6).setCellValue(p?.rbpcfcha?.format("dd-MM-yyyy"))
             rowF1.createCell(7).setCellValue(p?.rbpcpcun)
-            rowF1.createCell(8).setCellValue(p?.rbpc__id)
-            rowF1.createCell(9).setCellValue(p?.rbpcpcun)
+            rowF1.createCell(8).setCellValue(p?.rbpcpcun)
             fila++
         }
 
@@ -2571,15 +2568,14 @@ class ReportesExcelController {
 
         Sheet sheet = wb.createSheet("mantenimientoPrecios_grupos" ?: '')
         sheet.setColumnWidth(0, 15 * 256);
-        sheet.setColumnWidth(1, 40 * 256);
+        sheet.setColumnWidth(1, 15 * 256);
         sheet.setColumnWidth(2, 40 * 256);
-        sheet.setColumnWidth(3, 20 * 256);
+        sheet.setColumnWidth(3, 40 * 256);
         sheet.setColumnWidth(4, 20 * 256);
         sheet.setColumnWidth(5, 60 * 256);
         sheet.setColumnWidth(6, 15 * 256);
         sheet.setColumnWidth(7, 15 * 256);
         sheet.setColumnWidth(8, 15 * 256);
-        sheet.setColumnWidth(9, 15 * 256);
 
         Row row = sheet.createRow(0)
         row.createCell(0).setCellValue("")
@@ -2596,31 +2592,29 @@ class ReportesExcelController {
         def fila = 5
 
         Row rowC1 = sheet.createRow(fila)
-        rowC1.createCell(0).setCellValue("Lista número")
-        rowC1.createCell(1).setCellValue("Lista")
-        rowC1.createCell(2).setCellValue("Tipo de lista")
-        rowC1.createCell(3).setCellValue("Item número")
+        rowC1.createCell(0).setCellValue("Item número")
+        rowC1.createCell(1).setCellValue("Lista número")
+        rowC1.createCell(2).setCellValue("Lista")
+        rowC1.createCell(3).setCellValue("Tipo de lista")
         rowC1.createCell(4).setCellValue("Item Código")
-        rowC1.createCell(5).setCellValue("Item")
+        rowC1.createCell(5).setCellValue("Item nombre")
         rowC1.createCell(6).setCellValue("Fecha precios")
         rowC1.createCell(7).setCellValue("Precio unitario")
-        rowC1.createCell(8).setCellValue("Precio número")
-        rowC1.createCell(9).setCellValue("Nuevo precio")
+        rowC1.createCell(8).setCellValue("Nuevo precio")
         rowC1.setRowStyle(style)
         fila++
 
         res.eachWithIndex { p, i ->
             Row rowF1 = sheet.createRow(fila)
-            rowF1.createCell(0).setCellValue(p?.lgar__id)
-            rowF1.createCell(1).setCellValue(p?.lgardscr)
-            rowF1.createCell(2).setCellValue(p?.tplsdscr)
-            rowF1.createCell(3).setCellValue(p?.item__id)
+            rowF1.createCell(0).setCellValue(p?.item__id)
+            rowF1.createCell(1).setCellValue(p?.lgar__id)
+            rowF1.createCell(2).setCellValue(p?.lgardscr)
+            rowF1.createCell(3).setCellValue(p?.tplsdscr)
             rowF1.createCell(4).setCellValue(p?.itemcdgo)
             rowF1.createCell(5).setCellValue(p?.itemnmbr)
             rowF1.createCell(6).setCellValue(p?.rbpcfcha?.format("dd-MM-yyyy"))
             rowF1.createCell(7).setCellValue(p?.rbpcpcun)
-            rowF1.createCell(8).setCellValue(p?.rbpc__id)
-            rowF1.createCell(9).setCellValue(p?.rbpcpcun)
+            rowF1.createCell(8).setCellValue(p?.rbpcpcun)
             fila++
         }
 
@@ -2654,15 +2648,14 @@ class ReportesExcelController {
 
         Sheet sheet = wb.createSheet("mantenimientoPrecios_manoObra" ?: '')
         sheet.setColumnWidth(0, 15 * 256);
-        sheet.setColumnWidth(1, 40 * 256);
+        sheet.setColumnWidth(1, 15 * 256);
         sheet.setColumnWidth(2, 40 * 256);
-        sheet.setColumnWidth(3, 20 * 256);
+        sheet.setColumnWidth(3, 40 * 256);
         sheet.setColumnWidth(4, 20 * 256);
         sheet.setColumnWidth(5, 60 * 256);
         sheet.setColumnWidth(6, 15 * 256);
         sheet.setColumnWidth(7, 15 * 256);
         sheet.setColumnWidth(8, 15 * 256);
-        sheet.setColumnWidth(9, 15 * 256);
 
         Row row = sheet.createRow(0)
         row.createCell(0).setCellValue("")
@@ -2679,31 +2672,29 @@ class ReportesExcelController {
         def fila = 5
 
         Row rowC1 = sheet.createRow(fila)
-        rowC1.createCell(0).setCellValue("Lista número")
-        rowC1.createCell(1).setCellValue("Lista")
-        rowC1.createCell(2).setCellValue("Tipo de lista")
-        rowC1.createCell(3).setCellValue("Item número")
+        rowC1.createCell(0).setCellValue("Item número")
+        rowC1.createCell(1).setCellValue("Lista número")
+        rowC1.createCell(2).setCellValue("Lista")
+        rowC1.createCell(3).setCellValue("Tipo de lista")
         rowC1.createCell(4).setCellValue("Item Código")
-        rowC1.createCell(5).setCellValue("Item")
+        rowC1.createCell(5).setCellValue("Item nombre")
         rowC1.createCell(6).setCellValue("Fecha precios")
         rowC1.createCell(7).setCellValue("Precio unitario")
-        rowC1.createCell(8).setCellValue("Precio número")
-        rowC1.createCell(9).setCellValue("Nuevo precio")
+        rowC1.createCell(8).setCellValue("Nuevo precio")
         rowC1.setRowStyle(style)
         fila++
 
         res.eachWithIndex { p, i ->
             Row rowF1 = sheet.createRow(fila)
-            rowF1.createCell(0).setCellValue(p?.lgar__id)
-            rowF1.createCell(1).setCellValue(p?.lgardscr)
-            rowF1.createCell(2).setCellValue(p?.tplsdscr)
-            rowF1.createCell(3).setCellValue(p?.item__id)
+            rowF1.createCell(0).setCellValue(p?.item__id)
+            rowF1.createCell(1).setCellValue(p?.lgar__id)
+            rowF1.createCell(2).setCellValue(p?.lgardscr)
+            rowF1.createCell(3).setCellValue(p?.tplsdscr)
             rowF1.createCell(4).setCellValue(p?.itemcdgo)
             rowF1.createCell(5).setCellValue(p?.itemnmbr)
             rowF1.createCell(6).setCellValue(p?.rbpcfcha?.format("dd-MM-yyyy"))
             rowF1.createCell(7).setCellValue(p?.rbpcpcun)
-            rowF1.createCell(8).setCellValue(p?.rbpc__id)
-            rowF1.createCell(9).setCellValue(p?.rbpcpcun)
+            rowF1.createCell(8).setCellValue(p?.rbpcpcun)
             fila++
         }
 

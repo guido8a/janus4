@@ -23,16 +23,16 @@
         <table class="table" style="background-color: #5a7ab2; color: #fff; margin-bottom: 30px">
             <tr>
                 <th style="border: 1px solid #ddd; text-align: center">
-                    A - LISTA NUMERO
+                    A - ITEM NUMERO
                 </th>
                 <th style="border: 1px solid #ddd; text-align: center">
-                    B - LISTA
+                    B - LISTA NUMERO
                 </th>
                 <th style="border: 1px solid #ddd; text-align: center">
-                    C - TIPO DE LISTA
+                    C - LISTA
                 </th>
                 <th style="border: 1px solid #ddd; text-align: center">
-                    D - ITEM NUMERO
+                    D - TIPO DE LISTA
                 </th>
                 <th style="border: 1px solid #ddd; text-align: center">
                     E - ITEM CÓDIGO
@@ -47,10 +47,7 @@
                     H - PRECIO UNITARIO
                 </th>
                 <th style="border: 1px solid #ddd; text-align: center">
-                    I - PRECIO NUMERO
-                </th>
-                <th style="border: 1px solid #ddd; text-align: center">
-                    J - NUEVO PRECIO
+                    I - NUEVO PRECIO
                 </th>
             </tr>
         </table>
