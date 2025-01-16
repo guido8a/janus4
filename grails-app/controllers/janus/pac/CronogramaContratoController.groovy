@@ -49,13 +49,12 @@ class CronogramaContratoController {
             return
         }
 
-
 //        def existente = VolumenContrato.findByContrato(contrato)?.refresh()
 //        println("ex " + existente)
 
 
-        def obra = Obra.findByCodigo(obraOld.codigo+"-OF")
-        if(!obra) {
+        def obra = Obra.findByCodigo(obraOld.codigo + "-OF")
+        if (!obra) {
             obra = obraOld
         }
         //solo copia si esta vacio el cronograma del contrato
@@ -113,12 +112,12 @@ class CronogramaContratoController {
                 ((plazoObra + 1)..plazoMesesContrato).each { extra ->
                     detalle.each { vol ->
                         def cronogramaCon = new CronogramaContrato([
-                                contrato: contrato,
+                                contrato   : contrato,
                                 volumenObra: vol,
-                                periodo: extra,
-                                precio: 0,
-                                porcentaje: 0,
-                                cantidad: 0,
+                                periodo    : extra,
+                                precio     : 0,
+                                porcentaje : 0,
+                                cantidad   : 0,
                         ])
                         if (!cronogramaCon.save(flush: true)) {
                             println "Error al guardar el crono contrato extra " + extra
@@ -142,7 +141,7 @@ class CronogramaContratoController {
                     [sort: "volumenOrden"])
         } else {
 //            detalle =  VolumenesObra.findAllByObra(obra, [sort: 'orden'])
-            detalle =  VolumenContrato.findAllByContratoAndObra(contrato, obra, [sort: 'volumenOrden'])
+            detalle = VolumenContrato.findAllByContratoAndObra(contrato, obra, [sort: 'volumenOrden'])
         }
 
         def precios = [:]
@@ -159,9 +158,7 @@ class CronogramaContratoController {
     }
 
 
-
-
-    def nuevoCronograma () {
+    def nuevoCronograma() {
         println "nuevoCronograma: $params"
         def contrato = Contrato.get(params.id).refresh()
         def cn = dbConnectionService.getConnection()
@@ -183,7 +180,7 @@ class CronogramaContratoController {
         def sql2 = "select * from vocr where cntr__id = ${contrato?.id}"
         def ex = cn.rows(sql2.toString())
 
-        if(!ex || ex == ''){
+        if (!ex || ex == '') {
             def sqlCopia = "insert into vocr(sbpr__id, cntr__id, obra__id, item__id, vocrcntd, vocrordn, vocrpcun, vocrsbtt, vocrrtcr, vocrcncp)\n" +
                     "select sbpr__id, ${contrato?.id}, ${contrato?.obra?.id}, item__id, vlobcntd, vlobordn, vlobpcun, vlobsbtt, vlobrtcr, 0 \n" +
                     "from vlob where obra__id = ${contrato?.obra?.id}"
@@ -193,8 +190,8 @@ class CronogramaContratoController {
         }
 
 
-        def obra = Obra.findByCodigo(obraOld.codigo+"-OF")
-        if(!obra) {
+        def obra = Obra.findByCodigo(obraOld.codigo + "-OF")
+        if (!obra) {
             obra = obraOld
         }
         //solo copia si esta vacio el cronograma del contrato
@@ -267,12 +264,12 @@ class CronogramaContratoController {
                 ((plazoObra + 1)..plazoMesesContrato).each { extra ->
                     detalle.each { vol ->
                         def cronogramaCon = new CronogramaContratado([
-                                contrato: contrato,
+                                contrato       : contrato,
                                 volumenContrato: vol,
-                                periodo: extra,
-                                precio: 0,
-                                porcentaje: 0,
-                                cantidad: 0,
+                                periodo        : extra,
+                                precio         : 0,
+                                porcentaje     : 0,
+                                cantidad       : 0,
                         ])
                         if (!cronogramaCon.save(flush: true)) {
                             println "Error al guardar el crono contrato extra " + extra
@@ -292,9 +289,9 @@ class CronogramaContratoController {
         }
 
         if (subpre != "-1") {
-            detalle =  VolumenContrato.findAllByObraAndSubPresupuesto(obra, SubPresupuesto.get(subpre), [sort:'volumenOrden'])
+            detalle = VolumenContrato.findAllByObraAndSubPresupuesto(obra, SubPresupuesto.get(subpre), [sort: 'volumenOrden'])
         } else {
-            detalle =  VolumenContrato.findAllByObra(obra, [sort: 'volumenOrden'])
+            detalle = VolumenContrato.findAllByObra(obra, [sort: 'volumenOrden'])
         }
 
         def precios = [:]
@@ -408,12 +405,12 @@ class CronogramaContratoController {
                 ((plazoObra + 1)..plazoMesesContrato).each { extra ->
                     detalle.each { vol ->
                         def cronoContrato = new CronogramaContrato([
-                                contrato: contrato,
+                                contrato   : contrato,
                                 volumenObra: vol,
-                                periodo: extra,
-                                precio: 0,
-                                porcentaje: 0,
-                                cantidad: 0,
+                                periodo    : extra,
+                                precio     : 0,
+                                porcentaje : 0,
+                                cantidad   : 0,
                         ])
                         if (!cronoContrato.save(flush: true)) {
                             println "Error al guardar el crono contrato extra " + extra
@@ -526,7 +523,7 @@ class CronogramaContratoController {
         println "grafico: $params"
         def obra = Obra.get(params.obra)
         def sbpr = SubPresupuesto.get(params.sbpr)
-        def contrato= Contrato.get(params.contrato)
+        def contrato = Contrato.get(params.contrato)
 
         def sql
         def data = "0"
@@ -548,7 +545,7 @@ class CronogramaContratoController {
             println "valor de suma: $suma"
             i++
             suma += d.suma
-            sumapcnt += Math.round(d.pcnt/total * 10000) / 100
+            sumapcnt += Math.round(d.pcnt / total * 10000) / 100
             data += "_$suma"
             datapcnt += "_$sumapcnt"
             prdo += "_Mes ${i}"
@@ -564,7 +561,7 @@ class CronogramaContratoController {
     }
 
 
-    def saveCronoNuevo_ajax () {
+    def saveCronoNuevo_ajax() {
 //        println("params " + params)
         def saved = ""
         def ok = ""
@@ -607,7 +604,7 @@ class CronogramaContratoController {
 
     }
 
-    def deleteRubroNuevo_ajax () {
+    def deleteRubroNuevo_ajax() {
 //        println("params borrar " + params)
         def ok = 0, no = 0
         def vol = VolumenContrato.get(params.id)
@@ -622,7 +619,7 @@ class CronogramaContratoController {
         render "ok:" + ok + "_no:" + no
     }
 
-    def deleteCronogramaNuevo_ajax () {
+    def deleteCronogramaNuevo_ajax() {
 //        println("params " + params)
         def ok = 0, no = 0
         def obra = Obra.get(params.obra)
@@ -640,15 +637,15 @@ class CronogramaContratoController {
         render "ok:" + ok + "_no:" + no
     }
 
-    def modificarCantidad_ajax (){
+    def modificarCantidad_ajax() {
         def volumen = VolumenContrato.get(params.id)
         def cantidadActual = volumen.volumenCantidad
         def cantidadComp = volumen.cantidadComplementaria
         def cantidad = cantidadActual.toDouble() + cantidadComp.toDouble()
-        return[volumen: volumen, cantidad: cantidad]
+        return [volumen: volumen, cantidad: cantidad]
     }
 
-    def guardarCantidad_ajax () {
+    def guardarCantidad_ajax() {
         println("params " + params)
         def volumen = VolumenContrato.get(params.id)
         def cantidadComplementaria = params.volumenCantidad.toDouble()
@@ -662,14 +659,14 @@ class CronogramaContratoController {
         volumen.cantidadComplementaria = cantidadComplementaria.toDouble()
         volumen.volumenSubtotal = nuevoTotal.toDouble()
 
-        println("--> " +  volumen.cantidadComplementaria )
-        println("--> " +  volumen.volumenSubtotal )
+        println("--> " + volumen.cantidadComplementaria)
+        println("--> " + volumen.volumenSubtotal)
 
-        try{
+        try {
             volumen.save(flush: true)
             println("- " + volumen.volumenSubtotal)
             render "ok"
-        }catch (DataIntegrityViolationException e){
+        } catch (DataIntegrityViolationException e) {
             println("error al modificar la cantidad complementaria " + e)
             render "no"
         }
@@ -682,7 +679,7 @@ class CronogramaContratoController {
         def sql = "select distinct sbpr__id from vocr where cntr__id = ${params.id}"
         def cn = dbConnectionService.getConnection()
         cn.eachRow(sql.toString()) { d ->
-            sbpr.add( SubPresupuesto.get(d.sbpr__id) )
+            sbpr.add(SubPresupuesto.get(d.sbpr__id))
         }
         [subpresupuestos: sbpr, cntr: params.id]
     }
@@ -696,7 +693,7 @@ class CronogramaContratoController {
                 "from vocr, item, undd " +
                 "where item.item__id = vocr.item__id and undd.undd__id = item.undd__id and " +
                 "cntr__id = ${params.cntr} "
-        if(params.sbpr != '0') {
+        if (params.sbpr != '0') {
             sqlTx += "and sbpr__id = ${params.sbpr} order by vocrordn"
         } else {
             sqlTx += "order by vocrordn"
@@ -751,7 +748,7 @@ class CronogramaContratoController {
         println "actualizaVlin: " + params
 //        println("clase " + params?.item?.class)
         //formato de id:###/new _ prin _ indc _ valor
-        if(params?.item?.class == java.lang.String) {
+        if (params?.item?.class == java.lang.String) {
             params?.item = [params?.item]
         }
 
@@ -764,7 +761,7 @@ class CronogramaContratoController {
             println "vlor: ${vlor}"
             def vocr = VolumenContrato.get(vlor[0].toInteger())
 
-            if(vlor[1] == 'vocrcntd') {
+            if (vlor[1] == 'vocrcntd') {
                 vocr.volumenCantidad = vlor[2].toDouble()
                 println "cantidad: ${vocr.item.nombre} --> ${vlor[2]}"
             } else {
@@ -811,7 +808,7 @@ class CronogramaContratoController {
         flash.message = "Cronograma corregido.."
         def url = "/contrato/registroContrato?contrato=" + params.id
 
-        redirect( url: url)
+        redirect(url: url)
     }
 
     def cantidadObra() {
@@ -878,7 +875,7 @@ class CronogramaContratoController {
                 number = new jxl.write.Number(4, fila, it?.vocrcntd.toDouble() ?: 0); sheet.addCell(number);
                 number = new jxl.write.Number(5, fila, it?.vocrpcun.toDouble().round(6) ?: 0); sheet.addCell(number);
                 number = new jxl.write.Number(6, fila, it?.vocrsbtt.toDouble() ?: 0); sheet.addCell(number);
-                number = new jxl.write.Number(7, fila,0); sheet.addCell(number);
+                number = new jxl.write.Number(7, fila, 0); sheet.addCell(number);
 
                 fila++
 
@@ -898,10 +895,10 @@ class CronogramaContratoController {
         }
     }
 
-    def subirExcel () {
+    def subirExcel() {
 //        println("params se " + params)
         def contrato = Contrato.get(params.id)
-        return[contrato:contrato]
+        return [contrato: contrato]
     }
 
 //    def uploadFile() {
@@ -1037,7 +1034,7 @@ class CronogramaContratoController {
 
     def uploadFile() {
         println("params uf " + params)
-        def filasNO = [0,1,2,3,4]
+        def filasNO = [0, 1, 2, 3, 4]
         def contrato = Contrato.get(params.id)
         def path = "/var/janus/" + "xlsCronosContratos/" + contrato?.id + "/"   //web-app/archivos
         new File(path).mkdirs()
@@ -1089,13 +1086,14 @@ class CronogramaContratoController {
 
                 Iterator rows = sheet1.rowIterator();
 
-                while (rows.hasNext()) { i
+                while (rows.hasNext()) {
+                    i
 
                     row = (XSSFRow) rows.next()
 
-                    if(row.rowNum in filasNO){
+                    if (row.rowNum in filasNO) {
                         println("rows NO " + row.rowNum)
-                    }else{
+                    } else {
 
                         def ok = true
 
@@ -1119,31 +1117,25 @@ class CronogramaContratoController {
 //                                }
 //                            }
 
-                            def nmro = 0
-                            if (cell.getCellType() == XSSFCell.CELL_TYPE_NUMERIC) {
-                                nmro = cell.getNumericCellValue()
-                            }
-                            if(nmro) {  /* si hay número se insertan valores **/
-                                if(cell.columnIndex <= 5){
-                                    if (cell.getCellType() == XSSFCell.CELL_TYPE_NUMERIC) {
-                                        rgst.add(cell.getNumericCellValue())
-                                    } else if (cell.getCellType() == XSSFCell.CELL_TYPE_STRING) {
-                                        rgst.add(cell.getStringCellValue())
-                                    } else if(cell.getCellType() == XSSFCell.CELL_TYPE_FORMULA) {
-                                        rgst.add(cell.getNumericCellValue())
-                                    }
-
-                                }else{
-                                    if (cell.getCellType() == XSSFCell.CELL_TYPE_NUMERIC) {
-                                        meses.add(cell.getNumericCellValue())
-                                    } else if (cell.getCellType() == XSSFCell.CELL_TYPE_STRING) {
-                                        meses.add(cell.getStringCellValue())
-                                    } else if(cell.getCellType() == XSSFCell.CELL_TYPE_FORMULA) {
-                                        meses.add(cell.getNumericCellValue())
-                                    }
+                            if (cell.columnIndex <= 5) {
+                                if (cell.getCellType() == XSSFCell.CELL_TYPE_NUMERIC) {
+                                    rgst.add(cell.getNumericCellValue())
+                                } else if (cell.getCellType() == XSSFCell.CELL_TYPE_STRING) {
+                                    rgst.add(cell.getStringCellValue())
+                                } else if (cell.getCellType() == XSSFCell.CELL_TYPE_FORMULA) {
+                                    rgst.add(cell.getNumericCellValue())
                                 }
 
+                            } else {
+                                if (cell.getCellType() == XSSFCell.CELL_TYPE_NUMERIC) {
+                                    meses.add(cell.getNumericCellValue())
+                                } else if (cell.getCellType() == XSSFCell.CELL_TYPE_STRING) {
+                                    meses.add(cell.getStringCellValue())
+                                } else if (cell.getCellType() == XSSFCell.CELL_TYPE_FORMULA) {
+                                    meses.add(cell.getNumericCellValue())
+                                }
                             }
+
 
                         }
 
@@ -1166,10 +1158,10 @@ class CronogramaContratoController {
                         println("meses " + meses)
 
 
-                        htmlInfo += "<h2>Hoja : "  + sheet1.getSheetName() + " - ITEM: " +  rubro + "</h2>"
+                        htmlInfo += "<h2>Hoja : " + sheet1.getSheetName() + " - ITEM: " + rubro + "</h2>"
 
-
-//                        if (cod != "CODIGO") {
+                        if (numero) {
+                            println "puede procesar: $rgst"
 //                            cantidad = cantidad.replaceAll(",", ".")
 //                            precioConst = precioConst.replaceAll(",", ".")
 //                            def vc = VolumenContrato.get(cod)
@@ -1200,7 +1192,7 @@ class CronogramaContratoController {
 //                                done++
 //                                doneHtml += "<li>Se ha modificado los valores para el item ${rubro}</li>"
 //                            }
-//                        }
+                        }
                     }
                 } //sheets.each
                 if (done > 0) {
@@ -1303,17 +1295,17 @@ class CronogramaContratoController {
                     if (cod != "CODIGO") {
                         def vc = VolumenContrato.get(cod)
 //
-                        if(!vc){
+                        if (!vc) {
                             errores += "<li>No se encontró volumen contrato con id ${cod} (linea: ${j + 1})</li>"
                             println "No se encontró volumen contrato con id ${cod}"
                             ok = false
-                        }else{
+                        } else {
 
-                            if(!precioConst){
+                            if (!precioConst) {
                                 precioConst = 0
                             }
 
-                            if(!cantidad){
+                            if (!cantidad) {
                                 cantidad = 0
                             }
 //                            println "precio: ${precioConst.toDouble()}"
@@ -1322,10 +1314,10 @@ class CronogramaContratoController {
                             vc.volumenSubtotal = precioConst.toDouble() * (Math.round(cantidad.toDouble() * 10000) / 10000)
                         }
 
-                        if(!vc.save(flush:true)){
+                        if (!vc.save(flush: true)) {
                             println "No se pudo guardar valor contrato con id ${vc.id}: " + vc.errors
                             errores += "<li>Ha ocurrido un error al guardar los valores para ${rubro} (l. ${j + 1})</li>"
-                        }else{
+                        } else {
                             done++
 //                                            println "Modificado vocr: ${vc.id}"
                             doneHtml += "<li>Se ha modificado los valores para el item ${rubro}</li>"
@@ -1363,7 +1355,7 @@ class CronogramaContratoController {
 
     def mensajeUploadContrato() {
         def contrato = Contrato.get(params.id)
-        return[contrato:contrato]
+        return [contrato: contrato]
     }
 
     def excelCronograma() {
@@ -1406,7 +1398,7 @@ class CronogramaContratoController {
             sheet.setColumnView(5, 15)
             sheet.setColumnView(6, 15)
             periodos.times {
-                sheet.setColumnView(it+7, 15)
+                sheet.setColumnView(it + 7, 15)
             }
 
             def label
@@ -1460,14 +1452,14 @@ class CronogramaContratoController {
         }
     }
 
-    def subirExcelCronograma(){
+    def subirExcelCronograma() {
         def contrato = Contrato.get(params.id)
-        return[contrato:contrato]
+        return [contrato: contrato]
     }
 
     def mensajeUploadCronograma() {
         def contrato = Contrato.get(params.id)
-        return[contrato:contrato]
+        return [contrato: contrato]
     }
 
     def uploadFileCronograma() {
@@ -1537,11 +1529,11 @@ class CronogramaContratoController {
                                     def subtotal = row[6].getContents().replaceAll(',', '.')
 
                                     if (cod != "CODIGO") {
-                                        cantidad = cantidad.replaceAll(",",".")
+                                        cantidad = cantidad.replaceAll(",", ".")
 
                                         def vc = VolumenContrato.get(cod)
 
-                                        if(!vc){
+                                        if (!vc) {
                                             errores += "<li>No se encontró volumen contrato con id ${cod} (l. ${j + 1})</li>"
                                             println "No se encontró volumen contrato con id ${cod}"
                                             ok = false
@@ -1555,15 +1547,15 @@ class CronogramaContratoController {
 //                                                println "*** ${row[columna].getContents()}"
                                                 def periodoCrono = CronogramaContratado.findByVolumenContratoAndPeriodo(vc, (columna - 6))
                                                 valorPeriodo = row[columna].getContents()
-                                                valorPeriodo = valorPeriodo? valorPeriodo.replaceAll(",",".") : null
-                                                valorPeriodo = valorPeriodo? valorPeriodo.toDouble() : 0
+                                                valorPeriodo = valorPeriodo ? valorPeriodo.replaceAll(",", ".") : null
+                                                valorPeriodo = valorPeriodo ? valorPeriodo.toDouble() : 0
 
-                                                if(valorPeriodo > 0){
+                                                if (valorPeriodo > 0) {
 //                                                    println "id: $cod --> $valorPeriodo --> prdo: ${periodoCrono?.periodo}"
-                                                    if(subtotal?.toDouble() != 0){
-                                                        porcentajeCrono = ((Math.round(valorPeriodo.toDouble() * 100) / 100) / subtotal.toDouble()*100)
+                                                    if (subtotal?.toDouble() != 0) {
+                                                        porcentajeCrono = ((Math.round(valorPeriodo.toDouble() * 100) / 100) / subtotal.toDouble() * 100)
                                                         cantidadCrono = (porcentajeCrono * (Math.round(cantidad.toDouble() * 100) / 100)) / 100
-                                                        if(!periodoCrono) {
+                                                        if (!periodoCrono) {
                                                             periodoCrono = new CronogramaContratado()
                                                         }
                                                         periodoCrono.contrato = vc.contrato
@@ -1572,17 +1564,17 @@ class CronogramaContratoController {
                                                         periodoCrono.porcentaje = porcentajeCrono
                                                         periodoCrono.cantidad = cantidadCrono
                                                         periodoCrono.precio = valorPeriodo
-                                                        if(!periodoCrono.save(flush:true)){
+                                                        if (!periodoCrono.save(flush: true)) {
                                                             println "No se pudo guardar valor del cronograma con id ${periodoCrono.id}: " + periodoCrono.errors
                                                             errores += "<li>Ha ocurrido un error al guardar los valores para ${rubro} (l. ${j + 1})</li>"
-                                                        }else{
+                                                        } else {
                                                             done++
 //                                                            println "Modificado vocr: ${periodoCrono.id}"
                                                             doneHtml += "<li>Se ha modificado los valores para el item ${rubro}</li>"
                                                         }
 
                                                     }
-                                                } else if(periodoCrono){  //se elimina si existía antes
+                                                } else if (periodoCrono) {  //se elimina si existía antes
                                                     periodoCrono.delete(flush: true)
                                                 }
 
