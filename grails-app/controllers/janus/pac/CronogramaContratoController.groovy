@@ -1119,25 +1119,32 @@ class CronogramaContratoController {
 //                                }
 //                            }
 
-
-                            if(cell.columnIndex <= 5){
-                                if (cell.getCellType() == XSSFCell.CELL_TYPE_NUMERIC) {
-                                    rgst.add(cell.getNumericCellValue())
-                                } else if (cell.getCellType() == XSSFCell.CELL_TYPE_STRING) {
-                                    rgst.add(cell.getStringCellValue())
-                                } else if(cell.getCellType() == XSSFCell.CELL_TYPE_FORMULA) {
-                                    rgst.add(cell.getNumericCellValue())
-                                }
-
-                            }else{
-                                if (cell.getCellType() == XSSFCell.CELL_TYPE_NUMERIC) {
-                                    meses.add(cell.getNumericCellValue())
-                                } else if (cell.getCellType() == XSSFCell.CELL_TYPE_STRING) {
-                                    meses.add(cell.getStringCellValue())
-                                } else if(cell.getCellType() == XSSFCell.CELL_TYPE_FORMULA) {
-                                    meses.add(cell.getNumericCellValue())
-                                }
+                            def nmro = 0
+                            if (cell.getCellType() == XSSFCell.CELL_TYPE_NUMERIC) {
+                                nmro = cell.getNumericCellValue()
                             }
+                            if(nmro) {  /* si hay número se insertan valores **/
+                                if(cell.columnIndex <= 5){
+                                    if (cell.getCellType() == XSSFCell.CELL_TYPE_NUMERIC) {
+                                        rgst.add(cell.getNumericCellValue())
+                                    } else if (cell.getCellType() == XSSFCell.CELL_TYPE_STRING) {
+                                        rgst.add(cell.getStringCellValue())
+                                    } else if(cell.getCellType() == XSSFCell.CELL_TYPE_FORMULA) {
+                                        rgst.add(cell.getNumericCellValue())
+                                    }
+
+                                }else{
+                                    if (cell.getCellType() == XSSFCell.CELL_TYPE_NUMERIC) {
+                                        meses.add(cell.getNumericCellValue())
+                                    } else if (cell.getCellType() == XSSFCell.CELL_TYPE_STRING) {
+                                        meses.add(cell.getStringCellValue())
+                                    } else if(cell.getCellType() == XSSFCell.CELL_TYPE_FORMULA) {
+                                        meses.add(cell.getNumericCellValue())
+                                    }
+                                }
+
+                            }
+
                         }
 
 //                        def cod = rgst[0]
