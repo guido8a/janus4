@@ -1108,6 +1108,17 @@ class CronogramaContratoController {
                             cell = (XSSFCell) cells.next()
 
 //                            println("cell " + cell.columnIndex)
+//
+//                            if(cell.columnIndex == 0){
+//                                if (cell.getCellType() == XSSFCell.CELL_TYPE_NUMERIC) {
+//                                    println(cell.getNumericCellValue())
+//                                } else if (cell.getCellType() == XSSFCell.CELL_TYPE_STRING) {
+//                                    println(cell.getStringCellValue())
+//                                } else if(cell.getCellType() == XSSFCell.CELL_TYPE_FORMULA) {
+//                                    println(cell.getNumericCellValue())
+//                                }
+//                            }
+
 
                             if(cell.columnIndex <= 5){
                                 if (cell.getCellType() == XSSFCell.CELL_TYPE_NUMERIC) {
