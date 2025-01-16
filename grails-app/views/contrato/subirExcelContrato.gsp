@@ -43,20 +43,20 @@
                         <th style="border: 1px solid #ddd; text-align: center">
                             B - DESCRIPCIÓN DEL RUBRO
                         </th>
+%{--                        <th style="border: 1px solid #ddd; text-align: center">--}%
+%{--                            C - UNIDAD--}%
+%{--                        </th>--}%
                         <th style="border: 1px solid #ddd; text-align: center">
-                            C - UNIDAD
+                            C - CANTIDAD
                         </th>
                         <th style="border: 1px solid #ddd; text-align: center">
-                            D - CANTIDAD
+                            D - PRECIO UNITARIO OFERTADO
                         </th>
                         <th style="border: 1px solid #ddd; text-align: center">
-                            E - PRECIO UNITARIO OFERTADO
+                            E - PRECIO TOTAL
                         </th>
                         <th style="border: 1px solid #ddd; text-align: center">
-                            F - PRECIO TOTAL
-                        </th>
-                        <th style="border: 1px solid #ddd; text-align: center">
-                            G - MESES...
+                            F - MESES 1 2 3...
                         </th>
                     </tr>
                 </table>

@@ -1037,7 +1037,7 @@ class CronogramaContratoController {
 
     def uploadFile() {
         println("params uf " + params)
-        def filasNO = [0,1,2]
+        def filasNO = [0,1,2,3,4]
         def contrato = Contrato.get(params.id)
         def path = "/var/janus/" + "xlsCronosContratos/" + contrato?.id + "/"   //web-app/archivos
         new File(path).mkdirs()
@@ -1129,17 +1129,18 @@ class CronogramaContratoController {
                             }
                         }
 
-                        def cod = rgst[0]
-                        def numero = rgst[1]
-                        def rubro = rgst[2]
-                        def unidad = rgst[3]
-                        def cantidad = rgst[4]
-                        def punitario = rgst[5]
-                        def subtotal = rgst[6]
+//                        def cod = rgst[0]
+                        def numero = rgst[0]
+                        def rubro = rgst[1]
+//                        def unidad = rgst[3]
+                        def cantidad = rgst[2]
+                        def punitario = rgst[3]
+                        def subtotal = rgst[4]
 
-                        println("cod " + cod)
+//                        println("cod " + cod)
                         println("numero " + numero)
-                        println("unidad " + unidad)
+                        println("rubro " + rubro)
+//                        println("unidad " + unidad)
                         println("cantidad " + cantidad)
                         println("punitario " + punitario)
                         println("subtotal " + subtotal)
