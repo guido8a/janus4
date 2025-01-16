@@ -1035,6 +1035,7 @@ class CronogramaContratoController {
     def uploadFile() {
         println("params uf " + params)
         def filasNO = [0, 1, 2, 3, 4]
+        def filasTodasNo = []
         def contrato = Contrato.get(params.id)
         def path = "/var/janus/" + "xlsCronosContratos/" + contrato?.id + "/"   //web-app/archivos
         new File(path).mkdirs()
@@ -1084,14 +1085,33 @@ class CronogramaContratoController {
                 XSSFRow row;
                 XSSFCell cell;
 
+                XSSFRow row1;
+                XSSFCell cell1;
+
+               Iterator rows1 = sheet1.rowIterator()
+
+                while (rows1.hasNext()) {i
+                    row1 = (XSSFRow) rows1.next()
+                    Iterator cells = row1.cellIterator()
+
+                    if(cells[0].getCellType() == XSSFCell.CELL_TYPE_NUMERIC){
+//                        println("si " + row1.rowNum )
+                    }else{
+                        filasTodasNo += row1.rowNum
+//                        println("no " + row1.rowNum )
+                    }
+                }
+
+                println("filas no " +filasTodasNo)
+
                 Iterator rows = sheet1.rowIterator();
 
-                while (rows.hasNext()) {
-                    i
+                while (rows.hasNext()) {i
 
                     row = (XSSFRow) rows.next()
 
-                    if (row.rowNum in filasNO) {
+//                    if (row.rowNum in filasNO) {
+                    if (row.rowNum in filasTodasNo) {
                         println("rows NO " + row.rowNum)
                     } else {
 
@@ -1105,18 +1125,6 @@ class CronogramaContratoController {
                         while (cells.hasNext()) {
                             cell = (XSSFCell) cells.next()
 
-//                            println("cell " + cell.columnIndex)
-//
-//                            if(cell.columnIndex == 0){
-//                                if (cell.getCellType() == XSSFCell.CELL_TYPE_NUMERIC) {
-//                                    println(cell.getNumericCellValue())
-//                                } else if (cell.getCellType() == XSSFCell.CELL_TYPE_STRING) {
-//                                    println(cell.getStringCellValue())
-//                                } else if(cell.getCellType() == XSSFCell.CELL_TYPE_FORMULA) {
-//                                    println(cell.getNumericCellValue())
-//                                }
-//                            }
-
                             if (cell.columnIndex <= 5) {
                                 if (cell.getCellType() == XSSFCell.CELL_TYPE_NUMERIC) {
                                     rgst.add(cell.getNumericCellValue())
@@ -1125,7 +1133,6 @@ class CronogramaContratoController {
                                 } else if (cell.getCellType() == XSSFCell.CELL_TYPE_FORMULA) {
                                     rgst.add(cell.getNumericCellValue())
                                 }
-
                             } else {
                                 if (cell.getCellType() == XSSFCell.CELL_TYPE_NUMERIC) {
                                     meses.add(cell.getNumericCellValue())
@@ -1160,8 +1167,8 @@ class CronogramaContratoController {
 
                         htmlInfo += "<h2>Hoja : " + sheet1.getSheetName() + " - ITEM: " + rubro + "</h2>"
 
-                        if (numero) {
-                            println "puede procesar: $rgst"
+//                        if (numero) {
+//                            println "puede procesar: $rgst"
 //                            cantidad = cantidad.replaceAll(",", ".")
 //                            precioConst = precioConst.replaceAll(",", ".")
 //                            def vc = VolumenContrato.get(cod)
@@ -1192,7 +1199,7 @@ class CronogramaContratoController {
 //                                done++
 //                                doneHtml += "<li>Se ha modificado los valores para el item ${rubro}</li>"
 //                            }
-                        }
+//                        }
                     }
                 } //sheets.each
                 if (done > 0) {
