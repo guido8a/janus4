@@ -1721,7 +1721,7 @@ class Reportes5Controller{
             addCellTabla(tablaRegistradas, new Paragraph(i.unddcdgo, times8normal), prmsCellCentro)
             addCellTabla(tablaRegistradas, new Paragraph(numero(i.pcun, 2)?.toString(), times8normal), prmsCellRight)
             addCellTabla(tablaRegistradas, new Paragraph(numero(i.cntd, 2)?.toString(), times8normal), prmsCellRight)
-            addCellTabla(tablaRegistradas, new Paragraph(numero(i.cnta, 2)?.toString(), times8normal), prmsCellRight)
+            addCellTabla(tablaRegistradas, new Paragraph(numero(i.cnta, 0)?.toString(), times8normal), prmsCellRight)
         }
 
         document.add(tablaRegistradas);
