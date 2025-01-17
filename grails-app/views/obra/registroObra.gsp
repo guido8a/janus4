@@ -381,7 +381,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
 
             <div class="col-md-1" style="margin-left: -50px;">Tipo</div>
 
-            <div class="col-md-4" id="divTipoObra">
+            <div class="col-md-3" id="divTipoObra">
                 <g:if test="${persona?.departamento?.codigo == 'CRFC'}">
                     <g:select id="tipoObra" name="tipoObjetivo.id" class="tipoObjetivo required" from="${tipoObra}"
                               value="${obra?.tipoObjetivo?.id}" optionValue="descripcion" optionKey="id"
@@ -398,7 +398,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                 </g:else>
             </div>
 
-            <div class="col-md-1" style="margin-left: -50px">Clase</div>
+            <div class="col-md-1" style="margin-left: -20px">Clase</div>
 
             <div class="col-md-3">
                 <g:if test="${persona?.departamento?.codigo == 'CRFC'}">

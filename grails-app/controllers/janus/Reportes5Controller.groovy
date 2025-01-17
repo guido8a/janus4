@@ -1649,4 +1649,9 @@ class Reportes5Controller{
         response.getOutputStream().write(b)
     }
 
+
+    def componentesObraPdf(){
+
+    }
+
 }

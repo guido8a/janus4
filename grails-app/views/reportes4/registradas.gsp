@@ -55,9 +55,9 @@
         <div class="col-md-4">
             <b style="margin-left: 20px">Dirección o Coordinación requirente:</b>
             <g:select name="departamento.id"
-                      from="${janus.Departamento.findAllByRequirente(1, [sort: 'direccion'])}"
+                      from="${janus.Departamento.findAllByRequirente(1).sort{it.direccion.nombre}}"
                       id="departamento" optionKey="id" optionValue="${{ it.direccion.nombre + ' - ' + it.descripcion }}"
-                      dire="${{ it.direccion.id }}" style="width: 410px;"/>
+                      dire="${{ it.direccion.id }}" noSelection="['' : 'Todas']" style="width: 410px;"/>
         </div>
          <div class="col-md-2" style="align-items: center;">
         <b style="margin-left: 20px">Fecha Desde: </b>

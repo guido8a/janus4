@@ -145,6 +145,12 @@
                 </g:link>
                 Reporte en Excel de los contratos y obras contratadas inluyendo valores planillados y fechas de las actas
             </li>
+            <li text="cob" class="item" texto="cob">
+                <g:link controller="reportes5" style="color: #FFFDF4" action="componentesObraPdf" file="" class="btn btn-primary btn-xs">
+                    <i class="fa fa-print"></i> Componentes de obra
+                </g:link>
+                Reporte de componentes de obra
+            </li>
         </ul>
     </div>
 
@@ -233,8 +239,11 @@
         <p>Fechas de contrato, inicio de obra, recepción de obra y actas de entrega - recepción provisional y definitiva</p>
     </div>
 
+    <div id="cob" style="display: none">
+        <h3>Reporte de componentes de obra</h3><br>
 
-
+        <p>Componentes más usados en las obras</p>
+    </div>
 </div>
 
 <div id="dlgContabilidad" class="ui-helper-hidden">
