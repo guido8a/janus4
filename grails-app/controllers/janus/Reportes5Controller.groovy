@@ -1652,6 +1652,83 @@ class Reportes5Controller{
 
     def componentesObraPdf(){
 
+        def cn = dbConnectionService.getConnection()
+
+        def sql = ""
+
+        def componentes = cn.rows(sql)
+
+        def prmsCellHead2 = [border: Color.WHITE,align : Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE, bordeTop: "1", bordeBot: "1"]
+        def prmsCellRight = [border: Color.WHITE,align: Element.ALIGN_RIGHT, valign: Element.ALIGN_RIGHT]
+        def prmsCellLeft = [border: Color.WHITE,valign: Element.ALIGN_MIDDLE]
+
+        def baos = new ByteArrayOutputStream()
+        def name = "componentesObra" + new Date().format("ddMMyyyy_hhmm") + ".pdf";
+        Font times12bold = new Font(Font.TIMES_ROMAN, 12, Font.BOLD);
+        Font times18bold = new Font(Font.TIMES_ROMAN, 18, Font.BOLD);
+        Font times8bold = new Font(Font.TIMES_ROMAN, 8, Font.BOLD)
+        Font times8normal = new Font(Font.TIMES_ROMAN, 8, Font.NORMAL)
+        Font times10boldWhite = new Font(Font.TIMES_ROMAN, 10, Font.BOLD);
+        Font times8boldWhite = new Font(Font.TIMES_ROMAN, 8, Font.BOLD)
+        times8boldWhite.setColor(Color.WHITE)
+        times10boldWhite.setColor(Color.WHITE)
+
+        Document document
+        document = new Document(PageSize.A4.rotate());
+        def pdfw = PdfWriter.getInstance(document, baos);
+        document.open();
+
+        document.addTitle("Componentes obra " + new Date().format("dd_MM_yyyy"));
+        document.addSubject("Generado por el sistema Janus");
+        document.addKeywords("documentosObra, janus, presupuesto");
+        document.addAuthor("Janus");
+        document.addCreator("Tedein SA");
+
+        Paragraph headers = new Paragraph();
+        addEmptyLine(headers, 1);
+        headers.setAlignment(Element.ALIGN_CENTER);
+        headers.add(new Paragraph((Auxiliar.get(1)?.titulo ?: ''), times18bold));
+        addEmptyLine(headers, 1);
+        headers.add(new Paragraph("REPORTE DE COMPONENTES DE OBRA", times12bold));
+        addEmptyLine(headers, 1);
+        headers.add(new Paragraph("AL " + printFecha(new Date()).toUpperCase(), times12bold));
+        addEmptyLine(headers, 1);
+        document.add(headers);
+
+        PdfPTable tablaRegistradas = new PdfPTable(8);
+        tablaRegistradas.setWidthPercentage(100);
+        tablaRegistradas.setWidths(arregloEnteros([7, 24, 18, 8, 15, 15, 8, 7]))
+
+        addCellTabla(tablaRegistradas, new Paragraph("Grupo", times8bold), prmsCellHead2)
+        addCellTabla(tablaRegistradas, new Paragraph("Tipo", times8bold), prmsCellHead2)
+        addCellTabla(tablaRegistradas, new Paragraph("Código", times8bold), prmsCellHead2)
+        addCellTabla(tablaRegistradas, new Paragraph("Item", times8bold), prmsCellHead2)
+        addCellTabla(tablaRegistradas, new Paragraph("Unidad", times8bold), prmsCellHead2)
+        addCellTabla(tablaRegistradas, new Paragraph("Precio", times8bold), prmsCellHead2)
+        addCellTabla(tablaRegistradas, new Paragraph("Cantidad", times8bold), prmsCellHead2)
+        addCellTabla(tablaRegistradas, new Paragraph("Presupuestos", times8bold), prmsCellHead2)
+
+        componentes.eachWithIndex {i,j->
+//            addCellTabla(tablaRegistradas, new Paragraph(i.obracdgo, times8normal), prmsCellLeft)
+//            addCellTabla(tablaRegistradas, new Paragraph(i.obranmbr, times8normal), prmsCellLeft)
+//            addCellTabla(tablaRegistradas, new Paragraph(i.direccion, times8normal), prmsCellLeft)
+//            addCellTabla(tablaRegistradas, new Paragraph(i?.obrafcha?.format("dd-MM-yyyy"), times8normal), prmsCellLeft)
+//            addCellTabla(tablaRegistradas, new Paragraph(i.obrasito, times8normal), prmsCellLeft)
+//            addCellTabla(tablaRegistradas, new Paragraph(i.parrnmbr, times8normal), prmsCellLeft)
+//            addCellTabla(tablaRegistradas, new Paragraph(i?.obrafcin?.format("dd-MM-yyyy"), times8normal), prmsCellLeft)
+//            addCellTabla(tablaRegistradas, new Paragraph(i?.obrafcfn?.format("dd-MM-yyyy"), times8normal), prmsCellLeft)
+        }
+
+        document.add(tablaRegistradas);
+        document.close();
+        pdfw.close()
+        byte[] b = baos.toByteArray();
+        response.setContentType("application/pdf")
+        response.setHeader("Content-disposition", "attachment; filename=" + name)
+        response.setContentLength(b.length)
+        response.getOutputStream().write(b)
+
+
     }
 
 }
