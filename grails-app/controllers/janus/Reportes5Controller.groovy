@@ -1734,4 +1734,78 @@ class Reportes5Controller{
         response.getOutputStream().write(b)
     }
 
+    def itemsNoUsadosPdf(){
+
+        def cn = dbConnectionService.getConnection()
+
+        def sql = "select grpodscr, item.itemcdgo, itemnmbr, unddcdgo from item, undd, dprt, sbgr, grpo where item.item__id not in (select item__id from vlobitem) and undd.undd__id = item.undd__id and tpit__id = 1 and " +
+                "item.item__id not in (select item__id from rbro) and item.itemcdgo not in ('EQPO', 'REP', 'COMB', '009.001', '103.001.009') and dprt.dprt__id = item.dprt__id and sbgr.sbgr__id = dprt.sbgr__id and " +
+                "grpo.grpo__id = sbgr.grpo__id group by grpodscr, item.itemcdgo, itemnmbr, unddcdgo order by 1;"
+
+        def items = cn.rows(sql)
+
+        def prmsCellHead2 = [border: Color.WHITE,align : Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE, bordeTop: "1", bordeBot: "1"]
+        def prmsCellRight = [border: Color.WHITE,align: Element.ALIGN_RIGHT, valign: Element.ALIGN_RIGHT]
+        def prmsCellLeft = [border: Color.WHITE,valign: Element.ALIGN_MIDDLE]
+        def prmsCellCentro = [border: Color.WHITE,align : Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE]
+
+        def baos = new ByteArrayOutputStream()
+        def name = "itemsNoUsados" + new Date().format("ddMMyyyy_hhmm") + ".pdf";
+        Font times12bold = new Font(Font.TIMES_ROMAN, 12, Font.BOLD);
+        Font times18bold = new Font(Font.TIMES_ROMAN, 18, Font.BOLD);
+        Font times8bold = new Font(Font.TIMES_ROMAN, 8, Font.BOLD)
+        Font times8normal = new Font(Font.TIMES_ROMAN, 8, Font.NORMAL)
+        Font times10boldWhite = new Font(Font.TIMES_ROMAN, 10, Font.BOLD);
+        Font times8boldWhite = new Font(Font.TIMES_ROMAN, 8, Font.BOLD)
+        times8boldWhite.setColor(Color.WHITE)
+        times10boldWhite.setColor(Color.WHITE)
+
+        Document document
+        document = new Document(PageSize.A4.rotate());
+        def pdfw = PdfWriter.getInstance(document, baos);
+        document.open();
+
+        document.addTitle("Items no usados " + new Date().format("dd_MM_yyyy"));
+        document.addSubject("Generado por el sistema Janus");
+        document.addKeywords("documentosObra, janus, presupuesto");
+        document.addAuthor("Janus");
+        document.addCreator("Tedein SA");
+
+        Paragraph headers = new Paragraph();
+        addEmptyLine(headers, 1);
+        headers.setAlignment(Element.ALIGN_CENTER);
+        headers.add(new Paragraph((Auxiliar.get(1)?.titulo ?: ''), times18bold));
+        addEmptyLine(headers, 1);
+        headers.add(new Paragraph("REPORTE DE ITEMS NO USADOS", times12bold));
+        addEmptyLine(headers, 1);
+        headers.add(new Paragraph("AL " + printFecha(new Date()).toUpperCase(), times12bold));
+        addEmptyLine(headers, 1);
+        document.add(headers);
+
+        PdfPTable tablaRegistradas = new PdfPTable(4);
+        tablaRegistradas.setWidthPercentage(100);
+        tablaRegistradas.setWidths(arregloEnteros([10, 10, 65, 5]))
+
+        addCellTabla(tablaRegistradas, new Paragraph("Grupo", times8bold), prmsCellHead2)
+        addCellTabla(tablaRegistradas, new Paragraph("Código", times8bold), prmsCellHead2)
+        addCellTabla(tablaRegistradas, new Paragraph("Item", times8bold), prmsCellHead2)
+        addCellTabla(tablaRegistradas, new Paragraph("Unidad", times8bold), prmsCellHead2)
+
+        items.eachWithIndex {i,j->
+            addCellTabla(tablaRegistradas, new Paragraph(i.grpodscr, times8normal), prmsCellLeft)
+            addCellTabla(tablaRegistradas, new Paragraph(i.itemcdgo, times8normal), prmsCellCentro)
+            addCellTabla(tablaRegistradas, new Paragraph(i.itemnmbr, times8normal), prmsCellLeft)
+            addCellTabla(tablaRegistradas, new Paragraph(i.unddcdgo, times8normal), prmsCellCentro)
+        }
+
+        document.add(tablaRegistradas);
+        document.close();
+        pdfw.close()
+        byte[] b = baos.toByteArray();
+        response.setContentType("application/pdf")
+        response.setHeader("Content-disposition", "attachment; filename=" + name)
+        response.setContentLength(b.length)
+        response.getOutputStream().write(b)
+    }
+
 }

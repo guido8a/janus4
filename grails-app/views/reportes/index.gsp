@@ -151,6 +151,12 @@
                 </g:link>
                 Reporte de componentes de obra
             </li>
+            <li text="inu" class="item" texto="inu">
+                <g:link controller="reportes5" style="color: #FFFDF4" action="itemsNoUsadosPdf" file="" class="btn btn-primary btn-xs">
+                    <i class="fa fa-print"></i> Items no usados
+                </g:link>
+                Reporte de items no usados
+            </li>
         </ul>
     </div>
 
@@ -243,6 +249,12 @@
         <h3>Reporte de componentes de obra</h3><br>
 
         <p>Componentes más usados en las obras</p>
+    </div>
+
+    <div id="inu" style="display: none">
+        <h3>Reporte de items no usados</h3><br>
+
+        <p>Items no usados</p>
     </div>
 </div>
 
