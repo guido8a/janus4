@@ -1704,7 +1704,7 @@ class Reportes5Controller{
 
         PdfPTable tablaRegistradas = new PdfPTable(7);
         tablaRegistradas.setWidthPercentage(100);
-        tablaRegistradas.setWidths(arregloEnteros([10, 10, 40, 5, 5, 15, 15]))
+        tablaRegistradas.setWidths(arregloEnteros([10, 10, 45, 5, 5, 15, 10]))
 
         addCellTabla(tablaRegistradas, new Paragraph("Grupo", times8bold), prmsCellHead2)
         addCellTabla(tablaRegistradas, new Paragraph("Código", times8bold), prmsCellHead2)
