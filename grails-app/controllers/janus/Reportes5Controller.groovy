@@ -1667,6 +1667,7 @@ class Reportes5Controller{
         def prmsCellHead2 = [border: Color.WHITE,align : Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE, bordeTop: "1", bordeBot: "1"]
         def prmsCellRight = [border: Color.WHITE,align: Element.ALIGN_RIGHT, valign: Element.ALIGN_RIGHT]
         def prmsCellLeft = [border: Color.WHITE,valign: Element.ALIGN_MIDDLE]
+        def prmsCellCentro = [border: Color.WHITE,align : Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE]
 
         def baos = new ByteArrayOutputStream()
         def name = "componentesObra" + new Date().format("ddMMyyyy_hhmm") + ".pdf";
@@ -1701,12 +1702,11 @@ class Reportes5Controller{
         addEmptyLine(headers, 1);
         document.add(headers);
 
-        PdfPTable tablaRegistradas = new PdfPTable(8);
+        PdfPTable tablaRegistradas = new PdfPTable(7);
         tablaRegistradas.setWidthPercentage(100);
-        tablaRegistradas.setWidths(arregloEnteros([7, 24, 18, 8, 15, 15, 8, 7]))
+        tablaRegistradas.setWidths(arregloEnteros([10, 10, 40, 5, 5, 15, 15]))
 
         addCellTabla(tablaRegistradas, new Paragraph("Grupo", times8bold), prmsCellHead2)
-        addCellTabla(tablaRegistradas, new Paragraph("Tipo", times8bold), prmsCellHead2)
         addCellTabla(tablaRegistradas, new Paragraph("Código", times8bold), prmsCellHead2)
         addCellTabla(tablaRegistradas, new Paragraph("Item", times8bold), prmsCellHead2)
         addCellTabla(tablaRegistradas, new Paragraph("Unidad", times8bold), prmsCellHead2)
@@ -1715,14 +1715,13 @@ class Reportes5Controller{
         addCellTabla(tablaRegistradas, new Paragraph("Presupuestos", times8bold), prmsCellHead2)
 
         componentes.eachWithIndex {i,j->
-//            addCellTabla(tablaRegistradas, new Paragraph(i.obracdgo, times8normal), prmsCellLeft)
-//            addCellTabla(tablaRegistradas, new Paragraph(i.obranmbr, times8normal), prmsCellLeft)
-//            addCellTabla(tablaRegistradas, new Paragraph(i.direccion, times8normal), prmsCellLeft)
-//            addCellTabla(tablaRegistradas, new Paragraph(i?.obrafcha?.format("dd-MM-yyyy"), times8normal), prmsCellLeft)
-//            addCellTabla(tablaRegistradas, new Paragraph(i.obrasito, times8normal), prmsCellLeft)
-//            addCellTabla(tablaRegistradas, new Paragraph(i.parrnmbr, times8normal), prmsCellLeft)
-//            addCellTabla(tablaRegistradas, new Paragraph(i?.obrafcin?.format("dd-MM-yyyy"), times8normal), prmsCellLeft)
-//            addCellTabla(tablaRegistradas, new Paragraph(i?.obrafcfn?.format("dd-MM-yyyy"), times8normal), prmsCellLeft)
+            addCellTabla(tablaRegistradas, new Paragraph(i.grpodscr, times8normal), prmsCellLeft)
+            addCellTabla(tablaRegistradas, new Paragraph(i.itemcdgo, times8normal), prmsCellCentro)
+            addCellTabla(tablaRegistradas, new Paragraph(i.itemnmbr, times8normal), prmsCellLeft)
+            addCellTabla(tablaRegistradas, new Paragraph(i.unddcdgo, times8normal), prmsCellCentro)
+            addCellTabla(tablaRegistradas, new Paragraph(numero(i.pcun, 2)?.toString(), times8normal), prmsCellRight)
+            addCellTabla(tablaRegistradas, new Paragraph(numero(i.cntd, 2)?.toString(), times8normal), prmsCellRight)
+            addCellTabla(tablaRegistradas, new Paragraph(numero(i.cnta, 2)?.toString(), times8normal), prmsCellRight)
         }
 
         document.add(tablaRegistradas);
@@ -1733,8 +1732,6 @@ class Reportes5Controller{
         response.setHeader("Content-disposition", "attachment; filename=" + name)
         response.setContentLength(b.length)
         response.getOutputStream().write(b)
-
-
     }
 
 }
