@@ -1654,7 +1654,12 @@ class Reportes5Controller{
 
         def cn = dbConnectionService.getConnection()
 
-        def sql = ""
+        def sql = "select item.itemcdgo, itemnmbr, unddcdgo, avg(voitpcun) pcun, sum(voitcntd) cntd, " +
+                "count(distinct (obra.obra__id) ) cnta " +
+                "from obra, vlobitem, item, undd " +
+                "where vlobitem.obra__id = obra.obra__id and item.item__id = vlobitem.item__id and " +
+                "undd.undd__id = item.undd__id " +
+                "group by item.itemcdgo, itemnmbr, unddcdgo order by cnta desc"
 
         def componentes = cn.rows(sql)
 

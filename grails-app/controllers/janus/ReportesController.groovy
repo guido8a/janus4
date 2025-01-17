@@ -5128,20 +5128,31 @@ class ReportesController {
 
 
 
-        def sql = "SELECT i.itemcdgo codigo, i.itemnmbr item, u.unddcdgo unidad, sum(v.voitcntd) cantidad, \n" +
-                "v.voitpcun punitario, v.voittrnp transporte, v.voitpcun + v.voittrnp  costo, \n" +
-                "sum((v.voitpcun + v.voittrnp) * v.voitcntd)  total, g.grpodscr grupo, g.grpo__id grid \n" +
-                "FROM vlobitem v INNER JOIN item i ON v.item__id = i.item__id\n" +
-                "INNER JOIN undd u ON i.undd__id = u.undd__id\n" +
-                "INNER JOIN dprt d ON i.dprt__id = d.dprt__id\n" +
-                "INNER JOIN sbgr s ON d.sbgr__id = s.sbgr__id\n" +
-                "INNER JOIN grpo g ON s.grpo__id = g.grpo__id AND g.grpo__id IN (${params.tipo}) \n" +
-                "WHERE v.obra__id = ${params.id} and v.voitcntd >0 \n" + wsp +
-                "group by i.itemcdgo, i.itemnmbr, u.unddcdgo, v.voitpcun, v.voittrnp, v.voitpcun, \n" +
-                "g.grpo__id, g.grpodscr " +
-                "ORDER BY g.grpo__id ASC, i.itemcdgo"
+//        def sql = "SELECT i.itemcdgo codigo, i.itemnmbr item, u.unddcdgo unidad, sum(v.voitcntd) cantidad, \n" +
+//                "v.voitpcun punitario, v.voittrnp transporte, v.voitpcun + v.voittrnp  costo, \n" +
+//                "sum((v.voitpcun + v.voittrnp) * v.voitcntd)  total, g.grpodscr grupo, g.grpo__id grid \n" +
+//                "FROM vlobitem v INNER JOIN item i ON v.item__id = i.item__id\n" +
+//                "INNER JOIN undd u ON i.undd__id = u.undd__id\n" +
+//                "INNER JOIN dprt d ON i.dprt__id = d.dprt__id\n" +
+//                "INNER JOIN sbgr s ON d.sbgr__id = s.sbgr__id\n" +
+//                "INNER JOIN grpo g ON s.grpo__id = g.grpo__id AND g.grpo__id IN (${params.tipo}) \n" +
+//                "WHERE v.obra__id = ${params.id} and v.voitcntd >0 \n" + wsp +
+//                "group by i.itemcdgo, i.itemnmbr, u.unddcdgo, v.voitpcun, v.voittrnp, v.voitpcun, \n" +
+//                "g.grpo__id, g.grpodscr " +
+//                "ORDER BY g.grpo__id ASC, i.itemcdgo"
 
+        def sql = "SELECT item.itemcdgo codigo, itemnmbr item, unddcdgo unidad, sum(voitcntd) cantidad, " +
+                "voitpcun punitario, voittrnp transporte, voitpcun + voittrnp  costo, " +
+                "sum((voitpcun + voittrnp) * voitcntd)  total, grpodscr grupo, grpo.grpo__id grid " +
+                "from vlobitem, item, undd, dprt, sbgr, grpo " +
+                "where vlobitem.obra__id = ${params.id} and item.item__id = vlobitem.item__id and " +
+                "undd.undd__id = item.undd__id and dprt.dprt__id = item.dprt__id and " +
+                "sbgr.sbgr__id = dprt.sbgr__id and grpo.grpo__id = sbgr.grpo__id and " +
+                "voitcntd > 0 and grpo.grpo__id in (${params.tipo}) " + wsp +
+                "group by item.itemcdgo, itemnmbr, unddcdgo, voitpcun, voittrnp, voitpcun, grpo.grpo__id, grpodscr " +
+                "ORDER BY grpo.grpo__id ASC, item.itemcdgo"
 
+        println "--sql: $sql"
         def cn = dbConnectionService.getConnection()
         def res = cn.rows(sql.toString())
 
