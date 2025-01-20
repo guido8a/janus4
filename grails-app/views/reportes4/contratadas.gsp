@@ -27,6 +27,29 @@
         <span id="selOpt"></span>
         <b style="margin-left: 20px">Criterio: </b>
         <g:textField name="criterio" style="width: 160px; margin-right: 10px" value="${params.criterio}" id="criterio_con"/>
+
+    </div>
+    <div class="span12">
+
+        <div class="col-md-1">
+        </div>
+        <div class="col-md-4">
+            <b style="margin-left: 20px">Dirección o Coordinación requirente:</b>
+            <g:select name="departamento.id"
+                      from="${janus.Departamento.findAllByRequirente(1).sort{it.direccion.nombre}}"
+                      id="departamento" optionKey="id" optionValue="${{ it.direccion.nombre + ' - ' + it.descripcion }}"
+                      dire="${{ it.direccion.id }}" noSelection="['' : 'Todas']" style="width: 410px;"/>
+        </div>
+        <div class="col-md-2" style="align-items: center;">
+            <b style="margin-left: 20px">Fecha Desde: </b>
+            <input aria-label="" name="fechaInicio_name" id='fechaInicio' type='text' class=""  />
+        </div>
+
+        <div class="col-md-2" style="align-items: center;">
+            <b style="margin-left: 20px">Fecha Hasta: </b>
+            <input aria-label="" name="fechaFin_name" id='fechaFin' type='text' class=""  />
+        </div>
+
         <a href="#" class="btn btn-success" id="buscar">
             <i class="fa fa-search"></i>
             Buscar
@@ -82,6 +105,14 @@
 
 
 <script type="text/javascript">
+
+    $('#fechaInicio, #fechaFin').datetimepicker({
+        locale: 'es',
+        format: 'DD-MM-YYYY',
+        sideBySide: true,
+        icons: {
+        }
+    });
 
     $("#regresar").click(function () {
         location.href = "${g.createLink(controller: 'reportes', action: 'index')}"

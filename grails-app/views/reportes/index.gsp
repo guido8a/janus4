@@ -146,16 +146,16 @@
                 Reporte en Excel de los contratos y obras contratadas inluyendo valores planillados y fechas de las actas
             </li>
             <li text="cob" class="item" texto="cob">
-                <g:link controller="reportes5" style="color: #FFFDF4" action="componentesObraPdf" file="" class="btn btn-primary btn-xs">
+                <g:link controller="reportes5" style="color: #FFFDF4" action="componentesObraPdf" file="" class="btn btn-warning btn-xs">
                     <i class="fa fa-print"></i> Componentes de obra
                 </g:link>
-                Reporte de componentes de obra
+                Genera el reporte PDF de componentes de obra
             </li>
             <li text="inu" class="item" texto="inu">
-                <g:link controller="reportes5" style="color: #FFFDF4" action="itemsNoUsadosPdf" file="" class="btn btn-primary btn-xs">
+                <g:link controller="reportes5" style="color: #FFFDF4" action="itemsNoUsadosPdf" file="" class="btn btn-warning btn-xs">
                     <i class="fa fa-print"></i> Items no usados
                 </g:link>
-                Reporte de items no usados
+                Genera el reporte PDF de items no usados
             </li>
         </ul>
     </div>
@@ -247,13 +247,11 @@
 
     <div id="cob" style="display: none">
         <h3>Reporte de componentes de obra</h3><br>
-
         <p>Componentes más usados en las obras</p>
     </div>
 
     <div id="inu" style="display: none">
         <h3>Reporte de items no usados</h3><br>
-
         <p>Items no usados</p>
     </div>
 </div>

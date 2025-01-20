@@ -36,18 +36,6 @@
         <span id="selOpt"></span>
         <b style="margin-left: 20px">Criterio: </b>
         <g:textField name="criterio" style="width: 200px; margin-right: 10px" value="${params.criterio ?: ''}" id="criterio_con"/>
-        %{--        <a href="#" class="btn btn-success" id="buscar">--}%
-        %{--            <i class="fa fa-search"></i>--}%
-        %{--            Buscar--}%
-        %{--        </a>--}%
-        %{--        <a href="#" class="btn btn-info" id="imprimir" >--}%
-        %{--            <i class="fa fa-print"></i>--}%
-        %{--            Imprimir--}%
-        %{--        </a>--}%
-        %{--        <a href="#" class="btn btn-success" id="excel" >--}%
-        %{--            <i class="fa fa-file-excel"></i>--}%
-        %{--            Excel--}%
-        %{--        </a>--}%
     </div>
     <div class="span12">
         <div class="col-md-1">
@@ -71,7 +59,7 @@
 
         <a href="#" class="btn btn-success" id="buscar">
             <i class="fa fa-search"></i>
-            Reporte
+            Buscar
         </a>
         <a href="#" class="btn btn-info" id="imprimir" >
             <i class="fa fa-print"></i>

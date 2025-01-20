@@ -12,27 +12,46 @@
 
 <div class="row-fluid">
     <div class="span12">
-        <a href="#" class="btn btn-primary" id="regresar">
-            <i class=" fa fa-arrow-left"></i>
-            Regresar
-        </a>
-        <b>Buscar Por:</b>
-        <g:select name="buscador" from="${[0: 'Código', 1: 'Objeto', 2: 'Obra', 3: 'Certificación']}" optionKey="key" optionValue="value" />
-        <span id="selOpt"></span>
-        <b style="margin-left: 20px">Criterio: </b>
-        <g:textField name="criterio" style="width: 160px; margin-right: 10px" value="${params.criterio ?: ''}" id="criterio"/>
-        <a href="#" class="btn btn-success" id="buscar">
-            <i class="fa fa-search"></i>
-            Buscar
-        </a>
-        <a href="#" class="btn btn-info" id="imprimir" >
-            <i class="fa fa-print"></i>
-            Imprimir
-        </a>
-        <a href="#" class="btn btn-success" id="excel" >
-            <i class="fa fa-file-excel"></i>
-            Excel
-        </a>
+
+        <div class="col-md-1">
+            <a href="#" class="btn btn-primary" id="regresar">
+                <i class=" fa fa-arrow-left"></i>
+                Regresar
+            </a>
+        </div>
+
+        <div class="col-md-4" style="margin-top: 12px">
+            <b>Buscar Por:</b>
+            <g:select name="buscador" from="${[0: 'Código', 1: 'Objeto', 2: 'Obra', 3: 'Certificación']}" optionKey="key" optionValue="value" />
+            <span id="selOpt"></span>
+            <b style="margin-left: 20px">Criterio: </b>
+            <g:textField name="criterio" style="width: 160px; margin-right: 10px" value="${params.criterio ?: ''}" id="criterio"/>
+        </div>
+
+        <div class="col-md-2" style="align-items: center;">
+            <b style="margin-left: 20px">Fecha Desde: </b>
+            <input aria-label="" name="fechaInicio_name" id='fechaInicio' type='text' class=""  />
+        </div>
+
+        <div class="col-md-2" style="align-items: center;">
+            <b style="margin-left: 20px">Fecha Hasta: </b>
+            <input aria-label="" name="fechaFin_name" id='fechaFin' type='text' class=""  />
+        </div>
+
+        <div class="col-md-3">
+            <a href="#" class="btn btn-success" id="buscar">
+                <i class="fa fa-search"></i>
+                Buscar
+            </a>
+            <a href="#" class="btn btn-info" id="imprimir" >
+                <i class="fa fa-print"></i>
+                Imprimir
+            </a>
+            <a href="#" class="btn btn-success" id="excel" >
+                <i class="fa fa-file-excel"></i>
+                Excel
+            </a>
+        </div>
     </div>
 </div>
 
@@ -75,6 +94,14 @@
 
 
 <script type="text/javascript">
+
+    $('#fechaInicio, #fechaFin').datetimepicker({
+        locale: 'es',
+        format: 'DD-MM-YYYY',
+        sideBySide: true,
+        icons: {
+        }
+    });
 
     $("#imprimir").click(function () {
         location.href = "${g.createLink(controller: 'reportes4', action:'reporteProcesosContratacion' )}?buscador=" +$("#buscador option:selected").val() + "&criterio=" + $("#criterio").val()

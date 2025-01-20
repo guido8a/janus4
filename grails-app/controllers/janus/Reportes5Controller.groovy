@@ -1715,13 +1715,15 @@ class Reportes5Controller{
         addCellTabla(tablaRegistradas, new Paragraph("Presupuestos", times8bold), prmsCellHead2)
 
         componentes.eachWithIndex {i,j->
-            addCellTabla(tablaRegistradas, new Paragraph(i.grpodscr, times8normal), prmsCellLeft)
-            addCellTabla(tablaRegistradas, new Paragraph(i.itemcdgo, times8normal), prmsCellCentro)
-            addCellTabla(tablaRegistradas, new Paragraph(i.itemnmbr, times8normal), prmsCellLeft)
-            addCellTabla(tablaRegistradas, new Paragraph(i.unddcdgo, times8normal), prmsCellCentro)
-            addCellTabla(tablaRegistradas, new Paragraph(numero(i.pcun, 2)?.toString(), times8normal), prmsCellRight)
-            addCellTabla(tablaRegistradas, new Paragraph(numero(i.cntd, 2)?.toString(), times8normal), prmsCellRight)
-            addCellTabla(tablaRegistradas, new Paragraph(numero(i.cnta, 0)?.toString(), times8normal), prmsCellRight)
+            if(i?.pcun){
+                addCellTabla(tablaRegistradas, new Paragraph(i.grpodscr, times8normal), prmsCellLeft)
+                addCellTabla(tablaRegistradas, new Paragraph(i.itemcdgo, times8normal), prmsCellCentro)
+                addCellTabla(tablaRegistradas, new Paragraph(i.itemnmbr, times8normal), prmsCellLeft)
+                addCellTabla(tablaRegistradas, new Paragraph(i.unddcdgo, times8normal), prmsCellCentro)
+                addCellTabla(tablaRegistradas, new Paragraph(numero(i.pcun, 2)?.toString(), times8normal), prmsCellRight)
+                addCellTabla(tablaRegistradas, new Paragraph(numero(i.cntd, 2)?.toString(), times8normal), prmsCellRight)
+                addCellTabla(tablaRegistradas, new Paragraph(numero(i.cnta, 0)?.toString(), times8normal), prmsCellRight)
+            }
         }
 
         document.add(tablaRegistradas);
@@ -1747,6 +1749,7 @@ class Reportes5Controller{
         def prmsCellHead2 = [border: Color.WHITE,align : Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE, bordeTop: "1", bordeBot: "1"]
         def prmsCellRight = [border: Color.WHITE,align: Element.ALIGN_RIGHT, valign: Element.ALIGN_RIGHT]
         def prmsCellLeft = [border: Color.WHITE,valign: Element.ALIGN_MIDDLE]
+        def prmsCellLeft2 = [border: Color.WHITE,align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE]
         def prmsCellCentro = [border: Color.WHITE,align : Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE]
 
         def baos = new ByteArrayOutputStream()
@@ -1761,7 +1764,7 @@ class Reportes5Controller{
         times10boldWhite.setColor(Color.WHITE)
 
         Document document
-        document = new Document(PageSize.A4.rotate());
+        document = new Document(PageSize.A4);
         def pdfw = PdfWriter.getInstance(document, baos);
         document.open();
 
@@ -1784,12 +1787,12 @@ class Reportes5Controller{
 
         PdfPTable tablaRegistradas = new PdfPTable(4);
         tablaRegistradas.setWidthPercentage(100);
-        tablaRegistradas.setWidths(arregloEnteros([10, 10, 65, 5]))
+        tablaRegistradas.setWidths(arregloEnteros([10, 10, 63, 7]))
 
         addCellTabla(tablaRegistradas, new Paragraph("Grupo", times8bold), prmsCellHead2)
         addCellTabla(tablaRegistradas, new Paragraph("Código", times8bold), prmsCellHead2)
         addCellTabla(tablaRegistradas, new Paragraph("Item", times8bold), prmsCellHead2)
-        addCellTabla(tablaRegistradas, new Paragraph("Unidad", times8bold), prmsCellHead2)
+        addCellTabla(tablaRegistradas, new Paragraph("Unidad", times8bold), prmsCellLeft2)
 
         items.eachWithIndex {i,j->
             addCellTabla(tablaRegistradas, new Paragraph(i.grpodscr, times8normal), prmsCellLeft)
