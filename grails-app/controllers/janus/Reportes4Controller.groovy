@@ -1109,23 +1109,6 @@ class Reportes4Controller {
         return [obras: obras, params: params]
     }
 
-    def ejecutadas() {
-    }
-
-    def tablaEjecutadas() {
-        def cn = dbConnectionService.getConnection()
-        def campos = reportesService.obrasContratadas()
-
-        params.old = params.criterio
-        params.criterio = reportesService.limpiaCriterio(params.criterio)
-
-        def sql = armaSqlEjecutadas(params)
-        def obras = cn.rows(sql)
-
-        params.criterio = params.old
-        return [obras: obras, params: params]
-    }
-
     def armaSqlContratadas(params) {
         def campos = reportesService.obrasContratadas()
         def operador = reportesService.operadores()

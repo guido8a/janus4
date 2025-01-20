@@ -70,31 +70,38 @@
     <table class="table table-bordered table-hover table-condensed" style="width: 100%; background-color: #a39e9e">
         <thead>
         <tr>
-            <th style="width: 10%;">
+            <th style="width: 10%">
                 Código
             </th>
-            <th style="width: 22%;">
+            <th style="width: 24%;">
                 Nombre
             </th>
-            <th style="width: 13%;">
-                Tipo
-            </th>
-            <th style="width: 8%">
-                Fecha Reg
-            </th>
-            <th style="width: 15%">
+            <th style="width: 14%">
                 Cantón-Parroquia-Comunidad
             </th>
-            <th style="width: 9%">
-                Valor
-            </th>
-            <th style="width: 12%">
-                Coordinación
+            <th style="width: 8%">
+                Núm. Contrato
             </th>
             <th style="width: 10%">
-                Contrato
+                Contratista
             </th>
-            <th style="width: 1%">
+            <th style="width: 8%">
+                Monto
+            </th>
+            <th style="width: 8%">
+                Fecha suscripción
+            </th>
+            <th style="width: 8%">
+                Fecha Inicio Obra
+            </th>
+            <th style="width: 6%">
+                Plazo
+            </th>
+            <th style="width: 7%">
+                % avance económico
+            </th>
+            <th style="width: 5%">
+                Avance físico
             </th>
         </tr>
         </thead>
@@ -150,7 +157,7 @@
     function cargarTabla() {
         var d = cargarLoader("Cargando...");
         var datos = "si=${"si"}&buscador=" + $("#buscador_con").val() + "&criterio=" + $("#criterio_con").val() +
-            "&operador=" + $("#oprd").val();
+            "&operador=" + $("#oprd").val() + "&departamento=" + $("#departamento option:selected").val() + "&fi=" + $("#fechaInicio").val() + "&ff=" + $("#fechaFin").val();
         $.ajax({
             type : "POST",
             url : "${g.createLink(controller: 'reportes4', action: 'tablaSuspendidas')}",
