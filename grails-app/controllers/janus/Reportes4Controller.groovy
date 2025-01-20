@@ -37,12 +37,12 @@ class Reportes4Controller {
         return ia
     }
 
-    def registradas () {
+    def registradas() {
         def perfil = session.perfil.id
         return [perfil: perfil]
     }
 
-    def presuestadasFinal () {
+    def presuestadasFinal() {
         def perfil = session.perfil.id
         return [perfil: perfil]
     }
@@ -226,8 +226,8 @@ class Reportes4Controller {
             PdfPTable table2 = new PdfPTable(((fin - inicio).toInteger()) - 1);
 
             def tam = 100
-            if(anchos.size()<10)
-                tam=(anchos.size()*10).toInteger()
+            if (anchos.size() < 10)
+                tam = (anchos.size() * 10).toInteger()
             table.setWidthPercentage(tam);
             table.setWidths(arregloEnteros(anchos))
             table.setHorizontalAlignment(Element.ALIGN_LEFT);
@@ -285,7 +285,7 @@ class Reportes4Controller {
 //                    }
                         def fuente = small
                         def borde = 1.5
-                        if (f[1]=~"sS") {
+                        if (f[1] =~ "sS") {
                             fuente = new Font(Font.TIMES_ROMAN, 8, Font.BOLD);
                         }
 
@@ -316,7 +316,7 @@ class Reportes4Controller {
 //                    println "f "+f[1]
                     def fuente = small
                     def borde = 1.5
-                    if (f[1]=~"sS") {
+                    if (f[1] =~ "sS") {
                         fuente = new Font(Font.TIMES_ROMAN, 8, Font.BOLD);
                     }
                     if (f[1] == "sS1" || f[1] == "sS2")
@@ -382,7 +382,7 @@ class Reportes4Controller {
 
         def total1 = 0;
         def totales
-        def totalPresupuestoBien=[];
+        def totalPresupuestoBien = [];
         def valoresTotales = []
 
         def valores
@@ -396,7 +396,7 @@ class Reportes4Controller {
 
         params.criterio = reportesService.limpiaCriterio(params.criterio)
 
-        def sqlBase =  "SELECT\n" +
+        def sqlBase = "SELECT\n" +
                 "  o.obra__id    id,\n" +
                 "  o.obracdgo    codigo, \n" +
                 "  o.obranmbr    nombre,\n" +
@@ -426,7 +426,7 @@ class Reportes4Controller {
                 "  LEFT JOIN tpob t ON o.tpob__id = t.tpob__id\n"
 
 
-        def filtro=" where obraetdo='R' or obraofig is NOT NULL "
+        def filtro = " where obraetdo='R' or obraofig is NOT NULL "
         def filtroBuscador = ""
 
         def buscador = ""
@@ -439,8 +439,8 @@ class Reportes4Controller {
             case "mmsl":
             case "frpl":
 //            case "tipo":
-                buscador = "obra"+params.buscador
-                filtroBuscador =" and ${buscador} ILIKE ('%${params.criterio}%') "
+                buscador = "obra" + params.buscador
+                filtroBuscador = " and ${buscador} ILIKE ('%${params.criterio}%') "
                 break;
             case "cmnd":
                 filtroBuscador = " and c.cmndnmbr ILIKE ('%${params.criterio}%') "
@@ -464,8 +464,6 @@ class Reportes4Controller {
 
         filtro = " where obraetdo='N' "
 
-
-
 //        println "====================="
 //        println filtro
 //        println filtroBuscador
@@ -481,7 +479,7 @@ class Reportes4Controller {
         res = cn.rows(sql.toString())
 //        println(res)
 
-        res.each{
+        res.each {
 
 /*
             totales = 0
@@ -516,21 +514,20 @@ class Reportes4Controller {
 //          println("->" + personasPRSP)
 
 
+        if (Persona.get(session.usuario.id).departamento?.codigo == 'CRFC') {
 
-        if(Persona.get(session.usuario.id).departamento?.codigo == 'CRFC'){
-
-            res.each{
+            res.each {
                 responsableObra = it.responsable
-                if((personasPRSP.contains(Persona.get(responsableObra))) || it.tipo == 'D'){
+                if ((personasPRSP.contains(Persona.get(responsableObra))) || it.tipo == 'D') {
                     obrasFiltradas += it
                 }
             }
-        }else {
+        } else {
             obrasFiltradas = res
         }
 
 //        println("obras filtradas " + obrasFiltradas)
-        return [obras: obras, res: obrasFiltradas, valoresTotales: valoresTotales, params:params]
+        return [obras: obras, res: obrasFiltradas, valoresTotales: valoresTotales, params: params]
     }
 
     def tablaRegistradas() {
@@ -549,7 +546,7 @@ class Reportes4Controller {
         return [obras: obras, params: params]
     }
 
-    def armaSqlRegistradas(params){
+    def armaSqlRegistradas(params) {
         def campos = reportesService.obrasPresupuestadas()
         def operador = reportesService.operadores()
         println "armaSqlRegistradas $params"
@@ -565,8 +562,8 @@ class Reportes4Controller {
 
         println "llega params: $params"
         params.nombre = "Código"
-        if(campos.find {it.campo == params.buscador}?.size() > 0) {
-            def op = operador.find {it.valor == params.operador}
+        if (campos.find { it.campo == params.buscador }?.size() > 0) {
+            def op = operador.find { it.valor == params.operador }
 //            println "op: $op"
             sqlWhere += " and ${params.buscador} ${op.operador} ${op.strInicio}${params.criterio}${op.strFin}";
         }
@@ -578,8 +575,7 @@ class Reportes4Controller {
     }
 
 
-
-    def tablaPresupuestadas_old () {
+    def tablaPresupuestadas_old() {
 
         //        println("paramsReg" + params)
 
@@ -592,7 +588,7 @@ class Reportes4Controller {
 
         def total1 = 0;
         def totales
-        def totalPresupuestoBien=[];
+        def totalPresupuestoBien = [];
         def valoresTotales = []
 
         def valores
@@ -607,7 +603,7 @@ class Reportes4Controller {
 
         params.criterio = reportesService.limpiaCriterio(params.criterio)
 
-        def sqlBase =  "SELECT\n" +
+        def sqlBase = "SELECT\n" +
                 "  o.obra__id    id,\n" +
                 "  o.obracdgo    codigo, \n" +
                 "  o.obranmbr    nombre,\n" +
@@ -637,7 +633,7 @@ class Reportes4Controller {
                 "  LEFT JOIN tpob t ON o.tpob__id = t.tpob__id\n"
 
 
-        def filtro=" where obraetdo='R' or obraofig is NOT NULL "
+        def filtro = " where obraetdo='R' or obraofig is NOT NULL "
         def filtroBuscador = ""
 
         def buscador = ""
@@ -650,8 +646,8 @@ class Reportes4Controller {
             case "mmsl":
             case "frpl":
 //            case "tipo":
-                buscador = "obra"+params.buscador
-                filtroBuscador =" and ${buscador} ILIKE ('%${params.criterio}%') "
+                buscador = "obra" + params.buscador
+                filtroBuscador = " and ${buscador} ILIKE ('%${params.criterio}%') "
                 break;
             case "cmnd":
                 filtroBuscador = " and c.cmndnmbr ILIKE ('%${params.criterio}%') "
@@ -674,8 +670,6 @@ class Reportes4Controller {
 
         filtro = " where obraetdo='R' "
 
-
-
 //        println "====================="
 //        println filtro
 //        println filtroBuscador
@@ -687,18 +681,18 @@ class Reportes4Controller {
         cn = dbConnectionService.getConnection()
         res = cn.rows(sql.toString())
 
-        if(Persona.get(session.usuario.id).departamento?.codigo == 'CRFC'){
-            res.each{
+        if (Persona.get(session.usuario.id).departamento?.codigo == 'CRFC') {
+            res.each {
                 responsableObra = it.responsable
-                if((personasPRSP.contains(Persona.get(responsableObra))) || it.tipo == 'D'){
+                if ((personasPRSP.contains(Persona.get(responsableObra))) || it.tipo == 'D') {
                     obrasFiltradas += it
                 }
             }
-        }else{
+        } else {
             obrasFiltradas = res
         }
 
-        return [obras: obras, res: obrasFiltradas, valoresTotales: valoresTotales, params:params]
+        return [obras: obras, res: obrasFiltradas, valoresTotales: valoresTotales, params: params]
     }
 
 
@@ -717,7 +711,7 @@ class Reportes4Controller {
         return [obras: obras, params: params]
     }
 
-    def armaSqlPresupuestadas(params){
+    def armaSqlPresupuestadas(params) {
         def campos = reportesService.obrasPresupuestadas()
         def operador = reportesService.operadores()
 //        println("operador " + operador)
@@ -732,8 +726,8 @@ class Reportes4Controller {
         def sqlOrder = "order by obracdgo"
 
         params.nombre = "Código"
-        if(campos.find {it.campo == params.buscador}?.size() > 0) {
-            def op = operador.find {it.valor == params.operador}
+        if (campos.find { it.campo == params.buscador }?.size() > 0) {
+            def op = operador.find { it.valor == params.operador }
             sqlWhere += " and ${params.buscador} ${op.operador} ${op.strInicio}${params.criterio}${op.strFin}";
         }
         "$sqlSelect $sqlWhere $sqlOrder".toString()
@@ -832,7 +826,7 @@ class Reportes4Controller {
         table.addCell(cell);
     }
 
-    def reporteRegistradas () {
+    def reporteRegistradas() {
 
 //        println("params reporte:" + params)
 
@@ -847,7 +841,6 @@ class Reportes4Controller {
 
 //        println "registro retornados del sql: ${obras.size()}"
         params.criterio = params.old
-
 
         //reporte
 
@@ -877,10 +870,10 @@ class Reportes4Controller {
                             align : Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE]
         def prmsNum = [border: Color.WHITE, align: Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE]
 
-        def prms = [prmsHeaderHoja: prmsHeaderHoja, prmsHeader: prmsHeader, prmsHeader2: prmsHeader2,
-                    prmsCellHead: prmsCellHead, prmsCell: prmsCellCenter, prmsCellLeft: prmsCellLeft, prmsSubtotal: prmsSubtotal, prmsNum: prmsNum,
+        def prms = [prmsHeaderHoja : prmsHeaderHoja, prmsHeader: prmsHeader, prmsHeader2: prmsHeader2,
+                    prmsCellHead   : prmsCellHead, prmsCell: prmsCellCenter, prmsCellLeft: prmsCellLeft, prmsSubtotal: prmsSubtotal, prmsNum: prmsNum,
                     prmsHeaderHoja2: prmsHeaderHoja2, prmsCellRight: prmsCellRight, prmsCellHeadRight: prmsCellHeadRight, prmsCellHead2: prmsCellHead2,
-                    prmsCellRight2: prmsCellRight2, prmsCellRightTop: prmsCellRightTop, prmsCellRightBot: prmsCellRightBot]
+                    prmsCellRight2 : prmsCellRight2, prmsCellRightTop: prmsCellRightTop, prmsCellRightBot: prmsCellRightBot]
 
         def baos = new ByteArrayOutputStream()
         def name = "registradas_" + new Date().format("ddMMyyyy_hhmm") + ".pdf";
@@ -893,7 +886,7 @@ class Reportes4Controller {
         Font times8boldWhite = new Font(Font.TIMES_ROMAN, 8, Font.BOLD)
         times8boldWhite.setColor(Color.WHITE)
         times10boldWhite.setColor(Color.WHITE)
-        def fonts = [times12bold: times12bold, times10bold: times10bold, times8bold: times8bold,
+        def fonts = [times12bold     : times12bold, times10bold: times10bold, times8bold: times8bold,
                      times10boldWhite: times10boldWhite, times8boldWhite: times8boldWhite, times8normal: times8normal, times18bold: times18bold]
 
         Document document
@@ -923,7 +916,7 @@ class Reportes4Controller {
 
         PdfPTable tablaRegistradas = new PdfPTable(9);
         tablaRegistradas.setWidthPercentage(100);
-        tablaRegistradas.setWidths(arregloEnteros([14, 35, 18, 8, 30, 10, 10,14,8]))
+        tablaRegistradas.setWidths(arregloEnteros([14, 35, 18, 8, 30, 10, 10, 14, 8]))
 
         addCellTabla(tablaRegistradas, new Paragraph("Código", times8bold), prmsCellHead2)
         addCellTabla(tablaRegistradas, new Paragraph("Nombre", times8bold), prmsCellHead2)
@@ -935,14 +928,14 @@ class Reportes4Controller {
         addCellTabla(tablaRegistradas, new Paragraph("Doc. Referencia", times8bold), prmsCellHead2)
         addCellTabla(tablaRegistradas, new Paragraph("Estado", times8bold), prmsCellHead2)
 
-        obras.eachWithIndex {i,j->
+        obras.eachWithIndex { i, j ->
             addCellTabla(tablaRegistradas, new Paragraph(i.obracdgo, times8normal), prmsCellLeft)
             addCellTabla(tablaRegistradas, new Paragraph(i.obranmbr, times8normal), prmsCellLeft)
             addCellTabla(tablaRegistradas, new Paragraph(i.tpobdscr, times8normal), prmsCellLeft)
             addCellTabla(tablaRegistradas, new Paragraph(g.formatDate(date: i?.obrafcha, format: "dd-MM-yyyy"), times8normal), prmsCellLeft)
             addCellTabla(tablaRegistradas, new Paragraph(i.cntnnmbr + "-" + i.parrnmbr + "-" + i.cmndnmbr, times8normal), prmsCellLeft)
             addCellTabla(tablaRegistradas, new Paragraph(g.formatNumber(number: i.obravlor, minFractionDigits:
-                        2, maxFractionDigits: 2, format: "##,##0", locale: "ec"), times8normal), prmsCellRight)
+                    2, maxFractionDigits: 2, format: "##,##0", locale: "ec"), times8normal), prmsCellRight)
             addCellTabla(tablaRegistradas, new Paragraph(i.dptodscr, times8normal), prmsCellLeft)
             addCellTabla(tablaRegistradas, new Paragraph(i.obrarefe, times8normal), prmsCellLeft)
             addCellTabla(tablaRegistradas, new Paragraph(i.estado, times8normal), prmsCellLeft)
@@ -960,7 +953,7 @@ class Reportes4Controller {
     }
 
 
-    def reportePresupuestadas () {
+    def reportePresupuestadas() {
 
         //        println("params reporte:" + params)
 
@@ -1001,10 +994,10 @@ class Reportes4Controller {
                             align : Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE]
         def prmsNum = [border: Color.WHITE, align: Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE]
 
-        def prms = [prmsHeaderHoja: prmsHeaderHoja, prmsHeader: prmsHeader, prmsHeader2: prmsHeader2,
-                    prmsCellHead: prmsCellHead, prmsCell: prmsCellCenter, prmsCellLeft: prmsCellLeft, prmsSubtotal: prmsSubtotal, prmsNum: prmsNum,
+        def prms = [prmsHeaderHoja : prmsHeaderHoja, prmsHeader: prmsHeader, prmsHeader2: prmsHeader2,
+                    prmsCellHead   : prmsCellHead, prmsCell: prmsCellCenter, prmsCellLeft: prmsCellLeft, prmsSubtotal: prmsSubtotal, prmsNum: prmsNum,
                     prmsHeaderHoja2: prmsHeaderHoja2, prmsCellRight: prmsCellRight, prmsCellHeadRight: prmsCellHeadRight, prmsCellHead2: prmsCellHead2,
-                    prmsCellRight2: prmsCellRight2, prmsCellRightTop: prmsCellRightTop, prmsCellRightBot: prmsCellRightBot]
+                    prmsCellRight2 : prmsCellRight2, prmsCellRightTop: prmsCellRightTop, prmsCellRightBot: prmsCellRightBot]
 
         def baos = new ByteArrayOutputStream()
         def name = "presupuestadas_" + new Date().format("ddMMyyyy_hhmm") + ".pdf";
@@ -1017,7 +1010,7 @@ class Reportes4Controller {
         Font times8boldWhite = new Font(Font.TIMES_ROMAN, 8, Font.BOLD)
         times8boldWhite.setColor(Color.WHITE)
         times10boldWhite.setColor(Color.WHITE)
-        def fonts = [times12bold: times12bold, times10bold: times10bold, times8bold: times8bold,
+        def fonts = [times12bold     : times12bold, times10bold: times10bold, times8bold: times8bold,
                      times10boldWhite: times10boldWhite, times8boldWhite: times8boldWhite, times8normal: times8normal, times18bold: times18bold]
 
         Document document
@@ -1046,7 +1039,7 @@ class Reportes4Controller {
 
         PdfPTable tablaRegistradas = new PdfPTable(9);
         tablaRegistradas.setWidthPercentage(100);
-        tablaRegistradas.setWidths(arregloEnteros([14, 35, 18, 8, 25, 13, 12,14,8]))
+        tablaRegistradas.setWidths(arregloEnteros([14, 35, 18, 8, 25, 13, 12, 14, 8]))
 
         addCellTabla(tablaRegistradas, new Paragraph("Código", times8bold), prmsCellHead2)
         addCellTabla(tablaRegistradas, new Paragraph("Nombre", times8bold), prmsCellHead2)
@@ -1058,14 +1051,14 @@ class Reportes4Controller {
         addCellTabla(tablaRegistradas, new Paragraph("Doc. Referencia", times8bold), prmsCellHead2)
         addCellTabla(tablaRegistradas, new Paragraph("Estado", times8bold), prmsCellHead2)
 
-        obras.eachWithIndex {i,j->
+        obras.eachWithIndex { i, j ->
             addCellTabla(tablaRegistradas, new Paragraph(i.obracdgo, times8normal), prmsCellLeft)
             addCellTabla(tablaRegistradas, new Paragraph(i.obranmbr, times8normal), prmsCellLeft)
             addCellTabla(tablaRegistradas, new Paragraph(i.tpobdscr, times8normal), prmsCellLeft)
             addCellTabla(tablaRegistradas, new Paragraph(g.formatDate(date: i?.obrafcha, format: "dd-MM-yyyy"), times8normal), prmsCellLeft)
             addCellTabla(tablaRegistradas, new Paragraph(i.cntnnmbr + "-" + i.parrnmbr + "-" + i.cmndnmbr, times8normal), prmsCellLeft)
             addCellTabla(tablaRegistradas, new Paragraph(g.formatNumber(number: i.obravlor.toDouble(), minFractionDigits:
-                        2, maxFractionDigits: 2, format: "##,##0", locale: "ec"), times8normal), prmsCellRight)
+                    2, maxFractionDigits: 2, format: "##,##0", locale: "ec"), times8normal), prmsCellRight)
             addCellTabla(tablaRegistradas, new Paragraph(i.dptodscr, times8normal), prmsCellLeft)
             addCellTabla(tablaRegistradas, new Paragraph(i.obrarefe, times8normal), prmsCellLeft)
             addCellTabla(tablaRegistradas, new Paragraph(i.estado, times8normal), prmsCellLeft)
@@ -1082,10 +1075,10 @@ class Reportes4Controller {
 
     }
 
-    def contratadas () {
+    def contratadas() {
     }
 
-    def tablaContratadas () {
+    def tablaContratadas() {
         def cn = dbConnectionService.getConnection()
         def campos = reportesService.obrasContratadas()
 
@@ -1099,10 +1092,10 @@ class Reportes4Controller {
         return [obras: obras, params: params]
     }
 
-    def suspendidas () {
+    def suspendidas() {
     }
 
-    def tablaSuspendidas () {
+    def tablaSuspendidas() {
         def cn = dbConnectionService.getConnection()
         def campos = reportesService.obrasContratadas()
 
@@ -1119,7 +1112,7 @@ class Reportes4Controller {
     def ejecutadas() {
     }
 
-    def tablaEjecutadas () {
+    def tablaEjecutadas() {
         def cn = dbConnectionService.getConnection()
         def campos = reportesService.obrasContratadas()
 
@@ -1133,7 +1126,7 @@ class Reportes4Controller {
         return [obras: obras, params: params]
     }
 
-    def armaSqlContratadas(params){
+    def armaSqlContratadas(params) {
         def campos = reportesService.obrasContratadas()
         def operador = reportesService.operadores()
 //        println("operador " + operador)
@@ -1150,8 +1143,8 @@ class Reportes4Controller {
 
         println "llega params: $params"
         params.nombre = "Código"
-        if(campos.find {it.campo == params.buscador}?.size() > 0) {
-            def op = operador.find {it.valor == params.operador}
+        if (campos.find { it.campo == params.buscador }?.size() > 0) {
+            def op = operador.find { it.valor == params.operador }
 //            println "op: $op"
             sqlWhere += " and ${params.buscador} ${op.operador} ${op.strInicio}${params.criterio}${op.strFin}";
         }
@@ -1161,7 +1154,38 @@ class Reportes4Controller {
         "$sqlSelect $sqlWhere $sqlOrder".toString()
     }
 
-    def armaSqlSuspendidas(params){
+    def armaSqlSuspendidas(params) {
+        println "armaSqlSuspendidas $params"
+        def campos = reportesService.obrasAvance()
+        def operador = reportesService.operadores()
+
+        def sqlSelect = "select obra.obra__id, obracdgo, obranmbr, cntnnmbr, parrnmbr, cmndnmbr, " +
+                "c.cntr__id, c.cntrcdgo, " +
+                "c.cntrmnto, c.cntrfcsb, prvenmbr, c.cntrplzo, obrafcin, cntrfcfs," +
+                "(select(coalesce(sum(plnlmnto), 0)) / cntrmnto av_economico " +
+                "from plnl where cntr__id = c.cntr__id and tppl__id > 1), " +
+                "(select(coalesce(max(plnlavfs), 0)) av_fisico " +
+                "from plnl where cntr__id = c.cntr__id and tppl__id > 1) " +  // no cuenta el anticipo
+                "from obra, cntn, parr, cmnd, cncr, ofrt, cntr c, dpto, prve, mdce "
+        def sqlWhere = "where cmnd.cmnd__id = obra.cmnd__id and " +
+                "parr.parr__id = obra.parr__id and cntn.cntn__id = parr.cntn__id and " +
+                "cncr.obra__id = obra.obra__id and ofrt.cncr__id = cncr.cncr__id and " +
+                "c.ofrt__id = ofrt.ofrt__id and dpto.dpto__id = obra.dpto__id and " +
+                "prve.prve__id = c.prve__id and mdce.cntr__id = c.cntr__id and mdcefcfn is null "
+        def sqlOrder = "order by obracdgo"
+
+//        println "llega params: $params"
+        params.nombre = "Código"
+        if (campos.find { it.campo == params.buscador }?.size() > 0) {
+            def op = operador.find { it.valor == params.operador }
+            println "op: $op"
+            sqlWhere += " and ${params.buscador} ${op.operador} ${op.strInicio}${params.criterio}${op.strFin}";
+        }
+        println "++sql: $sqlSelect $sqlWhere $sqlOrder".toString()
+        "$sqlSelect $sqlWhere $sqlOrder".toString()
+    }
+
+    def armaSqlEjecutadas(params) {
         def campos = reportesService.obrasContratadas()
         def operador = reportesService.operadores()
 
@@ -1177,39 +1201,15 @@ class Reportes4Controller {
 
         println "llega params: $params"
         params.nombre = "Código"
-        if(campos.find {it.campo == params.buscador}?.size() > 0) {
-            def op = operador.find {it.valor == params.operador}
+        if (campos.find { it.campo == params.buscador }?.size() > 0) {
+            def op = operador.find { it.valor == params.operador }
             sqlWhere += " and ${params.buscador} ${op.operador} ${op.strInicio}${params.criterio}${op.strFin}";
         }
 
         "$sqlSelect $sqlWhere $sqlOrder".toString()
     }
 
-    def armaSqlEjecutadas(params){
-        def campos = reportesService.obrasContratadas()
-        def operador = reportesService.operadores()
-
-        def sqlSelect = "select obra.obra__id, obracdgo, obranmbr, tpobdscr, obrafcha, cntnnmbr, parrnmbr, cmndnmbr, " +
-                "cntrmnto, dptodscr, cntrcdgo " +
-                "from obra, tpob, cntn, parr, cmnd, cncr, ofrt, cntr, dpto "
-        def sqlWhere = "where tpob.tpob__id = obra.tpob__id and cmnd.cmnd__id = obra.cmnd__id and " +
-                "parr.parr__id = obra.parr__id and cntn.cntn__id = parr.cntn__id  and " +
-                "cncr.obra__id = obra.obra__id and ofrt.cncr__id = cncr.cncr__id and " +
-                "cntr.ofrt__id = ofrt.ofrt__id and dpto.dpto__id = obra.dpto__id "
-
-        def sqlOrder = "order by obracdgo"
-
-        println "llega params: $params"
-        params.nombre = "Código"
-        if(campos.find {it.campo == params.buscador}?.size() > 0) {
-            def op = operador.find {it.valor == params.operador}
-            sqlWhere += " and ${params.buscador} ${op.operador} ${op.strInicio}${params.criterio}${op.strFin}";
-        }
-
-        "$sqlSelect $sqlWhere $sqlOrder".toString()
-    }
-
-    def reporteContratadas () {
+    def reporteContratadas() {
 
         def prmsHeaderHoja = [border: Color.WHITE]
         def prmsHeaderHoja2 = [border: Color.WHITE, colspan: 9]
@@ -1237,10 +1237,10 @@ class Reportes4Controller {
                             align : Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE]
         def prmsNum = [border: Color.WHITE, align: Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE]
 
-        def prms = [prmsHeaderHoja: prmsHeaderHoja, prmsHeader: prmsHeader, prmsHeader2: prmsHeader2,
-                    prmsCellHead: prmsCellHead, prmsCell: prmsCellCenter, prmsCellLeft: prmsCellLeft, prmsSubtotal: prmsSubtotal, prmsNum: prmsNum,
+        def prms = [prmsHeaderHoja : prmsHeaderHoja, prmsHeader: prmsHeader, prmsHeader2: prmsHeader2,
+                    prmsCellHead   : prmsCellHead, prmsCell: prmsCellCenter, prmsCellLeft: prmsCellLeft, prmsSubtotal: prmsSubtotal, prmsNum: prmsNum,
                     prmsHeaderHoja2: prmsHeaderHoja2, prmsCellRight: prmsCellRight, prmsCellHeadRight: prmsCellHeadRight, prmsCellHead2: prmsCellHead2,
-                    prmsCellRight2: prmsCellRight2, prmsCellRightTop: prmsCellRightTop, prmsCellRightBot: prmsCellRightBot]
+                    prmsCellRight2 : prmsCellRight2, prmsCellRightTop: prmsCellRightTop, prmsCellRightBot: prmsCellRightBot]
 
         def baos = new ByteArrayOutputStream()
         def name = "contratadas_" + new Date().format("ddMMyyyy_hhmm") + ".pdf";
@@ -1253,7 +1253,7 @@ class Reportes4Controller {
         Font times8boldWhite = new Font(Font.TIMES_ROMAN, 8, Font.BOLD)
         times8boldWhite.setColor(Color.WHITE)
         times10boldWhite.setColor(Color.WHITE)
-        def fonts = [times12bold: times12bold, times10bold: times10bold, times8bold: times8bold,
+        def fonts = [times12bold     : times12bold, times10bold: times10bold, times8bold: times8bold,
                      times10boldWhite: times10boldWhite, times8boldWhite: times8boldWhite, times8normal: times8normal, times18bold: times18bold]
 
         Document document
@@ -1299,7 +1299,7 @@ class Reportes4Controller {
         def nuevoRes = cn.rows(sql2)
         params.criterio = params.old
 
-        nuevoRes.eachWithIndex {i,j->
+        nuevoRes.eachWithIndex { i, j ->
 
             addCellTabla(tablaRegistradas, new Paragraph(i.obracdgo, times8normal), prmsCellLeft)
             addCellTabla(tablaRegistradas, new Paragraph(i.obranmbr, times8normal), prmsCellLeft)
@@ -1322,12 +1322,12 @@ class Reportes4Controller {
         response.getOutputStream().write(b)
     }
 
-    def aseguradoras () {
+    def aseguradoras() {
         def perfil = session.perfil.id
         return [perfil: perfil]
     }
 
-    def tablaAseguradoras () {
+    def tablaAseguradoras() {
 
         def obras = []
         def sql
@@ -1336,7 +1336,7 @@ class Reportes4Controller {
         params.old = params.criterio
         params.criterio = reportesService.limpiaCriterio(params.criterio)
 
-        def sqlBase =  "SELECT\n" +
+        def sqlBase = "SELECT\n" +
                 "  a.asgr__id    id,\n" +
                 "  a.asgrfaxx    fax, \n" +
                 "  a.asgrtelf    telefono,\n" +
@@ -1350,7 +1350,7 @@ class Reportes4Controller {
                 "  LEFT JOIN tpas t ON a.tpas__id = t.tpas__id\n"
 
         def filtroBuscador = ""
-        def buscador=""
+        def buscador = ""
 
         switch (params.buscador) {
             case "nmbr":
@@ -1358,8 +1358,8 @@ class Reportes4Controller {
             case "faxx":
             case "rspn":
             case "dire":
-                buscador = "asgr"+params.buscador
-                filtroBuscador =" where ${buscador} ILIKE ('%${params.criterio}%') "
+                buscador = "asgr" + params.buscador
+                filtroBuscador = " where ${buscador} ILIKE ('%${params.criterio}%') "
                 break;
             case "tipo":
                 filtroBuscador = " where t.tpasdscr ILIKE ('%${params.criterio}%') "
@@ -1371,17 +1371,17 @@ class Reportes4Controller {
         cn = dbConnectionService.getConnection()
         res = cn.rows(sql.toString())
 
-        return [obras: obras, res: res, params:params,]
+        return [obras: obras, res: res, params: params,]
     }
 
-    def reporteAseguradoras () {
+    def reporteAseguradoras() {
 
         def obras = []
         def sql
         def cn
         def res
 
-        def sqlBase =  "SELECT\n" +
+        def sqlBase = "SELECT\n" +
                 "  a.asgr__id    id,\n" +
                 "  a.asgrfaxx    fax, \n" +
                 "  a.asgrtelf    telefono,\n" +
@@ -1395,7 +1395,7 @@ class Reportes4Controller {
                 "  LEFT JOIN tpas t ON a.tpas__id = t.tpas__id\n"
 
         def filtroBuscador = ""
-        def buscador=""
+        def buscador = ""
 
         params.criterio = params.criterio.trim();
 
@@ -1444,8 +1444,8 @@ class Reportes4Controller {
             case "faxx":
             case "rspn":
             case "dire":
-                buscador = "asgr"+params.buscador
-                filtroBuscador =" where ${buscador} ILIKE ('%${params.criterio}%') "
+                buscador = "asgr" + params.buscador
+                filtroBuscador = " where ${buscador} ILIKE ('%${params.criterio}%') "
                 break;
             case "tipo":
                 filtroBuscador = " where t.tpasdscr ILIKE ('%${params.criterio}%') "
@@ -1506,12 +1506,12 @@ class Reportes4Controller {
         response.getOutputStream().write(b)
     }
 
-    def contratistas () {
+    def contratistas() {
         def perfil = session.perfil.id
         return [perfil: perfil]
     }
 
-    def tablaContratistas (){
+    def tablaContratistas() {
 
         def sql
         def cn
@@ -1519,7 +1519,7 @@ class Reportes4Controller {
         params.old = params.criterio
         params.criterio = reportesService.limpiaCriterio(params.criterio)
 
-        def sqlBase =  "SELECT\n" +
+        def sqlBase = "SELECT\n" +
                 "  p.prve__id    id,\n" +
                 "  p.prve_ruc    ruc, \n" +
                 "  p.prvesgla    sigla,\n" +
@@ -1536,19 +1536,19 @@ class Reportes4Controller {
                 "  p.prvefccn    fecha,\n" +
                 "  f.cntrfcsb    fechacontrato\n" +
                 "FROM prve p\n" +
-                "  LEFT JOIN espc e ON p.espc__id = e.espc__id\n"+
-                "  LEFT JOIN ofrt o ON p.prve__id = o.prve__id\n"+
+                "  LEFT JOIN espc e ON p.espc__id = e.espc__id\n" +
+                "  LEFT JOIN ofrt o ON p.prve__id = o.prve__id\n" +
                 "  LEFT JOIN cntr f ON o.ofrt__id = f.ofrt__id\n"
 
         def filtroBuscador = ""
-        def buscador=""
+        def buscador = ""
 
         switch (params.buscador) {
             case "cdgo":
             case "nmbr":
             case "_ruc":
-                buscador = "prve"+params.buscador
-                filtroBuscador =" where ${buscador} ILIKE ('%${params.criterio}%') "
+                buscador = "prve" + params.buscador
+                filtroBuscador = " where ${buscador} ILIKE ('%${params.criterio}%') "
                 break;
             case "espe":
                 filtroBuscador = " where e.espcdscr ILIKE ('%${params.criterio}%') "
@@ -1565,17 +1565,17 @@ class Reportes4Controller {
 //        println(sql)
 //        println(res)
 
-        return [res: res, params:params]
+        return [res: res, params: params]
 
     }
 
-    def reporteContratistas () {
+    def reporteContratistas() {
 
         def sql
         def cn
         def res
 
-        def sqlBase =  "SELECT\n" +
+        def sqlBase = "SELECT\n" +
                 "  p.prve__id    id,\n" +
                 "  p.prve_ruc    ruc, \n" +
                 "  p.prvesgla    sigla,\n" +
@@ -1592,12 +1592,12 @@ class Reportes4Controller {
                 "  p.prvefccn    fecha,\n" +
                 "  f.cntrfcsb    fechacontrato\n" +
                 "FROM prve p\n" +
-                "  LEFT JOIN espc e ON p.espc__id = e.espc__id\n"+
-                "  LEFT JOIN ofrt o ON p.prve__id = o.prve__id\n"+
+                "  LEFT JOIN espc e ON p.espc__id = e.espc__id\n" +
+                "  LEFT JOIN ofrt o ON p.prve__id = o.prve__id\n" +
                 "  LEFT JOIN cntr f ON o.ofrt__id = f.ofrt__id\n"
 
         def filtroBuscador = ""
-        def buscador=""
+        def buscador = ""
 
         params.criterio = params.criterio.trim();
 
@@ -1643,8 +1643,8 @@ class Reportes4Controller {
             case "cdgo":
             case "nmbr":
             case "_ruc":
-                buscador = "prve"+params.buscador
-                filtroBuscador =" where ${buscador} ILIKE ('%${params.criterio}%') "
+                buscador = "prve" + params.buscador
+                filtroBuscador = " where ${buscador} ILIKE ('%${params.criterio}%') "
                 break;
             case "espe":
                 filtroBuscador = " where e.espcdscr ILIKE ('%${params.criterio}%') "
@@ -1721,12 +1721,12 @@ class Reportes4Controller {
         response.getOutputStream().write(b)
     }
 
-    def contratos (){
+    def contratos() {
         def perfil = session.perfil.id
         return [perfil: perfil]
     }
 
-    def tablaContratos () {
+    def tablaContratos() {
 
         def sql
         def res
@@ -1735,7 +1735,7 @@ class Reportes4Controller {
         params.old = params.criterio
         params.criterio = reportesService.limpiaCriterio(params.criterio)
 
-        def sqlBase =  "SELECT\n" +
+        def sqlBase = "SELECT\n" +
                 "  c.cntr__id    id,\n" +
                 "  c.cntrcdgo    codigo, \n" +
                 "  c.cntrmemo    memo,\n" +
@@ -1744,7 +1744,7 @@ class Reportes4Controller {
                 "  o.obracdgo    obracodigo,\n" +
                 "  o.obratipo     tipo,\n" +
                 "  o.obranmbr    obranombre,\n" +
-                "  k.dptocdgo    codigodepar,\n"+
+                "  k.dptocdgo    codigodepar,\n" +
                 "  n.cntnnmbr    canton,\n" +
                 "  p.parrnmbr    parroquia,\n" +
                 "  t.tpobdscr    tipoobra,\n" +
@@ -1778,8 +1778,8 @@ class Reportes4Controller {
             case "cdgo":
             case "memo":
             case "ofsl":
-                buscador = "cntr"+params.buscador
-                filtroBuscador =" where ${buscador} ILIKE ('%${params.criterio}%') "
+                buscador = "cntr" + params.buscador
+                filtroBuscador = " where ${buscador} ILIKE ('%${params.criterio}%') "
                 break;
             case "mnto":
                 filtroBuscador = " where c.cntrmnto= '${params.criterio}' "
@@ -1813,9 +1813,9 @@ class Reportes4Controller {
                 break;
             case "inic":
 
-                if(params.fecha){
+                if (params.fecha) {
 
-                    def fecha =new Date().parse("dd-MM-yyyy", params.fecha)
+                    def fecha = new Date().parse("dd-MM-yyyy", params.fecha)
                     params.fecha = fecha
                     def dia = formatDate(date: fecha, format: "yyyy-MM-dd")
                     filtroBuscador = " where b.prinfcin= '${dia}' "
@@ -1823,9 +1823,9 @@ class Reportes4Controller {
 
                 break;
             case "fin":
-                if(params.fecha){
+                if (params.fecha) {
 
-                    def fecha =new Date().parse("dd-MM-yyyy", params.fecha)
+                    def fecha = new Date().parse("dd-MM-yyyy", params.fecha)
                     params.fecha = fecha
                     def dia = formatDate(date: fecha, format: "yyyy-MM-dd")
                     filtroBuscador = " where b.prinfcfn= '${dia}' "
@@ -1834,9 +1834,9 @@ class Reportes4Controller {
                 break;
             case "fcsb":
 
-                if(params.fecha){
+                if (params.fecha) {
 
-                    def fecha =new Date().parse("dd-MM-yyyy", params.fecha)
+                    def fecha = new Date().parse("dd-MM-yyyy", params.fecha)
                     params.fecha = fecha
                     def dia = formatDate(date: fecha, format: "yyyy-MM-dd")
                     filtroBuscador = " where c.cntrfcsb= '${dia}' "
@@ -1853,22 +1853,22 @@ class Reportes4Controller {
 
         def obrasFiltradas = []
 
-        res.each{
-            if(it.codigodepar == 'CRFC' || it.tipo == 'D'){
+        res.each {
+            if (it.codigodepar == 'CRFC' || it.tipo == 'D') {
                 obrasFiltradas += it
             }
         }
 
-        return [res: res, params:params]
+        return [res: res, params: params]
     }
 
-    def reporteContratos () {
+    def reporteContratos() {
 
         def sql
         def cn
         def res
 
-        def sqlBase =  "SELECT\n" +
+        def sqlBase = "SELECT\n" +
                 "  c.cntr__id    id,\n" +
                 "  c.cntrcdgo    codigo, \n" +
                 "  c.cntrmemo    memo,\n" +
@@ -1975,7 +1975,7 @@ class Reportes4Controller {
 
         PdfPTable tablaRegistradas = new PdfPTable(11);
         tablaRegistradas.setWidthPercentage(100);
-        tablaRegistradas.setWidths(arregloEnteros([14, 14,15, 15,30, 25,15, 20, 15, 10, 15]))
+        tablaRegistradas.setWidths(arregloEnteros([14, 14, 15, 15, 30, 25, 15, 20, 15, 10, 15]))
 
         addCellTabla(tablaRegistradas, new Paragraph("N° Contrato", times8bold), prmsCellHead2)
         addCellTabla(tablaRegistradas, new Paragraph("Fecha Suscripcion", times8bold), prmsCellHead2)
@@ -1993,8 +1993,8 @@ class Reportes4Controller {
             case "cdgo":
             case "memo":
             case "ofsl":
-                buscador = "cntr"+params.buscador
-                filtroBuscador =" where ${buscador} ILIKE ('%${params.criterio}%') "
+                buscador = "cntr" + params.buscador
+                filtroBuscador = " where ${buscador} ILIKE ('%${params.criterio}%') "
                 break;
             case "cncr":
                 filtroBuscador = " where r.cncrcdgo ILIKE ('%${params.criterio}%') "
@@ -2027,24 +2027,24 @@ class Reportes4Controller {
                 filtroBuscador = " where z.tppzdscr ILIKE ('%${params.criterio}%') "
                 break;
             case "inic":
-                if(params.fecha){
-                    def fecha =new Date().parse("dd-MM-yyyy", params.fecha)
+                if (params.fecha) {
+                    def fecha = new Date().parse("dd-MM-yyyy", params.fecha)
                     params.fecha = fecha
                     def dia = formatDate(date: fecha, format: "yyyy-MM-dd")
                     filtroBuscador = " where b.prinfcin= '${dia}' "
                 }
                 break;
             case "fin":
-                if(params.fecha){
-                    def fecha =new Date().parse("dd-MM-yyyy", params.fecha)
+                if (params.fecha) {
+                    def fecha = new Date().parse("dd-MM-yyyy", params.fecha)
                     params.fecha = fecha
                     def dia = formatDate(date: fecha, format: "yyyy-MM-dd")
                     filtroBuscador = " where b.prinfcfn= '${dia}' "
                 }
                 break;
             case "fcsb":
-                if(params.fecha){
-                    def fecha =new Date().parse("dd-MM-yyyy", params.fecha)
+                if (params.fecha) {
+                    def fecha = new Date().parse("dd-MM-yyyy", params.fecha)
                     params.fecha = fecha
                     def dia = formatDate(date: fecha, format: "yyyy-MM-dd")
                     filtroBuscador = " where c.cntrfcsb= '${dia}' "
@@ -2056,7 +2056,7 @@ class Reportes4Controller {
         cn = dbConnectionService.getConnection()
         res = cn.rows(sql.toString())
 
-        res.eachWithIndex {i,j->
+        res.eachWithIndex { i, j ->
             addCellTabla(tablaRegistradas, new Paragraph(i.codigo, times8normal), prmsCellLeft)
             addCellTabla(tablaRegistradas, new Paragraph(i.fechasu?.format("dd-MM-yyyy"), times8normal), prmsCellLeft)
             addCellTabla(tablaRegistradas, new Paragraph(i.concurso, times8normal), prmsCellLeft)
@@ -2083,12 +2083,12 @@ class Reportes4Controller {
         response.getOutputStream().write(b)
     }
 
-    def garantias () {
+    def garantias() {
         def perfil = session.perfil.id
         return [perfil: perfil]
     }
 
-    def tablaGarantias () {
+    def tablaGarantias() {
         println(params)
         def sql
         def res
@@ -2097,7 +2097,7 @@ class Reportes4Controller {
         params.old = params.criterio
         params.criterio = reportesService.limpiaCriterio(params.criterio)
 
-        def sqlBase =  "SELECT\n" +
+        def sqlBase = "SELECT\n" +
                 "  g.grnt__id    id,\n" +
                 "  g.grntcdgo    codigo, \n" +
                 "  g.grntnmrv    renovacion,\n" +
@@ -2131,8 +2131,8 @@ class Reportes4Controller {
             case "etdo":
 //            case "mnto":
             case "dias":
-                buscador = "grnt"+params.buscador
-                filtroBuscador =" where ${buscador} ILIKE ('%${params.criterio}%') "
+                buscador = "grnt" + params.buscador
+                filtroBuscador = " where ${buscador} ILIKE ('%${params.criterio}%') "
                 break;
             case "contrato":
                 filtroBuscador = " where c.cntrcdgo ILIKE ('%${params.criterio}%') "
@@ -2154,32 +2154,32 @@ class Reportes4Controller {
                 filtroBuscador = " where m.mndacdgo ILIKE ('%${params.criterio}%') "
                 break;
             case "mnto":
-                if(!params.criterio){
-                    params.criterio=-5
+                if (!params.criterio) {
+                    params.criterio = -5
                 }
                 try {
                     filtroBuscador = " where g.grntmnto=${params.criterio.trim().toDouble()} "
-                } catch(e) {
-                    println "error: "+params.criterio
+                } catch (e) {
+                    println "error: " + params.criterio
                     println e
-                    params.criterio=-5
+                    params.criterio = -5
                     filtroBuscador = " where g.grntmnto=-5"
                 }
                 break;
             case "nmrv":
-                if(!params.criterio){
-                    params.criterio=0
+                if (!params.criterio) {
+                    params.criterio = 0
                 }
 
-                filtroBuscador =" where g.grntnmrv = ${params.criterio} "
+                filtroBuscador = " where g.grntnmrv = ${params.criterio} "
                 break;
             case "fcin":
 
-                if(params.fecha){
+                if (params.fecha) {
 
 //                    println("---->>>>****" + params.fecha)
 
-                    def fecha =new Date().parse("dd-MM-yyyy", params.fecha)
+                    def fecha = new Date().parse("dd-MM-yyyy", params.fecha)
                     params.fecha = fecha
 //                    println("---->>>>" + params.fecha)
                     def dia = formatDate(date: fecha, format: "yyyy-MM-dd")
@@ -2190,11 +2190,11 @@ class Reportes4Controller {
 
             case "fcfn":
 
-                if(params.fecha){
+                if (params.fecha) {
 
 //                    println("---->>>>****" + params.fecha)
 
-                    def fecha =new Date().parse("dd-MM-yyyy", params.fecha)
+                    def fecha = new Date().parse("dd-MM-yyyy", params.fecha)
                     params.fecha = fecha
 //                    println("---->>>>" + params.fecha)
                     def dia = formatDate(date: fecha, format: "yyyy-MM-dd")
@@ -2210,16 +2210,16 @@ class Reportes4Controller {
         sql = sqlBase + filtroBuscador
         cn = dbConnectionService.getConnection()
         res = cn.rows(sql.toString())
-        return [res: res, params:params]
+        return [res: res, params: params]
     }
 
-    def reporteGarantias () {
+    def reporteGarantias() {
 
         def sql
         def res
         def cn
 
-        def sqlBase =  "SELECT\n" +
+        def sqlBase = "SELECT\n" +
                 "  g.grnt__id    id,\n" +
                 "  g.grntcdgo    codigo, \n" +
                 "  g.grntnmrv    renovacion,\n" +
@@ -2292,7 +2292,7 @@ class Reportes4Controller {
 
         PdfPTable tablaRegistradas = new PdfPTable(13);
         tablaRegistradas.setWidthPercentage(100);
-        tablaRegistradas.setWidths(arregloEnteros([15, 30, 25, 20, 8, 30, 15, 9, 20,15,15,12,10]))
+        tablaRegistradas.setWidths(arregloEnteros([15, 30, 25, 20, 8, 30, 15, 9, 20, 15, 15, 12, 10]))
 
         addCellTabla(tablaRegistradas, new Paragraph("N° Contrato", times8bold), prmsCellHead2)
         addCellTabla(tablaRegistradas, new Paragraph("Contratista", times8bold), prmsCellHead2)
@@ -2313,8 +2313,8 @@ class Reportes4Controller {
             case "etdo":
             case "mnto":
             case "dias":
-                buscador = "grnt"+params.buscador
-                filtroBuscador =" where ${buscador} ILIKE ('%${params.criterio}%') "
+                buscador = "grnt" + params.buscador
+                filtroBuscador = " where ${buscador} ILIKE ('%${params.criterio}%') "
                 break;
             case "contrato":
                 filtroBuscador = " where c.cntrcdgo ILIKE ('%${params.criterio}%') "
@@ -2335,14 +2335,14 @@ class Reportes4Controller {
                 filtroBuscador = " where m.mndacdgo ILIKE ('%${params.criterio}%') "
                 break;
             case "nmrv":
-                if(!params.criterio){
-                    params.criterio=0
+                if (!params.criterio) {
+                    params.criterio = 0
                 }
-                filtroBuscador =" where g.grntnmrv = ${params.criterio} "
+                filtroBuscador = " where g.grntnmrv = ${params.criterio} "
                 break;
             case "fcin":
-                if(params.fecha){
-                    def fecha =new Date().parse("dd-MM-yyyy", params.fecha)
+                if (params.fecha) {
+                    def fecha = new Date().parse("dd-MM-yyyy", params.fecha)
                     params.fecha = fecha
                     def dia = formatDate(date: fecha, format: "yyyy-MM-dd")
                     filtroBuscador = " where g.grntfcin = '${dia}' "
@@ -2350,8 +2350,8 @@ class Reportes4Controller {
 
                 break;
             case "fcfn":
-                if(params.fecha){
-                    def fecha =new Date().parse("dd-MM-yyyy", params.fecha)
+                if (params.fecha) {
+                    def fecha = new Date().parse("dd-MM-yyyy", params.fecha)
                     params.fecha = fecha
                     def dia = formatDate(date: fecha, format: "yyyy-MM-dd")
                     filtroBuscador = " where g.grntfcfn= '${dia}' "
@@ -2363,7 +2363,7 @@ class Reportes4Controller {
         cn = dbConnectionService.getConnection()
         res = cn.rows(sql.toString())
 
-        res.eachWithIndex {i,j->
+        res.eachWithIndex { i, j ->
             addCellTabla(tablaRegistradas, new Paragraph(i.codigocontrato, times8normal), prmsCellLeft)
             addCellTabla(tablaRegistradas, new Paragraph(i.contratista, times8normal), prmsCellLeft)
             addCellTabla(tablaRegistradas, new Paragraph(i.tipogarantia, times8normal), prmsCellLeft)
@@ -2378,7 +2378,7 @@ class Reportes4Controller {
             addCellTabla(tablaRegistradas, new Paragraph(g.formatDate(date: i.emision, format: "dd-MM-yyyy"), times8normal), prmsCellLeft)
             addCellTabla(tablaRegistradas, new Paragraph(g.formatDate(date: i.vencimiento, format: "dd-MM-yyyy"), times8normal), prmsCellLeft)
             addCellTabla(tablaRegistradas, new Paragraph(g.formatNumber(number: i.dias, minFractionDigits:
-                    0, maxFractionDigits: 0, format: "##,##0", locale: "ec")+ " Días", times8normal), prmsCellRight)
+                    0, maxFractionDigits: 0, format: "##,##0", locale: "ec") + " Días", times8normal), prmsCellRight)
             addCellTabla(tablaRegistradas, new Paragraph(i.moneda, times8normal), prmsCellLeft)
         }
 
@@ -2392,14 +2392,14 @@ class Reportes4Controller {
         response.getOutputStream().write(b)
     }
 
-    def presupuestadas () {
+    def presupuestadas() {
         def perfil = session.perfil.id
         return [perfil: perfil]
         def campos = ["codigo": ["Código", "string"], "nombre": ["Nombre", "string"], "descripcion": ["Descripción", "string"], "oficioIngreso": ["Memo ingreso", "string"], "oficioSalida": ["Memo salida", "string"], "sitio": ["Sitio", "string"], "plazoEjecucionMeses": ["Plazo", "number"], "parroquia": ["Parroquia", "string"], "comunidad": ["Comunidad", "string"], "departamento": ["Dirección", "string"], "fechaCreacionObra": ["Fecha", "date"]]
-        [campos:campos]
+        [campos: campos]
     }
 
-    def buscarObraPre(){
+    def buscarObraPre() {
         println "buscar obra pre"
         def extraParr = ""
         def extraCom = ""
@@ -2543,13 +2543,13 @@ class Reportes4Controller {
         }
     }
 
-    def reporteExcelItemsVae () {
+    def reporteExcelItemsVae() {
 
         def sql
         def cn
         def res
 
-        def fecha =new Date().parse("dd-MM-yyyy", params.fecha)
+        def fecha = new Date().parse("dd-MM-yyyy", params.fecha)
 
         fecha = fecha.format("yyyy/MM/dd")
 
@@ -2604,10 +2604,10 @@ class Reportes4Controller {
         label = new Label(4, 4, "VAE", times16format); sheet.addCell(label);
         label = new Label(5, 4, "Valor", times16format); sheet.addCell(label);
 
-        res.eachWithIndex {i, j->
+        res.eachWithIndex { i, j ->
             label = new Label(0, fila, i?.itemcdgo?.toString()); sheet.addCell(label);
             label = new Label(1, fila, i?.itemnmbr?.toString()); sheet.addCell(label);
-            label = new Label(2, fila,  Item.get(i?.item__id)?.codigoComprasPublicas?.numero?.toString()); sheet.addCell(label);
+            label = new Label(2, fila, Item.get(i?.item__id)?.codigoComprasPublicas?.numero?.toString()); sheet.addCell(label);
             label = new Label(3, fila, i?.unddcdgo?.toString()); sheet.addCell(label);
             label = new Label(4, fila, i?.item_vae?.toString()); sheet.addCell(label);
             number = new jxl.write.Number(5, fila, i?.itvapcnt ?: 0); sheet.addCell(number);
@@ -2622,15 +2622,15 @@ class Reportes4Controller {
         output.write(file.getBytes());
     }
 
-    def ingresadas () {
+    def ingresadas() {
 
     }
 
-    def tablaIngresadas () {
+    def tablaIngresadas() {
 
     }
 
-    def tablaProcesos (){
+    def tablaProcesos() {
         def campos = ['cncrcdgo', 'cncrobjt', 'obranmbr', 'cncrnmct']
         def cn = dbConnectionService.getConnection()
         def sql = "select cncrcdgo, cncrobjt, obracdgo, obranmbr, cncrprrf, cncretdo, cncrnmct, cncrfcad " +
@@ -2643,7 +2643,7 @@ class Reportes4Controller {
         return [data: obras, params: params]
     }
 
-    def reporteProcesosContratacion () {
+    def reporteProcesosContratacion() {
 
         def cn = dbConnectionService.getConnection()
         def campos = ['cncrcdgo', 'cncrobjt', 'obranmbr', 'cncrnmct']
@@ -2695,7 +2695,7 @@ class Reportes4Controller {
 
         PdfPTable tablaRegistradas = new PdfPTable(8);
         tablaRegistradas.setWidthPercentage(100);
-        tablaRegistradas.setWidths(arregloEnteros([7, 7, 28, 26, 10, 7, 5,9]))
+        tablaRegistradas.setWidths(arregloEnteros([7, 7, 28, 26, 10, 7, 5, 9]))
 
         addCellTabla(tablaRegistradas, new Paragraph("Código", times8bold), prmsCellHead2)
         addCellTabla(tablaRegistradas, new Paragraph("Fecha de Adjudicación", times8bold), prmsCellHead2)
@@ -2706,7 +2706,7 @@ class Reportes4Controller {
         addCellTabla(tablaRegistradas, new Paragraph("Estado", times8bold), prmsCellHead2)
         addCellTabla(tablaRegistradas, new Paragraph("Certificación Presupuestaria", times8bold), prmsCellHead2)
 
-        obras.eachWithIndex {i,j->
+        obras.eachWithIndex { i, j ->
             addCellTabla(tablaRegistradas, new Paragraph(i.cncrcdgo, times8normal), prmsCellLeft)
             addCellTabla(tablaRegistradas, new Paragraph(i?.cncrfcad?.format("dd-MM-yyyy"), times8normal), prmsCellLeft)
             addCellTabla(tablaRegistradas, new Paragraph(i.cncrobjt, times8normal), prmsCellLeft)
