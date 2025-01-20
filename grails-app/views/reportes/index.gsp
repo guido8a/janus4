@@ -94,19 +94,7 @@
                 Listado de obras que se encuentran contratadas
             </li>
 
-            <li text="obrasus" class="item" texto="obrasus">
-                <g:link controller="reportes4" action="suspendidas" class="btn btn-primary btn-xs" style="color: #FFFDF4">
-                    <i class="fa fa-print"></i> Obras suspendidas:
-                </g:link>
-                Listado de obras que se encuentran suspendidas
-            </li>
 
-            <li text="obraeje" class="item" texto="obraeje">
-                <g:link controller="reportes4" action="ejecutadas" class="btn btn-primary btn-xs" style="color: #FFFDF4">
-                    <i class="fa fa-print"></i> Obras en ejecución:
-                </g:link>
-                Listado de obras que se encuentran en ejecución
-            </li>
 
             <li text="cntr" class="item" texto="cntr">
                 <g:link controller="reportes4" action="contratos" class="btn btn-primary btn-xs" style="color: #FFFDF4">
@@ -147,6 +135,13 @@
                 </g:link>
                 Listado de obras con el respectivo porcentaje de avance.
             </li>
+            <li text="obrasus" class="item" texto="obrasus">
+                <g:link controller="reportes4" action="suspendidas" class="btn btn-primary btn-xs" style="color: #FFFDF4">
+                    <i class="fa fa-print"></i> Obras suspendidas:
+                </g:link>
+                Listado de obras que se encuentran suspendidas
+            </li>
+
             <li text="obfn" class="item" texto="obfn">
                 <g:link controller="obra" action="obrasFinalizadas" file="" class="btn btn-primary btn-xs" style="color: #FFFDF4" dialog="dlgVentas">
                     <i class="fa fa-print"></i> Obras finalizadas:
