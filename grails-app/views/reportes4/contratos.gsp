@@ -18,24 +18,35 @@
         Regresar
     </a>
 
-    <div class="col-md-3">
+    <div class="col-md-2" style="align-items: center; margin-top: 13px">
         <b>Buscar Por: </b>
-        <g:select name="buscador" from="${['cdgo':'N° Contrato', 'memo': 'Memo', 'fcsb': 'Fecha Suscrip', 'tipo': 'Tipo Contrato', 'cncr': 'Concurso',
+        <g:select name="buscador"
+                  from="${['cdgo':'N° Contrato', 'memo': 'Memo', 'fcsb': 'Fecha Suscrip', 'tipo': 'Tipo Contrato', 'cncr': 'Concurso',
                                            'obra':'Obra', 'nmbr': 'Nombre', 'cntn':'Cantón', 'parr': 'Parroquia', 'clas':'Clase', 'mnto': 'Monto', 'cont': 'Contratista',
                                            'tppz':'Tipo Plazo', 'inic':'Fecha Inicio', 'fin':'Fecha Fin']}" value="${params.buscador}"
-                  optionKey="key" optionValue="value" id="buscador_tra" style="width: 150px"/>
+                  optionKey="key" optionValue="value" id="buscador_tra" />
     </div>
 
-    <div class="col-md-4 hide" id="divFecha">
+    <div class="col-md-2 hide" id="divFecha">
         <b>Fecha: </b>
         <input aria-label="" name="fecha_tra" id='fecha_tra' type='text' class="input-small" value="${params.fecha?.format("dd-MM-yyyy")}" />
     </div>
-    <div class="col-md-4" id="divCriterio">
+    <div class="col-md-2" id="divCriterio">
         <b>Criterio: </b>
-        <g:textField name="criterio" id="criterio_tra" value="${params.criterio}" style="width: 250px;"/>
+        <g:textField name="criterio" id="criterio_tra" value="${params.criterio}" style="width: 150px;"/>
     </div>
 
-    <div>
+    <div class="col-md-2" style="align-items: center;">
+        <b style="margin-left: 20px">Fecha Inicio: </b>
+        <input aria-label="" name="fechaInicio_name" id='fechaInicio' type='text' class=""  />
+    </div>
+
+    <div class="col-md-2" style="align-items: center;">
+        <b style="margin-left: 20px">Fecha Fin: </b>
+        <input aria-label="" name="fechaFin_name" id='fechaFin' type='text' class=""  />
+    </div>
+
+    <div class="col-md-3">
         <a href="#" class="btn btn-success" id="buscar">
             <i class="fa fa-search"></i>
             Buscar
@@ -103,6 +114,14 @@
 </div>
 
 <script type="text/javascript">
+
+    $('#fechaInicio, #fechaFin').datetimepicker({
+        locale: 'es',
+        format: 'DD-MM-YYYY',
+        sideBySide: true,
+        icons: {
+        }
+    });
 
     $("#regresar").click(function () {
         location.href = "${g.createLink(controller: 'reportes', action: 'index')}"
