@@ -1099,6 +1099,40 @@ class Reportes4Controller {
         return [obras: obras, params: params]
     }
 
+    def suspendidas () {
+    }
+
+    def tablaSuspendidas () {
+        def cn = dbConnectionService.getConnection()
+        def campos = reportesService.obrasContratadas()
+
+        params.old = params.criterio
+        params.criterio = reportesService.limpiaCriterio(params.criterio)
+
+        def sql = armaSqlSuspendidas(params)
+        def obras = cn.rows(sql)
+
+        params.criterio = params.old
+        return [obras: obras, params: params]
+    }
+
+    def ejecutadas() {
+    }
+
+    def tablaEjecutadas () {
+        def cn = dbConnectionService.getConnection()
+        def campos = reportesService.obrasContratadas()
+
+        params.old = params.criterio
+        params.criterio = reportesService.limpiaCriterio(params.criterio)
+
+        def sql = armaSqlEjecutadas(params)
+        def obras = cn.rows(sql)
+
+        params.criterio = params.old
+        return [obras: obras, params: params]
+    }
+
     def armaSqlContratadas(params){
         def campos = reportesService.obrasContratadas()
         def operador = reportesService.operadores()
@@ -1127,6 +1161,53 @@ class Reportes4Controller {
         "$sqlSelect $sqlWhere $sqlOrder".toString()
     }
 
+    def armaSqlSuspendidas(params){
+        def campos = reportesService.obrasContratadas()
+        def operador = reportesService.operadores()
+
+        def sqlSelect = "select obra.obra__id, obracdgo, obranmbr, tpobdscr, obrafcha, cntnnmbr, parrnmbr, cmndnmbr, " +
+                "cntrmnto, dptodscr, cntrcdgo " +
+                "from obra, tpob, cntn, parr, cmnd, cncr, ofrt, cntr, dpto "
+        def sqlWhere = "where tpob.tpob__id = obra.tpob__id and cmnd.cmnd__id = obra.cmnd__id and " +
+                "parr.parr__id = obra.parr__id and cntn.cntn__id = parr.cntn__id  and " +
+                "cncr.obra__id = obra.obra__id and ofrt.cncr__id = cncr.cncr__id and " +
+                "cntr.ofrt__id = ofrt.ofrt__id and dpto.dpto__id = obra.dpto__id "
+
+        def sqlOrder = "order by obracdgo"
+
+        println "llega params: $params"
+        params.nombre = "Código"
+        if(campos.find {it.campo == params.buscador}?.size() > 0) {
+            def op = operador.find {it.valor == params.operador}
+            sqlWhere += " and ${params.buscador} ${op.operador} ${op.strInicio}${params.criterio}${op.strFin}";
+        }
+
+        "$sqlSelect $sqlWhere $sqlOrder".toString()
+    }
+
+    def armaSqlEjecutadas(params){
+        def campos = reportesService.obrasContratadas()
+        def operador = reportesService.operadores()
+
+        def sqlSelect = "select obra.obra__id, obracdgo, obranmbr, tpobdscr, obrafcha, cntnnmbr, parrnmbr, cmndnmbr, " +
+                "cntrmnto, dptodscr, cntrcdgo " +
+                "from obra, tpob, cntn, parr, cmnd, cncr, ofrt, cntr, dpto "
+        def sqlWhere = "where tpob.tpob__id = obra.tpob__id and cmnd.cmnd__id = obra.cmnd__id and " +
+                "parr.parr__id = obra.parr__id and cntn.cntn__id = parr.cntn__id  and " +
+                "cncr.obra__id = obra.obra__id and ofrt.cncr__id = cncr.cncr__id and " +
+                "cntr.ofrt__id = ofrt.ofrt__id and dpto.dpto__id = obra.dpto__id "
+
+        def sqlOrder = "order by obracdgo"
+
+        println "llega params: $params"
+        params.nombre = "Código"
+        if(campos.find {it.campo == params.buscador}?.size() > 0) {
+            def op = operador.find {it.valor == params.operador}
+            sqlWhere += " and ${params.buscador} ${op.operador} ${op.strInicio}${params.criterio}${op.strFin}";
+        }
+
+        "$sqlSelect $sqlWhere $sqlOrder".toString()
+    }
 
     def reporteContratadas () {
 

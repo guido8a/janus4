@@ -94,6 +94,20 @@
                 Listado de obras que se encuentran contratadas
             </li>
 
+            <li text="obrasus" class="item" texto="obrasus">
+                <g:link controller="reportes4" action="suspendidas" class="btn btn-primary btn-xs" style="color: #FFFDF4">
+                    <i class="fa fa-print"></i> Obras suspendidas:
+                </g:link>
+                Listado de obras que se encuentran suspendidas
+            </li>
+
+            <li text="obraeje" class="item" texto="obraeje">
+                <g:link controller="reportes4" action="ejecutadas" class="btn btn-primary btn-xs" style="color: #FFFDF4">
+                    <i class="fa fa-print"></i> Obras en ejecución:
+                </g:link>
+                Listado de obras que se encuentran en ejecución
+            </li>
+
             <li text="cntr" class="item" texto="cntr">
                 <g:link controller="reportes4" action="contratos" class="btn btn-primary btn-xs" style="color: #FFFDF4">
                     <i class="fa fa-print"></i> Contratos:
@@ -140,8 +154,8 @@
                 Listado de obras finalizadas.
             </li>
             <li text="cnfc" class="item" texto="cnfc">
-                <g:link controller="reportesExcel" style="color: #FFFDF4" action="contratoFechas" file="" class="btn btn-primary btn-xs">
-                    <i class="fa fa-print"></i> Detalle de Contratos y Obras contratadas
+                <g:link controller="reportesExcel" style="color: #FFFDF4" action="contratoFechas" file="" class="btn btn-warning btn-xs">
+                    <i class="fa fa-print"></i> Detalle de Contratos <br> y Obras contratadas
                 </g:link>
                 Reporte en Excel de los contratos y obras contratadas inluyendo valores planillados y fechas de las actas
             </li>
