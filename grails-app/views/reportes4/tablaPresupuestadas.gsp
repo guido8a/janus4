@@ -20,73 +20,73 @@
 
 <script type="text/javascript">
 
-    var checkeados = [];
+    %{--var checkeados = [];--}%
 
-    $("#buscar").click(function(){
-        var c = cargarLoader("Cargando...");
-        var datos = "si=${"si"}&buscador=" + $("#buscador_con").val() + "&criterio=" + $("#criterio_con").val() +
-            "&operador=" + $("#oprd").val();
-        $.ajax({
-            type : "POST",
-            url : "${g.createLink(controller: 'reportes4',action:'tablaPresupuestadas')}",
-            data     : datos,
-            success  : function (msg) {
-                c.modal("hide");
-                $("#detalle").html(msg)
-            }
-        });
-    });
+    %{--$("#buscar").click(function(){--}%
+    %{--    var c = cargarLoader("Cargando...");--}%
+    %{--    var datos = "si=${"si"}&buscador=" + $("#buscador_con").val() + "&criterio=" + $("#criterio_con").val() +--}%
+    %{--        "&operador=" + $("#oprd").val();--}%
+    %{--    $.ajax({--}%
+    %{--        type : "POST",--}%
+    %{--        url : "${g.createLink(controller: 'reportes4',action:'tablaPresupuestadas')}",--}%
+    %{--        data     : datos,--}%
+    %{--        success  : function (msg) {--}%
+    %{--            c.modal("hide");--}%
+    %{--            $("#detalle").html(msg)--}%
+    %{--        }--}%
+    %{--    });--}%
+    %{--});--}%
 
-    $("#regresar").click(function () {
-        location.href = "${g.createLink(controller: 'reportes', action: 'index')}"
-    });
+    %{--$("#regresar").click(function () {--}%
+    %{--    location.href = "${g.createLink(controller: 'reportes', action: 'index')}"--}%
+    %{--});--}%
 
-    $("#imprimir").click(function () {
-        location.href = "${g.createLink(controller: 'reportes4', action:'reportePresupuestadas' )}?buscador=" + $("#buscador_con").val() + "&criterio=" + $("#criterio_con").val() + "&operador=" + $("#oprd").val()
-    });
+    %{--$("#imprimir").click(function () {--}%
+    %{--    location.href = "${g.createLink(controller: 'reportes4', action:'reportePresupuestadas' )}?buscador=" + $("#buscador_con").val() + "&criterio=" + $("#criterio_con").val() + "&operador=" + $("#oprd").val()--}%
+    %{--});--}%
 
-    $("#excel").click(function () {
-        location.href = "${g.createLink(controller: 'reportesExcel', action:'reporteExcelPresupuestadas' )}?buscador=" + $("#buscador_con").val() + "&criterio=" + $("#criterio_con").val() + "&operador=" + $("#oprd").val()
-    });
+    %{--$("#excel").click(function () {--}%
+    %{--    location.href = "${g.createLink(controller: 'reportesExcel', action:'reporteExcelPresupuestadas' )}?buscador=" + $("#buscador_con").val() + "&criterio=" + $("#criterio_con").val() + "&operador=" + $("#oprd").val()--}%
+    %{--});--}%
 
-    $("#buscador_con").change(function(){
-        var anterior = "${params.operador}";
-        var opciones = $(this).find("option:selected").attr("class").split(",");
-        poneOperadores(opciones);
-        /* regresa a la opción seleccionada */
-        // $("#oprd option[value=" + anterior + "]").prop('selected', true);
-    });
+    %{--$("#buscador_con").change(function(){--}%
+    %{--    var anterior = "${params.operador}";--}%
+    %{--    var opciones = $(this).find("option:selected").attr("class").split(",");--}%
+    %{--    poneOperadores(opciones);--}%
+    %{--    /* regresa a la opción seleccionada */--}%
+    %{--    // $("#oprd option[value=" + anterior + "]").prop('selected', true);--}%
+    %{--});--}%
 
 
-    function poneOperadores (opcn) {
-        var $sel = $("<select name='operador' id='oprd' style='width: 160px'}>");
-        for(var i=0; i<opcn.length; i++) {
-            var opt = opcn[i].split(":");
-            var $opt = $("<option value='"+opt[0]+"'>"+opt[1]+"</option>");
-            $sel.append($opt);
-        }
-        $("#selOpt").html($sel);
-    }
+    %{--function poneOperadores (opcn) {--}%
+    %{--    var $sel = $("<select name='operador' id='oprd' style='width: 160px'}>");--}%
+    %{--    for(var i=0; i<opcn.length; i++) {--}%
+    %{--        var opt = opcn[i].split(":");--}%
+    %{--        var $opt = $("<option value='"+opt[0]+"'>"+opt[1]+"</option>");--}%
+    %{--        $sel.append($opt);--}%
+    %{--    }--}%
+    %{--    $("#selOpt").html($sel);--}%
+    %{--}--}%
 
-    /* inicializa el select de oprd con la primea opción de busacdor */
-    $( document ).ready(function() {
-        $("#buscador_con").change();
-    });
+    %{--/* inicializa el select de oprd con la primea opción de busacdor */--}%
+    %{--$( document ).ready(function() {--}%
+    %{--    $("#buscador_con").change();--}%
+    %{--});--}%
 
-    $.contextMenu({
-        selector: '.obra_row',
-        callback: function (key, options) {
+    %{--$.contextMenu({--}%
+    %{--    selector: '.obra_row',--}%
+    %{--    callback: function (key, options) {--}%
 
-            var m = "clicked: " + $(this).attr("id");
-            var idFila = $(this).attr("id");
+    %{--        var m = "clicked: " + $(this).attr("id");--}%
+    %{--        var idFila = $(this).attr("id");--}%
 
-            if(key === "registro"){
-                location.href = "${g.createLink(controller: 'obra', action: 'registroObra')}" + "?obra=" + idFila;
-            }
-        },
-        items: {
-            "registro": {name: "Ir al Registro de esta Obra", icon:"info"}
-        }
-    });
+    %{--        if(key === "registro"){--}%
+    %{--            location.href = "${g.createLink(controller: 'obra', action: 'registroObra')}" + "?obra=" + idFila;--}%
+    %{--        }--}%
+    %{--    },--}%
+    %{--    items: {--}%
+    %{--        "registro": {name: "Ir al Registro de esta Obra", icon:"info"}--}%
+    %{--    }--}%
+    %{--});--}%
 
 </script>

@@ -12,6 +12,9 @@ import janus.pac.CronogramaContratado
 import jxl.Workbook
 import jxl.WorkbookSettings
 import jxl.write.*
+import org.apache.poi.ss.usermodel.Sheet
+import org.apache.poi.xssf.usermodel.XSSFCellStyle
+import org.apache.poi.xssf.usermodel.XSSFFont
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import seguridad.Persona
 
@@ -1810,5 +1813,181 @@ class Reportes5Controller{
         response.setContentLength(b.length)
         response.getOutputStream().write(b)
     }
+
+
+    def reporteSuspendidas() {
+
+        def baos = new ByteArrayOutputStream()
+        def name = "obras_suspendidas_" + new Date().format("ddMMyyyy_hhmm") + ".pdf";
+        Font titleFont = new Font(Font.TIMES_ROMAN, 14, Font.BOLD);
+        Font titleFont3 = new Font(Font.TIMES_ROMAN, 12, Font.BOLD);
+        Font titleFont2 = new Font(Font.TIMES_ROMAN, 16, Font.BOLD);
+        Font times8normal = new Font(Font.TIMES_ROMAN, 8, Font.NORMAL);
+        Font fontTh = new Font(Font.TIMES_ROMAN, 10, Font.BOLD);
+        Font fontTd = new Font(Font.TIMES_ROMAN, 10, Font.NORMAL);
+
+        Document document
+        document = new Document(PageSize.A4.rotate());
+        def pdfw = PdfWriter.getInstance(document, baos);
+
+        HeaderFooter footer1 = new HeaderFooter(new Phrase(" ", times8normal), true);
+        footer1.setBorder(Rectangle.NO_BORDER);
+        footer1.setAlignment(Element.ALIGN_CENTER);
+
+        document.setFooter(footer1);
+
+        document.open();
+        document.addTitle("obrasSuspendidas " + new Date().format("dd_MM_yyyy"));
+        document.addSubject("Generado por el sistema Janus");
+        document.addKeywords("reporte, janus,matriz");
+        document.addAuthor("Janus");
+        document.addCreator("Tedein SA");
+
+        Paragraph headersTitulo = new Paragraph();
+        addEmptyLine(headersTitulo, 1)
+        headersTitulo.setAlignment(Element.ALIGN_CENTER);
+        headersTitulo.add(new Paragraph((Auxiliar.get(1)?.titulo ?: ''), titleFont2));
+        addEmptyLine(headersTitulo, 1);
+        headersTitulo.add(new Paragraph("REPORTE DE OBRAS SUSPENDIDAS", titleFont));
+        headersTitulo.add(new Paragraph("Quito, " + fechaConFormato(new Date(), "dd MMMM yyyy").toUpperCase(), titleFont3));
+        addEmptyLine(headersTitulo, 1);
+        addEmptyLine(headersTitulo, 1);
+
+        document.add(headersTitulo)
+
+        params.old = params.criterio
+        params.criterio = reportesService.limpiaCriterio(params.criterio)
+
+        def cn = dbConnectionService.getConnection()
+        def campos = reportesService.obrasAvance()
+        def sql = armaSqlSuspendidas(params)
+        def obras = cn.rows(sql)
+        params.criterio = params.old
+
+        def tablaDatos = new PdfPTable(11);
+        tablaDatos.setWidthPercentage(100);
+        tablaDatos.setWidths(arregloEnteros([7, 18, 13, 9, 14, 10, 9, 9, 6, 5, 5]))
+
+        def paramsHead = [border: Color.BLACK,
+                          align : Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE, bordeTop: "1", bordeBot: "1"]
+        def prmsCellLeft = [border: Color.WHITE, valign: Element.ALIGN_MIDDLE]
+        def prmsCellRight = [border: Color.WHITE, valign: Element.ALIGN_RIGHT]
+
+        addCellTabla(tablaDatos, new Paragraph("Código", fontTh), paramsHead)
+        addCellTabla(tablaDatos, new Paragraph("Nombre", fontTh), paramsHead)
+        addCellTabla(tablaDatos, new Paragraph("Cantón-Parroquia-Comunidad", fontTh), paramsHead)
+        addCellTabla(tablaDatos, new Paragraph("Núm. Contrato", fontTh), paramsHead)
+        addCellTabla(tablaDatos, new Paragraph("Contratista", fontTh), paramsHead)
+        addCellTabla(tablaDatos, new Paragraph("Monto", fontTh), paramsHead)
+        addCellTabla(tablaDatos, new Paragraph("Fecha Inicio obra", fontTh), paramsHead)
+        addCellTabla(tablaDatos, new Paragraph("Fecha suscripción", fontTh), paramsHead)
+        addCellTabla(tablaDatos, new Paragraph("Plazo", fontTh), paramsHead)
+        addCellTabla(tablaDatos, new Paragraph("% Avance", fontTh), paramsHead)
+        addCellTabla(tablaDatos, new Paragraph("Avance Físico", fontTh), paramsHead)
+
+        obras.each { fila ->
+            addCellTabla(tablaDatos, new Paragraph(fila.obracdgo, fontTd), prmsCellLeft)
+            addCellTabla(tablaDatos, new Paragraph(fila.obranmbr, fontTd), prmsCellLeft)
+            addCellTabla(tablaDatos, new Paragraph(fila.cntnnmbr + " - " + fila.parrnmbr + " - " + fila.cmndnmbr, fontTd), prmsCellLeft)
+            addCellTabla(tablaDatos, new Paragraph(fila.cntrcdgo, fontTd), prmsCellLeft)
+            addCellTabla(tablaDatos, new Paragraph(fila.prvenmbr, fontTd), prmsCellLeft)
+            addCellTabla(tablaDatos, new Paragraph(numero(fila.cntrmnto, 2), fontTd), prmsCellRight)
+            addCellTabla(tablaDatos, new Paragraph(fila.obrafcin.format("dd-MM-yyyy"), fontTd), prmsCellLeft)
+            addCellTabla(tablaDatos, new Paragraph(fila.cntrfcsb.format("dd-MM-yyyy"), fontTd), prmsCellLeft)
+            addCellTabla(tablaDatos, new Paragraph(numero(fila.cntrplzo, 0) + " días", fontTd), prmsCellLeft)
+            addCellTabla(tablaDatos, new Paragraph(numero( (fila.av_economico) * 100, 2) + "%", fontTd), prmsCellRight)
+            addCellTabla(tablaDatos, new Paragraph(numero(fila.av_fisico, 2), fontTd), prmsCellRight)
+        }
+
+        document.add(tablaDatos)
+
+        document.close();
+        pdfw.close()
+        byte[] b = baos.toByteArray();
+        response.setContentType("application/pdf")
+        response.setHeader("Content-disposition", "attachment; filename=" + name)
+        response.setContentLength(b.length)
+        response.getOutputStream().write(b)
+    }
+
+    def reporteExcelAvance () {
+
+        def cn = dbConnectionService.getConnection()
+        def campos = reportesService.obrasAvance()
+        params.old = params.criterio
+        params.criterio = reportesService.limpiaCriterio(params.criterio)
+        def sql = armaSqlSuspendidas(params)
+        def obras = cn.rows(sql)
+        params.criterio = params.old
+
+        def fila = 4;
+
+        XSSFWorkbook wb = new XSSFWorkbook()
+        XSSFCellStyle style = wb.createCellStyle();
+        XSSFFont font = wb.createFont();
+        font.setBold(true);
+        style.setFont(font);
+
+        Sheet sheet = wb.createSheet("Suspendidas")
+        sheet.setColumnWidth(0, 20 * 256);
+        sheet.setColumnWidth(1, 50 * 256);
+        sheet.setColumnWidth(2, 30 * 256);
+        sheet.setColumnWidth(3, 15 * 256);
+        sheet.setColumnWidth(4, 30 * 256);
+        sheet.setColumnWidth(5, 15 * 256);
+        sheet.setColumnWidth(6, 15 * 256);
+        sheet.setColumnWidth(7, 10 * 256);
+        sheet.setColumnWidth(8, 15 * 256);
+        sheet.setColumnWidth(9, 15 * 256);
+        sheet.setColumnWidth(10, 15 * 256);
+
+        org.apache.poi.ss.usermodel.Row row = sheet.createRow(0)
+        row.createCell(0).setCellValue("")
+        org.apache.poi.ss.usermodel.Row row0 = sheet.createRow(1)
+        row0.createCell(1).setCellValue(Auxiliar.get(1)?.titulo ?: '')
+        row0.setRowStyle(style)
+        org.apache.poi.ss.usermodel.Row row1 = sheet.createRow(2)
+        row1.createCell(1).setCellValue("REPORTE EXCEL DE OBRAS SUSPENDIDAS")
+        row1.setRowStyle(style)
+        fila++
+
+        org.apache.poi.ss.usermodel.Row rowC1 = sheet.createRow(fila)
+        rowC1.createCell(0).setCellValue("Código")
+        rowC1.createCell(1).setCellValue("Nombre")
+        rowC1.createCell(2).setCellValue("Cantón-Parroquia-Comunidad")
+        rowC1.createCell(3).setCellValue("Num. Contrato")
+        rowC1.createCell(4).setCellValue("Contratista")
+        rowC1.createCell(5).setCellValue("Monto")
+        rowC1.createCell(6).setCellValue("Fecha Inicio obra")
+        rowC1.createCell(7).setCellValue("Fecha suscripción")
+        rowC1.createCell(8).setCellValue("Plazo")
+        rowC1.createCell(9).setCellValue("% Avance")
+        rowC1.createCell(10).setCellValue("Avance Físico")
+        rowC1.setRowStyle(style)
+        fila++
+
+        obras.eachWithIndex {i, j->
+            org.apache.poi.ss.usermodel.Row rowF1 = sheet.createRow(fila)
+            rowF1.createCell(0).setCellValue(i.obracdgo.toString() ?: '')
+            rowF1.createCell(1).setCellValue(i?.obranmbr?.toString() ?: '')
+            rowF1.createCell(2).setCellValue(i?.cntnnmbr?.toString() + " " + i?.parrnmbr?.toString() + " " + i?.cmndnmbr?.toString())
+            rowF1.createCell(3).setCellValue(i?.cntrcdgo?.toString() ?: '')
+            rowF1.createCell(4).setCellValue(i?.prvenmbr?.toString() ?: '')
+            rowF1.createCell(5).setCellValue( i.cntrmnto ?: 0)
+            rowF1.createCell(6).setCellValue( i?.obrafcin?.toString() ?: '')
+            rowF1.createCell(6).setCellValue( i?.cntrfcsb?.toString() ?: '')
+            rowF1.createCell(7).setCellValue(i.cntrplzo?.toString() ?: '')
+            rowF1.createCell(8).setCellValue((i.av_economico * 100) ?: 0)
+            rowF1.createCell(9).setCellValue((i.av_fisico * 100) ?: 0)
+            fila++
+        }
+
+        def output = response.getOutputStream()
+        def header = "attachment; filename=" + "avanceObras.xlsx";
+        response.setContentType("application/octet-stream")
+        response.setHeader("Content-Disposition", header);
+        wb.write(output)
+    }
+
 
 }

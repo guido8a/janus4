@@ -123,11 +123,38 @@
         }
     });
 
+    $("#buscador_con").change(function(){
+        var opciones = $(this).find("option:selected").attr("class").split(",");
+        poneOperadores(opciones);
+        /* regresa a la opción seleccionada */
+    });
+
+    function poneOperadores (opcn) {
+        var $sel = $("<select name='operador' id='oprd' style='width: 160px'}>");
+        for(var i=0; i<opcn.length; i++) {
+            var opt = opcn[i].split(":");
+            var $opt = $("<option value='"+opt[0]+"'>"+opt[1]+"</option>");
+            $sel.append($opt);
+        }
+        $("#selOpt").html($sel);
+    }
+
+    /* inicializa el select de oprd con la primea opción de busacdor */
+    // $( document ).ready(function() {
+    //     $("#buscador_con").change();
+    // });
+
     cargarTabla();
 
+    $("#buscar").click(function(){
+        cargarTabla();
+    });
+
     function cargarTabla() {
+        $("#buscador_con").change();
         var d = cargarLoader("Cargando...");
-        var datos = "si=${"si"}&buscador=" + $("#buscador_reg1").val() + "&estado=" + $("#estado_reg1").val();
+        var datos = "si=${"si"}&buscador=" + $("#buscador_con").val() + "&criterio=" + $("#criterio_con").val() +
+            "&operador=" + $("#oprd").val() + "&departamento=" + $("#departamento option:selected").val() + "&fechaInicio=" + $("#fechaInicio").val() + "&fechaFin=" + $("#fechaFin").val();
         $.ajax({
             type : "POST",
             url : "${g.createLink(controller: 'reportes4',action:'tablaRegistradas')}",
@@ -138,6 +165,26 @@
             }
         });
     }
+
+    $("#regresar").click(function () {
+        location.href = "${g.createLink(controller: 'reportes', action: 'index')}"
+    });
+
+    $("#imprimir").click(function () {
+        location.href = "${g.createLink(controller: 'reportes4', action:'reporteRegistradas' )}?buscador=" + $("#buscador_con").val() + "&criterio=" + $("#criterio_con").val() + "&operador=" + $("#oprd").val() + "&departamento=" + $("#departamento option:selected").val() + "&fechaInicio=" + $("#fechaInicio").val() + "&fechaFin=" + $("#fechaFin").val()
+    });
+
+    $("#excel").click(function () {
+        location.href = "${g.createLink(controller: 'reportesExcel', action:'reporteRegistradasExcel' )}?buscador=" + $("#buscador_con").val() + "&criterio=" + $("#criterio_con").val() + "&operador=" + $("#oprd").val() + "&departamento=" + $("#departamento option:selected").val() + "&fechaInicio=" + $("#fechaInicio").val() + "&fechaFin=" + $("#fechaFin").val()
+    });
+
+    $("#criterio_con").keydown(function (ev) {
+        if (ev.keyCode === 13) {
+            ev.preventDefault();
+            cargarTabla();
+            return false;
+        }
+    });
 
 </script>
 </body>
