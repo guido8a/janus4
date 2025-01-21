@@ -42,10 +42,14 @@
         </div>
         <div class="col-md-4">
             <b style="margin-left: 20px">Dirección o Coordinación requirente:</b>
+            %{--<g:select name="departamento.id"--}%
+                      %{--from="${janus.Departamento.findAllByRequirente(1).sort{it.direccion.nombre}}"--}%
+                      %{--id="departamento" optionKey="id" optionValue="${{ it.direccion.nombre + ' - ' + it.descripcion }}"--}%
+                      %{--dire="${{ it.direccion.id }}" noSelection="['' : 'Todas']" style="width: 410px;"/>--}%
             <g:select name="departamento.id"
-                      from="${janus.Departamento.findAllByRequirente(1).sort{it.direccion.nombre}}"
-                      id="departamento" optionKey="id" optionValue="${{ it.direccion.nombre + ' - ' + it.descripcion }}"
-                      dire="${{ it.direccion.id }}" noSelection="['' : 'Todas']" style="width: 410px;"/>
+                      from="${departamento}" id="departamento" optionKey="key" optionValue="value"
+                      noSelection="['' : 'Todas']" style="width: 410px;"/>
+
         </div>
          <div class="col-md-2" style="align-items: center;">
         <b style="margin-left: 20px">Fecha Desde: </b>
@@ -59,7 +63,7 @@
 
         <a href="#" class="btn btn-success" id="buscar">
             <i class="fa fa-search"></i>
-            Buscar
+            Reporte
         </a>
         <a href="#" class="btn btn-info" id="imprimir" >
             <i class="fa fa-print"></i>
@@ -154,7 +158,8 @@
         $("#buscador_con").change();
         var d = cargarLoader("Cargando...");
         var datos = "si=${"si"}&buscador=" + $("#buscador_con").val() + "&criterio=" + $("#criterio_con").val() +
-            "&operador=" + $("#oprd").val() + "&departamento=" + $("#departamento option:selected").val() + "&fechaInicio=" + $("#fechaInicio").val() + "&fechaFin=" + $("#fechaFin").val();
+            "&operador=" + $("#oprd").val() + "&departamento=" + $("#departamento option:selected").val() +
+            "&fechaInicio=" + $("#fechaInicio").val() + "&fechaFin=" + $("#fechaFin").val();
         $.ajax({
             type : "POST",
             url : "${g.createLink(controller: 'reportes4',action:'tablaRegistradas')}",

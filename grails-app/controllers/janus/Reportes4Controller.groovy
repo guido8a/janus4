@@ -42,8 +42,17 @@ class Reportes4Controller {
     }
 
     def registradas() {
-        def perfil = session.perfil.id
-        return [perfil: perfil]
+        def cn = dbConnectionService.getConnection()
+        def departamento = [:]
+        def sql = "select distinct obra.dpto__id id, diredscr||' - '||dptodscr nombre " +
+                "from obra, dpto, dire " +
+                "where dpto.dpto__id = obra.dpto__id and dire.dire__id = dpto.dire__id " +
+                "order by 2"
+        println "sqlReg: $sql"
+        cn.eachRow(sql.toString()) { r ->
+            departamento[r.id] = r.nombre
+        }
+        [departamento: departamento]
     }
 
     def presuestadasFinal() {
@@ -554,6 +563,8 @@ class Reportes4Controller {
         def campos = reportesService.obrasPresupuestadas()
         def operador = reportesService.operadores()
         println "armaSqlRegistradas $params"
+        def fcin = params.fechaInicio ? new Date().parse("dd-MM-yyyy", params.fechaInicio).format('yyyy-MM-dd') : ''
+        def fcfn = params.fechaFin ? new Date().parse("dd-MM-yyyy", params.fechaFin).format('yyyy-MM-dd') : ''
 
         def sqlSelect = "select obra.obra__id, obracdgo, obranmbr, tpobdscr, obrafcha, cntnnmbr, parrnmbr, cmndnmbr, " +
                 "dptodscr, obrarefe, obravlor, case when obraetdo = 'N' THEN 'No registrada' end estado " +
@@ -564,8 +575,6 @@ class Reportes4Controller {
 
         def sqlOrder = "order by obracdgo"
 
-        println "llega params: $params"
-        params.nombre = "Código"
         if (campos.find { it.campo == params.buscador }?.size() > 0) {
             def op = operador.find { it.valor == params.operador }
 //            println "op: $op"
@@ -573,6 +582,9 @@ class Reportes4Controller {
         }
 //        println "txWhere: $sqlWhere"
 //        println "sql armado: sqlSelect: ${sqlSelect} \n sqlWhere: ${sqlWhere} \n sqlOrder: ${sqlOrder}"
+        if(params.departamento) sqlWhere += " and obra.dpto__id = ${params.departamento} "
+        if(params.fechaInicio) sqlWhere += " and obrafcha >= '${fcin}' "
+        if(params.fechaFIn) sqlWhere += " and obrafcha <= '${fcfn}' "
         println "sql: ${sqlSelect} ${sqlWhere} ${sqlOrder}"
         //retorna sql armado:
         "$sqlSelect $sqlWhere $sqlOrder".toString()
