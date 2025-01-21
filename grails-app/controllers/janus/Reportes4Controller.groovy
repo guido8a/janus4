@@ -1154,8 +1154,8 @@ class Reportes4Controller {
         println "armaSqlSuspendidas $params"
         def campos = reportesService.obrasAvance()
         def operador = reportesService.operadores()
-        def fcin = new Date().parse("dd-MM-yyyy", params.fi).format('yyyy-MM-dd')
-        def fcfn = new Date().parse("dd-MM-yyyy", params.ff).format('yyyy-MM-dd')
+        def fcin = params.fi ? new Date().parse("dd-MM-yyyy", params.fi).format('yyyy-MM-dd') : ''
+        def fcfn = params.ff ? new Date().parse("dd-MM-yyyy", params.ff).format('yyyy-MM-dd') : ''
 
         def sqlSelect = "select obra.obra__id, obracdgo, obranmbr, cntnnmbr, parrnmbr, cmndnmbr, " +
                 "c.cntr__id, c.cntrcdgo, mdce.mdcefcin," +
