@@ -11,14 +11,6 @@
     <title>
         Obras Ingresadas
     </title>
-    <asset:javascript src="/jquery/plugins/jQuery-contextMenu-gh-pages/src/jquery.contextMenu.js"/>
-    <asset:stylesheet src="/jquery/plugins/jQuery-contextMenu-gh-pages/src/jquery.contextMenu.css"/>
-    <style>
-    .letra{
-        font-size: 10px;
-    }
-    </style>
-
 </head>
 
 <body>
@@ -42,17 +34,13 @@
         </div>
         <div class="col-md-4">
             <b style="margin-left: 20px">Dirección o Coordinación requirente:</b>
-            %{--<g:select name="departamento.id"--}%
-                      %{--from="${janus.Departamento.findAllByRequirente(1).sort{it.direccion.nombre}}"--}%
-                      %{--id="departamento" optionKey="id" optionValue="${{ it.direccion.nombre + ' - ' + it.descripcion }}"--}%
-                      %{--dire="${{ it.direccion.id }}" noSelection="['' : 'Todas']" style="width: 410px;"/>--}%
             <g:select name="departamento.id"
                       from="${departamento}" id="departamento" optionKey="key" optionValue="value"
                       noSelection="['' : 'Todas']" style="width: 410px;"/>
 
         </div>
-         <div class="col-md-2" style="align-items: center;">
-        <b style="margin-left: 20px">Fecha Desde: </b>
+        <div class="col-md-2" style="align-items: center;">
+            <b style="margin-left: 20px">Fecha Desde: </b>
             <input aria-label="" name="fechaInicio_name" id='fechaInicio' type='text' class=""  />
         </div>
 
@@ -99,7 +87,7 @@
                 Valor
             </th>
             <th style="width: 16%">
-                Elaborado
+                Requirente
             </th>
             <th style="width: 11%">
                 Doc.Referencia
@@ -116,7 +104,6 @@
     </div>
 </div>
 
-
 <script type="text/javascript">
 
     $('#fechaInicio, #fechaFin').datetimepicker({
@@ -130,7 +117,6 @@
     $("#buscador_con").change(function(){
         var opciones = $(this).find("option:selected").attr("class").split(",");
         poneOperadores(opciones);
-        /* regresa a la opción seleccionada */
     });
 
     function poneOperadores (opcn) {
@@ -143,12 +129,9 @@
         $("#selOpt").html($sel);
     }
 
-    /* inicializa el select de oprd con la primea opción de busacdor */
-    // $( document ).ready(function() {
-    //     $("#buscador_con").change();
-    // });
-
-    cargarTabla();
+    $( document ).ready(function() {
+        cargarTabla();
+    });
 
     $("#buscar").click(function(){
         cargarTabla();

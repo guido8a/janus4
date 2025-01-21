@@ -104,11 +104,11 @@
     });
 
     $("#imprimir").click(function () {
-        location.href = "${g.createLink(controller: 'reportes4', action:'reporteProcesosContratacion' )}?buscador=" +$("#buscador option:selected").val() + "&criterio=" + $("#criterio").val()
+        location.href = "${g.createLink(controller: 'reportes4', action:'reporteProcesosContratacion' )}?buscador=" +$("#buscador option:selected").val() + "&criterio=" + $("#criterio").val() + "&fechaInicio=" + $("#fechaInicio").val() + "&fechaFin=" + $("#fechaFin").val();
     });
 
     $("#excel").click(function () {
-        location.href = "${g.createLink(controller: 'reportesExcel', action:'reporteExcelProcesosContratacion' )}?buscador=" +$("#buscador option:selected").val() + "&criterio=" + $("#criterio").val()
+        location.href = "${g.createLink(controller: 'reportesExcel', action:'reporteExcelProcesosContratacion' )}?buscador=" +$("#buscador option:selected").val() + "&criterio=" + $("#criterio").val() + "&fechaInicio=" + $("#fechaInicio").val() + "&fechaFin=" + $("#fechaFin").val();
     });
 
     $("#buscar").click(function () {
@@ -118,13 +118,17 @@
     cargarTabla();
 
     function cargarTabla() {
+        var fechaInicio = $("#fechaInicio").val();
+        var fechaFin = $("#fechaFin").val();
         var d = cargarLoader("Cargando...");
         $.ajax({
             type : "POST",
             url : "${g.createLink(controller: 'reportes4',action:'tablaProcesos')}",
             data     : {
                 buscador: $("#buscador option:selected").val(),
-                criterio: $("#criterio").val()
+                criterio: $("#criterio").val(),
+                fechaInicio: fechaInicio,
+                fechaFin: fechaFin
             },
             success  : function (msg) {
                 d.modal("hide");
@@ -139,12 +143,5 @@
 
 
 </script>
-
-
-
-
-%{--<div class="row">--}%
-%{--    <bsc:buscador name="concursos" value="" accion="buscarConcurso" controlador="concurso" campos="${campos}" label="Concurso" tipo="lista"/>--}%
-%{--</div>--}%
 </body>
 </html>

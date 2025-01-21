@@ -19,7 +19,7 @@ th, td {
                 <td style="width: 25% !important;">${obra.obranmbr}</td>
                 <td style="width: 13% !important;">${obra.tpobdscr}</td>
                 <td style="width: 8% !important;"><g:formatDate date="${obra.obrafcha}" format="dd-MM-yyyy"/></td>
-                <td style="width: 21% !important;">${obra.cntnnmbr} - ${obra.parrnmbr} - ${obra.cmndnmbr}</td>
+                <td style="width: 21% !important; font-size: 10px">${obra.cntnnmbr} - ${obra.parrnmbr} - ${obra.cmndnmbr}</td>
                 <td style="text-align: right; width: 9% !important;">${obra.obravlor}</td>
                 <td style="width: 16% !important;">${obra.dptodscr}</td>
                 <td style="width: 11% !important;">${obra.obrarefe}</td>
