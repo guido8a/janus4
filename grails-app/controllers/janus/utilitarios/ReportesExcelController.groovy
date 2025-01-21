@@ -2705,5 +2705,4 @@ class ReportesExcelController {
         wb.write(output)
     }
 
-
 }

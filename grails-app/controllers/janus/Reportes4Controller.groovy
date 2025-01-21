@@ -33,6 +33,32 @@ class Reportes4Controller {
         }
     }
 
+    private String fechaConFormato(fecha, formato) {
+        def meses = ["", "Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"]
+        def mesesLargo = ["", "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]
+        def strFecha = ""
+        if (fecha) {
+            switch (formato) {
+                case "MMM-yy":
+                    strFecha = meses[fecha.format("MM").toInteger()] + "-" + fecha.format("yy")
+                    break;
+                case "dd-MM-yyyy":
+                    strFecha = "" + fecha.format("dd-MM-yyyy")
+                    break;
+                case "dd-MMM-yyyy":
+                    strFecha = "" + fecha.format("dd") + "-" + meses[fecha.format("MM").toInteger()] + "-" + fecha.format("yyyy")
+                    break;
+                case "dd MMMM yyyy":
+                    strFecha = "" + fecha.format("dd") + " de " + mesesLargo[fecha.format("MM").toInteger()] + " de " + fecha.format("yyyy")
+                    break;
+                default:
+                    strFecha = "Formato " + formato + " no reconocido"
+                    break;
+            }
+        }
+        return strFecha
+    }
+
     static arregloEnteros(array) {
         int[] ia = new int[array.size()]
         array.eachWithIndex { it, i ->
@@ -2746,7 +2772,6 @@ class Reportes4Controller {
         response.getOutputStream().write(b)
     }
 
-
     def reporteSuspendidas() {
 
         def baos = new ByteArrayOutputStream()
@@ -2811,8 +2836,8 @@ class Reportes4Controller {
         addCellTabla(tablaDatos, new Paragraph("Núm. Contrato", fontTh), paramsHead)
         addCellTabla(tablaDatos, new Paragraph("Contratista", fontTh), paramsHead)
         addCellTabla(tablaDatos, new Paragraph("Monto", fontTh), paramsHead)
-        addCellTabla(tablaDatos, new Paragraph("Fecha Inicio obra", fontTh), paramsHead)
         addCellTabla(tablaDatos, new Paragraph("Fecha suscripción", fontTh), paramsHead)
+        addCellTabla(tablaDatos, new Paragraph("Fecha Inicio obra", fontTh), paramsHead)
         addCellTabla(tablaDatos, new Paragraph("Plazo", fontTh), paramsHead)
         addCellTabla(tablaDatos, new Paragraph("% Avance", fontTh), paramsHead)
         addCellTabla(tablaDatos, new Paragraph("Avance Físico", fontTh), paramsHead)
@@ -2824,8 +2849,8 @@ class Reportes4Controller {
             addCellTabla(tablaDatos, new Paragraph(fila.cntrcdgo, fontTd), prmsCellLeft)
             addCellTabla(tablaDatos, new Paragraph(fila.prvenmbr, fontTd), prmsCellLeft)
             addCellTabla(tablaDatos, new Paragraph(numero(fila.cntrmnto, 2), fontTd), prmsCellRight)
-            addCellTabla(tablaDatos, new Paragraph(fila.obrafcin.format("dd-MM-yyyy"), fontTd), prmsCellLeft)
             addCellTabla(tablaDatos, new Paragraph(fila.cntrfcsb.format("dd-MM-yyyy"), fontTd), prmsCellLeft)
+            addCellTabla(tablaDatos, new Paragraph(fila.obrafcin.format("dd-MM-yyyy"), fontTd), prmsCellLeft)
             addCellTabla(tablaDatos, new Paragraph(numero(fila.cntrplzo, 0) + " días", fontTd), prmsCellLeft)
             addCellTabla(tablaDatos, new Paragraph(numero( (fila.av_economico) * 100, 2) + "%", fontTd), prmsCellRight)
             addCellTabla(tablaDatos, new Paragraph(numero(fila.av_fisico, 2), fontTd), prmsCellRight)
@@ -2842,7 +2867,7 @@ class Reportes4Controller {
         response.getOutputStream().write(b)
     }
 
-    def reporteExcelAvance () {
+    def reporteExcelSuspendidas() {
 
         def cn = dbConnectionService.getConnection()
         def campos = reportesService.obrasAvance()
@@ -2890,8 +2915,8 @@ class Reportes4Controller {
         rowC1.createCell(3).setCellValue("Num. Contrato")
         rowC1.createCell(4).setCellValue("Contratista")
         rowC1.createCell(5).setCellValue("Monto")
-        rowC1.createCell(6).setCellValue("Fecha Inicio obra")
-        rowC1.createCell(7).setCellValue("Fecha suscripción")
+        rowC1.createCell(6).setCellValue("Fecha suscripción")
+        rowC1.createCell(7).setCellValue("Fecha Inicio Obra")
         rowC1.createCell(8).setCellValue("Plazo")
         rowC1.createCell(9).setCellValue("% Avance")
         rowC1.createCell(10).setCellValue("Avance Físico")
@@ -2906,16 +2931,16 @@ class Reportes4Controller {
             rowF1.createCell(3).setCellValue(i?.cntrcdgo?.toString() ?: '')
             rowF1.createCell(4).setCellValue(i?.prvenmbr?.toString() ?: '')
             rowF1.createCell(5).setCellValue( i.cntrmnto ?: 0)
-            rowF1.createCell(6).setCellValue( i?.obrafcin?.toString() ?: '')
             rowF1.createCell(6).setCellValue( i?.cntrfcsb?.toString() ?: '')
-            rowF1.createCell(7).setCellValue(i.cntrplzo?.toString() ?: '')
-            rowF1.createCell(8).setCellValue((i.av_economico * 100) ?: 0)
-            rowF1.createCell(9).setCellValue((i.av_fisico * 100) ?: 0)
+            rowF1.createCell(7).setCellValue( i?.obrafcin?.toString() ?: '')
+            rowF1.createCell(8).setCellValue(i.cntrplzo?.toString() ?: '')
+            rowF1.createCell(9).setCellValue((i.av_economico * 100) ?: 0)
+            rowF1.createCell(10).setCellValue((i.av_fisico * 100) ?: 0)
             fila++
         }
 
         def output = response.getOutputStream()
-        def header = "attachment; filename=" + "avanceObras.xlsx";
+        def header = "attachment; filename=" + "obrasSuspendidas.xlsx";
         response.setContentType("application/octet-stream")
         response.setHeader("Content-Disposition", header);
         wb.write(output)
