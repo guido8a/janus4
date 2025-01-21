@@ -531,7 +531,7 @@ class Reportes4Controller {
     }
 
     def tablaRegistradas() {
-
+        println "tablaRegistradas: $params"
         def cn = dbConnectionService.getConnection()
         def campos = reportesService.obrasPresupuestadas()
 
@@ -1093,9 +1093,22 @@ class Reportes4Controller {
     }
 
     def suspendidas() {
+        def cn = dbConnectionService.getConnection()
+        def departamento = [:]
+        def sql = "select distinct obra.dpto__id id, diredscr||' - '||dptodscr nombre " +
+                "from obra, dpto, dire " +
+                "where dpto.dpto__id = obra.dpto__id and dire.dire__id = dpto.dire__id and " +
+                "obra.obra__id in (select distinct cntr.obra__id from cntr, mdce " +
+                   "where mdce.cntr__id = cntr.cntr__id and mdcetipo = 'S' and mdcefcfn is null) " +
+                "order by 2"
+        cn.eachRow(sql.toString()) { r ->
+            departamento[r.id] = r.nombre
+        }
+        [departamento: departamento]
     }
 
     def tablaSuspendidas() {
+//        println "tablaSuspendidas: $params"
         def cn = dbConnectionService.getConnection()
         def campos = reportesService.obrasContratadas()
 
@@ -1141,20 +1154,26 @@ class Reportes4Controller {
         println "armaSqlSuspendidas $params"
         def campos = reportesService.obrasAvance()
         def operador = reportesService.operadores()
+        def fcin = new Date().parse("dd-MM-yyyy", params.fi).format('yyyy-MM-dd')
+        def fcfn = new Date().parse("dd-MM-yyyy", params.ff).format('yyyy-MM-dd')
 
         def sqlSelect = "select obra.obra__id, obracdgo, obranmbr, cntnnmbr, parrnmbr, cmndnmbr, " +
-                "c.cntr__id, c.cntrcdgo, " +
+                "c.cntr__id, c.cntrcdgo, mdce.mdcefcin," +
                 "c.cntrmnto, c.cntrfcsb, prvenmbr, c.cntrplzo, obrafcin, cntrfcfs," +
                 "(select(coalesce(sum(plnlmnto), 0)) / cntrmnto av_economico " +
-                "from plnl where cntr__id = c.cntr__id and tppl__id > 1), " +
+                  "from plnl where cntr__id = c.cntr__id and tppl__id > 1), " +
                 "(select(coalesce(max(plnlavfs), 0)) av_fisico " +
-                "from plnl where cntr__id = c.cntr__id and tppl__id > 1) " +  // no cuenta el anticipo
+                  "from plnl where cntr__id = c.cntr__id and tppl__id > 1) " +  // no cuenta el anticipo
                 "from obra, cntn, parr, cmnd, cncr, ofrt, cntr c, dpto, prve, mdce "
         def sqlWhere = "where cmnd.cmnd__id = obra.cmnd__id and " +
                 "parr.parr__id = obra.parr__id and cntn.cntn__id = parr.cntn__id and " +
                 "cncr.obra__id = obra.obra__id and ofrt.cncr__id = cncr.cncr__id and " +
                 "c.ofrt__id = ofrt.ofrt__id and dpto.dpto__id = obra.dpto__id and " +
-                "prve.prve__id = c.prve__id and mdce.cntr__id = c.cntr__id and mdcefcfn is null "
+                "prve.prve__id = c.prve__id and mdce.cntr__id = c.cntr__id and mdcefcfn is null and " +
+                "mdcetipo = 'S' "
+        if(params.departamento) sqlWhere += " and obra.dpto__id = ${params.departamento} "
+        if(params.fi) sqlWhere += " and c.cntrfcsb >= '${fcin}' "
+        if(params.ff) sqlWhere += " and c.cntrfcsb <= '${fcfn}' "
         def sqlOrder = "order by obracdgo"
 
 //        println "llega params: $params"
@@ -1164,7 +1183,7 @@ class Reportes4Controller {
             println "op: $op"
             sqlWhere += " and ${params.buscador} ${op.operador} ${op.strInicio}${params.criterio}${op.strFin}";
         }
-        println "++sql: $sqlSelect $sqlWhere $sqlOrder".toString()
+//        println "++sql: $sqlSelect $sqlWhere $sqlOrder".toString()
         "$sqlSelect $sqlWhere $sqlOrder".toString()
     }
 
