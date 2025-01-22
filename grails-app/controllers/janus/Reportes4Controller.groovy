@@ -2939,5 +2939,44 @@ class Reportes4Controller {
         wb.write(output)
     }
 
+    def presupuesto(){
+
+    }
+
+    def tablaPresupuesto() {
+        def cn = dbConnectionService.getConnection()
+        def campos = reportesService.obrasPresupuestadas()
+
+        params.old = params.criterio
+        params.criterio = reportesService.limpiaCriterio(params.criterio)
+
+        def sql = armaSqlPresupuesto(params)
+        def obras = cn.rows(sql)
+
+        params.criterio = params.old
+
+        return [obras: obras, params: params]
+    }
+
+    def armaSqlPresupuesto(params) {
+        def campos = reportesService.obrasPresupuestadas()
+        def operador = reportesService.operadores()
+
+        def sqlSelect = "select obra.obra__id, obracdgo, obranmbr, tpobdscr, obrafcha, cntnnmbr, parrnmbr, cmndnmbr, " +
+                "dptodscr, obrarefe, obravlor, case when obraetdo = 'N' THEN 'Registrada' end estado " +
+                "from obra, tpob, cntn, parr, cmnd, dpto "
+        def sqlWhere = "where tpob.tpob__id = obra.tpob__id and cmnd.cmnd__id = obra.cmnd__id and " +
+                "parr.parr__id = obra.parr__id and cntn.cntn__id = parr.cntn__id  and " +
+                "dpto.dpto__id = obra.dpto__id and obraetdo = 'N'"
+
+        def sqlOrder = "order by obracdgo"
+
+        params.nombre = "Código"
+        if (campos.find { it.campo == params.buscador }?.size() > 0) {
+            def op = operador.find { it.valor == params.operador }
+            sqlWhere += " and ${params.buscador} ${op.operador} ${op.strInicio}${params.criterio}${op.strFin}";
+        }
+        "$sqlSelect $sqlWhere $sqlOrder".toString()
+    }
 
 }

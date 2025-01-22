@@ -79,6 +79,13 @@
                 Listado de obras que ya poseen un presupuesto elaborado y se encuentran listas para entrar en </br>  <span style="margin-left: 150px">  el proceso de
             contratación. Estado = 'R'</span>
             </li>
+            <li text="obraprsp1" class="item" texto="obraprsp1">
+                <g:link controller="reportes4" action="presupuesto" class="btn btn-primary btn-xs" style="color: #FFFDF4">
+                    <i class="fa fa-print"></i> Obras para presupuesto:
+                </g:link>
+                Listado de obras que ya poseen un presupuesto elaborado y se encuentran listas para entrar en </br>  <span style="margin-left: 150px">  el proceso de
+            contratación. Estado = 'N'</span>
+            </li>
             <li text="cncr" class="item" texto="cncr">
                 <g:link controller="concurso" action="concursos" file="concursos" class="btn btn-primary btn-xs" style="color: #FFFDF4"
                         dialog="dlgContabilidadPeriodo">
