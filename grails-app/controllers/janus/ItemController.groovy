@@ -860,7 +860,7 @@ class ItemController {
                         def nombre = rgst[5]
                         def precio = 0
                         try {
-                            precio = rgst[9]?.toDouble()
+                            precio = rgst[8]?.toDouble()
                         } catch (e) {
                             precio = -999
                         }
@@ -1000,7 +1000,7 @@ class ItemController {
                         def nombre = rgst[5]
                         def precio = 0
                         try {
-                            precio = rgst[9]?.toDouble()
+                            precio = rgst[8]?.toDouble()
                         } catch (e) {
                             precio = -999
                         }
@@ -1141,7 +1141,7 @@ class ItemController {
                         def nombre = rgst[5]
                         def precio = 0
                         try {
-                            precio = rgst[9]?.toDouble()
+                            precio = rgst[8]?.toDouble()
                         } catch (e) {
                             precio = -999
                         }
