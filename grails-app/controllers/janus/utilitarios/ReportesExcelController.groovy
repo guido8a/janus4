@@ -2051,7 +2051,6 @@ class ReportesExcelController {
         sheet.setColumnWidth(5, 15 * 256)
         sheet.setColumnWidth(6, 30 * 256)
         sheet.setColumnWidth(7, 30 * 256)
-        sheet.setColumnWidth(8, 10 * 256)
 
         Row row = sheet.createRow(0)
         row.createCell(0).setCellValue("")
@@ -2073,7 +2072,6 @@ class ReportesExcelController {
         rowC1.createCell(5).setCellValue("Valor")
         rowC1.createCell(6).setCellValue("Requirente")
         rowC1.createCell(7).setCellValue("Doc. Referencia")
-        rowC1.createCell(8).setCellValue("Estado")
         rowC1.setRowStyle(style)
         fila++
 
@@ -2087,7 +2085,6 @@ class ReportesExcelController {
             rowF1.createCell(5).setCellValue(i.obravlor ?: '')
             rowF1.createCell(6).setCellValue(i?.dptodscr?.toString() ?: '')
             rowF1.createCell(7).setCellValue(i?.obrarefe?.toString() ?: '')
-            rowF1.createCell(8).setCellValue(i.estado.toString() ?: '')
             fila++
         }
 

@@ -946,15 +946,15 @@ class Reportes4Controller {
         headers.setAlignment(Element.ALIGN_CENTER);
         headers.add(new Paragraph((Auxiliar.get(1)?.titulo ?: ''), times18bold));
         addEmptyLine(headers, 1);
-        headers.add(new Paragraph("REPORTE DE OBRAS INGRESADAS", times12bold));
+        headers.add(new Paragraph("REPORTE DE OBRAS INGRESADAS (No registradas)", times12bold));
         addEmptyLine(headers, 1);
         headers.add(new Paragraph("AL " + printFecha(new Date()).toUpperCase(), times12bold));
         addEmptyLine(headers, 1);
         document.add(headers);
 
-        PdfPTable tablaRegistradas = new PdfPTable(9);
+        PdfPTable tablaRegistradas = new PdfPTable(8);
         tablaRegistradas.setWidthPercentage(100);
-        tablaRegistradas.setWidths(arregloEnteros([14, 35, 15, 8, 30, 10, 13, 14, 8]))
+        tablaRegistradas.setWidths(arregloEnteros([10, 25, 9, 7, 15, 8, 16, 10]))
 
         addCellTabla(tablaRegistradas, new Paragraph("Código", times8bold), prmsCellHead2)
         addCellTabla(tablaRegistradas, new Paragraph("Nombre", times8bold), prmsCellHead2)
@@ -964,7 +964,6 @@ class Reportes4Controller {
         addCellTabla(tablaRegistradas, new Paragraph("Valor", times8bold), prmsCellHead2)
         addCellTabla(tablaRegistradas, new Paragraph("Requirente", times8bold), prmsCellHead2)
         addCellTabla(tablaRegistradas, new Paragraph("Doc. Referencia", times8bold), prmsCellHead2)
-        addCellTabla(tablaRegistradas, new Paragraph("Estado", times8bold), prmsCellHead2)
 
         obras.eachWithIndex { i, j ->
             addCellTabla(tablaRegistradas, new Paragraph(i.obracdgo, times8normal), prmsCellLeft)
@@ -976,7 +975,6 @@ class Reportes4Controller {
                     2, maxFractionDigits: 2, format: "##,##0", locale: "ec"), times8normal), prmsCellRight)
             addCellTabla(tablaRegistradas, new Paragraph(i.dptodscr, times7normal), prmsCellLeft)
             addCellTabla(tablaRegistradas, new Paragraph(i.obrarefe, times7normal), prmsCellLeft)
-            addCellTabla(tablaRegistradas, new Paragraph(i.estado, times8normal), prmsCellLeft)
         }
 
         document.add(tablaRegistradas);
