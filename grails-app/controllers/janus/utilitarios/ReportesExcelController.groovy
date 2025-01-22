@@ -1901,8 +1901,9 @@ class ReportesExcelController {
         rowC1.createCell(3).setCellValue("Obra")
         rowC1.createCell(4).setCellValue("Código Obra")
         rowC1.createCell(5).setCellValue("Monto")
-        rowC1.createCell(6).setCellValue("Estado")
-        rowC1.createCell(7).setCellValue("Certificación Presupuestaria")
+        rowC1.createCell(6).setCellValue("Certificación Presupuestaria")
+        rowC1.createCell(7).setCellValue("Estado")
+
         rowC1.setRowStyle(style)
         fila++
 
@@ -1914,8 +1915,8 @@ class ReportesExcelController {
             rowF1.createCell(3).setCellValue(i?.obranmbr?.toString() ?: '')
             rowF1.createCell(4).setCellValue(i?.obracdgo?.toString() ?: '')
             rowF1.createCell(5).setCellValue(i.cncrprrf ?: '')
-            rowF1.createCell(6).setCellValue(i?.cncretdo?.toString() ?: '')
-            rowF1.createCell(7).setCellValue(i?.cncrnmct?.toString() ?: '')
+            rowF1.createCell(6).setCellValue(i?.cncrnmct?.toString() ?: '')
+            rowF1.createCell(7).setCellValue(i?.cncretdo == 'R' ? "Registrada" : 'No registrada')
             fila++
         }
 

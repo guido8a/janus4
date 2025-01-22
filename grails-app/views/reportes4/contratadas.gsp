@@ -73,10 +73,10 @@
             <th style="width: 10%;">
                 Código
             </th>
-            <th style="width: 22%;">
+            <th style="width: 27%;">
                 Nombre
             </th>
-            <th style="width: 13%;">
+            <th style="width: 10%;">
                 Tipo
             </th>
             <th style="width: 8%">
@@ -88,7 +88,7 @@
             <th style="width: 9%">
                 Valor
             </th>
-            <th style="width: 12%">
+            <th style="width: 10%">
                 Coordinación
             </th>
             <th style="width: 10%">
@@ -120,11 +120,11 @@
 
     $("#imprimir").click(function () {
         var busca = $("#buscador_con").val();
-        location.href="${g.createLink(controller: 'reportes4', action:'reporteContratadas' )}?buscador=" + busca + "&operador=" + $("#oprd").val() + "&criterio=" + $("#criterio_con").val()
+        location.href="${g.createLink(controller: 'reportes4', action:'reporteContratadas' )}?buscador=" + busca + "&operador=" + $("#oprd").val() + "&criterio=" + $("#criterio_con").val() + "&departamento=" + $("#departamento option:selected").val() + "&fechaInicio=" + $("#fechaInicio").val() + "&fechaFin=" + $("#fechaFin").val()
     });
 
     $("#excel").click(function () {
-        location.href="${g.createLink(controller: 'reportesExcel', action:'reporteExcelContratadas' )}?buscador=" + $("#buscador_con").val() + "&criterio=" + $("#criterio_con").val() + "&operador=" + $("#oprd").val()
+        location.href="${g.createLink(controller: 'reportesExcel', action:'reporteExcelContratadas' )}?buscador=" + $("#buscador_con").val() + "&criterio=" + $("#criterio_con").val() + "&operador=" + $("#oprd").val() + "&departamento=" + $("#departamento option:selected").val() + "&fechaInicio=" + $("#fechaInicio").val() + "&fechaFin=" + $("#fechaFin").val()
     });
 
     $("#buscador_con").change(function(){
@@ -143,14 +143,15 @@
     }
 
     $( document ).ready(function() {
-        $("#buscador_con").change();
         cargarTabla();
     });
 
     function cargarTabla() {
+        $("#buscador_con").change();
         var d = cargarLoader("Cargando...");
         var datos = "si=${"si"}&buscador=" + $("#buscador_con").val() + "&criterio=" + $("#criterio_con").val() +
-            "&operador=" + $("#oprd").val();
+            "&operador=" + $("#oprd").val() + "&departamento=" + $("#departamento option:selected").val() +
+            "&fechaInicio=" + $("#fechaInicio").val() + "&fechaFin=" + $("#fechaFin").val();
         $.ajax({
             type : "POST",
             url : "${g.createLink(controller: 'reportes4', action: 'tablaContratadas')}",
@@ -164,6 +165,14 @@
 
     $("#buscar").click(function(){
         cargarTabla();
+    });
+
+    $("#criterio_con").keydown(function (ev) {
+        if (ev.keyCode === 13) {
+            ev.preventDefault();
+            cargarTabla();
+            return false;
+        }
     });
 
 </script>

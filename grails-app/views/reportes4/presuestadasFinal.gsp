@@ -11,8 +11,8 @@
     <title>
         Obras Presupuestadas
     </title>
-    <asset:javascript src="/jquery/plugins/jQuery-contextMenu-gh-pages/src/jquery.contextMenu.js"/>
-    <asset:stylesheet src="/jquery/plugins/jQuery-contextMenu-gh-pages/src/jquery.contextMenu.css"/>
+    %{--    <asset:javascript src="/jquery/plugins/jQuery-contextMenu-gh-pages/src/jquery.contextMenu.js"/>--}%
+    %{--    <asset:stylesheet src="/jquery/plugins/jQuery-contextMenu-gh-pages/src/jquery.contextMenu.css"/>--}%
 </head>
 
 <body>
@@ -23,13 +23,13 @@
             <i class=" fa fa-arrow-left"></i>
             Regresar
         </a>
-        <b>Buscar Por:</b>
+        <b style="margin-left: 35px">Buscar Por:</b>
         <elm:select name="buscador" from = "${reportesServ.obrasPresupuestadas()}" value="${params.buscador}"
-                    optionKey="campo" optionValue="nombre" optionClass="operador" id="buscador_con" style="width: 240px" />
+                    optionKey="campo" optionValue="nombre" optionClass="operador" id="buscador_con" style="width: 200px" />
         <b>Operación:</b>
         <span id="selOpt"></span>
         <b style="margin-left: 20px">Criterio: </b>
-        <g:textField name="criterio" style="width: 160px; margin-right: 10px" value="${params.criterio}" id="criterio_con"/>
+        <g:textField name="criterio" style="width: 230px; margin-right: 10px" value="${params.criterio}" id="criterio_con"/>
     </div>
     <div class="span12">
 
@@ -72,32 +72,34 @@
     <table class="table table-bordered table-hover table-condensed" style="width: 100%; background-color: #a39e9e">
         <thead>
         <tr>
-            <th style="width: 80px;">
+            <th style="width: 12%;">
                 Código
             </th>
-            <th style="width: 280px;">
+            <th style="width: 25%;">
                 Nombre
             </th>
-            <th style="width: 120px;">
+            <th style="width: 13%;">
                 Tipo
             </th>
-            <th style="width: 80px">
+            <th style="width: 8%">
                 Fecha Reg
             </th>
-            <th style="width: 270px">
+            <th style="width: 21%">
                 Cantón-Parroquia-Comunidad
             </th>
-            <th style="width: 100px">
+            <th style="width: 9%">
                 Valor
             </th>
-            <th style="width: 200px">
-                Elaborado
+            <th style="width: 14%">
+                Requirente
             </th>
-            <th style="width: 70px">
+            <th style="width: 11%">
                 Doc.Referencia
             </th>
-            <th style="width: 80px">
+            <th style="width: 9%">
                 Estado
+            </th>
+            <th style="width: 1%">
             </th>
         </tr>
         </thead>
@@ -105,7 +107,6 @@
     <div id="detalle">
     </div>
 </div>
-
 
 <script type="text/javascript">
 
@@ -117,11 +118,17 @@
         }
     });
 
-    cargarTabla();
+    /* inicializa el select de oprd con la primea opción de busacdor */
+    $( document ).ready(function() {
+        cargarTabla();
+    });
 
     function cargarTabla() {
+        $("#buscador_con").change();
         var d = cargarLoader("Cargando...");
-        var  datos = "si=${"si"}&buscador=" + $("#buscador_reg1").val() + "&estado=" + $("#estado_reg1").val() + "&departamento=" + $("#departamento option:selected").val() + "&fechaInicio=" + $("#fechaInicio").val() + "&fechaFin=" + $("#fechaFin").val();
+        var datos = "si=${"si"}&buscador=" + $("#buscador_con").val() + "&criterio=" + $("#criterio_con").val() +
+            "&operador=" + $("#oprd").val() + "&departamento=" + $("#departamento option:selected").val() +
+            "&fechaInicio=" + $("#fechaInicio").val() + "&fechaFin=" + $("#fechaFin").val();
         $.ajax({
             type : "POST",
             url : "${g.createLink(controller: 'reportes4',action:'tablaPresupuestadas')}",
@@ -133,21 +140,8 @@
         });
     }
 
-    var checkeados = [];
-
     $("#buscar").click(function(){
-        var c = cargarLoader("Cargando...");
-        var datos = "si=${"si"}&buscador=" + $("#buscador_con").val() + "&criterio=" + $("#criterio_con").val() +
-            "&operador=" + $("#oprd").val();
-        $.ajax({
-            type : "POST",
-            url : "${g.createLink(controller: 'reportes4',action:'tablaPresupuestadas')}",
-            data     : datos,
-            success  : function (msg) {
-                c.modal("hide");
-                $("#detalle").html(msg)
-            }
-        });
+        cargarTabla();
     });
 
     $("#regresar").click(function () {
@@ -155,21 +149,17 @@
     });
 
     $("#imprimir").click(function () {
-        location.href = "${g.createLink(controller: 'reportes4', action:'reportePresupuestadas' )}?buscador=" + $("#buscador_con").val() + "&criterio=" + $("#criterio_con").val() + "&operador=" + $("#oprd").val()
+        location.href = "${g.createLink(controller: 'reportes4', action:'reportePresupuestadas' )}?buscador=" + $("#buscador_con").val() + "&criterio=" + $("#criterio_con").val() + "&operador=" + $("#oprd").val() + "&departamento=" + $("#departamento option:selected").val() + "&fechaInicio=" + $("#fechaInicio").val() + "&fechaFin=" + $("#fechaFin").val()
     });
 
     $("#excel").click(function () {
-        location.href = "${g.createLink(controller: 'reportesExcel', action:'reporteExcelPresupuestadas' )}?buscador=" + $("#buscador_con").val() + "&criterio=" + $("#criterio_con").val() + "&operador=" + $("#oprd").val()
+        location.href = "${g.createLink(controller: 'reportesExcel', action:'reporteExcelPresupuestadas' )}?buscador=" + $("#buscador_con").val() + "&criterio=" + $("#criterio_con").val() + "&operador=" + $("#oprd").val() + "&departamento=" + $("#departamento option:selected").val() + "&fechaInicio=" + $("#fechaInicio").val() + "&fechaFin=" + $("#fechaFin").val()
     });
 
     $("#buscador_con").change(function(){
-        var anterior = "${params.operador}";
         var opciones = $(this).find("option:selected").attr("class").split(",");
         poneOperadores(opciones);
-        /* regresa a la opción seleccionada */
-        // $("#oprd option[value=" + anterior + "]").prop('selected', true);
     });
-
 
     function poneOperadores (opcn) {
         var $sel = $("<select name='operador' id='oprd' style='width: 160px'}>");
@@ -181,24 +171,11 @@
         $("#selOpt").html($sel);
     }
 
-    /* inicializa el select de oprd con la primea opción de busacdor */
-    $( document ).ready(function() {
-        $("#buscador_con").change();
-    });
-
-    $.contextMenu({
-        selector: '.obra_row',
-        callback: function (key, options) {
-
-            var m = "clicked: " + $(this).attr("id");
-            var idFila = $(this).attr("id");
-
-            if(key === "registro"){
-                location.href = "${g.createLink(controller: 'obra', action: 'registroObra')}" + "?obra=" + idFila;
-            }
-        },
-        items: {
-            "registro": {name: "Ir al Registro de esta Obra", icon:"info"}
+    $("#criterio_con").keydown(function (ev) {
+        if (ev.keyCode === 13) {
+            ev.preventDefault();
+            cargarTabla();
+            return false;
         }
     });
 

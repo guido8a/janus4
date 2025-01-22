@@ -2,9 +2,7 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
-
     <meta name="layout" content="main">
-
     <title>Procesos de contratación</title>
 </head>
 
@@ -59,16 +57,16 @@
     <table class="table table-bordered table-hover table-condensed" style="width: 100%; background-color: #a39e9e">
         <thead>
         <tr>
-            <th style="width: 8%;">
+            <th style="width: 11%;">
                 Código
             </th>
-            <th style="width: 7%;">
+            <th style="width: 8%;">
                 Fecha Adjudicación
             </th>
-            <th style="width: 28%;">
+            <th style="width: 24%;">
                 Objeto
             </th>
-            <th style="width: 26%;">
+            <th style="width: 24%;">
                 Obra
             </th>
             <th style="width: 10%">
@@ -77,11 +75,11 @@
             <th style="width: 7%">
                 Monto
             </th>
-            <th style="width: 5%">
-                Estado
-            </th>
             <th style="width: 8%">
                 Certificación Presupuestaria
+            </th>
+            <th style="width: 7%">
+                Estado
             </th>
             <th style="width: 1%">
             </th>

@@ -21,13 +21,14 @@
             <i class=" fa fa-arrow-left"></i>
             Regresar
         </a>
-        <b>Buscar Por:</b>
+
+        <b style="margin-left: 35px">Buscar Por:</b>
         <elm:select name="buscador" from = "${reportesServ.obrasPresupuestadas()}" value="${params.buscador}"
                     optionKey="campo" optionValue="nombre" optionClass="operador" id="buscador_con" style="width: 200px" />
         <b>Operación:</b>
         <span id="selOpt"></span>
         <b style="margin-left: 20px">Criterio: </b>
-        <g:textField name="criterio" style="width: 200px; margin-right: 10px" value="${params.criterio ?: ''}" id="criterio_con"/>
+        <g:textField name="criterio" style="width: 230px; margin-right: 10px" value="${params.criterio ?: ''}" id="criterio_con"/>
     </div>
     <div class="span12">
         <div class="col-md-1">
@@ -68,7 +69,7 @@
     <table class="table table-bordered table-hover table-condensed" style="width: 100%; background-color: #a39e9e">
         <thead>
         <tr>
-            <th style="width: 10%;">
+            <th style="width: 12%;">
                 Código
             </th>
             <th style="width: 25%;">
@@ -86,7 +87,7 @@
             <th style="width: 9%">
                 Valor
             </th>
-            <th style="width: 16%">
+            <th style="width: 14%">
                 Requirente
             </th>
             <th style="width: 11%">
