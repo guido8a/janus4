@@ -72,7 +72,7 @@
             <th style="width: 12%;">
                 Código
             </th>
-            <th style="width: 25%;">
+            <th style="width: 30%;">
                 Nombre
             </th>
             <th style="width: 13%;">
@@ -87,14 +87,11 @@
             <th style="width: 9%">
                 Valor
             </th>
-            <th style="width: 14%">
+            <th style="width: 18%">
                 Requirente
             </th>
             <th style="width: 11%">
                 Doc.Referencia
-            </th>
-            <th style="width: 9%">
-                Estado
             </th>
             <th style="width: 1%">
             </th>

@@ -16,20 +16,14 @@ th, td {
             <g:each in="${obras}" var="obra" status="j">
                 <tr class="obra_row" id="${obra.obra__id}">
                     <td style="width: 12% !important;">${obra.obracdgo}</td>
-                    <td style="width: 25% !important;">${obra.obranmbr}</td>
+                    <td style="width: 30% !important;">${obra.obranmbr}</td>
                     <td style="width: 13% !important;font-size: 10px">${obra.tpobdscr}</td>
                     <td style="width: 8% !important;"><g:formatDate date="${obra.obrafcha}" format="dd-MM-yyyy"/></td>
                     <td style="width: 21% !important; font-size: 10px">${obra.cntnnmbr} - ${obra.parrnmbr} - ${obra.cmndnmbr}</td>
                     <td style="text-align: right; width: 9% !important;">${obra.obravlor}</td>
-                    <td style="width: 14% !important;">${obra.dptodscr}</td>
+                    <td style="width: 18% !important;">${obra.dptodscr}</td>
                     <td style="width: 11% !important;font-size: 10px">${obra.obrarefe}</td>
-                    <g:if test="${obras?.size() < 9}">
-                        <td style="width: 9% !important; font-size: 10px">${obra.estado}</td>
-                        <td style="width: 1%"></td>
-                    </g:if>
-                    <g:else>
-                        <td style="width: 10% !important;font-size: 10px">${obra.estado}</td>
-                    </g:else>
+                    <td style="width: 1%"></td>
                 </tr>
             </g:each>
         </g:if>
