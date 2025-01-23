@@ -210,6 +210,48 @@ class FormulaPolinomicaController {
         }
     }
 
+    def guardarGrupoSgrcCt() {
+        println "guardarGrupoSgrcCt $params"
+        def formula = FormulaPolinomica.get(params.id)
+        def cn = dbConnectionService.getConnection()
+        def sql = "SELECT item.item__id, itemcdgo codigo, item.itemnmbr, valor " +
+                "from item, dprt, sbgr, mfcl, mfvl " +
+                "where mfcl.obra__id = ${params.obra} and mfcl.sbpr__id = ${params.sbpr} and " +
+                "mfcl.clmndscr = item.item__id || '_T' and dprt.dprt__id = item.dprt__id and " +
+                "sbgr.sbgr__id = dprt.sbgr__id and grpo__id = 2 and mfvl.obra__id = mfcl.obra__id and " +
+                "mfvl.sbpr__id = mfcl.sbpr__id and mfvl.clmncdgo = mfcl.clmncdgo and mfvl.codigo = 'sS5' and " +
+                "item.item__id not in (select item__id from itfp, fpob where itfp.fpob__id = fpob.fpob__id and " +
+                "obra__id = ${params.obra} and sbpr__id = ${params.sbpr}) AND " +
+                "itemcdgo not in ('MO') and item__id in " +
+                "(select item__id from itin where indc__id = ${params.indice} order by valor desc;"
+        formula.indice = Indice.get(params.indice)
+        formula.valor = params.valor.toDouble()
+        println "sql: $sql"
+        if (formula.save(flush: true)) {
+//            Guardar items sugeridos
+            sql = "insert into itfp(fpob__id, item__id, itfpvlor) select ${params.id}, item.item__id, valor " +
+                    "from item, dprt, sbgr, mfcl, mfvl " +
+                    "where mfcl.obra__id = ${params.obra} and mfcl.sbpr__id = ${params.sbpr} and " +
+                    "mfcl.clmndscr = item.item__id || '_T' and dprt.dprt__id = item.dprt__id and " +
+                    "sbgr.sbgr__id = dprt.sbgr__id and grpo__id = 2 and mfvl.obra__id = mfcl.obra__id and " +
+                    "mfvl.sbpr__id = mfcl.sbpr__id and mfvl.clmncdgo = mfcl.clmncdgo and mfvl.codigo = 'sS5' and " +
+                    "item.item__id not in (select item__id from itfp, fpob where itfp.fpob__id = fpob.fpob__id and " +
+                    "obra__id = ${params.obra} and sbpr__id = ${params.sbpr}) AND " +
+                    "itemcdgo not in ('MO') and item__id in " +
+                    "(select item__id from itin where indc__id = ${params.indice} ) order by valor desc"
+            println "sql insert: $sql"
+            cn.execute(sql.toString())
+            sql = "update fpob set fpobvlor = (select sum(itfpvlor) from itfp where fpob__id = ${params.id} ) " +
+                    "where fpob.fpob__id = ${params.id}"
+            cn.execute(sql.toString())
+            cn.close()
+            render "OK"
+        } else {
+            println "errorres: ${formula.errors}"
+            render "NO"
+        }
+    }
+
     def coeficientes() {
 
 //        println "coef " + params

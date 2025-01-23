@@ -642,7 +642,7 @@
                                 btnSaveSgrc.replaceWith(spinner);
                                 $.ajax({
                                     type    : "POST",
-                                    url     : "${createLink(action: 'guardarGrupoSgrc')}",
+                                    url     : "${createLink(action: 'guardarGrupoSgrcCt')}",
                                     data    : {
                                         id     : nodeId,
                                         indice : indice,
@@ -746,7 +746,7 @@
                                     success : function (msg) {
                                         $("#modalTitle-sugeridosCt").html("Editar grupo");
                                         $("#modalBody-sugeridosCt").html(msg);
-                                        $("#modalFooter-sugeridosCt").html("").append(btnCancelSgrc).append(btnSaveSgrc);
+                                        $("#modalFooter-sugeridosCt").html("").append(btnCancelSgrcCt).append(btnSaveSgrcCt);
                                         $("#modal-sugeridosCt").dialog("open");
                                     }
                                 });

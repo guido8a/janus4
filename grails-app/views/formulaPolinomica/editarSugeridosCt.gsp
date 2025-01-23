@@ -1,15 +1,13 @@
 <div>
     <div class="row">
-        <div class="span">
+        <div class="col-md-12">
             Índices sugereridos para <strong>${formula.numero}</strong>
         </div>
     </div>
 
     <div class="row">
-        <div class="span">
-            por
-            %{--<g:select name="indice" from="${janus.Indice.list([sort: 'descripcion'])}" optionKey="id" optionValue="descripcion" class="span4" value="${formula.indiceId}"/>--}%
-            <g:select name="indice" from="${indices}" optionKey="indc__id" optionValue="indcdscr" class="span4"
+        <div class="col-md-12">
+            <g:select name="indice" from="${indices}" optionKey="indc__id" optionValue="indcdscr" class="col-md-12"
                       value="${formula.indiceId}"/>
         </div>
     </div>
@@ -56,27 +54,7 @@
             } else {
                 return validarNum(ev);
             }
-        }/*,
-         keyup   : function () {
-         if ($.trim($(this).val() == "")) {
-         ////console.log("aqui", $(this).val());
-         $(this).val("0");
-         } else {
-         ////console.log("?");
-         }
-         }*/
+        },
     });
-
-    //    $("#valor").keydown(function (ev) {
-    //        if (ev.keyCode == 190 || ev.keyCode == 110) {
-    //            var val = $(this).val();
-    //            if (val.length == 0) {
-    //                $(this).val("0");
-    //            }
-    //            return val.indexOf(".") == -1;
-    //        } else {
-    //            return validarNum(ev);
-    //        }
-    //    });
 
 </script>

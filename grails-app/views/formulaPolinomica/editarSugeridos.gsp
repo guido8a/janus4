@@ -1,15 +1,17 @@
 <div>
     <div class="row">
-        <div class="span">
+        <div class="col-md-12">
             Índices sugereridos para <strong>${formula.numero}</strong>
         </div>
     </div>
 
     <div class="row">
-        <div class="span">
-            por
+        <div class="col-md-12">
+            <div class="col-md-1">
+                por
+            </div>
             %{--<g:select name="indice" from="${janus.Indice.list([sort: 'descripcion'])}" optionKey="id" optionValue="descripcion" class="span4" value="${formula.indiceId}"/>--}%
-            <g:select name="indice" from="${indices}" optionKey="indc__id" optionValue="indcdscr" class="span4"
+            <g:select name="indice" from="${indices}" optionKey="indc__id" optionValue="indcdscr" class="col-md-11"
                       value="${formula.indiceId}"/>
         </div>
     </div>
@@ -17,7 +19,6 @@
     <div class="row">
         <div class="span">
             Modificar valor &nbsp;&nbsp;&nbsp;
-            %{--<input type="number" step="0.001" pattern="#.###"/>--}%
             <g:field type="number" name="valorSgrc" step="0.001" pattern="#.###" value="${formula.valor}" class="input-mini"/>
             (suma <g:formatNumber number="${total}" format="##,##0.#####" locale="ec"/>)
         </div>
@@ -56,15 +57,7 @@
             } else {
                 return validarNum(ev);
             }
-        }/*,
-         keyup   : function () {
-         if ($.trim($(this).val() == "")) {
-         ////console.log("aqui", $(this).val());
-         $(this).val("0");
-         } else {
-         ////console.log("?");
-         }
-         }*/
+        }
     });
 
     //    $("#valor").keydown(function (ev) {
