@@ -235,6 +235,14 @@
     </div>
 </div>
 
+<div id="modal-sugeridosCt">
+    <div class="modal-body" id="modalBody-sugeridosCt">
+    </div>
+
+    <div class="modal-footer" id="modalFooter-sugeridosCt">
+    </div>
+</div>
+
 <div class="modal hide fade" id="modal-indice" style="width: 640px;">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">×</button>
@@ -444,6 +452,17 @@
         title: 'Indices Sugeridos'
     });
 
+    $("#modal-sugeridosCt").dialog({
+        autoOpen: false,
+        resizable: true,
+        modal: true,
+        draggable: false,
+        width: 500,
+        height: 280,
+        position: 'center',
+        title: 'Indices Sugeridos Cuadrilla Tipo'
+    });
+
     function createContextmenu(node) {
 
         var parent = node.parent().parent();
@@ -475,8 +494,10 @@
                 if(num !== 'p01'){
                     var btnCancel = $('<a href="#" class="btn">Cancelar</a>');
                     var btnCancelSgrc = $('<a href="#" class="btn">Cancelar</a>');
+                    var btnCancelSgrcCt = $('<a href="#" class="btn">Cancelar</a>');
                     var btnSave = $('<a href="#"  class="btn btn-success"><i class="fa fa-save"></i> Guardar</a>');
                     var btnSaveSgrc = $('<a href="#"  class="btn btn-success"><i class="fa fa-save"></i> Guardar Sgrc</a>');
+                    var btnSaveSgrcCt = $('<a href="#"  class="btn btn-success"><i class="fa fa-save"></i> Guardar Sgrc</a>');
 
                     btnCancel.click(function () {
                         $("#modal-formula").dialog("close");
@@ -484,6 +505,10 @@
 
                     btnCancelSgrc.click(function () {
                         $("#modal-sugeridos").dialog("close");
+                    });
+
+                    btnCancelSgrcCt.click(function () {
+                        $("#modal-sugeridosCt").dialog("close");
                     });
 
                     btnSave.click(function () {
@@ -590,6 +615,61 @@
                         }
                     });
 
+                    btnSaveSgrcCt.click(function () {
+                        var indice = $("#indice").val();
+
+                        var valor = $.trim($("#valorSgrc").val());
+                        var indiceNombre = $("#indice option:selected").text();
+                        var cantNombre = 0;
+                        console.log('Compara');
+                        var $spans = $("#tree").find("span:contains('" + indiceNombre + "')");
+
+                        $spans.each(function () {
+                            var t = $.trim($(this).text());
+                            if (t === indiceNombre) {
+                                cantNombre++;
+                            }
+                        });
+
+                        if (indiceNombre === nodeText) {
+                            cantNombre = 0;
+                        }
+
+                        console.log('cantNombre:', cantNombre, ' Valor', valor);
+
+                        if (cantNombre === 0) {
+                            if (valor !== "") {
+                                btnSaveSgrc.replaceWith(spinner);
+                                $.ajax({
+                                    type    : "POST",
+                                    url     : "${createLink(action: 'guardarGrupoSgrc')}",
+                                    data    : {
+                                        id     : nodeId,
+                                        indice : indice,
+                                        valor  : valor,
+                                        obra: ${obra.id},
+                                        sbpr: ${subpre}
+                                    },
+                                    success : function (msg) {
+                                        if (msg === "OK") {
+                                            node.attr("nombre", indiceNombre).trigger("change_node.jstree");
+                                            node.attr("valor", valor).trigger("change_node.jstree");
+                                            $("#modal-sugeridos").dialog("close");
+                                            updateSumaTotal();
+                                            location.reload();
+                                        }
+                                    }
+                                });
+                            } else {
+                            }
+                        } else {
+                            bootbox.alert('<i class="fa fa-exclamation-triangle text-info fa-3x"></i> ' +
+                                '<strong style="font-size: 14px">' + "No puede ingresar dos coeficientes con el mismo nombre" +
+                                '</strong>');
+                            return false;
+                        }
+                    });
+
                     menuItems.editar = {
                         label            : "<i class='fa fa-edit'></i> Editar índice (todos)",
                         separator_before : false,
@@ -618,7 +698,7 @@
                     };
 
                     console.log('sugiere:', sugiere);
-                    if(sugiere === 'false'){
+                    if(sugiere === 'false' && num[0] == 'p'){
                         menuItems.sugeridos = {
                             label            : "<i class='fa fa-edit'></i> Índices sugeridos",
                             separator_before : false,
@@ -638,6 +718,36 @@
                                         $("#modalBody-sugeridos").html(msg);
                                         $("#modalFooter-sugeridos").html("").append(btnCancelSgrc).append(btnSaveSgrc);
                                         $("#modal-sugeridos").dialog("open");
+                                    }
+                                });
+                                </g:if>
+                                <g:else>
+                                bootbox.alert('<i class="fa fa-exclamation-triangle text-info fa-3x"></i> ' + '<strong style="font-size: 14px">' + "No puede modificar los coeficientes de una obra ya registrada" + '</strong>');
+                                </g:else>
+                            }
+                        };
+                    }
+
+                    if(sugiere === 'false' && num[0] == 'c'){
+                        menuItems.sugeridosCt = {
+                            label            : "<i class='fa fa-edit'></i> Índices sugeridos Cuadrilla",
+                            separator_before : false,
+                            separator_after  : false,
+                            action           : function (obj) {
+                                <g:if test="${obra?.liquidacion==1 || obra?.estado!='R' || obra?.codigo[-1..-2] != 'OF'}">
+                                $.ajax({
+                                    type    : "POST",
+                                    url     : "${createLink(action: 'editarSugeridosCt')}",
+                                    data    : {
+                                        id : nodeId,
+                                        sbpr: ${subpre},
+                                        obra: ${obra.id}
+                                    },
+                                    success : function (msg) {
+                                        $("#modalTitle-sugeridosCt").html("Editar grupo");
+                                        $("#modalBody-sugeridosCt").html(msg);
+                                        $("#modalFooter-sugeridosCt").html("").append(btnCancelSgrc).append(btnSaveSgrc);
+                                        $("#modal-sugeridosCt").dialog("open");
                                     }
                                 });
                                 </g:if>

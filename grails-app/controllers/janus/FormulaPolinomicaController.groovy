@@ -125,6 +125,37 @@ class FormulaPolinomicaController {
         return [formula: formula, total: total, indices: indices]
     }
 
+    def editarSugeridosCt() {
+        println "editarSugeridos: $params"
+        def formula = FormulaPolinomica.get(params.id)
+        def children = ItemsFormulaPolinomica.findAllByFormulaPolinomica(formula)
+        def total = children.sum { it.valor }
+        def cn = dbConnectionService.getConnection()
+//        def sql = "select indc__id id, indcdscr descripcion from indc where indc__id in " +
+//                "(select indc__id from vlin where vlinvalr > 0 and prin__id = " +
+//                "(select prin__id from prin order by prinfcin desc limit 1)) order by tpin__id desc, indcdscr"
+
+        def sql = "SELECT item.item__id from item, dprt, sbgr, mfcl, mfvl " +
+                "where mfcl.obra__id = ${params.obra} and mfcl.sbpr__id = 0 and " +
+                "mfcl.clmndscr = item.item__id || '_T' and dprt.dprt__id = item.dprt__id and " +
+                "sbgr.sbgr__id = dprt.sbgr__id and grpo__id = 2 and mfvl.obra__id = mfcl.obra__id and " +
+                "mfvl.sbpr__id = mfcl.sbpr__id and mfvl.clmncdgo = mfcl.clmncdgo and mfvl.codigo = 'sS5' and " +
+                "item.item__id not in (select item__id from itfp, fpob " +
+                  "where itfp.fpob__id = fpob.fpob__id and obra__id = ${params.obra} and sbpr__id = 0) AND " +
+                "itemcdgo not in ('MO') order by valor desc limit 1"
+
+        println "editarSugeridos... item: $sql"
+        def item = cn.rows(sql.toString())[0].item__id
+        sql = "select indc.indc__id, indcdscr from indc, itin " +
+                "where indc.indc__id = itin.indc__id and item__id = ${item} and indcdscr not like '%NO PRINCIPAL%' " +
+                "order by itinnmro desc"
+
+        println "editarSugeridos... indicaes: $sql"
+        def indices = cn.rows(sql.toString())
+        cn.close()
+        return [formula: formula, total: total, indices: indices]
+    }
+
     def guardarGrupo() {
         def formula = FormulaPolinomica.get(params.id)
         formula.indice = Indice.get(params.indice)
