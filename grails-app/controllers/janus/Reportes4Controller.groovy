@@ -1906,6 +1906,8 @@ class Reportes4Controller {
 
     def reporteContratos() {
 
+        println("params r " + params)
+
         def sql
         def cn
         def res
@@ -2988,7 +2990,7 @@ class Reportes4Controller {
                 "from obra, tpob, cntn, parr, cmnd, dpto "
         def sqlWhere = "where tpob.tpob__id = obra.tpob__id and cmnd.cmnd__id = obra.cmnd__id and " +
                 "parr.parr__id = obra.parr__id and cntn.cntn__id = parr.cntn__id  and " +
-                "dpto.dpto__id = obra.dpto__id and obraetdo = 'R'"
+                "dpto.dpto__id = obra.dpto__id and obraetdo = 'N'"
 
         def sqlOrder = "order by obracdgo"
 
@@ -3004,6 +3006,100 @@ class Reportes4Controller {
         println "sql: ${sqlSelect} ${sqlWhere} ${sqlOrder}"
 
         "$sqlSelect $sqlWhere $sqlOrder".toString()
+    }
+
+    def reporteObrasParaPresupuesto() {
+
+        def cn = dbConnectionService.getConnection()
+        def campos = reportesService.obrasPresupuestadas()
+
+        params.old = params.criterio
+        params.criterio = reportesService.limpiaCriterio(params.criterio)
+
+        def sql = armaSqlPresupuesto(params)
+        def obras = cn.rows(sql)
+
+        params.criterio = params.old
+
+        def prmsCellHead2 = [border: Color.WHITE,
+                             align : Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE, bordeTop: "1", bordeBot: "1"]
+        def prmsCellCenter = [border: Color.WHITE, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE, bordeBot: "1"]
+        def prmsCellRight = [border: Color.WHITE, align: Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE, bordeBot: "1"]
+        def prmsCellLeft = [border: Color.WHITE, valign: Element.ALIGN_MIDDLE, bordeBot: "1"]
+
+        def baos = new ByteArrayOutputStream()
+        def name = "obrasPresupuesto_" + new Date().format("ddMMyyyy_hhmm") + ".pdf";
+        Font times12bold = new Font(Font.TIMES_ROMAN, 12, Font.BOLD);
+        Font times18bold = new Font(Font.TIMES_ROMAN, 18, Font.BOLD);
+        Font times10bold = new Font(Font.TIMES_ROMAN, 10, Font.BOLD);
+        Font times8bold = new Font(Font.TIMES_ROMAN, 8, Font.BOLD)
+        Font times8normal = new Font(Font.TIMES_ROMAN, 8, Font.NORMAL)
+        Font times7normal = new Font(Font.TIMES_ROMAN, 7, Font.NORMAL)
+        Font times10boldWhite = new Font(Font.TIMES_ROMAN, 10, Font.BOLD);
+        Font times8boldWhite = new Font(Font.TIMES_ROMAN, 8, Font.BOLD)
+        times8boldWhite.setColor(Color.WHITE)
+        times10boldWhite.setColor(Color.WHITE)
+
+        Document document
+        document = new Document(PageSize.A4.rotate());
+        def pdfw = PdfWriter.getInstance(document, baos);
+        document.open();
+
+//        document.setMargins(2,2,2,2)
+        document.addTitle("obrasPresupuesto " + new Date().format("dd_MM_yyyy"));
+        document.addSubject("Generado por el sistema Janus");
+        document.addKeywords("documentosObra, janus, presupuesto");
+        document.addAuthor("Janus");
+        document.addCreator("Tedein SA");
+
+
+        Paragraph headers = new Paragraph();
+        addEmptyLine(headers, 1);
+        headers.setAlignment(Element.ALIGN_CENTER);
+        headers.add(new Paragraph((Auxiliar.get(1)?.titulo ?: ''), times18bold));
+        addEmptyLine(headers, 1);
+        headers.add(new Paragraph("REPORTE DE OBRAS PARA PRESUPEUSTO", times12bold));
+        addEmptyLine(headers, 1);
+        headers.add(new Paragraph("AL " + printFecha(new Date()).toUpperCase(), times12bold));
+        addEmptyLine(headers, 1);
+        document.add(headers);
+
+        PdfPTable tablaRegistradas = new PdfPTable(9);
+        tablaRegistradas.setWidthPercentage(100);
+        tablaRegistradas.setWidths(arregloEnteros([16, 35, 15, 8, 25, 9, 16, 15, 8]))
+
+        addCellTabla(tablaRegistradas, new Paragraph("Código", times8bold), prmsCellHead2)
+        addCellTabla(tablaRegistradas, new Paragraph("Nombre", times8bold), prmsCellHead2)
+        addCellTabla(tablaRegistradas, new Paragraph("Tipo", times8bold), prmsCellHead2)
+        addCellTabla(tablaRegistradas, new Paragraph("Fecha Reg.", times8bold), prmsCellHead2)
+        addCellTabla(tablaRegistradas, new Paragraph("Cantón-Parroquia-Comunidad", times8bold), prmsCellHead2)
+        addCellTabla(tablaRegistradas, new Paragraph("Valor", times8bold), prmsCellHead2)
+        addCellTabla(tablaRegistradas, new Paragraph("Requirente", times8bold), prmsCellHead2)
+        addCellTabla(tablaRegistradas, new Paragraph("Doc. Referencia", times8bold), prmsCellHead2)
+        addCellTabla(tablaRegistradas, new Paragraph("Estado", times8bold), prmsCellHead2)
+
+        obras.eachWithIndex { i, j ->
+            addCellTabla(tablaRegistradas, new Paragraph(i.obracdgo, times8normal), prmsCellLeft)
+            addCellTabla(tablaRegistradas, new Paragraph(i.obranmbr, times8normal), prmsCellLeft)
+            addCellTabla(tablaRegistradas, new Paragraph(i.tpobdscr, times7normal), prmsCellLeft)
+            addCellTabla(tablaRegistradas, new Paragraph(g.formatDate(date: i?.obrafcha, format: "dd-MM-yyyy"), times8normal), prmsCellCenter)
+            addCellTabla(tablaRegistradas, new Paragraph(i.cntnnmbr + "-" + i.parrnmbr + "-" + i.cmndnmbr, times7normal), prmsCellLeft)
+            addCellTabla(tablaRegistradas, new Paragraph(g.formatNumber(number: i.obravlor.toDouble(), minFractionDigits:
+                    2, maxFractionDigits: 2, format: "##,##0", locale: "ec"), times8normal), prmsCellRight)
+            addCellTabla(tablaRegistradas, new Paragraph(i.dptodscr, times7normal), prmsCellLeft)
+            addCellTabla(tablaRegistradas, new Paragraph(i.obrarefe, times7normal), prmsCellLeft)
+            addCellTabla(tablaRegistradas, new Paragraph(i.estado, times7normal), prmsCellLeft)
+        }
+
+        document.add(tablaRegistradas);
+        document.close();
+        pdfw.close()
+        byte[] b = baos.toByteArray();
+        response.setContentType("application/pdf")
+        response.setHeader("Content-disposition", "attachment; filename=" + name)
+        response.setContentLength(b.length)
+        response.getOutputStream().write(b)
+
     }
 
 }

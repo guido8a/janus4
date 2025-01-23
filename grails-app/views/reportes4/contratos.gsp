@@ -128,7 +128,7 @@
     });
 
     $("#imprimir").click(function () {
-        location.href="${g.createLink(controller: 'reportes4', action:'reporteContratos' )}?buscador=" + $("#buscador_tra").val() + "&criterio=" + $("#criterio_tra").val() + + "&fecha=" + $("#fecha_tra").val() +   "&fechaInicio=" + $("#fechaInicio").val() + "&fechaFin=" + $("#fechaFin").val();
+        location.href="${g.createLink(controller: 'reportes4', action:'reporteContratos' )}?buscador=" + $("#buscador_tra").val() + "&criterio=" + $("#criterio_tra").val() + "&fecha=" + $("#fecha_tra").val() +   "&fechaInicio=" + $("#fechaInicio").val() + "&fechaFin=" + $("#fechaFin").val();
     });
 
     $("#excel").click(function () {

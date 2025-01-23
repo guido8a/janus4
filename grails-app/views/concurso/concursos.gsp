@@ -116,7 +116,7 @@
         cargarTabla();
     });
 
-    // cargarTabla();
+    cargarTabla();
 
     function cargarTabla() {
         var fechaInicio = $("#fechaInicio").val();

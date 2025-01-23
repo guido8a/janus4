@@ -144,9 +144,9 @@
         $("#selOpt").html($sel);
     }
 
-    // $( document ).ready(function() {
-    //     cargarTabla();
-    // });
+    $( document ).ready(function() {
+        cargarTabla();
+    });
 
     function cargarTabla() {
         $("#buscador_con").change();

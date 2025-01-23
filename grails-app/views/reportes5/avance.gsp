@@ -29,16 +29,11 @@
 
 </div>
 
-<div class="row">
-
+<div class="span12">
     <div class="col-md-1">
     </div>
     <div class="col-md-4">
         <b style="margin-left: 20px">Dirección o Coordinación requirente:</b>
-        %{--<g:select name="departamento.id"--}%
-                  %{--from="${janus.Departamento.findAllByRequirente(1).sort{it.direccion.nombre}}"--}%
-                  %{--id="departamento" optionKey="id" optionValue="${{ it.direccion.nombre + ' - ' + it.descripcion }}"--}%
-                  %{--dire="${{ it.direccion.id }}" noSelection="['' : 'Todas']" style="width: 410px;"/>--}%
         <g:select name="departamento.id"
                   from="${departamento}" id="departamento" optionKey="key" optionValue="value"
                   noSelection="['' : 'Todas']" style="width: 410px;"/>
@@ -130,15 +125,15 @@
     });
 
     $("#imprimir").click(function () {
-        location.href = "${g.createLink(controller: 'reportes5', action:'reporteAvance' )}?buscador=" + $("#buscador_con").val() + "&criterio=" + $("#criterio_con").val() + "&operador=" + $("#oprd").val()
+        location.href = "${g.createLink(controller: 'reportes5', action:'reporteAvance' )}?buscador=" + $("#buscador_con").val() + "&criterio=" + $("#criterio_con").val() + "&operador=" + $("#oprd").val() + "&departamento=" + $("#departamento option:selected").val() + "&fechaInicio=" + $("#fechaInicio").val() + "&fechaFin=" + $("#fechaFin").val()
     });
 
     $("#excel").click(function () {
-        location.href = "${g.createLink(controller: 'reportesExcel', action:'reporteExcelAvance' )}?buscador=" + $("#buscador_con").val() + "&criterio=" + $("#criterio_con").val() + "&operador=" + $("#oprd").val()
+        location.href = "${g.createLink(controller: 'reportesExcel', action:'reporteExcelAvance' )}?buscador=" + $("#buscador_con").val() + "&criterio=" + $("#criterio_con").val() + "&operador=" + $("#oprd").val() + "&departamento=" + $("#departamento option:selected").val() + "&fechaInicio=" + $("#fechaInicio").val() + "&fechaFin=" + $("#fechaFin").val()
     });
 
     $("#imprimirGrafico").click(function () {
-        location.href = "${g.createLink(controller: 'reportes6', action:'graficoAvance' )}?buscador=" + $("#buscador_con").val() + "&criterio=" + $("#criterio_con").val() + "&operador=" + $("#oprd").val()
+        location.href = "${g.createLink(controller: 'reportes6', action:'graficoAvance' )}?buscador=" + $("#buscador_con").val() + "&criterio=" + $("#criterio_con").val() + "&operador=" + $("#oprd").val() + "&departamento=" + $("#departamento option:selected").val() + "&fechaInicio=" + $("#fechaInicio").val() + "&fechaFin=" + $("#fechaFin").val()
     });
 
     $("#buscador_con").change(function(){
@@ -157,14 +152,15 @@
     }
 
     $( document ).ready(function() {
-        $("#buscador_con").change();
-//        cargarTabla();
+       cargarTabla();
     });
 
     function cargarTabla() {
+        $("#buscador_con").change();
         var d = cargarLoader("Cargando...");
         var datos = "si=${"si"}&buscador=" + $("#buscador_con").val() + "&criterio=" + $("#criterio_con").val() +
-            "&operador=" + $("#oprd").val();
+            "&operador=" + $("#oprd").val() + "&departamento=" + $("#departamento option:selected").val() +
+            "&fechaInicio=" + $("#fechaInicio").val() + "&fechaFin=" + $("#fechaFin").val();
         $.ajax({
             type : "POST",
             url : "${g.createLink(controller: 'reportes5',action:'tablaAvance')}",

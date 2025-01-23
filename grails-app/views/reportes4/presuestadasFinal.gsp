@@ -118,9 +118,8 @@
         }
     });
 
-    /* inicializa el select de oprd con la primea opción de busacdor */
     $( document ).ready(function() {
-//        cargarTabla();
+       cargarTabla();
     });
 
     function cargarTabla() {
