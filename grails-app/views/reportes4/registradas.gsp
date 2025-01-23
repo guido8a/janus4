@@ -129,7 +129,7 @@
 
     $( document ).ready(function() {
         $("#buscador_con").change();
-//        cargarTabla();
+        cargarTabla();
     });
 
     $("#buscar").click(function(){
