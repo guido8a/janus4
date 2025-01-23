@@ -15,12 +15,12 @@
 <body>
 
 <div class="row-fluid">
-    <div class="span12">
+    <div class="row">
         <a href="#" class="btn btn-primary" id="regresar">
             <i class=" fa fa-arrow-left"></i>
             Regresar
         </a>
-        <b>Buscar Por: </b>
+        <b style="margin-left: 35px">Buscar Por: </b>
         <elm:select name="buscador" from = "${reportesServ.obrasContratadas()}" value="${params.buscador}"
                     optionKey="campo" optionValue="nombre" optionClass="operador" id="buscador_con" style="width: 200px" />
         <b>Operación:</b>

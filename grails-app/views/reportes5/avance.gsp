@@ -14,12 +14,12 @@
 
 <body>
 
-<div class="span12">
+<div class="row">
     <a href="#" class="btn btn-primary col-md-1" id="regresar">
         <i class=" fa fa-arrow-left"></i>
         Regresar
     </a>
-    <b>Buscar Por:</b>
+    <b style="margin-left: 35px">Buscar Por:</b>
     <elm:select name="buscador" from = "${reportesServ.obrasAvance()}" value="${params.buscador}"
                 optionKey="campo" optionValue="nombre" optionClass="operador" id="buscador_con" style="width: 240px" />
     <b>Operación:</b>
@@ -29,27 +29,32 @@
 
 </div>
 
-<div class="span12">
+<div class="row">
 
+    <div class="col-md-1">
+    </div>
     <div class="col-md-4">
         <b style="margin-left: 20px">Dirección o Coordinación requirente:</b>
+        %{--<g:select name="departamento.id"--}%
+                  %{--from="${janus.Departamento.findAllByRequirente(1).sort{it.direccion.nombre}}"--}%
+                  %{--id="departamento" optionKey="id" optionValue="${{ it.direccion.nombre + ' - ' + it.descripcion }}"--}%
+                  %{--dire="${{ it.direccion.id }}" noSelection="['' : 'Todas']" style="width: 410px;"/>--}%
         <g:select name="departamento.id"
-                  from="${janus.Departamento.findAllByRequirente(1).sort{it.direccion.nombre}}"
-                  id="departamento" optionKey="id" optionValue="${{ it.direccion.nombre + ' - ' + it.descripcion }}"
-                  dire="${{ it.direccion.id }}" noSelection="['' : 'Todas']" style="width: 410px;"/>
+                  from="${departamento}" id="departamento" optionKey="key" optionValue="value"
+                  noSelection="['' : 'Todas']" style="width: 410px;"/>
     </div>
     <div class="col-md-2" style="align-items: center;">
         <b style="margin-left: 20px">Fecha Desde: </b>
-        <input aria-label="" name="fechaInicio_name" id='fechaInicio' type='text' class=""  />
+        <input aria-label="" name="fechaInicio_name" id='fechaInicio' type='text' class=""  style="width: 120px" />
     </div>
 
-    <div class="col-md-2" style="align-items: center;">
+    <div class="col-md-2" style="align-items: center; margin-left: -80px">
         <b style="margin-left: 20px">Fecha Hasta: </b>
-        <input aria-label="" name="fechaFin_name" id='fechaFin' type='text' class=""  />
+        <input aria-label="" name="fechaFin_name" id='fechaFin' type='text' class="" style="width: 120px"/>
     </div>
 
     <a href="#" class="btn btn-success" id="buscar">
-        <i class="fa fa-search"></i>
+        <i class="fa fa-search"></i> Reporte
     </a>
     <a href="#" class="btn btn-info" id="imprimir" >
         <i class="fa fa-print"></i>
@@ -153,7 +158,7 @@
 
     $( document ).ready(function() {
         $("#buscador_con").change();
-        cargarTabla();
+//        cargarTabla();
     });
 
     function cargarTabla() {

@@ -120,8 +120,18 @@ class Reportes5Controller{
     }
 
     def avance() {
-        def perfil = session.perfil.id
-        return [perfil: perfil]
+        def cn = dbConnectionService.getConnection()
+        def departamento = [:]
+        def sql = "select distinct obra.dpto__id id, diredscr||' - '||dptodscr nombre " +
+                "from obra, dpto, dire, cntr " +
+                "where dpto.dpto__id = obra.dpto__id and dire.dire__id = dpto.dire__id and " +
+                "cntr.obra__id = obra.obra__id and cntretdo = 'R' " +
+                "order by 2"
+        println "sqlReg: $sql"
+        cn.eachRow(sql.toString()) { r ->
+            departamento[r.id] = r.nombre
+        }
+        [departamento: departamento]
     }
 
     def tablaAvance_old() {
@@ -170,6 +180,9 @@ class Reportes5Controller{
     def armaSqlAvance(params){
         def campos = reportesService.obrasAvance()
         def operador = reportesService.operadores()
+        println "armaSqlAvance: $params"
+        def fcin = params.fechaInicio ? new Date().parse("dd-MM-yyyy", params.fechaInicio).format('yyyy-MM-dd') : ''
+        def fcfn = params.fechaFin ? new Date().parse("dd-MM-yyyy", params.fechaFin).format('yyyy-MM-dd') : ''
 
         def sqlSelect = "select obra.obra__id, obracdgo, obranmbr, cntnnmbr, parrnmbr, cmndnmbr, c.cntrcdgo, " +
                 "c.cntrmnto, c.cntrfcsb, prvenmbr, c.cntrplzo, obrafcin, cntrfcfs," +
@@ -192,6 +205,11 @@ class Reportes5Controller{
             println "op: $op"
             sqlWhere += " and ${params.buscador} ${op.operador} ${op.strInicio}${params.criterio}${op.strFin}";
         }
+
+        if(params.departamento) sqlWhere += " and obra.dpto__id = ${params.departamento} "
+        if(params.fechaInicio) sqlWhere += " and obrafcha >= '${fcin}' "
+        if(params.fechaFIn) sqlWhere += " and obrafcha <= '${fcfn}' "
+        println "sql: ${sqlSelect} ${sqlWhere} ${sqlOrder}"
         "$sqlSelect $sqlWhere $sqlOrder".toString()
     }
 
