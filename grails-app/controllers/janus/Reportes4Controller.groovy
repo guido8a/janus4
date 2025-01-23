@@ -2990,7 +2990,7 @@ class Reportes4Controller {
                 "from obra, tpob, cntn, parr, cmnd, dpto "
         def sqlWhere = "where tpob.tpob__id = obra.tpob__id and cmnd.cmnd__id = obra.cmnd__id and " +
                 "parr.parr__id = obra.parr__id and cntn.cntn__id = parr.cntn__id  and " +
-                "dpto.dpto__id = obra.dpto__id and obraetdo = 'N'"
+                "dpto.dpto__id = obra.dpto__id and obraetdo = 'R'"
 
         def sqlOrder = "order by obracdgo"
 
