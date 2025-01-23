@@ -128,6 +128,7 @@
     }
 
     $( document ).ready(function() {
+        $("#buscador_con").change();
 //        cargarTabla();
     });
 
