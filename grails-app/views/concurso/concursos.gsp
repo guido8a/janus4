@@ -18,11 +18,14 @@
             </a>
         </div>
 
-        <div class="col-md-4" style="margin-top: 12px">
+        <div class="col-md-2" >
             <b>Buscar Por:</b>
-            <g:select name="buscador" from="${[0: 'Código', 1: 'Objeto', 2: 'Obra', 3: 'Certificación']}" optionKey="key" optionValue="value" />
+            <g:select name="buscador" from="${[0: 'Código', 1: 'Objeto', 2: 'Obra', 3: 'Certificación']}" optionKey="key" optionValue="value" style="width: 160px;" />
             <span id="selOpt"></span>
-            <b style="margin-left: 20px">Criterio: </b>
+        </div>
+
+        <div class="col-md-2" id="divCriterio">
+            <b>Criterio: </b>
             <g:textField name="criterio" style="width: 160px; margin-right: 10px" value="${params.criterio ?: ''}" id="criterio"/>
         </div>
 
@@ -57,10 +60,10 @@
     <table class="table table-bordered table-hover table-condensed" style="width: 100%; background-color: #a39e9e">
         <thead>
         <tr>
-            <th style="width: 11%;">
-                Código Proceso de Contratación
+            <th style="width: 10%;">
+                Código
             </th>
-            <th style="width: 8%;">
+            <th style="width: 7%;">
                 Fecha Adjudicación
             </th>
             <th style="width: 24%;">
@@ -113,7 +116,7 @@
         cargarTabla();
     });
 
-//    cargarTabla();
+    // cargarTabla();
 
     function cargarTabla() {
         var fechaInicio = $("#fechaInicio").val();

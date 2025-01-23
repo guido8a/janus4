@@ -17,10 +17,10 @@ th, td {
                 <td style="width: 10%;">${obra.obracdgo}</td>
                 <td style="width: 27% ">${obra.obranmbr}</td>
                 <td style="width: 10%;font-size: 10px">${obra.tpobdscr}</td>
-                <td style="width: 8%;"><g:formatDate date="${obra.obrafcha}" format="dd-MM-yyyy"/></td>
+                <td style="width: 7%;"><g:formatDate date="${obra.obrafcha}" format="dd-MM-yyyy"/></td>
                 <td style="width: 15%;font-size: 10px">${obra.cntnnmbr} - ${obra.parrnmbr} - ${obra.cmndnmbr}</td>
-                <td style="width: 9%; text-align: right">${obra.cntrmnto}</td>
-                <td style="width: 10%;font-size: 10px">${obra.dptodscr}</td>
+                <td style="width: 7%; text-align: right">${obra.cntrmnto}</td>
+                <td style="width: 13%;font-size: 10px">${obra.dptodscr}</td>
                 <td style="width: 11%;">${obra.cntrcdgo}</td>
             </tr>
         </g:each>

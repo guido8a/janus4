@@ -20,13 +20,13 @@
             <i class=" fa fa-arrow-left"></i>
             Regresar
         </a>
-        <b style="margin-left: 35px">Buscar Por: </b>
+        <b style="margin-left: 35px">Buscar Por:</b>
         <elm:select name="buscador" from = "${reportesServ.obrasContratadas()}" value="${params.buscador}"
                     optionKey="campo" optionValue="nombre" optionClass="operador" id="buscador_con" style="width: 200px" />
         <b>Operación:</b>
         <span id="selOpt"></span>
         <b style="margin-left: 20px">Criterio: </b>
-        <g:textField name="criterio" style="width: 160px; margin-right: 10px" value="${params.criterio}" id="criterio_con"/>
+        <g:textField name="criterio" style="width: 230px; margin-right: 10px" value="${params.criterio}" id="criterio_con"/>
 
     </div>
     <div class="span12">
@@ -81,16 +81,16 @@
             <th style="width: 10%;">
                 Tipo
             </th>
-            <th style="width: 8%">
+            <th style="width: 7%">
                 Fecha Reg
             </th>
             <th style="width: 15%">
                 Cantón-Parroquia-Comunidad
             </th>
-            <th style="width: 9%">
+            <th style="width: 7%">
                 Valor
             </th>
-            <th style="width: 10%">
+            <th style="width: 13%">
                 Coordinación
             </th>
             <th style="width: 10%">
@@ -145,7 +145,7 @@
     }
 
     $( document ).ready(function() {
-//        cargarTabla();
+        cargarTabla();
     });
 
     function cargarTabla() {

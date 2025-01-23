@@ -18,13 +18,13 @@
         Regresar
     </a>
 
-    <div class="col-md-2" style="align-items: center; margin-top: 13px">
+    <div class="col-md-2">
         <b>Buscar Por: </b>
         <g:select name="buscador"
                   from="${['cdgo':'N° Contrato', 'memo': 'Memo', 'fcsb': 'Fecha Suscrip', 'tipo': 'Tipo Contrato', 'cncr': 'Concurso',
                                            'obra':'Obra', 'nmbr': 'Nombre', 'cntn':'Cantón', 'parr': 'Parroquia', 'clas':'Clase', 'mnto': 'Monto', 'cont': 'Contratista',
                                            'tppz':'Tipo Plazo', 'inic':'Fecha Inicio', 'fin':'Fecha Fin']}" value="${params.buscador}"
-                  optionKey="key" optionValue="value" id="buscador_tra" />
+                  optionKey="key" optionValue="value" id="buscador_tra"  style="width: 150px;" />
     </div>
 
     <div class="col-md-2 hide" id="divFecha">
@@ -67,16 +67,16 @@
         <thead>
         <tr>
 
-            <th style="width: 7%;">
+            <th style="width: 9%;">
                 N° Contrato
             </th>
-            <th style="width: 7%;">
+            <th style="width: 6%;">
                 Fecha Suscripción
             </th>
-            <th style="width: 7%;">
+            <th style="width: 8%;">
                 Concurso
             </th>
-            <th style="width: 7%;">
+            <th style="width: 8%;">
                 Código Obra
             </th>
             <th style="width: 18%;">
@@ -100,10 +100,10 @@
             <th style="width: 8%;">
                 Contratista
             </th>
-            <th style="width: 7%;">
+            <th style="width: 6%;">
                 Fecha Inicio
             </th>
-            <th style="width: 7%;">
+            <th style="width: 6%;">
                 Fecha Fin
             </th>
         </tr>
@@ -128,11 +128,11 @@
     });
 
     $("#imprimir").click(function () {
-        location.href="${g.createLink(controller: 'reportes4', action:'reporteContratos' )}?buscador=" + $("#buscador_tra").val() + "&criterio=" + $("#criterio_tra").val()
+        location.href="${g.createLink(controller: 'reportes4', action:'reporteContratos' )}?buscador=" + $("#buscador_tra").val() + "&criterio=" + $("#criterio_tra").val() + + "&fecha=" + $("#fecha_tra").val() +   "&fechaInicio=" + $("#fechaInicio").val() + "&fechaFin=" + $("#fechaFin").val();
     });
 
     $("#excel").click(function () {
-        location.href="${g.createLink(controller: 'reportesExcel', action:'reporteExcelContratos' )}?buscador=" + $("#buscador_tra").val() + "&criterio=" + $("#criterio_tra").val()
+        location.href="${g.createLink(controller: 'reportesExcel', action:'reporteExcelContratos' )}?buscador=" + $("#buscador_tra").val() + "&criterio=" + $("#criterio_tra").val()  + "&fecha=" + $("#fecha_tra").val() + "&fechaInicio=" + $("#fechaInicio").val() + "&fechaFin=" + $("#fechaFin").val();
     });
 
     $("#buscador_tra").change(function () {
@@ -159,7 +159,8 @@
 
     function cargarTabla() {
         var d = cargarLoader("Cargando...");
-        var datos = "si=${"si"}&buscador=" + $("#buscador_tra").val() + "&criterio=" + $("#criterio_tra").val() + "&fecha=" + $("#fecha_tra").val();
+        var datos = "si=${"si"}&buscador=" + $("#buscador_tra").val() + "&criterio=" + $("#criterio_tra").val() + "&fecha=" + $("#fecha_tra").val()
+             + "&fechaInicio=" + $("#fechaInicio").val() + "&fechaFin=" + $("#fechaFin").val();
         $.ajax({
             type : "POST",
             url : "${g.createLink(controller: 'reportes4',action:'tablaContratos')}",
