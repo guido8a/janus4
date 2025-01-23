@@ -84,7 +84,7 @@
         location.href="${g.createLink(controller: 'reportesExcel', action:'reporteExcelAseguradoras' )}?buscador=" + $("#buscador_as").val() + "&criterio=" + $("#criterio_as").val()
     });
 
-//    cargarTabla();
+   cargarTabla();
 
     function cargarTabla() {
         var d = cargarLoader("Cargando...");

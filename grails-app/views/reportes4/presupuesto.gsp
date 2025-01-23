@@ -76,7 +76,7 @@
             <th style="width: 12%;">
                 Código
             </th>
-            <th style="width: 25%;">
+            <th style="width: 29%;">
                 Nombre
             </th>
             <th style="width: 13%;">
@@ -97,7 +97,7 @@
             <th style="width: 11%">
                 Doc.Referencia
             </th>
-            <th style="width: 9%">
+            <th style="width: 5%">
                 Estado
             </th>
             <th style="width: 1%">

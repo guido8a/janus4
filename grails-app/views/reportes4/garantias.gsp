@@ -18,7 +18,7 @@
         Regresar
     </a>
 
-    <div class="col-md-4">
+    <div class="col-md-3">
         <b style="margin-left: 35px">Buscar Por: </b>
         <g:select name="buscador" from="${['contrato':'N° Contrato', 'cdgo': 'Garantía', 'nmrv': 'Renovación', 'tpgr': 'Tipo de Garantía', 'tdgr': 'Documento',
                                            'aseguradora':'Aseguradora', 'cont': 'Contratista', 'etdo':'Estado', 'mnto': 'Monto', 'mnda':'Moneda', 'fcin': 'Emisión', 'fcfn': 'Vencimiento',
@@ -133,7 +133,7 @@
         }
     });
 
-//    cargarTabla();
+   cargarTabla();
 
     function cargarTabla() {
         var d = cargarLoader("Cargando...");

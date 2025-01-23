@@ -174,7 +174,15 @@
 
     $("#buscar").click(function(){
         cargarTabla();
-    })
+    });
+
+    $("#criterio_tra").keydown(function (ev) {
+        if (ev.keyCode === 13) {
+            ev.preventDefault();
+            cargarTabla();
+            return false;
+        }
+    });
 
 </script>
 </body>

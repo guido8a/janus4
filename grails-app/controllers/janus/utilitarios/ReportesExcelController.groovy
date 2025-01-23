@@ -1720,10 +1720,10 @@ class ReportesExcelController {
         Row rowC1 = sheet.createRow(fila)
         rowC1.createCell(0).setCellValue("N° Contrato")
         rowC1.createCell(1).setCellValue("Fecha Suscripción")
-        rowC1.createCell(2).setCellValue("Memo")
+        rowC1.createCell(2).setCellValue("Concurso")
         rowC1.createCell(3).setCellValue("Obra")
         rowC1.createCell(4).setCellValue("Nombre de la Obra")
-        rowC1.createCell(5).setCellValue("Cantón-Parroquia-Comunidad")
+        rowC1.createCell(5).setCellValue("Cantón-Parroquia")
         rowC1.createCell(6).setCellValue("Clase de Obra")
         rowC1.createCell(7).setCellValue("Tipo de Obra")
         rowC1.createCell(8).setCellValue("Contratista")
@@ -1732,7 +1732,6 @@ class ReportesExcelController {
         rowC1.createCell(11).setCellValue("Anticipo")
         rowC1.createCell(12).setCellValue("Fecha Inicio")
         rowC1.createCell(13).setCellValue("Fecha Fin")
-        rowC1.createCell(14).setCellValue("Plazo")
         rowC1.setRowStyle(style)
         fila++
 
@@ -1752,7 +1751,6 @@ class ReportesExcelController {
             rowF1.createCell(11).setCellValue(i.anticipo ?: '')
             rowF1.createCell(12).setCellValue(i?.fechainicio?.format("dd-MM-yyyy")?.toString() ?: '')
             rowF1.createCell(13).setCellValue(i?.fechafin?.format("dd-MM-yyyy")?.toString() ?: '')
-            rowF1.createCell(14).setCellValue(i?.plazo ?: '')
             fila++
         }
 
@@ -2700,6 +2698,112 @@ class ReportesExcelController {
         def header = "attachment; filename=" + "mantenimientoPrecios_ManoObra.xlsx";
         response.setContentType("application/octet-stream")
         response.setHeader("Content-Disposition", header);
+        wb.write(output)
+    }
+
+    def armaSqlPresupuesto(params) {
+        def campos = reportesService.obrasPresupuestadas()
+        def operador = reportesService.operadores()
+        println "armaSqlPresupuesto: $params"
+        def fcin = params.fechaInicio ? new Date().parse("dd-MM-yyyy", params.fechaInicio).format('yyyy-MM-dd') : ''
+        def fcfn = params.fechaFin ? new Date().parse("dd-MM-yyyy", params.fechaFin).format('yyyy-MM-dd') : ''
+
+        def sqlSelect = "select obra.obra__id, obracdgo, obranmbr, tpobdscr, obrafcha, cntnnmbr, parrnmbr, cmndnmbr, " +
+                "dptodscr, obrarefe, obravlor, case when obraetdo = 'R' THEN 'Registrada' end estado " +
+                "from obra, tpob, cntn, parr, cmnd, dpto "
+        def sqlWhere = "where tpob.tpob__id = obra.tpob__id and cmnd.cmnd__id = obra.cmnd__id and " +
+                "parr.parr__id = obra.parr__id and cntn.cntn__id = parr.cntn__id  and " +
+                "dpto.dpto__id = obra.dpto__id and obraetdo = 'R'"
+
+        def sqlOrder = "order by obracdgo"
+
+        params.nombre = "Código"
+        if (campos.find { it.campo == params.buscador }?.size() > 0) {
+            def op = operador.find { it.valor == params.operador }
+            sqlWhere += " and ${params.buscador} ${op.operador} ${op.strInicio}${params.criterio}${op.strFin}";
+        }
+
+        if(params.departamento) sqlWhere += " and obra.dpto__id = ${params.departamento} "
+        if(params.fechaInicio) sqlWhere += " and obrafcha >= '${fcin}' "
+        if(params.fechaFIn) sqlWhere += " and obrafcha <= '${fcfn}' "
+//        println "sql: ${sqlSelect} ${sqlWhere} ${sqlOrder}"
+
+        "$sqlSelect $sqlWhere $sqlOrder".toString()
+    }
+
+
+    def reporteExcelObrasParaPresupuesto() {
+
+        def cn = dbConnectionService.getConnection()
+        def campos = reportesService.obrasPresupuestadas()
+
+        params.old = params.criterio
+        params.criterio = reportesService.limpiaCriterio(params.criterio)
+
+        def sql = armaSqlPresupuesto(params)
+        def obras = cn.rows(sql)
+
+        params.criterio = params.old
+
+        XSSFWorkbook wb = new XSSFWorkbook()
+        XSSFCellStyle style = wb.createCellStyle()
+        XSSFFont font = wb.createFont()
+        font.setBold(true)
+        style.setFont(font)
+
+        Sheet sheet = wb.createSheet("Para Presupuesto")
+        sheet.setColumnWidth(0, 20 * 256)
+        sheet.setColumnWidth(1, 60 * 256)
+        sheet.setColumnWidth(2, 30 * 256)
+        sheet.setColumnWidth(3, 10 * 256)
+        sheet.setColumnWidth(4, 35 * 256)
+        sheet.setColumnWidth(5, 15 * 256)
+        sheet.setColumnWidth(6, 30 * 256)
+        sheet.setColumnWidth(7, 30 * 256)
+        sheet.setColumnWidth(8, 10 * 256)
+
+        Row row = sheet.createRow(0)
+        row.createCell(0).setCellValue("")
+        Row row0 = sheet.createRow(1)
+        row0.createCell(1).setCellValue(Auxiliar.get(1)?.titulo ?: '')
+        row0.setRowStyle(style)
+        Row row1 = sheet.createRow(2)
+        row1.createCell(1).setCellValue("REPORTE EXCEL DE OBRAS PARA PRESUPUESTO")
+        row1.setRowStyle(style)
+
+        def fila = 4
+
+        Row rowC1 = sheet.createRow(fila)
+        rowC1.createCell(0).setCellValue("Código")
+        rowC1.createCell(1).setCellValue("Nombre")
+        rowC1.createCell(2).setCellValue("Tipo")
+        rowC1.createCell(3).setCellValue("Fecha Reg.")
+        rowC1.createCell(4).setCellValue("Cantón-Parroquia-Comunidad")
+        rowC1.createCell(5).setCellValue("Valor")
+        rowC1.createCell(6).setCellValue("Requirente")
+        rowC1.createCell(7).setCellValue("Doc. Referencia")
+        rowC1.createCell(8).setCellValue("Estado")
+        rowC1.setRowStyle(style)
+        fila++
+
+        obras.eachWithIndex {i, j->
+            Row rowF1 = sheet.createRow(fila)
+            rowF1.createCell(0).setCellValue(i.obracdgo.toString() ?: '')
+            rowF1.createCell(1).setCellValue(i.obranmbr.toString() ?: '')
+            rowF1.createCell(2).setCellValue(i?.tpobdscr?.toString() ?: '')
+            rowF1.createCell(3).setCellValue(i?.obrafcha?.format("dd-MM-yyyy")?.toString() ?: '')
+            rowF1.createCell(4).setCellValue(i?.cntnnmbr?.toString() + " " + i?.parrnmbr?.toString() + " " + i?.cmndnmbr?.toString())
+            rowF1.createCell(5).setCellValue(i.obravlor ?: '')
+            rowF1.createCell(6).setCellValue(i?.dptodscr?.toString() ?: '')
+            rowF1.createCell(7).setCellValue(i?.obrarefe?.toString() ?: '')
+            rowF1.createCell(8).setCellValue(i.estado.toString() ?: '')
+            fila++
+        }
+
+        def output = response.getOutputStream()
+        def header = "attachment; filename=" + "obrasParaPresupuesto.xlsx"
+        response.setContentType("application/octet-stream")
+        response.setHeader("Content-Disposition", header)
         wb.write(output)
     }
 

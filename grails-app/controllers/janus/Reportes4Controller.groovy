@@ -1950,50 +1950,23 @@ class Reportes4Controller {
 
         params.criterio = params.criterio.trim();
 
-        def prmsHeaderHoja = [border: Color.WHITE]
-        def prmsHeaderHoja2 = [border: Color.WHITE, colspan: 9]
-//        def prmsHeaderHoja3 = [border: Color.WHITE, colspan: 5]
-        def prmsHeader = [border: Color.WHITE, colspan: 7, bg: new Color(73, 175, 205),
-                          align : Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE]
-        def prmsHeader2 = [border: Color.WHITE, colspan: 3, bg: new Color(73, 175, 205),
-                           align : Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE]
-        def prmsCellHead = [border: Color.WHITE, bg: Color.WHITE,
-                            align : Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE]
         def prmsCellHead2 = [border: Color.WHITE,
                              align : Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE, bordeTop: "1", bordeBot: "1"]
-//        def prmsCellHead3 = [border: Color.WHITE,
-//                             align : Element.ALIGN_RIGHT, valign: Element.ALIGN_RIGHT, bordeTop: "1", bordeBot: "1"]
-        def prmsCellHeadRight = [border: Color.WHITE, bg: new Color(73, 175, 205),
-                                 align : Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE]
-        def prmsCellCenter = [border: Color.WHITE, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE]
-//        def prmsCellCenterLeft = [border: Color.WHITE, align: Element.ALIGN_LEFT, valign: Element.ALIGN_LEFT]
-        def prmsCellRight = [border: Color.WHITE, align: Element.ALIGN_RIGHT, valign: Element.ALIGN_RIGHT]
-        def prmsCellRight2 = [border: Color.WHITE, align: Element.ALIGN_RIGHT, valign: Element.ALIGN_RIGHT, bordeTop: "1", bordeBot: "1"]
-        def prmsCellRightTop = [border: Color.WHITE, align: Element.ALIGN_RIGHT, valign: Element.ALIGN_RIGHT, bordeTop: "1"]
-        def prmsCellRightBot = [border: Color.WHITE, align: Element.ALIGN_RIGHT, valign: Element.ALIGN_RIGHT, bordeBot: "1"]
-        def prmsCellLeft = [border: Color.WHITE, valign: Element.ALIGN_MIDDLE]
-        def prmsSubtotal = [border: Color.WHITE, colspan: 6,
-                            align : Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE]
-        def prmsNum = [border: Color.WHITE, align: Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE]
-
-//        def prms = [prmsHeaderHoja: prmsHeaderHoja, prmsHeader: prmsHeader, prmsHeader2: prmsHeader2,
-//                    prmsCellHead: prmsCellHead, prmsCell: prmsCellCenter, prmsCellLeft: prmsCellLeft, prmsSubtotal: prmsSubtotal, prmsNum: prmsNum,
-//                    prmsHeaderHoja2: prmsHeaderHoja2, prmsCellRight: prmsCellRight, prmsCellHeadRight: prmsCellHeadRight, prmsCellHead2: prmsCellHead2,
-//                    prmsCellRight2: prmsCellRight2, prmsCellRightTop: prmsCellRightTop, prmsCellRightBot: prmsCellRightBot]
+        def prmsCellRight = [border: Color.WHITE, align: Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE, bordeBot: "1"]
+        def prmsCellCenter = [border: Color.WHITE, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE, bordeBot: "1"]
+        def prmsCellLeft = [border: Color.WHITE, valign: Element.ALIGN_MIDDLE, bordeBot: "1"]
 
         def baos = new ByteArrayOutputStream()
         def name = "contratos_" + new Date().format("ddMMyyyy_hhmm") + ".pdf";
         Font times12bold = new Font(Font.TIMES_ROMAN, 12, Font.BOLD);
         Font times18bold = new Font(Font.TIMES_ROMAN, 18, Font.BOLD);
-        Font times10bold = new Font(Font.TIMES_ROMAN, 10, Font.BOLD);
         Font times8bold = new Font(Font.TIMES_ROMAN, 8, Font.BOLD)
         Font times8normal = new Font(Font.TIMES_ROMAN, 8, Font.NORMAL)
+        Font times7normal = new Font(Font.TIMES_ROMAN, 7, Font.NORMAL)
         Font times10boldWhite = new Font(Font.TIMES_ROMAN, 10, Font.BOLD);
         Font times8boldWhite = new Font(Font.TIMES_ROMAN, 8, Font.BOLD)
         times8boldWhite.setColor(Color.WHITE)
         times10boldWhite.setColor(Color.WHITE)
-//        def fonts = [times12bold: times12bold, times10bold: times10bold, times8bold: times8bold,
-//                     times10boldWhite: times10boldWhite, times8boldWhite: times8boldWhite, times8normal: times8normal, times18bold: times18bold]
 
         Document document
         document = new Document(PageSize.A4.rotate());
@@ -2019,14 +1992,14 @@ class Reportes4Controller {
 
         PdfPTable tablaRegistradas = new PdfPTable(11);
         tablaRegistradas.setWidthPercentage(100);
-        tablaRegistradas.setWidths(arregloEnteros([14, 14, 15, 15, 30, 25, 15, 20, 15, 10, 15]))
+        tablaRegistradas.setWidths(arregloEnteros([9, 6, 11, 11, 19, 10, 9, 7, 7, 5, 6]))
 
         addCellTabla(tablaRegistradas, new Paragraph("N° Contrato", times8bold), prmsCellHead2)
-        addCellTabla(tablaRegistradas, new Paragraph("Fecha Suscripcion", times8bold), prmsCellHead2)
+        addCellTabla(tablaRegistradas, new Paragraph("Fecha Suscripción", times8bold), prmsCellHead2)
         addCellTabla(tablaRegistradas, new Paragraph("Concurso", times8bold), prmsCellHead2)
         addCellTabla(tablaRegistradas, new Paragraph("Obra", times8bold), prmsCellHead2)
         addCellTabla(tablaRegistradas, new Paragraph("Nombre de la Obra", times8bold), prmsCellHead2)
-        addCellTabla(tablaRegistradas, new Paragraph("Cantón - Parroquia - Comunidad", times8bold), prmsCellHead2)
+        addCellTabla(tablaRegistradas, new Paragraph("Cantón - Parroquia", times8bold), prmsCellHead2)
         addCellTabla(tablaRegistradas, new Paragraph("Clase de Obra", times8bold), prmsCellHead2)
         addCellTabla(tablaRegistradas, new Paragraph("Contratista", times8bold), prmsCellHead2)
         addCellTabla(tablaRegistradas, new Paragraph("Monto", times8bold), prmsCellHead2)
@@ -2102,17 +2075,17 @@ class Reportes4Controller {
 
         res.eachWithIndex { i, j ->
             addCellTabla(tablaRegistradas, new Paragraph(i.codigo, times8normal), prmsCellLeft)
-            addCellTabla(tablaRegistradas, new Paragraph(i.fechasu?.format("dd-MM-yyyy"), times8normal), prmsCellLeft)
+            addCellTabla(tablaRegistradas, new Paragraph(i.fechasu?.format("dd-MM-yyyy"), times8normal), prmsCellCenter)
             addCellTabla(tablaRegistradas, new Paragraph(i.concurso, times8normal), prmsCellLeft)
             addCellTabla(tablaRegistradas, new Paragraph(i.obracodigo, times8normal), prmsCellLeft)
             addCellTabla(tablaRegistradas, new Paragraph(i.obranombre, times8normal), prmsCellLeft)
-            addCellTabla(tablaRegistradas, new Paragraph(i.canton + "-" + i.parroquia, times8normal), prmsCellLeft)
-            addCellTabla(tablaRegistradas, new Paragraph(i.tipoobra, times8normal), prmsCellLeft)
+            addCellTabla(tablaRegistradas, new Paragraph(i.canton + "-" + i.parroquia, times7normal), prmsCellLeft)
+            addCellTabla(tablaRegistradas, new Paragraph(i.tipoobra, times7normal), prmsCellLeft)
             addCellTabla(tablaRegistradas, new Paragraph(i.nombrecontra, times8normal), prmsCellLeft)
             addCellTabla(tablaRegistradas, new Paragraph(g.formatNumber(number: i.monto, minFractionDigits:
                     2, maxFractionDigits: 2, format: "##,##0", locale: "ec"), times8normal), prmsCellRight)
             addCellTabla(tablaRegistradas, new Paragraph(g.formatNumber(number: i.porcentaje, minFractionDigits:
-                    0, maxFractionDigits: 0, format: "##,##0", locale: "ec"), times8normal), prmsCellRight)
+                    0, maxFractionDigits: 0, format: "##,##0", locale: "ec"), times8normal), prmsCellCenter)
             addCellTabla(tablaRegistradas, new Paragraph(g.formatNumber(number: i.anticipo, minFractionDigits:
                     2, maxFractionDigits: 2, format: "##,##0", locale: "ec"), times8normal), prmsCellRight)
         }
@@ -2297,9 +2270,9 @@ class Reportes4Controller {
 
         def prmsCellHead2 = [border: Color.WHITE,
                              align : Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE, bordeTop: "1", bordeBot: "1"]
-        def prmsCellRight = [border: Color.WHITE, align: Element.ALIGN_RIGHT, valign: Element.ALIGN_RIGHT]
-        def prmsCellRight3 = [border: Color.WHITE, align: Element.ALIGN_CENTER, valign: Element.ALIGN_CENTER]
-        def prmsCellLeft = [border: Color.WHITE, valign: Element.ALIGN_MIDDLE]
+        def prmsCellRight = [border: Color.WHITE, align: Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE , bordeBot: "1"]
+        def prmsCellRight3 = [border: Color.WHITE, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE, bordeBot: "1"]
+        def prmsCellLeft = [border: Color.WHITE, valign: Element.ALIGN_MIDDLE, bordeBot: "1"]
 
         def baos = new ByteArrayOutputStream()
         def name = "garantias" + new Date().format("ddMMyyyy_hhmm") + ".pdf";
@@ -2307,6 +2280,7 @@ class Reportes4Controller {
         Font times18bold = new Font(Font.TIMES_ROMAN, 18, Font.BOLD);
         Font times8bold = new Font(Font.TIMES_ROMAN, 8, Font.BOLD)
         Font times8normal = new Font(Font.TIMES_ROMAN, 8, Font.NORMAL)
+        Font times7normal = new Font(Font.TIMES_ROMAN, 7, Font.NORMAL)
         Font times10boldWhite = new Font(Font.TIMES_ROMAN, 10, Font.BOLD);
         Font times8boldWhite = new Font(Font.TIMES_ROMAN, 8, Font.BOLD)
         times8boldWhite.setColor(Color.WHITE)
@@ -2336,7 +2310,7 @@ class Reportes4Controller {
 
         PdfPTable tablaRegistradas = new PdfPTable(13);
         tablaRegistradas.setWidthPercentage(100);
-        tablaRegistradas.setWidths(arregloEnteros([15, 30, 25, 20, 8, 30, 15, 9, 20, 15, 15, 12, 10]))
+        tablaRegistradas.setWidths(arregloEnteros([20, 30, 25, 15, 8, 30, 15, 9, 20, 15, 15, 12, 10]))
 
         addCellTabla(tablaRegistradas, new Paragraph("N° Contrato", times8bold), prmsCellHead2)
         addCellTabla(tablaRegistradas, new Paragraph("Contratista", times8bold), prmsCellHead2)
@@ -2419,11 +2393,11 @@ class Reportes4Controller {
             addCellTabla(tablaRegistradas, new Paragraph(i.estado, times8normal), prmsCellRight3)
             addCellTabla(tablaRegistradas, new Paragraph(g.formatNumber(number: i.monto, minFractionDigits:
                     5, maxFractionDigits: 5, format: "##,##0", locale: "ec"), times8normal), prmsCellRight)
-            addCellTabla(tablaRegistradas, new Paragraph(g.formatDate(date: i.emision, format: "dd-MM-yyyy"), times8normal), prmsCellLeft)
-            addCellTabla(tablaRegistradas, new Paragraph(g.formatDate(date: i.vencimiento, format: "dd-MM-yyyy"), times8normal), prmsCellLeft)
+            addCellTabla(tablaRegistradas, new Paragraph(g.formatDate(date: i.emision, format: "dd-MM-yyyy"), times8normal), prmsCellRight3)
+            addCellTabla(tablaRegistradas, new Paragraph(g.formatDate(date: i.vencimiento, format: "dd-MM-yyyy"), times8normal), prmsCellRight3)
             addCellTabla(tablaRegistradas, new Paragraph(g.formatNumber(number: i.dias, minFractionDigits:
-                    0, maxFractionDigits: 0, format: "##,##0", locale: "ec") + " Días", times8normal), prmsCellRight)
-            addCellTabla(tablaRegistradas, new Paragraph(i.moneda, times8normal), prmsCellLeft)
+                    0, maxFractionDigits: 0, format: "##,##0", locale: "ec") + " Días", times8normal), prmsCellRight3)
+            addCellTabla(tablaRegistradas, new Paragraph(i.moneda, times7normal), prmsCellRight3)
         }
 
         document.add(tablaRegistradas);
@@ -2781,8 +2755,9 @@ class Reportes4Controller {
         Font titleFont3 = new Font(Font.TIMES_ROMAN, 12, Font.BOLD);
         Font titleFont2 = new Font(Font.TIMES_ROMAN, 16, Font.BOLD);
         Font times8normal = new Font(Font.TIMES_ROMAN, 8, Font.NORMAL);
-        Font fontTh = new Font(Font.TIMES_ROMAN, 10, Font.BOLD);
-        Font fontTd = new Font(Font.TIMES_ROMAN, 10, Font.NORMAL);
+        Font times7normal = new Font(Font.TIMES_ROMAN, 7, Font.NORMAL);
+        Font fontTh = new Font(Font.TIMES_ROMAN, 8, Font.BOLD);
+        Font fontTd = new Font(Font.TIMES_ROMAN, 8, Font.NORMAL);
 
         Document document
         document = new Document(PageSize.A4.rotate());
@@ -2824,12 +2799,13 @@ class Reportes4Controller {
 
         def tablaDatos = new PdfPTable(11);
         tablaDatos.setWidthPercentage(100);
-        tablaDatos.setWidths(arregloEnteros([7, 18, 13, 9, 14, 10, 9, 9, 6, 5, 5]))
+        tablaDatos.setWidths(arregloEnteros([9, 21, 14, 9, 11, 7, 9, 6, 5, 5, 5]))
 
         def paramsHead = [border: Color.BLACK,
                           align : Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE, bordeTop: "1", bordeBot: "1"]
-        def prmsCellLeft = [border: Color.WHITE, valign: Element.ALIGN_MIDDLE]
-        def prmsCellRight = [border: Color.WHITE, valign: Element.ALIGN_RIGHT]
+        def prmsCellLeft = [border: Color.BLACK, valign: Element.ALIGN_MIDDLE,  bordeBot: "1"]
+        def prmsCellRight = [border: Color.BLACK,  align : Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE,  bordeBot: "1"]
+        def prmsCellCenter = [border: Color.BLACK, valign: Element.ALIGN_MIDDLE, align : Element.ALIGN_CENTER,  bordeBot: "1"]
 
         addCellTabla(tablaDatos, new Paragraph("Código", fontTh), paramsHead)
         addCellTabla(tablaDatos, new Paragraph("Nombre", fontTh), paramsHead)
@@ -2846,15 +2822,15 @@ class Reportes4Controller {
         obras.each { fila ->
             addCellTabla(tablaDatos, new Paragraph(fila.obracdgo, fontTd), prmsCellLeft)
             addCellTabla(tablaDatos, new Paragraph(fila.obranmbr, fontTd), prmsCellLeft)
-            addCellTabla(tablaDatos, new Paragraph(fila.cntnnmbr + " - " + fila.parrnmbr + " - " + fila.cmndnmbr, fontTd), prmsCellLeft)
+            addCellTabla(tablaDatos, new Paragraph(fila.cntnnmbr + " - " + fila.parrnmbr + " - " + fila.cmndnmbr, times7normal), prmsCellLeft)
             addCellTabla(tablaDatos, new Paragraph(fila.cntrcdgo, fontTd), prmsCellLeft)
-            addCellTabla(tablaDatos, new Paragraph(fila.prvenmbr, fontTd), prmsCellLeft)
+            addCellTabla(tablaDatos, new Paragraph(fila.prvenmbr, times7normal),prmsCellLeft )
             addCellTabla(tablaDatos, new Paragraph(numero(fila.cntrmnto, 2), fontTd), prmsCellRight)
-            addCellTabla(tablaDatos, new Paragraph(fila.cntrfcsb.format("dd-MM-yyyy"), fontTd), prmsCellLeft)
-            addCellTabla(tablaDatos, new Paragraph(fila.obrafcin.format("dd-MM-yyyy"), fontTd), prmsCellLeft)
-            addCellTabla(tablaDatos, new Paragraph(numero(fila.cntrplzo, 0) + " días", fontTd), prmsCellLeft)
-            addCellTabla(tablaDatos, new Paragraph(numero( (fila.av_economico) * 100, 2) + "%", fontTd), prmsCellRight)
-            addCellTabla(tablaDatos, new Paragraph(numero(fila.av_fisico, 2), fontTd), prmsCellRight)
+            addCellTabla(tablaDatos, new Paragraph(fila.cntrfcsb.format("dd-MM-yyyy"), fontTd), prmsCellCenter)
+            addCellTabla(tablaDatos, new Paragraph(fila.obrafcin.format("dd-MM-yyyy"), fontTd), prmsCellCenter)
+            addCellTabla(tablaDatos, new Paragraph(numero(fila.cntrplzo, 0) + " días", fontTd), prmsCellCenter)
+            addCellTabla(tablaDatos, new Paragraph(numero( (fila.av_economico) * 100, 2) + "%", fontTd), prmsCellCenter)
+            addCellTabla(tablaDatos, new Paragraph(numero(fila.av_fisico, 2), fontTd), prmsCellCenter)
         }
 
         document.add(tablaDatos)

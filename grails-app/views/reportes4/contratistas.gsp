@@ -43,31 +43,31 @@
     <table class="table table-bordered table-hover table-condensed" style="width: 100%; background-color: #a39e9e">
         <thead>
         <tr>
-            <th style="width: 10%;">
+            <th style="width: 7%;">
                 Cédula/RUC
             </th>
-            <th style="width: 10%;">
+            <th style="width: 19%;">
                 Nombre
             </th>
-            <th style="width: 10%;">
+            <th style="width: 8%;">
                 Especialidad
             </th>
             <th style="width: 10%;">
                 Contacto
             </th>
-            <th style="width: 10%;">
+            <th style="width: 15%;">
                 Dirección
             </th>
-            <th style="width: 10%;">
+            <th style="width: 7%;">
                 Teléfono
             </th>
             <th style="width: 10%;">
                 Garante
             </th>
-            <th style="width: 10%;">
+            <th style="width: 7%;">
                 Fecha Cont.
             </th>
-            <th style="width: 10%;">
+            <th style="width: 7%;">
                 Fecha Contrato.
             </th>
         </tr>
@@ -91,7 +91,7 @@
         location.href="${g.createLink(controller: 'reportesExcel', action:'reporteExcelContratistas' )}?buscador=" + $("#buscador_cont").val() + "&criterio=" + $("#criterio_cont").val()
     });
 
-//    cargarTabla();
+    cargarTabla();
 
     function cargarTabla() {
         var d = cargarLoader("Cargando...");

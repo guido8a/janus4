@@ -12,7 +12,7 @@ th, td {
 
 <div class="" style="width: 99.7%;height: 600px; overflow-y: auto;float: right; margin-top: -20px">
     <table class="table-bordered table-condensed table-striped table-hover" style="width: 100%">
-        <g:if test="${params.buscador != 'undefined'}">
+        <g:if test="${res}">
             <g:each in="${res}" var="cont" status="j">
                 <tr class="obra_row" id="${cont.id}">
                     <td style="width: 9%;">${cont.codigo}</td>
@@ -31,5 +31,10 @@ th, td {
                 </tr>
             </g:each>
         </g:if>
+        <g:else>
+            <tr style="text-align: center">
+                <td class="alert alert-warning"><i class="fa fa-exclamation-triangle fa-2x text-info"></i> <strong style="font-size: 16px"> No existen registros </strong></td>
+            </tr>
+        </g:else>
     </table>
 </div>

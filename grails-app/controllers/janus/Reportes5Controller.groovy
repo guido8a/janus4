@@ -221,18 +221,14 @@ class Reportes5Controller{
         Font titleFont3 = new Font(Font.TIMES_ROMAN, 12, Font.BOLD);
         Font titleFont2 = new Font(Font.TIMES_ROMAN, 16, Font.BOLD);
         Font times8normal = new Font(Font.TIMES_ROMAN, 8, Font.NORMAL);
+        Font times7normal = new Font(Font.TIMES_ROMAN, 7, Font.NORMAL);
         Font fontTh = new Font(Font.TIMES_ROMAN, 10, Font.BOLD);
-        Font fontTd = new Font(Font.TIMES_ROMAN, 10, Font.NORMAL);
+        Font fontTh8 = new Font(Font.TIMES_ROMAN, 8, Font.BOLD);
+        Font fontTd = new Font(Font.TIMES_ROMAN, 8, Font.NORMAL);
 
         Document document
         document = new Document(PageSize.A4.rotate());
         def pdfw = PdfWriter.getInstance(document, baos);
-
-        HeaderFooter footer1 = new HeaderFooter(new Phrase(" ", times8normal), true);
-        footer1.setBorder(Rectangle.NO_BORDER);
-        footer1.setAlignment(Element.ALIGN_CENTER);
-
-        document.setFooter(footer1);
 
         document.open();
         document.addTitle("avanceObra " + new Date().format("dd_MM_yyyy"));
@@ -264,35 +260,35 @@ class Reportes5Controller{
 
         def tablaDatos = new PdfPTable(10);
         tablaDatos.setWidthPercentage(100);
-        tablaDatos.setWidths(arregloEnteros([7, 18, 13, 9, 14, 10, 9, 6, 5, 5]))
+        tablaDatos.setWidths(arregloEnteros([9, 21, 14, 9, 11, 7, 9, 6, 5, 5]))
 
-        def paramsHead = [border: Color.BLACK,
-                          align : Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE, bordeTop: "1", bordeBot: "1"]
-        def prmsCellLeft = [border: Color.WHITE, valign: Element.ALIGN_MIDDLE]
-        def prmsCellRight = [border: Color.WHITE, valign: Element.ALIGN_RIGHT]
+        def paramsHead = [border: Color.BLACK, align : Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE, bordeTop: "1", bordeBot: "1"]
+        def prmsCellLeft = [border: Color.BLACK, valign: Element.ALIGN_MIDDLE, bordeBot: "1"]
+        def prmsCellRight = [border: Color.BLACK, align : Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE, bordeBot: "1"]
+        def prmsCellCenter = [border: Color.BLACK, align : Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE, bordeBot: "1"]
 
-        addCellTabla(tablaDatos, new Paragraph("Código", fontTh), paramsHead)
-        addCellTabla(tablaDatos, new Paragraph("Nombre", fontTh), paramsHead)
-        addCellTabla(tablaDatos, new Paragraph("Cantón-Parroquia-Comunidad", fontTh), paramsHead)
-        addCellTabla(tablaDatos, new Paragraph("Núm. Contrato", fontTh), paramsHead)
-        addCellTabla(tablaDatos, new Paragraph("Contratista", fontTh), paramsHead)
-        addCellTabla(tablaDatos, new Paragraph("Monto", fontTh), paramsHead)
-        addCellTabla(tablaDatos, new Paragraph("Fecha suscripción", fontTh), paramsHead)
-        addCellTabla(tablaDatos, new Paragraph("Plazo", fontTh), paramsHead)
-        addCellTabla(tablaDatos, new Paragraph("% Avance", fontTh), paramsHead)
-        addCellTabla(tablaDatos, new Paragraph("Avance Físico", fontTh), paramsHead)
+        addCellTabla(tablaDatos, new Paragraph("Código", fontTh8), paramsHead)
+        addCellTabla(tablaDatos, new Paragraph("Nombre", fontTh8), paramsHead)
+        addCellTabla(tablaDatos, new Paragraph("Cantón-Parroquia-Comunidad", fontTh8), paramsHead)
+        addCellTabla(tablaDatos, new Paragraph("Núm. Contrato", fontTh8), paramsHead)
+        addCellTabla(tablaDatos, new Paragraph("Contratista", fontTh8), paramsHead)
+        addCellTabla(tablaDatos, new Paragraph("Monto", fontTh8), paramsHead)
+        addCellTabla(tablaDatos, new Paragraph("Fecha suscripción", fontTh8), paramsHead)
+        addCellTabla(tablaDatos, new Paragraph("Plazo", fontTh8), paramsHead)
+        addCellTabla(tablaDatos, new Paragraph("% Avance", fontTh8), paramsHead)
+        addCellTabla(tablaDatos, new Paragraph("Avance Físico", fontTh8), paramsHead)
 
         obras.each { fila ->
             addCellTabla(tablaDatos, new Paragraph(fila.obracdgo, fontTd), prmsCellLeft)
             addCellTabla(tablaDatos, new Paragraph(fila.obranmbr, fontTd), prmsCellLeft)
-            addCellTabla(tablaDatos, new Paragraph(fila.cntnnmbr + " - " + fila.parrnmbr + " - " + fila.cmndnmbr, fontTd), prmsCellLeft)
+            addCellTabla(tablaDatos, new Paragraph(fila.cntnnmbr + " - " + fila.parrnmbr + " - " + fila.cmndnmbr, times7normal), prmsCellLeft)
             addCellTabla(tablaDatos, new Paragraph(fila.cntrcdgo, fontTd), prmsCellLeft)
-            addCellTabla(tablaDatos, new Paragraph(fila.prvenmbr, fontTd), prmsCellLeft)
+            addCellTabla(tablaDatos, new Paragraph(fila.prvenmbr, times7normal), prmsCellLeft)
             addCellTabla(tablaDatos, new Paragraph(numero(fila.cntrmnto, 2), fontTd), prmsCellRight)
-            addCellTabla(tablaDatos, new Paragraph(fila.cntrfcsb.format("dd-MM-yyyy"), fontTd), prmsCellLeft)
-            addCellTabla(tablaDatos, new Paragraph(numero(fila.cntrplzo, 0) + " días", fontTd), prmsCellLeft)
-            addCellTabla(tablaDatos, new Paragraph(numero( (fila.av_economico) * 100, 2) + "%", fontTd), prmsCellRight)
-            addCellTabla(tablaDatos, new Paragraph(numero(fila.av_fisico, 2), fontTd), prmsCellRight)
+            addCellTabla(tablaDatos, new Paragraph(fila.cntrfcsb.format("dd-MM-yyyy"), fontTd), prmsCellCenter)
+            addCellTabla(tablaDatos, new Paragraph(numero(fila.cntrplzo, 0) + " días", fontTd), prmsCellCenter)
+            addCellTabla(tablaDatos, new Paragraph(numero( (fila.av_economico) * 100, 2) + "%", fontTd), prmsCellCenter)
+            addCellTabla(tablaDatos, new Paragraph(numero(fila.av_fisico, 2), fontTd), prmsCellCenter)
         }
 
         document.add(tablaDatos)
