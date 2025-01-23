@@ -38,9 +38,9 @@
         <div class="col-md-4">
             <b style="margin-left: 20px">Dirección o Coordinación requirente:</b>
             <g:select name="departamento.id"
-                      from="${janus.Departamento.findAllByRequirente(1).sort{it.direccion.nombre}}"
-                      id="departamento" optionKey="id" optionValue="${{ it.direccion.nombre + ' - ' + it.descripcion }}"
-                      dire="${{ it.direccion.id }}" noSelection="['' : 'Todas']" style="width: 410px;"/>
+                      from="${departamento}" id="departamento" optionKey="key" optionValue="value"
+                      noSelection="['' : 'Todas']" style="width: 410px;"/>
+
         </div>
         <div class="col-md-2" style="align-items: center;">
             <b style="margin-left: 20px">Fecha Desde: </b>
@@ -54,7 +54,7 @@
 
         <a href="#" class="btn btn-success" id="buscar">
             <i class=" fa fa-search"></i>
-            Buscar
+            Reporte
         </a>
         <a href="#" class="btn btn-info" id="imprimir" >
             <i class=" fa fa-print"></i>
@@ -75,7 +75,7 @@
             <th style="width: 12%;">
                 Código
             </th>
-            <th style="width: 25%;">
+            <th style="width: 29%;">
                 Nombre
             </th>
             <th style="width: 13%;">
@@ -96,7 +96,7 @@
             <th style="width: 11%">
                 Doc.Referencia
             </th>
-            <th style="width: 9%">
+            <th style="width: 5%">
                 Estado
             </th>
             <th style="width: 1%">
@@ -120,7 +120,7 @@
 
     /* inicializa el select de oprd con la primea opción de busacdor */
     $( document ).ready(function() {
-        cargarTabla();
+//        cargarTabla();
     });
 
     function cargarTabla() {

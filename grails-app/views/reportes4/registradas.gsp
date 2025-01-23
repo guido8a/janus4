@@ -128,7 +128,7 @@
     }
 
     $( document ).ready(function() {
-        cargarTabla();
+//        cargarTabla();
     });
 
     $("#buscar").click(function(){

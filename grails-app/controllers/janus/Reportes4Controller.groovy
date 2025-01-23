@@ -82,8 +82,18 @@ class Reportes4Controller {
     }
 
     def presuestadasFinal() {
-        def perfil = session.perfil.id
-        return [perfil: perfil]
+        def cn = dbConnectionService.getConnection()
+        def departamento = [:]
+        def sql = "select distinct obra.dpto__id id, diredscr||' - '||dptodscr nombre " +
+                "from obra, dpto, dire " +
+                "where dpto.dpto__id = obra.dpto__id and dire.dire__id = dpto.dire__id and " +
+                "obracdgo ilike 'CO%' and obraetdo = 'N' " +
+                "order by 2"
+        println "sql+: $sql"
+        cn.eachRow(sql.toString()) { r ->
+            departamento[r.id] = r.nombre
+        }
+        [departamento: departamento]
     }
 
     def imprimeMatrizA4() {
@@ -756,14 +766,16 @@ class Reportes4Controller {
     def armaSqlPresupuestadas(params) {
         def campos = reportesService.obrasPresupuestadas()
         def operador = reportesService.operadores()
+        def fcin = params.fechaInicio ? new Date().parse("dd-MM-yyyy", params.fechaInicio).format('yyyy-MM-dd') : ''
+        def fcfn = params.fechaFin ? new Date().parse("dd-MM-yyyy", params.fechaFin).format('yyyy-MM-dd') : ''
 //        println("operador " + operador)
 
         def sqlSelect = "select obra.obra__id, obracdgo, obranmbr, tpobdscr, obrafcha, cntnnmbr, parrnmbr, cmndnmbr, " +
-                "dptodscr, obrarefe, obravlor, case when obraetdo = 'R' THEN 'Registrada' end estado " +
+                "dptodscr, obrarefe, obravlor, case when obraetdo = 'N' THEN 'No Reg.' end estado " +
                 "from obra, tpob, cntn, parr, cmnd, dpto "
         def sqlWhere = "where tpob.tpob__id = obra.tpob__id and cmnd.cmnd__id = obra.cmnd__id and " +
                 "parr.parr__id = obra.parr__id and cntn.cntn__id = parr.cntn__id  and " +
-                "dpto.dpto__id = obra.dpto__id and obraetdo = 'R'"
+                "dpto.dpto__id = obra.dpto__id and obraetdo = 'N'"
 
         def sqlOrder = "order by obracdgo"
 
@@ -772,6 +784,10 @@ class Reportes4Controller {
             def op = operador.find { it.valor == params.operador }
             sqlWhere += " and ${params.buscador} ${op.operador} ${op.strInicio}${params.criterio}${op.strFin}";
         }
+        if(params.departamento) sqlWhere += " and obra.dpto__id = ${params.departamento} "
+        if(params.fechaInicio) sqlWhere += " and obrafcha >= '${fcin}' "
+        if(params.fechaFIn) sqlWhere += " and obrafcha <= '${fcfn}' "
+        println "sql: ${sqlSelect} ${sqlWhere} ${sqlOrder}"
         "$sqlSelect $sqlWhere $sqlOrder".toString()
     }
 
@@ -2938,7 +2954,18 @@ class Reportes4Controller {
     }
 
     def presupuesto(){
-
+        def cn = dbConnectionService.getConnection()
+        def departamento = [:]
+        def sql = "select distinct obra.dpto__id id, diredscr||' - '||dptodscr nombre " +
+                "from obra, dpto, dire " +
+                "where dpto.dpto__id = obra.dpto__id and dire.dire__id = dpto.dire__id and " +
+                "obraetdo = 'R' " +
+                "order by 2"
+        println "sqlReg: $sql"
+        cn.eachRow(sql.toString()) { r ->
+            departamento[r.id] = r.nombre
+        }
+        [departamento: departamento]
     }
 
     def tablaPresupuesto() {
@@ -2949,6 +2976,7 @@ class Reportes4Controller {
         params.criterio = reportesService.limpiaCriterio(params.criterio)
 
         def sql = armaSqlPresupuesto(params)
+        println "sql presupuestadas: $sql"
         def obras = cn.rows(sql)
 
         params.criterio = params.old
@@ -2959,13 +2987,16 @@ class Reportes4Controller {
     def armaSqlPresupuesto(params) {
         def campos = reportesService.obrasPresupuestadas()
         def operador = reportesService.operadores()
+        println "armaSqlPresupuesto: $params"
+        def fcin = params.fechaInicio ? new Date().parse("dd-MM-yyyy", params.fechaInicio).format('yyyy-MM-dd') : ''
+        def fcfn = params.fechaFin ? new Date().parse("dd-MM-yyyy", params.fechaFin).format('yyyy-MM-dd') : ''
 
         def sqlSelect = "select obra.obra__id, obracdgo, obranmbr, tpobdscr, obrafcha, cntnnmbr, parrnmbr, cmndnmbr, " +
-                "dptodscr, obrarefe, obravlor, case when obraetdo = 'N' THEN 'Registrada' end estado " +
+                "dptodscr, obrarefe, obravlor, case when obraetdo = 'R' THEN 'Registrada' end estado " +
                 "from obra, tpob, cntn, parr, cmnd, dpto "
         def sqlWhere = "where tpob.tpob__id = obra.tpob__id and cmnd.cmnd__id = obra.cmnd__id and " +
                 "parr.parr__id = obra.parr__id and cntn.cntn__id = parr.cntn__id  and " +
-                "dpto.dpto__id = obra.dpto__id and obraetdo = 'N'"
+                "dpto.dpto__id = obra.dpto__id and obraetdo = 'R'"
 
         def sqlOrder = "order by obracdgo"
 
@@ -2974,6 +3005,12 @@ class Reportes4Controller {
             def op = operador.find { it.valor == params.operador }
             sqlWhere += " and ${params.buscador} ${op.operador} ${op.strInicio}${params.criterio}${op.strFin}";
         }
+
+        if(params.departamento) sqlWhere += " and obra.dpto__id = ${params.departamento} "
+        if(params.fechaInicio) sqlWhere += " and obrafcha >= '${fcin}' "
+        if(params.fechaFIn) sqlWhere += " and obrafcha <= '${fcfn}' "
+        println "sql: ${sqlSelect} ${sqlWhere} ${sqlOrder}"
+
         "$sqlSelect $sqlWhere $sqlOrder".toString()
     }
 
