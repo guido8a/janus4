@@ -1124,6 +1124,18 @@ class Reportes4Controller {
     }
 
     def contratadas() {
+        def cn = dbConnectionService.getConnection()
+        def departamento = [:]
+        def sql = "select distinct obra.dpto__id id, diredscr||' - '||dptodscr nombre " +
+                "from obra, dpto, dire, cntr " +
+                "where dpto.dpto__id = obra.dpto__id and dire.dire__id = dpto.dire__id and " +
+                "obra.obra__id in (select obra__id from cntr) " +
+                "order by 2"
+        println "sqlReg: $sql"
+        cn.eachRow(sql.toString()) { r ->
+            departamento[r.id] = r.nombre
+        }
+        [departamento: departamento]
     }
 
     def tablaContratadas() {
@@ -1173,6 +1185,8 @@ class Reportes4Controller {
     def armaSqlContratadas(params) {
         def campos = reportesService.obrasContratadas()
         def operador = reportesService.operadores()
+        def fcin = params.fechaInicio ? new Date().parse("dd-MM-yyyy", params.fechaInicio).format('yyyy-MM-dd') : ''
+        def fcfn = params.fechaFin ? new Date().parse("dd-MM-yyyy", params.fechaFin).format('yyyy-MM-dd') : ''
 //        println("operador " + operador)
 
         def sqlSelect = "select obra.obra__id, obracdgo, obranmbr, tpobdscr, obrafcha, cntnnmbr, parrnmbr, cmndnmbr, " +
@@ -1195,6 +1209,12 @@ class Reportes4Controller {
 //        println "txWhere: $sqlWhere"
 //        println "sql armado: sqlSelect: ${sqlSelect} \n sqlWhere: ${sqlWhere} \n sqlOrder: ${sqlOrder}"
         //retorna sql armado:
+
+        if(params.departamento) sqlWhere += " and obra.dpto__id = ${params.departamento} "
+        if(params.fechaInicio) sqlWhere += " and obrafcha >= '${fcin}' "
+        if(params.fechaFIn) sqlWhere += " and obrafcha <= '${fcfn}' "
+        println "sql: ${sqlSelect} ${sqlWhere} ${sqlOrder}"
+
         "$sqlSelect $sqlWhere $sqlOrder".toString()
     }
 

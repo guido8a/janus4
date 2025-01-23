@@ -18,8 +18,8 @@
         Regresar
     </a>
 
-    <div class="col-md-3">
-        <b>Buscar Por: </b>
+    <div class="col-md-4">
+        <b style="margin-left: 35px">Buscar Por: </b>
         <g:select name="buscador" from="${['contrato':'N° Contrato', 'cdgo': 'Garantía', 'nmrv': 'Renovación', 'tpgr': 'Tipo de Garantía', 'tdgr': 'Documento',
                                            'aseguradora':'Aseguradora', 'cont': 'Contratista', 'etdo':'Estado', 'mnto': 'Monto', 'mnda':'Moneda', 'fcin': 'Emisión', 'fcfn': 'Vencimiento',
                                            'dias':'Días']}" value="${params.buscador}"
@@ -38,7 +38,7 @@
     <div>
         <a href="#" class="btn btn-success" id="buscar">
             <i class="fa fa-search"></i>
-            Buscar
+            Reporte
         </a>
         <a href="#" class="btn btn-info" id="imprimir" >
             <i class="fa fa-print"></i>
@@ -133,7 +133,7 @@
         }
     });
 
-    cargarTabla();
+//    cargarTabla();
 
     function cargarTabla() {
         var d = cargarLoader("Cargando...");

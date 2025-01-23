@@ -9,7 +9,7 @@
 <body>
 
 <div class="row-fluid">
-    <div class="span12">
+    <div class="row">
 
         <div class="col-md-1">
             <a href="#" class="btn btn-primary" id="regresar">
@@ -39,7 +39,7 @@
         <div class="col-md-3">
             <a href="#" class="btn btn-success" id="buscar">
                 <i class="fa fa-search"></i>
-                Buscar
+                Reporte
             </a>
             <a href="#" class="btn btn-info" id="imprimir" >
                 <i class="fa fa-print"></i>
@@ -58,7 +58,7 @@
         <thead>
         <tr>
             <th style="width: 11%;">
-                Código
+                Código Proceso de Contratación
             </th>
             <th style="width: 8%;">
                 Fecha Adjudicación
@@ -113,7 +113,7 @@
         cargarTabla();
     });
 
-    cargarTabla();
+//    cargarTabla();
 
     function cargarTabla() {
         var fechaInicio = $("#fechaInicio").val();

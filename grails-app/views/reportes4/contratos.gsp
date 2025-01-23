@@ -49,7 +49,7 @@
     <div class="col-md-3">
         <a href="#" class="btn btn-success" id="buscar">
             <i class="fa fa-search"></i>
-            Buscar
+            Reporte
         </a>
         <a href="#" class="btn btn-info" id="imprimir" >
             <i class="fa fa-print"></i>

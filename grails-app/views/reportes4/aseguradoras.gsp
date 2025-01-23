@@ -12,12 +12,12 @@
 <body>
 
 <div class="row-fluid">
-    <div class="span12">
+    <div class="row">
         <a href="#" class="btn btn-primary" id="regresar">
             <i class=" fa fa-arrow-left"></i>
             Regresar
         </a>
-        <b>Buscar Por: </b>
+        <b style="margin-left: 35px">Buscar Por: </b>
         <g:select name="buscador" from="${['nmbr':'Nombre', 'tipo': 'Tipo', 'telf': 'Teléfono'
                                            , 'faxx': 'Fax', 'rspn':'Contacto', 'dire':'Dirección']}" value="${params.buscador}"
                   optionKey="key" optionValue="value" id="buscador_as" style="width: 150px"/>
@@ -25,7 +25,7 @@
         <g:textField name="criterio" id="criterio_as" style="width: 250px; margin-right: 10px" value="${params.criterio}"/>
         <a href="#" class="btn btn-success" id="buscar">
             <i class="fa fa-search"></i>
-            Buscar
+            Reporte
         </a>
         <a href="#" class="btn btn-info" id="imprimir" >
             <i class="fa fa-print"></i>
@@ -84,7 +84,7 @@
         location.href="${g.createLink(controller: 'reportesExcel', action:'reporteExcelAseguradoras' )}?buscador=" + $("#buscador_as").val() + "&criterio=" + $("#criterio_as").val()
     });
 
-    cargarTabla();
+//    cargarTabla();
 
     function cargarTabla() {
         var d = cargarLoader("Cargando...");
