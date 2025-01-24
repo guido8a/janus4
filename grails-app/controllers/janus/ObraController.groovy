@@ -57,11 +57,26 @@ class ObraController {
     }
 
     def obrasFinalizadas() {
-
         def perfil = session.perfil.id
+        def cn = dbConnectionService.getConnection()
+        def departamento = [:]
+        def sql = "select distinct obra.dpto__id id, diredscr||' - '||dptodscr nombre " +
+                "from obra, dpto, dire " +
+                "where dpto.dpto__id = obra.dpto__id and dire.dire__id = dpto.dire__id and " +
+                "obrafcin is not null " +
+                "order by 2"
+        println "sqlReg: $sql"
+        cn.eachRow(sql.toString()) { r ->
+            departamento[r.id] = r.nombre
+        }
 
-        def campos = ["codigo": ["Código", "string"], "nombre": ["Nombre", "string"], "descripcion": ["Descripción", "string"], "oficioIngreso": ["Memo ingreso", "string"], "oficioSalida": ["Memo salida", "string"], "sitio": ["Sitio", "string"], "plazoEjecucionMeses": ["Plazo", "number"], "parroquia": ["Parroquia", "string"], "comunidad": ["Comunidad", "string"], "departamento": ["Dirección", "string"], "fechaCreacionObra": ["Fecha", "date"]]
-        [campos: campos, perfil: perfil]
+        def campos = ["codigo": ["Código", "string"], "nombre": ["Nombre", "string"],
+                      "descripcion": ["Descripción", "string"], "oficioIngreso": ["Memo ingreso", "string"],
+                      "oficioSalida": ["Memo salida", "string"], "sitio": ["Sitio", "string"],
+                      "plazoEjecucionMeses": ["Plazo", "number"], "parroquia": ["Parroquia", "string"],
+                      "comunidad": ["Comunidad", "string"], "departamento": ["Dirección", "string"],
+                      "fechaCreacionObra": ["Fecha", "date"]]
+        [campos: campos, perfil: perfil, departamento: departamento]
     }
 
     /*lista obrtas */
@@ -1658,20 +1673,25 @@ class ObraController {
     }
 
     def tablaObrasFinalizadas(){
-//        println "tablaObrasFinalizadas params $params"
+        println "tablaObrasFinalizadas params $params"
+        def fcin = params.fechaInicio ? new Date().parse("dd-MM-yyyy", params.fechaInicio).format('yyyy-MM-dd') : ''
+        def fcfn = params.fechaFin ? new Date().parse("dd-MM-yyyy", params.fechaFin).format('yyyy-MM-dd') : ''
         def campos = ['obracdgo', 'obranmbr', 'obradscr',
                       'obrasito', 'parrnmbr', 'cmndnmbr', 'diredscr']
         def cn = dbConnectionService.getConnection()
         def sql = "select obracdgo, obranmbr, diredscr||' - '||dptodscr direccion, obrafcha, obrasito, parrnmbr, " +
-                "cmndnmbr, obrafcin, obrafcfn from obra, dpto, dire, parr, cmnd " +
-                "where dpto.dpto__id = obra.dpto__id and dire.dire__id = dpto.dire__id and " +
+                "cmndnmbr, obrafcin, obrafcfn from obra, dpto, dire, parr, cmnd "
+        def sqlWhere = "where dpto.dpto__id = obra.dpto__id and dire.dire__id = dpto.dire__id and " +
                 "parr.parr__id = obra.parr__Id and cmnd.cmnd__id = obra.cmnd__id and " +
                 "obrafcin is not null and " +
-                "${campos[params.buscador.toInteger()]} ilike '%${params.criterio}%' " +
-                "order by obrafcin desc"
-//        println "sql: $sql"
+                "${campos[params.buscador.toInteger()]} ilike '%${params.criterio}%' "
+        def sqlOrder = "order by obrafcin desc"
+        if(params.departamento) sqlWhere += " and obra.dpto__id = ${params.departamento} "
+        if(params.fechaInicio) sqlWhere += " and obrafcha >= '${fcin}' "
+        if(params.fechaFIn) sqlWhere += " and obrafcha <= '${fcfn}' "
+        sql += sqlWhere + sqlOrder
+        println "sql: $sql"
         def obras = cn.rows(sql)
-
         params.criterio = params.old
         return [data: obras, params: params]
     }
