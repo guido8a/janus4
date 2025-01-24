@@ -2000,26 +2000,35 @@ class ReportesExcelController {
         wb.write(output)
     }
 
-    def armaSqlPresupuestadas(params){
+    def armaSqlPresupuestadas(params) {
         def campos = reportesService.obrasPresupuestadas()
         def operador = reportesService.operadores()
+        def fcin = params.fechaInicio ? new Date().parse("dd-MM-yyyy", params.fechaInicio).format('yyyy-MM-dd') : ''
+        def fcfn = params.fechaFin ? new Date().parse("dd-MM-yyyy", params.fechaFin).format('yyyy-MM-dd') : ''
+//        println("operador " + operador)
 
         def sqlSelect = "select obra.obra__id, obracdgo, obranmbr, tpobdscr, obrafcha, cntnnmbr, parrnmbr, cmndnmbr, " +
-                "dptodscr, obrarefe, obravlor, case when obraetdo = 'R' THEN 'Registrada' end estado " +
+                "dptodscr, obrarefe, obravlor, case when obraetdo = 'N' THEN 'No Reg.' end estado " +
                 "from obra, tpob, cntn, parr, cmnd, dpto "
         def sqlWhere = "where tpob.tpob__id = obra.tpob__id and cmnd.cmnd__id = obra.cmnd__id and " +
                 "parr.parr__id = obra.parr__id and cntn.cntn__id = parr.cntn__id  and " +
-                "dpto.dpto__id = obra.dpto__id and obraetdo = 'R'"
+                "dpto.dpto__id = obra.dpto__id and obraetdo = 'N'"
 
         def sqlOrder = "order by obracdgo"
 
         params.nombre = "Código"
-        if(campos.find {it.campo == params.buscador}?.size() > 0) {
-            def op = operador.find {it.valor == params.operador}
+        if (campos.find { it.campo == params.buscador }?.size() > 0) {
+            def op = operador.find { it.valor == params.operador }
             sqlWhere += " and ${params.buscador} ${op.operador} ${op.strInicio}${params.criterio}${op.strFin}";
         }
+        if(params.departamento) sqlWhere += " and obra.dpto__id = ${params.departamento} "
+        if(params.fechaInicio) sqlWhere += " and obrafcha >= '${fcin}' "
+        if(params.fechaFIn) sqlWhere += " and obrafcha <= '${fcfn}' "
+        println "sql: ${sqlSelect} ${sqlWhere} ${sqlOrder}"
         "$sqlSelect $sqlWhere $sqlOrder".toString()
     }
+
+
 
     def reporteRegistradasExcel () {
 
