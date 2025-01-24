@@ -236,7 +236,7 @@
 </div>
 
 <div id="modal-sugeridosCt">
-    <div class="modal-body" id="modalBody-sugeridosCt"  style="background-color: #fafae8">
+    <div class="modal-body" id="modalBody-sugeridosCt"  style="background-color: #e8efe8">
     </div>
 
     <div class="modal-footer" id="modalFooter-sugeridosCt">
