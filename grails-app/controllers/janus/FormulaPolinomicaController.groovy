@@ -183,7 +183,7 @@ class FormulaPolinomicaController {
                 "itemcdgo not in ('EQPO', 'REP', 'COMB', 'SLDO', '103.001.009') and item__id in " +
                 "(select item__id from itin where indc__id = ${params.indice} order by valor desc;"
         formula.indice = Indice.get(params.indice)
-        formula.valor = params.valor.toDouble()
+        formula.valor = params.valor? params.valor.toDouble() : 0
         println "sql: $sql"
         if (formula.save(flush: true)) {
 //            Guardar items sugeridos
@@ -225,7 +225,7 @@ class FormulaPolinomicaController {
                 "itemcdgo not in ('MO') and item__id in " +
                 "(select item__id from itin where indc__id = ${params.indice} order by valor desc;"
         formula.indice = Indice.get(params.indice)
-        formula.valor = params.valor.toDouble()
+        formula.valor = params.valor? params.valor.toDouble() : 0
         println "sql: $sql"
         if (formula.save(flush: true)) {
 //            Guardar items sugeridos

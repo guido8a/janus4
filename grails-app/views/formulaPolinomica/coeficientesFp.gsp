@@ -236,7 +236,7 @@
 </div>
 
 <div id="modal-sugeridosCt">
-    <div class="modal-body" id="modalBody-sugeridosCt">
+    <div class="modal-body" id="modalBody-sugeridosCt"  style="background-color: #fafae8">
     </div>
 
     <div class="modal-footer" id="modalFooter-sugeridosCt">
@@ -447,7 +447,7 @@
         modal: true,
         draggable: false,
         width: 500,
-        height: 280,
+        height: 230,
         position: 'center',
         title: 'Indices Sugeridos'
     });
@@ -458,7 +458,7 @@
         modal: true,
         draggable: false,
         width: 500,
-        height: 280,
+        height: 230,
         position: 'center',
         title: 'Indices Sugeridos Cuadrilla Tipo'
     });
@@ -495,9 +495,11 @@
                     var btnCancel = $('<a href="#" class="btn">Cancelar</a>');
                     var btnCancelSgrc = $('<a href="#" class="btn">Cancelar</a>');
                     var btnCancelSgrcCt = $('<a href="#" class="btn">Cancelar</a>');
-                    var btnSave = $('<a href="#"  class="btn btn-success"><i class="fa fa-save"></i> Guardar</a>');
-                    var btnSaveSgrc = $('<a href="#"  class="btn btn-success"><i class="fa fa-save"></i> Guardar Sgrc</a>');
-                    var btnSaveSgrcCt = $('<a href="#"  class="btn btn-success"><i class="fa fa-save"></i> Guardar Sgrc</a>');
+                    var btnSave = $('<a href="#"  class="btn btn-success" style="color: #fff;"><i class="fa fa-save"></i> Guardar</a>');
+                    var btnSaveSgrc = $('<a href="#"  class="btn btn-success" style="color: #fff;">' +
+                        '<i class="fa fa-save"></i> Guardar Sgrc</a>');
+                    var btnSaveSgrcCt = $('<a href="#"  class="btn btn-success" style="color: #fff;">' +
+                        '<i class="fa fa-save"></i> Guardar Sgrc</a>');
 
                     btnCancel.click(function () {
                         $("#modal-formula").dialog("close");
@@ -583,7 +585,7 @@
                         console.log('cantNombre:', cantNombre, ' Valor', valor);
 
                         if (cantNombre === 0) {
-                            if (valor !== "") {
+//                            if (valor !== "") {
                                 btnSaveSgrc.replaceWith(spinner);
                                 $.ajax({
                                     type    : "POST",
@@ -605,8 +607,8 @@
                                         }
                                     }
                                 });
-                            } else {
-                            }
+//                            } else {
+//                            }
                         } else {
                             bootbox.alert('<i class="fa fa-exclamation-triangle text-info fa-3x"></i> ' +
                                 '<strong style="font-size: 14px">' + "No puede ingresar dos coeficientes con el mismo nombre" +
@@ -638,7 +640,7 @@
                         console.log('cantNombre:', cantNombre, ' Valor', valor);
 
                         if (cantNombre === 0) {
-                            if (valor !== "") {
+//                            if (valor !== "") {
                                 btnSaveSgrc.replaceWith(spinner);
                                 $.ajax({
                                     type    : "POST",
@@ -660,8 +662,8 @@
                                         }
                                     }
                                 });
-                            } else {
-                            }
+//                            } else {
+//                            }
                         } else {
                             bootbox.alert('<i class="fa fa-exclamation-triangle text-info fa-3x"></i> ' +
                                 '<strong style="font-size: 14px">' + "No puede ingresar dos coeficientes con el mismo nombre" +

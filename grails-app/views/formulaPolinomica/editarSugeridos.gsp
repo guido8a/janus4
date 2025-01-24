@@ -7,22 +7,23 @@
 
     <div class="row">
         <div class="col-md-12">
-            <div class="col-md-1">
-                por
-            </div>
+            %{--<div class="col-md-1">--}%
+                %{--por--}%
+            %{--</div>--}%
             %{--<g:select name="indice" from="${janus.Indice.list([sort: 'descripcion'])}" optionKey="id" optionValue="descripcion" class="span4" value="${formula.indiceId}"/>--}%
-            <g:select name="indice" from="${indices}" optionKey="indc__id" optionValue="indcdscr" class="col-md-11"
+            <g:select name="indice" from="${indices}" optionKey="indc__id" optionValue="indcdscr"
+                      class="col-md-11 form-control"
                       value="${formula.indiceId}"/>
         </div>
     </div>
 
-    <div class="row">
-        <div class="span">
-            Modificar valor &nbsp;&nbsp;&nbsp;
-            <g:field type="number" name="valorSgrc" step="0.001" pattern="#.###" value="${formula.valor}" class="input-mini"/>
-            (suma <g:formatNumber number="${total}" format="##,##0.#####" locale="ec"/>)
-        </div>
-    </div>
+    %{--<div class="row">--}%
+        %{--<div class="span">--}%
+            %{--Modificar valor &nbsp;&nbsp;&nbsp;--}%
+            %{--<g:field type="number" name="valorSgrc" step="0.001" pattern="#.###" value="${formula.valor}" class="input-mini"/>--}%
+            %{--(suma <g:formatNumber number="${total}" format="##,##0.#####" locale="ec"/>)--}%
+        %{--</div>--}%
+    %{--</div>--}%
 </div>
 
 <script type="text/javascript">
