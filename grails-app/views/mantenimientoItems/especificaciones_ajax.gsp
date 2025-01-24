@@ -25,32 +25,43 @@
             </div>
 
             <div class="col-md-12">
-                <g:uploadForm action="uploadFileEspecificacion" method="post" name="frmUploadEspe" enctype="multipart/form-data">
-                    <g:hiddenField name="item" value="${item?.id}"/>
-                    <g:hiddenField name="tipo" value="pdf"/>
-                    <div class="fieldcontain required">
-                        <b>Cargar archivo PDF:</b>
-                        <input type="file" id="fileEspePDF" name="file" class="" multiple accept=".pdf"/>
-                        <div class="btn-group" style="margin-top: 20px;">
-                            <a href="#" class="btn btn-success submitEspe" data-id="${item?.id}">
-                                <i class="fa fa-save"></i> Guardar
-                            </a>
-                        </div>
-
-                        <g:if test="${ares?.ruta}">
+                <g:if test="${!tipo}">
+                    <g:uploadForm action="uploadFileEspecificacion" method="post" name="frmUploadEspe" enctype="multipart/form-data">
+                        <g:hiddenField name="item" value="${item?.id}"/>
+                        <g:hiddenField name="tipo" value="pdf"/>
+                        <div class="fieldcontain required">
+                            <b>Cargar archivo PDF:</b>
+                            <input type="file" id="fileEspePDF" name="file" class="" multiple accept=".pdf"/>
                             <div class="btn-group" style="margin-top: 20px;">
-                                <g:link action="downloadFile" id="${item.id}" params="[tipo: 'pdf']" class="btn btn-info">
-                                    <i class="fa fa-download"></i> Descargar
-                                </g:link>
-                            </div>
-                            <div class="btn-group" style="margin-top: 20px;">
-                                <a href="#" class="btnBorrarPDF btn btn-danger" data-id="${item?.id}">
-                                    <i class="fa fa-trash"></i> Borrar
+                                <a href="#" class="btn btn-success submitEspe" data-id="${item?.id}">
+                                    <i class="fa fa-save"></i> Guardar
                                 </a>
                             </div>
-                        </g:if>
-                    </div>
-                </g:uploadForm>
+
+                            <g:if test="${ares?.ruta}">
+                                <div class="btn-group" style="margin-top: 20px;">
+                                    <g:link action="downloadFile" id="${item.id}" params="[tipo: 'pdf']" class="btn btn-info">
+                                        <i class="fa fa-download"></i> Descargar
+                                    </g:link>
+                                </div>
+                                <div class="btn-group" style="margin-top: 20px;">
+                                    <a href="#" class="btnBorrarPDF btn btn-danger" data-id="${item?.id}">
+                                        <i class="fa fa-trash"></i> Borrar
+                                    </a>
+                                </div>
+                            </g:if>
+                        </div>
+                    </g:uploadForm>
+                </g:if>
+                <g:else>
+                    <g:if test="${ares?.ruta}">
+                        <div class="btn-group" style="margin-top: 20px;">
+                            <g:link action="downloadFile" id="${item.id}" params="[tipo: 'pdf']" class="btn btn-info">
+                                <i class="fa fa-download"></i> Descargar
+                            </g:link>
+                        </div>
+                    </g:if>
+                </g:else>
             </div>
         </div>
 
@@ -63,34 +74,46 @@
 
             <g:if test="${existe}">
                 <div class="col-md-12">
-                    <g:uploadForm action="uploadFileEspecificacion" method="post" name="frmUploadWord" enctype="multipart/form-data">
-                        <g:hiddenField name="item" value="${item?.id}"/>
-                        <g:hiddenField name="tipo" value="word"/>
-                        <div class="fieldcontain required">
-                            <b>Cargar archivo WORD:</b>
-                            <input type="file" id="fileEspe" name="file" class=""  multiple accept=".doc, .docx"/>
+                    <g:if test="${!tipo}">
+                        <g:uploadForm action="uploadFileEspecificacion" method="post" name="frmUploadWord" enctype="multipart/form-data">
+                            <g:hiddenField name="item" value="${item?.id}"/>
+                            <g:hiddenField name="tipo" value="word"/>
+                            <div class="fieldcontain required">
+                                <b>Cargar archivo WORD:</b>
+                                <input type="file" id="fileEspe" name="file" class=""  multiple accept=".doc, .docx"/>
 
-                            <div class="btn-group" style="margin-top: 20px;">
-                                <a href="#" class="submitWord btn btn-success" data-id="${item?.id}">
-                                    <i class="fa fa-save"></i> Guardar
-                                </a>
-                            </div>
-
-                            <g:if test="${ares?.especificacion}">
                                 <div class="btn-group" style="margin-top: 20px;">
-
-                                    <g:link action="downloadFile" id="${item.id}" params="[tipo: 'wd']" class="btn btn-info">
-                                        <i class="fa fa-download"></i> Descargar
-                                    </g:link>
-                                </div>
-                                <div class="btn-group" style="margin-top: 20px;">
-                                    <a href="#" class=" btnBorrarWord btn btn-danger" data-id="${item?.id}">
-                                        <i class="fa fa-trash"></i> Borrar
+                                    <a href="#" class="submitWord btn btn-success" data-id="${item?.id}">
+                                        <i class="fa fa-save"></i> Guardar
                                     </a>
                                 </div>
-                            </g:if>
-                        </div>
-                    </g:uploadForm>
+
+                                <g:if test="${ares?.especificacion}">
+                                    <div class="btn-group" style="margin-top: 20px;">
+
+                                        <g:link action="downloadFile" id="${item.id}" params="[tipo: 'wd']" class="btn btn-info">
+                                            <i class="fa fa-download"></i> Descargar
+                                        </g:link>
+                                    </div>
+                                    <div class="btn-group" style="margin-top: 20px;">
+                                        <a href="#" class=" btnBorrarWord btn btn-danger" data-id="${item?.id}">
+                                            <i class="fa fa-trash"></i> Borrar
+                                        </a>
+                                    </div>
+                                </g:if>
+                            </div>
+                        </g:uploadForm>
+                    </g:if>
+                    <g:else>
+                        <g:if test="${ares?.especificacion}">
+                            <div class="btn-group" style="margin-top: 20px;">
+
+                                <g:link action="downloadFile" id="${item.id}" params="[tipo: 'wd']" class="btn btn-info">
+                                    <i class="fa fa-download"></i> Descargar
+                                </g:link>
+                            </div>
+                        </g:if>
+                    </g:else>
                 </div>
             </g:if>
         </div>
@@ -101,36 +124,46 @@
                     <i class="fa fa-image fa-2x"></i>  Ilustración: ${!item?.foto ? 'No se ha cargado ninguna ilustración para este material' : item?.foto}
                 </div>
             </div>
-
-            <g:uploadForm action="uploadFileIlustracion" method="post" name="frmUploadImagen" enctype="multipart/form-data">
-                <g:hiddenField name="item" value="${item?.id}"/>
-                <div class="fieldcontain required col-md-12">
-                    <b>Cargar archivo:</b>
-                    <input type="file" id="file" name="file" class="" multiple accept=".jpg, .jpeg, .png, .gif"/>
-                    <div class="btn-group" style="margin-top: 20px;">
-                        <a href="#" class="submit btn btn-success" data-id="${item?.id}">
-                            <i class="fa fa-save"></i> Guardar
-                        </a>
-                    </div>
-
-                    <g:if test="${item?.foto}">
+            <g:if test="${!tipo}">
+                <g:uploadForm action="uploadFileIlustracion" method="post" name="frmUploadImagen" enctype="multipart/form-data">
+                    <g:hiddenField name="item" value="${item?.id}"/>
+                    <div class="fieldcontain required col-md-12">
+                        <b>Cargar archivo:</b>
+                        <input type="file" id="file" name="file" class="" multiple accept=".jpg, .jpeg, .png, .gif"/>
                         <div class="btn-group" style="margin-top: 20px;">
-                            <g:link action="downloadFile" id="${item.id}" params="[tipo: 'il']" class="btn btn-info">
-                                <i class="fa fa-download"></i> Descargar
-                            </g:link>
-                        </div>
-                        <div class="btn-group" style="margin-top: 20px;">
-                            <a href="#" class="btnBorrarImagen btn btn-danger" data-id="${item?.id}">
-                                <i class="fa fa-trash"></i> Borrar
+                            <a href="#" class="submit btn btn-success" data-id="${item?.id}">
+                                <i class="fa fa-save"></i> Guardar
                             </a>
                         </div>
-                    </g:if>
-                </div>
-            </g:uploadForm>
+
+                        <g:if test="${item?.foto}">
+                            <div class="btn-group" style="margin-top: 20px;">
+                                <g:link action="downloadFile" id="${item.id}" params="[tipo: 'il']" class="btn btn-info">
+                                    <i class="fa fa-download"></i> Descargar
+                                </g:link>
+                            </div>
+                            <div class="btn-group" style="margin-top: 20px;">
+                                <a href="#" class="btnBorrarImagen btn btn-danger" data-id="${item?.id}">
+                                    <i class="fa fa-trash"></i> Borrar
+                                </a>
+                            </div>
+                        </g:if>
+                    </div>
+                </g:uploadForm>
+            </g:if>
+            <g:else>
+                <g:if test="${item?.foto}">
+                    <div class="btn-group" style="margin-top: 20px;">
+                        <g:link action="downloadFile" id="${item.id}" params="[tipo: 'il']" class="btn btn-info">
+                            <i class="fa fa-download"></i> Descargar
+                        </g:link>
+                    </div>
+                </g:if>
+            </g:else>
 
             <g:if test="${item?.foto}">
                 <div class="col-md-12" id="divImagenMateriales">
-%{--                    <img src="${request.contextPath}/mantenimientoItems/getFoto?id=${item?.id}" style="width: 400px; height: 400px"/>--}%
+                    %{--                    <img src="${request.contextPath}/mantenimientoItems/getFoto?id=${item?.id}" style="width: 400px; height: 400px"/>--}%
                 </div>
             </g:if>
 
@@ -290,7 +323,7 @@
             type    : "POST",
             url     : "${createLink(controller: 'mantenimientoItems', action: 'imagenMateriales_ajax')}",
             data    : {
-                    id: id
+                id: id
             },
             success : function (msg) {
                 $("#divImagenMateriales").html(msg)

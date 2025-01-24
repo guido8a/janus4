@@ -2536,7 +2536,9 @@ itemId: item.id
             existeUtfpu = true
         }
 
-        return [item: item, ares: ares, existe: existeUtfpu]
+        println("tipo " + params.tipo)
+
+        return [item: item, ares: ares, existe: existeUtfpu, tipo: params.tipo]
     }
 
     def uploadFileIlustracion() {

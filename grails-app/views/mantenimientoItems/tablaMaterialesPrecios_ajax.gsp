@@ -31,6 +31,11 @@
                         <a href="#" class="btn btn-xs btn-success btnHistorico" data-item="${item?.item__id}" data-lugar="${item?.lgar__id}" title="Histórico de Precios">
                             <i class="fas fa-edit"></i>
                         </a>
+                        <g:if test="${perfil}">
+                            <a href="#" class="btn btn-xs btn-warning btnEspecificacionesMaterial" data-id="${item?.item__id}" title="Especificaciones e Ilustración" ${janus.Item.get(item?.item__id)?.codigoEspecificacion ?: 'disabled'}>
+                                <i class="fas fa-book"></i>
+                            </a>
+                        </g:if>
                     </td>
                 </tr>
                 <g:set var="itemIDAnterior" value="${item.item__id}"/>
@@ -48,44 +53,44 @@
 
 <script type="text/javascript">
 
-    // var ths;
+    var es;
+
+    $(".btnEspecificacionesMaterial").click(function () {
+        var id = $(this).data("id");
+        cargarEspecificaciones(id, 2);
+    });
+
+    function cargarEspecificaciones(id, tipo){
+        $.ajax({
+            type    : "POST",
+            url     : "${createLink(controller: 'mantenimientoItems', action:'especificaciones_ajax')}",
+            data    : {
+                id: id,
+                tipo: tipo
+            },
+            success : function (msg) {
+                es = bootbox.dialog({
+                    id    : "dlgEspecificacionesMaterial",
+                    title : "Especificaciones del material",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        }
+                    } //buttons
+                }); //dialog
+            } //success
+        }); //ajax
+    }
 
     $(".btnHistorico").click(function () {
         var item = $(this).data("item");
         var lugar = $(this).data("lugar");
         cargarTablaHistoricoPrecios(item, lugar)
     });
-
-    %{--function cargarTablaHistoricoPrecios(item, lugar){--}%
-    %{--    $.ajax({--}%
-    %{--        type    : "POST",--}%
-    %{--        url     : "${createLink(controller: 'mantenimientoItems', action:'showLg_ajax')}",--}%
-    %{--        data    : {--}%
-    %{--            id: lugar,--}%
-    %{--            item: item,--}%
-    %{--            fecha: "all"--}%
-    %{--        },--}%
-    %{--        success : function (msg) {--}%
-    %{--            ths = bootbox.dialog({--}%
-    %{--                id    : "dlgVerPrecios",--}%
-    %{--                title : "Histórico de Precios",--}%
-    %{--                message : msg,--}%
-    %{--                buttons : {--}%
-    %{--                    cancelar : {--}%
-    %{--                        label     : "Cancelar",--}%
-    %{--                        className : "btn-primary",--}%
-    %{--                        callback  : function () {--}%
-    %{--                        }--}%
-    %{--                    }--}%
-    %{--                } //buttons--}%
-    %{--            }); //dialog--}%
-    %{--        } //success--}%
-    %{--    }); //ajax--}%
-    %{--}--}%
-
-    // function cerrarTablaHistoricos(){
-    //     ths.modal("hide");
-    // }
 
     $(".btnVerMaterial").click(function () {
         var id = $(this).data("id");
@@ -157,33 +162,5 @@
             }
         });
     }
-
-    %{--function verMaterial(id) {--}%
-    %{--    $.ajax({--}%
-    %{--        type    : "POST",--}%
-    %{--        url     : "${createLink(controller: 'mantenimientoItems', action:'showIt_ajax')}",--}%
-    %{--        data    : {--}%
-    %{--            id: id--}%
-    %{--        },--}%
-    %{--        success : function (msg) {--}%
-    %{--            var e = bootbox.dialog({--}%
-    %{--                id    : "dlgVerMaterial",--}%
-    %{--                title : "Datos del material",--}%
-    %{--                message : msg,--}%
-    %{--                buttons : {--}%
-    %{--                    cancelar : {--}%
-    %{--                        label     : "Cancelar",--}%
-    %{--                        className : "btn-primary",--}%
-    %{--                        callback  : function () {--}%
-    %{--                        }--}%
-    %{--                    }--}%
-    %{--                } //buttons--}%
-    %{--            }); //dialog--}%
-    %{--        } //success--}%
-    %{--    }); //ajax--}%
-    %{--} //createEdit--}%
-
-
-
 
 </script>

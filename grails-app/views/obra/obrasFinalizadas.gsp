@@ -142,7 +142,15 @@
 
     $("#buscar").click(function(){
         cargarTabla();
-    })
+    });
+
+    $("#criterio").keydown(function (ev) {
+        if (ev.keyCode === 13) {
+            ev.preventDefault();
+            cargarTabla();
+            return false;
+        }
+    });
 
 </script>
 </body>

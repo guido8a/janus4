@@ -172,6 +172,14 @@
         });
     }
 
+    $("#criterio_con").keydown(function (ev) {
+        if (ev.keyCode === 13) {
+            ev.preventDefault();
+            cargarTabla();
+            return false;
+        }
+    });
+
 </script>
 </body>
 </html>
