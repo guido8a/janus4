@@ -9,22 +9,26 @@
 
 <body>
 
-<div class="span12">
-    <a href="#" class="btn btn-primary" id="regresar">
+<div class="col-md-12">
+    <a href="#" class="btn btn-primary col-md-1" id="regresar">
         <i class=" fa fa-arrow-left"></i>
         Regresar
     </a>
 
-    <b>Buscar Por:</b>
-    <g:select name="buscador" id="buscador" from="${[0: 'Código', 1: 'Nombre', 2: 'Descripción',
-                                                     3: 'Sitio', 4: 'Parroquia', 5: 'Comunidad', 6: 'Dirección']}"
-              optionKey="key" optionValue="value" />
+    <div class="col-md-3">
+        <b>Buscar Por:</b>
+        <g:select name="buscador" id="buscador" from="${[0: 'Código', 1: 'Nombre', 2: 'Descripción', 3: 'Sitio', 4: 'Parroquia', 5: 'Comunidad', 6: 'Dirección']}"
+                  optionKey="key" optionValue="value" style="width: 200px" />
+    </div>
 
-    <b>Criterio: </b>
-    <g:textField name="criterio" id="criterio" value="${params.criterio ?: ''}" style="width: 250px;"/>
+    <div class="col-md-4">
+        <b>Criterio: </b>
+        <g:textField name="criterio" id="criterio" value="${params.criterio ?: ''}" style="width: 250px;"/>
+    </div>
+
 </div>
 
-<div class="span12">
+<div class="col-md-12">
 
     <div class="col-md-1">
     </div>
@@ -33,7 +37,7 @@
         <g:select name="departamento.id"
                   from="${janus.Departamento.findAllByRequirente(1).sort{it.direccion.nombre}}"
                   id="departamento" optionKey="id" optionValue="${{ it.direccion.nombre + ' - ' + it.descripcion }}"
-                  dire="${{ it.direccion.id }}" noSelection="['' : 'Todas']" style="width: 410px;"/>
+                  dire="${{ it.direccion.id }}" noSelection="['' : 'Todas']" style="width: 400px;"/>
     </div>
     <div class="col-md-2" style="align-items: center;">
         <b style="margin-left: 20px">Fecha Desde: </b>
@@ -63,7 +67,7 @@
     <table class="table table-bordered table-hover table-condensed" style="width: 100%; background-color: #a39e9e">
         <thead>
         <tr>
-            <th style="width: 7%;">
+            <th style="width: 10%;">
                 Código
             </th>
             <th style="width: 24%;">
@@ -72,16 +76,16 @@
             <th style="width: 18%;">
                 Dirección
             </th>
-            <th style="width: 8%;">
+            <th style="width: 7%;">
                 Fecha Reg.
             </th>
-            <th style="width: 15%;">
+            <th style="width: 14%;">
                 Sitio
             </th>
             <th style="width: 13%;">
                 Parroquia -  Comunidad
             </th>
-            <th style="width: 8%;">
+            <th style="width: 7%;">
                 Fecha Inicio
             </th>
             <th style="width: 7%;">
@@ -109,18 +113,19 @@
     });
 
     $("#imprimir").click(function () {
-        location.href = "${g.createLink(controller: 'reportes5', action:'reporteObrasFinalizadas' )}?buscador=" +$("#buscador option:selected").val() + "&criterio=" + $("#criterio").val()
+        location.href = "${g.createLink(controller: 'reportes5', action:'reporteObrasFinalizadas' )}?buscador=" +$("#buscador option:selected").val() + "&criterio=" + $("#criterio").val() +  "&departamento=" + $("#departamento option:selected").val() + "&fechaInicio=" + $("#fechaInicio").val() + "&fechaFin=" + $("#fechaFin").val();
     });
 
     $("#excel").click(function () {
-        location.href = "${g.createLink(controller: 'reportesExcel', action:'reporteExcelObrasFinalizadas' )}?buscador=" +$("#buscador option:selected").val() + "&criterio=" + $("#criterio").val()
+        location.href = "${g.createLink(controller: 'reportesExcel', action:'reporteExcelObrasFinalizadas' )}?buscador=" +$("#buscador option:selected").val() + "&criterio=" + $("#criterio").val() +  "&departamento=" + $("#departamento option:selected").val() + "&fechaInicio=" + $("#fechaInicio").val() + "&fechaFin=" + $("#fechaFin").val();
     });
 
     cargarTabla();
 
     function cargarTabla() {
         var d = cargarLoader("Cargando...");
-        var datos = "&buscador=" + $("#buscador").val() + "&criterio=" + $("#criterio").val();
+        var datos = "&buscador=" + $("#buscador").val() + "&criterio=" + $("#criterio").val() +
+            "&departamento=" + $("#departamento option:selected").val() + "&fechaInicio=" + $("#fechaInicio").val() + "&fechaFin=" + $("#fechaFin").val();
         $.ajax({
             type : "POST",
             url : "${g.createLink(controller: 'obra',action:'tablaObrasFinalizadas')}",

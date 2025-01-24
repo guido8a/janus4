@@ -54,17 +54,11 @@ class ObraController {
             render "error"
             return
         }
-
-
     }
-
 
     def obrasFinalizadas() {
 
-
         def perfil = session.perfil.id
-
-//        return [perfil: perfil]
 
         def campos = ["codigo": ["Código", "string"], "nombre": ["Nombre", "string"], "descripcion": ["Descripción", "string"], "oficioIngreso": ["Memo ingreso", "string"], "oficioSalida": ["Memo salida", "string"], "sitio": ["Sitio", "string"], "plazoEjecucionMeses": ["Plazo", "number"], "parroquia": ["Parroquia", "string"], "comunidad": ["Comunidad", "string"], "departamento": ["Dirección", "string"], "fechaCreacionObra": ["Fecha", "date"]]
         [campos: campos, perfil: perfil]
