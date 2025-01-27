@@ -30,11 +30,12 @@
             <div class="col-md-12">
                 <div class="col-md-1"> <label> Tipo de Obra: </label> </div>
                 <div class="col-md-2">
-                    <g:select name="tipoName" id="tipo" class="form-control btn-success" from="${tipos}" optionKey="id" optionValue="descripcion" />
+                    <g:select name="tipoName" id="tipo" class="form-control btn-success" from="${tipos}"
+                              optionKey="id" optionValue="descripcion" />
                 </div>
 
-                <div class="col-md-1"> <label> Subpresupuesto </label> </div>
-                <div class="col-md-5" id="divSubpresupuesto">
+                <div class="col-md-2"> <label> Subpresupuesto de la obra</label> </div>
+                <div class="col-md-6" id="divSubpresupuesto">
 
                 </div>
             </div>
@@ -44,7 +45,8 @@
             <div class="col-md-12">
                 <div class="col-md-1"> <label> Buscar Por </label> </div>
                 <div class="col-md-2">
-                    <g:select name="buscarPor" class="buscarPor form-control" from="${[1: 'Nombre', 2: 'Código']}" optionKey="key" optionValue="value"/>
+                    <g:select name="buscarPor" class="buscarPor form-control" from="${[1: 'Nombre', 2: 'Código']}"
+                              optionKey="key" optionValue="value"/>
                 </div>
                 <div class="col-md-1"> <label> Criterio </label> </div>
                 <div class="col-md-3">
@@ -57,7 +59,8 @@
                 </div>
                 <div class="col-md-2 btn-group">
                     <button class="btn btn-info" id="btnBuscar"><i class="fa fa-search"></i></button>
-                    <button class="btn btn-warning" id="btnLimpiar" title="Limpiar Búsqueda"><i class="fa fa-eraser"></i></button>
+                    <button class="btn btn-warning" id="btnLimpiar" title="Limpiar Búsqueda">
+                        <i class="fa fa-eraser"></i></button>
                 </div>
             </div>
         </div>
@@ -75,7 +78,7 @@
 
             <div class="row-fluid">
                 <div class="col-md-12">
-                    <div class="col-md-3"> <label> Subpresupuesto </label> </div>
+                    <div class="col-md-3"> <label> Ver rubros del Subpresupuesto </label> </div>
                     <div class="col-md-9" id="divSubpresupuestoSeleccionado">
 
                     </div>

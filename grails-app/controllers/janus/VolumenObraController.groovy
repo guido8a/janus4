@@ -434,7 +434,7 @@ class VolumenObraController {
         def select = "select item__id, itemnmbr, itemcdgo, unddcdgo " +
                 "from item, undd, dprt, sbgr "
         def txwh = "where tpit__id = 2 and undd.undd__id = item.undd__id and dprt.dprt__id = item.dprt__id and " +
-                "sbgr.sbgr__id = dprt.sbgr__id "
+                "sbgr.sbgr__id = dprt.sbgr__id and itemcdgo not ilike 'H%' "
         def sqlTx = ""
         def bsca = listaItems[params.buscarPor.toInteger()-1]
         def ordn = listaRbro[params.ordenar.toInteger()-1]
