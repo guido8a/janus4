@@ -33,61 +33,90 @@ class AccionistaController {
         return [accionistas: accionistas]
     }
 
-
     def save_ajax(){
 
-        println("params " + params)
+//        println("params " + params)
 
         def proveedor = Proveedor.get(params.proveedor)
         def accionista
         def consorcio
 
-        if(params.id){
 
-            consorcio = Consorcio.get(params.id)
-            accionista = consorcio.accionista
+        if(params.porcentaje != '0'){
+            if(params.id){
 
-            accionista.properties = params
+                consorcio = Consorcio.get(params.id)
+                accionista = consorcio.accionista
 
-            if(!accionista.save(flush:true)){
-                println("error al crear el accionista " + accionista.errors)
-                render "no_Error al guardar el accionista"
-            }else {
+                accionista.properties = params
 
-                consorcio.porcentaje = params.porcentaje.toDouble()
-
-                if(!consorcio.save(flush:true)){
-                    println("error al crear el consorcio " + consorcio.errors)
+                if(!accionista.save(flush:true)){
+                    println("error al crear el accionista " + accionista.errors)
                     render "no_Error al guardar el accionista"
-                }else{
-                    render "ok_Accionista guardado correctamente"
+                }else {
+
+                    consorcio.porcentaje = params.porcentaje.toDouble()
+
+                    if(!consorcio.save(flush:true)){
+                        println("error al crear el consorcio " + consorcio.errors)
+                        render "no_Error al guardar el accionista"
+                    }else{
+                        render "ok_Accionista guardado correctamente"
+                    }
                 }
 
-            }
-
-        }else{
-
-            accionista = new Accionista()
-            accionista.properties = params
-
-            if(!accionista.save(flush:true)){
-                println("error al crear el accionista " + accionista.errors)
-                render "no_Error al guardar el accionista"
             }else{
 
-                consorcio = new Consorcio()
-                consorcio.proveedor = proveedor
-                consorcio.accionista = accionista
-                consorcio.porcentaje = params.porcentaje.toDouble()
+                accionista = new Accionista()
+                accionista.properties = params
 
-                if(!consorcio.save(flush:true)){
-                    accionista.delete(flush:true)
-                    println("error al crear el consorcio " + consorcio.errors)
+                if(!accionista.save(flush:true)){
+                    println("error al crear el accionista " + accionista.errors)
                     render "no_Error al guardar el accionista"
                 }else{
-                    render "ok_Accionista guardado correctamente"
+
+                    consorcio = new Consorcio()
+                    consorcio.proveedor = proveedor
+                    consorcio.accionista = accionista
+                    consorcio.porcentaje = params.porcentaje.toDouble()
+
+                    if(!consorcio.save(flush:true)){
+                        accionista.delete(flush:true)
+                        println("error al crear el consorcio " + consorcio.errors)
+                        render "no_Error al guardar el accionista"
+                    }else{
+                        render "ok_Accionista guardado correctamente"
+                    }
                 }
             }
+        }else{
+            render "no_Ingrese un porcentaje diferente de 0"
+        }
+
+
+    }
+
+
+    def delete_ajax(){
+
+        def consorcio = Consorcio.get(params.id)
+        def accionista = Accionista.get(consorcio?.accionista?.id)
+
+
+        try{
+            consorcio.delete(flush:true)
+
+            try{
+                accionista.delete(flush:true)
+                render "ok_Borrado correctamente"
+            }catch(f){
+                println("error " + accionista.errors)
+                render"no_Error al borrar"
+            }
+
+        }catch(e){
+            println("error " + consorcio.errors)
+            render"no_Error al borrar"
         }
 
     }

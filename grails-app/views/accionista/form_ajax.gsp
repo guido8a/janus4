@@ -93,7 +93,7 @@
                 Porcentaje
             </label>
             <span class="col-md-4">
-                <g:textField name="porcentaje" maxlength="5" class="form-control" value="${consorcio?.porcentaje}"/>
+                <g:textField name="porcentaje" maxlength="5" class="form-control required" value="${consorcio?.porcentaje ?: 1}"/>
                 <p class="help-block ui-helper-hidden"></p>
             </span>
         </span>

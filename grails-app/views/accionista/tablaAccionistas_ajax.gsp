@@ -1,3 +1,15 @@
+<style type="text/css">
+table {
+    table-layout: fixed;
+    overflow-x: scroll;
+}
+th, td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+}
+</style>
+
 <table class="table table-bordered table-striped table-hover table-condensed" id="tabla">
     <thead>
     <tr>
@@ -44,9 +56,55 @@
 
 <script type="text/javascript">
 
+
+    $(".btnEliminarAccionista").click(function () {
+        var id = $(this).data("id");
+        eliminarAccionista(id);
+    });
+
     $(".btnEditarAccionista").click(function () {
         var id = $(this).data("id");
         createEditItem(id);
-    })
+    });
+
+
+    function eliminarAccionista(id){
+        bootbox.confirm({
+            title: "Eliminar Accionista",
+            message: '<i class="fa fa-trash text-danger fa-3x"></i>' + '<strong style="font-size: 14px">' + "Está seguro de borrar este accionista? Esta acción no puede deshacerse. " + '</strong>' ,
+            buttons: {
+                cancel: {
+                    label: '<i class="fa fa-times"></i> Cancelar',
+                    className: 'btn-primary'
+                },
+                confirm: {
+                    label: '<i class="fa fa-trash"></i> Borrar',
+                    className: 'btn-danger'
+                }
+            },
+            callback: function (result) {
+                if(result){
+                    var dialog = cargarLoader("Borrando...");
+                    $.ajax({
+                        type: 'POST',
+                        url: '${createLink(controller: 'accionista', action: 'delete_ajax')}',
+                        data:{
+                            id: id
+                        },
+                        success: function (msg) {
+                            dialog.modal('hide');
+                            var parts = msg.split("_");
+                            if(parts[0] === 'ok'){
+                                log(parts[1],"success");
+                                cargarTablaAccionistas();
+                            }else{
+                                log(parts[1], "error")
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    }
 
 </script>
