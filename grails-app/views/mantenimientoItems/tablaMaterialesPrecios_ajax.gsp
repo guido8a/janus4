@@ -71,7 +71,7 @@
             success : function (msg) {
                 es = bootbox.dialog({
                     id    : "dlgEspecificacionesMaterial",
-                    title : "Especificaciones del material",
+                    title : "Especificaciones del item",
                     message : msg,
                     buttons : {
                         cancelar : {

@@ -64,7 +64,7 @@
                 <span class="col-md-2">
                     <label class="control-label text-info">Tipo</label>
                     <g:select name="tipo" class="tipo col-md-12 form-control btn-info"
-                              from="${[1: 'Grupo', 2: 'Subgrupo', 3: 'Materiales', '4': 'Precios']}" optionKey="key"
+                              from="${[1: 'Grupo', 2: 'Subgrupo', 3: 'Items', '4': 'Precios']}" optionKey="key"
                               optionValue="value"/>
                 </span>
                 <span class="col-md-3">
@@ -170,14 +170,14 @@
                         $('#bc_sbgr').show();
                         $('#bc_sbgr').html('Subgrupo');
                         $('#bc_item').show();
-                        $('#bc_item').html('Materiales');
+                        $('#bc_item').html('Items');
                         break;
                     case "4":
                         $('#bc_grpo').html('Grupo');
                         $('#bc_sbgr').show();
                         $('#bc_sbgr').html('Subgrupo');
                         $('#bc_item').show();
-                        $('#bc_item').html('Materiales');
+                        $('#bc_item').html('Items');
                         break;
                 }
             }
@@ -462,7 +462,7 @@
             success : function (msg) {
                 var e = bootbox.dialog({
                     id    : "dlgVerMaterial",
-                    title : "Datos del material",
+                    title : "Datos del item",
                     message : msg,
                     buttons : {
                         cancelar : {
