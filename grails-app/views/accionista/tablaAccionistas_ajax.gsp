@@ -29,7 +29,7 @@ th, td {
         <g:if test="${accionistas}">
             <g:each in="${accionistas}" var="accionista" status="i">
                 <tr>
-                    <td style="width: 10%">${accionista?.accionista?.cedula}</td>
+                    <td style="width: 15%">${accionista?.accionista?.cedula}</td>
                     <td style="width: 40%">${accionista?.accionista?.nombre + " " + accionista?.accionista?.apellido}</td>
                     <td style="width: 15%">${accionista?.accionista?.mail}</td>
                     <td style="width: 10%">${accionista?.accionista?.telefono}</td>
