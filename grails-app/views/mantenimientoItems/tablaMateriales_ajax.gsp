@@ -18,7 +18,7 @@
             <i class="fas fa-arrow-left"></i>
         </a>
         <a href="#" class="btn btn-sm btn-success btnNuevoMaterial" title="Crear nuevo material">
-            <i class="fas fa-file"></i> Nuevo Material
+            <i class="fas fa-file"></i> Nuevo Item
         </a>
         <a href="#" class="btn btn-sm btn-info btnFabricante" title="Fabricante">
             <i class="fas fa-bookmark"></i> Fabricante
@@ -269,7 +269,7 @@
             success : function (msg) {
                 var e = bootbox.dialog({
                     id    : "dlgVerMaterial",
-                    title : "Datos del material",
+                    title : "Datos del item",
                     message : msg,
                     buttons : {
                         cancelar : {
