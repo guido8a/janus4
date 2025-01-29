@@ -1320,7 +1320,7 @@ class ObraController {
             switch (session.perfil.codigo) {
                 case "CSTO":
                     ultimo = Numero.findByDescripcion('CO')
-                    params.codigo = "CO-${ultimo?.valor + 100}-CRFC-${anioActual}"
+                    params.codigo = "CO-${ultimo?.valor + 1}-CRFC-${anioActual}" /* todo poner en 3 cifras */
 
                     ultimo.valor = (ultimo.valor+1)
 

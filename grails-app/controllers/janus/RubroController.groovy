@@ -963,9 +963,11 @@ class RubroController {
         def rubro = Item.get(params.id)
         def respuesta = "<ul>"
 
+        /* todo con SQL */
         def volumenes = VolumenesObra.withCriteria{
             eq("item",rubro)
             obra{
+                eq("estado", 'R')
                 distinct("nombre")
                 resultTransformer org.hibernate.Criteria.DISTINCT_ROOT_ENTITY
             }
