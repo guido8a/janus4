@@ -2,14 +2,14 @@
     <table class="table table-bordered table-striped table-condensed table-hover">
         <thead>
         <tr>
-            <th style="width: 7%">Código</th>
-            <th style="width: 15%">Materiales</th>
-            <th style="width: 7%">Unidad</th>
-            <th style="width: 15%">Peso/vol</th>
+            <th style="width: 10%">Código</th>
+            <th style="width: 35%">Materiales</th>
+            <th style="width: 5%">Unidad</th>
+            <th style="width: 10%">Peso/vol</th>
             <th style="width: 10%">Costo</th>
-            <th style="width: 28%">Fecha Act.</th>
+            <th style="width: 15%">Fecha Act.</th>
             <th style="width: 5%">#Rubros</th>
-            <th style="width: 14%">#Obras</th>
+            <th style="width: 5%">#Obras</th>
         </tr>
         </thead>
     </table>
@@ -21,14 +21,14 @@
         <g:if test="${materiales}">
             <g:each in="${materiales}" status="i" var="material">
                 <tr>
-                    <td style="width: 7%">${material[0]}</td>
-                    <td style="width: 15%">${material[1]}</td>
-                    <td style="width: 7%">${material[2]}</td>
-                    <td style="width: 15%">${material[3]}</td>
+                    <td style="width: 10%">${material[0]}</td>
+                    <td style="width: 35%">${material[1]}</td>
+                    <td style="width: 5%">${material[2]}</td>
+                    <td style="width: 10%">${material[3]}</td>
                     <td style="width: 10%">${material[4]}</td>
-                    <td style="width: 10%">${material[5]}</td>
-                    <td style="width: 10%">${material[6]}</td>
-                    <td style="width: 10%">${material[7]}</td>
+                    <td style="width: 15%">${material[5]}</td>
+                    <td style="width: 5%">${material[6]}</td>
+                    <td style="width: 5%">${material[7]}</td>
                 </tr>
             </g:each>
         </g:if>
