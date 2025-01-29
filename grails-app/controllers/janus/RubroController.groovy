@@ -1301,6 +1301,9 @@ class RubroController {
 
         def rendimientoTodos_ajax(){
 
+
+            def usuarioActual = Persona.get(session.usuario.id)
+
             def rubro = Item.get(params.id)
             def items = Rubro.findAllByRubro(rubro)
             def errores = ''
@@ -1318,6 +1321,11 @@ class RubroController {
             if(errores != ''){
                 render "no_Error al guardar el rendimiento"
             }else{
+
+                rubro.modifica = usuarioActual
+                rubro.fechaModificacion = new Date()
+                rubro.save(flush:true)
+
                 render "ok_Guardado correctamente"
             }
 
