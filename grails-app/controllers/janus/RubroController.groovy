@@ -1187,6 +1187,9 @@ class RubroController {
     }
 
     def agrearItem_ajax(){
+
+        def usuarioActual = Persona.get(session.usuario.id)
+
         def rubro = Item.get(params.rubro)
         def item = Item.get(params.id)
 
@@ -1203,22 +1206,34 @@ class RubroController {
             nuevoRubro.cantidad = 1
             nuevoRubro.rendimiento = 1
 
+
             if(!nuevoRubro.save(flush:true)){
                 println("Error al guardar el nuevo rubro " + nuevoRubro.errors)
                 render "no_Error al guardar"
             }else{
+
+                rubro.modifica = usuarioActual
+                rubro.fechaModificacion = new Date()
+                rubro.save(flush:true)
+
                 render "ok_Agregado correctamente"
             }
         }
     }
 
     def eliminarRubro_ajax(){
-        println "eliminarRubro_ajax: $params"
+//        println "eliminarRubro_ajax: $params"
+
+        def usuarioActual = Persona.get(session.usuario.id)
         def rubro = Rubro.get(params.id)
+        def item = Item.get(rubro.rubro.id)
 
         if(rubro){
             try{
                 rubro.delete(flush:true)
+                item.modifica = usuarioActual
+                item.fechaModificacion = new Date()
+                item.save(flush:true)
                 render "ok_Borrado correctamente"
             }catch(e){
                 println("Error al borrar el rubro " + rubro.delete(flush:true))
