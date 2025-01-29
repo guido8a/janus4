@@ -2034,6 +2034,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
         });
 
         $("#guardar").click(function () {
+
             var cod = $("#input_codigo").val();
             var desc = $("#input_descripcion").val();
             var subGr = $("#selSubgrupo").val();

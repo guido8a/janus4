@@ -469,7 +469,10 @@ class RubroController {
 
     def save() {
 //        println "save rubro " + params.rubro
-//        println("params " +  params)
+        println("params sr " +  params)
+
+        def usuarioActual = Persona.get(session.usuario.id)
+
         params.rubro.codigo = params.rubro.codigo.toUpperCase()
         params.rubro.codigoEspecificacion = params.rubro.codigoEspecificacion.toUpperCase()
 
@@ -497,6 +500,8 @@ class RubroController {
 
         rubro.properties = params.rubro
         rubro.tipoItem = TipoItem.get(2)
+        rubro.modifica = usuarioActual
+
 //        println "ren " + rubro.rendimiento
         if (!rubro.save(flush: true)) {
             println "error " + rubro.errors

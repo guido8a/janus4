@@ -40,6 +40,7 @@ class Item implements Auditable {
     Fabricante fabricante
     String codigoHistorico
     double transporetFijo = 0
+    Persona modifica
 //    Empresa empresa
 
     static auditable = true
@@ -85,6 +86,7 @@ class Item implements Auditable {
             transporteValor column: 'itemtrva'
             fabricante column: 'fabr__id'
             transporetFijo column: 'itemtrfj'
+            modifica column: 'prsnmdfc'
 //            empresa column: 'empr__id'
         }
     }
@@ -123,6 +125,7 @@ class Item implements Auditable {
         transporteValor(blank: true, nullable: true, attributes: [title: 'Transporte valor'])
         fabricante(blank: true, nullable: true)
         transporetFijo(blank: true, nullable: true)
+        modifica(blank: true, nullable: true)
     }
 
     String toString() {

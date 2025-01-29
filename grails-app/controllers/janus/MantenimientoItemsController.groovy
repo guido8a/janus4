@@ -1540,7 +1540,7 @@ class MantenimientoItemsController {
         def rubro = cn.rows(sql.toString())
 //        println "rh: ${rubro_hist}"
         return [item: item, rubro: rubro, precios: precios, fpItems: fpItems, delete: params.delete,
-        rubrosHist: rubro_hist]
+                rubrosHist: rubro_hist]
     }
 
     def copiarOferentes() {
@@ -2849,14 +2849,14 @@ itemId: item.id
         def sql = ""
         def perfil = Persona.get(session.usuario.id).departamento?.codigo == 'CRFC'
 
-            sql = "select item.item__id, itemcdgo, itemnmbr, p.rbpcfcha, rbpcpcun from item, dprt, sbgr, grpo, rbpc p " +
-                    "where p.item__id = item.item__id and p.rbpcfcha = " +
-                    "(select max(rbpcfcha) from rbpc r where r.item__id = p.item__id) and " +
-                    "item.dprt__id = dprt.dprt__id and dprt.sbgr__id = sbgr.sbgr__id and " +
-                    "sbgr.grpo__id = grpo.grpo__id and grpo.grpo__id = ${grupo?.id} and " +
-                    "item.itemnmbr ilike '%${params.criterio}%' " +
-                    "group by item.item__id, itemcdgo, itemnmbr, p.rbpcfcha, rbpcpcun " +
-                    "order by item.itemcdgo limit 100;"
+        sql = "select item.item__id, itemcdgo, itemnmbr, p.rbpcfcha, rbpcpcun from item, dprt, sbgr, grpo, rbpc p " +
+                "where p.item__id = item.item__id and p.rbpcfcha = " +
+                "(select max(rbpcfcha) from rbpc r where r.item__id = p.item__id) and " +
+                "item.dprt__id = dprt.dprt__id and dprt.sbgr__id = sbgr.sbgr__id and " +
+                "sbgr.grpo__id = grpo.grpo__id and grpo.grpo__id = ${grupo?.id} and " +
+                "item.itemnmbr ilike '%${params.criterio}%' " +
+                "group by item.item__id, itemcdgo, itemnmbr, p.rbpcfcha, rbpcpcun " +
+                "order by item.itemcdgo limit 100;"
 
         println("tablaMaterialesPrecios_ajax sql " + sql)
         def items = cn.rows(sql.toString());
@@ -2976,6 +2976,69 @@ itemId: item.id
         def subgrupos = cn.rows(sql.toString());
         cn.close()
         return [subgrupos: subgrupos]
+    }
+
+    def consultaPrecios(){
+
+    }
+
+    def tablaConsultaPrecios_ajax(){
+
+        def orden = "itemnmbr"
+        def estado = 'A'
+
+        def grupo = Grupo.get(1)
+        def lugar = Lugar.get(params.lugar.toLong())
+        def fecha = new Date().parse("dd-MM-yyyy", params.fecha)
+        def items = ""
+        def lista = Item.withCriteria {
+            eq("tipoItem", TipoItem.findByCodigo("I"))
+            eq("estado", estado)
+            departamento {
+                subgrupo {
+                    eq("grupo", grupo)
+                }
+            }
+        }
+        lista.id.each {
+            if (items != "") {
+                items += ","
+            }
+            items += it
+        }
+        def res = []
+        def tmp = preciosService.getPrecioRubroItemOrder(fecha, lugar, items, orden, "asc")
+        tmp.each {
+            res.add(PrecioRubrosItems.get(it))
+        }
+
+        def materiales = []
+
+        res.each {
+
+            def parcial = []
+
+            def sql2 = "select count(*) from vlobitem where item__id = ${it?.item?.id}"
+            def cn = dbConnectionService.getConnection()
+            def numero = cn.rows(sql2.toString())
+
+            def sql3 = "select count(*) from item it, item rb, rbro where rbro.rbrocdgo = rb.item__id and rbro.item__id = it.item__id and it.item__id = ${it?.item?.id}"
+            def cn2 = dbConnectionService.getConnection()
+            def rubros = cn2.rows(sql3.toString())
+
+            parcial+=  it?.item?.codigo?.toString() ?: ''
+            parcial+=  it?.item?.nombre?.toString() ?: ''
+            parcial+=  it?.item?.unidad?.codigo?.toString()?: ''
+            parcial+=  it?.item?.peso ?: ''
+            parcial+=  it?.precioUnitario ?: 0
+            parcial+=  it?.fecha?.format("dd-MM-yyyy")
+            parcial+=  rubros[0].count
+            parcial+=  numero[0].count
+
+            materiales.add(parcial)
+        }
+
+        return [materiales: materiales]
     }
 
 }

@@ -23,6 +23,8 @@
                 </a>
                 <a href="${createLink(controller: 'item', action: 'subirExcelMP')}" class="btn btn-success"><i class="fa fa-file-excel"></i> Precios desde excel
                 </a>
+                <a href="${createLink(controller: 'mantenimientoItems', action: 'consultaPrecios')}" class="btn btn-info"><i class="fa fa-file"></i> Consulta de precios
+                </a>
                 <a href="#" id="btnPreciosVolumen" class="btn">
                     <i class="fa fa-money-bill"></i> Precios por Volumen
                 </a>
