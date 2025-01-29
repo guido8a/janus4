@@ -543,9 +543,16 @@ class RubroController {
     } //show
 
     def eliminarRubroDetalle() {
+
+        def usuarioActual = Persona.get(session.usuario.id)
         def rubro = Rubro.get(params.id)
+        def item = Item.get(rubro.rubro.id)
+
         try {
             rubro.delete(flush: true)
+            item.modifica = usuarioActual
+            item.fechaModificacion = new Date()
+            item.save(flush:true)
             render "Registro eliminado"
         }
         catch (DataIntegrityViolationException e) {
@@ -1256,7 +1263,10 @@ class RubroController {
 
         println("params sr" + params)
 
+        def usuarioActual = Persona.get(session.usuario.id)
+
         def rubro = Rubro.get(params.id)
+        def item = Item.get(rubro.rubro.id)
 
         if(rubro){
             if(params.cantidad){
@@ -1271,6 +1281,11 @@ class RubroController {
                         println("error al guardar la cantidad y el rendimiento " + rubro.errors)
                         render "no_Error al guardar"
                     }else{
+
+                        item.modifica = usuarioActual
+                        item.fechaModificacion = new Date()
+                        item.save(flush:true)
+
                         render"ok_Guardado correctamente"
                     }
                 }else{
@@ -1279,7 +1294,6 @@ class RubroController {
             }else{
                 render "err_Ingrese la cantidad"
             }
-
         }else{
             render "err_No se encontró el registro"
         }
