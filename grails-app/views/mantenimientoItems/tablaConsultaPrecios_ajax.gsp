@@ -28,6 +28,7 @@
                     <td style="width: 10%">${material[4]}</td>
                     <td style="width: 10%">${material[5]}</td>
                     <td style="width: 10%">${material[6]}</td>
+                    <td style="width: 10%">${material[7]}</td>
                 </tr>
             </g:each>
         </g:if>
