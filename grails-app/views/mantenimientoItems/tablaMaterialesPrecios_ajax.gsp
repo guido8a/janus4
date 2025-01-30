@@ -36,7 +36,7 @@
                                 <i class="fas fa-book"></i>
                             </a>
                         </g:if>
-                        <a href="#" class="btn btn-xs btn-danger btnEliminarVarios" data-item="${item?.item__id}" data-lugar="${item?.lgar__id}" title="Borrar varios precios">
+                        <a href="#" class="btn btn-xs btn-danger btnEliminarVarios" data-item="${item?.item__id}" data-nombre="${item.itemnmbr}" title="Borrar varios precios">
                             <i class="fas fa-trash"></i>
                         </a>
                     </td>
@@ -97,7 +97,8 @@
 
     $(".btnEliminarVarios").click(function () {
         var item = $(this).data("item");
-        cargarTablaBorrarVarios(item)
+        var nombre = $(this).data("nombre");
+        borrarTodosPrecios(item, nombre)
     });
 
     $(".btnVerMaterial").click(function () {
@@ -171,30 +172,44 @@
         });
     }
 
-    function cargarTablaBorrarVarios(item){
-        $.ajax({
-            type    : "POST",
-            url     : "${createLink(controller: 'mantenimientoItems', action:'tablaBorrarPrecios_ajax')}",
-            data    : {
-                item: item,
-                fechaDefecto: $("#datetimepicker2").val()
+    function borrarTodosPrecios(id, nombre){
+        bootbox.confirm({
+            title: "Eliminar varios precios",
+            message: '<i class="fa fa-trash text-danger fa-3x"></i>' + '<strong style="font-size: 14px">' + 'Está seguro de borrar los precios del item: ' + nombre +  ' a la fecha: ' + $("#datetimepicker2").val() + '</strong>' ,
+            buttons: {
+                cancel: {
+                    label: '<i class="fa fa-times"></i> Cancelar',
+                    className: 'btn-primary'
+                },
+                confirm: {
+                    label: '<i class="fa fa-trash"></i> Borrar',
+                    className: 'btn-danger'
+                }
             },
-            success : function (msg) {
-                ths = bootbox.dialog({
-                    id    : "dlgBorrarPrecios",
-                    title : "Borrar varios Precios",
-                    message : msg,
-                    buttons : {
-                        cancelar : {
-                            label     : "Cancelar",
-                            className : "btn-primary",
-                            callback  : function () {
+            callback: function (result) {
+                if(result){
+                    var dialog = cargarLoader("Borrando...");
+                    $.ajax({
+                        type: 'POST',
+                        url: '${createLink(action: 'borrarVariosPrecios_ajax')}',
+                        data:{
+                            id: id,
+                            fecha: $("#datetimepicker2").val()
+                        },
+                        success: function (msg) {
+                            dialog.modal('hide');
+                            var parts = msg.split("_");
+                            if(parts[0] === 'ok'){
+                                log(parts[1],"success");
+                                cargarTablaItemsPrecios();
+                            }else{
+                                log(parts[1], "error")
                             }
                         }
-                    } //buttons
-                }); //dialog
-            } //success
-        }); //ajax
+                    });
+                }
+            }
+        });
     }
 
 </script>

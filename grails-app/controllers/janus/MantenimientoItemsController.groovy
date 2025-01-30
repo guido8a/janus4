@@ -3041,39 +3041,8 @@ itemId: item.id
         return [materiales: materiales]
     }
 
-
-    def tablaBorrarPrecios_ajax(){
-
-        println "borrar varios precios " + params
-
-//        if (params.fecha == "all") {
-//            params.todasLasFechas = "true"
-//        } else {
-//            params.todasLasFechas = "false"
-//            params.fecha = new Date().parse("dd-MM-yyyy", params.fechaDefecto)
-//        }
-
-        println("fecha " + params.fecha)
-
-        def item = Item.get(params.item)
-        def operador = params.operador
-        def fecha = params.fecha
-        def lugarNombre= "todos los lugares"
-
-        if (params.todasLasFechas == "true") {
-            fecha = null
-        }
-
-        def r = calcPrecio([
-                lugarId: 'all',
-                fecha: params.fecha,
-                operador: operador,
-                todasLasFechas: false,
-                itemId: item.id
-        ])
-
-        return [item: item, lugarNombre: lugarNombre, lugarId: 'all', precios: r.precios, lgar: params.id == "all", fecha: operador == "=" ? fecha.format("dd-MM-yyyy") : null,
-                params: params, precioRef: r.precioRef, anioRef: r.anioRef]
+    def borrarVariosPrecios_ajax(){
+        println("borrar precios " + params)
 
     }
 
