@@ -73,9 +73,9 @@
                         <td>Replanteo y niv..</td>
                         <td>m</td>
                         <td>2941.96</td>
-                        <td>1.2805</td>
+                        <td>1.28501</td>
                         <td>3780.44802</td>
-                        <td>3780.4402</td>
+                        <td>3780.44802</td>
                         <td>0</td>
                         <td>0</td>
                     </tr>
