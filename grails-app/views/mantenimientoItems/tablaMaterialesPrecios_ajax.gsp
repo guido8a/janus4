@@ -3,11 +3,11 @@
         <thead>
         <tr>
             <th style="width: 10%">Código</th>
-            <th style="width: 40%">Descripción</th>
+            <th style="width: 38%">Descripción</th>
             <th style="width: 26%">Lugar</th>
             <th style="width: 8%">Fecha</th>
             <th style="width: 8%">Precio</th>
-            <th style="width: 8%">Acciones</th>
+            <th style="width: 10%">Acciones</th>
         </tr>
         </thead>
     </table>
@@ -20,11 +20,11 @@
             <g:each in="${items}" status="i" var="item">
                 <tr data-id="${item?.rbpc__id}">
                     <td style="width: 10%">${item.itemcdgo}</td>
-                    <td style="width: 40%">${item.itemnmbr}</td>
+                    <td style="width: 38%">${item.itemnmbr}</td>
                     <td style="width: 26%">${item.lgardscr}</td>
                     <td style="width: 8%">${item.rbpcfcha}</td>
                     <td style="width: 8%">${item.rbpcpcun ?: ''}</td>
-                    <td style="width: 8%; text-align: center">
+                    <td style="width: 10%; text-align: center">
                         <a href="#" class="btn btn-xs btn-info btnVerMaterial" data-id="${item?.item__id}" title="Ver">
                             <i class="fas fa-search"></i>
                         </a>
@@ -36,6 +36,9 @@
                                 <i class="fas fa-book"></i>
                             </a>
                         </g:if>
+                        <a href="#" class="btn btn-xs btn-danger btnEliminarVarios" data-item="${item?.item__id}" data-lugar="${item?.lgar__id}" title="Borrar varios precios">
+                            <i class="fas fa-trash"></i>
+                        </a>
                     </td>
                 </tr>
                 <g:set var="itemIDAnterior" value="${item.item__id}"/>
@@ -90,6 +93,11 @@
         var item = $(this).data("item");
         var lugar = $(this).data("lugar");
         cargarTablaHistoricoPrecios(item, lugar)
+    });
+
+    $(".btnEliminarVarios").click(function () {
+        var item = $(this).data("item");
+        cargarTablaBorrarVarios(item)
     });
 
     $(".btnVerMaterial").click(function () {
@@ -161,6 +169,32 @@
                 }
             }
         });
+    }
+
+    function cargarTablaBorrarVarios(item){
+        $.ajax({
+            type    : "POST",
+            url     : "${createLink(controller: 'mantenimientoItems', action:'tablaBorrarPrecios_ajax')}",
+            data    : {
+                item: item,
+                fechaDefecto: $("#datetimepicker2").val()
+            },
+            success : function (msg) {
+                ths = bootbox.dialog({
+                    id    : "dlgBorrarPrecios",
+                    title : "Borrar varios Precios",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        }
+                    } //buttons
+                }); //dialog
+            } //success
+        }); //ajax
     }
 
 </script>
