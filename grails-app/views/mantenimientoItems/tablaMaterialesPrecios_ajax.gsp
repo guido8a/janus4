@@ -175,7 +175,9 @@
     function borrarTodosPrecios(id, nombre){
         bootbox.confirm({
             title: "Eliminar varios precios",
-            message: '<i class="fa fa-trash text-danger fa-3x"></i>' + '<strong style="font-size: 14px">' + 'Está seguro de borrar los precios del item: ' + nombre +  ' a la fecha: ' + $("#datetimepicker2").val() + '</strong>' ,
+            message: '<i class="fa fa-trash text-danger fa-3x"></i>' + '<p style="font-size: 14px; margin-left: 40px">' +
+            'Está seguro de borrar los precios del item: <strong>' + nombre +  '</strong> registrados a la <br>fecha: <strong>' +
+            $("#datetimepicker2").val() + ' en todas las listas de precios<strong></p>' ,
             buttons: {
                 cancel: {
                     label: '<i class="fa fa-times"></i> Cancelar',

@@ -1033,12 +1033,14 @@ class CronogramaContratoController {
 
 
     def uploadFile() {
-        println("params uf " + params)
-        def filasNO = [0, 1, 2, 3, 4]
+        println "uploadFile $params"
+        def cn = dbConnectionService.getConnection()
+        def filasNO = [0, 1]
         def filasTodasNo = []
-        def contrato = Contrato.get(params.id)
-        def path = "/var/janus/" + "xlsCronosContratos/" + contrato?.id + "/"   //web-app/archivos
+        def cntr_id = params.id
+        def path = "/var/janus/" + "xlsCronosContratos/" + cntr_id + "/"   //web-app/archivos
         new File(path).mkdirs()
+        def sql = ""
 
         def f = request.getFile('file')  //archivo = name del input type file
         if (f && !f.empty) {
@@ -1076,8 +1078,6 @@ class CronogramaContratoController {
 
                 //procesar excel
                 def htmlInfo = "", errores = "", doneHtml = "", done = 0
-                def file = new File(pathFile)
-
                 InputStream ExcelFileToRead = new FileInputStream(pathFile);
                 XSSFWorkbook workbook = new XSSFWorkbook(ExcelFileToRead);
 
@@ -1088,118 +1088,128 @@ class CronogramaContratoController {
                 XSSFRow row1;
                 XSSFCell cell1;
 
-               Iterator rows1 = sheet1.rowIterator()
+//               Iterator rows1 = sheet1.rowIterator()
 
-                while (rows1.hasNext()) {i
-                    row1 = (XSSFRow) rows1.next()
-                    Iterator cells = row1.cellIterator()
-
-                    if(cells[0].getCellType() == XSSFCell.CELL_TYPE_NUMERIC){
+//                while (rows1.hasNext()) {i
+//                    row1 = (XSSFRow) rows1.next()
+//                    Iterator cells = row1.cellIterator()
+//
+//                    if(cells[0].getCellType() == XSSFCell.CELL_TYPE_NUMERIC){
 //                        println("si " + row1.rowNum )
-                    }else{
-                        filasTodasNo += row1.rowNum
+//                    }else{
+//                        filasTodasNo += row1.rowNum
 //                        println("no " + row1.rowNum )
-                    }
-                }
-
-                println("filas no " +filasTodasNo)
+//                    }
+//                }
 
                 Iterator rows = sheet1.rowIterator();
-
-                while (rows.hasNext()) {i
+                while (rows.hasNext()) {
+                    i
 
                     row = (XSSFRow) rows.next()
 
-//                    if (row.rowNum in filasNO) {
-                    if (row.rowNum in filasTodasNo) {
-                        println("rows NO " + row.rowNum)
-                    } else {
-
+                    if (!(row.rowNum in filasNO)) {
                         def ok = true
-
                         Iterator cells = row.cellIterator()
-
                         def rgst = []
                         def meses = []
 
                         while (cells.hasNext()) {
                             cell = (XSSFCell) cells.next()
 
-                            if (cell.columnIndex <= 5) {
+                            if (cell.columnIndex < 6) {  //separa cronograma
                                 if (cell.getCellType() == XSSFCell.CELL_TYPE_NUMERIC) {
                                     rgst.add(cell.getNumericCellValue())
                                 } else if (cell.getCellType() == XSSFCell.CELL_TYPE_STRING) {
                                     rgst.add(cell.getStringCellValue())
-                                } else if (cell.getCellType() == XSSFCell.CELL_TYPE_FORMULA) {
-                                    rgst.add(cell.getNumericCellValue())
+                                } else {
+                                    rgst.add('')
                                 }
                             } else {
                                 if (cell.getCellType() == XSSFCell.CELL_TYPE_NUMERIC) {
                                     meses.add(cell.getNumericCellValue())
                                 } else if (cell.getCellType() == XSSFCell.CELL_TYPE_STRING) {
                                     meses.add(cell.getStringCellValue())
-                                } else if (cell.getCellType() == XSSFCell.CELL_TYPE_FORMULA) {
-                                    meses.add(cell.getNumericCellValue())
+                                } else {
+                                    meses.add(0)
                                 }
                             }
-
-
                         }
 
-//                        def cod = rgst[0]
                         def numero = rgst[0]
                         def rubro = rgst[1]
-//                        def unidad = rgst[3]
-                        def cantidad = rgst[2]
-                        def punitario = rgst[3]
-                        def subtotal = rgst[4]
+                        def unidad = rgst[2]
+                        def cantidad = rgst[3]
+                        def punitario = rgst[4]
+                        def subtotal = rgst[5]
+                        def pcun = 0.0, cntd = 0.0, pcnt = 0.0, prcl = 0.0, prco = 0.0
 
-//                        println("cod " + cod)
-                        println("numero " + numero)
-                        println("rubro " + rubro)
-//                        println("unidad " + unidad)
-                        println("cantidad " + cantidad)
-                        println("punitario " + punitario)
-                        println("subtotal " + subtotal)
+//                        println "R: $numero $rubro $unidad $cantidad $punitario $subtotal $meses"
 
-                        println("meses " + meses)
+                        try {numero = numero.toDouble()} catch (e) {numero = ''}
 
-
-                        htmlInfo += "<h2>Hoja : " + sheet1.getSheetName() + " - ITEM: " + rubro + "</h2>"
-
-//                        if (numero) {
-//                            println "puede procesar: $rgst"
+                        if ( numero ) {
+                            println "puede procesar: $rgst, meses: ${meses.size()}"
+                            htmlInfo += "<p>Hoja : " + sheet1.getSheetName() + " - ITEM: " + rubro + meses + "</p>"
 //                            cantidad = cantidad.replaceAll(",", ".")
-//                            precioConst = precioConst.replaceAll(",", ".")
-//                            def vc = VolumenContrato.get(cod)
-//
-//                            if (!vc) {
-//                                errores += "<li>No se encontró volumen contrato con id ${cod} (linea: ${row.rowNum + 1})</li>"
-//                                println "No se encontró volumen contrato con id ${cod}"
-//                                ok = false
-//                            } else {
-//
-//                                if (!precioConst) {
-//                                    precioConst = 0
-//                                }
-//
-//                                if (!cantidad) {
-//                                    cantidad = 0
-//                                }
-//                                println "precio: ${precioConst.toDouble()}"
-//                                vc.volumenPrecio = precioConst.toDouble()
+//                            punitario = punitario.replaceAll(",", ".")
+//                            def vc = VolumenContrato.findByContratoAndVolumenOrden(contrato, numero)
+                            sql = "select vocr__id from vocr where cntr__id = ${cntr_id} and vocrordn = ${numero}"
+                            def vc_id = cn.rows(sql.toString())[0].vocr__id
+                            if (!vc_id) {
+                                errores += "<li>No se encontró volumen contrato con id ${cod} (linea: ${row.rowNum + 1})</li>"
+                                println "No se encontró volumen contrato con id ${cod}"
+                                ok = false
+                            } else {
+
+                                if (!punitario) {
+                                    punitario = 0
+                                }
+
+                                if (!cantidad) {
+                                    cantidad = 0
+                                }
+                                println "precio: ${punitario.toDouble()}"
+                                pcun = punitario.toDouble()
+                                cntd = cantidad.toDouble()
+                                sql = "update vocr set vocrpcun = ${pcun}, vocrcntd = ${cntd}, vocrsbtt = ${pcun * cntd} " +
+                                        "where vocr__id = ${vc_id}"
 //                                vc.volumenCantidad = Math.round(cantidad.toDouble() * 100) / 100
-//                                vc.volumenSubtotal = precioConst.toDouble() * (Math.round(cantidad.toDouble() * 10000) / 10000)
-//                            }
-//
-//                            if (!vc.save(flush: true)) {
-//                                println "No se pudo guardar valor contrato con id ${vc.id}: " + vc.errors
-//                                errores += "<li>Ha ocurrido un error al guardar los valores para ${rubro} (l. ${row.rowNum + 1})</li>"
-//                            } else {
-//                                done++
-//                                doneHtml += "<li>Se ha modificado los valores para el item ${rubro}</li>"
-//                            }
-//                        }
+//                                vc.volumenSubtotal = punitario.toDouble() * cantidad.toDouble()
+                                try {
+//                                    vc.save(flush: true)
+                                    cn.execute(sql.toString())
+                                } catch (e) {
+                                    println " no se pudo guardar $rgst: ${e.erros()}"
+                                }
+
+                                /* regsitra cronograma */
+                                for(m in 0..meses.size()) {
+                                    if(meses[m] > 0) {
+                                        sql = "select crcr__id from crcr where cntr__id = $cntr_id and " +
+                                                "crcrprdo = ${m+1} and vocr__id = $vc_id"
+                                        def crcr_id = cn.rows(sql.toString())[0].crcr__id
+                                        prco = meses[m].toDouble()
+                                        prcl = prco / pcun + 0.01
+                                        pcnt = Math.round( (prcl / cntd) * 10000) / 100
+                                        if(crcr_id){
+                                            sql = "update crcr set crcrcntd = ${prcl}, crcrprct = $pcnt, " +
+                                                    "crcrprco = $prco where crcr__id = $crcr_id"
+                                        } else {
+                                            sql = "insert into crcr(cntr__id, vocr__id, crcrprdo, crcrcntd, crcrprct, " +
+                                                    " crcrprco) values ($cntr_id, $vc_id, $m, $prcl, $pcnt, " +
+                                                    "$prco)"
+                                        }
+                                        try {
+                                            cn.execute(sql.toString())
+                                        } catch (e) {
+                                            println " no se pudo guardar crcr $rgst: ${e.erros()}"
+                                        }
+                                    }
+                                }
+
+                            }
+                        }
                     }
                 } //sheets.each
                 if (done > 0) {

@@ -3043,7 +3043,7 @@ itemId: item.id
 
     def borrarVariosPrecios_ajax(){
         println("borrar precios " + params)
-
+        render "ok"
     }
 
 }
