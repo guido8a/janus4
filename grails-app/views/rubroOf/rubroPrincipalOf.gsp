@@ -275,7 +275,7 @@
             <tbody id="tabla_material">
             <g:each in="${items}" var="rub" status="i">
                 <g:if test="${rub.item.departamento.subgrupo.grupo.id == 1}">
-                    <tr class="item_row" id="${rub.id}" data-item="${rub.item.id}"  tipo="${rub.item.departamento.subgrupo.grupo.id}" data-unidad="${rub.item.unidad.codigo}">
+                    <tr class="item_row" id="${rub.id}" data-item="${rub.item.id}"  tipo="${rub.item.departamento.subgrupo.grupo.id}" data-tipo="${rub.item.departamento.subgrupo.grupo.id}" data-unidad="${rub.item.unidad.codigo}">
                         <td class="cdgo">${rub.item.codigo}</td>
                         <td>${rub.item.nombre}</td>
                         <td style="width: 60px !important;text-align: center" class="col_unidad">${rub.item.unidad.codigo}</td>
@@ -1060,30 +1060,8 @@
 
 
         $(".btnEditar").click(function () {
-            // var hijos = $(this).children();
-            // var desc=$(hijos[1]).html();
-            // var cant;
-            // var codigo=$(hijos[0]).html();
-            // var unidad = $(this).data("unidad");
-            // var rendimiento;
-            // var item;
 
-            // for(i=2;i<hijos.length;i++){
-            //     if($(hijos[i]).hasClass("cant"))
-            //         cant=$(hijos[i]).html();
-            //     if($(hijos[i]).hasClass("col_rend"))
-            //         rendimiento=$(hijos[i]).attr("valor");
-            // }
-
-            // item = $(this).data("item");
-
-            // $("#item_cantidad").val(cant.toString().trim());
-
-            // if(rendimiento){
-            //     $("#item_rendimiento").val(rendimiento.toString().trim());
-            // }
-            //
-
+            var cantidadHerramientaMenor =   number_format($("#total_mano").find(".valor_total").html(), 5, ".", "");
             var item = $(this).data("item");
             var tipo = $(this).data("tipo");
             var codigo = $(this).data("codigo");
@@ -1092,14 +1070,22 @@
             var cantidad =$(this).data("cant");
             var rendimiento =$(this).data("rend");
 
-
             $("#item_id").val(item);
             $("#item_id").attr("tipo", tipo);
             $("#cdgo_buscar").val(codigo);
             $("#item_desc").val(descripcion);
             $("#item_unidad").val(unidad);
-            $("#item_cantidad").val(cantidad);
             $("#item_rendimiento").val(rendimiento);
+
+            if(tipo === 3){
+                if(codigo === '103.001.002'){
+                    $("#item_cantidad").val(cantidadHerramientaMenor);
+                }else{
+                    $("#item_cantidad").val(cantidad);
+                }
+            }else{
+                $("#item_cantidad").val(cantidad);
+            }
 
             getPrecio();
         });
@@ -1112,6 +1098,7 @@
             var unidad = $(this).data("unidad");
             var rendimiento;
             var item;
+            var tipo = $(this).data("tipo");
 
             for(i=2;i<hijos.length;i++){
                 if($(hijos[i]).hasClass("cant"))
@@ -1124,12 +1111,16 @@
 
             $("#item_cantidad").val(cant.toString().trim());
 
-            if(rendimiento){
-                $("#item_rendimiento").val(rendimiento.toString().trim());
-            }
+            // if(rendimiento){
+                if(tipo === 1 ){
+                    $("#item_rendimiento").val(1);
+                }else{
+                    $("#item_rendimiento").val(rendimiento.toString().trim());
+                }
+            // }
 
             $("#item_id").val(item);
-            $("#item_id").attr("tipo",$(this).attr("tipo"));
+            $("#item_id").attr("tipo", $(this).attr("tipo"));
             $("#cdgo_buscar").val(codigo);
             $("#item_desc").val(desc);
             $("#item_unidad").val(unidad);
