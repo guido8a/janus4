@@ -87,37 +87,23 @@
         </g:form>
     </div>
 
-    <div style="border-bottom: 1px solid black;height: 100px; padding-left: 50px;margin-top: 10px;position: relative;">
+    <div style="border-bottom: 1px solid black;height: 120px; padding-left: 50px;margin-top: 10px;position: relative;">
         <p class="css-vertical-text">Items</p>
 
         <div class="linea" style="height: 100px;"></div>
 
         <div class="col-md-12">
-            <div class="col-md-3" style="color: #008">
+            <div class="col-md-2 breadcrumb" style="color: #008; font-size: 12px; font-weight: bold">
                 Porcentaje de costos indirectos
             </div>
             <div class="col-md-1">
-                <g:textField name="unidad.id" id="costo_indi" class="form-control"
-                             value="${obra ? obra.totales : '22.5'}" />
+                <g:textField name="unidad.id" id="costo_indi" class="form-control"  value="${obra ? obra.totales : '22.5'}" />
             </div>
-
-
-
-            %{--            <g:if test="${rubro}">--}%
-            <div class="col-md-2" style="margin-left: 85px">
+            <div class="col-md-2" style="float: right">
                 <a class="btn btn-xs btn-warning " href="#" rel="tooltip" title="Copiar " id="btn_copiarComp" ${rubro ? '' : 'disabled'}>
                     <i class="fa fa-copy"></i> Copiar composición
                 </a>
             </div>
-            %{--            </g:if>--}%
-            %{--            <g:else>--}%
-            %{--                <div class="col-md-2" style="margin-left: 30px">--}%
-            %{--                    <a class="btn btn-xs btn-warning " href="#" rel="tooltip" title="Copiar " disabled>--}%
-            %{--                        <i class="fa fa-copy"></i> Copiar composición--}%
-            %{--                    </a>--}%
-            %{--                </div>--}%
-            %{--            </g:else>--}%
-
         </div>
 
         <div class="row-fluid" style="margin-bottom: 5px">
@@ -137,15 +123,15 @@
             </div>
             <div class="col-md-2">
                 <label>Precio incluye transp.</label>
-                <g:textField name="item.precio" id="item_precio" class="form-control" value="1" style="text-align: right" />
+                <g:textField name="item.precio" id="item_precio" class="form-control" value="1" style="text-align: right; width: 120px" />
             </div>
-            <div class="col-md-1">
+            <div class="col-md-1" style="margin-left: -60px">
                 <label>Cantidad</label>
-                <g:textField name="item.cantidad" id="item_cantidad" class="form-control" value="1" style="text-align: right" />
+                <g:textField name="item.cantidad" id="item_cantidad" class="form-control" value="1" style="text-align: right; width: 90px" />
             </div>
             <div class="col-md-1">
                 <label> Rendimiento </label>
-                <g:textField name="item.rendimiento" id="item_rendimiento" class="form-control" value="1" style="text-align: right" />
+                <g:textField name="item.rendimiento" id="item_rendimiento" class="form-control" value="1" style="text-align: right; width: 90px" />
             </div>
             <div class="col-md-1">
                 <label>VAE (%)</label>
@@ -195,16 +181,20 @@
                         <td style="text-align: right" class="cant">
                             <g:formatNumber number="${rub.cantidad}" format="##,#####0" minFractionDigits="5" maxFractionDigits="7"  locale="ec"  />
                         </td>
-
                         <td class="col_tarifa" style="display: none;text-align: right" id="i_${rub.item.id}" ></td>
                         <td class="col_hora" style="display: none;text-align: right"></td>
                         <td class="col_rend rend" style="width: 50px;text-align: right"  valor="${rub.rendimiento}">
                             <g:formatNumber number="${rub.rendimiento}" format="##,#####0" minFractionDigits="5" maxFractionDigits="7" locale="ec" />
                         </td>
                         <td class="col_total" style="display: none;text-align: right"></td>
-                        <td style="width: 40px;text-align: center" class="col_delete">
+                        <td style="width: 70px;text-align: center" class="col_delete">
+                            <a class="btn btn-xs btn-success btnEditar" href="#" rel="tooltip" title="Editar" data-id="${rub.id}" data-item="${rub.item.id}"  data-tipo="${rub.item.departamento.subgrupo.grupo.id}"
+                               data-unidad="${rub.item.unidad.codigo}" data-codigo="${rub.item.codigo}" data-desc="${rub.item.nombre}" data-cant="${rub.cantidad}" data-rend="${rub.rendimiento}">
+                                <i class="fa fa-edit"></i>
+                            </a>
                             <a class="btn btn-xs btn-danger borrarItem" href="#" rel="tooltip" title="Eliminar" iden="${rub.id}" data-id="${rub.id}">
-                                <i class="fa fa-trash"></i></a>
+                                <i class="fa fa-trash"></i>
+                            </a>
                         </td>
                     </tr>
                 </g:if>
@@ -247,7 +237,11 @@
                             <g:formatNumber number="${rub.rendimiento}" format="##,#####0" minFractionDigits="5" maxFractionDigits="7" locale="ec"  />
                         </td>
                         <td class="col_total" style="display: none;text-align: right"></td>
-                        <td style="width: 40px;text-align: center" class="col_delete">
+                        <td style="width: 70px;text-align: center" class="col_delete">
+                            <a class="btn btn-xs btn-success btnEditar" href="#" rel="tooltip" title="Editar" data-id="${rub.id}" data-item="${rub.item.id}"  data-tipo="${rub.item.departamento.subgrupo.grupo.id}"
+                               data-unidad="${rub.item.unidad.codigo}" data-codigo="${rub.item.codigo}" data-desc="${rub.item.nombre}" data-cant="${rub.cantidad}" data-rend="${rub.rendimiento}">
+                                <i class="fa fa-edit"></i>
+                            </a>
                             <a class="btn btn-xs btn-danger borrarItem" href="#" rel="tooltip" title="Eliminar" iden="${rub.id}" data-id="${rub.id}">
                                 <i class="fa fa-trash"></i></a>
                         </td>
@@ -288,11 +282,15 @@
                         <td style="text-align: right" class="cant">
                             <g:formatNumber number="${rub.cantidad}" format="##,#####0" minFractionDigits="5" maxFractionDigits="7"  locale="ec"  />
                         </td>
-                        <td class="col_precioUnit" style="display: none;text-align: right" id="i_${rub.item.id}"></td>
                         <td class="col_vacio" style="width: 50px;display: none;"></td>
+                        <td class="col_precioUnit" style="display: none;text-align: right" id="i_${rub.item.id}"></td>
                         <td class="col_vacio" style="width: 50px;display: none"></td>
                         <td class="col_total" style="display: none;text-align: right"></td>
-                        <td style="width: 40px;text-align: center" class="col_delete">
+                        <td style="width: 70px;text-align: center" class="col_delete">
+                            <a class="btn btn-xs btn-success btnEditar" href="#" rel="tooltip" title="Editar" data-id="${rub.id}" data-item="${rub.item.id}"  data-tipo="${rub.item.departamento.subgrupo.grupo.id}"
+                               data-unidad="${rub.item.unidad.codigo}" data-codigo="${rub.item.codigo}" data-desc="${rub.item.nombre}" data-cant="${rub.cantidad}" data-rend="${1}">
+                                <i class="fa fa-edit"></i>
+                            </a>
                             <a class="btn btn-xs btn-danger borrarItem" href="#" rel="tooltip" title="Eliminar material" iden="${rub.id}" data-id="${rub.id}">
                                 <i class="fa fa-trash"></i></a>
                         </td>
@@ -569,8 +567,6 @@
 </div>
 
 <script type="text/javascript">
-
-
 
     $("#btn-consultar").click(function () {
         busqueda();
@@ -888,7 +884,6 @@
         $("#tabla_costos").show("slide")
     }
 
-    $(function () {
         $("#detalle").click(function () {
             var child = window.open('${createLink(controller:"rubro",action:"showFoto",id: rubro?.id, params:[tipo:"dt"])}', 'Mies', 'width=850,height=800,toolbar=0,resizable=0,menubar=0,scrollbars=1,status=0');
 
@@ -1063,6 +1058,52 @@
             }
         });
 
+
+        $(".btnEditar").click(function () {
+            // var hijos = $(this).children();
+            // var desc=$(hijos[1]).html();
+            // var cant;
+            // var codigo=$(hijos[0]).html();
+            // var unidad = $(this).data("unidad");
+            // var rendimiento;
+            // var item;
+
+            // for(i=2;i<hijos.length;i++){
+            //     if($(hijos[i]).hasClass("cant"))
+            //         cant=$(hijos[i]).html();
+            //     if($(hijos[i]).hasClass("col_rend"))
+            //         rendimiento=$(hijos[i]).attr("valor");
+            // }
+
+            // item = $(this).data("item");
+
+            // $("#item_cantidad").val(cant.toString().trim());
+
+            // if(rendimiento){
+            //     $("#item_rendimiento").val(rendimiento.toString().trim());
+            // }
+            //
+
+            var item = $(this).data("item");
+            var tipo = $(this).data("tipo");
+            var codigo = $(this).data("codigo");
+            var unidad = $(this).data("unidad");
+            var descripcion = $(this).data("desc");
+            var cantidad =$(this).data("cant");
+            var rendimiento =$(this).data("rend");
+
+
+            $("#item_id").val(item);
+            $("#item_id").attr("tipo", tipo);
+            $("#cdgo_buscar").val(codigo);
+            $("#item_desc").val(descripcion);
+            $("#item_unidad").val(unidad);
+            $("#item_cantidad").val(cantidad);
+            $("#item_rendimiento").val(rendimiento);
+
+            getPrecio();
+        });
+
         $(".item_row").dblclick(function(){
             var hijos = $(this).children();
             var desc=$(hijos[1]).html();
@@ -1073,11 +1114,8 @@
             var item;
 
             for(i=2;i<hijos.length;i++){
-
                 if($(hijos[i]).hasClass("cant"))
                     cant=$(hijos[i]).html();
-                // if($(hijos[i]).hasClass("col_unidad"))
-                //     unidad=$(hijos[i]).html();
                 if($(hijos[i]).hasClass("col_rend"))
                     rendimiento=$(hijos[i]).attr("valor");
             }
@@ -1086,13 +1124,16 @@
 
             $("#item_cantidad").val(cant.toString().trim());
 
-            if(rendimiento)
+            if(rendimiento){
                 $("#item_rendimiento").val(rendimiento.toString().trim());
+            }
+
             $("#item_id").val(item);
             $("#item_id").attr("tipo",$(this).attr("tipo"));
             $("#cdgo_buscar").val(codigo);
             $("#item_desc").val(desc);
             $("#item_unidad").val(unidad);
+
             getPrecio();
         });
 
@@ -1486,7 +1527,7 @@
             }
         });
 
-    });
+
 </script>
 </body>
 </html>
