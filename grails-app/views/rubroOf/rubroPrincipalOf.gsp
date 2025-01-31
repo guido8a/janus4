@@ -19,12 +19,12 @@
         <i class="fa fa-times"></i>
         Cancelar
     </a>
-    <g:if test="${rubro}">
-        <a href="#" class="btn btn-success btn-new" id="calcular" title="Calcular precios">
-            <i class="fa fa-table"></i>
-            Calcular
-        </a>
-    </g:if>
+%{--    <g:if test="${rubro}">--}%
+%{--        <a href="#" class="btn btn-success btn-new" id="calcular" title="Calcular precios">--}%
+%{--            <i class="fa fa-table"></i>--}%
+%{--            Calcular--}%
+%{--        </a>--}%
+%{--    </g:if>--}%
 </div>
 
 <div class="span6 btn-group" role="navigation">
@@ -274,8 +274,8 @@
                 <th style="width: 40px" class="col_delete"></th>
                 <th class="col_precioUnit" style="display: none;">Unitario</th>
                 <th class="col_vacio" style="width: 55px;display: none"></th>
-                <th class="col_vacio" style="width: 55px;display: none"></th>
                 <th class="col_total" style="display: none;">C.Total($)</th>
+                <th class="col_vacio" style="width: 55px;display: none"></th>
             </tr>
             </thead>
             <tbody id="tabla_material">
@@ -1126,10 +1126,12 @@
             });
         });
 
-        $("#calcular").click(function () {
+        calcularSiempre();
+
+        function calcularSiempre(){
             if ($(this).hasClass("active")) {
                 $(this).removeClass("active");
-                $(".col_delete").show();
+                // $(".col_delete").show();
                 $(".col_unidad").show();
                 $(".col_tarifa").hide();
                 $(".col_hora").hide();
@@ -1144,12 +1146,12 @@
             } else {
                 $(this).addClass("active");
                 var items = $(".item_row");
-                if (items.size() < 1) {
-                    bootbox.alert("<i class='fa fa-exclamation-triangle fa-3x text-warning'></i>" +
-                        "<strong style='font-size: 14px'>" +  "Añada items a la composición del rubro antes de calcular los precios" +
-                        "</strong>");
-                    $(this).removeClass("active")
-                } else {
+                // if (items.size() < 1) {
+                //     bootbox.alert("<i class='fa fa-exclamation-triangle fa-3x text-warning'></i>" +
+                //         "<strong style='font-size: 14px'>" +  "Añada items a la composición del rubro antes de calcular los precios" +
+                //         "</strong>");
+                //     $(this).removeClass("active")
+                // } else {
                     var tipo = "C";
                     if ($("#V").hasClass("active"))
                         tipo = "V";
@@ -1189,16 +1191,16 @@
                             calcularTotales()
                         }
                     });
-                    $(".col_delete").hide();
+                    // $(".col_delete").hide();
                     $(".col_tarifa").show();
                     $(".col_hora").show();
                     $(".col_total").show();
                     $(".col_jornal").show();
                     $(".col_precioUnit").show();
                     $(".col_vacio").show();
-                }
+                // }
             }
-        });
+        }
 
         // $("#btn_copiarComp").click(function () {
         //     if ($("#rubro__id").val() * 1 > 0) {
