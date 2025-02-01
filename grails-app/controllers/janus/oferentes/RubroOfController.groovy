@@ -784,4 +784,11 @@ def list() {
         [data: datos]
     }
 
+
+    def subirExcel(){
+        def oferente = session.usuario
+        return [oferente: oferente]
+    }
+
+
 } //fin controller

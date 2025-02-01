@@ -48,6 +48,16 @@
     </g:if>
 </div>
 
+<div class="span6 btn-group" role="navigation">
+    <div class="col-md-2">
+        <a href="${createLink(controller: 'rubroOf', action: 'subirExcel', id: contrato?.id)}" class="btn" id="btnSubirExcel"
+           title="Subir archivo excel">
+            <i class="fa fa-upload"></i> Subir excel
+        </a>
+    </div>
+
+</div>
+
 
 <div id="list-grupo" class="col-md-12" role="main" style="margin-top: 10px;margin-left: -10px">
     <div style="border-bottom: 1px solid black;padding-left: 50px;position: relative;">
@@ -1517,7 +1527,6 @@
                 busqueda();
             }
         });
-
 
 </script>
 </body>

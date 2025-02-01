@@ -136,7 +136,7 @@
 
     function editarFila(vol){
         $.ajax({
-            type: "POST",
+            type: "POST",temu
             url: "${createLink(action: 'modificacionNuevo_ajax')}",
             data: {
                 contrato: "${contrato}",
