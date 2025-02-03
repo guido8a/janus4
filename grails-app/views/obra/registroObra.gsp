@@ -73,12 +73,14 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
 
 <div class="col-md-6 btn-group" role="navigation" style="margin-left: 0px;width: 100%;float: left;height: 35px;">
     <button class="btn btn-info" id="lista"><i class="fa fa-list"></i> Lista</button>
-    <button class="btn" id="nuevo"><i class="fa fa-plus"></i> Nuevo</button>
+    %{--<button class="btn" id="nuevo"><i class="fa fa-plus"></i> Nuevo ${perfil?.codigo}</button>--}%
 
-    <g:if test="${persona?.departamento?.codigo != 'CRFC'}">
+    %{--<g:if test="${persona?.departamento?.codigo != 'CRFC'}">--}%
+    <g:if test="${perfil?.codigo in ['OBRA', 'ADDI', 'COGS', 'RBRO'] }">
 
         <g:if test="${obra?.estado != 'R'}">
             <g:if test="${(obra?.responsableObra?.departamento?.direccion?.id == persona?.departamento?.direccion?.id && duenoObra == 1) || obra?.id == null}">
+                <button class="btn" id="nuevo"><i class="fa fa-plus"></i> Nuevo</button>
                 <button class="btn btn-success" id="btn-aceptar"><i class="fa fa-save"></i> Grabar
                 </button>
             </g:if>
@@ -128,8 +130,9 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
             </g:if>
         </g:if>
     </g:if>
-    <g:else>%{-- usuario de CRFC --}%
+    <g:if test="${perfil?.codigo in ['CSTO'] }">%{-- usuario de CRFC --}%
 
+        <button class="btn" id="nuevo"><i class="fa fa-plus"></i> Nuevo</button>
         <g:if test="${obra?.estado != 'R'}">
             <g:if test="${duenoObra == 1 || obra?.id == null}">
                 <button class="btn btn-success" id="btn-aceptar"><i class="fa fa-save"></i> Grabar</button>
@@ -186,10 +189,10 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
             </g:if>
         </g:if>
 
-    </g:else>
+    </g:if>
 
     <g:if test="${obra?.id}">
-        <g:if test="${obra?.estado != 'R'}">
+        <g:if test="${ (obra?.estado != 'R') && (perfil?.codigo in ['OBRA', 'ADDI', 'COGS', 'RBRO']) }">
             <button class="btn" id="revisarPrecios"><i class="fa fa-list"></i> Precios 0</button>
         </g:if>
     </g:if>

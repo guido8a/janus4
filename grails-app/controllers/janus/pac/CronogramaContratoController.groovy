@@ -1149,7 +1149,7 @@ class CronogramaContratoController {
                         try {numero = numero.toDouble()} catch (e) {numero = ''}
 
                         if ( numero ) {
-                            println "puede procesar: $rgst, meses: ${meses.size()}"
+//                            println "puede procesar: $rgst, meses: ${meses.size()}"
                             htmlInfo += "<p>Hoja : " + sheet1.getSheetName() + " - ITEM: " + rubro + meses + "</p>"
 //                            cantidad = cantidad.replaceAll(",", ".")
 //                            punitario = punitario.replaceAll(",", ".")
@@ -1169,7 +1169,7 @@ class CronogramaContratoController {
                                 if (!cantidad) {
                                     cantidad = 0
                                 }
-                                println "precio: ${punitario.toDouble()}"
+//                                println "precio: ${punitario.toDouble()}"
                                 pcun = punitario.toDouble()
                                 cntd = cantidad.toDouble()
                                 sql = "update vocr set vocrpcun = ${pcun}, vocrcntd = ${cntd}, vocrsbtt = ${pcun * cntd} " +
@@ -1183,12 +1183,14 @@ class CronogramaContratoController {
                                     println " no se pudo guardar $rgst: ${e.erros()}"
                                 }
 
+                                println "procesa ${meses}"
                                 /* regsitra cronograma */
+                                prco = 0; prcl = 0; pcnt = 0;
                                 for(m in 0..meses.size()) {
                                     if(meses[m] > 0) {
                                         sql = "select crcr__id from crcr where cntr__id = $cntr_id and " +
                                                 "crcrprdo = ${m+1} and vocr__id = $vc_id"
-                                        def crcr_id = cn.rows(sql.toString())[0].crcr__id
+                                        def crcr_id = cn.rows(sql.toString())[0]?.crcr__id
                                         prco = meses[m].toDouble()
                                         prcl = prco / pcun + 0.01
                                         pcnt = Math.round( (prcl / cntd) * 10000) / 100
@@ -1197,9 +1199,17 @@ class CronogramaContratoController {
                                                     "crcrprco = $prco where crcr__id = $crcr_id"
                                         } else {
                                             sql = "insert into crcr(cntr__id, vocr__id, crcrprdo, crcrcntd, crcrprct, " +
-                                                    " crcrprco) values ($cntr_id, $vc_id, $m, $prcl, $pcnt, " +
+                                                    " crcrprco) values ($cntr_id, $vc_id, ${m+1}, $prcl, $pcnt, " +
                                                     "$prco)"
                                         }
+                                        try {
+                                            cn.execute(sql.toString())
+                                        } catch (e) {
+                                            println " no se pudo guardar crcr $rgst: ${e.erros()}"
+                                        }
+                                    } else {
+                                        sql = "delete from crcr where cntr__id = $cntr_id and  vocr__id = $vc_id and " +
+                                                "crcrprdo = ${m+1}"
                                         try {
                                             cn.execute(sql.toString())
                                         } catch (e) {
