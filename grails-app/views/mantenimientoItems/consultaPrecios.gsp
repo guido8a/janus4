@@ -23,16 +23,36 @@
             <span class="grupo">
                 <span class="col-md-4">
                     <label class="control-label text-info">Lugar</label>
-                    <g:set var="tipoMQ" value="${janus.TipoLista.findAllByCodigo('MQ')}"/>
-                    <g:select name="lugar" from="${janus.Lugar.findAllByTipoListaNotInList(tipoMQ, [sort: 'descripcion'])}" optionKey="id" optionValue="descripcion" class="form-control"/>
+                    %{--<g:set var="tipo" value="${janus.TipoLista.findByCodigo('P')}"/>--}%
+                    <g:select name="lugar" from="${janus.TipoLista.list([sort: 'descripcion'])}"
+                              optionKey="id"
+                              optionValue="descripcion" class="form-control"/>
                 </span>
-                <span class="col-md-2">
-                    <label class="control-label text-info">Fecha</label>
-                    <input aria-label="" name="fecha" id='fechaConsulta' type='text' class="form-control" value="${new Date().format("dd-MM-yyyy")}" />
-                </span>
+                <div class="col-md-1">
+                    <label class="control-label text-info">Año</label>
+                    <g:select style="font-size:large;" name="anio" class="input-small"
+                                                from="${anio - 1..anio}" value="${params.anio}"/>
+                </div>
+                %{--<span class="col-md-2">--}%
+                    %{--<label class="control-label text-info">Fecha</label>--}%
+                    %{--<input aria-label="" name="fecha" id='fechaConsulta' type='text' class="form-control"--}%
+                           %{--value="${new Date().format("dd-MM-yyyy")}" />--}%
+                %{--</span>--}%
+                <div class="col-md-2">
+                    <span style="margin-left: 20px" class="control-label text-info">Fecha</span>
+                    <g:select name="fecha"
+                              from="${fechas}" id="fecha" optionKey="value" optionValue="value" style="width: 140px;"/>
+                              %{--noSelection="['' : 'Todas']" style="width: 140px;"/>--}%
+
+                </div>
+
             </span>
-            <div class="col-md-2" style="margin-top: 20px">
-                <button class="btn btn-info" id="btnBuscar"><i class="fa fa-search"></i></button>
+            <div class="col-md-1" style="margin-top: 20px">
+                <button class="btn btn-info" id="btnBuscar" title="Buscar"><i class="fa fa-search"></i>Consultar</button>
+            </div>
+            <div class="col-md-1" style="margin-top: 20px">
+                <button class="btn btn-danger" id="btnBorrar" title="Buscar"><i class="fa fa-trash"></i>
+                    Borrar todos los precios</button>
             </div>
         </div>
     </fieldset>
@@ -73,13 +93,15 @@
 
     function cargarTablaConsulta(){
         var lugar = $("#lugar option:selected").val();
-        var fecha = $("#fechaConsulta").val();
+        var fecha = $("#fecha").val();
+        var anio = $("#anio").val();
         var d = cargarLoader("Cargando...");
         $.ajax({
             type: 'POST',
             url: '${createLink(controller: 'mantenimientoItems', action: 'tablaConsultaPrecios_ajax')}',
             data:{
                 lugar: lugar,
+                anio: anio,
                 fecha: fecha
             },
             success: function (msg){

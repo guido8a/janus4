@@ -170,15 +170,21 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
 
                 </div>
 
-                <div class="col-md-1" style="width: 100px; margin-left: 10px">
+                <div class="col-md-1" style="width: 100px; margin-left: -20px">
                     <label>Unidad</label>
                     <g:select name="rubro.unidad.id" from="${janus.Unidad.list()}" class="col-md-12" optionKey="id" optionValue="codigo" value="${rubro?.unidad?.id}"/>
                 </div>
 
-                <div class="col-md-2" style="color: #01a; width: 250px; margin-left: 10px" >
+                <div class="col-md-2" style="color: #01a; width: 250px; margin-left: -20px" >
                     <label>Responsable:</label>  <br>
                     <input type="hidden" name="rubro.responsable" class="col-md-12" value="${rubro?.responsable?.id?:session.usuario.id}" id="selResponsable">
                     <g:textField name="persona" class="col-md-12" value="${rubro?.responsable?:session.usuario}" id="Responsable" readonly="true" />
+
+                </div>
+                <div class="col-md-2" style="color: #01a; width: 200px; margin-left: -20px" >
+                    <label>Modificado por:</label>  <br>
+                    <input type="hidden" name="rubro.responsable" class="col-md-12" value="${rubro?.responsable?.id?:session.usuario.id}" id="selResponsable">
+                    <g:textField name="persona" class="col-md-12" value="${rubro?.modifica?.nombre} ${rubro?.modifica?.apellido}" id="Responsable" readonly="true" />
 
                 </div>
             </div>

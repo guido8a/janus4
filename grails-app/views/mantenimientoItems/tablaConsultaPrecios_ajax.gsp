@@ -5,11 +5,10 @@
             <th style="width: 10%">Código</th>
             <th style="width: 35%">Materiales</th>
             <th style="width: 5%">Unidad</th>
-            <th style="width: 10%">Peso/vol</th>
-            <th style="width: 10%">Costo</th>
+            <th style="width: 10%">P. Unitario</th>
             <th style="width: 15%">Fecha Act.</th>
-            <th style="width: 5%">#Rubros</th>
-            <th style="width: 5%">#Obras</th>
+            <th style="width: 5%">Lista</th>
+            <th style="width: 5%">Acciones</th>
         </tr>
         </thead>
     </table>
@@ -19,16 +18,15 @@
     <table class="table-bordered table-striped table-condensed table-hover" style="width: 100%">
         <tbody>
         <g:if test="${materiales}">
-            <g:each in="${materiales}" status="i" var="material">
+            <g:each in="${materiales}" status="i" var="m">
                 <tr>
-                    <td style="width: 10%">${material[0]}</td>
-                    <td style="width: 35%">${material[1]}</td>
-                    <td style="width: 5%">${material[2]}</td>
-                    <td style="width: 10%">${material[3]}</td>
-                    <td style="width: 10%">${material[4]}</td>
-                    <td style="width: 15%">${material[5]}</td>
-                    <td style="width: 5%">${material[6]}</td>
-                    <td style="width: 5%">${material[7]}</td>
+                    <td style="width: 10%">$m.itemcdgo}</td>
+                    <td style="width: 35%">${m.itemnmbr}</td>
+                    <td style="width: 10%">${m.unddcdgo}</td>
+                    <td style="width: 10%">${m.rbpcpcun}</td>
+                    <td style="width: 15%">${m.rbpcfcha}</td>
+                    <td style="width: 5%">${m.lgardscr}</td>
+                    <td style="width: 5%"></td>
                 </tr>
             </g:each>
         </g:if>

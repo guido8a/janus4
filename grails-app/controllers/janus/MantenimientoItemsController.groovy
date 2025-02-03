@@ -2979,66 +2979,34 @@ itemId: item.id
     }
 
     def consultaPrecios(){
-
+        def cn = dbConnectionService.getConnection()
+        def anio = new Date().format('yyyy').toInteger()
+        def fechas = [:]
+        def sql = "select distinct rbpcfcha from rbpc where extract(year from rbpcfcha) = '${anio}'"
+        "order by 1"
+        println "sql: $sql"
+        def i = 0
+        cn.eachRow(sql.toString()) { r ->
+            fechas[i] = r.rbpcfcha
+            i++
+        }
+        println "fechas: $fechas"
+        cn.close()
+        [fechas: fechas, anio: anio]
     }
 
     def tablaConsultaPrecios_ajax(){
+        println "tablaConsultaPrecios_ajax: $params"
+        def cn = dbConnectionService.getConnection()
+        def fecha = params.fecha
+        def sql = "select item.item__id, itemcdgo, itemnmbr, p.rbpcfcha, rbpcpcun,  rbpc__id, lgardscr, unddcdgo " +
+                "from item, rbpc p, lgar, undd where p.item__id = item.item__id and p.rbpcfcha = '${fecha}' and " +
+                "lgar.tpls__id = ${params.lugar} and undd.undd__id = item.undd__id "
+                "order by lgardscr"
+        def data = cn.rows(sql.toString())
+        cn.close()
 
-        def orden = "itemnmbr"
-        def estado = 'A'
-
-        def grupo = Grupo.get(1)
-        def lugar = Lugar.get(params.lugar.toLong())
-        def fecha = new Date().parse("dd-MM-yyyy", params.fecha)
-        def items = ""
-        def lista = Item.withCriteria {
-            eq("tipoItem", TipoItem.findByCodigo("I"))
-            eq("estado", estado)
-            departamento {
-                subgrupo {
-                    eq("grupo", grupo)
-                }
-            }
-        }
-        lista.id.each {
-            if (items != "") {
-                items += ","
-            }
-            items += it
-        }
-        def res = []
-        def tmp = preciosService.getPrecioRubroItemOrder(fecha, lugar, items, orden, "asc")
-        tmp.each {
-            res.add(PrecioRubrosItems.get(it))
-        }
-
-        def materiales = []
-
-        res.each {
-
-            def parcial = []
-
-            def sql2 = "select count(*) from vlobitem where item__id = ${it?.item?.id}"
-            def cn = dbConnectionService.getConnection()
-            def numero = cn.rows(sql2.toString())
-
-            def sql3 = "select count(*) from item it, item rb, rbro where rbro.rbrocdgo = rb.item__id and rbro.item__id = it.item__id and it.item__id = ${it?.item?.id}"
-            def cn2 = dbConnectionService.getConnection()
-            def rubros = cn2.rows(sql3.toString())
-
-            parcial+=  it?.item?.codigo?.toString() ?: ''
-            parcial+=  it?.item?.nombre?.toString() ?: ''
-            parcial+=  it?.item?.unidad?.codigo?.toString()?: ''
-            parcial+=  it?.item?.peso ?: ''
-            parcial+=  it?.precioUnitario ?: 0
-            parcial+=  it?.fecha?.format("dd-MM-yyyy")
-            parcial+=  rubros[0].count
-            parcial+=  numero[0].count
-
-            materiales.add(parcial)
-        }
-
-        return [materiales: materiales]
+        return [materiales: data]
     }
 
     def borrarVariosPrecios_ajax(){
