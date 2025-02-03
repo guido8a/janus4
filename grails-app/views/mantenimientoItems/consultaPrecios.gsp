@@ -29,8 +29,8 @@
                               optionValue="descripcion" class="form-control"/>
                 </span>
                 <div class="col-md-1">
-                    <label class="control-label text-info">Año</label>
-                    <g:select style="font-size:large;" name="anio" class="input-small"
+                    <label class="control-label text-info" style="text-align: center">Año</label>
+                    <g:select style="font-size:large;" name="anio" class="form-control"
                                                 from="${anio - 1..anio}" value="${params.anio}"/>
                 </div>
                 %{--<span class="col-md-2">--}%
@@ -38,11 +38,9 @@
                     %{--<input aria-label="" name="fecha" id='fechaConsulta' type='text' class="form-control"--}%
                            %{--value="${new Date().format("dd-MM-yyyy")}" />--}%
                 %{--</span>--}%
-                <div class="col-md-2">
-                    <span style="margin-left: 20px" class="control-label text-info">Fecha</span>
-                    <g:select name="fecha"
-                              from="${fechas}" id="fecha" optionKey="value" optionValue="value" style="width: 140px;"/>
-                              %{--noSelection="['' : 'Todas']" style="width: 140px;"/>--}%
+                <div class="col-md-2" id="divFecha" style="text-align: center">
+
+
 
                 </div>
 
@@ -111,8 +109,25 @@
         })
     }
 
+    cargarFechas();
 
+    function cargarFechas(){
+        var anio = $("#anio").val();
+        $.ajax({
+            type: 'POST',
+            url: '${createLink(controller: 'mantenimientoItems', action: 'fechas_ajax')}',
+            data:{
+                anio: anio
+            },
+            success: function (msg){
+                $("#divFecha").html(msg)
+            }
+        })
+    }
 
+    $("#anio").change(function () {
+        cargarFechas();
+    });
 
     %{--$("#criterio").keydown(function (ev) {--}%
     %{--    if (ev.keyCode === 13) {--}%

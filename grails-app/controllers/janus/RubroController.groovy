@@ -500,21 +500,23 @@ class RubroController {
 
         rubro.properties = params.rubro
         rubro.tipoItem = TipoItem.get(2)
-        rubro.modifica = usuarioActual
+
 
 //        println "ren " + rubro.rendimiento
         if (!rubro.save(flush: true)) {
             println "error " + rubro.errors
         }else{
+
+            rubro.modifica = usuarioActual
+            rubro.fechaModificacion = new Date()
+            rubro.save(flush:true)
+
             if(rubro.codigoEspecificacion!="" && rubro.codigoEspecificacion){
                 def rubros = Item.findByCodigoNotEqualAndCodigoEspecificacion(rubro.codigo,rubro.codigoEspecificacion,[sort:"codigo"])
-//                println "mismo codigo "+rubros
                 if(rubros){
-//                    println "actualizando "+rubros.especificaciones+"  "+rubros.foto
                     rubro.especificaciones=rubros.especificaciones
                     rubro.save(flush: true)
                 }
-
             }
 
         }

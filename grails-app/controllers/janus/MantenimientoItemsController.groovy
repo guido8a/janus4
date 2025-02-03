@@ -3014,4 +3014,25 @@ itemId: item.id
         render "ok"
     }
 
+
+    def fechas_ajax(){
+        println("parmas  " + params)
+
+        def cn = dbConnectionService.getConnection()
+//        def anio = new Date().format('yyyy').toInteger()
+        def anio = params.anio
+        def fechas = [:]
+        def sql = "select distinct rbpcfcha from rbpc where extract(year from rbpcfcha) = '${anio}'"
+        "order by 1"
+        println "sql: $sql"
+        def i = 0
+        cn.eachRow(sql.toString()) { r ->
+            fechas[i] = r.rbpcfcha
+            i++
+        }
+        println "fechas: $fechas"
+        cn.close()
+       return [fechas: fechas, anio: anio]
+    }
+
 }
