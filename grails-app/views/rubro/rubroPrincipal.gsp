@@ -183,7 +183,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                 <div class="col-md-2" style="color: #01a; width: 220px; margin-left: -20px" >
                     <label>Modificado por:</label>  <br>
                     <input type="hidden" name="selModifica" class="col-md-12" value="${rubro?.modifica?.id ?: session.usuario.id}" id="selModifica">
-                    <g:textField name="personaModifica" class="col-md-12" value="${rubro?.modifica?.nombre} ${rubro?.modifica?.apellido}" readonly="true" />
+                    <g:textField name="personaModifica" class="col-md-12" value="${rubro?.modifica?.nombre?:''} ${rubro?.modifica?.apellido?:''}" readonly="true" />
                 </div>
             </div>
         </g:form>
