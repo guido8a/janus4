@@ -1,4 +1,4 @@
-<%@ page import="janus.TipoLista; janus.Grupo" %>
+<%@ page import="seguridad.Persona; janus.TipoLista; janus.Grupo" %>
 <!doctype html>
 <html>
 <head>
@@ -177,11 +177,10 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
 
                 <div class="col-md-2" style="color: #01a; width: 250px; margin-left: -20px" >
                     <label>Responsable:</label>  <br>
-                    <input type="hidden" name="rubro.responsable" class="col-md-12" value="${rubro?.responsable?.id?:session.usuario.id}" id="selResponsable">
-                    <g:textField name="persona" class="col-md-12" value="${rubro?.responsable?:session.usuario}" id="Responsable" readonly="true" />
-
+                    <input type="hidden" name="rubro.responsable" class="col-md-12" value="${rubro?.responsable?.id ?: session.usuario.id}" id="selResponsable">
+                    <g:textField name="responsableName" class="col-md-12" value="${rubro?.responsable?.nombreCompleto ?: seguridad.Persona.get(session.usuario.id)?.nombreCompleto}" id="responsableName" readonly="true" />
                 </div>
-                <div class="col-md-2" style="color: #01a; width: 200px; margin-left: -20px" >
+                <div class="col-md-2" style="color: #01a; width: 220px; margin-left: -20px" >
                     <label>Modificado por:</label>  <br>
                     <input type="hidden" name="selModifica" class="col-md-12" value="${rubro?.modifica?.id ?: session.usuario.id}" id="selModifica">
                     <g:textField name="personaModifica" class="col-md-12" value="${rubro?.modifica?.nombre} ${rubro?.modifica?.apellido}" readonly="true" />
