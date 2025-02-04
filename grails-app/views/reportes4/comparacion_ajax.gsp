@@ -15,16 +15,16 @@
                Cantidad
             </th>
             <th style="width: 10%">
-                P. Unitario
+                P. U. GADPP
             </th>
             <th style="width: 7%">
-                Código
+                P.U. Oferta
             </th>
             <th style="width: 7%">
-                P. Unitario
+                Dif. Unitario
             </th>
             <th style="width: 7%">
-                Diferencia
+                Dif. Total
             </th>
         </tr>
         </thead>

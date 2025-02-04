@@ -3144,11 +3144,21 @@ class Reportes4Controller {
     }
 
     def tablaComparacion_ajax(){
-        def obra = Obra.get(params.id)
+        def obraOf = Obra.get(params.id)
+        println "tablaComparacion_ajax: $params"
+        def cn = dbConnectionService.getConnection()
+        def sql = "select obra__id from obra where obracdgo = '${obraOf.codigo[0..-4]}'"
+        println "sql: $sql"
+        def obraPr = cn.rows(sql.toString())[0].obra__id
+        sql = "select itemcdgo, itemnmbr, unddcdgo, vo.vlobcntd, vo.vlobpcun pcun, vf.vlobpcun pcof, " +
+                "vo.vlobpcun - vf.vlobpcun diffpcun, vo.vlobsbtt, vf.vlobsbtt, vo.vlobsbtt - vf.vlobsbtt diffsbtt " +
+                "from item, vlob vo, vlob vf, undd where vf.obra__id = ${params.id} and " +
+                "vo.obra__id = ${obraPr} and item.item__id = vo.item__id and " +
+                "undd.undd__id = item.undd__id and vo.item__id = vf.item__id order by vo.vlobordn"
+        println "sql2: $sql"
+        def data = cn.rows(sql.toString())
 
-        println("obra " + obra)
-
-
+        [data: data]
 
     }
 }

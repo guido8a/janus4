@@ -13,21 +13,17 @@ th, td {
 
 <div class="" style="width: 99.7%;height: 300px; overflow-y: auto;float: right; margin-top: -20px">
     <table class="table-bordered table-condensed table-striped table-hover" style="width: 100%">
-%{--        <g:each in="${obras}" var="fila" status="j">--}%
-%{--            <tr style="width: 100%">--}%
-%{--                <td style="width: 10%">${fila.obracdgo}</td>--}%
-%{--                <td style="width: 34%; font-size: 10px">${fila.obranmbr}</td>--}%
-%{--                <td style="width: 19%; font-size: 10px">${fila.cntnnmbr} - ${fila.parrnmbr} - ${fila.cmndnmbr}</td>--}%
-%{--                <td style="width: 8%">${fila.cntrcdgo}</td>--}%
-%{--                <td style="width: 10%">${fila.prvenmbr}</td>--}%
-%{--                <td style="width: 7%"><g:formatNumber number="${fila.cntrmnto}" maxFractionDigits="2" minFractionDigits="2" format="##,##0.##" locale="ec"/></td>--}%
-%{--                <td style="width: 7%"><g:formatDate date="${fila.cntrfcsb}" format="dd-MM-yyyy"/></td>--}%
-%{--                <td style="width: 5%; text-align: center">--}%
-%{--                    <a href="#" class="btn btn-info btn-xs btnVerComparacion" data-id="${fila?.obra__id}">--}%
-%{--                        <i class="fa fa-search"></i>--}%
-%{--                    </a>--}%
-%{--                </td>--}%
-%{--            </tr>--}%
-%{--        </g:each>--}%
+        <g:each in="${data}" var="o" status="j">
+            <tr style="width: 100%">
+                <td style="width: 10%">${o.itemcdgo}</td>
+                <td style="width: 34%; font-size: 10px">${o.itemnmbr}</td>
+                <td style="width: 19%; font-size: 10px">${o.unddcdgo}</td>
+                <td style="width: 8%">${o.vlobcntd}</td>
+                <td style="width: 10%">${o.pcun}</td>
+                <td style="width: 10%">${o.pcof}</td>
+                <td style="width: 7%"><g:formatNumber number="${o.diffpcun}" maxFractionDigits="2" minFractionDigits="2" format="##,##0.##" locale="ec"/></td>
+                <td style="width: 7%"><g:formatNumber number="${o.diffsbtt}" maxFractionDigits="2" minFractionDigits="2" format="##,##0.##" locale="ec"/></td>
+            </tr>
+        </g:each>
     </table>
 </div>

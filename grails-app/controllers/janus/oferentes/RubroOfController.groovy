@@ -865,10 +865,14 @@ class RubroOfController {
                 int hojas = workbook.getNumberOfSheets(); //Obtenemos el número de hojas que contiene el documento
                 println "Número Hojas: $hojas"
 
+                def sccnEq = false, sccnMo = false, sccnMt = false, sccnTr = false
+                def cdgoEq, nmbrEq, cntdEq, trfaEq, pcunEq, rndmEq, cstoEq
+
                 //for que recorre las hojas existentes
                 for (int hj = 0; hj < hojas; i++) {
                     sheet = workbook.getSheetAt(hj);
-                    while (rows.hasNext()) {
+                    while (rows.hasNext() && (row?.rowNum?:0 < 76) ) {
+                        cdgoEq = ''; nmbrEq = ''; cntdEq = 0; trfaEq = 0; pcunEq = 0; rndmEq = 0; cstoEq = 0;
                         row = (XSSFRow) rows.next()
                         println "fila: ${row.rowNum}"
                         if (!(row.rowNum in filasNO)) {
@@ -899,97 +903,61 @@ class RubroOfController {
                                 }
                             }
 
-                            def titlEq = rgst[cols[params.cldaEq]]
-                            if(titlEq != params.titlEq) {
-                                println "sin dato buscado"
-                                continue
-                            }
-                            def rubro = rgst[1]
-                            def unidad = rgst[2]
-                            def cantidad = rgst[3]
-                            def punitario = rgst[4]
-                            def subtotal = rgst[5]
-                            def pcun = 0.0, cntd = 0.0, pcnt = 0.0, prcl = 0.0, prco = 0.0
-
-                            println "R: $numero $rubro $unidad $cantidad $punitario $subtotal $meses"
-
-                            try {
-                                numero = numero.toDouble()
-                            } catch (e) {
-                                numero = ''
+                            def titlEq = rgst[cols[params.cldaEq].toInteger()]
+                            if(titlEq == params.titlEq) {
+                                println "Equipos"
+                                sccnEq = true; sccnMo = false; sccnMt = false; sccnTr = false
                             }
 
-                            if (numero) {
-//                            println "puede procesar: $rgst, meses: ${meses.size()}"
-                                htmlInfo += "<p>Hoja : " + sheet.getSheetName() + " - ITEM: " + rubro + meses + "</p>"
-//                            cantidad = cantidad.replaceAll(",", ".")
-//                            punitario = punitario.replaceAll(",", ".")
-//                            def vc = VolumenContrato.findByContratoAndVolumenOrden(contrato, numero)
-                                sql = "select vocr__id from vocr where cntr__id = ${cntr_id} and vocrordn = ${numero}"
-                                def vc_id = cn.rows(sql.toString())[0].vocr__id
-                                if (!vc_id) {
-                                    errores += "<li>No se encontró volumen contrato con id ${cod} (linea: ${row.rowNum + 1})</li>"
-                                    println "No se encontró volumen contrato con id ${cod}"
-                                    ok = false
-                                } else {
+                            if(sccnEq){
+//                                cdgoEq, nmbrEq, cntdEq, trfaEq, pcunEq, rndmEq, cstoEq
+                                cdgoEq = rgst[cols[params.itemcdgoEq].toInteger()]
+                                cntdEq = rgst[cols[params.rbrocntdEq].toInteger()]
+//                                def unidad = rgst[2]
+//                                def cantidad = rgst[3]
+//                                def punitario = rgst[4]
+//                                def subtotal = rgst[5]
+//                                def pcun = 0.0, cntd = 0.0, pcnt = 0.0, prcl = 0.0, prco = 0.0
 
-                                    if (!punitario) {
-                                        punitario = 0
-                                    }
+                                println "R: sccnEq: $sccnEq -> ${cols[params.itemcdgoEq].toInteger()}, " +
+                                        "${cols[params.rbrocntdEq].toInteger()}, $cdgoEq, $cntdEq"
 
-                                    if (!cantidad) {
-                                        cantidad = 0
-                                    }
-//                                println "precio: ${punitario.toDouble()}"
-                                    pcun = punitario.toDouble()
-                                    cntd = cantidad.toDouble()
-                                    sql = "update vocr set vocrpcun = ${pcun}, vocrcntd = ${cntd}, vocrsbtt = ${pcun * cntd} " +
-                                            "where vocr__id = ${vc_id}"
-//                                vc.volumenCantidad = Math.round(cantidad.toDouble() * 100) / 100
-//                                vc.volumenSubtotal = punitario.toDouble() * cantidad.toDouble()
-                                    try {
-//                                    vc.save(flush: true)
-                                        cn.execute(sql.toString())
-                                    } catch (e) {
-                                        println " no se pudo guardar $rgst: ${e.erros()}"
-                                    }
-
-                                    println "procesa ${meses}"
-                                    /* regsitra cronograma */
-                                    prco = 0; prcl = 0; pcnt = 0;
-                                    for (m in 0..meses.size()) {
-                                        if (meses[m] > 0) {
-                                            sql = "select crcr__id from crcr where cntr__id = $cntr_id and " +
-                                                    "crcrprdo = ${m + 1} and vocr__id = $vc_id"
-                                            def crcr_id = cn.rows(sql.toString())[0]?.crcr__id
-                                            prco = meses[m].toDouble()
-                                            prcl = prco / pcun + 0.01
-                                            pcnt = Math.round((prcl / cntd) * 10000) / 100
-                                            if (crcr_id) {
-                                                sql = "update crcr set crcrcntd = ${prcl}, crcrprct = $pcnt, " +
-                                                        "crcrprco = $prco where crcr__id = $crcr_id"
-                                            } else {
-                                                sql = "insert into crcr(cntr__id, vocr__id, crcrprdo, crcrcntd, crcrprct, " +
-                                                        " crcrprco) values ($cntr_id, $vc_id, ${m + 1}, $prcl, $pcnt, " +
-                                                        "$prco)"
-                                            }
-                                            try {
-                                                cn.execute(sql.toString())
-                                            } catch (e) {
-                                                println " no se pudo guardar crcr $rgst: ${e.erros()}"
-                                            }
-                                        } else {
-                                            sql = "delete from crcr where cntr__id = $cntr_id and  vocr__id = $vc_id and " +
-                                                    "crcrprdo = ${m + 1}"
-                                            try {
-                                                cn.execute(sql.toString())
-                                            } catch (e) {
-                                                println " no se pudo guardar crcr $rgst: ${e.erros()}"
-                                            }
-                                        }
-                                    }
-
+                                try {
+                                    cntdEq = cntdEq.toDouble()
+                                } catch (e) {
+                                    cntdEq = 0
                                 }
+
+                                if (cntdEq) {
+                                    htmlInfo += "<p>Hoja : " + sheet.getSheetName() + " - ITEM: " + rubro + meses + "</p>"
+                                    sql = "select vocr__id from vocr where cntr__id = ${cntr_id} and vocrordn = ${numero}"
+                                    def vc_id = cn.rows(sql.toString())[0].vocr__id
+                                    if (!vc_id) {
+                                        errores += "<li>No se encontró volumen contrato con id ${cod} (linea: ${row.rowNum + 1})</li>"
+                                        println "No se encontró volumen contrato con id ${cod}"
+                                        ok = false
+                                    } else {
+
+                                        if (!punitario) {
+                                            punitario = 0
+                                        }
+
+                                        if (!cantidad) {
+                                            cantidad = 0
+                                        }
+                                        pcun = punitario.toDouble()
+                                        cntd = cantidad.toDouble()
+                                        sql = "update vocr set vocrpcun = ${pcun}, vocrcntd = ${cntd}, vocrsbtt = ${pcun * cntd} " +
+                                                "where vocr__id = ${vc_id}"
+                                        try {
+                                            cn.execute(sql.toString())
+                                        } catch (e) {
+                                            println " no se pudo guardar $rgst: ${e.erros()}"
+                                        }
+
+                                    }
+                                }
+
                             }
                         }
                     } //sheets.each
