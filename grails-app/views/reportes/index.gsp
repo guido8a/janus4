@@ -100,9 +100,6 @@
                 </g:link>
                 Listado de obras que se encuentran contratadas
             </li>
-
-
-
             <li text="cntr" class="item" texto="cntr">
                 <g:link controller="reportes4" action="contratos" class="btn btn-primary btn-xs" style="color: #FFFDF4">
                     <i class="fa fa-print"></i> Contratos:
@@ -148,6 +145,12 @@
                     <i class="fa fa-print"></i> Obras finalizadas:
                 </g:link>
                 Listado de obras finalizadas.
+            </li>
+            <li text="obcp" class="item" texto="obcp">
+                <g:link controller="reportes4" action="obrasComparadas" file="" class="btn btn-primary btn-xs" style="color: #FFFDF4">
+                    <i class="fa fa-print"></i> Obras comparadas:
+                </g:link>
+                Listado de obras comparadas.
             </li>
             <li text="cnfc" class="item" texto="cnfc">
                 <g:link controller="reportesExcel" style="color: #FFFDF4" action="contratoFechas" file="" class="btn btn-warning btn-xs">

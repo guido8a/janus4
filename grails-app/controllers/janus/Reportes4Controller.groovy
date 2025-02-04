@@ -3075,7 +3075,26 @@ class Reportes4Controller {
         response.setHeader("Content-disposition", "attachment; filename=" + name)
         response.setContentLength(b.length)
         response.getOutputStream().write(b)
-
     }
 
+    def obrasComparadas(){
+        def departamentos = []
+        return [departamento: departamentos]
+    }
+
+
+    def tablaComparadas() {
+//        println "tablaSuspendidas: $params"
+        def cn = dbConnectionService.getConnection()
+        def campos = reportesService.obrasContratadas()
+
+        params.old = params.criterio
+        params.criterio = reportesService.limpiaCriterio(params.criterio)
+
+        def sql = armaSqlSuspendidas(params)
+        def obras = cn.rows(sql)
+
+        params.criterio = params.old
+        return [obras: obras, params: params]
+    }
 }
