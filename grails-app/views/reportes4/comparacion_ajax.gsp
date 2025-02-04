@@ -6,22 +6,25 @@
                 Código
             </th>
             <th style="width: 34%;">
-                Nombre
+                Rubro
             </th>
             <th style="width: 19%">
-                Cantón-Parroquia-Comunidad
+                Unidad
             </th>
             <th style="width: 8%">
-                Núm. Contrato
+               Cantidad
             </th>
             <th style="width: 10%">
-                Contratista
+                P. Unitario
             </th>
             <th style="width: 7%">
-                Monto
+                Código
             </th>
             <th style="width: 7%">
-                Fecha suscripción
+                P. Unitario
+            </th>
+            <th style="width: 7%">
+                Diferencia
             </th>
         </tr>
         </thead>

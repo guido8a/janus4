@@ -11,7 +11,7 @@ th, td {
 </style>
 
 
-<div class="" style="width: 99.7%;height: 200px; overflow-y: auto;float: right; margin-top: -20px">
+<div class="" style="width: 99.7%;height: 300px; overflow-y: auto;float: right; margin-top: -20px">
     <table class="table-bordered table-condensed table-striped table-hover" style="width: 100%">
         <g:each in="${obras}" var="fila" status="j">
             <tr style="width: 100%">
@@ -41,28 +41,15 @@ th, td {
 
     function verComparacion (id) {
         $.ajax({
-            type    : "POST",
-            url     : "${createLink(controller: 'reportes4', action:'comparacion_ajax')}",
-            data    : {
+            type : "POST",
+            url : "${g.createLink(controller: 'reportes4', action: 'comparacion_ajax')}",
+            data     : {
                 id: id
             },
-            success : function (msg) {
-                var dfg = bootbox.dialog({
-                    id    : "dlgVer",
-                    title : "Comparación de obras",
-                    class : "modal-lg",
-                    message : msg,
-                    buttons : {
-                        cancelar : {
-                            label     : "Cancelar",
-                            className : "btn-primary",
-                            callback  : function () {
-                            }
-                        }
-                    } //buttons
-                }); //dialog
-            } //success
-        }); //ajax
+            success  : function (msg) {
+                $("#divDetalle2").html(msg)
+            }
+        });
     } //createEdit
 
 </script>

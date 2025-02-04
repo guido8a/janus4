@@ -82,8 +82,12 @@
     </table>
     <div id="detalle">
     </div>
-    <div id="detalle2">
-    </div>
+%{--    <div id="detalle2">--}%
+%{--    </div>--}%
+</div>
+
+<div id="divDetalle2" style="margin-top: 10px">
+
 </div>
 
 <script type="text/javascript">
@@ -126,7 +130,7 @@
 
     $( document ).ready(function() {
         cargarTabla();
-        cargarTabla2();
+        // cargarTabla2();
     });
 
     function cargarTabla() {
@@ -145,21 +149,21 @@
         });
     }
 
-    function cargarTabla2() {
-        $("#buscador_con").change();
-        var d = cargarLoader("Cargando...");
-        var datos = "si=${"si"}&buscador=" + $("#buscador_con").val() + "&criterio=" + $("#criterio_con").val() +
-            "&operador=" + $("#oprd").val()
-        $.ajax({
-            type : "POST",
-            url : "${g.createLink(controller: 'reportes4', action: 'preciosComp')}",
-            data     : datos,
-            success  : function (msg) {
-                d.modal("hide");
-                $("#detalle2").html(msg)
-            }
-        });
-    }
+    %{--function cargarTabla2() {--}%
+    %{--    $("#buscador_con").change();--}%
+    %{--    var d = cargarLoader("Cargando...");--}%
+    %{--    var datos = "si=${"si"}&buscador=" + $("#buscador_con").val() + "&criterio=" + $("#criterio_con").val() +--}%
+    %{--        "&operador=" + $("#oprd").val()--}%
+    %{--    $.ajax({--}%
+    %{--        type : "POST",--}%
+    %{--        url : "${g.createLink(controller: 'reportes4', action: 'preciosComp')}",--}%
+    %{--        data     : datos,--}%
+    %{--        success  : function (msg) {--}%
+    %{--            d.modal("hide");--}%
+    %{--            $("#detalle2").html(msg)--}%
+    %{--        }--}%
+    %{--    });--}%
+    %{--}--}%
 
     $("#buscar").click(function(){
         cargarTabla();
