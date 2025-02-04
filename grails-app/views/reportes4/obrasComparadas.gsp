@@ -28,40 +28,25 @@
         <b style="margin-left: 20px">Criterio: </b>
         <g:textField name="criterio" style="width: 160px; margin-right: 10px" value="${params.criterio}" id="criterio_con"/>
 
-    </div>
-    <div class="span12">
-
-        <div class="col-md-1">
-        </div>
-        <div class="col-md-4">
-            <b style="margin-left: 20px">Dirección o Coordinación requirente:</b>
-            <g:select name="departamento.id"
-                      from="${departamento}" id="departamento" optionKey="key" optionValue="value"
-                      noSelection="['' : 'Todas']" style="width: 410px;"/>
-        </div>
-        <div class="col-md-2" style="align-items: center;">
-            <b style="margin-left: 20px">Fecha Desde: </b>
-            <input aria-label="" name="fechaInicio_name" id='fechaInicio' type='text' class=""  />
-        </div>
-
-        <div class="col-md-2" style="align-items: center;">
-            <b style="margin-left: 20px">Fecha Hasta: </b>
-            <input aria-label="" name="fechaFin_name" id='fechaFin' type='text' class=""  />
-        </div>
-
         <a href="#" class="btn btn-success" id="buscar">
             <i class="fa fa-search"></i>
             Reporte
         </a>
-        <a href="#" class="btn btn-info" id="imprimir" >
-            <i class="fa fa-print"></i>
-            Imprimir
-        </a>
-        <a href="#" class="btn btn-success" id="excel" >
-            <i class="fa fa-file-excel"></i>
-            Excel
-        </a>
     </div>
+%{--    <div class="span12">--}%
+%{--        <a href="#" class="btn btn-success" id="buscar">--}%
+%{--            <i class="fa fa-search"></i>--}%
+%{--            Reporte--}%
+%{--        </a>--}%
+%{--        <a href="#" class="btn btn-info" id="imprimir" >--}%
+%{--            <i class="fa fa-print"></i>--}%
+%{--            Imprimir--}%
+%{--        </a>--}%
+%{--        <a href="#" class="btn btn-success" id="excel" >--}%
+%{--            <i class="fa fa-file-excel"></i>--}%
+%{--            Excel--}%
+%{--        </a>--}%
+%{--    </div>--}%
 </div>
 
 <div style="margin-top: 15px; min-height: 300px">
@@ -122,14 +107,14 @@
         location.href = "${g.createLink(controller: 'reportes', action: 'index')}"
     });
 
-    $("#imprimir").click(function () {
-        var busca = $("#buscador_con").val();
-        location.href="${g.createLink(controller: 'reportes4', action:'reporteSuspendidas' )}?buscador=" + busca + "&operador=" + $("#oprd").val() + "&criterio=" + $("#criterio_con").val() + "&departamento=" + $("#departamento option:selected").val() + "&fi=" + $("#fechaInicio").val() + "&ff=" + $("#fechaFin").val();
-    });
+    %{--$("#imprimir").click(function () {--}%
+    %{--    var busca = $("#buscador_con").val();--}%
+    %{--    location.href="${g.createLink(controller: 'reportes4', action:'reporteComparadas' )}?buscador=" + busca + "&operador=" + $("#oprd").val() + "&criterio=" + $("#criterio_con").val() + "&departamento=" + $("#departamento option:selected").val() + "&fi=" + $("#fechaInicio").val() + "&ff=" + $("#fechaFin").val();--}%
+    %{--});--}%
 
-    $("#excel").click(function () {
-        location.href="${g.createLink(controller: 'reportes4', action:'reporteExcelSuspendidas' )}?buscador=" + $("#buscador_con").val() + "&criterio=" + $("#criterio_con").val() + "&operador=" + $("#oprd").val() + "&departamento=" + $("#departamento option:selected").val() + "&fi=" + $("#fechaInicio").val() + "&ff=" + $("#fechaFin").val();
-    });
+    %{--$("#excel").click(function () {--}%
+    %{--    location.href="${g.createLink(controller: 'reportes4', action:'reporteExcelComparadas' )}?buscador=" + $("#buscador_con").val() + "&criterio=" + $("#criterio_con").val() + "&operador=" + $("#oprd").val() + "&departamento=" + $("#departamento option:selected").val() + "&fi=" + $("#fechaInicio").val() + "&ff=" + $("#fechaFin").val();--}%
+    %{--});--}%
 
     $("#buscador_con").change(function(){
         var opciones = $(this).find("option:selected").attr("class").split(",");
@@ -154,7 +139,7 @@
         $("#buscador_con").change();
         var d = cargarLoader("Cargando...");
         var datos = "si=${"si"}&buscador=" + $("#buscador_con").val() + "&criterio=" + $("#criterio_con").val() +
-            "&operador=" + $("#oprd").val() + "&departamento=" + $("#departamento option:selected").val() + "&fi=" + $("#fechaInicio").val() + "&ff=" + $("#fechaFin").val();
+            "&operador=" + $("#oprd").val()
         $.ajax({
             type : "POST",
             url : "${g.createLink(controller: 'reportes4', action: 'tablaComparadas')}",

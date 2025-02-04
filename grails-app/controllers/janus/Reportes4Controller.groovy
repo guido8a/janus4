@@ -3091,10 +3091,45 @@ class Reportes4Controller {
         params.old = params.criterio
         params.criterio = reportesService.limpiaCriterio(params.criterio)
 
-        def sql = armaSqlSuspendidas(params)
+        def sql = armaSqlComparadas(params)
         def obras = cn.rows(sql)
 
         params.criterio = params.old
         return [obras: obras, params: params]
+    }
+
+    def armaSqlComparadas(params) {
+        println "armaSqlComparadas $params"
+        def campos = reportesService.obrasAvance()
+        def operador = reportesService.operadores()
+        def fcin = params.fi ? new Date().parse("dd-MM-yyyy", params.fi).format('yyyy-MM-dd') : ''
+        def fcfn = params.ff ? new Date().parse("dd-MM-yyyy", params.ff).format('yyyy-MM-dd') : ''
+
+        def sqlSelect = "select obra.obra__id, obracdgo, obranmbr, cntnnmbr, parrnmbr, cmndnmbr, " +
+                "c.cntr__id, c.cntrcdgo, mdce.mdcefcin," +
+                "c.cntrmnto, c.cntrfcsb, prvenmbr, c.cntrplzo, obrafcin, cntrfcfs," +
+                "(select(coalesce(sum(plnlmnto), 0)) / cntrmnto av_economico " +
+                "from plnl where cntr__id = c.cntr__id and tppl__id > 1), " +
+                "(select(coalesce(max(plnlavfs), 0)) av_fisico " +
+                "from plnl where cntr__id = c.cntr__id and tppl__id > 1) " +  // no cuenta el anticipo
+                "from obra, cntn, parr, cmnd, cncr, ofrt, cntr c, dpto, prve, mdce "
+        def sqlWhere = "where cmnd.cmnd__id = obra.cmnd__id and " +
+                "parr.parr__id = obra.parr__id and cntn.cntn__id = parr.cntn__id and " +
+                "cncr.obra__id = obra.obra__id and ofrt.cncr__id = cncr.cncr__id and " +
+                "c.ofrt__id = ofrt.ofrt__id and dpto.dpto__id = obra.dpto__id and " +
+                "prve.prve__id = c.prve__id and mdce.cntr__id = c.cntr__id and mdcefcfn is null and " +
+                "mdcetipo = 'S' "
+        if(params.departamento) sqlWhere += " and obra.dpto__id = ${params.departamento} "
+        if(params.fi) sqlWhere += " and c.cntrfcsb >= '${fcin}' "
+        if(params.ff) sqlWhere += " and c.cntrfcsb <= '${fcfn}' "
+        def sqlOrder = "order by obracdgo"
+
+        params.nombre = "Código"
+        if (campos.find { it.campo == params.buscador }?.size() > 0) {
+            def op = operador.find { it.valor == params.operador }
+            println "op: $op"
+            sqlWhere += " and ${params.buscador} ${op.operador} ${op.strInicio}${params.criterio}${op.strFin}";
+        }
+        "$sqlSelect $sqlWhere $sqlOrder".toString()
     }
 }
