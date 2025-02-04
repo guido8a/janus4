@@ -11,7 +11,8 @@ th, td {
 </style>
 
 
-<div class="" style="width: 99.7%;height: 300px; overflow-y: auto;float: right; margin-top: -20px">
+<div class="" style="width: 99.7%; max-height: 240px; overflow-y: auto;float: right; margin-top: -20px;
+border-style: solid; border-width: 1px; border-color: #506c90; margin-bottom: 20px">
     <table class="table-bordered table-condensed table-striped table-hover" style="width: 100%">
         <g:each in="${obras}" var="fila" status="j">
             <tr style="width: 100%">

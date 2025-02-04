@@ -49,7 +49,7 @@
     %{--    </div>--}%
 </div>
 
-<div style="margin-top: 15px; min-height: 300px">
+<div style="margin-top: 15px; min-height: 150px">
     <table class="table table-bordered table-hover table-condensed" style="width: 100%; background-color: #a39e9e">
         <thead>
         <tr>
