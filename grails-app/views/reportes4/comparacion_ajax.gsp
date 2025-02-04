@@ -8,22 +8,22 @@
             <th style="width: 34%;">
                 Rubro
             </th>
-            <th style="width: 19%">
+            <th style="width: 6%">
                 Unidad
             </th>
-            <th style="width: 8%">
+            <th style="width: 10%">
                Cantidad
             </th>
             <th style="width: 10%">
                 P. U. GADPP
             </th>
-            <th style="width: 7%">
+            <th style="width: 10%">
                 P.U. Oferta
             </th>
-            <th style="width: 7%">
+            <th style="width: 10%">
                 Dif. Unitario
             </th>
-            <th style="width: 7%">
+            <th style="width: 10%">
                 Dif. Total
             </th>
         </tr>

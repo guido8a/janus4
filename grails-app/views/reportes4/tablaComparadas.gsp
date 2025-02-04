@@ -21,7 +21,7 @@ border-style: solid; border-width: 1px; border-color: #506c90; margin-bottom: 20
                 <td style="width: 19%; font-size: 10px">${fila.cntnnmbr} - ${fila.parrnmbr} - ${fila.cmndnmbr}</td>
                 <td style="width: 8%">${fila.cntrcdgo}</td>
                 <td style="width: 10%">${fila.prvenmbr}</td>
-                <td style="width: 7%"><g:formatNumber number="${fila.cntrmnto}" maxFractionDigits="2" minFractionDigits="2" format="##,##0.##" locale="ec"/></td>
+                <td style="width: 7%; text-align: right"><g:formatNumber number="${fila.cntrmnto}" maxFractionDigits="2" minFractionDigits="2" format="##,##0.##" locale="ec"/></td>
                 <td style="width: 7%"><g:formatDate date="${fila.cntrfcsb}" format="dd-MM-yyyy"/></td>
                 <td style="width: 5%; text-align: center">
                     <a href="#" class="btn btn-info btn-xs btnVerComparacion" data-id="${fila?.obra__id}">

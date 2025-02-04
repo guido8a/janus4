@@ -94,7 +94,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
     </g:if>
 
     <g:if test="${rubro}">
-        %{--<g:if test="${(volumenes?.size()?: 0) > 0}">--}%
+    %{--<g:if test="${(volumenes?.size()?: 0) > 0}">--}%
         <g:if test="${(volumenes > 0)}">
             <div class="col-md-2 alert alert-warning" style="margin-left: 5px; font-weight: bold; text-align: center;
             height: 35px; padding: 10px">
@@ -212,7 +212,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                 </div>
 
 
-                <div class="col-md-2">
+                <div class="col-md-1" style="margin-top: -15px">
                     <label>  % costos indirectos </label>
                     <br>
                     <g:textField style="width: 40px;" name="costo_indi" value="22.5"/>
@@ -239,22 +239,28 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                 </div>
 
                 <g:if test="${rubro}">
-                    <div class="col-md-2 btn-group" style="margin-top: 10px">
+                    <div class="col-md-3 btn-group" style="margin-top: 10px">
                         <a class="btn btn-xs btn-warning " href="#" rel="tooltip" title="Copiar " id="btn_copiarComp">
                             <i class="fa fa-copy"></i> Copiar composición
                         </a>
                         <a class="btn btn-xs btn-info infoItem" href="#" rel="tooltip" title="Información">
                             <i class="fa fa-book"></i> Info
                         </a>
+                        <a class="btn btn-xs btn-success infoRubro" href="#" rel="tooltip" title="Información modifica">
+                            <i class="fa fa-book"></i> Modifica
+                        </a>
                     </div>
                 </g:if>
                 <g:else>
-                    <div class="col-md-2 btn-group" style="margin-top: 10px">
+                    <div class="col-md-3 btn-group" style="margin-top: 10px">
                         <a class="btn btn-xs btn-warning " href="#" rel="tooltip" title="Copiar " disabled>
                             <i class="fa fa-copy"></i> Copiar composición
                         </a>
                         <a class="btn btn-xs btn-info infoItem" href="#" rel="tooltip" title="Información" disabled>
                             <i class="fa fa-book"></i> Info
+                        </a>
+                        <a class="btn btn-xs btn-success infoRubro" href="#" rel="tooltip" title="Información modifica" disabled="">
+                            <i class="fa fa-book"></i> Modifica
                         </a>
                     </div>
                 </g:else>
@@ -1899,6 +1905,33 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                             }
                         });
                     }
+                }
+            });
+        });
+
+        $(".infoRubro").click(function () {
+            var ou = cargarLoader("Cargando...");
+            $.ajax({
+                type : "POST",
+                url : "${g.createLink(controller: 'rubro',action:'infoModifica_ajax')}",
+                data     : {
+                    id : '${rubro?.id}'
+                },
+                success  : function (msg) {
+                    ou.modal("hide");
+                    var b = bootbox.dialog({
+                        id      : "dlgIM",
+                        title   : "Información de modificacion",
+                        message : msg,
+                        buttons : {
+                            cancelar : {
+                                label     : "Cancelar",
+                                className : "btn-primary",
+                                callback  : function () {
+                                }
+                            }
+                        } //buttons
+                    }); //dialog
                 }
             });
         });

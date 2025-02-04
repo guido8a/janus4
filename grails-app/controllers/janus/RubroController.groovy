@@ -1330,8 +1330,13 @@ class RubroController {
 
                 render "ok_Guardado correctamente"
             }
-
         }
+
+
+    def infoModifica_ajax(){
+//        def rubro = Item.get(params.id)
+
+    }
 
 
 } //fin controller
