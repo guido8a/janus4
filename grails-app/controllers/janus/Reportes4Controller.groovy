@@ -3097,6 +3097,21 @@ class Reportes4Controller {
         return [obras: obras, params: params]
     }
 
+    def preciosComp() {
+        println "tablaComparadas: $params"
+        def cn = dbConnectionService.getConnection()
+        def campos = reportesService.obrasContratadas()
+
+        params.old = params.criterio
+        params.criterio = reportesService.limpiaCriterio(params.criterio)
+
+        def sql = armaSqlComparadas(params)
+        def obras = cn.rows(sql)
+
+        params.criterio = params.old
+        return [obras: obras, params: params]
+    }
+
     def armaSqlComparadas(params) {
         println "armaSqlComparadas $params"
         def campos = reportesService.obrasAvance()

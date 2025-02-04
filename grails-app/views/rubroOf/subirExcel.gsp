@@ -18,6 +18,7 @@
         height: 35px;
         padding: 2px;
         margin-bottom: 5px;
+        border-radius: 4px;
     }
 
     .inside {
@@ -55,7 +56,7 @@
     </div>
 </g:if>
 
-<g:uploadForm controller="cronogramaContrato" action="uploadFile" method="post" name="frmUpload" id="${contrato?.id}"
+<g:uploadForm controller="rubroOf" action="uploadApus" method="post" name="frmUpload" id="${contrato?.id}"
               style="padding: 10px">
     <div id="list-grupo" class="col-md-12" role="main">
         <div class="col-md-2">

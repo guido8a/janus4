@@ -1,6 +1,10 @@
 package janus.oferentes
 
 import janus.*
+import org.apache.poi.xssf.usermodel.XSSFCell
+import org.apache.poi.xssf.usermodel.XSSFRow
+import org.apache.poi.xssf.usermodel.XSSFSheet
+import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import org.springframework.dao.DataIntegrityViolationException
 
 class RubroOfController {
@@ -87,22 +91,22 @@ class RubroOfController {
             rubro = Item.get(params.idRubro)
             def items = RubroOferente.findAllByRubro(rubro)
             items.sort { it.item.codigo }
-            [campos: campos, listaRbro: listaRbro, listaItems: listaItems, rubro: rubro, grupos: grupos, items: items,
-             choferes: choferes, volquetes: volquetes, aux: aux,obra:obra]
+            [campos  : campos, listaRbro: listaRbro, listaItems: listaItems, rubro: rubro, grupos: grupos, items: items,
+             choferes: choferes, volquetes: volquetes, aux: aux, obra: obra]
         } else {
-            [campos: campos, listaRbro: listaRbro, listaItems: listaItems,  grupos: grupos, choferes: choferes,
-             volquetes: volquetes, aux: aux,obra:obra]
+            [campos   : campos, listaRbro: listaRbro, listaItems: listaItems, grupos: grupos, choferes: choferes,
+             volquetes: volquetes, aux: aux, obra: obra]
         }
     }
 
     def getDatosItem() {
 //        println "get datos items "+params
         def item = Item.get(params.id)
-        def precio = Precio.findByItemAndPersona(item,session.usuario)
+        def precio = Precio.findByItemAndPersona(item, session.usuario)
 //        println "render "+  item.id + "&" + item.codigo + "&" + item.nombre + "&" + item.unidad.codigo + "&" + item.rendimiento+"&"+((item.tipoLista)?item.tipoLista?.id:"0")
         render "" + item.id + "&" + item.codigo + "&" + item.nombre + "&" + item.unidad?.codigo?.trim() + "&" +
-                item.rendimiento + "&" + ((item.tipoLista) ? item.tipoLista?.id : "0")+"&"+
-                item.departamento.subgrupo.grupo.id+"&"+((precio)?precio.precio:"1")
+                item.rendimiento + "&" + ((item.tipoLista) ? item.tipoLista?.id : "0") + "&" +
+                item.departamento.subgrupo.grupo.id + "&" + ((precio) ? precio.precio : "1")
     }
 
     def addItem() {
@@ -140,26 +144,26 @@ class RubroOfController {
             rubro.fechaModificacion = new Date()
             rubro.save(flush: true)
             def precio = Precio.findByItemAndOferente(item, session.usuario)
-            if (!precio){
+            if (!precio) {
                 precio = new Precio()
-                precio.item=item
-                precio.oferente= oferente
-                precio.fecha=new Date()
+                precio.item = item
+                precio.oferente = oferente
+                precio.fecha = new Date()
             }
-            precio.precio=params.precio.toDouble()
+            precio.precio = params.precio.toDouble()
             precio.vae = params.vae.toDouble()
             if (precio.save(flush: true))
                 render "" + item.departamento.subgrupo.grupo.id + ";" + detalle.id + ";" + detalle.item.id + ";" + detalle.cantidad + ";" + detalle.rendimiento + ";" + ((item.tipoLista) ? item.tipoLista?.id : "0")
         }
     }
 
-    def getPrecioOferente(){
+    def getPrecioOferente() {
 //        println "get precio of "+params
         def item = Item.get(params.id)
         def precio = 0
         def vae = 100
-        def tmp = Precio.findByItemAndPersona(item,session.usuario)
-        if (tmp){
+        def tmp = Precio.findByItemAndPersona(item, session.usuario)
+        if (tmp) {
             precio = tmp.precio
             vae = tmp.vae
         }
@@ -192,12 +196,13 @@ class RubroOfController {
         funcionJs += '}'
         def numRegistros = 20
 
-        def tipo=params.tipo
+        def tipo = params.tipo
         def extras = " and tipoItem = 1 "
 //        println "extras "+extras
 
         if (!params.reporte) {
-            def lista = buscadorService.buscar(Item, "Item", "excluyente", params, true, extras) /* Dominio, nombre del dominio , excluyente o incluyente ,params tal cual llegan de la interfaz del buscador, ignore case */
+            def lista = buscadorService.buscar(Item, "Item", "excluyente", params, true, extras)
+            /* Dominio, nombre del dominio , excluyente o incluyente ,params tal cual llegan de la interfaz del buscador, ignore case */
             lista.pop()
             render(view: '../tablaBuscador', model: [listaTitulos: listaTitulos, listaCampos: listaCampos, lista: lista, funciones: funciones, url: url, controller: "llamada", numRegistros: numRegistros, funcionJs: funcionJs])
         } else {
@@ -209,6 +214,7 @@ class RubroOfController {
             redirect(controller: "reportes", action: "reporteBuscador", params: [listaCampos: listaCampos, listaTitulos: listaTitulos, tabla: "Item", orden: params.orden, ordenado: params.ordenado, criterios: params.criterios, operadores: params.operadores, campos: params.campos, titulo: "Rubros", anchos: anchos, extras: extras, landscape: true])
         }
     }
+
     def buscaRubro() {
 
         def listaTitulos = ["Código", "Descripción", "Unidad"]
@@ -222,7 +228,8 @@ class RubroOfController {
         def numRegistros = 20
         def extras = " and tipoItem = 2 and persona = ${session.usuario.id}"
         if (!params.reporte) {
-            def lista = buscadorService.buscar(Item, "Item", "excluyente", params, true, extras) /* Dominio, nombre del dominio , excluyente o incluyente ,params tal cual llegan de la interfaz del buscador, ignore case */
+            def lista = buscadorService.buscar(Item, "Item", "excluyente", params, true, extras)
+            /* Dominio, nombre del dominio , excluyente o incluyente ,params tal cual llegan de la interfaz del buscador, ignore case */
             lista.pop()
             render(view: '../tablaBuscador', model: [listaTitulos: listaTitulos, listaCampos: listaCampos, lista: lista, funciones: funciones, url: url, controller: "llamada", numRegistros: numRegistros, funcionJs: funcionJs])
         } else {
@@ -272,7 +279,8 @@ class RubroOfController {
         def numRegistros = 20
         def extras = " and tipoItem = 2"
         if (!params.reporte) {
-            def lista = buscadorService.buscar(Item, "Item", "excluyente", params, true, extras) /* Dominio, nombre del dominio , excluyente o incluyente ,params tal cual llegan de la interfaz del buscador, ignore case */
+            def lista = buscadorService.buscar(Item, "Item", "excluyente", params, true, extras)
+            /* Dominio, nombre del dominio , excluyente o incluyente ,params tal cual llegan de la interfaz del buscador, ignore case */
             lista.pop()
             render(view: '../tablaBuscador', model: [listaTitulos: listaTitulos, listaCampos: listaCampos, lista: lista, funciones: funciones, url: url, controller: "llamada", numRegistros: numRegistros, funcionJs: funcionJs])
         } else {
@@ -285,7 +293,7 @@ class RubroOfController {
         }
     }
 
-def list() {
+    def list() {
         params.max = Math.min(params.max ? params.int('max') : 10, 100)
         [rubroInstanceList: Rubro.list(params), rubroInstanceTotal: Rubro.count(), params: params]
     } //list
@@ -326,7 +334,7 @@ def list() {
         }
         rubro.properties = params.rubro
         rubro.tipoItem = TipoItem.get(2)
-        rubro.persona=Persona.get(session.usuario.id)
+        rubro.persona = Persona.get(session.usuario.id)
 //        println "ren " + rubro.rendimiento
         if (!rubro.save(flush: true)) {
             println "error " + rubro.errors
@@ -378,15 +386,15 @@ def list() {
 //        println "obras "+obras
         def ob = [:]
         if (vo.size() + obras.size() > 0) {
-            vo.each {v->
+            vo.each { v ->
 
-                ob.put(v.obra.codigo,v.obra.nombre)
+                ob.put(v.obra.codigo, v.obra.nombre)
 
             }
-            obras.each {o->
-                ob.put(o.codigo,o.nombre)
+            obras.each { o ->
+                ob.put(o.codigo, o.nombre)
             }
-            render ""+ob.collect{"<span class='label-azul'>"+it.key+"</span>: "+it.value}.join('<br>')
+            render "" + ob.collect { "<span class='label-azul'>" + it.key + "</span>: " + it.value }.join('<br>')
             return
         } else {
             try {
@@ -415,15 +423,15 @@ def list() {
 //        println "get precios sin item " + params
         def items = []
         def parts = params.ids.split("#")
-        def res =""
+        def res = ""
         parts.each {
             if (it.size() > 0) {
-                def item=RubroOferente.get(it).item
-                def precio = Precio.findByItemAndOferente(item,session.usuario)
-                if (!precio){
-                    res+=item.id+";0&"
-                }else{
-                    res+=item.id+";"+precio.precio+"&"
+                def item = RubroOferente.get(it).item
+                def precio = Precio.findByItemAndOferente(item, session.usuario)
+                if (!precio) {
+                    res += item.id + ";0&"
+                } else {
+                    res += item.id + ";" + precio.precio + "&"
                 }
             }
         }
@@ -433,15 +441,15 @@ def list() {
     def getPreciosItem() {
         def items = []
         def parts = params.ids.split("#")
-        def res =""
+        def res = ""
         parts.each {
             if (it.size() > 0) {
-                def item=Item.get(it)
-                def precio = Precio.findByItemAndPersona(item,session.usuario)
-                if (!precio){
-                    res+=item.id+";0&"
-                }else{
-                    res+=item.id+";"+precio.precio+"&"
+                def item = Item.get(it)
+                def precio = Precio.findByItemAndPersona(item, session.usuario)
+                if (!precio) {
+                    res += item.id + ";0&"
+                } else {
+                    res += item.id + ";" + precio.precio + "&"
                 }
             }
         }
@@ -465,13 +473,13 @@ def list() {
     }
 
 
-    def buscarRubroCodigo(){
+    def buscarRubroCodigo() {
 //        println "buscar rubro "+params
-        def rubro = Item.findByCodigoAndTipoItem(params.codigo?.trim(),TipoItem.get(1))
-        if (rubro){
-            render ""+rubro.id+"&&"+rubro.tipoLista?.id+"&&"+rubro.nombre+"&&"+rubro.unidad?.codigo
+        def rubro = Item.findByCodigoAndTipoItem(params.codigo?.trim(), TipoItem.get(1))
+        if (rubro) {
+            render "" + rubro.id + "&&" + rubro.tipoLista?.id + "&&" + rubro.nombre + "&&" + rubro.unidad?.codigo
             return
-        } else{
+        } else {
             render "-1"
             return
         }
@@ -499,25 +507,25 @@ def list() {
                 tabla += "<tr>"
                 tabla += "<td style='width: 80px;'>" + r["itemcdgo"] + "</td>"
                 tabla += "<td>" + r["itemnmbr"] + "</td>"
-                if(r["tplscdgo"]=~"P"){
+                if (r["tplscdgo"] =~ "P") {
                     tabla += "<td style='width: 50px;text-align: right'>" + r["itempeso"] + "</td>"
                     tabla += "<td></td>"
                 }
-                if(r["tplscdgo"]=~"V"){
+                if (r["tplscdgo"] =~ "V") {
                     tabla += "<td></td>"
                     tabla += "<td style='width: 50px;text-align: right'>" + r["itempeso"] + "</td>"
                 }
 
                 tabla += "<td style='width: 50px;text-align: right'>" + r["rbrocntd"] + "</td>"
                 tabla += "<td style='width: 50px;text-align: right'>" + r["distancia"] + "</td>"
-                tabla += "<td style='width: 50px;text-align: right'>" +  g.formatNumber(number: r["tarifa"],format:"##,#####0", minFractionDigits: 5,maxFractionDigits: 5 ,locale: "ec")  + "</td>"
-                tabla += "<td style='width: 50px;text-align: right'>" +  g.formatNumber(number: r["parcial_t"],format:"##,#####0", minFractionDigits: 5,maxFractionDigits: 5 ,locale: "ec") + "</td>"
+                tabla += "<td style='width: 50px;text-align: right'>" + g.formatNumber(number: r["tarifa"], format: "##,#####0", minFractionDigits: 5, maxFractionDigits: 5, locale: "ec") + "</td>"
+                tabla += "<td style='width: 50px;text-align: right'>" + g.formatNumber(number: r["parcial_t"], format: "##,#####0", minFractionDigits: 5, maxFractionDigits: 5, locale: "ec") + "</td>"
                 total += r["parcial_t"]
                 tabla += "</tr>"
             }
 //            <g:formatNumber number="${rub.cantidad}" format="##,#####0" minFractionDigits="5" maxFractionDigits="7"  locale="ec"  />
         }
-        tabla += "<tr><td><b>SUBTOTAL</b></td><td></td><td></td><td></td><td></td><td></td><td></td><td style='width: 50px;text-align: right;font-weight: bold' class='valor_total'>${g.formatNumber(number: total,format:"##,#####0", minFractionDigits: 5,maxFractionDigits: 5 ,locale: "ec")}</td>"
+        tabla += "<tr><td><b>SUBTOTAL</b></td><td></td><td></td><td></td><td></td><td></td><td></td><td style='width: 50px;text-align: right;font-weight: bold' class='valor_total'>${g.formatNumber(number: total, format: "##,#####0", minFractionDigits: 5, maxFractionDigits: 5, locale: "ec")}</td>"
         tabla += "</tbody></table>"
 
         render(tabla)
@@ -623,7 +631,7 @@ def list() {
     }
 
 
-    def listaRubros(){
+    def listaRubros() {
 //        println "listaItems" + params
         def datos;
         def listaRbro = ['grpo__id', 'grpo__id', 'grpo__id']
@@ -637,8 +645,8 @@ def list() {
                 "obratipo in ('F', 'O') and vlof.obra__id = obra.obra__id)"
         def sqlTx = ""
 //        def item = listaRbro[params.buscarTipo.toInteger()-1]
-        def bsca = listaItems[params.buscarPor.toInteger()-1]
-        def ordn = listaRbro[params.ordenar.toInteger()-1]
+        def bsca = listaItems[params.buscarPor.toInteger() - 1]
+        def ordn = listaRbro[params.ordenar.toInteger() - 1]
 
         txwh += " and $bsca ilike '%${params.criterio}%'"
         sqlTx = "${select} ${txwh} order by ${ordn} limit 100 ".toString()
@@ -650,7 +658,7 @@ def list() {
         [data: datos, tipo: params.tipo, rubro: params.rubro]
     }
 
-    def buscadorItemsOferente_ajax(){
+    def buscadorItemsOferente_ajax() {
 
     }
 
@@ -681,7 +689,6 @@ def list() {
 //    }
 
 
-
     def copiarComposicion() {
         println "copiar OF!!! " + params + "  " + request.method
 //        if (request.method == "POST") {
@@ -691,7 +698,7 @@ def list() {
         def persona = seguridad.Persona.get(session.usuario.id)
 
         detalles.each {
-            println ""+it.item.departamento.subgrupo.grupo.descripcion+"  "+it.item.departamento.subgrupo.grupo.codigo
+            println "" + it.item.departamento.subgrupo.grupo.descripcion + "  " + it.item.departamento.subgrupo.grupo.codigo
             def tmp = RubroOferente.findByRubroAndItem(rubro, it.item)
             println "rubro --> $tmp"
             if (!tmp) {
@@ -702,12 +709,12 @@ def list() {
                 nuevo.oferente = persona
 //                    println " asd "  +it.item.nombre
 
-                if(it.item.departamento.subgrupo.grupo.id.toInteger()==1){
+                if (it.item.departamento.subgrupo.grupo.id.toInteger() == 1) {
                     nuevo.cantidad = it.cantidad
-                }else{
+                } else {
                     if (!(it.item.nombre =~ "HERRAMIENTA MENOR")) {
                         nuevo.rendimiento = it.rendimiento
-                        nuevo.cantidad=it.cantidad
+                        nuevo.cantidad = it.cantidad
                     }
                 }
 
@@ -722,30 +729,30 @@ def list() {
 //                    println "else si hay "
                 if (!(it.item.nombre =~ "HERRAMIENTA MENOR")) {
 //                        println "entro 2 "
-                    if(it.item.departamento.subgrupo.grupo.id.toInteger()==2){
+                    if (it.item.departamento.subgrupo.grupo.id.toInteger() == 2) {
                         //println "es mano de obra"
-                        def maxCant = Math.max(tmp.cantidad,it.cantidad)
-                        def sum = tmp.cantidad*tmp.rendimiento+(it.cantidad*it.rendimiento)
+                        def maxCant = Math.max(tmp.cantidad, it.cantidad)
+                        def sum = tmp.cantidad * tmp.rendimiento + (it.cantidad * it.rendimiento)
                         //println "maxcant "+maxCant+" sum "+sum
-                        def rend = sum/maxCant
+                        def rend = sum / maxCant
                         tmp.cantidad = maxCant
-                        tmp.rendimiento=rend
+                        tmp.rendimiento = rend
                         tmp.fecha = new Date()
                         tmp.save(flush: true)
 
 
-                    }else{
-                        if(it.item.departamento.subgrupo.grupo.id.toInteger()==3){
+                    } else {
+                        if (it.item.departamento.subgrupo.grupo.id.toInteger() == 3) {
                             //println "es mano de obra"
-                            def maxCant = Math.max(tmp.cantidad,it.cantidad)
-                            def sum = tmp.cantidad*tmp.rendimiento+(it.cantidad*it.rendimiento)
+                            def maxCant = Math.max(tmp.cantidad, it.cantidad)
+                            def sum = tmp.cantidad * tmp.rendimiento + (it.cantidad * it.rendimiento)
                             //println "maxcant "+maxCant+" sum "+sum
-                            def rend = sum/maxCant
+                            def rend = sum / maxCant
                             tmp.cantidad = maxCant
-                            tmp.rendimiento=rend
+                            tmp.rendimiento = rend
                             tmp.fecha = new Date()
                             tmp.save(flush: true)
-                        }else{
+                        } else {
                             tmp.cantidad = tmp.cantidad + it.cantidad
                             tmp.fecha = new Date()
                             tmp.save(flush: true)
@@ -771,8 +778,8 @@ def list() {
         def txwh = " where itemnmbr is not null  "
 
         def sqlTx = ""
-        def bsca = listaItems[params.buscarPor.toInteger()-1]
-        def ordn = listaItems[params.ordenar.toInteger()-1]
+        def bsca = listaItems[params.buscarPor.toInteger() - 1]
+        def ordn = listaItems[params.ordenar.toInteger() - 1]
         txwh += " and $bsca ilike '%${params.criterio}%' and grpo__id = ${params.grupo}"
 
         sqlTx = "${select} ${txwh} order by ${ordn} limit 100 ".toString()
@@ -785,7 +792,7 @@ def list() {
     }
 
 
-    def subirExcel(){
+    def subirExcel() {
         def oferente = session.usuario
         def cn = dbConnectionService.getConnection()
         def obras = [:]
@@ -800,5 +807,215 @@ def list() {
         [obras: obras, oferente: oferente]
     }
 
+    def uploadApus() {
+        println "uploadApus $params"
+        def cn = dbConnectionService.getConnection()
+        def filasNO = [0, 1]
+        def filasTodasNo = []
+        def cntr_id = params.id
+        def path = "/var/janus/" + "xlsCronosContratos/" + cntr_id + "/"   //web-app/archivos
+        new File(path).mkdirs()
+        def sql = ""
+        def cols = [A: 0, B:1, C:2, D:3, E: 4, F: 5, G: 6, H: 7, I: 8, J:9, K: 10, L:11, M: 12, N: 13]
+
+        def f = request.getFile('file')  //archivo = name del input type file
+        if (f && !f.empty) {
+            def fileName = f.getOriginalFilename() //nombre original del archivo
+            def ext
+
+            def parts = fileName.split("\\.")
+            fileName = ""
+            parts.eachWithIndex { obj, i ->
+                if (i < parts.size() - 1) {
+                    fileName += obj
+                } else {
+                    ext = obj
+                }
+            }
+
+            if (ext == "xlsx") {
+
+                fileName = "xlsContratado_" + new Date().format("yyyyMMdd_HHmmss")
+
+                def fn = fileName
+                fileName = fileName + "." + ext
+
+                def pathFile = path + fileName
+                def src = new File(pathFile)
+
+                def i = 1
+                while (src.exists()) {
+                    pathFile = path + fn + "_" + i + "." + ext
+                    src = new File(pathFile)
+                    i++
+                }
+
+                f.transferTo(new File(pathFile)) // guarda el archivo subido al nuevo path
+
+                //procesar excel
+                def htmlInfo = "", errores = "", doneHtml = "", done = 0
+                InputStream ExcelFileToRead = new FileInputStream(pathFile);
+                XSSFWorkbook workbook = new XSSFWorkbook(ExcelFileToRead);
+
+                XSSFSheet sheet = workbook.getSheetAt(0);
+                XSSFRow row;
+                XSSFCell cell;
+                Iterator rows = sheet.rowIterator();
+
+                int hojas = workbook.getNumberOfSheets(); //Obtenemos el número de hojas que contiene el documento
+                println "Número Hojas: $hojas"
+
+                //for que recorre las hojas existentes
+                for (int hj = 0; hj < hojas; i++) {
+                    sheet = workbook.getSheetAt(hj);
+                    while (rows.hasNext()) {
+                        row = (XSSFRow) rows.next()
+                        println "fila: ${row.rowNum}"
+                        if (!(row.rowNum in filasNO)) {
+                            def ok = true
+                            Iterator cells = row.cellIterator()
+                            def rgst = []
+                            def meses = []
+
+                            while (cells.hasNext()) {
+                                cell = (XSSFCell) cells.next()
+
+                                if (cell.columnIndex < 6) {  //separa cronograma
+                                    if (cell.getCellType() == XSSFCell.CELL_TYPE_NUMERIC) {
+                                        rgst.add(cell.getNumericCellValue())
+                                    } else if (cell.getCellType() == XSSFCell.CELL_TYPE_STRING) {
+                                        rgst.add(cell.getStringCellValue())
+                                    } else {
+                                        rgst.add('')
+                                    }
+                                } else {
+                                    if (cell.getCellType() == XSSFCell.CELL_TYPE_NUMERIC) {
+                                        meses.add(cell.getNumericCellValue())
+                                    } else if (cell.getCellType() == XSSFCell.CELL_TYPE_STRING) {
+                                        meses.add(cell.getStringCellValue())
+                                    } else {
+                                        meses.add(0)
+                                    }
+                                }
+                            }
+
+                            def titlEq = rgst[cols[params.cldaEq]]
+                            if(titlEq != params.titlEq) {
+                                println "sin dato buscado"
+                                continue
+                            }
+                            def rubro = rgst[1]
+                            def unidad = rgst[2]
+                            def cantidad = rgst[3]
+                            def punitario = rgst[4]
+                            def subtotal = rgst[5]
+                            def pcun = 0.0, cntd = 0.0, pcnt = 0.0, prcl = 0.0, prco = 0.0
+
+                            println "R: $numero $rubro $unidad $cantidad $punitario $subtotal $meses"
+
+                            try {
+                                numero = numero.toDouble()
+                            } catch (e) {
+                                numero = ''
+                            }
+
+                            if (numero) {
+//                            println "puede procesar: $rgst, meses: ${meses.size()}"
+                                htmlInfo += "<p>Hoja : " + sheet.getSheetName() + " - ITEM: " + rubro + meses + "</p>"
+//                            cantidad = cantidad.replaceAll(",", ".")
+//                            punitario = punitario.replaceAll(",", ".")
+//                            def vc = VolumenContrato.findByContratoAndVolumenOrden(contrato, numero)
+                                sql = "select vocr__id from vocr where cntr__id = ${cntr_id} and vocrordn = ${numero}"
+                                def vc_id = cn.rows(sql.toString())[0].vocr__id
+                                if (!vc_id) {
+                                    errores += "<li>No se encontró volumen contrato con id ${cod} (linea: ${row.rowNum + 1})</li>"
+                                    println "No se encontró volumen contrato con id ${cod}"
+                                    ok = false
+                                } else {
+
+                                    if (!punitario) {
+                                        punitario = 0
+                                    }
+
+                                    if (!cantidad) {
+                                        cantidad = 0
+                                    }
+//                                println "precio: ${punitario.toDouble()}"
+                                    pcun = punitario.toDouble()
+                                    cntd = cantidad.toDouble()
+                                    sql = "update vocr set vocrpcun = ${pcun}, vocrcntd = ${cntd}, vocrsbtt = ${pcun * cntd} " +
+                                            "where vocr__id = ${vc_id}"
+//                                vc.volumenCantidad = Math.round(cantidad.toDouble() * 100) / 100
+//                                vc.volumenSubtotal = punitario.toDouble() * cantidad.toDouble()
+                                    try {
+//                                    vc.save(flush: true)
+                                        cn.execute(sql.toString())
+                                    } catch (e) {
+                                        println " no se pudo guardar $rgst: ${e.erros()}"
+                                    }
+
+                                    println "procesa ${meses}"
+                                    /* regsitra cronograma */
+                                    prco = 0; prcl = 0; pcnt = 0;
+                                    for (m in 0..meses.size()) {
+                                        if (meses[m] > 0) {
+                                            sql = "select crcr__id from crcr where cntr__id = $cntr_id and " +
+                                                    "crcrprdo = ${m + 1} and vocr__id = $vc_id"
+                                            def crcr_id = cn.rows(sql.toString())[0]?.crcr__id
+                                            prco = meses[m].toDouble()
+                                            prcl = prco / pcun + 0.01
+                                            pcnt = Math.round((prcl / cntd) * 10000) / 100
+                                            if (crcr_id) {
+                                                sql = "update crcr set crcrcntd = ${prcl}, crcrprct = $pcnt, " +
+                                                        "crcrprco = $prco where crcr__id = $crcr_id"
+                                            } else {
+                                                sql = "insert into crcr(cntr__id, vocr__id, crcrprdo, crcrcntd, crcrprct, " +
+                                                        " crcrprco) values ($cntr_id, $vc_id, ${m + 1}, $prcl, $pcnt, " +
+                                                        "$prco)"
+                                            }
+                                            try {
+                                                cn.execute(sql.toString())
+                                            } catch (e) {
+                                                println " no se pudo guardar crcr $rgst: ${e.erros()}"
+                                            }
+                                        } else {
+                                            sql = "delete from crcr where cntr__id = $cntr_id and  vocr__id = $vc_id and " +
+                                                    "crcrprdo = ${m + 1}"
+                                            try {
+                                                cn.execute(sql.toString())
+                                            } catch (e) {
+                                                println " no se pudo guardar crcr $rgst: ${e.erros()}"
+                                            }
+                                        }
+                                    }
+
+                                }
+                            }
+                        }
+                    } //sheets.each
+                } //sheets.each
+                if (done > 0) {
+                    doneHtml = "<div class='alert alert-success'>Se han ingresado correctamente " + done + " registros</div>"
+                }
+
+                def str = doneHtml
+                str += htmlInfo
+                if (errores != "") {
+                    str += "<ol>" + errores + "</ol>"
+                }
+
+                flash.message = str
+
+                println "DONE!!"
+                redirect(action: "mensajeUploadContrato", id: params.id)
+            } else {
+                flash.message = "Seleccione un archivo Excel xlsx para procesar (archivos xls deben ser convertidos a xlsx primero)"
+                redirect(action: 'formArchivo')
+            }
+        } else {
+            flash.message = "Seleccione un archivo para procesar"
+            redirect(action: 'subirExcel')
+        }
+    }
 
 } //fin controller
