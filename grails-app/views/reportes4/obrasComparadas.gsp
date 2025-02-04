@@ -33,20 +33,20 @@
             Reporte
         </a>
     </div>
-%{--    <div class="span12">--}%
-%{--        <a href="#" class="btn btn-success" id="buscar">--}%
-%{--            <i class="fa fa-search"></i>--}%
-%{--            Reporte--}%
-%{--        </a>--}%
-%{--        <a href="#" class="btn btn-info" id="imprimir" >--}%
-%{--            <i class="fa fa-print"></i>--}%
-%{--            Imprimir--}%
-%{--        </a>--}%
-%{--        <a href="#" class="btn btn-success" id="excel" >--}%
-%{--            <i class="fa fa-file-excel"></i>--}%
-%{--            Excel--}%
-%{--        </a>--}%
-%{--    </div>--}%
+    %{--    <div class="span12">--}%
+    %{--        <a href="#" class="btn btn-success" id="buscar">--}%
+    %{--            <i class="fa fa-search"></i>--}%
+    %{--            Reporte--}%
+    %{--        </a>--}%
+    %{--        <a href="#" class="btn btn-info" id="imprimir" >--}%
+    %{--            <i class="fa fa-print"></i>--}%
+    %{--            Imprimir--}%
+    %{--        </a>--}%
+    %{--        <a href="#" class="btn btn-success" id="excel" >--}%
+    %{--            <i class="fa fa-file-excel"></i>--}%
+    %{--            Excel--}%
+    %{--        </a>--}%
+    %{--    </div>--}%
 </div>
 
 <div style="margin-top: 15px; min-height: 300px">
@@ -56,10 +56,10 @@
             <th style="width: 10%">
                 Código
             </th>
-            <th style="width: 24%;">
+            <th style="width: 34%;">
                 Nombre
             </th>
-            <th style="width: 14%">
+            <th style="width: 19%">
                 Cantón-Parroquia-Comunidad
             </th>
             <th style="width: 8%">
@@ -68,23 +68,14 @@
             <th style="width: 10%">
                 Contratista
             </th>
-            <th style="width: 8%">
+            <th style="width: 7%">
                 Monto
             </th>
-            <th style="width: 8%">
+            <th style="width: 7%">
                 Fecha suscripción
             </th>
-            <th style="width: 8%">
-                Fecha Inicio Obra
-            </th>
-            <th style="width: 6%">
-                Plazo
-            </th>
-            <th style="width: 7%">
-                % avance económico
-            </th>
             <th style="width: 5%">
-                Avance físico
+                Acciones
             </th>
         </tr>
         </thead>

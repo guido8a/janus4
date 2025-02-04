@@ -3101,8 +3101,6 @@ class Reportes4Controller {
         println "armaSqlComparadas $params"
         def campos = reportesService.obrasAvance()
         def operador = reportesService.operadores()
-        def fcin = params.fi ? new Date().parse("dd-MM-yyyy", params.fi).format('yyyy-MM-dd') : ''
-        def fcfn = params.ff ? new Date().parse("dd-MM-yyyy", params.ff).format('yyyy-MM-dd') : ''
 
         def sqlSelect = "select obra.obra__id, obracdgo, obranmbr, cntnnmbr, parrnmbr, cmndnmbr, " +
                 "c.cntr__id, c.cntrcdgo, c.cntrmnto, c.cntrfcsb, prvenmbr " +
@@ -3122,5 +3120,20 @@ class Reportes4Controller {
         }
         println "sql: $sqlSelect $sqlWhere $sqlOrder"
         "$sqlSelect $sqlWhere $sqlOrder".toString()
+    }
+
+
+    def comparacion_ajax(){
+        def obra = Obra.get(params.id)
+        return [obra: obra]
+    }
+
+    def tablaComparacion_ajax(){
+        def obra = Obra.get(params.id)
+
+        println("obra " + obra)
+
+
+
     }
 }
