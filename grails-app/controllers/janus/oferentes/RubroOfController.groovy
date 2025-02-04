@@ -787,7 +787,17 @@ def list() {
 
     def subirExcel(){
         def oferente = session.usuario
-        return [oferente: oferente]
+        def cn = dbConnectionService.getConnection()
+        def obras = [:]
+        def sql = "select distinct obra.obra__id id, obracdgo||' - '||obranmbr nombre " +
+                "from obra, obof " +
+                "where obof.obrajnid = obra.obra__id and obof.prsn__id = ${oferente.id}" +
+                "order by 1"
+        println "sql: $sql"
+        cn.eachRow(sql.toString()) { r ->
+            obras[r.id] = r.nombre
+        }
+        [obras: obras, oferente: oferente]
     }
 
 

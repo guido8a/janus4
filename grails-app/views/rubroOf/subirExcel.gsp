@@ -58,6 +58,14 @@
 <g:uploadForm controller="cronogramaContrato" action="uploadFile" method="post" name="frmUpload" id="${contrato?.id}"
               style="padding: 10px">
     <div id="list-grupo" class="col-md-12" role="main">
+        <div class="col-md-2">
+            <b style="margin-left: 20px">Obra Ofertada:</b>
+        </div>
+        <div class="col-md-10">
+            <g:select name="obra"
+                      from="${obras}" id="obraOf" optionKey="key" optionValue="value"
+                      style="width: 100%; margin-left: -80px"/>
+        </div>
 
         <div class="col-md-12" style="margin-top: 20px; margin-bottom: 20px">
             <div class="col-md-2"><b>Archivo Excel a subir:</b></div>
@@ -73,7 +81,7 @@
             </div>
         </div>
 
-        <div style="text-align: center"><h3>Definición de las columnas del archivo excel a subir</h3></div>
+        <div style="text-align: center; margin-left: -180px"><h3>Columnas del archivo excel a subir</h3></div>
 
         <div style="background-color: #e0e0e8; height: 105px">
             <div class="contenedor">
