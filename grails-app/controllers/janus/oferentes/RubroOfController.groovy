@@ -809,11 +809,12 @@ class RubroOfController {
 
     def uploadApus() {
         println "uploadApus $params"
+        params.obra = 4255
         def cn = dbConnectionService.getConnection()
         def filasNO = [0, 1]
         def filasTodasNo = []
-        def cntr_id = params.id
-        def path = "/var/janus/" + "xlsCronosContratos/" + cntr_id + "/"   //web-app/archivos
+        def oferente = session.usuario
+        def path = "/var/janus/" + "xlsOfertas/" + params.obra + "/"   //web-app/archivos
         new File(path).mkdirs()
         def sql = ""
         def cols = [A: 0, B: 1, C: 2, D: 3, E: 4, F: 5, G: 6, H: 7, I: 8, J: 9, K: 10, L: 11, M: 12, N: 13]
@@ -836,7 +837,7 @@ class RubroOfController {
 
             if (ext == "xlsx") {
 
-                fileName = "xlsContratado_" + new Date().format("yyyyMMdd_HHmmss")
+                fileName = "xlsApus_" + params.obra
 
                 def fn = fileName
                 fileName = fileName + "." + ext
@@ -909,7 +910,35 @@ class RubroOfController {
                                 rbroundd = rgst[cols[params.rbroundd]]
                                 sccnEq = false; sccnMo = false; sccnMt = false; sccnTr = false; sccnRubro = false
                                 println "Rubro: $rbronmbr $rbroundd"
-//************                  insertar rubro
+                                /** insertar rubro */
+                                if (rbroundd) {
+                                    def ordn = sheet.getSheetName().toString().toInteger()
+                                    sql = "select item__id from vlob where obra__id = ${params.obra} and vlobordn = ${ordn}"
+                                    def item_id = cn.rows(sql.toString())[0].item__id
+                                    if (!item_id) {
+                                        errores += "<li>No se encontró rurbo ${ordn} (linea: ${row.rowNum + 1})</li>"
+                                        println "No se encontró rubro con id ${ordn}"
+                                        ok = false
+                                    } else {
+                                        sql = "select ofrb__id cnta from ofrb where prsn__id = ${oferente.id} and " +
+                                                "obra__id = ${params.obra} and vlobordn = ${ordn} and item__id = $item_id"
+                                        def ofrb_id = cn.rows(sql.toString())[0]?.ofrb__id?: 0
+                                        if(ofrb_id) {
+                                            sql = "update ofrb set ofrbnmbr = ${rbronmbr}, ofrbundd = ${rbroundd} " +
+                                                    "where ofrb__id = ${ofrb_id}"
+                                        } else {
+                                            sql = "insert into ofrb(prsn__id, obra__id, ofrbnmbr, ofrbundd, obrbordn, ofrbjni) " +
+                                                    "values (${oferente.id}, ${params.obra}, $rbronmbr, $rbroundd, $ordn, $item_id)"
+                                        }
+                                        try {
+                                            cn.execute(sql.toString())
+                                        } catch (e) {
+                                            println " no se pudo guardar $rgst: ${e.erros()}"
+                                        }
+
+                                    }
+                                }
+
                             }
 
                             if (rgst[cols[params.cldarbro]] == params.rbro) {

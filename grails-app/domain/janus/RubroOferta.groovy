@@ -5,6 +5,7 @@ import seguridad.Persona
 class RubroOferta {
 
     Persona persona
+    Obra obra
     String nombre
     String unidad
     int orden
@@ -20,6 +21,7 @@ class RubroOferta {
         columns {
             id column: 'ofrb__id'
             persona column: 'prsn__id'
+            obra column: 'obra__id'
             nombre column: 'ofrbnmbr'
             unidad column: 'ofrbundd'
             orden column: 'ofrbordn'
@@ -27,8 +29,9 @@ class RubroOferta {
         }
     }
     static constraints = {
-        persona(blank: true, nullable: true)
-        nombre(blank: true, nullable: true)
+        persona(blank: false, nullable: false)
+        obra(blank: false, nullable: false)
+        nombre(blank: false, nullable: false)
         unidad(blank: false, nullable: false)
         orden(blank: false, nullable: false)
         idJanus(blank: true, nullable: true)
