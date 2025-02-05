@@ -817,7 +817,7 @@ class RubroOfController {
         new File(path).mkdirs()
         def sql = ""
         def cols = [A: 0, B: 1, C: 2, D: 3, E: 4, F: 5, G: 6, H: 7, I: 8, J: 9, K: 10, L: 11, M: 12, N: 13]
-        def rubro = "", texto = ""
+        def rbronmbr = "", rbroundd = ""
 
         def f = request.getFile('file')  //archivo = name del input type file
         if (f && !f.empty) {
@@ -865,7 +865,7 @@ class RubroOfController {
                 int hojas = 3
                 println "Número Hojas: $hojas"
 
-                def sccnEq = false, sccnMo = false, sccnMt = false, sccnTr = false
+                def sccnEq = false, sccnMo = false, sccnMt = false, sccnTr = false, sccnRubro = false
                 def cdgoEq, nmbrEq, cntdEq, trfaEq, pcunEq, rndmEq, cstoEq
 
                 //for que recorre las hojas existentes
@@ -886,9 +886,6 @@ class RubroOfController {
                             println "fila: ${row.rowNum}"
                             while (cells.hasNext()) {
                                 cell = (XSSFCell) cells.next()
-                                if (row.rowNum == 8) {
-                                    println "celdas.. ${cell.getStringCellValue()}"
-                                }
                                 if (cell.getCellType() == XSSFCell.CELL_TYPE_NUMERIC) {
                                     rgst.add(cell.getNumericCellValue())
                                 } else if (cell.getCellType() == XSSFCell.CELL_TYPE_STRING) {
@@ -899,14 +896,22 @@ class RubroOfController {
                             }
 
                             println "reg: $rgst"
-                            println "--> ${rgst[cols[params.cldarbro].toInteger()]} == ${params.rbro}"
 
-                            if (rgst[cols[params.cldarbro].toInteger()] == params.rbro) {
-                                rubro = rgst[cols[params.rbronmbr]]
-                                println "Rubro: $rubro"
+                            if (sccnRubro) {
+                                rbroundd = rgst[cols[params.rbroundd]]
+                                sccnRubro = false
+                                println "Rubro: $rbronmbr $rbroundd"
+//************                  insertar rubro
                             }
 
-                            def titlEq = rgst[cols[params.cldaEq].toInteger()]
+                            if (rgst[cols[params.cldarbro]] == params.rbro) {
+                                rbronmbr = rgst[cols[params.rbronmbr]]
+                                sccnRubro = true
+                                println "Rubro: $rbronmbr"
+                            }
+
+
+                            def titlEq = rgst[cols[params.cldaEq]]
                             if (titlEq == params.titlEq) {
                                 println "Equipos: $titlEq"
                                 sccnEq = true; sccnMo = false; sccnMt = false; sccnTr = false
@@ -914,17 +919,17 @@ class RubroOfController {
 
                             if (sccnEq) {
 //                                cdgoEq, nmbrEq, cntdEq, trfaEq, pcunEq, rndmEq, cstoEq
-                                println "cols: ${cols[params.cdgoEq].toInteger()}, ${cols[params.cntdEq].toInteger()}"
-                                cdgoEq = rgst[cols[params.cdgoEq].toInteger()]
-                                cntdEq = rgst[cols[params.cntdEq].toInteger()]
+                                println "cols: ${cols[params.cdgoEq]}, ${cols[params.cntdEq]}"
+                                cdgoEq = rgst[cols[params.cdgoEq]]
+                                cntdEq = rgst[cols[params.cntdEq]]
 //                                def unidad = rgst[2]
 //                                def cantidad = rgst[3]
 //                                def punitario = rgst[4]
 //                                def subtotal = rgst[5]
 //                                def pcun = 0.0, cntd = 0.0, pcnt = 0.0, prcl = 0.0, prco = 0.0
 
-                                println "R: sccnEq: $sccnEq -> ${cols[params.cdgoEq].toInteger()}, " +
-                                        "${cols[params.cntdEq].toInteger()}, $cdgoEq, $cntdEq"
+                                println "R: sccnEq: $sccnEq -> ${cols[params.cdgoEq]}, " +
+                                        "${cols[params.cntdEq]}, $cdgoEq, $cntdEq"
 
                                 try {
                                     cntdEq = cntdEq.toDouble()
@@ -988,6 +993,10 @@ class RubroOfController {
             flash.message = "Seleccione un archivo para procesar"
             redirect(action: 'subirExcel')
         }
+    }
+
+    def cambiaSeccion(actual) {
+        def sccnEq = false, sccnMo = false, sccnMt = false, sccnTr = false, sccnRubro = false
     }
 
 } //fin controller

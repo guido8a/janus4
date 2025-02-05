@@ -1338,7 +1338,7 @@ class RubroController {
         def sql = "select audtcmpo, audtantr, audtactl, audtfcha from audt " +
                 "where audtfcha > '${rubro?.fecha}' and (audtrgid = ${rubro?.id} or audtrgid in " +
                 "(select rbro__id from rbro where rbrocdgo = ${rubro?.id})) and " +
-                "audtcmpo in ('valor', 'nombre', 'item', 'cantidad', 'rendimiento')"
+                "audtcmpo in ('valor', 'nombre', 'item', 'cantidad', 'rendimiento') order by audtfcha"
         def cn = dbConnectionService.getConnection()
         def res = cn.rows(sql.toString())
 
