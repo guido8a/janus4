@@ -1342,8 +1342,6 @@ class RubroController {
         def cn = dbConnectionService.getConnection()
         def res = cn.rows(sql.toString())
 
-        println("sql " + sql)
-
         return [res: res]
     }
 

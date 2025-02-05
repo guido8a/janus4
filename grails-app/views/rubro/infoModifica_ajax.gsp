@@ -14,7 +14,7 @@ th, td {
     <table class="table table-bordered table-hover table-condensed" style="width: 100%; background-color: #a39e9e">
         <thead>
         <tr>
-            <th style="width: 20%">
+            <th style="width: 15%">
                 Fecha
             </th>
             <th style="width: 20%;">
@@ -23,7 +23,7 @@ th, td {
             <th style="width: 30%">
                 Valor anterior
             </th>
-            <th style="width: 30%">
+            <th style="width: 35%">
                 Valor actual
             </th>
         </tr>
@@ -35,10 +35,10 @@ th, td {
     <table class="table-bordered table-condensed table-striped table-hover" style="width: 100%">
         <g:each in="${res}" var="dato" >
             <tr style="width: 100%">
-                <td style="width: 20%">${dato.audtfcha.format("dd-MM-yyyy HH:mm")}</td>
-                <td style="width: 20%; font-size: 10px">${dato.audtcmpo}</td>
-                <td style="width: 30%; font-size: 10px">${dato.audtantr}</td>
-                <td style="width: 30%">${dato.audtactl}</td>
+                <td style="width: 15%">${dato.audtfcha.format("dd-MM-yyyy HH:mm")}</td>
+                <td style="width: 20%; font-size: 12px">${dato.audtcmpo}</td>
+                <td style="width: 30%; font-size: 12px">${dato.audtantr}</td>
+                <td style="width: 35%">${dato.audtactl}</td>
             </tr>
         </g:each>
     </table>
