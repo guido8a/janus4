@@ -151,7 +151,7 @@
 
                 <div class="col-md-2">
                     <label>Costo Hora</label>
-                    <g:textField name="rbropcunEq" class="form-control" value="F"/>
+                    <g:textField name="pcunEq" class="form-control" value="F"/>
                 </div>
 
                 <div class="col-md-2">

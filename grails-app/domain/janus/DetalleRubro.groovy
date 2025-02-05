@@ -21,13 +21,13 @@ class DetalleRubro {
         columns {
             id column: 'dtrb__id'
             rubroOferta column: 'ofrb__id'
-            nombre column: 'ofrbnmbr'
-            unidad column: 'itemundd'
-            cantidad column: 'itemcntd'
-            precio column: 'itempcun'
-            costo column: 'itemcsto'
-            rendimiento column: 'itemrndm'
-            subtotal column: 'itemsbtt'
+            nombre column: 'dtrbnmbr'
+            unidad column: 'dtrbundd'
+            cantidad column: 'dtrbcntd'
+            precio column: 'dtrbpcun'
+            costo column: 'dtrbcsto'
+            rendimiento column: 'dtrbrndm'
+            subtotal column: 'dtrbsbtt'
         }
     }
     static constraints = {

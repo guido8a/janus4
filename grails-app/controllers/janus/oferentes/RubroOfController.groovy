@@ -861,8 +861,8 @@ class RubroOfController {
                 XSSFRow row;
                 XSSFCell cell;
 
-//                int hojas = workbook.getNumberOfSheets(); //Obtenemos el número de hojas que contiene el documento
-                int hojas = 3
+                int hojas = workbook.getNumberOfSheets(); //Obtenemos el número de hojas que contiene el documento
+//                int hojas = 3
                 println "Número Hojas: $hojas"
 
                 def sccnEq = false, sccnMo = false, sccnMt = false, sccnTr = false, sccnRubro = false
@@ -875,7 +875,8 @@ class RubroOfController {
                     Iterator rows = sheet.rowIterator();
                     println "Porcesando hoja: $hj"
 
-                    while ( rows.hasNext() ) {
+                    def fila = 0
+                    while ( rows.hasNext() && (fila < 76) ) {
                         cdgoEq = ''; nmbrEq = ''; cntdEq = 0; trfaEq = 0; pcunEq = 0; rndmEq = 0; cstoEq = 0;
                         row = (XSSFRow) rows.next()
                         if (!(row.rowNum in filasNO)) {
@@ -886,10 +887,16 @@ class RubroOfController {
                             println "fila: ${row.rowNum}"
                             while (cells.hasNext()) {
                                 cell = (XSSFCell) cells.next()
+                                if(row.rowNum == 57) {
+                                    println "Cell: ${cell.getCellType()} ${cell.getRawValue()}"
+                                }
                                 if (cell.getCellType() == XSSFCell.CELL_TYPE_NUMERIC) {
                                     rgst.add(cell.getNumericCellValue())
                                 } else if (cell.getCellType() == XSSFCell.CELL_TYPE_STRING) {
                                     rgst.add(cell.getStringCellValue())
+                                } else if (cell.getCellType() == XSSFCell.CELL_TYPE_FORMULA) {
+//                                    rgst.add(cell.getNumericCellValue())
+                                    rgst.add(cell.getRawValue())
                                 } else {
                                     rgst.add('')
                                 }
@@ -897,9 +904,10 @@ class RubroOfController {
 
                             println "reg: $rgst"
 
+                            /** va antes que ssnRbro = true porque analiza la siguiente pasada **/
                             if (sccnRubro) {
                                 rbroundd = rgst[cols[params.rbroundd]]
-                                sccnRubro = false
+                                sccnEq = false; sccnMo = false; sccnMt = false; sccnTr = false; sccnRubro = false
                                 println "Rubro: $rbronmbr $rbroundd"
 //************                  insertar rubro
                             }
@@ -910,35 +918,27 @@ class RubroOfController {
                                 println "Rubro: $rbronmbr"
                             }
 
-
-                            def titlEq = rgst[cols[params.cldaEq]]
-                            if (titlEq == params.titlEq) {
-                                println "Equipos: $titlEq"
-                                sccnEq = true; sccnMo = false; sccnMt = false; sccnTr = false
+                            if ( rgst[cols[params.cldaEq]] == params.titlEq) {
+                                sccnEq = true
+                                println "Equipos..... $sccnEq"
                             }
-
                             if (sccnEq) {
 //                                cdgoEq, nmbrEq, cntdEq, trfaEq, pcunEq, rndmEq, cstoEq
-                                println "cols: ${cols[params.cdgoEq]}, ${cols[params.cntdEq]}"
-                                cdgoEq = rgst[cols[params.cdgoEq]]
-                                cntdEq = rgst[cols[params.cntdEq]]
-//                                def unidad = rgst[2]
-//                                def cantidad = rgst[3]
-//                                def punitario = rgst[4]
-//                                def subtotal = rgst[5]
-//                                def pcun = 0.0, cntd = 0.0, pcnt = 0.0, prcl = 0.0, prco = 0.0
-
-                                println "R: sccnEq: $sccnEq -> ${cols[params.cdgoEq]}, " +
-                                        "${cols[params.cntdEq]}, $cdgoEq, $cntdEq"
-
                                 try {
-                                    cntdEq = cntdEq.toDouble()
+                                    cdgoEq = rgst[cols[params.cdgoEq]]
+                                    nmbrEq = rgst[cols[params.nmbrEq]]
+                                    cntdEq = rgst[cols[params.cntdEq]].toDouble()
+                                    trfaEq = rgst[cols[params.trfaEq]].toDouble()
+                                    pcunEq = rgst[cols[params.pcunEq]].toDouble()
+                                    rndmEq = rgst[cols[params.rndmEq]].toDouble()
+                                    cstoEq = rgst[cols[params.cstoEq]].toDouble()
                                 } catch (e) {
                                     cntdEq = 0
                                 }
 
                                 if (cntdEq) {
-                                    htmlInfo += "<p>Hoja : " + sheet.getSheetName() + " - ITEM: " + cdgoEq + "</p>"
+                                    println "htmlInfo: ${htmlInfo.size()}"
+                                    println "Inserta Eq: $cdgoEq, $nmbrEq, $cntdEq, $cntdEq, $trfaEq, $pcunEq, $rndmEq, $cstoEq"
 //                                    sql = "select vocr__id from vocr where cntr__id = ${cntr_id} and vocrordn = ${numero}"
 //                                    def vc_id = cn.rows(sql.toString())[0].vocr__id
 //                                    if (!vc_id) {
@@ -969,7 +969,9 @@ class RubroOfController {
 
                             }
                         }
+                        fila++
                     } //sheets.each
+                    htmlInfo += "<p>Hoja : " + sheet.getSheetName() + " Rubro: " + rbronmbr + "</p>"
                 } //sheets.each
                 if (done > 0) {
                     doneHtml = "<div class='alert alert-success'>Se han ingresado correctamente " + done + " registros</div>"
@@ -984,7 +986,7 @@ class RubroOfController {
                 flash.message = str
 
                 println "DONE!!"
-                redirect(action: "mensajeUploadContrato", id: params.id)
+                redirect(action: "mensajeUploadApu", id: params.id)
             } else {
                 flash.message = "Seleccione un archivo Excel xlsx para procesar (archivos xls deben ser convertidos a xlsx primero)"
                 redirect(action: 'formArchivo')
@@ -995,8 +997,8 @@ class RubroOfController {
         }
     }
 
-    def cambiaSeccion(actual) {
-        def sccnEq = false, sccnMo = false, sccnMt = false, sccnTr = false, sccnRubro = false
+    def mensajeUploadApu() {
+
     }
 
 } //fin controller
