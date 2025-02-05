@@ -27,7 +27,7 @@
         /*border: 1px solid black;*/
         display: inline-block;
         font-size: 12pt;
-        text-align: center;
+        text-align: left;
         color: #0A246A;
     }
 
@@ -64,7 +64,7 @@
         </div>
         <div class="col-md-10">
             <g:select name="obra"
-                      from="${obras}" id="obraOf" optionKey="key" optionValue="value"
+                      from="${obras}" optionKey="key" optionValue="value"
                       style="width: 100%; margin-left: -80px"/>
         </div>
 
@@ -72,25 +72,54 @@
             <div class="col-md-2"><b>Archivo Excel a subir:</b></div>
 
             <div class="col-md-8">
-                <input type="file" class="required" id="fileCrono" name="file" multiple accept=".xlsx"
+                <input type="file" class="required" name="file" multiple accept=".xlsx"
                        style="width: 100%; font-size: 12pt" value="Arch"/>
             </div>
 
             <div class="col-md-2">
                 <a href="#" class="btn btn-success" id="btnSubmitCrono"><i class="fa fa-upload"></i>
-                    Subir archivo APUs</a>
+                    Procesar archivo APUs</a>
             </div>
         </div>
 
-        <div style="text-align: center; margin-left: -180px"><h3>Columnas del archivo excel a subir</h3></div>
+        <div class="col-md-2">
+            <label>Texto para Rubro</label>
+        </div>
+        <div class="col-md-2" style="margin-left: -90px">
+            <g:textField name="rbro" class="form-control" value="RUBRO:"/>
+        </div>
 
-        <div style="background-color: #e0e0e8; height: 105px">
+        <div class="col-md-2">
+            <label>Celda texto FRubro</label>
+        </div>
+        <div class="col-md-1" style="margin-left: -40px">
+            <g:textField name="cldarbro" class="form-control" value="A"/>
+        </div>
+
+        <div class="col-md-2">
+            <label>Celda del Nombre del rubro</label>
+        </div>
+        <div class="col-md-1" style="margin-left: -40px">
+            <g:textField name="rbronmbr" class="form-control" value="B"/>
+        </div>
+
+        <div class="col-md-1">
+            <label>Celda Unidad</label>
+        </div>
+        <div class="col-md-1" style="margin-left: -20px">
+            <g:textField name="rbroundd" class="form-control" value="H"/>
+        </div>
+
+        %{--<div style="text-align: center; margin-left: -180px; margin-bottom: 20px"><h3>Celdas y Columnas del APU</h3></div>--}%
+        %{--<div style="text-align: center; margin-left: -180px; margin-bottom: 20px"><h3>ss</h3></div>--}%
+
+        <div style="background-color: #e0e0e8; height: 105px; margin-top: 150px">
             <div class="contenedor">
                 <div class="inside" style="width: 30%; font-weight: bold" >Equipos</div>
 
-                <div class="inside" style="width: 70%">
-                    <span style="display: inline-block">Tìtulo de la sección Equipos</span>
-                    <g:textField name="titlEq" id="titlEq" class="form-control" value=""
+                <div class="inside" style="width: 70%; margin-left: 15px">
+                    <span style="display: inline-block; margin-left: 44px">Tìtulo de la sección Equipos</span>
+                    <g:textField name="titlEq" id="titlEq" class="form-control" value="EQUIPOS"
                                  style="width: 400px; display: inline-block; height: 26px"/>
                     <span style="display: inline-block; margin-left: 20px">Celda:</span>
                     <g:textField name="cldaEq" id="cldaEq" class="form-control" value="A"
@@ -102,22 +131,22 @@
             <div class="row-fluid">
                 <div class="col-md-2">
                     <label>Código del Ítem</label>
-                    <g:textField name="itemcdgoEq" id="itemcdgoEq" class="form-control" value="A"/>
+                    <g:textField name="cdgoEq" class="form-control" value="A"/>
                 </div>
 
                 <div class="col-md-2">
                     <label>Descricón del Ítem Item</label>
-                    <g:textField name="itemnmbrEq" id="itemnmbrEq" class="form-control" value="B"/>
+                    <g:textField name="nmbrEq" id="nmbrEq" class="form-control" value="B"/>
                 </div>
 
                 <div class="col-md-1">
                     <label>Cantidad</label>
-                    <g:textField name="rbrocntdEq" id="rbrocntdEq" class="form-control" value="D"/>
+                    <g:textField name="cntdEq" id="cntdEq" class="form-control" value="D"/>
                 </div>
 
                 <div class="col-md-1">
                     <label>Tarifa</label>
-                    <g:textField name="rbrotrfaEq" class="form-control" value="E"/>
+                    <g:textField name="trfaEq" class="form-control" value="E"/>
                 </div>
 
                 <div class="col-md-2">
@@ -127,12 +156,12 @@
 
                 <div class="col-md-2">
                     <label>Rendimiento</label>
-                    <g:textField name="rbrorndmEq" class="form-control" value="G"/>
+                    <g:textField name="rndmEq" class="form-control" value="G"/>
                 </div>
 
                 <div class="col-md-2">
                     <label>Costo</label>
-                    <g:textField name="rbrocstoEq" class="form-control" value="H"/>
+                    <g:textField name="cstoEq" class="form-control" value="H"/>
                 </div>
             </div>
         </div>
@@ -141,7 +170,7 @@
             <div class="contenedor">
                 <div class="inside" style="width: 30%; font-weight: bold">Mano de Obra</div>
 
-                <div class="inside" style="width: 70%">
+                <div class="inside" style="width: 70%; margin-left: 15px">
                     <span style="display: inline-block">Tìtulo de la sección Mano de Obra</span>
                     <g:textField name="titlMo" id="titlMo" class="form-control" value=""
                                  style="width: 400px; display: inline-block; height: 26px"/>
@@ -155,22 +184,22 @@
             <div class="row-fluid">
                 <div class="col-md-2">
                     <label>Código del Ítem</label>
-                    <g:textField name="itemcdgoMo" id="itemcdgoMo" class="form-control" value="A"/>
+                    <g:textField name="cdgoMo" id="cdgoMo" class="form-control" value="A"/>
                 </div>
 
                 <div class="col-md-2">
                     <label>Descricón del Ítem Item</label>
-                    <g:textField name="itemnmbrMo" id="itemnmbrMo" class="form-control" value="B"/>
+                    <g:textField name="nmbrMo" id="nmbrMo" class="form-control" value="B"/>
                 </div>
 
                 <div class="col-md-1">
                     <label>Cantidad</label>
-                    <g:textField name="rbrocntdMo" id="rbrocntdMo" class="form-control" value="D"/>
+                    <g:textField name="cntdMo" id="cntdMo" class="form-control" value="D"/>
                 </div>
 
                 <div class="col-md-1">
                     <label>Tarifa</label>
-                    <g:textField name="rbrotrfaMo" class="form-control" value="E"/>
+                    <g:textField name="trfaMo" class="form-control" value="E"/>
                 </div>
 
                 <div class="col-md-2">
@@ -180,12 +209,12 @@
 
                 <div class="col-md-2">
                     <label>Rendimiento</label>
-                    <g:textField name="rbrorndmMo" class="form-control" value="G"/>
+                    <g:textField name="rndmMo" class="form-control" value="G"/>
                 </div>
 
                 <div class="col-md-2">
                     <label>Costo</label>
-                    <g:textField name="rbrocstoMo" class="form-control" value="H"/>
+                    <g:textField name="cstoMo" class="form-control" value="H"/>
                 </div>
             </div>
         </div>
@@ -194,7 +223,7 @@
             <div class="contenedor">
                 <div class="inside" style="width: 30%; font-weight: bold">Materiales</div>
 
-                <div class="inside" style="width: 70%">
+                <div class="inside" style="width: 70%; margin-left: 40px">
                     <span style="display: inline-block">Tìtulo de la sección Materiales</span>
                     <g:textField name="titlMt" id="titlMt" class="form-control" value=""
                                  style="width: 400px; display: inline-block; height: 26px"/>
@@ -208,22 +237,22 @@
             <div class="row-fluid">
                 <div class="col-md-2">
                     <label>Código del Ítem</label>
-                    <g:textField name="itemcdgoMt" id="itemcdgoMt" class="form-control" value="A"/>
+                    <g:textField name="cdgoMt" id="cdgoMt" class="form-control" value="A"/>
                 </div>
 
                 <div class="col-md-2">
                     <label>Descricón del Ítem Item</label>
-                    <g:textField name="itemnmbrMt" id="itemnmbrMt" class="form-control" value="B"/>
+                    <g:textField name="nmbrMt" id="nmbrMt" class="form-control" value="B"/>
                 </div>
 
                 <div class="col-md-1">
                     <label>Cantidad</label>
-                    <g:textField name="rbrocntdMt" id="rbrocntdMt" class="form-control" value="D"/>
+                    <g:textField name="cntdMt" id="cntdMt" class="form-control" value="D"/>
                 </div>
 
                 <div class="col-md-1">
                     <label>Tarifa</label>
-                    <g:textField name="rbrotrfaMt" class="form-control" value="E"/>
+                    <g:textField name="trfaMt" class="form-control" value="E"/>
                 </div>
 
                 <div class="col-md-2">
@@ -233,12 +262,12 @@
 
                 <div class="col-md-2">
                     <label>Rendimiento</label>
-                    <g:textField name="rbrorndmMt" class="form-control" value="G"/>
+                    <g:textField name="rndmMt" class="form-control" value="G"/>
                 </div>
 
                 <div class="col-md-2">
                     <label>Costo</label>
-                    <g:textField name="rbrocstoMt" class="form-control" value="H"/>
+                    <g:textField name="cstoMt" class="form-control" value="H"/>
                 </div>
             </div>
         </div>
@@ -248,7 +277,7 @@
                 <div class="inside" style="width: 30%; font-weight: bold">Transporte</div>
 
                 <div class="inside" style="width: 70%">
-                    <span style="display: inline-block">Tìtulo de la sección Transporte de Materiales</span>
+                    <span style="display: inline-block">Tìtulo para Transporte de Materiales</span>
                     <g:textField name="titlTr" id="titlTr" class="form-control" value=""
                                  style="width: 400px; display: inline-block; height: 26px"/>
                     <span style="display: inline-block; margin-left: 20px">Celda:</span>
@@ -261,22 +290,22 @@
             <div class="row-fluid">
                 <div class="col-md-2">
                     <label>Código del Ítem</label>
-                    <g:textField name="itemcdgoTr" id="itemcdgoTr" class="form-control" value="A"/>
+                    <g:textField name="cdgoTr" id="cdgoTr" class="form-control" value="A"/>
                 </div>
 
                 <div class="col-md-2">
                     <label>Descricón del Ítem Item</label>
-                    <g:textField name="itemnmbrTr" id="itemnmbrTr" class="form-control" value="B"/>
+                    <g:textField name="nmbrTr" id="nmbrTr" class="form-control" value="B"/>
                 </div>
 
                 <div class="col-md-1">
                     <label>Cantidad</label>
-                    <g:textField name="rbrocntdTr" id="rbrocntdTr" class="form-control" value="D"/>
+                    <g:textField name="cntdTr" id="cntdTr" class="form-control" value="D"/>
                 </div>
 
                 <div class="col-md-1">
                     <label>Tarifa</label>
-                    <g:textField name="rbrotrfaTr" class="form-control" value="E"/>
+                    <g:textField name="trfaTr" class="form-control" value="E"/>
                 </div>
 
                 <div class="col-md-2">
@@ -286,12 +315,12 @@
 
                 <div class="col-md-2">
                     <label>Rendimiento</label>
-                    <g:textField name="rbrorndmTr" class="form-control" value="G"/>
+                    <g:textField name="rndmTr" class="form-control" value="G"/>
                 </div>
 
                 <div class="col-md-2">
                     <label>Costo</label>
-                    <g:textField name="rbrocstoTr" class="form-control" value="H"/>
+                    <g:textField name="cstoTr" class="form-control" value="H"/>
                 </div>
             </div>
         </div>

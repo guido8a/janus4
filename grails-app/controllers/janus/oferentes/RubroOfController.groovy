@@ -816,7 +816,8 @@ class RubroOfController {
         def path = "/var/janus/" + "xlsCronosContratos/" + cntr_id + "/"   //web-app/archivos
         new File(path).mkdirs()
         def sql = ""
-        def cols = [A: 0, B:1, C:2, D:3, E: 4, F: 5, G: 6, H: 7, I: 8, J:9, K: 10, L:11, M: 12, N: 13]
+        def cols = [A: 0, B: 1, C: 2, D: 3, E: 4, F: 5, G: 6, H: 7, I: 8, J: 9, K: 10, L: 11, M: 12, N: 13]
+        def rubro = "", texto = ""
 
         def f = request.getFile('file')  //archivo = name del input type file
         if (f && !f.empty) {
@@ -857,70 +858,73 @@ class RubroOfController {
                 InputStream ExcelFileToRead = new FileInputStream(pathFile);
                 XSSFWorkbook workbook = new XSSFWorkbook(ExcelFileToRead);
 
-                XSSFSheet sheet = workbook.getSheetAt(0);
                 XSSFRow row;
                 XSSFCell cell;
-                Iterator rows = sheet.rowIterator();
 
-                int hojas = workbook.getNumberOfSheets(); //Obtenemos el número de hojas que contiene el documento
+//                int hojas = workbook.getNumberOfSheets(); //Obtenemos el número de hojas que contiene el documento
+                int hojas = 3
                 println "Número Hojas: $hojas"
 
                 def sccnEq = false, sccnMo = false, sccnMt = false, sccnTr = false
                 def cdgoEq, nmbrEq, cntdEq, trfaEq, pcunEq, rndmEq, cstoEq
 
                 //for que recorre las hojas existentes
-                for (int hj = 0; hj < hojas; i++) {
+                for (int hj = 1; hj < hojas; hj++) {
+                    XSSFSheet sheet = workbook.getSheetAt(hj);
                     sheet = workbook.getSheetAt(hj);
-                    while (rows.hasNext() && (row?.rowNum?:0 < 76) ) {
+                    Iterator rows = sheet.rowIterator();
+                    println "Porcesando hoja: $hj"
+
+                    while ( rows.hasNext() ) {
                         cdgoEq = ''; nmbrEq = ''; cntdEq = 0; trfaEq = 0; pcunEq = 0; rndmEq = 0; cstoEq = 0;
                         row = (XSSFRow) rows.next()
-                        println "fila: ${row.rowNum}"
                         if (!(row.rowNum in filasNO)) {
                             def ok = true
                             Iterator cells = row.cellIterator()
                             def rgst = []
                             def meses = []
-
+                            println "fila: ${row.rowNum}"
                             while (cells.hasNext()) {
                                 cell = (XSSFCell) cells.next()
-
-                                if (cell.columnIndex < 6) {  //separa cronograma
-                                    if (cell.getCellType() == XSSFCell.CELL_TYPE_NUMERIC) {
-                                        rgst.add(cell.getNumericCellValue())
-                                    } else if (cell.getCellType() == XSSFCell.CELL_TYPE_STRING) {
-                                        rgst.add(cell.getStringCellValue())
-                                    } else {
-                                        rgst.add('')
-                                    }
+                                if (row.rowNum == 8) {
+                                    println "celdas.. ${cell.getStringCellValue()}"
+                                }
+                                if (cell.getCellType() == XSSFCell.CELL_TYPE_NUMERIC) {
+                                    rgst.add(cell.getNumericCellValue())
+                                } else if (cell.getCellType() == XSSFCell.CELL_TYPE_STRING) {
+                                    rgst.add(cell.getStringCellValue())
                                 } else {
-                                    if (cell.getCellType() == XSSFCell.CELL_TYPE_NUMERIC) {
-                                        meses.add(cell.getNumericCellValue())
-                                    } else if (cell.getCellType() == XSSFCell.CELL_TYPE_STRING) {
-                                        meses.add(cell.getStringCellValue())
-                                    } else {
-                                        meses.add(0)
-                                    }
+                                    rgst.add('')
                                 }
                             }
 
+                            println "reg: $rgst"
+                            println "--> ${rgst[cols[params.cldarbro].toInteger()]} == ${params.rbro}"
+
+                            if (rgst[cols[params.cldarbro].toInteger()] == params.rbro) {
+                                rubro = rgst[cols[params.rbronmbr]]
+                                println "Rubro: $rubro"
+                            }
+
                             def titlEq = rgst[cols[params.cldaEq].toInteger()]
-                            if(titlEq == params.titlEq) {
-                                println "Equipos"
+                            if (titlEq == params.titlEq) {
+                                println "Equipos: $titlEq"
                                 sccnEq = true; sccnMo = false; sccnMt = false; sccnTr = false
                             }
 
-                            if(sccnEq){
+                            if (sccnEq) {
 //                                cdgoEq, nmbrEq, cntdEq, trfaEq, pcunEq, rndmEq, cstoEq
-                                cdgoEq = rgst[cols[params.itemcdgoEq].toInteger()]
-                                cntdEq = rgst[cols[params.rbrocntdEq].toInteger()]
+                                println "cols: ${cols[params.cdgoEq].toInteger()}, ${cols[params.cntdEq].toInteger()}"
+                                cdgoEq = rgst[cols[params.cdgoEq].toInteger()]
+                                cntdEq = rgst[cols[params.cntdEq].toInteger()]
 //                                def unidad = rgst[2]
 //                                def cantidad = rgst[3]
 //                                def punitario = rgst[4]
 //                                def subtotal = rgst[5]
 //                                def pcun = 0.0, cntd = 0.0, pcnt = 0.0, prcl = 0.0, prco = 0.0
 
-                                println "R: sccnEq: $sccnEq -> ${cols[params.itemcdgoEq].toInteger()}, " +
-                                        "${cols[params.rbrocntdEq].toInteger()}, $cdgoEq, $cntdEq"
+                                println "R: sccnEq: $sccnEq -> ${cols[params.cdgoEq].toInteger()}, " +
+                                        "${cols[params.cntdEq].toInteger()}, $cdgoEq, $cntdEq"
 
                                 try {
                                     cntdEq = cntdEq.toDouble()
@@ -929,33 +933,33 @@ class RubroOfController {
                                 }
 
                                 if (cntdEq) {
-                                    htmlInfo += "<p>Hoja : " + sheet.getSheetName() + " - ITEM: " + rubro + meses + "</p>"
-                                    sql = "select vocr__id from vocr where cntr__id = ${cntr_id} and vocrordn = ${numero}"
-                                    def vc_id = cn.rows(sql.toString())[0].vocr__id
-                                    if (!vc_id) {
-                                        errores += "<li>No se encontró volumen contrato con id ${cod} (linea: ${row.rowNum + 1})</li>"
-                                        println "No se encontró volumen contrato con id ${cod}"
-                                        ok = false
-                                    } else {
-
-                                        if (!punitario) {
-                                            punitario = 0
-                                        }
-
-                                        if (!cantidad) {
-                                            cantidad = 0
-                                        }
-                                        pcun = punitario.toDouble()
-                                        cntd = cantidad.toDouble()
-                                        sql = "update vocr set vocrpcun = ${pcun}, vocrcntd = ${cntd}, vocrsbtt = ${pcun * cntd} " +
-                                                "where vocr__id = ${vc_id}"
-                                        try {
-                                            cn.execute(sql.toString())
-                                        } catch (e) {
-                                            println " no se pudo guardar $rgst: ${e.erros()}"
-                                        }
-
-                                    }
+                                    htmlInfo += "<p>Hoja : " + sheet.getSheetName() + " - ITEM: " + cdgoEq + "</p>"
+//                                    sql = "select vocr__id from vocr where cntr__id = ${cntr_id} and vocrordn = ${numero}"
+//                                    def vc_id = cn.rows(sql.toString())[0].vocr__id
+//                                    if (!vc_id) {
+//                                        errores += "<li>No se encontró volumen contrato con id ${cod} (linea: ${row.rowNum + 1})</li>"
+//                                        println "No se encontró volumen contrato con id ${cod}"
+//                                        ok = false
+//                                    } else {
+//
+//                                        if (!punitario) {
+//                                            punitario = 0
+//                                        }
+//
+//                                        if (!cantidad) {
+//                                            cantidad = 0
+//                                        }
+//                                        pcun = punitario.toDouble()
+//                                        cntd = cantidad.toDouble()
+//                                        sql = "update vocr set vocrpcun = ${pcun}, vocrcntd = ${cntd}, vocrsbtt = ${pcun * cntd} " +
+//                                                "where vocr__id = ${vc_id}"
+//                                        try {
+//                                            cn.execute(sql.toString())
+//                                        } catch (e) {
+//                                            println " no se pudo guardar $rgst: ${e.erros()}"
+//                                        }
+//
+//                                    }
                                 }
 
                             }
