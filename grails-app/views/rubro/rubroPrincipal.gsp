@@ -1922,6 +1922,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                     var b = bootbox.dialog({
                         id      : "dlgIM",
                         title   : "Información de modificacion",
+                        class: 'modal-lg',
                         message : msg,
                         buttons : {
                             cancelar : {

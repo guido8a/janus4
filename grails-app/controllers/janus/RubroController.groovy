@@ -1334,11 +1334,17 @@ class RubroController {
 
 
     def infoModifica_ajax(){
-//        def rubro = Item.get(params.id)
-//        def sql = "select audtcmpo, audtantr, audtactl, audtfcha from audt " +
-//                "where audtfcha > '3-feb-2025' and (audtrgid = 1737 or audtrgid in " +
-//                "(select rbro__id from rbro where rbrocdgo = 1737)) and " +
-//                "audtcmpo in ('valor', 'nombre', 'item', 'cantidad', 'rendimiento')"
+        def rubro = Item.get(params.id)
+        def sql = "select audtcmpo, audtantr, audtactl, audtfcha from audt " +
+                "where audtfcha > '${rubro?.fecha}' and (audtrgid = ${rubro?.id} or audtrgid in " +
+                "(select rbro__id from rbro where rbrocdgo = ${rubro?.id})) and " +
+                "audtcmpo in ('valor', 'nombre', 'item', 'cantidad', 'rendimiento')"
+        def cn = dbConnectionService.getConnection()
+        def res = cn.rows(sql.toString())
+
+        println("sql " + sql)
+
+        return [res: res]
     }
 
 
