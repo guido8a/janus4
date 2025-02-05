@@ -35,7 +35,7 @@ th, td {
     <table class="table-bordered table-condensed table-striped table-hover" style="width: 100%">
         <g:each in="${res}" var="dato" >
             <tr style="width: 100%">
-                <td style="width: 20%">${dato.audtfcha}</td>
+                <td style="width: 20%">${dato.audtfcha.format("dd-MM-yyyy HH:mm")}</td>
                 <td style="width: 20%; font-size: 10px">${dato.audtcmpo}</td>
                 <td style="width: 30%; font-size: 10px">${dato.audtantr}</td>
                 <td style="width: 30%">${dato.audtactl}</td>
