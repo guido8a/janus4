@@ -810,6 +810,7 @@ class RubroOfController {
     def uploadApus() {
         println "uploadApus $params"
         params.obra = 4255
+        def obra = params.obra
         def cn = dbConnectionService.getConnection()
         def filasNO = [0, 1]
         def filasTodasNo = []
@@ -867,7 +868,7 @@ class RubroOfController {
                 println "Número Hojas: $hojas"
 
                 def sccnEq = false, sccnMo = false, sccnMt = false, sccnTr = false, sccnRubro = false
-                def cdgoEq, nmbrEq, cntdEq, trfaEq, pcunEq, rndmEq, cstoEq
+                def cdgo, nmbr, undd, peso, cntd, trfa, pcun, rndm, csto, dstn
 
                 //for que recorre las hojas existentes
                 for (int hj = 1; hj < hojas; hj++) {
@@ -876,9 +877,10 @@ class RubroOfController {
                     Iterator rows = sheet.rowIterator();
                     println "Porcesando hoja: $hj"
 
+                    def ordn = 0 // número de rubro VLOBORDN
                     def fila = 0
                     while ( rows.hasNext() && (fila < 76) ) {
-                        cdgoEq = ''; nmbrEq = ''; cntdEq = 0; trfaEq = 0; pcunEq = 0; rndmEq = 0; cstoEq = 0;
+                        cdgo = ''; nmbr = ''; undd = ''; cntd = 0; trfa = 0; pcun = 0; rndm = 0; csto = 0;
                         row = (XSSFRow) rows.next()
                         if (!(row.rowNum in filasNO)) {
                             def ok = true
@@ -905,14 +907,15 @@ class RubroOfController {
 
                             println "reg: $rgst"
 
-                            /** va antes que ssnRbro = true porque analiza la siguiente pasada **/
+                            /** va antes que ssnRbro = true porque se analiza en la siguiente pasada **/
                             if (sccnRubro) {
                                 rbroundd = rgst[cols[params.rbroundd]]
                                 sccnEq = false; sccnMo = false; sccnMt = false; sccnTr = false; sccnRubro = false
                                 println "Rubro: $rbronmbr $rbroundd"
                                 /** insertar rubro */
                                 if (rbroundd) {
-                                    def ordn = sheet.getSheetName().toString().toInteger()
+                                    ordn = sheet.getSheetName().toString().toInteger()
+                                    rbronmbr = rbronmbr.toString().replaceAll("'", "''")
                                     sql = "select item__id from vlob where obra__id = ${params.obra} and vlobordn = ${ordn}"
                                     def item_id = cn.rows(sql.toString())[0].item__id
                                     if (!item_id) {
@@ -920,25 +923,25 @@ class RubroOfController {
                                         println "No se encontró rubro con id ${ordn}"
                                         ok = false
                                     } else {
-                                        sql = "select ofrb__id cnta from ofrb where prsn__id = ${oferente.id} and " +
-                                                "obra__id = ${params.obra} and vlobordn = ${ordn} and item__id = $item_id"
+                                        sql = "select ofrb__id from ofrb where prsn__id = ${oferente.id} and " +
+                                                "obra__id = ${params.obra} and ofrbordn = ${ordn} and ofrbjnid = $item_id"
                                         def ofrb_id = cn.rows(sql.toString())[0]?.ofrb__id?: 0
                                         if(ofrb_id) {
-                                            sql = "update ofrb set ofrbnmbr = ${rbronmbr}, ofrbundd = ${rbroundd} " +
+                                            sql = "update ofrb set ofrbnmbr = '${rbronmbr}', ofrbundd = '${rbroundd}' " +
                                                     "where ofrb__id = ${ofrb_id}"
                                         } else {
-                                            sql = "insert into ofrb(prsn__id, obra__id, ofrbnmbr, ofrbundd, obrbordn, ofrbjni) " +
-                                                    "values (${oferente.id}, ${params.obra}, $rbronmbr, $rbroundd, $ordn, $item_id)"
+                                            sql = "insert into ofrb(prsn__id, obra__id, ofrbnmbr, ofrbundd, ofrbordn, ofrbjnid) " +
+                                                    "values (${oferente.id}, ${params.obra}, '${rbronmbr}', '${rbroundd}', " +
+                                                    "$ordn, $item_id)"
                                         }
+                                        println "sql: $sql"
                                         try {
                                             cn.execute(sql.toString())
                                         } catch (e) {
                                             println " no se pudo guardar $rgst: ${e.erros()}"
                                         }
-
                                     }
                                 }
-
                             }
 
                             if (rgst[cols[params.cldarbro]] == params.rbro) {
@@ -947,56 +950,106 @@ class RubroOfController {
                                 println "Rubro: $rbronmbr"
                             }
 
+                            /** --------------- Equipos del rbro ordn ---------------**/
                             if ( rgst[cols[params.cldaEq]] == params.titlEq) {
-                                sccnEq = true
-                                println "Equipos..... $sccnEq"
+                                sccnEq = true; sccnMo = false; sccnMt = false; sccnTr = false; sccnRubro = false
+                                println "Equipos..... $sccnEq --> rbro: $ordn $rbronmbr"
                             }
                             if (sccnEq) {
-//                                cdgoEq, nmbrEq, cntdEq, trfaEq, pcunEq, rndmEq, cstoEq
+//                                cdgo, undd, nmbr, cntd, trfa, pcun, rndm, csto
                                 try {
-                                    cdgoEq = rgst[cols[params.cdgoEq]]
-                                    nmbrEq = rgst[cols[params.nmbrEq]]
-                                    cntdEq = rgst[cols[params.cntdEq]].toDouble()
-                                    trfaEq = rgst[cols[params.trfaEq]].toDouble()
-                                    pcunEq = rgst[cols[params.pcunEq]].toDouble()
-                                    rndmEq = rgst[cols[params.rndmEq]].toDouble()
-                                    cstoEq = rgst[cols[params.cstoEq]].toDouble()
+                                    cdgo = rgst[cols[params.cdgoEq]]
+                                    nmbr = rgst[cols[params.nmbrEq]]
+                                    undd   = params.unddEq? rgst[cols[params.unddEq]] : ''
+                                    cntd = rgst[cols[params.cntdEq]].toDouble() //cantidad
+                                    trfa = rgst[cols[params.trfaEq]].toDouble() //tarifa, jornal dtrbpcun
+                                    pcun = rgst[cols[params.pcunEq]].toDouble() //costo
+                                    rndm = rgst[cols[params.rndmEq]].toDouble()
+                                    csto = rgst[cols[params.cstoEq]].toDouble()
                                 } catch (e) {
-                                    cntdEq = 0
+                                    cntd = 0
                                 }
-
-                                if (cntdEq) {
-                                    println "htmlInfo: ${htmlInfo.size()}"
-                                    println "Inserta Eq: $cdgoEq, $nmbrEq, $cntdEq, $cntdEq, $trfaEq, $pcunEq, $rndmEq, $cstoEq"
-//                                    sql = "select vocr__id from vocr where cntr__id = ${cntr_id} and vocrordn = ${numero}"
-//                                    def vc_id = cn.rows(sql.toString())[0].vocr__id
-//                                    if (!vc_id) {
-//                                        errores += "<li>No se encontró volumen contrato con id ${cod} (linea: ${row.rowNum + 1})</li>"
-//                                        println "No se encontró volumen contrato con id ${cod}"
-//                                        ok = false
-//                                    } else {
-//
-//                                        if (!punitario) {
-//                                            punitario = 0
-//                                        }
-//
-//                                        if (!cantidad) {
-//                                            cantidad = 0
-//                                        }
-//                                        pcun = punitario.toDouble()
-//                                        cntd = cantidad.toDouble()
-//                                        sql = "update vocr set vocrpcun = ${pcun}, vocrcntd = ${cntd}, vocrsbtt = ${pcun * cntd} " +
-//                                                "where vocr__id = ${vc_id}"
-//                                        try {
-//                                            cn.execute(sql.toString())
-//                                        } catch (e) {
-//                                            println " no se pudo guardar $rgst: ${e.erros()}"
-//                                        }
-//
-//                                    }
+                                if (cntd) {
+                                      errores += insertaDtrb(oferente.id, obra, ordn, cdgo, nmbr, undd, cntd, trfa, pcun, rndm, csto)
                                 }
-
                             }
+
+                            /** --------------- Mano de Obra del rbro ordn ---------------**/
+                            if ( rgst[cols[params.cldaMo]] == params.titlMo) {
+                                sccnEq = false; sccnMo = true; sccnMt = false; sccnTr = false; sccnRubro = false
+                                println "Mano de Obra.... $sccnMo --> rbro: $ordn $rbronmbr"
+                            }
+                            if (sccnMo) {
+//                                cdgo, undd, nmbr, cntd, trfa, pcun, rndm, csto
+                                try {
+                                    cdgo = rgst[cols[params.cdgoMo]]
+                                    nmbr = rgst[cols[params.nmbrMo]]
+                                    undd   = params.unddMo? rgst[cols[params.unddMo]] : ''
+                                    cntd = rgst[cols[params.cntdMo]].toDouble() //cantidad
+                                    trfa = rgst[cols[params.trfaMo]].toDouble() //tarifa, jornal dtrbpcun
+                                    pcun = rgst[cols[params.pcunMo]].toDouble() //costo
+                                    rndm = rgst[cols[params.rndmMo]].toDouble()
+                                    csto = rgst[cols[params.cstoMo]].toDouble()
+                                } catch (e) {
+                                    cntd = 0
+                                }
+                                if (cntd) {
+                                    errores += insertaDtrb(oferente.id, obra, ordn, cdgo, nmbr, undd, cntd, trfa, pcun, rndm, csto)
+                                }
+                            }
+
+                            /** --------------- Materiales del rbro ordn ---------------**/
+                            if ( rgst[cols[params.cldaMt]] == params.titlMt) {
+                                sccnEq = false; sccnMo = false; sccnMt = true; sccnTr = false; sccnRubro = false
+                                println "Mano de Mat... $sccnMt --> rbro: $ordn $rbronmbr"
+                            }
+                            if (sccnMt) {
+//                                cdgo, undd, nmbr, cntd, trfa, pcun, rndm, csto
+                                try {
+                                    cdgo = rgst[cols[params.cdgoMt]]
+                                    nmbr = rgst[cols[params.nmbrMt]]
+                                    undd   = params.unddMt? rgst[cols[params.unddMt]] : ''
+                                    cntd = rgst[cols[params.cntdMt]].toDouble() //cantidad
+                                    trfa = rgst[cols[params.trfaMt]].toDouble() //tarifa, jornal dtrbpcun
+                                    pcun = rgst[cols[params.pcunMt]].toDouble() //costo
+//                                    rndm = rgst[cols[params.rndmMt]].toDouble()
+                                    csto = rgst[cols[params.cstoMt]].toDouble()
+                                } catch (e) {
+                                    cntd = 0
+                                }
+                                if (cntd) {
+                                    errores += insertaDtrb(oferente.id, obra, ordn, cdgo, nmbr, undd, cntd, trfa, pcun, rndm, csto)
+                                }
+                            }
+
+                            /** --------- Transporte de Materiales del rbro ordn ---------**/
+                            if ( rgst[cols[params.cldaTr]] == params.titlTr) {
+                                sccnEq = false; sccnMo = false; sccnMt = false; sccnTr = true; sccnRubro = false
+                                println "Transp... $sccnTr --> rbro: $ordn $rbronmbr"
+                            }
+                            if (sccnTr) {
+//                                cdgo, undd, nmbr, cntd, trfa, pcun, rndm, csto
+                                println "transporte: $rgst"
+                                try {
+                                    cdgo = rgst[cols[params.cdgoTr]]
+                                    nmbr = rgst[cols[params.nmbrTr]]
+                                    undd   = params.unddTr? rgst[cols[params.unddTr]] : ''
+                                    peso   = params.pesoTr? rgst[cols[params.pesoTr]].toDouble() : ''
+                                    dstn   = params.dstnTr? rgst[cols[params.dstnTr]].toDouble() : ''
+                                    cntd = rgst[cols[params.cntdTr]].toDouble() //cantidad
+//                                    trfa = rgst[cols[params.trfaTr]].toDouble() //tarifa, jornal dtrbpcun
+                                    pcun = rgst[cols[params.pcunTr]].toDouble() //costo
+//                                    rndm = rgst[cols[params.rndmTr]].toDouble()
+                                    csto = rgst[cols[params.cstoTr]].toDouble()
+                                } catch (e) {
+                                    cntd = 0
+                                }
+                                if (cntd) {
+                                    println "inserta transporte $ordn $nmbr"
+                                    errores += insertaTrnp(oferente.id, obra, ordn, cdgo, nmbr, undd, peso, cntd, trfa, pcun, rndm, csto, dstn)
+                                }
+                            }
+
                         }
                         fila++
                     } //sheets.each
@@ -1029,5 +1082,78 @@ class RubroOfController {
     def mensajeUploadApu() {
 
     }
+
+
+    def insertaDtrb(oferente, obra, ordn, cdgo, nmbr, undd, cntd, trfa, pcun, rndm, csto) {
+        def cn = dbConnectionService.getConnection()
+        def errores = ""
+        def sql = "select ofrb__id from ofrb where prsn__id = ${oferente} and " +
+                "obra__id = ${obra} and ofrbordn = ${ordn}"
+        def ofrb_id = cn.rows(sql.toString())[0]?.ofrb__id ?: 0
+        if (!ofrb_id) {
+            errores += "<li>No se encontró rurbo ${ordn} (linea: ${row.rowNum + 1})</li>"
+            println "No se encontró rubro con id ${ordn}"
+        } else {
+            sql = "select dtrb__id from dtrb where ofrb__id = ${ofrb_id} and " +
+                    "dtrbnmbr = '${nmbr}'"
+            def dtrb_id = cn.rows(sql.toString())[0]?.dtrb__id ?: 0
+            if (dtrb_id) {
+                sql = "update dtrb set dtrbcdgo = '${cdgo}', dtrbnmbr = '${nmbr}', " +
+                        "dtrbundd = '${undd}', dtrbcntd = $cntd, dtrbpcun = $trfa, " +
+                        "dtrbcsto = $pcun, dtrbrndm = $rndm, dtrbsbtt = $csto " +
+                        "where dtrb__id = ${ofrb_id}"
+            } else {
+                sql = "insert into dtrb(ofrb__id, dtrbcdgo, dtrbnmbr, dtrbundd, dtrbcntd, dtrbpcun, " +
+                        "dtrbcsto, dtrbrndm, dtrbsbtt) " +
+                        "values (${ofrb_id}, '${cdgo}', '${nmbr}', '${undd}', $cntd, $trfa, " +
+                        "$pcun, $rndm, $csto )"
+            }
+            println "sql: $sql"
+            try {
+                cn.execute(sql.toString())
+            } catch (e) {
+                println " no se pudo guardar dtrb: ${e.erros()}"
+            }
+        }
+        return errores
+    }
+
+    def insertaTrnp(oferente, obra, ordn, cdgo, nmbr, undd, peso, cntd, trfa, pcun, rndm, csto, dstn) {
+        def cn = dbConnectionService.getConnection()
+        def errores = ""
+        def sql = "select ofrb__id from ofrb where prsn__id = ${oferente} and " +
+                "obra__id = ${obra} and ofrbordn = ${ordn}"
+        def ofrb_id = cn.rows(sql.toString())[0]?.ofrb__id ?: 0
+        println "insertaTrnp $oferente, $obra, $ordn, $cdgo, $nmbr, $undd, $peso, $cntd, $trfa, $pcun, $rndm, $csto, $dstn"
+        if (!ofrb_id) {
+            errores += "<li>No se encontró rurbo ${ordn} (linea: ${row.rowNum + 1})</li>"
+            println "No se encontró rubro con id ${ordn}"
+        } else {
+            println "porcesa transporte: dstn: $dstn"
+            sql = "select dtrb__id from dtrb where ofrb__id = ${ofrb_id} and " +
+                    "dtrbnmbr = '${nmbr}' and dtrbdstn > 0"
+            def dtrb_id = cn.rows(sql.toString())[0]?.dtrb__id ?: 0
+            if (dtrb_id) {
+                sql = "update dtrb set dtrbcdgo = '${cdgo}', dtrbnmbr = '${nmbr}', " +
+                        "dtrbundd = '${undd}', dtrbcntd = $cntd, dtrbpcun = $trfa, " +
+                        "dtrbcsto = $pcun, dtrbrndm = $rndm, dtrbsbtt = $csto, dtrbpeso = $peso," +
+                        "dtrbdstn = $dstn " +
+                        "where dtrb__id = ${ofrb_id}"
+            } else {
+                sql = "insert into dtrb(ofrb__id, dtrbcdgo, dtrbnmbr, dtrbundd, dtrbcntd, dtrbpcun, " +
+                        "dtrbcsto, dtrbrndm, dtrbsbtt, dtrbpeso, dtrbdstn) " +
+                        "values (${ofrb_id}, '${cdgo}', '${nmbr}', '${undd}', $cntd, $trfa, " +
+                        "$pcun, $rndm, $csto, $peso, $dstn )"
+            }
+            println "sql: $sql"
+            try {
+                cn.execute(sql.toString())
+            } catch (e) {
+                println " no se pudo guardar dtrb: ${e.erros()}"
+            }
+        }
+        return errores
+    }
+
 
 } //fin controller
