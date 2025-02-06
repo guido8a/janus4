@@ -1158,24 +1158,35 @@ class RubroOfController {
 
     def rubroCon(){
 
-        def rubro
-
-        if(params.id){
-            rubro = RubroOferta.get(params.id)
-        }else{
-            rubro = new RubroOferta()
+        def oferente = session.usuario
+        def cn = dbConnectionService.getConnection()
+        def obras = [:]
+        def sql = "select distinct obra.obra__id id, obracdgo||' - '||obranmbr nombre " +
+                "from obra, obof " +
+                "where obof.obrajnid = obra.obra__id and obof.prsn__id = ${oferente.id}" +
+//                "where obof.obrajnid = obra.obra__id " +
+                "order by 1"
+        cn.eachRow(sql.toString()) { r ->
+            obras[r.id] = r.nombre
         }
-
-        return [rubro: rubro]
-    }
-
-    def buscarCon_ajax(){
+        [obras: obras, oferente: oferente]
 
     }
 
-    def tablaBuscarCon_ajax(){
-        println("params b " + params)
+    def listaRubros_ajax(){
+        println("params " + params)
+        def obra = Obra.get(params.id)
+        def rubros = RubroOferta.findAllByObra(obra, [sort: 'nombre'])
+        return [rubros: rubros]
+    }
 
+    def tablaComposicion_ajax(){
+        def rubro = RubroOferta.get(params.id)
+//        def detalles = DetalleRubro.findAllByRubroOferta(rubro, [sort: 'tipo'])
+        def equipos = DetalleRubro.findAllByRubroOfertaAndTipo(rubro, 'EQ')
+        def manos = DetalleRubro.findAllByRubroOfertaAndTipo(rubro, 'MO')
+        def materiales = DetalleRubro.findAllByRubroOfertaAndTipo(rubro, 'MT')
+        return [equipos: equipos, manos: manos,materiales: materiales]
     }
 
 } //fin controller

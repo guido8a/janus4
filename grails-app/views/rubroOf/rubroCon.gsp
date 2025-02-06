@@ -11,13 +11,9 @@
 <body>
 
 <div class="span6 btn-group" role="navigation">
-    <a href="#" class="btn  btn-primary" id="btnLista">
-        <i class="fa fa-list"></i>
-        Lista
-    </a>
-    <a href="${g.createLink(action: 'rubroCon')}" class="btn btn-info btn-new">
-        <i class="fa fa-times"></i>
-        Cancelar
+    <a href="#" class="btn  btn-primary" id="btnRegresar">
+        <i class="fa fa-arrow-left"></i>
+        Regresar
     </a>
 </div>
 
@@ -53,40 +49,27 @@
 
 
 <div id="list-grupo" class="col-md-12" role="main" style="margin-top: 10px;margin-left: -10px">
-    <div style="border-bottom: 1px solid black;padding-left: 50px;position: relative;">
-        <g:form name="frmRubro" action="save" style="height: 80px;">
-            <input type="hidden" id="rubro__id" name="rubro.id" value="${rubro?.id}">
 
-            <p class="css-vertical-text">Rubro</p>
+    <div class="col-md-12">
+        <div class="col-md-2 breadcrumb">
+            <label style="margin-left: 20px; font-size: 14px">Obra Ofertada:</label>
+        </div>
+        <div class="col-md-10">
+            <g:select name="obra" from="${obras}" optionKey="key" optionValue="value" class="form-control"/>
+        </div>
+    </div>
 
-            <div class="linea" style="height: 80px;"></div>
+    <div class="col-md-12">
+        <div class="col-md-2 breadcrumb">
+            <label style="margin-left: 20px; font-size: 14px">Rubros:</label>
+        </div>
+        <div class="col-md-10" id="divRubros">
 
-            <div class="row-fluid">
-                <div class="col-md-2">
-                    <label> Obra </label>
-                    <g:textField name="rubro.codigo" id="input_codigo" class="form-control"
-                                 value="${rubro?.obra?.codigo ?: ''}" readonly="" />
-                </div>
-                <div class="col-md-2">
-                    <label> Obra </label>
-                    <g:textField name="rubro.codigo" id="input_codigo" class="form-control"
-                                 value="${rubro?.obra?.nombre ?: ''}" readonly="" />
-                </div>
-                <div class="col-md-6" >
-                    <label>Descripción</label>
-                    <g:textField name="rubro.nombre" id="input_descripcion" class="form-control"
-                                 value="${rubro?.nombre ?: ''}" readonly="" />
-                </div>
-                <div class="col-md-2">
-                    <label>Unidad</label>
-                    <g:textField name="unidad.id" class="form-control"
-                                 value="${rubro?.unidad ?: ''}" readonly="" />
-                </div>
-            </div>
-            <div class="row-fluid">
+        </div>
+    </div>
 
-            </div>
-        </g:form>
+    <div class="col-md-12" id="divComposicion">
+
     </div>
 
 %{--    <div style="border-bottom: 1px solid black;height: 120px; padding-left: 50px;margin-top: 10px;position: relative;">--}%
@@ -570,36 +553,26 @@
 
 <script type="text/javascript">
 
-    $("#btnLista").click(function () {
-        $.ajax({
-            type    : "POST",
-            url     : "${createLink( action:'buscarCon_ajax')}",
-            data    : {
-
-            },
-            success : function (msg) {
-                var dfi= bootbox.dialog({
-                    id    : "dlgBuscar",
-                    title : "Lista de rubros",
-                    class : "modal-lg",
-                    message : msg,
-                    buttons : {
-                        cancelar : {
-                            label     : "Cancelar",
-                            className : "btn-primary",
-                            callback  : function () {
-                            }
-                        }
-                    } //buttons
-                }); //dialog
-            } //success
-        }); //ajax
+    $("#obra").change(function () {
+       cargarRubro();
     });
 
-    //
-    // $("#btn-consultar").click(function () {
-    //     busqueda();
-    // });
+    cargarRubro();
+
+    function cargarRubro() {
+        var id = $("#obra").val();
+            $.ajax({
+                type: "POST",
+                url: "${createLink(controller: 'rubroOf', action:'listaRubros_ajax')}",
+                data: {
+                   id: id
+                },
+                success: function (msg) {
+                    $("#divRubros").html(msg);
+                }
+            });
+    }
+
 
     %{--function busqueda() {--}%
     %{--    var buscarPor = $("#buscarPor").val();--}%
