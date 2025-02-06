@@ -3,12 +3,15 @@ package janus
 class DetalleRubro {
 
     RubroOferta rubroOferta
+    String codigo
     String nombre
     String unidad
+    double peso
     double cantidad
+    double rendimiento
+    double distancia
     double precio
     double costo
-    double rendimiento
     double subtotal
 
     static auditable = true
@@ -21,24 +24,29 @@ class DetalleRubro {
         columns {
             id column: 'dtrb__id'
             rubroOferta column: 'ofrb__id'
+            codigo column: 'dtrbcdgo'
             nombre column: 'dtrbnmbr'
             unidad column: 'dtrbundd'
+            peso column: 'dtrbpeso'
             cantidad column: 'dtrbcntd'
+            rendimiento column: 'dtrbrndm'
+            distancia column: 'dtrbdstn'
             precio column: 'dtrbpcun'
             costo column: 'dtrbcsto'
-            rendimiento column: 'dtrbrndm'
             subtotal column: 'dtrbsbtt'
         }
     }
     static constraints = {
         rubroOferta(blank: true, nullable: true)
+        codigo(blank: true, nullable: true)
         nombre(blank: true, nullable: true)
         unidad(blank: false, nullable: false)
-        cantidad(blank: true, nullable: true)
-        precio(blank: true, nullable: true)
-        costo(blank: true, nullable: true)
-        rendimiento(blank: true, nullable: true)
-        subtotal(blank: true, nullable: true)
+        peso(blank: false, nullable: false)
+        cantidad(blank: false, nullable: false)
+        precio(blank: false, nullable: false)
+        costo(blank: false, nullable: false)
+        rendimiento(blank: false, nullable: false)
+        subtotal(blank: false, nullable: false)
     }
 
 }
