@@ -1156,4 +1156,26 @@ class RubroOfController {
     }
 
 
+    def rubroCon(){
+
+        def rubro
+
+        if(params.id){
+            rubro = RubroOferta.get(params.id)
+        }else{
+            rubro = new RubroOferta()
+        }
+
+        return [rubro: rubro]
+    }
+
+    def buscarCon_ajax(){
+
+    }
+
+    def tablaBuscarCon_ajax(){
+        println("params b " + params)
+
+    }
+
 } //fin controller

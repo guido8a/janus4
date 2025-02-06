@@ -31,6 +31,10 @@
     </div>
 </g:if>
 
+%{--<div class="alert alert-warning">--}%
+    <div class="alert alert-warning"><i class="fa fa-exclamation-triangle fa-2x text-info"></i> <strong style="font-size: 16px"> Ingrese a CRONOGRAMA TOTAL antes de subir cualquier archivo excel </strong></div>
+%{--</div>--}%
+
 <g:uploadForm controller="cronogramaContrato" action="uploadFile" method="post" name="frmUpload" id="${contrato?.id}" style="padding: 10px">
     <g:hiddenField name="id" value="${contrato?.id}"/>
     <div id="list-grupo" class="col-md-12" role="main">
