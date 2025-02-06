@@ -869,21 +869,22 @@ class RubroOfController {
 
                 def sccnEq = false, sccnMo = false, sccnMt = false, sccnTr = false, sccnRubro = false
                 def cdgo, nmbr, undd, peso, cntd, trfa, pcun, rndm, csto, dstn
+                def tipo = ""
 
                 //for que recorre las hojas existentes
                 for (int hj = 1; hj < hojas; hj++) {
                     XSSFSheet sheet = workbook.getSheetAt(hj);
                     sheet = workbook.getSheetAt(hj);
+                    def ordn = sheet.getSheetName().toString().toInteger()
                     Iterator rows = sheet.rowIterator();
-                    println "Porcesando hoja: $hj"
+                    println "Porcesando hoja: $hj --> $ordn"
 
-                    def ordn = 0 // número de rubro VLOBORDN
                     def fila = 0
                     while ( rows.hasNext() && (fila < 76) ) {
-                        cdgo = ''; nmbr = ''; undd = ''; cntd = 0; trfa = 0; pcun = 0; rndm = 0; csto = 0;
                         row = (XSSFRow) rows.next()
                         if (!(row.rowNum in filasNO)) {
                             def ok = true
+                            cdgo = ''; nmbr = ''; undd = ''; cntd = 0; trfa = 0; pcun = 0; rndm = 0; csto = 0; peso = 0; dstn = 0
                             Iterator cells = row.cellIterator()
                             def rgst = []
                             def meses = []
@@ -914,7 +915,6 @@ class RubroOfController {
                                 println "Rubro: $rbronmbr $rbroundd"
                                 /** insertar rubro */
                                 if (rbroundd) {
-                                    ordn = sheet.getSheetName().toString().toInteger()
                                     rbronmbr = rbronmbr.toString().replaceAll("'", "''")
                                     sql = "select item__id from vlob where obra__id = ${params.obra} and vlobordn = ${ordn}"
                                     def item_id = cn.rows(sql.toString())[0].item__id
@@ -969,8 +969,8 @@ class RubroOfController {
                                 } catch (e) {
                                     cntd = 0
                                 }
-                                if (cntd) {
-                                      errores += insertaDtrb(oferente.id, obra, ordn, cdgo, nmbr, undd, cntd, trfa, pcun, rndm, csto)
+                                if (cntd && sccnEq) {
+                                      errores += insertaDtrb(oferente.id, obra, ordn, cdgo, nmbr, undd, cntd, trfa, pcun, rndm, csto, "EQ")
                                 }
                             }
 
@@ -993,8 +993,8 @@ class RubroOfController {
                                 } catch (e) {
                                     cntd = 0
                                 }
-                                if (cntd) {
-                                    errores += insertaDtrb(oferente.id, obra, ordn, cdgo, nmbr, undd, cntd, trfa, pcun, rndm, csto)
+                                if (cntd && sccnMo) {
+                                    errores += insertaDtrb(oferente.id, obra, ordn, cdgo, nmbr, undd, cntd, trfa, pcun, rndm, csto, "MO")
                                 }
                             }
 
@@ -1010,15 +1010,15 @@ class RubroOfController {
                                     nmbr = rgst[cols[params.nmbrMt]]
                                     undd   = params.unddMt? rgst[cols[params.unddMt]] : ''
                                     cntd = rgst[cols[params.cntdMt]].toDouble() //cantidad
-                                    trfa = rgst[cols[params.trfaMt]].toDouble() //tarifa, jornal dtrbpcun
+//                                    trfa = rgst[cols[params.trfaMt]].toDouble() //tarifa, jornal dtrbpcun
                                     pcun = rgst[cols[params.pcunMt]].toDouble() //costo
 //                                    rndm = rgst[cols[params.rndmMt]].toDouble()
                                     csto = rgst[cols[params.cstoMt]].toDouble()
                                 } catch (e) {
                                     cntd = 0
                                 }
-                                if (cntd) {
-                                    errores += insertaDtrb(oferente.id, obra, ordn, cdgo, nmbr, undd, cntd, trfa, pcun, rndm, csto)
+                                if (cntd && sccnMt) {
+                                    errores += insertaDtrb(oferente.id, obra, ordn, cdgo, nmbr, undd, cntd, trfa, pcun, rndm, csto, "MT")
                                 }
                             }
 
@@ -1042,9 +1042,9 @@ class RubroOfController {
 //                                    rndm = rgst[cols[params.rndmTr]].toDouble()
                                     csto = rgst[cols[params.cstoTr]].toDouble()
                                 } catch (e) {
-                                    cntd = 0
+                                    csto = 0
                                 }
-                                if (cntd) {
+                                if (csto  && sccnTr) {
                                     println "inserta transporte $ordn $nmbr"
                                     errores += insertaTrnp(oferente.id, obra, ordn, cdgo, nmbr, undd, peso, cntd, trfa, pcun, rndm, csto, dstn)
                                 }
@@ -1084,7 +1084,7 @@ class RubroOfController {
     }
 
 
-    def insertaDtrb(oferente, obra, ordn, cdgo, nmbr, undd, cntd, trfa, pcun, rndm, csto) {
+    def insertaDtrb(oferente, obra, ordn, cdgo, nmbr, undd, cntd, trfa, pcun, rndm, csto, tipo) {
         def cn = dbConnectionService.getConnection()
         def errores = ""
         def sql = "select ofrb__id from ofrb where prsn__id = ${oferente} and " +
@@ -1095,18 +1095,18 @@ class RubroOfController {
             println "No se encontró rubro con id ${ordn}"
         } else {
             sql = "select dtrb__id from dtrb where ofrb__id = ${ofrb_id} and " +
-                    "dtrbnmbr = '${nmbr}'"
+                    "dtrbnmbr = '${nmbr}' and dtrbtipo = '${tipo}'"
             def dtrb_id = cn.rows(sql.toString())[0]?.dtrb__id ?: 0
             if (dtrb_id) {
                 sql = "update dtrb set dtrbcdgo = '${cdgo}', dtrbnmbr = '${nmbr}', " +
                         "dtrbundd = '${undd}', dtrbcntd = $cntd, dtrbpcun = $trfa, " +
-                        "dtrbcsto = $pcun, dtrbrndm = $rndm, dtrbsbtt = $csto " +
+                        "dtrbcsto = $pcun, dtrbrndm = $rndm, dtrbsbtt = $csto, dtrbtipo = '${tipo}' " +
                         "where dtrb__id = ${ofrb_id}"
             } else {
                 sql = "insert into dtrb(ofrb__id, dtrbcdgo, dtrbnmbr, dtrbundd, dtrbcntd, dtrbpcun, " +
-                        "dtrbcsto, dtrbrndm, dtrbsbtt) " +
-                        "values (${ofrb_id}, '${cdgo}', '${nmbr}', '${undd}', $cntd, $trfa, " +
-                        "$pcun, $rndm, $csto )"
+                        "dtrbcsto, dtrbrndm, dtrbsbtt, dtrbtipo) " +
+                        "values (${ofrb_id}, '${cdgo}', '${nmbr}', '${undd}', $cntd, $pcun, " +
+                        "$pcun, $rndm, $csto, '${tipo}' )"
             }
             println "sql: $sql"
             try {
@@ -1131,19 +1131,19 @@ class RubroOfController {
         } else {
             println "porcesa transporte: dstn: $dstn"
             sql = "select dtrb__id from dtrb where ofrb__id = ${ofrb_id} and " +
-                    "dtrbnmbr = '${nmbr}' and dtrbdstn > 0"
+                    "dtrbnmbr = '${nmbr}' and dtrbdstn > 0 and dtrbtipo = 'TR'"
             def dtrb_id = cn.rows(sql.toString())[0]?.dtrb__id ?: 0
             if (dtrb_id) {
                 sql = "update dtrb set dtrbcdgo = '${cdgo}', dtrbnmbr = '${nmbr}', " +
                         "dtrbundd = '${undd}', dtrbcntd = $cntd, dtrbpcun = $trfa, " +
                         "dtrbcsto = $pcun, dtrbrndm = $rndm, dtrbsbtt = $csto, dtrbpeso = $peso," +
-                        "dtrbdstn = $dstn " +
+                        "dtrbdstn = $dstn" +
                         "where dtrb__id = ${ofrb_id}"
             } else {
                 sql = "insert into dtrb(ofrb__id, dtrbcdgo, dtrbnmbr, dtrbundd, dtrbcntd, dtrbpcun, " +
-                        "dtrbcsto, dtrbrndm, dtrbsbtt, dtrbpeso, dtrbdstn) " +
+                        "dtrbcsto, dtrbrndm, dtrbsbtt, dtrbpeso, dtrbdstn, dtrbtipo) " +
                         "values (${ofrb_id}, '${cdgo}', '${nmbr}', '${undd}', $cntd, $trfa, " +
-                        "$pcun, $rndm, $csto, $peso, $dstn )"
+                        "$pcun, $rndm, $csto, $peso, $dstn, 'TR' )"
             }
             println "sql: $sql"
             try {

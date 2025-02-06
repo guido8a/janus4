@@ -3,6 +3,7 @@ package janus
 class DetalleRubro {
 
     RubroOferta rubroOferta
+    String tipo
     String codigo
     String nombre
     String unidad
@@ -22,8 +23,8 @@ class DetalleRubro {
         id generator: 'identity'
         version false
         columns {
-            id column: 'dtrb__id'
             rubroOferta column: 'ofrb__id'
+            tipo column: 'dtrbtipo'
             codigo column: 'dtrbcdgo'
             nombre column: 'dtrbnmbr'
             unidad column: 'dtrbundd'
@@ -38,6 +39,7 @@ class DetalleRubro {
     }
     static constraints = {
         rubroOferta(blank: true, nullable: true)
+        tipo(blank: true, nullable: true)
         codigo(blank: true, nullable: true)
         nombre(blank: true, nullable: true)
         unidad(blank: false, nullable: false)

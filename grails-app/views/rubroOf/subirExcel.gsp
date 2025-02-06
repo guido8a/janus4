@@ -246,8 +246,8 @@
                 </div>
 
                 <div class="col-md-1">
-                    <label>Uniadd</label>
-                    <g:textField name="nmbrMt" class="form-control" value="E"/>
+                    <label>Unidad</label>
+                    <g:textField name="unddMt" class="form-control" value="E"/>
                 </div>
 
                 <div class="col-md-1">
@@ -255,20 +255,20 @@
                     <g:textField name="cntdMt" class="form-control" value="F"/>
                 </div>
 
-                <div class="col-md-1">
-                    <label>Tarifa</label>
-                    <g:textField name="trfaMt" class="form-control" value=""/>
-                </div>
+                %{--<div class="col-md-1">--}%
+                    %{--<label>Tarifa</label>--}%
+                    %{--<g:textField name="trfaMt" class="form-control" value=""/>--}%
+                %{--</div>--}%
 
-                <div class="col-md-1">
-                    <label>Costo Hora</label>
+                <div class="col-md-2">
+                    <label>Precio Unitario</label>
                     <g:textField name="pcunMt" class="form-control" value="G"/>
                 </div>
 
-                <div class="col-md-2">
-                    <label>Rendimiento</label>
-                    <g:textField name="rndmMt" class="form-control" value=""/>
-                </div>
+                %{--<div class="col-md-2">--}%
+                    %{--<label>Rendimiento</label>--}%
+                    %{--<g:textField name="rndmMt" class="form-control" value=""/>--}%
+                %{--</div>--}%
 
                 <div class="col-md-2">
                     <label>Costo</label>
