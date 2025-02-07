@@ -494,7 +494,7 @@
             </div>
 
             <div class="col-md-2">Criterio
-            <g:textField name="buscarCriterio" id="criterioCriterio" style="width: 80%"/>
+            <g:textField name="buscarCriterio" id="criterioCriterio" style="width: 100%"/>
             </div>
 
             <div class="col-md-2">Ordenado por

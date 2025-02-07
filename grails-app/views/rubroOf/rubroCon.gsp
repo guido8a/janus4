@@ -17,51 +17,29 @@
     </a>
 </div>
 
-%{--<div class="span6 btn-group" role="navigation">--}%
-%{--    <g:if test="${rubro}">--}%
-%{--        <a href="#" class="btn btn-ajax btn-info" id="imprimir" title="Imprimir">--}%
-%{--            <i class="fa fa-print"></i>--}%
-%{--            Imprimir--}%
-%{--        </a>--}%
-%{--        <a href="#" class="btn btn-ajax btn-info" id="vae" title="Imprimir Vae">--}%
-%{--            <i class="fa fa-print"></i>--}%
-%{--            Imprimir Vae--}%
-%{--        </a>--}%
-%{--        <a href="#" class="btn btn-ajax btn-success" id="excel" title="Imprimir">--}%
-%{--            <i class="fa fa-file-excel"></i>--}%
-%{--            Excel--}%
-%{--        </a>--}%
-%{--        <a href="#" class="btn btn-ajax btn-success" id="excelVae" title="Imprimir Excel Vae">--}%
-%{--            <i class="fa fa-file-excel"></i>--}%
-%{--            Excel Vae--}%
-%{--        </a>--}%
-%{--    </g:if>--}%
-%{--</div>--}%
-
-%{--<div class="span6 btn-group" role="navigation">--}%
-%{--    <div class="col-md-2">--}%
-%{--        <a href="${createLink(controller: 'rubroOf', action: 'subirExcel', id: contrato?.id)}" class="btn" id="btnSubirExcel"--}%
-%{--           title="Subir archivo excel">--}%
-%{--            <i class="fa fa-upload"></i> Subir excel--}%
-%{--        </a>--}%
-%{--    </div>--}%
-%{--</div>--}%
-
+<div class="span6 btn-group" role="navigation">
+    <a href="#" class="btn  btn-info" id="btnProcesar">
+        <i class="fa fa-check-circle"></i>
+        Validar rubros importados de excel
+    </a>
+</div>
 
 <div id="list-grupo" class="col-md-12" role="main" style="margin-top: 10px;margin-left: -10px">
 
     <div class="col-md-12">
-        <div class="col-md-2 breadcrumb">
-            <label style="margin-left: 20px; font-size: 14px">Obra Ofertada:</label>
+        <div class="col-md-2">
+            <b style="margin-left: 20px">Obra Ofertada:</b>
         </div>
         <div class="col-md-10">
-            <g:select name="obra" from="${obras}" optionKey="key" optionValue="value" class="form-control"/>
+            <g:select name="obra"
+                      from="${obras}" optionKey="key" optionValue="value"
+                      style="width: 100%; margin-left: -80px"/>
         </div>
     </div>
 
-    <div class="col-md-12">
-        <div class="col-md-2 breadcrumb">
-            <label style="margin-left: 20px; font-size: 14px">Rubros:</label>
+    <div class="col-md-12" style="margin-top: 20px">
+        <div class="col-md-2">
+            <b style="margin-left: 20px">Rubros:</b>
         </div>
         <div class="col-md-10" id="divRubros">
 
@@ -572,6 +550,16 @@
                 }
             });
     }
+
+    $("#btnRegresar").click(function () {
+        var cntr = $("#obra").val()
+        location.href = "${createLink(controller: 'rubroOf', action: 'rubroPrincipalOf')}?contrato=" + cntr
+    });
+
+    $("#btnProcesar").click(function () {
+        var cntr = $("#obra").val()
+        location.href = "${createLink(controller: 'rubroOf', action: 'procesarRubrosOf')}?contrato=" + cntr
+    });
 
 
     %{--function busqueda() {--}%

@@ -1,4 +1,7 @@
-<g:select name="rubro" from="${rubros}" optionKey="id" optionValue="nombre" class="form-control"/>
+%{--<g:select name="rubro" from="${rubros}" optionKey="key" optionValue="value" class="form-control"/>--}%
+<g:select name="rubro" from="${rubros}" optionKey="key" optionValue="value"
+          style="width: 100%; margin-left: -80px"/>
+
 
 <script type="text/javascript">
 

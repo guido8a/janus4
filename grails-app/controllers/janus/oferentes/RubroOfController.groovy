@@ -1157,7 +1157,6 @@ class RubroOfController {
 
 
     def rubroCon(){
-
         def oferente = session.usuario
         def cn = dbConnectionService.getConnection()
         def obras = [:]
@@ -1175,18 +1174,48 @@ class RubroOfController {
 
     def listaRubros_ajax(){
         println("params " + params)
-        def obra = Obra.get(params.id)
-        def rubros = RubroOferta.findAllByObra(obra, [sort: 'nombre'])
+        params.id = 4255
+        def oferente = session.usuario
+        def cn = dbConnectionService.getConnection()
+        def rubros= [:]
+        def sql = "select ofrb.ofrb__id id, ofrbordn||' - '||ofrbnmbr nombre " +
+                "from ofrb " +
+                "where ofrb.obra__id = ${params.id} and ofrb.prsn__id = ${oferente.id} " +
+                "order by ofrbordn"
+        println "sql: $sql"
+        cn.eachRow(sql.toString()) { r ->
+            rubros[r.id] = r.nombre
+        }
         return [rubros: rubros]
     }
 
     def tablaComposicion_ajax(){
+        println "tablaComposicion_ajax $params"
         def rubro = RubroOferta.get(params.id)
 //        def detalles = DetalleRubro.findAllByRubroOferta(rubro, [sort: 'tipo'])
         def equipos = DetalleRubro.findAllByRubroOfertaAndTipo(rubro, 'EQ')
         def manos = DetalleRubro.findAllByRubroOfertaAndTipo(rubro, 'MO')
         def materiales = DetalleRubro.findAllByRubroOfertaAndTipo(rubro, 'MT')
-        return [equipos: equipos, manos: manos,materiales: materiales]
+        def transporte = DetalleRubro.findAllByRubroOfertaAndTipo(rubro, 'TR')
+
+        println "mano: $manos"
+        return [equipos: equipos, manos: manos, materiales: materiales, transporte: transporte]
+    }
+
+    def procesarRubrosOf() {
+        println "procesarRubrosOf $params"
+        params.id = 4255
+        def oferente = session.usuario
+        def cn = dbConnectionService.getConnection()
+        def sql = ""
+        def cmpos = ['dtrbpeso','dtrbcntd','dtrbrndm','dtrbdstn','dtrbpcun','dtrbcsto','dtrbsbtt']
+        for (i in cmpos) {
+            sql = "update dtrb set ${i} = 0 where ${i} is null"
+            println "sql: $sql"
+            cn.execute(sql.toString())
+        }
+
+        render "ok"
     }
 
 } //fin controller
