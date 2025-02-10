@@ -95,7 +95,9 @@
                                 <td class="col_rend rend" style="width: 50px;text-align: right"  valor="${item.rendimiento}">
                                     <g:formatNumber number="${item.rendimiento}" format="##,#####0" minFractionDigits="5" maxFractionDigits="7" locale="ec"  />
                                 </td>
-                                <td class="col_total" style="text-align: right">${item.subtotal}</td>
+                                <td class="col_total" style="text-align: right">
+                                    <g:formatNumber number="${item.subtotal}" format="##,#####0" minFractionDigits="5" maxFractionDigits="7" locale="ec"  />
+                                </td>
                                 <td style="width: 70px;text-align: center" class="col_delete">
                                     <a class="btn btn-xs btn-success btnEditar" href="#" rel="tooltip" title="Editar" data-id="${item.id}"
                                        data-tipo="${item.tipo}"
@@ -221,7 +223,9 @@
                             <td style="text-align: right" class="cant">
                                 <g:formatNumber number="${item.costo}" format="##,#####0" minFractionDigits="5" maxFractionDigits="7"  locale="ec"  />
                             </td>
-                            <td class="col_total" style="text-align: right">${item.subtotal}</td>
+                            <td class="col_total" style="text-align: right">
+                            <g:formatNumber number="${item.subtotal}" format="##,#####0" minFractionDigits="5" maxFractionDigits="7"  locale="ec"  />
+                            </td>
                             <td style="width: 70px;text-align: center" class="col_delete">
                                 <a class="btn btn-xs btn-success btnEditar" href="#" rel="tooltip" title="Editar" data-id="${item.id}" data-tipo="${item.tipo}"
                                    data-unidad="${item.unidad}" data-codigo="${item.codigo}" data-desc="${item.nombre}" data-cant="${item.cantidad}" data-rend="${1}">

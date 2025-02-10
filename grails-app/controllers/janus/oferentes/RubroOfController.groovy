@@ -1214,7 +1214,9 @@ class RubroOfController {
             println "sql: $sql"
             cn.execute(sql.toString())
         }
-
+        sql = "update ofrb set ofrbpcun = (select sum(dtrbsbtt*1.1) from dtrb where dtrb.ofrb__id = ofrb.ofrb__id)"
+        cn.execute(sql.toString())
+        cn.close()
         render "ok"
     }
 
