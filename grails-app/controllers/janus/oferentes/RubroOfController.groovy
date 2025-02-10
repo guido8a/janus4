@@ -1198,8 +1198,11 @@ class RubroOfController {
         def materiales = DetalleRubro.findAllByRubroOfertaAndTipo(rubro, 'MT')
         def transporte = DetalleRubro.findAllByRubroOfertaAndTipo(rubro, 'TR')
 
+        def precioUnitario = (equipos.subtotal.sum() ?: 0) +  (manos.subtotal.sum() ?: 0) + (materiales.subtotal.sum() ?: 0) + (transporte.subtotal.sum() ?: 0)
+
+
         println "mano: $manos"
-        return [equipos: equipos, manos: manos, materiales: materiales, transporte: transporte]
+        return [equipos: equipos, manos: manos, materiales: materiales, transporte: transporte, precioUnitario: precioUnitario]
     }
 
     def procesarRubrosOf() {
