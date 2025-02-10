@@ -10,6 +10,8 @@ class RubroOferta {
     String unidad
     int orden
     int idJanus
+    Double precioUnitario
+    Double indirectos
 
     static auditable = true
     static mapping = {
@@ -26,6 +28,8 @@ class RubroOferta {
             unidad column: 'ofrbundd'
             orden column: 'ofrbordn'
             idJanus column: 'ofrbjnid'
+            precioUnitario column: 'ofrbpcun'
+            indirectos column: 'ofrbindi'
         }
     }
     static constraints = {
@@ -35,6 +39,8 @@ class RubroOferta {
         unidad(blank: false, nullable: false)
         orden(blank: false, nullable: false)
         idJanus(blank: true, nullable: true)
+        precioUnitario(blank: true, nullable: true)
+        indirectos(blank: true, nullable: true)
     }
 
 }
