@@ -34,7 +34,7 @@
                 Buscar Por
                 <g:select name="buscarPor" class="buscarPor form-control" from="${[1: 'Nombre', 2: 'Código']}" style="width: 100%" optionKey="key" optionValue="value"/>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-4">
                 Criterio
                 <g:textField name="criterio" class="criterio form-control"/>
             </div>
@@ -45,11 +45,9 @@
         </div>
     </fieldset>
 
-    <fieldset class="borde col-md-12">
-        <div class="col-md-7" id="divTablaBusqueda">
+    <fieldset class="borde">
+        <div id="divTablaBusqueda">
         </div>
-%{--        <div class="col-md-5" id="divTablaSeleccionados" >--}%
-%{--        </div>--}%
     </fieldset>
 </div>
 

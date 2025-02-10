@@ -2,25 +2,25 @@
     <table class="table table-bordered table-striped table-condensed table-hover">
         <thead>
         <tr>
-            <th style="width: 12%">Código</th>
-            <th style="width: 72%">Descripción</th>
-            <th style="width: 8%">Seleccionar</th>
+            <th style="width: 20%">Código</th>
+            <th style="width: 70%">Descripción</th>
+            <th style="width: 9%">Seleccionar</th>
             <th style="width: 1%"></th>
         </tr>
         </thead>
     </table>
 </div>
 
-<div class="" style="width: 99.7%;height: 600px; overflow-y: auto;float: right; margin-top: -20px">
-    <table class="table-bordered table-striped table-condensed table-hover">
+<div style="width: 100%;height: 300px; overflow-y: auto;float: right; margin-top: -20px">
+    <table class="table-bordered table-striped table-condensed table-hover" style="width: 100%">
         <tbody>
         <g:if test="${datos}">
             <g:each in="${datos}" var="dt" status="i">
-                <tr>
-                    <td style="width: 9%">${dt.codigo}</td>
-                    <td style="width: 69%">${dt.nombre}</td>
-                    <td style="width: 9%">
-                            <a href="#" class="btn btn-success btn-xs btnSeleccionar" data-id="${dt?.dtrb__id}"><i class="fa fa-arrow-right"></i></a>
+                <tr style="width: 100%">
+                    <td style="width: 20%">${dt.codigo}</td>
+                    <td style="width: 70%">${dt.nombre}</td>
+                    <td style="width: 10%; text-align: center">
+                            <a href="#" class="btn btn-success btn-xs btnSeleccionar" data-id="${dt?.dtrb__id}"><i class="fa fa-search"></i></a>
                     </td>
                 </tr>
             </g:each>
@@ -30,40 +30,42 @@
                 <i class="fa fa-exclamation-triangle text-info fa-2x"></i> <strong style="font-size: 14px"> No se encontraron registros </strong>
             </div>
         </g:else>
-
         </tbody>
     </table>
 </div>
 
 <script type="text/javascript">
 
-%{--    $(".btnSeleccionar").click(function () {--}%
-%{--        var id = $(this).data("id");--}%
+    $(".btnSeleccionar").click(function () {
+        var id = $(this).data("id");
 
-%{--        var g = cargarLoader("Guardando...");--}%
-%{--        $.ajax({--}%
-%{--            type: "POST",--}%
-%{--            url: "${createLink(controller: 'rubro', action:'agrearItem_ajax')}",--}%
-%{--            data: {--}%
-%{--                id: id,--}%
-%{--                rubro: '${rubro?.id}'--}%
-%{--            },--}%
-%{--            success: function (msg) {--}%
-%{--                g.modal("hide");--}%
-%{--                var parts = msg.split("_");--}%
-%{--                if(parts[0] === 'ok'){--}%
-%{--                    log(parts[1], "success");--}%
-%{--                    cargarTablaSeleccionados();--}%
-%{--                }else{--}%
-%{--                    if(parts[0] === 'err'){--}%
-%{--                        bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');--}%
-%{--                        return false;--}%
-%{--                    }else{--}%
-%{--                        log(parts[1], "error")--}%
-%{--                    }--}%
-%{--                }--}%
-%{--            }--}%
-%{--        });--}%
-%{--    })--}%
+        var g = cargarLoader("Cargando...");
+
+        $.ajax({
+            type    : "POST",
+            url     : "${createLink(action:'buscarRubros_ajax')}",
+            data    : {
+
+            },
+            success : function (msg) {
+                g.modal("hide");
+               var dfi= bootbox.dialog({
+                    id    : "dlgBuscarRubro",
+                    title : "Buscar rubro",
+                    class : "modal-lg",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        }
+                    } //buttons
+                }); //dialog
+            } //success
+        }); //ajax
+
+    })
 
 </script>

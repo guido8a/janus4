@@ -6,6 +6,7 @@ import org.apache.poi.xssf.usermodel.XSSFRow
 import org.apache.poi.xssf.usermodel.XSSFSheet
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import org.springframework.dao.DataIntegrityViolationException
+import seguridad.Persona
 
 class RubroOfController {
 
@@ -1237,6 +1238,33 @@ class RubroOfController {
         println("sql " + sql)
         def datos = cn.rows(sql)
         return [datos: datos]
+    }
+
+    def buscarRubros_ajax(){
+
+    }
+
+    def tablaBuscarRubros_ajax(){
+        def listaItems = ['itemnmbr', 'itemcdgo']
+        def rubro = Item.get(params.rubro)
+        def datos;
+
+        def select = "select item.item__id, itemcdgo, itemnmbr, item.tpls__id, unddcdgo " +
+                "from item, undd, dprt, sbgr "
+        def txwh = "where tpit__id = 1 and undd.undd__id = item.undd__id and dprt.dprt__id = item.dprt__id and " +
+                "sbgr.sbgr__id = dprt.sbgr__id and itemetdo = 'A'"
+        def sqlTx = ""
+        def bsca = listaItems[params.buscarPor.toInteger()-1]
+        def ordn = listaItems[params.ordenar.toInteger()-1]
+        txwh += " and $bsca ilike '%${params.criterio}%' and grpo__id = ${params.grupo}"
+
+        sqlTx = "${select} ${txwh} order by ${ordn} limit 100 ".toString()
+        println "sql: $sqlTx"
+
+        def cn = dbConnectionService.getConnection()
+        datos = cn.rows(sqlTx)
+        println "data: ${datos[0]}"
+        [data: datos, rubro: rubro]
     }
 
 } //fin controller
