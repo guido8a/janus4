@@ -1223,4 +1223,20 @@ class RubroOfController {
         render "ok"
     }
 
+
+    def rubroEmpatado(){
+//        def obra = Obra.get(params.id)
+//        return [obra: obra]
+    }
+
+
+    def tablaBusqueda_ajax(){
+        def cn = dbConnectionService.getConnection()
+        def obra = Obra.get(4255)
+        def sql = "select distinct dtrb__id, dtrbcdgo codigo, dtrbnmbr nombre from dtrb, ofrb where ofrb.obra__id = ${obra?.id} and dtrb.ofrb__id = ofrb.ofrb__id order by 1"
+        println("sql " + sql)
+        def datos = cn.rows(sql)
+        return [datos: datos]
+    }
+
 } //fin controller
