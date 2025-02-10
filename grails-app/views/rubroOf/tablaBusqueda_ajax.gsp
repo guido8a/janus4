@@ -38,14 +38,12 @@
 
     $(".btnSeleccionar").click(function () {
         var id = $(this).data("id");
-
         var g = cargarLoader("Cargando...");
-
         $.ajax({
             type    : "POST",
             url     : "${createLink(action:'buscarRubros_ajax')}",
             data    : {
-
+                id: id
             },
             success : function (msg) {
                 g.modal("hide");
@@ -65,7 +63,6 @@
                 }); //dialog
             } //success
         }); //ajax
-
     })
 
 </script>

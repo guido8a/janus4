@@ -1241,7 +1241,9 @@ class RubroOfController {
     }
 
     def buscarRubros_ajax(){
-
+        def rubro = DetalleRubro.get(params.id)
+        def tipo = rubro.tipo == 'EQ' ? ['3' : 'Equipos'] : (rubro.tipo == 'MT' ? ['1' : 'Materiales'] : ['2' : 'Mano de obra'])
+        return [rubro: rubro, tipo: tipo]
     }
 
     def tablaBuscarRubros_ajax(){
@@ -1259,12 +1261,16 @@ class RubroOfController {
         txwh += " and $bsca ilike '%${params.criterio}%' and grpo__id = ${params.grupo}"
 
         sqlTx = "${select} ${txwh} order by ${ordn} limit 100 ".toString()
-        println "sql: $sqlTx"
+//        println "sql: $sqlTx"
 
         def cn = dbConnectionService.getConnection()
         datos = cn.rows(sqlTx)
         println "data: ${datos[0]}"
         [data: datos, rubro: rubro]
+    }
+
+    def tablaEmpatados_ajax(){
+
     }
 
 } //fin controller

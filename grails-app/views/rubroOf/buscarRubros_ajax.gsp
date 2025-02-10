@@ -1,11 +1,11 @@
 
 
 <div class="row" style="margin-bottom: 1px">
-
-%{--    <div class="col-md-8 breadcrumb" style="font-weight: bold; font-size: 16px">--}%
-%{--        ${"Código: " +  rubro?.codigo + " - " + "Nombre: " + rubro?.nombre}--}%
-%{--    </div>--}%
-
+    <div class="col-md-12">
+        <div class="col-md-12 breadcrumb" style="font-weight: bold; font-size: 16px">
+            ${"Código: " +  rubro?.codigo + " - " + "Nombre: " + rubro?.nombre}
+        </div>
+    </div>
 </div>
 
 <div id="busqueda" style="overflow: hidden">
@@ -13,7 +13,7 @@
         <div class="row-fluid">
             <div class="col-md-2">
                 Grupo
-                <g:select name="buscarGrupoRubro_name" id="buscarGrupoRubro" from="['1': 'Materiales', '2': 'Mano de Obra', '3': 'Equipos']" optionKey="key" optionValue="value" class="form-control" />
+                <g:select name="buscarGrupoRubro_name" id="buscarGrupoRubro" from="${tipo}" optionKey="key" optionValue="value" class="form-control" />
             </div>
             <div class="col-md-2">
                 Buscar Por
@@ -44,19 +44,24 @@
 <script type="text/javascript">
     var di;
 
+    %{--cargarGrupo();--}%
+
+    %{--function cargarGrupo(){--}%
+    %{--    $("#buscarGrupoRubro").val('${tipo}')--}%
+    %{--}--}%
+
     $("#btnBuscarRubro").click(function () {
         cargarTablaBusquedaRubro();
     });
 
     $("#btnLimpiarRubro").click(function  () {
-        $("#buscarGrupoRubro").val(1);
         $("#buscarPorRubro").val(1);
         $("#criterioRubro").val('');
         $("#ordenarRubro").val(1);
         cargarTablaBusquedaRubro();
     });
 
-    $("#criterio").keydown(function (ev) {
+    $("#criterioRubro").keydown(function (ev) {
         if (ev.keyCode === 13) {
             cargarTablaBusquedaRubro();
             return false;
@@ -81,7 +86,7 @@
                 criterio: criterio,
                 ordenar: ordenar,
                 grupo: grupo,
-                %{--rubro: '${rubro?.id}'--}%
+                rubro: '${rubro?.id}'
             },
             success: function (msg) {
                 d.modal("hide");
@@ -89,7 +94,5 @@
             }
         });
     }
-
-
 
 </script>

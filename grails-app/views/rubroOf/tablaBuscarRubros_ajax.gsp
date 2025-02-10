@@ -24,7 +24,7 @@
                         ${dt.unddcdgo}
                     </td>
                     <td style="width: 9%">
-                        <a href="#" class="btn btn-success btn-xs btnSeleccionar" data-id="${dt?.item__id}"><i class="fa fa-check"></i></a>
+                        <a href="#" class="btn btn-success btn-xs btnSeleccionarRubro" data-id="${dt?.item__id}"><i class="fa fa-check"></i></a>
                     </td>
                 </tr>
             </g:each>
@@ -41,7 +41,7 @@
 
 <script type="text/javascript">
 
-    $(".btnSeleccionar").click(function () {
+    $(".btnSeleccionarRubro").click(function () {
         var id = $(this).data("id");
         %{--bootbox.confirm({--}%
         %{--    title: "Agregar rubro ",--}%

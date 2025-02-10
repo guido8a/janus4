@@ -9,23 +9,23 @@
 </head>
 <body>
 
-<div class="row" style="margin-bottom: 1px">
-    <div class="col-md-2 btn-group" role="navigation">
-        <a href="#" class="btn btn-primary" id="btnRegresarPrincipal">
-            <i class="fa fa-arrow-left"></i>
-            Regresar
-        </a>
-    </div>
+%{--<div class="row" style="margin-bottom: 1px">--}%
 
 %{--    <div class="col-md-8 breadcrumb" style="font-weight: bold; font-size: 16px">--}%
 %{--        ${"Código: " +  rubro?.codigo + " - " + "Nombre: " + rubro?.nombre}--}%
 %{--    </div>--}%
 
-</div>
+%{--</div>--}%
 
 <div id="busqueda" style="overflow: hidden">
     <fieldset class="borde" style="border-radius: 4px">
         <div class="row-fluid">
+            <div class="col-md-2 btn-group" role="navigation">
+                <a href="#" class="btn btn-primary" id="btnRegresarPrincipal">
+                    <i class="fa fa-arrow-left"></i>
+                    Regresar
+                </a>
+            </div>
             <div class="col-md-2">
                 Grupo
                 <g:select name="buscarGrupo_name" id="buscarGrupo" from="['1': 'Materiales', '2': 'Mano de Obra', '3': 'Equipos']" optionKey="key" optionValue="value" class="form-control" />
@@ -49,6 +49,10 @@
         <div id="divTablaBusqueda">
         </div>
     </fieldset>
+</div>
+
+<div class="col-md-12" id="divTablaEmpatados" style="margin-top: 10px">
+
 </div>
 
 <script type="text/javascript">
@@ -79,7 +83,7 @@
     });
 
     cargarTablaBusqueda();
-    // cargarTablaSeleccionados();
+    cargarTablaEmpatados();
 
     function cargarTablaBusqueda() {
         var d = cargarLoader("Cargando...");
@@ -102,20 +106,20 @@
         });
     }
 
-    %{--function cargarTablaSeleccionados() {--}%
-    %{--    var d = cargarLoader("Cargando...");--}%
-    %{--    $.ajax({--}%
-    %{--        type: "POST",--}%
-    %{--        url: "${createLink(controller: 'rubro', action:'tablaSeleccionados_ajax')}",--}%
-    %{--        data: {--}%
-    %{--            id: '${rubro?.id}'--}%
-    %{--        },--}%
-    %{--        success: function (msg) {--}%
-    %{--            d.modal("hide");--}%
-    %{--            $("#divTablaSeleccionados").html(msg);--}%
-    %{--        }--}%
-    %{--    });--}%
-    %{--}--}%
+    function cargarTablaEmpatados() {
+        var d = cargarLoader("Cargando...");
+        $.ajax({
+            type: "POST",
+            url: "${createLink(controller: 'rubroOf', action:'tablaEmpatados_ajax')}",
+            data: {
+                %{--id: '${rubro?.id}'--}%
+            },
+            success: function (msg) {
+                d.modal("hide");
+                $("#divTablaEmpatados").html(msg);
+            }
+        });
+    }
 
 </script>
 
