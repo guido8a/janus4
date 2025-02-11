@@ -3,8 +3,8 @@ package janus.cnsl
 import audita.Auditable
 
 class Costo implements Auditable {
-    Nivel nivel
     Costo padre
+    int nivel
     String numero
     String descripcion
     String movimiento
@@ -18,8 +18,8 @@ class Costo implements Auditable {
         id generator: 'identity'
         version false
         columns {
-            nivel column: 'nvel__id'
             padre column: 'cstopdre'
+            nivel column: 'cstonvel'
             numero column: 'cstonmro'
             descripcion column: 'cstodscr'
             movimiento column: 'cstomvmt'
@@ -27,11 +27,15 @@ class Costo implements Auditable {
         }
     }
     static constraints = {
-        nivel(blank: false, nullable: false, attributes: [title: 'nivel'])
         padre(blank: true, nullable: true, attributes: [title: 'padre'])
-        numero(size: 1..20, blank: false, nullable: false, attributes: [title: 'descripcion'])
-        descripcion(size: 1..15, blank: false, nullable: false, attributes: [title: 'descripcion'])
+        nivel(blank: false, nullable: false, attributes: [title: 'nivel'])
+        numero(size: 1..10, blank: false, nullable: false, attributes: [title: 'descripcion'])
+        descripcion(size: 1..127, blank: false, nullable: false, attributes: [title: 'descripcion'])
         movimiento(size: 1..1, blank: false, nullable: false, attributes: [title: 'movimiento'])
         estado(size: 1..1, blank: false, nullable: false, attributes: [title: 'estado'])
+    }
+
+    String toString() {
+        "${this.numero} (${this.descripcion})"
     }
 }

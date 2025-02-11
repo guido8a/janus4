@@ -20,7 +20,7 @@
                     <td style="width: 20%">${dt.codigo}</td>
                     <td style="width: 70%">${dt.nombre}</td>
                     <td style="width: 10%; text-align: center">
-                            <a href="#" class="btn btn-success btn-xs btnSeleccionar" data-id="${dt?.dtrb__id}"><i class="fa fa-search"></i></a>
+                            <a href="#" class="btn btn-success btn-xs btnSeleccionar" data-dscr="${dt?.nombre}"><i class="fa fa-search"></i></a>
                     </td>
                 </tr>
             </g:each>

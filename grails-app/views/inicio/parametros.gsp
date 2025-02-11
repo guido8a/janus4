@@ -275,6 +275,19 @@
 
                                     <div class="col-md-12" style="margin-bottom: 10px">
                                         <div class="col-md-4">
+                                            <g:link class="link btn btn-success btn-xs" controller="costo" action="arbol">
+                                                <i class="fa fa-globe fa-2x"></i>
+                                                Esquema de costos
+                                            </g:link>
+                                        </div>
+
+                                        <div class="col-md-8">
+                                            <strong style="font-size: 14px">a ejecutarse en un proyecto.</strong>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12" style="margin-bottom: 10px">
+                                        <div class="col-md-4">
                                             <g:link class="link btn btn-success btn-xs" controller="tipoObra" action="list">
                                                 <i class="fa fa-globe fa-2x"></i>
                                                 Tipo de Obras
