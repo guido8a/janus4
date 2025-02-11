@@ -1,5 +1,6 @@
 package janus.cnsl
 
+import janus.PrecioRubrosItems
 import org.springframework.dao.DataIntegrityViolationException
 
 //import vesta.seguridad.Shield
@@ -323,51 +324,92 @@ class CostoController {
 
     def precio_ajax() {
         println "precio_ajax: $params"
-        def costoInstance = new Costo()
-        if (params.id) {
-            costoInstance = Costo.get(params.padre)
-            if (!costoInstance) {
-                render "ERROR*No se encontró Costo."
-                return
-            }
-        }
-        costoInstance.properties = params
-        def nivel = 1
-        if (!params.id) {
-            costoInstance.movimiento = 0
-        } else {
-            nivel = costoInstance.nivel
-        }
-        if (params.padre) {
-            def padre = Costo.get(params.padre.toLong())
-            nivel = padre.nivel + 1
-            costoInstance.padre = padre
+//        def costoInstance = new Costo()
+//        if (params.id) {
+//            costoInstance = Costo.get(params.padre)
+//            if (!costoInstance) {
+//                render "ERROR*No se encontró Costo."
+//                return
+//            }
+//        }
+//        costoInstance.properties = params
+//        def nivel = 1
+//        if (!params.id) {
+//            costoInstance.movimiento = 0
+//        } else {
+//            nivel = costoInstance.nivel
+//        }
+//        if (params.padre) {
+//            def padre = Costo.get(params.padre.toLong())
+//            nivel = padre.nivel + 1
+//            costoInstance.padre = padre
+//        }
+//
+//        costoInstance.nivel = nivel
+//
+//        return [costoInstance: costoInstance]
+
+        def costo = Costo.get(params.padre)
+        def existe = PrecioCostos.findByCosto(costo)
+        def precioCosto
+
+        if(existe){
+            precioCosto = existe
+        }else{
+            precioCosto = new PrecioCostos()
         }
 
-        costoInstance.nivel = nivel
+        return [precioCosto: precioCosto, costo: costo]
 
-        return [costoInstance: costoInstance]
+
     } //form para cargar con ajax en un dialog
 
     def savePrecio_ajax() {
         println "savePrecio_ajax: $params"
-        def precio = new PrecioCostos()
-        if (params.id) {
-            precio = PrecioCostos.get(params.id)
-            if (!precio) {
-                render "ERROR*No se encontró Costo."
-                return
-            }
-        }
-        precio.properties = params
-        precio.estado = params.estado ?: 'N'
 
-        if (!precio.save(flush: true)) {
-            render "ERROR*Ha ocurrido un error al guardar Costo: " + renderErrors(bean: costoInstance)
-            return
+        def costo = Costo.get(params.costo)
+        def precioCosto
+        def fecha
+
+        if(params.fecha){
+            fecha = new Date().parse("dd-MM-yyyy", params.fecha)
         }
-        render "SUCCESS*${params.id ? 'Actualización' : 'Creación'} de Costo exitosa."
-        return
+
+        if(params.id){
+           precioCosto = PrecioCostos.get(params.id)
+        }else{
+            precioCosto = new PrecioCostos()
+            precioCosto.costo = costo
+            precioCosto.fechaIngreso = new Date()
+        }
+
+        params.fecha = fecha
+        precioCosto.properties = params
+
+        if(!precioCosto.save(flush:true)){
+            println("error al guardar el precio costo " + precioCosto.errors)
+            render "no_Error al guardar el precio costo"
+        }else{
+            render "ok_Guardado correctamente"
+        }
+
+//        def precio = new PrecioCostos()
+//        if (params.id) {
+//            precio = PrecioCostos.get(params.id)
+//            if (!precio) {
+//                render "ERROR*No se encontró Costo."
+//                return
+//            }
+//        }
+//        precio.properties = params
+//        precio.estado = params.estado ?: 'N'
+//
+//        if (!precio.save(flush: true)) {
+//            render "ERROR*Ha ocurrido un error al guardar Costo: " + renderErrors(bean: costoInstance)
+//            return
+//        }
+//        render "SUCCESS*${params.id ? 'Actualización' : 'Creación'} de Costo exitosa."
+//        return
     } //save para grabar desde ajax
 
     def tablaPrecio_ajax() {
