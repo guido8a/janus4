@@ -55,7 +55,7 @@
                 Nombre
             </label>
             <span class="col-md-8">
-                <g:textField name="nombre" maxlength="160" class="form-control allCaps required" value="${itemInstance?.nombre}"/>
+                <g:textField name="nombre" maxlength="200" class="form-control allCaps required" value="${itemInstance?.nombre}"/>
                 <p class="help-block ui-helper-hidden"></p>
             </span>
         </span>
