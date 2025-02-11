@@ -9,6 +9,8 @@ import org.springframework.dao.DataIntegrityViolationException
  */
 class CostoController {
 
+    def dbConnectionService
+
     static allowedMethods = [save_ajax: "POST", delete_ajax: "POST"]
 
     /**
@@ -23,6 +25,7 @@ class CostoController {
      * Acción llamada con ajax que permite realizar búsquedas en el árbol
      */
     def arbolSearch_ajax() {
+        println "arbolSearch_ajax: $params"
         def search = params.str.trim()
         if (search != "") {
             def c = Costo.createCriteria()
@@ -35,14 +38,15 @@ class CostoController {
             println find
             def costos = []
             find.each { pres ->
-                if (pres.costo && !costos.contains(pres.costo)) {
+                if (pres && !costos.contains(pres.descripcion)) {
                     def pr = pres
-                    while (pr) {
-                        if (pr.costo && !costos.contains(pr.costo)) {
-                            costos.add(pr.costo)
+                    println "pr: ${pr.descripcion}"
+//                    while (pr) {
+                        if (pr.descripcion && !costos.contains(pr.descripcion)) {
+                            costos.add(pr)
                         }
-                        pr = pr.costo
-                    }
+//                        pr = pr.descripcion
+//                    }
                 }
             }
             costos = costos.reverse()
@@ -74,7 +78,7 @@ class CostoController {
         res += "<a href='#' class='label_arbol'>Costo</a>"
         res += "<ul>"
         lista.each {
-            res += imprimeHijos(it, 0)
+            res += imprimeHijos(it)
         }
         res += "</ul>"
         res += "</ul>"
@@ -83,7 +87,7 @@ class CostoController {
     /**
      * Función que genera las hojas del árbol de un padre específico
      */
-    def imprimeHijos(padre, pcun) {
+    def imprimeHijos(padre) {
         println "imprimeHijos: $padre"
         def band = true
         def t = ""
@@ -92,18 +96,12 @@ class CostoController {
         def costo = Costo.get(padre)
 
         def l = Costo.findAllByPadre(costo, [sort: 'numero']);
-        def precios, precio
 
         l.each {
             band = false;
-            precios = PrecioCostos.findAllByCosto(l, [sort: 'fecha', order: 'desc'])
-            println "--> ${l.numero} ${precios}"
-            precio = (precios?.size() > 0)? precios.last().precioUnitario : ''
-            println "precio: $precio"
-            t += imprimeHijos(it.id, precio)
+            t += imprimeHijos(it.id)
         }
 
-        def tx_pcun = pcun ? ' -> $' + pcun : ''
         if (!band) {
             def clase = "jstree-open"
             if (costo.nivel >= 2) {
@@ -116,11 +114,50 @@ class CostoController {
             txt += "</ul>"
         } else {
             txt += "<li id='li_" + costo.id + "' data-level='" + costo.nivel + "' class='hijo jstree-leaf' data-jstree='{\"type\":\"hijo\"}'>"
-            txt += "<a href='#' class='label_arbol'>" + costo + tx_pcun + "</a>"
+            txt += "<a href='#' class='label_arbol'>" + costo + "</a>"
         }
         txt += "</li>"
         return txt
     }
+
+//    def imprimeHijos(padre, pcun) {
+//        println "imprimeHijos: $padre"
+//        def band = true
+//        def t = ""
+//        def txt = ""
+//
+//        def costo = Costo.get(padre)
+//
+//        def l = Costo.findAllByPadre(costo, [sort: 'numero']);
+//        def precios, precio
+//
+//        l.each {
+//            band = false;
+//            precios = PrecioCostos.findAllByCosto(l, [sort: 'fecha', order: 'desc'])
+//            println "--> ${l.numero} ${precios}"
+//            precio = (precios?.size() > 0)? precios.last().precioUnitario : ''
+//            println "precio: $precio"
+//            t += imprimeHijos(it.id, precio)
+//        }
+//
+//        def tx_pcun = pcun ? ' -> $' + pcun : ''
+//        if (!band) {
+//            def clase = "jstree-open"
+//            if (costo.nivel >= 2) {
+//                clase = "jstree-closed"
+//            }
+//            txt += "<li id='li_" + costo.id + "' data-level='" + costo.nivel + "' class='padre " + clase + "' data-jstree='{\"type\":\"padre\"}'>"
+//            txt += "<a href='#' class='label_arbol'>" + costo + "</a>"
+//            txt += "<ul>"
+//            txt += t
+//            txt += "</ul>"
+//        } else {
+//            txt += "<li id='li_" + costo.id + "' data-level='" + costo.nivel + "' class='hijo jstree-leaf' data-jstree='{\"type\":\"hijo\"}'>"
+//            txt += "<a href='#' class='label_arbol'>" + costo + tx_pcun + "</a>"
+//        }
+//        txt += "</li>"
+//        return txt
+//    }
 
     /**
      * Acción que redirecciona a la lista (acción "list")
@@ -309,7 +346,7 @@ class CostoController {
 
         costoInstance.nivel = nivel
 
-        return [costoInstance: costoInstance, precio: precio]
+        return [costoInstance: costoInstance]
     } //form para cargar con ajax en un dialog
 
     def savePrecio_ajax() {
@@ -333,5 +370,19 @@ class CostoController {
         return
     } //save para grabar desde ajax
 
+    def tablaPrecio_ajax() {
+        def cn = dbConnectionService.getConnection()
+        def txto = "<table class='table table-bordered table-striped table-condensed table-hover'><tbody><tr>"
+        def sql = "select p.prcsfcha, p.prcspcun from prcs p where p.prcsfcha = (select max(prcsfcha) from prcs " +
+                "where prcs.csto__id = p.csto__id) and p.csto__id = ${params.id}"
+        println "sql: $sql"
+        def data = []
+        cn.eachRow(sql.toString()) { d ->
+            txto += "<td width='140px'>${d.prcsfcha}</td><td width='200px'>${d.prcspcun}</td>"
+        }
+        txto += "</tr></tbody></table>"
+        println "txto: $txto"
+        render txto
+    }
 
 }

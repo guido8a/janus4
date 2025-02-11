@@ -101,9 +101,9 @@
                         </th>
                     </tr>
                     </thead>
-                    <tbody id="tabla_prcs">
-                    </tbody>
                 </table>
+                    <div id="tabla_prcs">
+                    </div>
             </div>
         </div>
 
@@ -266,9 +266,8 @@
                 }); //ajax
             } //createEdit
 
-            function cargaPrecios() {
-                var node = $("#tree3").jstree(true).get_selected();
-                console.log('nodo:', node)
+            function cargaPrecios(id) {
+                console.log('nodo:', id);
                 var data = id ? {id : id} : {};
                 $.ajax({
                     type    : "POST",
@@ -421,8 +420,10 @@
                         }
                     },
                 }).bind("select_node.jstree", function (node, selected) {
-                    cargaPrecios();
-                });;
+                    cargaPrecios(selected.node.id.split('_')[1]);
+//                    console.log('xxxxxx', selected.node.text);
+                    console.log('xxxxxx', selected.node.id, selected.node.id.split('_')[1] );
+                });
 
                 $("#btnExpandAll").click(function () {
                     $treeContainer.jstree("open_all");
