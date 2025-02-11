@@ -19,6 +19,7 @@ class VariablesController {
         def choferes = []
         def grupoTransporte = DepartamentoItem.findAllByTransporteIsNotNull()
 
+        println "transporte: $grupoTransporte"
         grupoTransporte.each {
             if (it.transporte.codigo == "H")
                 choferes = Item.findAllByDepartamento(it)
