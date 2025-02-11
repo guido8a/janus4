@@ -41,17 +41,17 @@ class DetalleRubro {
     }
     static constraints = {
         rubroOferta(blank: true, nullable: true)
-        tipo(blank: true, nullable: true)
+        tipo(blank: false, nullable: false)
         codigo(blank: true, nullable: true)
-        nombre(blank: true, nullable: true)
-        unidad(blank: false, nullable: false)
-        peso(blank: false, nullable: false)
-        cantidad(blank: false, nullable: false)
-        precio(blank: false, nullable: false)
-        costo(blank: false, nullable: false)
-        rendimiento(blank: false, nullable: false)
-        subtotal(blank: false, nullable: false)
-        idJanus(blank: false, nullable: false)
+        nombre(blank: false, nullable: false)
+        unidad(blank: true, nullable: true)
+        peso(blank: true, nullable: true)
+        cantidad(blank: true, nullable: true)
+        precio(blank: true, nullable: true)
+        costo(blank: true, nullable: true)
+        rendimiento(blank: true, nullable: true)
+        subtotal(blank: true, nullable: true)
+        idJanus(blank: true, nullable: true)
     }
 
 }

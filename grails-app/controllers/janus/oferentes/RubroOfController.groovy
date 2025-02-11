@@ -1224,34 +1224,36 @@ class RubroOfController {
         render "ok"
     }
 
-
     def rubroEmpatado(){
 //        def obra = Obra.get(params.id)
 //        return [obra: obra]
     }
 
-
     def tablaBusqueda_ajax(){
         def cn = dbConnectionService.getConnection()
         def obra = Obra.get(4255)
+        def listaItems = ['dtrbnmbr', 'dtrbcdgo']
         def sql = "select distinct dtrbcdgo codigo, dtrbnmbr nombre, dtrbtipo tipo from dtrb, ofrb " +
                 "where ofrb.obra__id = ${obra?.id} and dtrb.ofrb__id = ofrb.ofrb__id and dtrbjnid = 0 and " +
-                "dtrbtipo != 'TR' order by 3, 1"
-        println("sql " + sql)
-        def datos = cn.rows(sql)
+                "dtrbtipo != 'TR'"
+        def bsca = listaItems[params.buscarPor.toInteger()-1]
+        sql += " and $bsca ilike '%${params.criterio}%' and dtrb.dtrbtipo = '${params.grupo}' "
+        def sqlTx = "${sql} order by 3, 1".toString()
+//        println("sql " + sqlTx)
+        def datos = cn.rows(sqlTx)
         return [datos: datos]
     }
 
     def buscarRubros_ajax(){
         def rubro = DetalleRubro.findAllByNombreAndTipoNotEqual(params.dscr, 'TR')?.first()
-        println "tipo: ${rubro.tipo}"
         def tipo = rubro.tipo == 'EQ' ? ['3' : 'Equipos'] : (rubro.tipo == 'MT' ? ['1' : 'Materiales'] : ['2' : 'Mano de obra'])
         return [rubro: rubro, tipo: tipo]
     }
 
     def tablaBuscarRubros_ajax(){
         def listaItems = ['itemnmbr', 'itemcdgo']
-        def rubro = Item.get(params.rubro)
+//        def rubro = Item.get(params.rubro)
+        def rubro = DetalleRubro.get(params.rubro)
         def datos;
 
         def select = "select item.item__id, itemcdgo, itemnmbr, item.tpls__id, unddcdgo " +
@@ -1268,11 +1270,40 @@ class RubroOfController {
 
         def cn = dbConnectionService.getConnection()
         datos = cn.rows(sqlTx)
-        println "data: ${datos[0]}"
+//        println "data: ${datos[0]}"
         [data: datos, rubro: rubro]
     }
 
     def tablaEmpatados_ajax(){
+        def empatados = DetalleRubro.findAllByIdJanusNotEqual(0, [sort: 'nombre'])
+        return [empatados: empatados]
+    }
+
+
+    def empatarRubros_ajax(){
+        def item = Item.get(params.id)
+        def rubro = DetalleRubro.get(params.rubro)
+        def detalles = DetalleRubro.findAllByNombre(rubro.nombre)
+        def errores = ''
+
+        detalles.each {
+            it.idJanus = item?.id?.toInteger()
+            if(!it.save(flush:true)){
+                println("error al empatar el rubro " + it.errors )
+                errores += it.errors
+            }else{
+                errores += ''
+            }
+        }
+
+        if(errores == ''){
+            render "ok_Guardado correctamente"
+        }else{
+            render "no_Error al guardar"
+        }
+
+        println("item " + item)
+        println("rubro " + rubro?.nombre)
 
     }
 

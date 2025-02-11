@@ -28,7 +28,7 @@
             </div>
             <div class="col-md-2">
                 Grupo
-                <g:select name="buscarGrupo_name" id="buscarGrupo" from="['1': 'Materiales', '2': 'Mano de Obra', '3': 'Equipos']" optionKey="key" optionValue="value" class="form-control" />
+                <g:select name="buscarGrupo_name" id="buscarGrupo" from="['MT': 'Materiales', 'MO': 'Mano de Obra', 'EQ': 'Equipos']" optionKey="key" optionValue="value" class="form-control" />
             </div>
             <div class="col-md-2">
                 Buscar Por
@@ -62,12 +62,16 @@
     %{--    location.href="${createLink(controller: 'rubro', action: 'rubroPrincipal')}/${rubro?.id}"--}%
     %{--});--}%
 
+    $("#buscarGrupo").change(function () {
+        cargarTablaBusqueda();
+    });
+
     $("#btnBuscar").click(function () {
         cargarTablaBusqueda();
     });
 
     $("#btnLimpiar").click(function  () {
-        $("#buscarGrupo").val(1);
+        $("#buscarGrupo").val('MT');
         $("#buscarPor").val(1);
         $("#criterio").val('');
         $("#ordenar").val(1);

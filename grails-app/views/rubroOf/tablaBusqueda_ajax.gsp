@@ -2,8 +2,9 @@
     <table class="table table-bordered table-striped table-condensed table-hover">
         <thead>
         <tr>
+            <th style="width: 10%">Tipo</th>
             <th style="width: 20%">Código</th>
-            <th style="width: 70%">Descripción</th>
+            <th style="width: 60%">Descripción</th>
             <th style="width: 9%">Seleccionar</th>
             <th style="width: 1%"></th>
         </tr>
@@ -17,8 +18,9 @@
         <g:if test="${datos}">
             <g:each in="${datos}" var="dt" status="i">
                 <tr style="width: 100%">
+                    <td style="width: 10%">${dt.tipo == 'EQ' ? 'Equipo' : (dt.tipo == 'MT' ? 'Materiales' : 'Mano de obra')}</td>
                     <td style="width: 20%">${dt.codigo}</td>
-                    <td style="width: 70%">${dt.nombre}</td>
+                    <td style="width: 60%">${dt.nombre}</td>
                     <td style="width: 10%; text-align: center">
                             <a href="#" class="btn btn-success btn-xs btnSeleccionar" data-dscr="${dt?.nombre}"><i class="fa fa-search"></i></a>
                     </td>
@@ -36,6 +38,8 @@
 
 <script type="text/javascript">
 
+    var tbr;
+
     $(".btnSeleccionar").click(function () {
         var dscr = $(this).data("dscr");
         var g = cargarLoader("Cargando...");
@@ -47,7 +51,7 @@
             },
             success : function (msg) {
                 g.modal("hide");
-               var dfi= bootbox.dialog({
+                tbr= bootbox.dialog({
                     id    : "dlgBuscarRubro",
                     title : "Buscar rubro",
                     class : "modal-lg",
@@ -63,6 +67,10 @@
                 }); //dialog
             } //success
         }); //ajax
-    })
+    });
+
+    function cerrarDialogoBusquedaRubro(){
+        tbr.modal("hide");
+    }
 
 </script>
