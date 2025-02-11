@@ -1259,7 +1259,8 @@ class RubroOfController {
         def datos;
 
         def longitud = params.nmbr.size()
-        params.criterio = params.criterio?: params.nmbr[0..(longitud/2)]
+        def recorte = longitud > 10 ? longitud *0.75 : longitud -2
+        params.criterio = params.criterio?: params.nmbr[0..(recorte)]
 
         def select = "select item.item__id, itemcdgo, itemnmbr, item.tpls__id, unddcdgo " +
                 "from item, undd, dprt, sbgr "
