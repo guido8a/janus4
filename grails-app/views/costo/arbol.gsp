@@ -117,7 +117,7 @@
                 var $btn = $("#dlgCreateEditPresupuesto").find("#btnSave");
                 if ($form.valid()) {
                     $btn.replaceWith(spinner);
-                    openLoader("Guardando Presupuesto");
+                    var dialog = cargarLoader("Guardando...");
                     $.ajax({
                         type    : "POST",
                         url     : $form.attr("action"),
@@ -240,7 +240,7 @@
                         var b = bootbox.dialog({
                             id    : "dlgCreateEditPresupuesto",
                             title : title + " Presupuesto",
-
+                            class: 'modal-sm',
                             message : msg,
                             buttons : {
                                 cancelar : {
@@ -265,6 +265,38 @@
                     } //success
                 }); //ajax
             } //createEdit
+
+            function submitFormPrecio() {
+                var $form = $("#frmPrecio");
+                if ($form.valid()) {
+                    var dialog = cargarLoader("Guardando...");
+                    $.ajax({
+                        type    : "POST",
+                        url     : $form.attr("action"),
+                        data    : $form.serialize(),
+                        success : function (msg) {
+                            dialog.modal("hide");
+                            var parts = msg.split("_");
+                            if(parts[0] === 'ok'){
+                                log(parts[1], "success");
+                                setTimeout(function () {
+                                    location.reload();
+                                }, 1000);
+                            }else{
+                                if(parts[0] === 'err'){
+                                    bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
+                                    return false;
+                                }else{
+                                    log(parts[1], "error");
+                                    return false;
+                                }
+                            }
+                        }
+                    });
+                } else {
+                    return false;
+                } //else
+            }
 
             function cargaPrecios(id) {
                 console.log('nodo:', id);
