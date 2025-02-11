@@ -108,15 +108,17 @@
                 $("#divTablaBusqueda").html(msg);
             }
         });
+        cargarTablaEmpatados()
     }
 
     function cargarTablaEmpatados() {
         var d = cargarLoader("Cargando...");
+        var tipo = $("#buscarGrupo").val()
         $.ajax({
             type: "POST",
             url: "${createLink(controller: 'rubroOf', action:'tablaEmpatados_ajax')}",
             data: {
-                %{--id: '${rubro?.id}'--}%
+                tipo: tipo
             },
             success: function (msg) {
                 d.modal("hide");

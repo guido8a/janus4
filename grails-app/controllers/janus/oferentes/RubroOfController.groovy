@@ -1251,10 +1251,15 @@ class RubroOfController {
     }
 
     def tablaBuscarRubros_ajax(){
+        println "tablaBuscarRubros_ajax: $params"
+        def cn = dbConnectionService.getConnection()
         def listaItems = ['itemnmbr', 'itemcdgo']
 //        def rubro = Item.get(params.rubro)
         def rubro = DetalleRubro.get(params.rubro)
         def datos;
+
+        def longitud = params.nmbr.size()
+        params.criterio = params.criterio?: params.nmbr[0..(longitud/2)]
 
         def select = "select item.item__id, itemcdgo, itemnmbr, item.tpls__id, unddcdgo " +
                 "from item, undd, dprt, sbgr "
@@ -1267,16 +1272,20 @@ class RubroOfController {
 
         sqlTx = "${select} ${txwh} order by ${ordn} limit 100 ".toString()
 //        println "sql: $sqlTx"
-
-        def cn = dbConnectionService.getConnection()
         datos = cn.rows(sqlTx)
 //        println "data: ${datos[0]}"
         [data: datos, rubro: rubro]
     }
 
     def tablaEmpatados_ajax(){
-        def empatados = DetalleRubro.findAllByIdJanusNotEqual(0, [sort: 'nombre'])
-        return [empatados: empatados]
+        println "tablaEmpatados_ajax: $params"
+        def cn = dbConnectionService.getConnection()
+        def sql = "select distinct dtrbtipo, dtrbcdgo, dtrbnmbr, dtrbundd, dtrbtipo, itemnmbr, itemcdgo from dtrb, item " +
+                "where item.item__id = dtrbjnid and dtrbtipo = '${params.tipo}' " + // "and obra__id = ${params.obra}"
+                "order by itemcdgo"
+        println "sql: $sql"
+        def empatados = cn.rows(sql.toString())
+        return [data: empatados]
     }
 
 

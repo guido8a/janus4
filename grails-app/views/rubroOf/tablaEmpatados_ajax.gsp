@@ -5,11 +5,11 @@
           <th colspan="7">Rubros Empatados</th>
         </tr>
         <tr>
-            <th style="width: 10%">Tipo</th>
-            <th style="width: 10%">Código</th>
-            <th style="width: 30%">Descripción</th>
-            <th style="width: 10%"></th>
-            <th style="width: 10%">Código</th>
+            <th style="width: 8%">Tipo</th>
+            <th style="width: 8%">Código</th>
+            <th style="width: 37%">Descripción</th>
+            <th style="width: 8%">Equivale a</th>
+            <th style="width: 8%">Código</th>
             <th style="width: 30%">Descripción</th>
             <th style="width: 1%"></th>
         </tr>
@@ -18,17 +18,17 @@
 </div>
 
 <div class="" style="width: 99.7%;height: 400px; overflow-y: auto;float: right; margin-top: -20px">
-    <table class="table-bordered table-striped table-condensed table-hover">
+    <table class="table-bordered table-striped table-condensed table-hover" width="100%">
         <tbody>
-        <g:if test="${empatados}">
-            <g:each in="${empatados}" var="empatado" status="i">
+        <g:if test="${data}">
+            <g:each in="${data}" var="d" status="i">
                 <tr>
-                    <td style="width: 10%">${empatado?.tipo == 'EQ' ? 'Equipos' : (empatado?.tipo == 'MT' ? 'Materiales' : 'Mano de Obra') }</td>
-                    <td style="width: 10%">${empatado?.codigo}</td>
-                    <td style="width: 30%">${empatado?.nombre}</td>
-                    <td style="width: 10%; text-align: center"><i class="fa fa-exchange-alt fa-3x text-success"></i> </td>
-                    <td style="width: 10%">${janus.Item.get(empatado?.idJanus)?.codigo}</td>
-                    <td style="width: 30%">${janus.Item.get(empatado?.idJanus)?.nombre}</td>
+                    <td style="width: 8%">${d?.dtrbtipo == 'EQ' ? 'Equipos' : (d?.dtrbtipo == 'MT' ? 'Materiales' : 'Mano de Obra') }</td>
+                    <td style="width: 8%">${d?.dtrbcdgo}</td>
+                    <td style="width: 37%">${d?.dtrbnmbr}</td>
+                    <td style="width: 8%; text-align: center"><i class="fa fa-exchange-alt fa-3x text-success"></i> </td>
+                    <td style="width: 8%">${d?.itemcdgo}</td>
+                    <td style="width: 30%">${d?.itemnmbr}</td>
                     <td style="width: 1%"></td>
                 </tr>
             </g:each>

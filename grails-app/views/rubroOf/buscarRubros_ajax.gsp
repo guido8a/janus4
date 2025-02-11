@@ -86,7 +86,8 @@
                 criterio: criterio,
                 ordenar: ordenar,
                 grupo: grupo,
-                rubro: '${rubro?.id}'
+                rubro: '${rubro?.id}',
+                nmbr:  '${rubro?.nombre}',
             },
             success: function (msg) {
                 d.modal("hide");
