@@ -1235,14 +1235,15 @@ class RubroOfController {
         def cn = dbConnectionService.getConnection()
         def obra = Obra.get(4255)
         def sql = "select distinct dtrbcdgo codigo, dtrbnmbr nombre, dtrbtipo tipo from dtrb, ofrb " +
-                "where ofrb.obra__id = ${obra?.id} and dtrb.ofrb__id = ofrb.ofrb__id and dtrbjnid = 0 order by 3, 1"
+                "where ofrb.obra__id = ${obra?.id} and dtrb.ofrb__id = ofrb.ofrb__id and dtrbjnid = 0 and " +
+                "dtrbtipo != 'TR' order by 3, 1"
         println("sql " + sql)
         def datos = cn.rows(sql)
         return [datos: datos]
     }
 
     def buscarRubros_ajax(){
-        def rubro = DetalleRubro.findAllByNombre(params.dscr)?.first()
+        def rubro = DetalleRubro.findAllByNombreAndTipoNotEqual(params.dscr, 'TR')?.first()
         println "tipo: ${rubro.tipo}"
         def tipo = rubro.tipo == 'EQ' ? ['3' : 'Equipos'] : (rubro.tipo == 'MT' ? ['1' : 'Materiales'] : ['2' : 'Mano de obra'])
         return [rubro: rubro, tipo: tipo]
