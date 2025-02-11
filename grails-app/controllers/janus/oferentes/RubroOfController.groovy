@@ -1235,7 +1235,7 @@ class RubroOfController {
         def cn = dbConnectionService.getConnection()
         def obra = Obra.get(4255)
         def sql = "select distinct dtrbcdgo codigo, dtrbnmbr nombre, dtrbtipo tipo from dtrb, ofrb " +
-                "where ofrb.obra__id = ${obra?.id} and dtrb.ofrb__id = ofrb.ofrb__id order by 3, 1"
+                "where ofrb.obra__id = ${obra?.id} and dtrb.ofrb__id = ofrb.ofrb__id and dtrbjnid = 0 order by 3, 1"
         println("sql " + sql)
         def datos = cn.rows(sql)
         return [datos: datos]
