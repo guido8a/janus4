@@ -1242,7 +1242,8 @@ class RubroOfController {
     }
 
     def buscarRubros_ajax(){
-        def rubro = DetalleRubro.get(params.id)
+        def rubro = DetalleRubro.findAllByNombre(params.dscr)?.first()
+        println "tipo: ${rubro.tipo}"
         def tipo = rubro.tipo == 'EQ' ? ['3' : 'Equipos'] : (rubro.tipo == 'MT' ? ['1' : 'Materiales'] : ['2' : 'Mano de obra'])
         return [rubro: rubro, tipo: tipo]
     }

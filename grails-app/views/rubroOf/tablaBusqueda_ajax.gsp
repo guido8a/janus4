@@ -37,13 +37,13 @@
 <script type="text/javascript">
 
     $(".btnSeleccionar").click(function () {
-        var id = $(this).data("id");
+        var dscr = $(this).data("dscr");
         var g = cargarLoader("Cargando...");
         $.ajax({
             type    : "POST",
             url     : "${createLink(action:'buscarRubros_ajax')}",
             data    : {
-                id: id
+                dscr: dscr
             },
             success : function (msg) {
                 g.modal("hide");

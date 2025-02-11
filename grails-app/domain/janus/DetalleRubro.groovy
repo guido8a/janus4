@@ -14,6 +14,7 @@ class DetalleRubro {
     double precio
     double costo
     double subtotal
+    int idJanus = 0
 
     static auditable = true
     static mapping = {
@@ -35,6 +36,7 @@ class DetalleRubro {
             precio column: 'dtrbpcun'
             costo column: 'dtrbcsto'
             subtotal column: 'dtrbsbtt'
+            idJanus column: 'dtrbjnid'
         }
     }
     static constraints = {
@@ -49,6 +51,7 @@ class DetalleRubro {
         costo(blank: false, nullable: false)
         rendimiento(blank: false, nullable: false)
         subtotal(blank: false, nullable: false)
+        idJanus(blank: false, nullable: false)
     }
 
 }
