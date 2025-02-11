@@ -11,20 +11,23 @@
             <th style="width: 6%">
                 Unidad
             </th>
-            <th style="width: 10%">
+            <th style="width: 8%">
                Cantidad
             </th>
-            <th style="width: 10%">
+            <th style="width: 8%">
                 P. U. GADPP
             </th>
-            <th style="width: 10%">
+            <th style="width: 8%">
                 P.U. Oferta
             </th>
-            <th style="width: 10%">
+            <th style="width: 8%">
                 Dif. Unitario
             </th>
             <th style="width: 10%">
                 Dif. Total
+            </th>
+            <th style="width: 8%">
+                Dif. %
             </th>
         </tr>
         </thead>
