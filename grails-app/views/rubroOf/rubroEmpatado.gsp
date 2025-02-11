@@ -58,9 +58,9 @@
 <script type="text/javascript">
     var di;
 
-    %{--$("#btnRegresarPrincipal").click(function () {--}%
-    %{--    location.href="${createLink(controller: 'rubro', action: 'rubroPrincipal')}/${rubro?.id}"--}%
-    %{--});--}%
+    $("#btnRegresarPrincipal").click(function () {
+        location.href="${createLink(controller: 'rubroOf', action: 'rubroCon')}/${rubro?.id}"
+    });
 
     $("#buscarGrupo").change(function () {
         cargarTablaBusqueda();

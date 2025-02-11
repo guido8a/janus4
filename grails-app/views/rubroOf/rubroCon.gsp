@@ -24,6 +24,13 @@
     </a>
 </div>
 
+<div class="span6 btn-group" role="navigation">
+    <a href="#" class="btn  btn-success" id="btnEmpatar">
+        <i class="fa fa-check-circle"></i>
+        Emparejamiento de Items
+    </a>
+</div>
+
 <div id="list-grupo" class="col-md-12" role="main" style="margin-top: 10px;margin-left: -10px">
 
     <div class="col-md-12">
@@ -82,6 +89,11 @@
     $("#btnProcesar").click(function () {
         var cntr = $("#obra").val();
         location.href = "${createLink(controller: 'rubroOf', action: 'procesarRubrosOf')}?contrato=" + cntr
+    });
+
+    $("#btnEmpatar").click(function () {
+        var cntr = $("#obra").val();
+        location.href = "${createLink(controller: 'rubroOf', action: 'rubroEmpatado')}?contrato=" + cntr
     });
 
 </script>
