@@ -93,7 +93,7 @@ class Item implements Auditable {
     static constraints = {
         responsable(nullable: true,blank:true)
 //        empresa(nullable: true,blank:true)
-        nombre(size: 1..160, blank: false, attributes: [title: 'nombre'])
+        nombre(size: 1..200, blank: false, attributes: [title: 'nombre'])
         codigo(size: 1..30, blank: false, attributes: [title: 'numero'])
         codigoHistorico(blank: true, nullable: true, attributes: [title: 'código histórico'])
         unidad(blank: true, nullable: true, attributes: [title: 'unidad'])
