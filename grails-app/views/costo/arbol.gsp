@@ -96,8 +96,11 @@
                         <th style="width: 140px;">
                             Fecha
                         </th>
-                        <th style="width: 200px;">
+                        <th style="width: 100px;">
                             Precio
+                        </th>
+                        <th style="width: 100px;">
+                            Porcentaje
                         </th>
                     </tr>
                     </thead>
@@ -196,7 +199,7 @@
                     success : function (msg) {
                         var b = bootbox.dialog({
                             id    : "dlgCreateEditPresupuesto",
-                            title : title + " Presupuesto",
+                            title : title + " Costo",
 
                             message : msg,
                             buttons : {
@@ -239,7 +242,7 @@
                     success : function (msg) {
                         var b = bootbox.dialog({
                             id    : "dlgCreateEditPresupuesto",
-                            title : title + " Presupuesto",
+                            title : title + " Precio",
                             class: 'modal-sm',
                             message : msg,
                             buttons : {

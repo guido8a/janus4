@@ -415,12 +415,13 @@ class CostoController {
     def tablaPrecio_ajax() {
         def cn = dbConnectionService.getConnection()
         def txto = "<table class='table table-bordered table-striped table-condensed table-hover'><tbody><tr>"
-        def sql = "select p.prcsfcha, p.prcspcun from prcs p where p.prcsfcha = (select max(prcsfcha) from prcs " +
+        def sql = "select p.prcsfcha, p.prcspcun, p.prcspcnt from prcs p where p.prcsfcha = (select max(prcsfcha) from prcs " +
                 "where prcs.csto__id = p.csto__id) and p.csto__id = ${params.id}"
         println "sql: $sql"
         def data = []
         cn.eachRow(sql.toString()) { d ->
-            txto += "<td width='140px'>${d.prcsfcha}</td><td width='200px'>${d.prcspcun}</td>"
+            txto += "<td width='140px'>${d.prcsfcha}</td><td width='100px'>${d.prcspcun}</td>" +
+                    "<td width='100px'>${d.prcspcnt?:'-'} %</td>"
         }
         txto += "</tr></tbody></table>"
         println "txto: $txto"

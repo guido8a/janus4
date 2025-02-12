@@ -30,7 +30,7 @@ class Costo implements Auditable {
         padre(blank: true, nullable: true, attributes: [title: 'padre'])
         nivel(blank: false, nullable: false, attributes: [title: 'nivel'])
         numero(size: 1..10, blank: false, nullable: false, attributes: [title: 'descripcion'])
-        descripcion(size: 1..127, blank: false, nullable: false, attributes: [title: 'descripcion'])
+        descripcion(size: 1..255, blank: false, nullable: false, attributes: [title: 'descripcion'])
         movimiento(size: 1..1, blank: false, nullable: false, attributes: [title: 'movimiento'])
         estado(size: 1..1, blank: false, nullable: false, attributes: [title: 'estado'])
     }

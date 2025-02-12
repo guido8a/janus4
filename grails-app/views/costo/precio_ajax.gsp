@@ -7,7 +7,7 @@
 
         <div class="form-group keeptogether ${hasErrors(bean: precioCosto, field: 'precioUnitario', 'error')} ">
             <span class="grupo">
-                <label for="precioUnitario" class="col-md-2 control-label">
+                <label for="precioUnitario" class="col-md-3 control-label">
                     Precio
                 </label>
 
@@ -17,9 +17,22 @@
             </span>
         </div>
 
+        <div class="form-group keeptogether ${hasErrors(bean: precioCosto, field: 'precioUnitario', 'error')} ">
+            <span class="grupo">
+                <label for="porcentaje" class="col-md-3 control-label">
+                    Porcentaje
+                </label>
+
+                <span class="col-md-8">
+                    <g:textField name="porcentaje" maxlength="15" class="form-control input-sm required"
+                                 value="${precioCosto?.porcentaje}"/>
+                </span>
+            </span>
+        </div>
+
         <div class="form-group keeptogether ${hasErrors(bean: precioCosto, field: 'fecha', 'error')} ">
             <span class="grupo">
-                <label for="precioUnitario" class="col-md-2 control-label">
+                <label for="precioUnitario" class="col-md-3 control-label">
                     Fecha
                 </label>
 

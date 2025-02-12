@@ -9,6 +9,7 @@ class PrecioCostos implements Auditable {
     Date fecha
     Date fechaIngreso
     String registro = 'N'
+    int porcentaje = 0
 
     static auditable = true
     static mapping = {
@@ -23,6 +24,7 @@ class PrecioCostos implements Auditable {
             fecha column: 'prcsfcha'
             fechaIngreso column: 'prcsfcin'
             registro column: 'prcsrgst'
+            porcentaje column: 'prcspcnt'
         }
     }
     static constraints = {
@@ -31,5 +33,6 @@ class PrecioCostos implements Auditable {
         fecha(blank: false, nullable: false, attributes: [title: 'fecha'])
         fechaIngreso(blank: false, nullable: false, attributes: [title: 'fecha registro'])
         registro(blank: false, nullable: false, attributes: [title: 'regsitrado'])
+        porcentaje(blank: false, nullable: false, attributes: [title: 'porcentaje'])
     }
 }
