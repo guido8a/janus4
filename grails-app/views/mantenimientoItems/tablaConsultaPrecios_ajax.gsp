@@ -20,7 +20,7 @@
         <g:if test="${materiales}">
             <g:each in="${materiales}" status="i" var="m">
                 <tr>
-                    <td style="width: 10%">$m.itemcdgo}</td>
+                    <td style="width: 10%">${m.itemcdgo}</td>
                     <td style="width: 35%">${m.itemnmbr}</td>
                     <td style="width: 10%">${m.unddcdgo}</td>
                     <td style="width: 10%">${m.rbpcpcun}</td>

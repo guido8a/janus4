@@ -48,10 +48,10 @@
             <div class="col-md-1" style="margin-top: 20px">
                 <button class="btn btn-info" id="btnBuscar" title="Buscar"><i class="fa fa-search"></i>Consultar</button>
             </div>
-            <div class="col-md-1" style="margin-top: 20px">
-                <button class="btn btn-danger" id="btnBorrar" title="Buscar"><i class="fa fa-trash"></i>
-                    Borrar todos los precios</button>
-            </div>
+%{--            <div class="col-md-1" style="margin-top: 20px">--}%
+%{--                <button class="btn btn-danger" id="btnBorrar" title="Buscar"><i class="fa fa-trash"></i>--}%
+%{--                    Borrar todos los precios</button>--}%
+%{--            </div>--}%
         </div>
     </fieldset>
 
