@@ -39,7 +39,8 @@
     <g:hiddenField name="id" value="${contrato?.id}"/>
     <div id="list-grupo" class="col-md-12" role="main">
         <div class="" style="margin: 0 0 20px 0;">
-            <div class="col-md-2 text-info">Formato del archivo <strong>Excel xlsx</strong></div>
+            <div class="col-md-2 text-info">Formato del archivo <strong>Excel xlsx</strong><br>
+                La columna de unidad debe tener valor, no importa si no es real, puede ser todo 'u'</div>
             <div class="col-md-9">
 
                 <table class="table" style="background-color: #5a7ab2; color: #fff;">
@@ -54,19 +55,19 @@
                             C - UNIDAD
                         </th>
                         <th style="border: 1px solid #ddd; text-align: center">
-                            C - CANTIDAD
+                            D - CANTIDAD
                         </th>
                         <th style="border: 1px solid #ddd; text-align: center">
-                            D - PRECIO UNITARIO OFERTADO
+                            E - PRECIO UNITARIO OFERTADO
                         </th>
                         <th style="border: 1px solid #ddd; text-align: center">
-                            E - PRECIO TOTAL
+                            F - PRECIO TOTAL
                         </th>
                         <th style="border: 1px solid #ddd; text-align: center">
-                            F - MES 1
+                            G - MES 1
                         </th>
                         <th style="border: 1px solid #ddd; text-align: center">
-                            G - MES 2
+                            H - MES 2
                         </th>
                         <th style="border: 1px solid #ddd; text-align: center">
                             ...

@@ -26,6 +26,20 @@
                     Regresar
                 </a>
             </div>
+            <div id="list-grupo" class="col-md-10" role="main" style="margin-top: 10px;margin-left: -10px">
+
+                <div class="col-md-12">
+                    <div class="col-md-3">
+                        <b style="margin-left: 20px">Obra Ofertada:</b>
+                    </div>
+                    <div class="col-md-9">
+                        <g:select name="obra"
+                                  from="${obras}" optionKey="key" optionValue="value"
+                                  style="width: 100%; margin-left: -80px"/>
+                    </div>
+                </div>
+            </div>
+
             <div class="col-md-2">
                 Grupo
                 <g:select name="buscarGrupo_name" id="buscarGrupo" from="['MT': 'Materiales', 'MO': 'Mano de Obra', 'EQ': 'Equipos']" optionKey="key" optionValue="value" class="form-control" />
@@ -101,7 +115,7 @@
                 buscarPor: buscarPor,
                 criterio: criterio,
                 grupo: grupo,
-                %{--obra: '${obra?.id}'--}%
+                obra: $("#obra").val()
             },
             success: function (msg) {
                 d.modal("hide");
@@ -118,7 +132,8 @@
             type: "POST",
             url: "${createLink(controller: 'rubroOf', action:'tablaEmpatados_ajax')}",
             data: {
-                tipo: tipo
+                tipo: tipo,
+                obra: $("#obra").val()
             },
             success: function (msg) {
                 d.modal("hide");

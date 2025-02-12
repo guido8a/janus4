@@ -799,7 +799,7 @@ class RubroOfController {
         def obras = [:]
         def sql = "select distinct obra.obra__id id, obracdgo||' - '||obranmbr nombre " +
                 "from obra, obof " +
-                "where obof.obrajnid = obra.obra__id and obof.prsn__id = ${oferente.id}" +
+                "where obof.obra__id = obra.obra__id and obof.prsn__id = ${oferente.id} " +
                 "order by 1"
         println "sql: $sql"
         cn.eachRow(sql.toString()) { r ->
@@ -810,7 +810,7 @@ class RubroOfController {
 
     def uploadApus() {
         println "uploadApus $params"
-        params.obra = 4255
+//        params.obra = 4255
         def obra = params.obra
         def cn = dbConnectionService.getConnection()
         def filasNO = [0, 1]
@@ -1163,7 +1163,7 @@ class RubroOfController {
         def obras = [:]
         def sql = "select distinct obra.obra__id id, obracdgo||' - '||obranmbr nombre " +
                 "from obra, obof " +
-                "where obof.obrajnid = obra.obra__id and obof.prsn__id = ${oferente.id}" +
+                "where obof.obra__id = obra.obra__id and obof.prsn__id = ${oferente.id}" +
 //                "where obof.obrajnid = obra.obra__id " +
                 "order by 1"
         cn.eachRow(sql.toString()) { r ->
@@ -1175,7 +1175,7 @@ class RubroOfController {
 
     def listaRubros_ajax(){
         println("params " + params)
-        params.id = 4255
+//        params.id = 4255
         def oferente = session.usuario
         def cn = dbConnectionService.getConnection()
         def rubros= [:]
@@ -1208,7 +1208,7 @@ class RubroOfController {
 
     def procesarRubrosOf() {
         println "procesarRubrosOf $params"
-        params.id = 4255
+//        params.id = 4255
         def oferente = session.usuario
         def cn = dbConnectionService.getConnection()
         def sql = ""
@@ -1220,18 +1220,33 @@ class RubroOfController {
         }
         sql = "update ofrb set ofrbpcun = (select sum(dtrbsbtt*1.1) from dtrb where dtrb.ofrb__id = ofrb.ofrb__id)"
         cn.execute(sql.toString())
+        sql = "update dtrb set dtrbjnid = 0 where dtrbjnid is null"
+        cn.execute(sql.toString())
         cn.close()
         render "ok"
     }
 
     def rubroEmpatado(){
-//        def obra = Obra.get(params.id)
-//        return [obra: obra]
+        def oferente = session.usuario
+        def cn = dbConnectionService.getConnection()
+        def obras = [:]
+        def sql = "select distinct obra.obra__id id, obracdgo||' - '||obranmbr nombre " +
+                "from obra, obof " +
+                "where obof.obra__id = obra.obra__id and obof.prsn__id = ${oferente.id}" +
+//                "where obof.obrajnid = obra.obra__id " +
+                "order by 1"
+        cn.eachRow(sql.toString()) { r ->
+            obras[r.id] = r.nombre
+        }
+        [obras: obras, oferente: oferente]
     }
 
     def tablaBusqueda_ajax(){
         def cn = dbConnectionService.getConnection()
-        def obra = Obra.get(4255)
+        def obra = Obra.get(params.obra)
+//        def oferente = session.usuario
+        println "tablaBusqueda_ajax: $params"
+//        def obra = Obra.get(params.id)
         def listaItems = ['dtrbnmbr', 'dtrbcdgo']
         def sql = "select distinct dtrbcdgo codigo, dtrbnmbr nombre, dtrbtipo tipo from dtrb, ofrb " +
                 "where ofrb.obra__id = ${obra?.id} and dtrb.ofrb__id = ofrb.ofrb__id and dtrbjnid = 0 and " +
@@ -1281,8 +1296,9 @@ class RubroOfController {
     def tablaEmpatados_ajax(){
         println "tablaEmpatados_ajax: $params"
         def cn = dbConnectionService.getConnection()
-        def sql = "select distinct dtrbtipo, dtrbcdgo, dtrbnmbr, dtrbundd, dtrbtipo, itemnmbr, itemcdgo from dtrb, item " +
-                "where item.item__id = dtrbjnid and dtrbtipo = '${params.tipo}' " + // "and obra__id = ${params.obra}"
+        def sql = "select distinct dtrbtipo, dtrbcdgo, dtrbnmbr, dtrbundd, dtrbtipo, itemnmbr, itemcdgo from dtrb, item, ofrb " +
+                "where item.item__id = dtrbjnid and dtrbtipo = '${params.tipo}' and ofrb.ofrb__id = dtrb.ofrb__id and " +
+                "obra__id = ${params.obra}" + // "and obra__id = ${params.obra}"
                 "order by itemcdgo"
         println "sql: $sql"
         def empatados = cn.rows(sql.toString())
