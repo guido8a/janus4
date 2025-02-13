@@ -40,11 +40,11 @@
 <div class="dialog">
     <div style="text-align: center;"><h1 class="titl" style="font-size: 20px;">SEGUIMIENTO Y EJECUCIÓN DE PROYECTOS DE OBRAS Y CONSULTORÍAS<br>
             GOBIERNO AUTÓNOMO DESCENTRALIZADO PROVINCIA DE PICHINCHA</h1>
-        <h1 class="titl" style="font-size: 24px; color: #06a">Registro de Ofertas en Línea</h1></div>
-        <h3 style="font-size: 16px; color: #06a; text-align: center">Incluye Módulo VAE</h3>
-    <div class="body ui-corner-all" style="width: 600px;position: relative;margin: auto;margin-top: 0px;height: 383px;
+        <h1 class="titl" style="font-size: 24px; color: #06a">Módulo de Oferentes</h1></div>
+        %{--<h3 style="font-size: 16px; color: #06a; text-align: center">Incluye Módulo VAE</h3>--}%
+    <div class="body ui-corner-all" style="width: 600px;position: relative;margin: auto;margin-top: 30px;height: 320px;
     background: #2080b0;">
-        <img src="${resource(dir: 'images', file: 'oferentes2.jpeg')}"/>
+        <img src="${resource(dir: 'images', file: 'oferentes2.jpeg')}" width="600px"/>
 
                         %{--<g:link  controller="proyecto" action="list" title="Gestión de proyectos">--}%
 %{--
@@ -130,7 +130,7 @@
 
     </div>
 --}%
-    <div style="height: 25px;width: 100%;text-align: right;float: right;">&copy; TEDEIN S.A. Versión ${message(code: 'version', default: '0.1.0x')}</div>
+    <div style="height: 25px;width: 100%;text-align: right;float: right; margin-top: 20px">&copy; TEDEIN S.A. Versión ${message(code: 'version', default: '0.1.0x')}</div>
 </div>
 <script type="text/javascript">
     $(".fuera").hover(function(){
