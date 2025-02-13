@@ -191,6 +191,7 @@
                     <g:link controller="descargas" action="manualOferentes" target="_blank">Oferentes</g:link>,
                     <g:link controller="descargas" action="manualRprt" target="_blank">Reportes</g:link>,
                     <g:link controller="descargas" action="manualAdmnDire" target="_blank">Administración Directa</g:link>,
+                    <g:link controller="descargas" action="consultorias" target="_blank">Consultoría</g:link>
                 </div>
             </div>
         </div>

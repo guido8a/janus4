@@ -137,5 +137,27 @@ class DescargasController {
         response.getOutputStream().write(b)
     }
 
+    def plantilla() {
+        def nombre = "MODELO ESPECIFICACIONES GADPP.docx"
+        def path = '/var/janus/manual/' + nombre
+        def file = new File(path)
+        def b = file.getBytes()
+        response.setContentType("application/word")
+        response.setHeader("Content-disposition", "attachment; filename=" + nombre)
+        response.setContentLength(b.length)
+        response.getOutputStream().write(b)
+    }
+
+    def consultorias() {
+        def nombre = "consultorias.pdf"
+        def path = '/var/janus/manual/' + nombre
+        def file = new File(path)
+        def b = file.getBytes()
+        response.setContentType("application/word")
+        response.setHeader("Content-disposition", "attachment; filename=" + nombre)
+        response.setContentLength(b.length)
+        response.getOutputStream().write(b)
+    }
+
 
 } //fin controller
