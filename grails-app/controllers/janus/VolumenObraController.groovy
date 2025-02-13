@@ -505,10 +505,36 @@ class VolumenObraController {
         return [volumenObra: volumenObra, obra: obra, subpresupuesto: subpresupuesto, rubro: rubro]
     }
 
-   def subpresupuestosObra_ajax () {
-       def obra = Obra.get(params.obra)
-       def subPresupuestos = VolumenesObra.findAllByObra(obra, [sort: "orden"]).subPresupuesto.unique()
-       return [subPresupuestos: subPresupuestos]
-   }
+    def subpresupuestosObra_ajax () {
+        def obra = Obra.get(params.obra)
+        def subPresupuestos = VolumenesObra.findAllByObra(obra, [sort: "orden"]).subPresupuesto.unique()
+        return [subPresupuestos: subPresupuestos]
+    }
+
+    def costos(){
+        def obra = Obra.get(params.id)
+        return [obra: obra]
+    }
+
+    def tablaCostos_ajax(){
+
+    }
+
+
+    def buscarCostos(){
+        def cn = dbConnectionService.getConnection()
+        def obra = Obra.get(params.id)
+        def sql = "select * from csto where cstonvel = 1 order by cstonmro;"
+        def datos = cn.rows(sql.toString())
+        return [datos:datos, obra: obra]
+    }
+
+    def tablaBusquedaCostos_ajax(){
+        def cn = dbConnectionService.getConnection()
+        def obra = Obra.get(params.obra)
+        def sql = "select * from csto where cstomvmt = '${params.tipo}' and cstonmro ilike '${params.tipo}%';"
+        def datos = cn.rows(sql.toString())
+        return [datos:datos, obra: obra]
+    }
 
 }
