@@ -31,7 +31,7 @@
                 <div class="col-md-1"> <label> Tipo de costo: </label> </div>
                 <div class="col-md-2">
                     <g:select name="tipoName" id="tipo" class="form-control btn-success" from="${datos}"
-                              optionKey="${{it.csto__id}}" optionValue="${{it.cstodscr}}" />
+                              optionKey="${{it.cstonmro}}" optionValue="${{it.cstodscr}}" />
                 </div>
 
 %{--                <div class="col-md-2"> <label> Subpresupuesto de la obra</label> </div>--}%
