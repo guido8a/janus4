@@ -2,11 +2,10 @@
     <table class="table table-bordered table-striped table-condensed table-hover">
         <thead>
         <tr>
-            <th style="width: 12%">Nivel</th>
             <th style="width: 12%">Número</th>
             <th style="width: 72%">Descripción</th>
-            <th style="width: 10%">Movimiento</th>
-            <th style="width: 8%">Seleccionar</th>
+            <th style="width: 10%">Unitario</th>
+            <th style="width: 8%">Porcentaje</th>
             <th style="width: 1%"></th>
         </tr>
         </thead>
@@ -19,10 +18,10 @@
         <g:if test="${datos}">
             <g:each in="${datos}" var="dt" status="i">
                 <tr>
-                    <td style="width: 9%">${dt.cstonvel}</td>
                     <td style="width: 9%">${dt.cstonmro}</td>
                     <td style="width: 69%">${dt.cstodscr}</td>
-                    <td style="width: 10%">${dt.cstomvmt}</td>
+                    <td style="width: 10%">${dt.prcspcun}</td>
+                    <td style="width: 10%">${dt.prcspcnt} %</td>
                     <td style="width: 9%">
                             <a href="#" class="btn btn-success btn-xs btnSeleccionar" data-id="${dt?.csto__id}"><i class="fa fa-check"></i></a>
                     </td>
