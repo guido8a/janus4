@@ -1,5 +1,7 @@
 package janus
 
+import janus.cnsl.Costo
+import janus.cnsl.DetalleConsultoria
 import janus.pac.TipoProcedimiento
 import seguridad.Persona
 
@@ -517,9 +519,10 @@ class VolumenObraController {
     }
 
     def tablaCostos_ajax(){
-
+        def obra = Obra.get(params.obra)
+        def costos = DetalleConsultoria.findAllByObra(obra, [sort: 'orden'])
+        return [costos: costos]
     }
-
 
     def buscarCostos(){
         def cn = dbConnectionService.getConnection()
@@ -539,6 +542,65 @@ class VolumenObraController {
         println "sql: $sql"
         def datos = cn.rows(sql.toString())
         return [datos:datos, obra: obra]
+    }
+
+    def tablaCostosSeleccionados_ajax(){
+        def obra = Obra.get(params.obra)
+        def costos = DetalleConsultoria.findAllByObra(obra, [sort: 'orden'])
+        return [costos: costos]
+    }
+
+    def formCosto_ajax(){
+        def obra = Obra.get(params.obra)
+        def costo
+        def detalle
+
+        if(params.id){
+            detalle = DetalleConsultoria.get(params.id)
+            costo = detalle.costo
+        }else{
+            detalle = new DetalleConsultoria()
+            costo = Costo.get(params.costo)
+        }
+
+        return [detalle:detalle, costo: costo, obra: obra]
+    }
+
+    def saveCosto_ajax(){
+
+        def detalle
+
+        if(params.id){
+            detalle = DetalleConsultoria.get(params.id)
+        }else{
+            detalle = new DetalleConsultoria()
+        }
+        params.valor = params.valor.toDouble()
+        detalle.properties = params
+
+        if(!detalle.save(flush:true)){
+            println("error al guardar el detalle costo " + detalle.errors)
+            render "no_Error al guardar el costo"
+        }else{
+            render "ok_Costo guardado correctamente"
+        }
+    }
+
+    def deleteCosto_ajax(){
+
+        def detalle = DetalleConsultoria.get(params.id)
+
+        if(detalle){
+            try{
+                detalle.delete(flush:true)
+                render "ok_Borrado correctamente"
+            }catch(e){
+                println("Error al borrar el costo " + detalle.errors)
+                render "no_Error al borrar el costo"
+            }
+        }else{
+            render "no_Error al borrar el costo"
+        }
     }
 
 }

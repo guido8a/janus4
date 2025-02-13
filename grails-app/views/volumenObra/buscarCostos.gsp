@@ -4,7 +4,7 @@
 <head>
     <meta name="layout" content="main">
     <title>
-        Lista de Rubros
+        Costos
     </title>
 </head>
 <body>
@@ -29,7 +29,7 @@
         <div class="row-fluid">
             <div class="col-md-12">
                 <div class="col-md-1"> <label> Tipo de costo: </label> </div>
-                <div class="col-md-2">
+                <div class="col-md-4">
                     <g:select name="tipoName" id="tipo" class="form-control btn-success" from="${datos}"
                               optionKey="${{it.cstonmro}}" optionValue="${{it.cstodscr}}" />
                 </div>
@@ -70,11 +70,10 @@
         <div class="col-md-7" id="divTablaBusquedaCostos">
         </div>
 
-%{--        <div class="col-md-5">--}%
-
-%{--            <div class="alert alert-info" style="margin-top: 10px; text-align: center">--}%
-%{--                <i class="fa fa-list"></i> <strong style="font-size: 16px"> Rubros en volúmenes de obra</strong>--}%
-%{--            </div>--}%
+        <div class="col-md-5">
+            <div class="alert alert-info" style="margin-top: 10px; text-align: center">
+                <i class="fa fa-list"></i> <strong style="font-size: 16px"> Costos seleccionados</strong>
+            </div>
 
 %{--            <div class="row-fluid">--}%
 %{--                <div class="col-md-12">--}%
@@ -85,10 +84,10 @@
 %{--                </div>--}%
 %{--            </div>--}%
 
-%{--            <div class="col-md-12" id="divTablaSeleccionados" >--}%
+            <div class="col-md-12" id="divTablaCostosSeleccionados" >
 
-%{--            </div>--}%
-%{--        </div>--}%
+            </div>
+        </div>
 
 
     </fieldset>
@@ -142,7 +141,7 @@
     // });
 
     cargarTablaBusquedaCostos();
-    // cargarTablaSeleccionados();
+    cargarTablaCostosSeleccionados();
 
     function cargarTablaBusquedaCostos() {
         var d = cargarLoader("Cargando...");
@@ -162,22 +161,22 @@
         });
     }
 
-    %{--function cargarTablaSeleccionados() {--}%
-    %{--    var d = cargarLoader("Cargando...");--}%
-    %{--    var subpresupuesto = $("#subpresupuestoSeleccionado option:selected").val();--}%
-    %{--    $.ajax({--}%
-    %{--        type: "POST",--}%
-    %{--        url: "${createLink(controller: 'volumenObra', action:'tablaSeleccionados_ajax')}",--}%
-    %{--        data: {--}%
-    %{--            subpresupuesto: subpresupuesto,--}%
-    %{--            obra: '${obra?.id}'--}%
-    %{--        },--}%
-    %{--        success: function (msg) {--}%
-    %{--            d.modal("hide");--}%
-    %{--            $("#divTablaSeleccionados").html(msg);--}%
-    %{--        }--}%
-    %{--    });--}%
-    %{--}--}%
+    function cargarTablaCostosSeleccionados() {
+        var d = cargarLoader("Cargando...");
+        var subpresupuesto = $("#subpresupuestoSeleccionado option:selected").val();
+        $.ajax({
+            type: "POST",
+            url: "${createLink(controller: 'volumenObra', action:'tablaCostosSeleccionados_ajax')}",
+            data: {
+                tipo: '',
+                obra: '${obra?.id}'
+            },
+            success: function (msg) {
+                d.modal("hide");
+                $("#divTablaCostosSeleccionados").html(msg);
+            }
+        });
+    }
 
     %{--$("#subpresupuestoSeleccionado").change(function () {--}%
     %{--    cargarTablaSeleccionados();--}%
@@ -197,6 +196,119 @@
     %{--        }--}%
     %{--    });--}%
     %{--}--}%
+
+    $(".btnBorrarCosto").click(function () {
+        var id = $(this).data("id");
+        borrarCosto(id);
+    });
+
+    function formCosto(id, costo){
+        $.ajax({
+            type    : "POST",
+            url: "${createLink(controller: 'volumenObra', action:'formCosto_ajax')}",
+            data    : {
+                id: id,
+                costo: costo,
+                obra: '${obra?.id}'
+            },
+            success : function (msg) {
+                var er = bootbox.dialog({
+                    id      : "dlgCreateEditCosto",
+                    title   : "Costo",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        },
+                        guardar  : {
+                            id        : "btnSave",
+                            label     : "<i class='fa fa-save'></i> Guardar",
+                            className : "btn-success",
+                            callback  : function () {
+                                return submitFormCosto();
+                            } //callback
+                        } //guardar
+                    } //buttons
+                }); //dialog
+            } //success
+        }); //ajax
+    }
+
+    function submitFormCosto() {
+        var $form = $("#frmCosto");
+        if ($form.valid()) {
+            var data = $form.serialize();
+            var dialog = cargarLoader("Guardando...");
+            $.ajax({
+                type    : "POST",
+                url     : $form.attr("action"),
+                data    : data,
+                success : function (msg) {
+                    dialog.modal('hide');
+                    var parts = msg.split("_");
+                    if(parts[0] === 'ok'){
+                        log(parts[1], "success");
+                        cargarTablaBusquedaCostos();
+                        cargarTablaCostosSeleccionados();
+                    }else{
+                        if(parts[0] === 'err'){
+                            bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
+                            return false;
+                        }else{
+                            log(parts[1], "error");
+                            return false;
+                        }
+                    }
+                }
+            });
+        } else {
+            return false;
+        }
+    }
+
+
+    function borrarCosto(id){
+        bootbox.confirm({
+            title: "Eliminar",
+            message: "<i class='fa fa-exclamation-triangle text-info fa-3x'></i> <strong style='font-size: 14px'> Está seguro de eliminar este costo?</strong> ",
+            buttons: {
+                cancel: {
+                    label: '<i class="fa fa-times"></i> Cancelar',
+                    className: 'btn-primary'
+                },
+                confirm: {
+                    label: '<i class="fa fa-trash"></i> Borrar',
+                    className: 'btn-danger'
+                }
+            },
+            callback: function (result) {
+                if(result){
+                    var d = cargarLoader("Borrando...");
+                    $.ajax({
+                        type : "POST",
+                        url : "${g.createLink(controller: 'volumenObra',action:'deleteCosto_ajax')}",
+                        data     : {
+                            id: id
+                        },
+                        success  : function (msg) {
+                            d.modal("hide");
+                            var parts = msg.split("_");
+                            if(parts[0] === "ok"){
+                                log(parts[1], "success");
+                                cargarTablaBusquedaCostos();
+                                cargarTablaCostosSeleccionados();
+                            }else{
+                                bootbox.alert('<i class="fa fa-exclamation-triangle text-info fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] +'</strong>');
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    }
 
 </script>
 

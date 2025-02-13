@@ -2,10 +2,11 @@
     <table class="table table-bordered table-striped table-condensed table-hover">
         <thead>
         <tr>
-            <th style="width: 12%">Número</th>
-            <th style="width: 72%">Descripción</th>
-            <th style="width: 10%">Unitario</th>
-            <th style="width: 8%">Porcentaje</th>
+            <th style="width: 15%">Número</th>
+            <th style="width: 50%">Descripción</th>
+            <th style="width: 15%">Unitario</th>
+            <th style="width: 10%">Porcentaje</th>
+            <th style="width: 9%"></th>
             <th style="width: 1%"></th>
         </tr>
         </thead>
@@ -17,14 +18,15 @@
         <tbody>
         <g:if test="${datos}">
             <g:each in="${datos}" var="dt" status="i">
-                <tr>
-                    <td style="width: 9%">${dt.cstonmro}</td>
-                    <td style="width: 69%">${dt.cstodscr}</td>
-                    <td style="width: 10%">${dt.prcspcun}</td>
-                    <td style="width: 10%">${dt.prcspcnt} %</td>
-                    <td style="width: 9%">
-                            <a href="#" class="btn btn-success btn-xs btnSeleccionar" data-id="${dt?.csto__id}"><i class="fa fa-check"></i></a>
+                <tr style="width: 100%">
+                    <td style="width: 15%">${dt.cstonmro}</td>
+                    <td style="width: 50%">${dt.cstodscr}</td>
+                    <td style="width: 15%">${dt.prcspcun}</td>
+                    <td style="width: 10%">${dt.prcspcnt}%</td>
+                    <td style="width: 9%; text-align: center">
+                        <a href="#" class="btn btn-success btn-xs btnSeleccionar" data-id="${dt?.csto__id}"><i class="fa fa-check"></i></a>
                     </td>
+                    <td style="width: 1%"></td>
                 </tr>
             </g:each>
         </g:if>
@@ -39,17 +41,9 @@
 
 <script type="text/javascript">
 
-
-
-    // $(".btnSeleccionar").click(function () {
-    //     var rubro = $(this).data("id");
-    //     var existe = verificarEstadoVO(rubro);
-    //
-    //     if(existe){
-    //         formVolObraExistente(rubro)
-    //     }else{
-    //         editarFormVolObra(null, rubro);
-    //     }
-    // });
+    $(".btnSeleccionar").click(function () {
+        var costo = $(this).data("id");
+        formCosto(null, costo)
+    });
 
 </script>

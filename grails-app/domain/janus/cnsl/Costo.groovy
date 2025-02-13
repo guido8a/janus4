@@ -18,6 +18,7 @@ class Costo implements Auditable {
         id generator: 'identity'
         version false
         columns {
+            id column: 'csto__id'
             padre column: 'cstopdre'
             nivel column: 'cstonvel'
             numero column: 'cstonmro'

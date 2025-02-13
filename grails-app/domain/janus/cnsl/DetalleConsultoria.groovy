@@ -18,6 +18,7 @@ class DetalleConsultoria implements Auditable {
         id generator: 'identity'
         version false
         columns {
+            id column: 'dtcn__id'
             obra column: 'obra__id'
             costo column: 'csto__id'
             orden column: 'dtcnordn'

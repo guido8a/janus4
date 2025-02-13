@@ -22,8 +22,8 @@
                     <td style="width: 50%; font-size: 10px">${costo?.descripcion}</td>
                     <td style="width: 20%; text-align: right"><g:formatNumber number="${costo?.valor}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/></td>
                     <td style="width: 20%">
-                        <a href="#" class="btn btn-success btn-xs btnEditarCosto" data-id="${costo?.id}" ><i class="fa fa-edit"></i></a>
-                        <a href="#" class="btn btn-danger btn-xs btnBorrarCosto" data-id="${costo?.id}" ><i class="fa fa-trash"></i></a>
+                        <a href="#" class="btn btn-success btn-xs btnEditarSeleccion" data-id="${costo?.id}" ><i class="fa fa-edit"></i></a>
+                        <a href="#" class="btn btn-danger btn-xs btnBorrarSeleccion" data-id="${costo?.id}" ><i class="fa fa-trash"></i></a>
                     </td>
                     <td style="width: 1%"></td>
                 </tr>
@@ -40,14 +40,14 @@
 
 <script type="text/javascript">
 
-    $(".btnBorrarCosto").click(function () {
+    $(".btnBorrarSeleccion").click(function () {
         var id = $(this).data("id");
-        borrarCostoP(id);
+        borrarCosto(id);
     });
 
-    $(".btnEditarCosto").click(function () {
+    $(".btnEditarSeleccion").click(function () {
         var id = $(this).data("id");
-        formCostoP(id)
+        formCosto(id)
     });
 
 </script>
