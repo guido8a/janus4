@@ -100,23 +100,6 @@
         location.href="${createLink(controller: 'volumenObra', action: 'costos')}/${obra?.id}"
     });
 
-    %{--cargarSubpresupuestoBusqueda();--}%
-
-    %{--function cargarSubpresupuestoBusqueda (){--}%
-    %{--    var tipo = $("#tipo option:selected").val();--}%
-    %{--    $.ajax({--}%
-    %{--        type    : "POST",--}%
-    %{--        url : "${g.createLink(controller: 'volumenObra',action:'subpresupuestos_ajax')}",--}%
-    %{--        data    : {--}%
-    %{--            id: tipo,--}%
-    %{--            obra: '${obra?.id}'--}%
-    %{--        },--}%
-    %{--        success : function (msg) {--}%
-    %{--            $("#divSubpresupuesto").html(msg)--}%
-    %{--        }--}%
-    %{--    });--}%
-    %{--}--}%
-
     $("#tipo").change(function () {
         cargarTablaBusquedaCostos();
     });
@@ -124,21 +107,6 @@
     $("#btnBuscar").click(function () {
         cargarTablaBusquedaCostos();
     });
-
-    // $("#btnLimpiar").click(function  () {
-    //     $("#buscarPor").val(1);
-    //     $("#criterio").val('');
-    //     $("#ordenar").val(1);
-    //     cargarTablaBusqueda();
-    // });
-    //
-    // $("#criterio").keydown(function (ev) {
-    //     if (ev.keyCode === 13) {
-    //         cargarTablaBusqueda();
-    //         return false;
-    //     }
-    //     return true;
-    // });
 
     cargarTablaBusquedaCostos();
     cargarTablaCostosSeleccionados();
@@ -177,25 +145,6 @@
             }
         });
     }
-
-    %{--$("#subpresupuestoSeleccionado").change(function () {--}%
-    %{--    cargarTablaSeleccionados();--}%
-    %{--});--}%
-
-    %{--cargarSubpresuspuestosObra();--}%
-
-    %{--function cargarSubpresuspuestosObra(){--}%
-    %{--    $.ajax({--}%
-    %{--        type: "POST",--}%
-    %{--        url: "${createLink(controller: 'volumenObra', action:'subpresupuestosObra_ajax')}",--}%
-    %{--        data: {--}%
-    %{--            obra: '${obra?.id}'--}%
-    %{--        },--}%
-    %{--        success: function (msg) {--}%
-    %{--            $("#divSubpresupuestoSeleccionado").html(msg);--}%
-    %{--        }--}%
-    %{--    });--}%
-    %{--}--}%
 
     $(".btnBorrarCosto").click(function () {
         var id = $(this).data("id");

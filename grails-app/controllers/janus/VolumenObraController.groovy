@@ -533,13 +533,12 @@ class VolumenObraController {
     }
 
     def tablaBusquedaCostos_ajax(){
-        println "tablaBusquedaCostos_ajax $params"
+//        println "tablaBusquedaCostos_ajax $params"
         def cn = dbConnectionService.getConnection()
         def obra = Obra.get(params.obra)
         def sql = "select csto.csto__id, cstonmro, cstodscr, prcspcun, prcspcnt " +
                 "from csto, prcs where prcs.csto__id = csto.csto__id and " +
                 "cstomvmt = '1' and cstonmro ilike '${params.tipo}%';"
-        println "sql: $sql"
         def datos = cn.rows(sql.toString())
         return [datos:datos, obra: obra]
     }

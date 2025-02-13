@@ -28,7 +28,7 @@
     </div>
 
     <div class="alert alert-info col-md-10" style="font-size: 14px;">
-       Obra: ${obra.nombre + " (" + obra.codigo + ")"}
+        Obra: ${obra.nombre + " (" + obra.codigo + ")"}
         <input type="hidden" id="override" value="0">
     </div>
 </div>
@@ -44,32 +44,17 @@
     </div>
 </div>
 
-
 <div id="list-grupo" class="col-md-12" role="main" style="margin-top: 20px;margin-left: 0px">
     <div class="borde_abajo" style="padding-left: 5px;position: relative; height: 92px">
 
-        <div class="row-fluid" style="margin-left: 0px" id="divTablaCostos">
+%{--        <div class="borde_abajo" style="position: relative;float: left;width: 100%;padding-left: 45px">--}%
+%{--            <p class="css-vertical-text">Composición</p>--}%
 
-        </div>
+%{--            <div class="linea" style="height: 98%;"></div>--}%
 
+            <div style="width: 99.7%;height: 400px;overflow-y: auto;float: right;" id="divTablaCostos"></div>
 
-
-        %{--        <div class="borde_abajo" style="position: relative;float: left;width: 100%;padding-left: 45px">--}%
-        %{--            <p class="css-vertical-text">Composición</p>--}%
-
-        %{--            <div class="linea" style="height: 98%;"></div>--}%
-
-        %{--            <div style="width: 99.7%;height: 600px;overflow-y: auto;float: right;" id="detalle"></div>--}%
-
-        %{--            <div class="col-md-12 breadcrumb" style="height: 35px;overflow-y: auto;float: right;text-align: right; font-size: 14px" id="total">--}%
-        %{--                <div class="col-md-10">--}%
-        %{--                    <b>TOTAL:</b>--}%
-        %{--                </div>--}%
-        %{--                <div class="col-md-2" >--}%
-        %{--                    <div id="divTotal" style="float: left;height: 30px;font-weight: bold;font-size: 14px;margin-right: 20px"></div>--}%
-        %{--                </div>--}%
-        %{--            </div>--}%
-        %{--        </div>--}%
+%{--        </div>--}%
     </div>
 
 </div>
@@ -191,7 +176,7 @@
                             var parts = msg.split("_");
                             if(parts[0] === "ok"){
                                 log(parts[1], "success");
-                                    cargarTabla();
+                                cargarTabla();
                             }else{
                                 bootbox.alert('<i class="fa fa-exclamation-triangle text-info fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] +'</strong>');
                             }

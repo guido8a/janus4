@@ -12,12 +12,14 @@
     </table>
 </div>
 
-<div class="" style="width: 99.7%;height: 475px; overflow-y: auto;float: right; margin-top: -20px">
+<div class="" style="width: 99.7%;height: 350px; overflow-y: auto;float: right; margin-top: -20px">
     <table class="table-bordered table-striped table-condensed table-hover" style="width: 100%">
         <tbody>
         <g:if test="${costos}">
+            <g:set var="total" value="${0}"/>
             <g:each in="${costos}" var="costo" status="i">
                 <tr>
+                    <g:set var="total" value="${total += (costo?.valor ?: 0)}"/>
                     <td style="width: 15%; font-size: 10px">${costo?.orden}</td>
                     <td style="width: 50%; font-size: 10px">${costo?.descripcion}</td>
                     <td style="width: 20%; text-align: right"><g:formatNumber number="${costo?.valor}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/></td>
@@ -36,6 +38,15 @@
         </g:else>
         </tbody>
     </table>
+
+    <div class="col-md-12 breadcrumb" style="height: 35px;overflow-y: auto;float: right;text-align: right; font-size: 14px" id="total">
+        <div class="col-md-9">
+            <b>TOTAL:</b>
+        </div>
+        <div class="col-md-2" >
+            <div id="divTotal" style="height: 30px;font-weight: bold;font-size: 14px;margin-right: 20px; text-align: center">${total}</div>
+        </div>
+    </div>
 </div>
 
 <script type="text/javascript">
