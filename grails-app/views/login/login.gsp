@@ -34,7 +34,7 @@
 
     <div class="centrado"><h1 class="titl" style="font-size: 32px;">${empr.empresa}</h1>
         <h1 class="titl" style="font-size: 24px;">${raw(empr.nombre)}</h1>
-        <h1 class="titl" style="font-size: 24px; color: #904040">Sistema Mejorado - En Construcción</h1>
+        <h1 class="titl" style="font-size: 24px; color: #904040">Sistema Mejorado - Fase de Pruebas</h1>
 
         <div class="dialog ui-corner-all logo">
             <div>

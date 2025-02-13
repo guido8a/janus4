@@ -755,9 +755,11 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
         <a href="${g.createLink(controller: 'volumenObra', action: 'volObra', id: obra?.id)}" class="btn"><i
                 class="fa fa-list"></i> Vol. Obra
         </a>
-        <a href="${g.createLink(controller: 'volumenObra', action: 'costos', id: obra?.id)}" class="btn"><i
-                class="fa fa-list"></i> Costos
-        </a>
+        <g:if test="${janus.Parametros.findByEmpresaLike('SEP-C-GADPP')}">
+            <a href="${g.createLink(controller: 'volumenObra', action: 'costos', id: obra?.id)}" class="btn"><i
+                    class="fa fa-list"></i> Costos
+            </a>
+        </g:if>
         <a href="#" id="matriz" class="btn"><i class="fa fa-table"></i> Matriz FP</a>
 
         <a href="#" id="btnFormula" class="btn"><i class="fa fa-money-bill"></i> Fórmula Pol.
