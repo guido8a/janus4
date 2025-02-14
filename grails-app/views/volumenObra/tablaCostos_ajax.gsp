@@ -21,7 +21,7 @@
                 <tr>
                     <g:set var="total" value="${total += (costo?.valor ?: 0)}"/>
                     <td style="width: 15%; font-size: 10px">${costo?.orden}</td>
-                    <td style="width: 50%; font-size: 10px">${costo?.descripcion}</td>
+                    <td style="width: 50%; font-size: 10px">${costo?.costo?.descripcion}</td>
                     <td style="width: 20%; text-align: right"><g:formatNumber number="${costo?.valor}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/></td>
                     <td style="width: 20%; text-align: center">
                         <a href="#" class="btn btn-success btn-xs btnEditarCosto" data-id="${costo?.id}" ><i class="fa fa-edit"></i></a>
