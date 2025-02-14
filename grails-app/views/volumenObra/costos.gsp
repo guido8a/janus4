@@ -82,14 +82,15 @@
 
     cargarTabla();
 
-    function formCostoP(id, costo){
+    function formCostoP(id, costo, tipo){
         $.ajax({
             type    : "POST",
             url: "${createLink(controller: 'volumenObra', action:'formCosto_ajax')}",
             data    : {
                 id: id,
                 costo: costo,
-                obra: '${obra?.id}'
+                obra: '${obra?.id}',
+                tipo: tipo
             },
             success : function (msg) {
                 var er = bootbox.dialog({

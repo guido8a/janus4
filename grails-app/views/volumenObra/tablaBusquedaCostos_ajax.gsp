@@ -24,7 +24,7 @@
                     <td style="width: 15%; text-align: right">${dt.prcspcun}</td>
                     <td style="width: 10%; text-align: center">${dt.prcspcnt}%</td>
                     <td style="width: 9%; text-align: center">
-                        <a href="#" class="btn btn-success btn-xs btnSeleccionar" data-id="${dt?.csto__id}"><i class="fa fa-check"></i></a>
+                        <a href="#" class="btn btn-success btn-xs btnSeleccionar" data-id="${dt?.csto__id}" data-por="${dt.prcspcnt}" data-uni="${dt.prcspcun}" ><i class="fa fa-check"></i></a>
                     </td>
                     <td style="width: 1%"></td>
                 </tr>
@@ -43,7 +43,9 @@
 
     $(".btnSeleccionar").click(function () {
         var costo = $(this).data("id");
-        formCosto(null, costo)
+        var unitario = $(this).data("uni");
+        var porcentaje = $(this).data("por");
+        formCosto(null, costo, 1, unitario, porcentaje)
     });
 
 </script>

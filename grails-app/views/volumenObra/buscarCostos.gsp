@@ -151,14 +151,17 @@
         borrarCosto(id);
     });
 
-    function formCosto(id, costo){
+    function formCosto(id, costo, tipo, unitario, porcentaje){
         $.ajax({
             type    : "POST",
             url: "${createLink(controller: 'volumenObra', action:'formCosto_ajax')}",
             data    : {
                 id: id,
                 costo: costo,
-                obra: '${obra?.id}'
+                tipo: tipo,
+                obra: '${obra?.id}',
+                unitario: unitario,
+                porcentaje: porcentaje
             },
             success : function (msg) {
                 var er = bootbox.dialog({

@@ -23,13 +23,18 @@
                     <td style="width: 15%; font-size: 10px">${costo?.orden}</td>
                     <td style="width: 50%; font-size: 10px">${costo?.descripcion}</td>
                     <td style="width: 20%; text-align: right"><g:formatNumber number="${costo?.valor}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/></td>
-                    <td style="width: 20%">
+                    <td style="width: 20%; text-align: center">
                         <a href="#" class="btn btn-success btn-xs btnEditarCosto" data-id="${costo?.id}" ><i class="fa fa-edit"></i></a>
                         <a href="#" class="btn btn-danger btn-xs btnBorrarCosto" data-id="${costo?.id}" ><i class="fa fa-trash"></i></a>
                     </td>
                     <td style="width: 1%"></td>
                 </tr>
             </g:each>
+                <tr class="breadcrumb">
+                    <td colspan="2" style="text-align: right; font-weight: bold">TOTAL</td>
+                    <td style="text-align: right; font-weight: bold">${total}</td>
+                    <td colspan="2"></td>
+                </tr>
         </g:if>
         <g:else>
             <div class="alert alert-info" style="text-align: center">
@@ -38,15 +43,6 @@
         </g:else>
         </tbody>
     </table>
-
-    <div class="col-md-12 breadcrumb" style="height: 35px;overflow-y: auto;float: right;text-align: right; font-size: 14px" id="total">
-        <div class="col-md-9">
-            <b>TOTAL:</b>
-        </div>
-        <div class="col-md-2" >
-            <div id="divTotal" style="height: 30px;font-weight: bold;font-size: 14px;margin-right: 20px; text-align: center">${total}</div>
-        </div>
-    </div>
 </div>
 
 <script type="text/javascript">
@@ -58,7 +54,7 @@
 
     $(".btnEditarCosto").click(function () {
         var id = $(this).data("id");
-        formCostoP(id)
+        formCostoP(id,null,2)
     });
 
 </script>

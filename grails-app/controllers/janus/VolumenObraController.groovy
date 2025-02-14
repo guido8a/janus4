@@ -546,6 +546,7 @@ class VolumenObraController {
     def tablaCostosSeleccionados_ajax(){
         def obra = Obra.get(params.obra)
         def costos = DetalleConsultoria.findAllByObra(obra, [sort: 'orden'])
+
         return [costos: costos]
     }
 
@@ -562,7 +563,7 @@ class VolumenObraController {
             costo = Costo.get(params.costo)
         }
 
-        return [detalle:detalle, costo: costo, obra: obra]
+        return [detalle:detalle, costo: costo, obra: obra, tipo: params.tipo, unitario: params.unitario, porcentaje: params.porcentaje]
     }
 
     def saveCosto_ajax(){

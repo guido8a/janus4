@@ -3,6 +3,13 @@
     <g:hiddenField name="costo" value="${costo?.id}" />
     <g:hiddenField name="obra" value="${obra?.id}" />
 
+    <g:if test="${tipo == '1'}">
+        <div class="breadcrumb">
+          <strong style="font-size: 14px"> Unitario: ${unitario}   -  Porcentaje: ${porcentaje} %</strong>
+        </div>
+
+    </g:if>
+
     <div class="form-group ${hasErrors(bean: detalle, field: 'orden', 'error')} required">
         <span class="grupo">
             <label for="orden" class="col-md-2 control-label text-info">
