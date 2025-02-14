@@ -30,7 +30,7 @@ class DetalleConsultoria implements Auditable {
         obra(blank: false, nullable: false, attributes: [title: 'obra'])
         costo(blank: true, nullable: true, attributes: [title: 'costo'])
         orden(blank: false, nullable: false, attributes: [title: 'orden'])
-        descripcion(size: 1..127, blank: false, nullable: false, attributes: [title: 'descripcion'])
+        descripcion(size: 1..127, blank: true, nullable: true, attributes: [title: 'descripcion'])
         valor(blank: false, nullable: false, attributes: [title: 'valor'])
     }
 }

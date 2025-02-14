@@ -27,7 +27,7 @@
                 Descripción
             </label>
             <span class="col-md-10">
-                <g:textArea name="descripcion" maxlenght="127" class="form-control" value="${detalle?.descripcion ?: costo?.descripcion}" style="resize: none; height: 100px" />
+                <g:textArea name="descripcion" maxlenght="127" class="form-control" value="${detalle?.descripcion ?: ''}" style="resize: none; height: 100px" />
             </span>
         </span>
     </div>
