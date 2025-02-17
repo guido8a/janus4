@@ -1,5 +1,7 @@
 package janus
 
+import janus.cnsl.Costo
+import janus.cnsl.DetalleConsultoria
 import org.apache.poi.ss.usermodel.HorizontalAlignment
 import org.apache.poi.ss.usermodel.Row
 import org.apache.poi.ss.usermodel.Sheet
@@ -2496,6 +2498,158 @@ class ReportesExcel2Controller {
         wb.write(output)
     }
 
+
+    def reporteExcelCostos() {
+
+        def obra = Obra.get(params.id)
+        def costo1 = Costo.findAllByNumeroIlike('1%')
+        def costo2 = Costo.findAllByNumeroIlike('2%')
+        def costo3 = Costo.findAllByNumeroIlike('3%')
+        def costosDirectos = DetalleConsultoria.findAllByObraAndCostoInList(obra, costo1, [sort: 'orden'])
+        def costosIndirectos = DetalleConsultoria.findAllByObraAndCostoInList(obra, costo2, [sort: 'orden'])
+        def costosUtilidades = DetalleConsultoria.findAllByObraAndCostoInList(obra, costo3, [sort: 'orden'])
+
+        def total = 0;
+
+        XSSFWorkbook wb = new XSSFWorkbook()
+        XSSFCellStyle style = wb.createCellStyle();
+        XSSFFont font = wb.createFont();
+        font.setBold(true);
+        style.setFont(font);
+
+        Sheet sheet = wb.createSheet("COSTOS")
+        sheet.setColumnWidth(0, 15 * 256);
+        sheet.setColumnWidth(1, 60 * 256);
+        sheet.setColumnWidth(2, 10 * 256);
+        sheet.setColumnWidth(3, 15 * 256);
+        sheet.setColumnWidth(4, 15 * 256);
+        sheet.setColumnWidth(5, 15 * 256);
+        sheet.setColumnWidth(6, 20 * 256);
+        sheet.setColumnWidth(7, 15 * 256);
+        sheet.setColumnWidth(8, 15 * 256);
+        sheet.setColumnWidth(9, 25 * 256);
+
+        Row row = sheet.createRow(0)
+        row.createCell(0).setCellValue("")
+        Row row0 = sheet.createRow(1)
+        row0.createCell(1).setCellValue(Auxiliar.get(1)?.titulo ?: '')
+        row0.setRowStyle(style)
+        Row row1 = sheet.createRow(2)
+        row1.createCell(1).setCellValue("OBRA: " + obra?.nombre)
+        row1.setRowStyle(style)
+        Row row2 = sheet.createRow(3)
+        row2.createCell(1).setCellValue("CÓDIGO: " + obra?.codigo)
+        row2.setRowStyle(style)
+        Row rowE = sheet.createRow(4)
+        rowE.createCell(1).setCellValue("DOCUMENTO DE REFERENCIA: " + obra?.referencia)
+        rowE.setRowStyle(style)
+        Row row3 = sheet.createRow(5)
+        row3.createCell(1).setCellValue("FECHA: " + obra?.fechaCreacionObra?.format('dd-MM-yyyy'))
+        row3.setRowStyle(style)
+        Row row4 = sheet.createRow(6)
+        row4.createCell(1).setCellValue("FECHA ACT.PRECIOS: " + obra?.fechaPreciosRubros?.format("dd-MM-yyyy"))
+        row4.setRowStyle(style)
+        Row row5 = sheet.createRow(7)
+        row5.createCell(1).setCellValue("")
+        Row row6 = sheet.createRow(8)
+        row6.createCell(1).setCellValue("ACLARACIONES")
+        row6.setRowStyle(style)
+        Row row7 = sheet.createRow(9)
+        row7.createCell(1).setCellValue("- ENTREGAR PROFORMA CONFORME ESTE DOCUMENTO Y ANEXAR EL DETALLE DE CADA ITEM DE ESTE CUADRO CONFORME AL TDR ADJUNTO")
+        Row row8 = sheet.createRow(10)
+        row8.createCell(1).setCellValue("- ADJUNTAR MANIFESTACION DE INTERES DONDE INDIQUE QUE CUMPLE CON LA EXPERIENCIA, PERSONAL Y EQUIPO MINIMO SOLICITADO (DE SER EL CASO INCLUIR COMO ANEXO O ENVIAR AL EMAIL DEL PROCESO)")
+        Row row9 = sheet.createRow(11)
+        row9.createCell(1).setCellValue("- LEER Y CONSIDERAR LOS ENTREGABLES CONFORME EL TDR ADJUNTO")
+        Row row10 = sheet.createRow(12)
+        row10.createCell(1).setCellValue("- ESTE ESTUDIO DE COSTOS SOLO SE CALIFICARA A FIRMAS CONSULTORAS")
+        row10.setRowStyle(style)
+
+        def fila = 14
+//
+        Row rowC1 = sheet.createRow(fila)
+        rowC1.createCell(0).setCellValue("")
+        rowC1.createCell(1).setCellValue("DESCRIPCIÓN")
+        rowC1.createCell(2).setCellValue('VALOR USD $')
+        rowC1.setRowStyle(style)
+        fila++
+
+        Row rowC2 = sheet.createRow(fila)
+        rowC2.createCell(0).setCellValue("1. COSTOS DIRECTOS")
+        rowC2.createCell(1).setCellValue("")
+        rowC2.createCell(2).setCellValue('')
+        rowC2.setRowStyle(style)
+        fila++
+
+        if(costosDirectos.size() > 0){
+            costosDirectos.each {
+                Row rowF1 = sheet.createRow(fila)
+                rowF1.createCell(0).setCellValue(it?.costo?.numero?.toString() ?: '')
+                rowF1.createCell(1).setCellValue(it?.costo?.descripcion?.toString() ?: '')
+                rowF1.createCell(2).setCellValue(it?.valor?.toString() ?: '')
+                total += it?.valor
+                fila++
+            }
+        }
+
+        Row rowC3 = sheet.createRow(fila)
+        rowC3.createCell(0).setCellValue("2. COSTOS INDIRECTOS o GASTOS GENERALES")
+        rowC3.createCell(1).setCellValue("")
+        rowC3.createCell(2).setCellValue('')
+        rowC3.setRowStyle(style)
+        fila++
+
+        if(costosIndirectos.size() > 0){
+            costosIndirectos.each {
+                Row rowF1 = sheet.createRow(fila)
+                rowF1.createCell(0).setCellValue(it?.costo?.numero?.toString() ?: '')
+                rowF1.createCell(1).setCellValue(it?.costo?.descripcion?.toString() ?: '')
+                rowF1.createCell(2).setCellValue(it?.valor?.toString() ?: '')
+                total += it?.valor
+                fila++
+            }
+        }
+
+        Row rowC4 = sheet.createRow(fila)
+        rowC4.createCell(0).setCellValue("3. HONORARIOS O UTILIDAD EMPRESARIAL (Solo aplicable para firmas consultoras)")
+        rowC4.createCell(1).setCellValue("")
+        rowC4.createCell(2).setCellValue('')
+        rowC4.setRowStyle(style)
+        fila++
+
+        if(costosUtilidades.size() > 0){
+            costosUtilidades.each {
+                Row rowF1 = sheet.createRow(fila)
+                rowF1.createCell(0).setCellValue(it?.costo?.numero?.toString() ?: '')
+                rowF1.createCell(1).setCellValue(it?.costo?.descripcion?.toString() ?: '')
+                rowF1.createCell(2).setCellValue(it?.valor?.toString() ?: '')
+                total += it?.valor
+                fila++
+            }
+        }
+
+        Row rowT = sheet.createRow(fila)
+        rowT.createCell(0).setCellValue("")
+        rowT.createCell(1).setCellValue("TOTAL")
+        rowT.createCell(2).setCellValue(total?.toString())
+        rowT.setRowStyle(style)
+        fila++
+        fila++
+        Row rowP = sheet.createRow(fila)
+        rowP.createCell(1).setCellValue("COSTOS DIRECTOS: Son aquellos que se generan directa y exclusivamente en función de cada trabajo de consultoría.")
+        fila++
+        Row rowP2 = sheet.createRow(fila)
+        rowP2.createCell(1).setCellValue("COSTOS INDIRECTOS O GASTOS GENERALES: Son aquellos que se reconocen a consultores para atender sus gastos de carácter permanente relacionados con su organización profesional, a fin de posibilitar la oferta oportuna y eficiente de sus servicios profesionales y que no pueden imputarse a un estudio o proyecto en particular.")
+        fila++
+        Row rowP3 = sheet.createRow(fila)
+        rowP3.createCell(1).setCellValue("HONORARIOS O UTILIDAD EMPRESARIAL: Son aquellos que se reconoce a las personas jurídicas consultoras, exclusivamente, por el esfuerzo empresarial, así como por el riesgo y responsabilidad que asumen en la prestación del servicio de consultaría que se contrata.")
+        fila++
+
+        def output = response.getOutputStream()
+        def header = "attachment; filename=" + "costos.xlsx";
+        response.setContentType("application/octet-stream")
+        response.setHeader("Content-Disposition", header);
+        wb.write(output)
+    }
 
 
 }

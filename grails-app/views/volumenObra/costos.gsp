@@ -35,16 +35,22 @@
 
 <div class="row">
     <div class="col-md-12">
-        <div class="col-md-4" style="margin-top: 20px;">
+        <div class="col-md-2">
             <a href="#" class="btn btn-success" id="btnAgregarCostos" title="Agregar costos">
                 <i class="fa fa-plus-square"></i>
                 Agregar costos
             </a>
         </div>
+
+        <div class="btn-group col-md-1">
+            <g:link controller="reportesExcel2" action="reporteExcelCostos" class="btn btn-print btnExcel btn-success" id="${obra?.id}" >
+                <i class="fa fa-file-excel"></i> Excel
+            </g:link>
+        </div>
     </div>
 </div>
 
-<div id="list-grupo" class="col-md-12" role="main" style="margin-top: 20px;margin-left: 0px">
+<div id="list-grupo" class="col-md-12" role="main" style="margin-top: 5px;margin-left: 0px">
     <div class="borde_abajo" style="padding-left: 5px;position: relative; height: 92px">
 
 %{--        <div class="borde_abajo" style="position: relative;float: left;width: 100%;padding-left: 45px">--}%
