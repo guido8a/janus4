@@ -42,7 +42,10 @@
             </a>
         </div>
 
-        <div class="btn-group col-md-1">
+        <div class="btn-group col-md-2">
+            <a href="#" class="btn  btn-info" id="imprimirPdf">
+                <i class="fa fa-print"></i> PDF
+            </a>
             <g:link controller="reportesExcel2" action="reporteExcelCostos" class="btn btn-print btnExcel btn-success" id="${obra?.id}" >
                 <i class="fa fa-file-excel"></i> Excel
             </g:link>
@@ -53,19 +56,23 @@
 <div id="list-grupo" class="col-md-12" role="main" style="margin-top: 5px;margin-left: 0px">
     <div class="borde_abajo" style="padding-left: 5px;position: relative; height: 92px">
 
-%{--        <div class="borde_abajo" style="position: relative;float: left;width: 100%;padding-left: 45px">--}%
-%{--            <p class="css-vertical-text">Composición</p>--}%
+        %{--        <div class="borde_abajo" style="position: relative;float: left;width: 100%;padding-left: 45px">--}%
+        %{--            <p class="css-vertical-text">Composición</p>--}%
 
-%{--            <div class="linea" style="height: 98%;"></div>--}%
+        %{--            <div class="linea" style="height: 98%;"></div>--}%
 
-            <div style="width: 99.7%;height: 400px;overflow-y: auto;float: right;" id="divTablaCostos"></div>
+        <div style="width: 99.7%;height: 400px;overflow-y: auto;float: right;" id="divTablaCostos"></div>
 
-%{--        </div>--}%
+        %{--        </div>--}%
     </div>
 
 </div>
 
 <script type="text/javascript">
+
+    $("#imprimirPdf").click(function () {
+        location.href = "${g.createLink(controller: 'reportes6' ,action: 'reporteCostos',id: obra?.id)}"
+    });
 
     $("#btnAgregarCostos").click(function () {
         location.href="${createLink(controller: 'volumenObra', action: 'buscarCostos')}/" + '${obra?.id}';

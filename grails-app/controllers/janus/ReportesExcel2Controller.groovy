@@ -2523,11 +2523,6 @@ class ReportesExcel2Controller {
         sheet.setColumnWidth(2, 10 * 256);
         sheet.setColumnWidth(3, 15 * 256);
         sheet.setColumnWidth(4, 15 * 256);
-        sheet.setColumnWidth(5, 15 * 256);
-        sheet.setColumnWidth(6, 20 * 256);
-        sheet.setColumnWidth(7, 15 * 256);
-        sheet.setColumnWidth(8, 15 * 256);
-        sheet.setColumnWidth(9, 25 * 256);
 
         Row row = sheet.createRow(0)
         row.createCell(0).setCellValue("")

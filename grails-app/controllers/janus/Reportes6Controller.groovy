@@ -12,6 +12,8 @@ import com.lowagie.text.Paragraph
 import com.lowagie.text.pdf.PdfPCell
 import com.lowagie.text.pdf.PdfPTable
 import com.lowagie.text.pdf.PdfWriter
+import janus.cnsl.Costo
+import janus.cnsl.DetalleConsultoria
 import janus.ejecucion.DetallePlanillaCosto
 import janus.ejecucion.Planilla
 import janus.pac.CronogramaContrato
@@ -1503,8 +1505,8 @@ class Reportes6Controller {
         def indirecto = obra.totales/100
 
         renderPdf(template:'/reportes6/imprimirTablaSubVaeOferente', model: [detalle:detalle,precios:precios,subPres:subPres,
-             subPre:subPre,obra: obra,indirectos:indirecto*100, oferente: oferente, fechaHoy: fechaHoy, concurso: concurso,
-             fechaOferta: fechaOferta, firma: firma], filename: 'subPresupuestoVaeOferente.pdf')
+                                                                             subPre:subPre,obra: obra,indirectos:indirecto*100, oferente: oferente, fechaHoy: fechaHoy, concurso: concurso,
+                                                                             fechaOferta: fechaOferta, firma: firma], filename: 'subPresupuestoVaeOferente.pdf')
     }
 
     def _imprimirTablaSubOferente(){
@@ -1707,9 +1709,9 @@ class Reportes6Controller {
             tablaMat = ""
 
         renderPdf(template:'/reportes6/imprimirRubroVolObraOferente', model:  [rubro: rubro, tablaTrans: tablaTrans, tablaTrans2: tablaTrans2, band:  band, tablaMat2: tablaMat2, bandMat: bandMat,
-         bandTrans: bandTrans, tablaHer: tablaHer, tablaMano: tablaMano, tablaMat: tablaMat, tablaIndi: tablaIndi, totalRubro: totalRubro,
-         totalIndi: totalIndi, obra: obra, oferente: oferente,
-         fechaOferta: fechaOferta, concurso: concurso, fechaEntregaOferta: fechaEntregaOferta, firma: firma], filename: 'rubroVolObraOferente.pdf')
+                                                                               bandTrans: bandTrans, tablaHer: tablaHer, tablaMano: tablaMano, tablaMat: tablaMat, tablaIndi: tablaIndi, totalRubro: totalRubro,
+                                                                               totalIndi: totalIndi, obra: obra, oferente: oferente,
+                                                                               fechaOferta: fechaOferta, concurso: concurso, fechaEntregaOferta: fechaEntregaOferta, firma: firma], filename: 'rubroVolObraOferente.pdf')
     }
 
     def _imprimirRubroVolObraVaeOferente () {
@@ -1929,9 +1931,9 @@ class Reportes6Controller {
             tablaMat = ""
 
         renderPdf(template:'/reportes6/imprimirRubroVolObraVaeOferente', model:   [rubro: rubro, tablaTrans: tablaTrans, tablaTrans2: tablaTrans2, band:  band, tablaMat2: tablaMat2, bandMat: bandMat,
-         bandTrans: bandTrans, tablaHer: tablaHer, tablaMano: tablaMano, tablaMat: tablaMat, tablaIndi: tablaIndi, totalRubro: totalRubro,
-         totalIndi: totalIndi, obra: obra, oferente: oferente,
-         fechaOferta: fechaOferta, concurso: concurso, fechaEntregaOferta: fechaEntregaOferta, firma: firma, totalRelativo: totalRelativo, totalVae: totalVae], filename: 'rubroVolObraVaeOferente.pdf')
+                                                                                   bandTrans: bandTrans, tablaHer: tablaHer, tablaMano: tablaMano, tablaMat: tablaMat, tablaIndi: tablaIndi, totalRubro: totalRubro,
+                                                                                   totalIndi: totalIndi, obra: obra, oferente: oferente,
+                                                                                   fechaOferta: fechaOferta, concurso: concurso, fechaEntregaOferta: fechaEntregaOferta, firma: firma, totalRelativo: totalRelativo, totalVae: totalVae], filename: 'rubroVolObraVaeOferente.pdf')
 
     }
 
@@ -1974,7 +1976,7 @@ class Reportes6Controller {
         Row row0 = sheet.createRow(1)
         row0.createCell(1).setCellValue(Auxiliar.get(1)?.titulo ?: '')
         row0.setRowStyle(style)
-         Row row2 = sheet.createRow(2)
+        Row row2 = sheet.createRow(2)
         row2.createCell(1).setCellValue("LISTA DE USUARIOS")
         row2.setRowStyle(style)
         Row row3 = sheet.createRow(4)
@@ -3446,6 +3448,232 @@ class Reportes6Controller {
         response.setContentType("application/octet-stream")
         response.setHeader("Content-Disposition", header);
         wb.write(output)
+    }
+
+
+    def reporteCostos() {
+
+        def obra = Obra.get(params.id)
+        def costo1 = Costo.findAllByNumeroIlike('1%')
+        def costo2 = Costo.findAllByNumeroIlike('2%')
+        def costo3 = Costo.findAllByNumeroIlike('3%')
+        def costosDirectos = DetalleConsultoria.findAllByObraAndCostoInList(obra, costo1, [sort: 'orden'])
+        def costosIndirectos = DetalleConsultoria.findAllByObraAndCostoInList(obra, costo2, [sort: 'orden'])
+        def costosUtilidades = DetalleConsultoria.findAllByObraAndCostoInList(obra, costo3, [sort: 'orden'])
+        def total = 0
+
+        def baos = new ByteArrayOutputStream()
+        def name = "costos" + new Date().format("ddMMyyyy_hhmm") + ".pdf";
+        com.lowagie.text.Font times12bold = new com.lowagie.text.Font(com.lowagie.text.Font.TIMES_ROMAN, 12, com.lowagie.text.Font.BOLD);
+        com.lowagie.text.Font times10bold = new com.lowagie.text.Font(com.lowagie.text.Font.TIMES_ROMAN, 10, com.lowagie.text.Font.BOLD);
+        com.lowagie.text.Font times18bold = new com.lowagie.text.Font(com.lowagie.text.Font.TIMES_ROMAN, 18, com.lowagie.text.Font.BOLD);
+        com.lowagie.text.Font times14bold = new com.lowagie.text.Font(com.lowagie.text.Font.TIMES_ROMAN, 16, com.lowagie.text.Font.BOLD);
+        com.lowagie.text.Font times16bold = new com.lowagie.text.Font(com.lowagie.text.Font.TIMES_ROMAN, 14, com.lowagie.text.Font.BOLD);
+        com.lowagie.text.Font times8bold = new com.lowagie.text.Font(com.lowagie.text.Font.TIMES_ROMAN, 8, com.lowagie.text.Font.BOLD)
+        com.lowagie.text.Font times8normal = new com.lowagie.text.Font(com.lowagie.text.Font.TIMES_ROMAN, 8, com.lowagie.text.Font.NORMAL)
+        com.lowagie.text.Font times10boldWhite = new com.lowagie.text.Font(com.lowagie.text.Font.TIMES_ROMAN, 10, com.lowagie.text.Font.BOLD);
+        com.lowagie.text.Font times8boldWhite = new com.lowagie.text.Font(com.lowagie.text.Font.TIMES_ROMAN, 8, com.lowagie.text.Font.BOLD)
+        times8boldWhite.setColor(Color.BLACK)
+        times10boldWhite.setColor(Color.BLACK)
+        def fonts = [times12bold: times12bold, times10bold: times10bold, times8bold: times8bold,
+                     times10boldWhite: times10boldWhite, times8boldWhite: times8boldWhite, times8normal: times8normal]
+
+        Document document
+        document = new Document(PageSize.A4);
+        def pdfw = PdfWriter.getInstance(document, baos);
+        document.open();
+        document.addTitle("Costos_" + new Date().format("dd_MM_yyyy"));
+        document.addSubject("Generado por el sistema Janus");
+        document.addKeywords("reporte, janus, costos");
+        document.addAuthor("Janus");
+        document.addCreator("Tedein SA");
+
+        def prmsHeaderHoja = [border: Color.WHITE]
+        def prmsHeader = [border: Color.WHITE, colspan: 7,
+                          align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE]
+        def prmsRight = [border: Color.WHITE, colspan: 7,
+                         align: Element.ALIGN_RIGHT, valign: Element.ALIGN_RIGHT]
+        def prmsHeader2 = [border: Color.WHITE, colspan: 3,
+                           align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE]
+        def prmsCellHead = [border: Color.WHITE,
+                            align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE]
+        def prmsCellHead3 = [border: Color.WHITE,
+                             align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE]
+        def prmsCellHead2 = [border: Color.WHITE,
+                             align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE, bordeTop: "1", bordeBot: "1"]
+        def prmsCellHeadArriba = [border: Color.WHITE,
+                             align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE, bordeTop: "1"]
+        def prmsCellHeadAbajo = [border: Color.WHITE,
+                                  align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE, bordeBot: "1"]
+        def prmsCellIzquierda = [border: Color.WHITE,
+                                 align: Element.ALIGN_LEFT, valign: Element.ALIGN_LEFT]
+        def prmsCellDerecha = [border: Color.WHITE,
+                               align: Element.ALIGN_RIGHT, valign: Element.ALIGN_RIGHT]
+        def prmsCellDerecha2 = [border: Color.WHITE,
+                                align: Element.ALIGN_RIGHT, valign: Element.ALIGN_RIGHT, bordeTop: "1", bordeBot: "1"]
+        def prmsCellCenter = [border: Color.WHITE, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE]
+        def prmsCellLeft = [border: Color.WHITE, valign: Element.ALIGN_MIDDLE]
+        def prmsSubtotal = [border: Color.WHITE, colspan: 6,
+                            align: Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE]
+        def prmsNum = [border: Color.WHITE, align: Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE]
+
+        def prms = [prmsHeaderHoja: prmsHeaderHoja, prmsHeader: prmsHeader, prmsHeader2: prmsHeader2,
+                    prmsCellHead: prmsCellHead, prmsCell: prmsCellCenter, prmsCellLeft: prmsCellLeft, prmsSubtotal: prmsSubtotal, prmsNum: prmsNum, prmsRight: prmsRight,
+                    prmsCellDerecha: prmsCellDerecha, prmsCellIzquierda: prmsCellIzquierda]
+
+        Paragraph headersTitulo = new Paragraph();
+        addEmptyLine(headersTitulo, 1);
+        headersTitulo.setAlignment(Element.ALIGN_CENTER);
+        headersTitulo.add(new Paragraph("SEP - G.A.D. PROVINCIA DE PICHINCHA", times14bold));
+        headersTitulo.add(new Paragraph(obra?.departamento?.direccion?.nombre, times12bold));
+        headersTitulo.add(new Paragraph("", times12bold));
+        document.add(headersTitulo)
+
+        PdfPTable header = new PdfPTable(3)
+        header.setWidthPercentage(100)
+        header.setWidths(arregloEnteros([25, 8, 65]))
+
+        addCellTabla(header, new Paragraph("", times8bold), prmsCellHead3)
+        addCellTabla(header, new Paragraph("", times8bold), prmsCellHead3)
+        addCellTabla(header, new Paragraph("", times8bold), prmsCellHead3)
+        addCellTabla(header, new Paragraph("OBRA", times8bold), prmsCellHead3)
+        addCellTabla(header, new Paragraph(" : ", times8bold), prmsCellHead3)
+        addCellTabla(header, new Paragraph(obra?.nombre, times8bold), prmsCellHead3)
+        addCellTabla(header, new Paragraph("CÓDIGO", times8bold), prmsCellHead3)
+        addCellTabla(header, new Paragraph(" : ", times8bold), prmsCellHead3)
+        addCellTabla(header, new Paragraph(obra?.codigo, times8bold), prmsCellHead3)
+        addCellTabla(header, new Paragraph("DOCUMENTO DE REFERENCIA", times8bold), prmsCellHead3)
+        addCellTabla(header, new Paragraph(" : ", times8bold), prmsCellHead3)
+        addCellTabla(header, new Paragraph(obra?.referencia, times8bold), prmsCellHead3)
+        addCellTabla(header, new Paragraph("FECHA", times8bold), prmsCellHead3)
+        addCellTabla(header, new Paragraph(" : ", times8bold), prmsCellHead3)
+        addCellTabla(header, new Paragraph(printFecha(obra?.fechaCreacionObra) + "         FECHA ACT. PRECIOS : " +
+                printFecha(obra?.fechaPreciosRubros), times8bold), prmsCellHead3)
+        addCellTabla(header, new Paragraph("", times8bold), prmsCellHead3)
+        addCellTabla(header, new Paragraph("", times8bold), prmsCellHead3)
+        addCellTabla(header, new Paragraph("", times8bold), prmsCellHead3)
+
+
+        document.add(header);
+
+        PdfPTable tablaHeader = new PdfPTable(3)
+        tablaHeader.setWidthPercentage(100)
+        tablaHeader.setWidths(arregloEnteros([25,60,15]))
+
+        PdfPTable tablaTitulo = new PdfPTable(2)
+        tablaTitulo.setWidthPercentage(100)
+        tablaTitulo.setWidths(arregloEnteros([90, 10]))
+
+        PdfPTable tablaCostosDirectos = new PdfPTable(3)
+        tablaCostosDirectos.setWidthPercentage(100)
+        tablaCostosDirectos.setWidths(arregloEnteros([25,60,15]))
+
+        PdfPTable tablaCostosInDirectos = new PdfPTable(3)
+        tablaCostosInDirectos.setWidthPercentage(100)
+        tablaCostosInDirectos.setWidths(arregloEnteros([25,60,15]))
+
+        PdfPTable tablaCostosUtilidad = new PdfPTable(3)
+        tablaCostosUtilidad.setWidthPercentage(100)
+        tablaCostosUtilidad.setWidths(arregloEnteros([25,60,15]))
+
+        PdfPTable tablaInformacion = new PdfPTable(1)
+        tablaInformacion.setWidthPercentage(100)
+        tablaInformacion.setWidths(arregloEnteros([100]))
+
+        addCellTabla2(tablaInformacion, new Paragraph("ACLARACIONES:", times8bold), prmsCellHeadArriba)
+        addCellTabla2(tablaInformacion, new Paragraph("- ENTREGAR PROFORMA CONFORME ESTE DOCUMENTO Y ANEXAR EL DETALLE DE CADA ITEM DE ESTE CUADRO CONFORME AL TDR ADJUNTO:", times8normal), prmsCellHead3)
+        addCellTabla2(tablaInformacion, new Paragraph("- ADJUNTAR MANIFESTACION DE INTERES DONDE INDIQUE QUE CUMPLE CON LA EXPERIENCIA, PERSONAL Y EQUIPO MINIMO SOLICITADO (DE SER EL CASO INCLUIR COMO ANEXO O ENVIAR AL EMAIL DEL PROCESO):", times8normal), prmsCellHead3)
+        addCellTabla2(tablaInformacion, new Paragraph("- LEER Y CONSIDERAR LOS ENTREGABLES CONFORME EL TDR ADJUNTO:", times8normal), prmsCellHead3)
+        addCellTabla2(tablaInformacion, new Paragraph("- ESTE ESTUDIO DE COSTOS SOLO SE CALIFICARA A FIRMAS CONSULTORAS ", times8bold), prmsCellHead3)
+
+        PdfPTable tablaTotales = new PdfPTable(2)
+        tablaTotales.setWidthPercentage(100)
+        tablaTotales.setWidths(arregloEnteros([70, 30]))
+
+        addCellTabla2(tablaHeader, new Paragraph("", times8bold), prmsCellHead2)
+        addCellTabla2(tablaHeader, new Paragraph("Descripción", times8bold), prmsCellHead2)
+        addCellTabla2(tablaHeader, new Paragraph("Valor", times8bold), prmsCellHead2)
+
+        PdfPTable tablaDirectos = new PdfPTable(2)
+        tablaDirectos.setWidthPercentage(100)
+        tablaDirectos.setWidths(arregloEnteros([85, 15]))
+
+        addCellTabla(tablaDirectos, new Paragraph("1. COSTOS DIRECTOS ", times12bold), prmsCellIzquierda)
+        addCellTabla(tablaDirectos, new Paragraph(" ", times10bold), prmsCellIzquierda)
+
+        costosDirectos.each { r->
+            addCellTabla(tablaCostosDirectos, new Paragraph(r?.costo?.numero, times8normal), prmsCellIzquierda)
+            addCellTabla(tablaCostosDirectos, new Paragraph(r?.costo?.descripcion, times8normal), prmsCellIzquierda)
+            addCellTabla(tablaCostosDirectos, new Paragraph(g.formatNumber(number: r?.valor, minFractionDigits:
+                    2, maxFractionDigits: 2, format: "##,##0", locale: "ec"), times8normal), prmsNum)
+            total += r?.valor
+        }
+
+        PdfPTable tablaIndirectos = new PdfPTable(2)
+        tablaIndirectos.setWidthPercentage(100)
+        tablaIndirectos.setWidths(arregloEnteros([85, 15]))
+
+        addCellTabla(tablaIndirectos, new Paragraph("2. COSTOS INDIRECTOS O GASTOS GENERALES", times12bold), prmsCellIzquierda)
+        addCellTabla(tablaIndirectos, new Paragraph(" ", times10bold), prmsCellIzquierda)
+
+        costosIndirectos.each { r->
+            addCellTabla(tablaCostosInDirectos, new Paragraph(r?.costo?.numero, times8normal), prmsCellIzquierda)
+            addCellTabla(tablaCostosInDirectos, new Paragraph(r?.costo?.descripcion, times8normal), prmsCellIzquierda)
+            addCellTabla(tablaCostosInDirectos, new Paragraph(g.formatNumber(number: r?.valor, minFractionDigits:
+                    2, maxFractionDigits: 2, format: "##,##0", locale: "ec"), times8normal), prmsNum)
+            total += r?.valor
+        }
+
+        PdfPTable tablaUtilidad = new PdfPTable(1)
+        tablaUtilidad.setWidthPercentage(100)
+        tablaUtilidad.setWidths(arregloEnteros([100]))
+
+        addCellTabla(tablaUtilidad, new Paragraph("3. HONORARIOS O UTILIDAD EMPRESARIAL (Solo aplicable para firmas consultoras)", times12bold), prmsCellIzquierda)
+
+        costosUtilidades.each { r->
+            addCellTabla(tablaCostosUtilidad, new Paragraph(r?.costo?.numero, times8normal), prmsCellIzquierda)
+            addCellTabla(tablaCostosUtilidad, new Paragraph(r?.costo?.descripcion, times8normal), prmsCellIzquierda)
+            addCellTabla(tablaCostosUtilidad, new Paragraph(g.formatNumber(number: r?.valor, minFractionDigits:
+                    2, maxFractionDigits: 2, format: "##,##0", locale: "ec"), times8normal), prmsNum)
+            total += r?.valor
+        }
+
+        PdfPTable tablaTotales3 = new PdfPTable(3)
+        tablaTotales3.setWidthPercentage(100)
+        tablaTotales3.setWidths(arregloEnteros([25, 60, 15]))
+
+        addCellTabla(tablaTotales3, new Paragraph("", times10bold), prmsCellDerecha)
+        addCellTabla(tablaTotales3, new Paragraph("TOTAL :", times10bold), prmsCellDerecha)
+        addCellTabla(tablaTotales3, new Paragraph(g.formatNumber(number: (total), minFractionDigits:
+                2, maxFractionDigits: 2, format: "##,##0", locale: "ec"), times10bold), prmsNum)
+
+        PdfPTable tablaPie = new PdfPTable(1)
+        tablaPie.setWidthPercentage(100)
+        tablaPie.setWidths(arregloEnteros([100]))
+
+        addCellTabla2(tablaPie, new Paragraph("COSTOS DIRECTOS: Son aquellos que se generan directa y exclusivamente en función de cada trabajo de consultoría.:", times8normal), prmsCellHeadArriba)
+        addCellTabla2(tablaPie, new Paragraph("COSTOS INDIRECTOS O GASTOS GENERALES: Son aquellos que se reconocen a consultores para atender sus gastos de carácter permanente relacionados con su organización profesional, a fin de posibilitar la oferta oportuna y eficiente de sus servicios profesionales y que no pueden imputarse a un estudio o proyecto en particular.", times8normal), prmsCellHead3)
+        addCellTabla2(tablaPie, new Paragraph("HONORARIOS O UTILIDAD EMPRESARIAL: Son aquellos que se reconoce a las personas jurídicas consultoras, exclusivamente, por el esfuerzo empresarial, así como por el riesgo y responsabilidad que asumen en la prestación del servicio de consultaría que se contrata.", times8normal), prmsCellHeadAbajo)
+
+        document.add(tablaInformacion);
+        document.add(tablaHeader);
+        document.add(tablaDirectos);
+        document.add(tablaTitulo);
+        document.add(tablaCostosDirectos);
+        document.add(tablaIndirectos);
+        document.add(tablaCostosInDirectos);
+        document.add(tablaUtilidad);
+        document.add(tablaCostosUtilidad);
+        document.add(tablaTotales3);
+        document.add(tablaPie);
+
+        document.close();
+        pdfw.close()
+        byte[] b = baos.toByteArray();
+        response.setContentType("application/pdf")
+        response.setHeader("Content-disposition", "attachment; filename=" + name)
+        response.setContentLength(b.length)
+        response.getOutputStream().write(b)
     }
 
 
