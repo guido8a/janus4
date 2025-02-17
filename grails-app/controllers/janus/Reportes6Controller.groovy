@@ -3566,15 +3566,15 @@ class Reportes6Controller {
 
         PdfPTable tablaCostosDirectos = new PdfPTable(3)
         tablaCostosDirectos.setWidthPercentage(100)
-        tablaCostosDirectos.setWidths(arregloEnteros([25,60,15]))
+        tablaCostosDirectos.setWidths(arregloEnteros([10,75,15]))
 
         PdfPTable tablaCostosInDirectos = new PdfPTable(3)
         tablaCostosInDirectos.setWidthPercentage(100)
-        tablaCostosInDirectos.setWidths(arregloEnteros([25,60,15]))
+        tablaCostosInDirectos.setWidths(arregloEnteros([10,75,15]))
 
         PdfPTable tablaCostosUtilidad = new PdfPTable(3)
         tablaCostosUtilidad.setWidthPercentage(100)
-        tablaCostosUtilidad.setWidths(arregloEnteros([25,60,15]))
+        tablaCostosUtilidad.setWidths(arregloEnteros([10,75,15]))
 
         PdfPTable tablaInformacion = new PdfPTable(1)
         tablaInformacion.setWidthPercentage(100)
@@ -3585,20 +3585,21 @@ class Reportes6Controller {
         addCellTabla2(tablaInformacion, new Paragraph("- ADJUNTAR MANIFESTACION DE INTERES DONDE INDIQUE QUE CUMPLE CON LA EXPERIENCIA, PERSONAL Y EQUIPO MINIMO SOLICITADO (DE SER EL CASO INCLUIR COMO ANEXO O ENVIAR AL EMAIL DEL PROCESO):", times8normal), prmsCellHead3)
         addCellTabla2(tablaInformacion, new Paragraph("- LEER Y CONSIDERAR LOS ENTREGABLES CONFORME EL TDR ADJUNTO:", times8normal), prmsCellHead3)
         addCellTabla2(tablaInformacion, new Paragraph("- ESTE ESTUDIO DE COSTOS SOLO SE CALIFICARA A FIRMAS CONSULTORAS ", times8bold), prmsCellHead3)
+        addCellTabla2(tablaInformacion, new Paragraph("", times8bold), prmsCellHead3)
 
         PdfPTable tablaTotales = new PdfPTable(2)
         tablaTotales.setWidthPercentage(100)
         tablaTotales.setWidths(arregloEnteros([70, 30]))
 
         addCellTabla2(tablaHeader, new Paragraph("", times8bold), prmsCellHead2)
-        addCellTabla2(tablaHeader, new Paragraph("Descripción", times8bold), prmsCellHead2)
-        addCellTabla2(tablaHeader, new Paragraph("Valor", times8bold), prmsCellHead2)
+        addCellTabla2(tablaHeader, new Paragraph("DESCRIPCIÓN", times8bold), prmsCellHead2)
+        addCellTabla2(tablaHeader, new Paragraph("VALOR USD", times8bold), prmsCellHead2)
 
         PdfPTable tablaDirectos = new PdfPTable(2)
         tablaDirectos.setWidthPercentage(100)
         tablaDirectos.setWidths(arregloEnteros([85, 15]))
 
-        addCellTabla(tablaDirectos, new Paragraph("1. COSTOS DIRECTOS ", times12bold), prmsCellIzquierda)
+        addCellTabla(tablaDirectos, new Paragraph("1. COSTOS DIRECTOS ", times8bold), prmsCellIzquierda)
         addCellTabla(tablaDirectos, new Paragraph(" ", times10bold), prmsCellIzquierda)
 
         costosDirectos.each { r->
@@ -3609,12 +3610,12 @@ class Reportes6Controller {
             total += r?.valor
         }
 
-        PdfPTable tablaIndirectos = new PdfPTable(2)
+        PdfPTable tablaIndirectos = new PdfPTable(1)
         tablaIndirectos.setWidthPercentage(100)
-        tablaIndirectos.setWidths(arregloEnteros([85, 15]))
+        tablaIndirectos.setWidths(arregloEnteros([100]))
 
-        addCellTabla(tablaIndirectos, new Paragraph("2. COSTOS INDIRECTOS O GASTOS GENERALES", times12bold), prmsCellIzquierda)
-        addCellTabla(tablaIndirectos, new Paragraph(" ", times10bold), prmsCellIzquierda)
+        addCellTabla(tablaIndirectos, new Paragraph("", times8bold), prmsCellIzquierda)
+        addCellTabla(tablaIndirectos, new Paragraph("2. COSTOS INDIRECTOS O GASTOS GENERALES", times8bold), prmsCellIzquierda)
 
         costosIndirectos.each { r->
             addCellTabla(tablaCostosInDirectos, new Paragraph(r?.costo?.numero, times8normal), prmsCellIzquierda)
@@ -3628,7 +3629,8 @@ class Reportes6Controller {
         tablaUtilidad.setWidthPercentage(100)
         tablaUtilidad.setWidths(arregloEnteros([100]))
 
-        addCellTabla(tablaUtilidad, new Paragraph("3. HONORARIOS O UTILIDAD EMPRESARIAL (Solo aplicable para firmas consultoras)", times12bold), prmsCellIzquierda)
+        addCellTabla(tablaUtilidad, new Paragraph("", times8bold), prmsCellIzquierda)
+        addCellTabla(tablaUtilidad, new Paragraph("3. HONORARIOS O UTILIDAD EMPRESARIAL (Solo aplicable para firmas consultoras)", times8bold), prmsCellIzquierda)
 
         costosUtilidades.each { r->
             addCellTabla(tablaCostosUtilidad, new Paragraph(r?.costo?.numero, times8normal), prmsCellIzquierda)
@@ -3646,6 +3648,9 @@ class Reportes6Controller {
         addCellTabla(tablaTotales3, new Paragraph("TOTAL :", times10bold), prmsCellDerecha)
         addCellTabla(tablaTotales3, new Paragraph(g.formatNumber(number: (total), minFractionDigits:
                 2, maxFractionDigits: 2, format: "##,##0", locale: "ec"), times10bold), prmsNum)
+        addCellTabla(tablaTotales3, new Paragraph("", times10bold), prmsCellDerecha)
+        addCellTabla(tablaTotales3, new Paragraph("", times10bold), prmsCellDerecha)
+        addCellTabla(tablaTotales3, new Paragraph("", times10bold), prmsCellDerecha)
 
         PdfPTable tablaPie = new PdfPTable(1)
         tablaPie.setWidthPercentage(100)
