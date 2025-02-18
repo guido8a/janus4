@@ -1,5 +1,6 @@
 <style>
 .desalojo { color: #4d2868; }
+.historico { color: #804a4c; }
 </style>
 
 <div class="row-fluid" style="margin-left: 0px">
@@ -89,7 +90,9 @@
     <table class="table-bordered table-striped table-condensed table-hover">
         <tbody>
         <g:each in="${valores}" var="val" status="j">
-            <tr class="item_row ${val.rbrocdgo[0..1] == 'TR'? 'desalojo':''}" id="${val.vlob__id}"  item="${val}"
+            %{--<tr class="item_row ${val.rbrocdgo[0..1] == 'TR'? 'desalojo':''}" id="${val.vlob__id}"  item="${val}"--}%
+            <tr class="item_row ${val.rbrocdgo[0..1] == 'TR'? 'desalojo': (val.rbrocdgo[0] == 'H'? 'historico': '')}" id="${val.vlob__id}"  item="${val}"
+            %{--<tr class="item_row ${val.rbrocdgo.contains('H')? 'historico': ''}" id="${val.vlob__id}"  item="${val}"--}%
                 dscr="${val.vlobdscr}" sub="${val.sbpr__id}" cdgo="${val.item__id}" title="${val.vlobdscr}">
                 <td style="width: 5%" class="orden">${val.vlobordn}</td>
                 <td style="width: 15%" class="sub">${val.sbprdscr.trim()}</td>
