@@ -343,6 +343,8 @@ class ReportePlanillas4Controller {
                 pdfs.add(pl.toByteArray())
                 contador++
             }
+        } else {
+            pl =  resumenAnticipo(planilla)  //no hay reajuste
         }
         if(planilla.tipoPlanilla.codigo in ['P', 'Q', 'R', 'L']) {
             println "invoca multas"
