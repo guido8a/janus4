@@ -831,7 +831,9 @@ class RubroController {
 
 
     def downloadFile() {
+
         def rubro = Item.get(params.id)
+        def ares = ArchivoEspecificacion.findByCodigo(rubro?.codigoEspecificacion)
 
         def tipo = params.tipo
         def filePath
@@ -841,7 +843,10 @@ class RubroController {
                 filePath = rubro.foto
                 break;
             case "dt":
-                filePath = rubro.especificaciones
+                filePath = ares?.ruta
+                break;
+            case "wd":
+                filePath = ares?.especificacion
                 break;
         }
 
@@ -858,8 +863,8 @@ class RubroController {
             response.setContentLength(b.length)
             response.getOutputStream().write(b)
         }else{
-            flash.message="El archivo seleccionado no se encuentra en el servidor."
-            redirect(action: "showFoto",params: [id:rubro.id,tipo: "dt"])
+//            flash.message="El archivo seleccionado no se encuentra en el servidor."
+//            redirect(action: "especificaciones_ajax",params: [id:rubro.id])
         }
     }
 
@@ -891,22 +896,28 @@ class RubroController {
     def uploadFile() {
         println "upload "+params
 
-        def acceptedExt = ["jpg", "png", "gif", "jpeg", "pdf"]
+        def acceptedExt = ["jpg", "png", "gif", "jpeg", "pdf", "doc", "docx"]
 
         def tipo = params.tipo
 
         def path = "/var/janus/" + "rubros/"   //web-app/rubros
         new File(path).mkdirs()
         def rubro = Item.get(params.rubro)
+        println("rrr " + rubro?.id)
+        def usuario = Persona.get(session.usuario.id)
         def archivEsp
         if(ArchivoEspecificacion.findByCodigo(rubro.codigoEspecificacion)) {
             archivEsp = ArchivoEspecificacion.findByCodigo(rubro.codigoEspecificacion)
         } else {
-//            println("entro")
             archivEsp = new ArchivoEspecificacion()
             archivEsp.item = rubro
             archivEsp.codigo = rubro.codigoEspecificacion
         }
+
+
+        println("arc " + archivEsp.id)
+
+        archivEsp.persona = usuario
 
         def f = request.getFile('file')  //archivo = name del input type file
         if (f && !f.empty) {
@@ -931,9 +942,10 @@ class RubroController {
 
                 f.transferTo(file)
 
-                def old = tipo == "il" ? rubro.foto : archivEsp?.ruta
+                def old = tipo == "il" ? rubro.foto : (  tipo == 'dt' ? archivEsp?.ruta : archivEsp?.especificacion)
                 if (old && old.trim() != "") {
-                    def oldPath = servletContext.getRealPath("/") + "rubros/" + old
+//                    def oldPath = servletContext.getRealPath("/") + "rubros/" + old
+                    def oldPath =  "/var/janus/" + "rubros/" + old
                     def oldFile = new File(oldPath)
                     if (oldFile.exists()) {
                         oldFile.delete()
@@ -948,24 +960,37 @@ class RubroController {
                     case "dt":
 //                        rubro.especificaciones = /*g.resource(dir: "rubros") + "/" + */ fileName
                         archivEsp?.ruta = /*g.resource(dir: "rubros") + "/" + */ fileName
+                        archivEsp.save(flush:true)
+                        break;
+                    case "wd":
+                        archivEsp?.especificacion = fileName
+                        archivEsp.save(flush:true)
                         break;
                 }
 
                 if(archivEsp.save(flush: true)){
                     rubro.especificaciones = archivEsp?.ruta
                     rubro.save(flush: true)
+                    render "ok_Guardado correctamente"
+                } else {
+                    println "${archivEsp.errors}"
+                    render "no_Error al guardar"
                 }
+
             } else {
-                flash.clase = "alert-error"
-                flash.message = "Error: Los formatos permitidos son: JPG, JPEG, GIF, PNG y PDF"
+//                flash.clase = "alert-error"
+//                flash.message = "Error: Los formatos permitidos son: JPG, JPEG, GIF, PNG y PDF"
+                render "no_" + params.tipo == 'il' ? ("Error: Los formatos permitidos son: JPG, JPEG, GIF, PNGF") : (params.tipo == 'dt' ? ("Error: Los formatos permitidos son: PDF") : ("Error: Los formatos permitidos son: DOC, DOCX"))
             }
         } else {
-            flash.clase = "alert-error"
-            flash.message = "Error: Seleccione un archivo JPG, JPEG, GIF, PNG ó PDF"
+//            flash.clase = "alert-error"
+//            flash.message = "Error: Seleccione un archivo JPG, JPEG, GIF, PNG ó PDF"
+            render "no_" + params.tipo == 'il' ? ("Error: Los formatos permitidos son: JPG, JPEG, GIF, PNGF") : (params.tipo == 'dt' ? ("Error: Los formatos permitidos son: PDF") : ("Error: Los formatos permitidos son: DOC, DOCX"))
+
         }
 
-        redirect(action: "showFoto", id: rubro.id, params: [tipo: tipo])
-        return
+//        redirect(action: "showFoto", id: rubro.id, params: [tipo: tipo])
+//        return
     }
 
 
@@ -1302,36 +1327,36 @@ class RubroController {
         }
     }
 
-        def rendimientoTodos_ajax(){
+    def rendimientoTodos_ajax(){
 
 
-            def usuarioActual = Persona.get(session.usuario.id)
+        def usuarioActual = Persona.get(session.usuario.id)
 
-            def rubro = Item.get(params.id)
-            def items = Rubro.findAllByRubro(rubro)
-            def errores = ''
+        def rubro = Item.get(params.id)
+        def items = Rubro.findAllByRubro(rubro)
+        def errores = ''
 
-            items.each {
+        items.each {
 
-                it.rendimiento = params.rendimiento.toDouble()
-                if(!it.save(flush:true)){
-                    errores += it.errors
-                }else{
-                    errores += ''
-                }
-            }
-
-            if(errores != ''){
-                render "no_Error al guardar el rendimiento"
+            it.rendimiento = params.rendimiento.toDouble()
+            if(!it.save(flush:true)){
+                errores += it.errors
             }else{
-
-                rubro.modifica = usuarioActual
-                rubro.fechaModificacion = new Date()
-                rubro.save(flush:true)
-
-                render "ok_Guardado correctamente"
+                errores += ''
             }
         }
+
+        if(errores != ''){
+            render "no_Error al guardar el rendimiento"
+        }else{
+
+            rubro.modifica = usuarioActual
+            rubro.fechaModificacion = new Date()
+            rubro.save(flush:true)
+
+            render "ok_Guardado correctamente"
+        }
+    }
 
 
     def infoModifica_ajax(){
@@ -1344,6 +1369,59 @@ class RubroController {
         def res = cn.rows(sql.toString())
 
         return [res: res]
+    }
+
+    def especificaciones_ajax(){
+
+        println("params es"  + params)
+
+        def item = Item.get(params.id)
+        def ares = ArchivoEspecificacion.findByCodigo(item.codigoEspecificacion)
+        println("ares "  + ares?.id)
+        def usuario = Persona.get(session.usuario.id)
+        def existeUtfpu = false
+        if(usuario.departamento?.codigo == 'CRFC'){
+            existeUtfpu = true
+        }
+
+        return [item: item, ares: ares, existe: existeUtfpu, tipo: params.tipo]
+    }
+
+
+
+    def borrarArchivo_ajax(){
+        println("params bb " + params)
+        def rubro = Item.get(params.id)
+        def archivoEspe = ArchivoEspecificacion.findByCodigo(rubro.codigoEspecificacion)
+
+        def old = params.tipo == 'dt' ?  archivoEspe?.ruta : ( params.tipo == 'wd' ?  archivoEspe?.especificacion :rubro?.foto)
+
+        if (old) {
+            def oldPath = "/var/janus/" + "rubros/" + old
+            def oldFile = new File(oldPath)
+            if (oldFile.exists()) {
+                oldFile.delete()
+
+                if(params.tipo == 'dt'){
+                    archivoEspe.ruta = null
+                    archivoEspe.save(flush:true)
+                }else{
+                    if(params.tipo == 'wd'){
+                        archivoEspe.especificacion = null
+                        archivoEspe.save(flush:true)
+                    }else{
+                        rubro.foto = null
+                        rubro.save(flush:true)
+                    }
+                }
+                render "ok_Borrada Correctamente"
+            }else{
+
+                render "no_Error al borrar"
+            }
+        }else{
+            render "no_Error al borrar"
+        }
     }
 
 

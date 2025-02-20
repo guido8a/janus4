@@ -525,17 +525,17 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
 
 </div>
 
-<div id="modal-detalle" style=";overflow: hidden;">
-    <div class="modal-body" id="modalBody-detalle">
-        Especificaciones:<br>
-        <textarea id="especificaciones" style="width: 700px;height: 150px;resize: none;margin-top: 10px">
-            ${rubro?.especificaciones}
-        </textarea>
-    </div>
-    <div class="modal-footer" id="modalFooter-detalle">
-        <a href="#" id="save-espc" class="btn btn-info">Guardar</a>
-    </div>
-</div>
+%{--<div id="modal-detalle" style=";overflow: hidden;">--}%
+%{--    <div class="modal-body" id="modalBody-detalle">--}%
+%{--        Especificaciones:<br>--}%
+%{--        <textarea id="especificaciones" style="width: 700px;height: 150px;resize: none;margin-top: 10px">--}%
+%{--            ${rubro?.especificaciones}--}%
+%{--        </textarea>--}%
+%{--    </div>--}%
+%{--    <div class="modal-footer" id="modalFooter-detalle">--}%
+%{--        <a href="#" id="save-espc" class="btn btn-info">Guardar</a>--}%
+%{--    </div>--}%
+%{--</div>--}%
 
 <div id="dialTransporte" style="overflow: hidden">
     <fieldset class="borde" style="border-radius: 4px; margin-top: 10px">
@@ -809,14 +809,14 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
     function cargarEspecificaciones(id){
         $.ajax({
             type    : "POST",
-            url     : "${createLink(controller: 'mantenimientoItems', action:'especificaciones_ajax')}",
+            url     : "${createLink(controller: 'rubro', action:'especificaciones_ajax')}",
             data    : {
                 id: id
             },
             success : function (msg) {
                 es = bootbox.dialog({
                     id    : "dlgEspecificacionesMaterial",
-                    title : "Especificaciones del material",
+                    title : "Especificaciones del rubro",
                     message : msg,
                     buttons : {
                         cancelar : {

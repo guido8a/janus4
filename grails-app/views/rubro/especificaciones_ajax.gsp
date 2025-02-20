@@ -28,12 +28,12 @@
 
             <div class="col-md-12">
                 <g:if test="${!tipo}">
-                    <g:uploadForm action="uploadFileEspecificacion" method="post" name="frmUploadEspe" enctype="multipart/form-data">
-                        <g:hiddenField name="item" value="${item?.id}"/>
-                        <g:hiddenField name="tipo" value="pdf"/>
+                    <g:uploadForm action="uploadFile" method="post" name="frmUploadEspe" enctype="multipart/form-data">
+                        <g:hiddenField name="rubro" value="${item?.id}"/>
+                        <g:hiddenField name="tipo" value="dt"/>
                         <div class="fieldcontain required">
                             <b>Cargar archivo PDF:</b>
-                            <input type="file" id="fileEspePDF" name="file" class="" multiple accept=".pdf"/>
+                            <input type="file" id="fileEspePDF" name="file" class="requied" required  multiple accept=".pdf"/>
                             <div class="btn-group" style="margin-top: 20px;">
                                 <a href="#" class="btn btn-success submitEspe" data-id="${item?.id}">
                                     <i class="fa fa-save"></i> Guardar
@@ -42,7 +42,7 @@
 
                             <g:if test="${ares?.ruta}">
                                 <div class="btn-group" style="margin-top: 20px;">
-                                    <g:link action="downloadFile" id="${item.id}" params="[tipo: 'pdf']" class="btn btn-info">
+                                    <g:link action="downloadFile" id="${item.id}" params="[tipo: 'dt']" class="btn btn-info">
                                         <i class="fa fa-download"></i> Descargar
                                     </g:link>
                                 </div>
@@ -58,7 +58,7 @@
                 <g:else>
                     <g:if test="${ares?.ruta}">
                         <div class="btn-group" style="margin-top: 20px;">
-                            <g:link action="downloadFile" id="${item.id}" params="[tipo: 'pdf']" class="btn btn-info">
+                            <g:link action="downloadFile" id="${item.id}" params="[tipo: 'dt']" class="btn btn-info">
                                 <i class="fa fa-download"></i> Descargar
                             </g:link>
                         </div>
@@ -77,12 +77,12 @@
                 <g:if test="${existe}">
                     <div class="col-md-12">
                         <g:if test="${!tipo}">
-                            <g:uploadForm action="uploadFileEspecificacion" method="post" name="frmUploadWord" enctype="multipart/form-data">
-                                <g:hiddenField name="item" value="${item?.id}"/>
-                                <g:hiddenField name="tipo" value="word"/>
+                            <g:uploadForm action="uploadFile" method="post" name="frmUploadWord" enctype="multipart/form-data">
+                                <g:hiddenField name="rubro" value="${item?.id}"/>
+                                <g:hiddenField name="tipo" value="wd"/>
                                 <div class="fieldcontain required">
                                     <b>Cargar archivo WORD:</b>
-                                    <input type="file" id="fileEspe" name="file" class=""  multiple accept=".doc, .docx"/>
+                                    <input type="file" id="fileEspe" name="file" class="required" required  multiple accept=".doc, .docx"/>
 
                                     <div class="btn-group" style="margin-top: 20px;">
                                         <a href="#" class="submitWord btn btn-success" data-id="${item?.id}">
@@ -129,11 +129,12 @@
                 </div>
             </div>
             <g:if test="${!tipo}">
-                <g:uploadForm action="uploadFileIlustracion" method="post" name="frmUploadImagen" enctype="multipart/form-data">
-                    <g:hiddenField name="item" value="${item?.id}"/>
+                <g:uploadForm action="uploadFile" method="post" name="frmUploadImagen" enctype="multipart/form-data">
+                    <g:hiddenField name="rubro" value="${item?.id}"/>
+                    <g:hiddenField name="tipo" value="il"/>
                     <div class="fieldcontain required col-md-12">
                         <b>Cargar archivo:</b>
-                        <input type="file" id="file" name="file" class="" multiple accept=".jpg, .jpeg, .png, .gif"/>
+                        <input type="file" id="file" name="file" class="requied" required  multiple accept=".jpg, .jpeg, .png, .gif"/>
                         <div class="btn-group" style="margin-top: 20px;">
                             <a href="#" class="submit btn btn-success" data-id="${item?.id}">
                                 <i class="fa fa-save"></i> Guardar
@@ -264,12 +265,12 @@
 
     $(".btnBorrarPDF").click(function (){
         var id = $(this).data("id");
-        deleteArchivo(id, 'pdf');
+        deleteArchivo(id, 'dt');
     });
 
     $(".btnBorrarWord").click(function (){
         var id = $(this).data("id");
-        deleteArchivo(id, 'word');
+        deleteArchivo(id, 'wd');
     });
 
     $(".btnBorrarImagen").click(function (){
@@ -308,7 +309,6 @@
                                 log(parts[1],"success");
                                 cerrarEspecificaciones();
                                 cargarEspecificaciones(id);
-                                cargarImagenMateriales();
                             }else{
                                 log(parts[1], "error")
                             }
@@ -327,7 +327,8 @@
             type    : "POST",
             url     : "${createLink(controller: 'mantenimientoItems', action: 'imagenMateriales_ajax')}",
             data    : {
-                id: id
+                id: id,
+                tipo: 2
             },
             success : function (msg) {
                 $("#divImagenMateriales").html(msg)

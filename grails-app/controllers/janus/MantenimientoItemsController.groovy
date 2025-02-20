@@ -2526,6 +2526,9 @@ itemId: item.id
     }
 
     def especificaciones_ajax(){
+
+        println("params es"  + params)
+
         def item = Item.get(params.id)
         def ares = ArchivoEspecificacion.findByItem(item)
         def usuario = Persona.get(session.usuario.id)
@@ -2533,8 +2536,6 @@ itemId: item.id
         if(usuario.departamento?.codigo == 'CRFC'){
             existeUtfpu = true
         }
-
-        println("tipo " + params.tipo)
 
         return [item: item, ares: ares, existe: existeUtfpu, tipo: params.tipo]
     }
@@ -2621,6 +2622,25 @@ itemId: item.id
         response.outputStream.flush()
     }
 
+
+    def getFotoRubro(){
+        println "getFoto: $params"
+        def item = Item.get(params.id)
+        def path = "/var/janus/rubros/" +  item?.foto
+        def fileext = path.substring(path.indexOf(".")+1, path.length())
+
+        BufferedImage imagen = ImageIO.read(new File(path));
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ImageIO.write( imagen, fileext, baos );
+        baos.flush();
+        byte[] img = baos.toByteArray();
+        baos.close();
+        response.setHeader('Content-length', img.length.toString())
+        response.contentType = "image/"+fileext // or the appropriate image content type
+        response.outputStream << img
+        response.outputStream.flush()
+    }
+
     def downloadFile() {
 
         def item = Item.get(params.id)
@@ -2659,6 +2679,7 @@ itemId: item.id
     def uploadFileEspecificacion() {
         println "upload "+params
 
+        def usuario = Persona.get(session.usuario.id)
         def rubro = Item.get(params.item)
         def acceptedWord = ['doc', 'docx']
         def acceptedPdf = ['pdf']
@@ -2679,7 +2700,7 @@ itemId: item.id
             archivEsp.codigo = rubro.codigoEspecificacion
         }
 
-        println "existe: $existe, espc: $archivEsp"
+        archivEsp.persona = usuario
 
         def f = request.getFile('file')  //archivo = name del input type file
         if (f && !f.empty) {
@@ -2695,13 +2716,18 @@ itemId: item.id
                 }
             }
 
-            if ( params.tipo == 'pdf' ?  acceptedPdf.contains(ext?.toLowerCase()) : acceptedWord.contains(ext?.toLowerCase())) {
+            println("ext " + ext)
+
+
+//            if ( params.tipo == 'pdf' ?  acceptedPdf.contains(ext?.toLowerCase()) : acceptedWord.contains(ext?.toLowerCase())) {
+            if ( ext == 'pdf' ?  acceptedPdf.contains(ext?.toLowerCase()) : acceptedWord.contains(ext?.toLowerCase())) {
 
                 println("entro??")
 
                 def old
 
-                if(tipo == 'pdf'){
+//                if(tipo == 'pdf'){
+                if(ext == 'pdf'){
                     old = archivEsp?.ruta
                 }else{
                     old = archivEsp?.especificacion
@@ -2721,7 +2747,7 @@ itemId: item.id
                 def file = new File(pathFile)
                 f.transferTo(file)
 
-                switch (tipo) {
+                switch (ext) {
                     case "pdf":
                         archivEsp?.ruta =  fileName
                         break;
@@ -2729,8 +2755,6 @@ itemId: item.id
                         archivEsp?.especificacion =  fileName
                         break;
                 }
-
-                println "antes de grabar ares: ${archivEsp?.ruta}"
 
                 if(archivEsp.save(flush: true)){
                     rubro.especificaciones = archivEsp?.ruta
@@ -2935,7 +2959,7 @@ itemId: item.id
 //        response.outputStream << img
 //        response.outputStream.flush()
 
-        return [item: item]
+        return [item: item, tipo: params.tipo]
     }
 
 //    def borrarImagen_ajax(){
