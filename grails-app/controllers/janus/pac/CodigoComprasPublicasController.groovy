@@ -95,7 +95,7 @@ class CodigoComprasPublicasController {
     def delete() {
         def codigoComprasPublicasInstance = CodigoComprasPublicas.get(params.id)
         if (!codigoComprasPublicasInstance) {
-           render "no_No se encontró el registro"
+            render "no_No se encontró el registro"
         }
 
         try {
@@ -113,7 +113,6 @@ class CodigoComprasPublicasController {
     def cargarCPC () {
 
     }
-
 
 
     def uploadFile() {
@@ -254,5 +253,10 @@ class CodigoComprasPublicasController {
     def uploadCpc(){
 
     }
+
+    def subirExcel_ajax(){
+
+    }
+
 
 } //fin controller
