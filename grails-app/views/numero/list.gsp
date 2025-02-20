@@ -10,21 +10,29 @@
 </head>
 <body>
 
-<div class="span12 btn-group" role="navigation">
+<div class="col-md-2 btn-group" role="navigation">
     <g:link class="link btn btn-info" controller="inicio" action="parametros">
         <i class="fa fa-arrow-left"></i>
         Parámetros
     </g:link>
 </div>
+<div class="col-md-2 btn-group" role="navigation">
+</div>
+<div class="col-md-2 btn-group" role="navigation">
+    <g:link class="link btn btn-warning" controller="inicio" action="parametros">
+        <i class="fa fa-edit"></i>
+        Reiniciar todos los valores
+    </g:link>
+</div>
 
-<div class="span12" role="main" style="margin-top: 10px;">
-    <table class="table table-bordered table-striped table-condensed table-hover">
+<div class="col-md-12" role="main" style="margin-top: 10px;">
+    <table class="table table-bordered table-striped table-condensed table-hover" style="width: 600px !important">
         <thead>
         <tr>
-            <th>Tipo de número</th>
-            <th>Descripción</th>
-            <th>Número</th>
-            <th style="width: 130px">Acciones</th>
+            <th width="50%">Numeración para:</th>
+            <th whith="20%">Código<br>a usar<br>(Prefijo)</th>
+            <th whith="20%">Número</th>
+            <th whith="10%">Acciones</th>
         </tr>
         </thead>
         <tbody>
@@ -32,8 +40,8 @@
             <tr>
                 <td>${numero?.tipoNumero?.descripcion}</td>
                 <td>${numero?.descripcion}</td>
-                <td>${numero?.valor}</td>
-                <td>
+                <td style="text-align: center">${numero?.valor}</td>
+                <td style="text-align: center">
                     <a class="btn btn-success btn-xs btn-edit" href="#"  title="Editar" data-id="${numero.id}">
                         <i class="fa fa-edit"></i>
                     </a>
