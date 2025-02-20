@@ -1,6 +1,7 @@
 package janus
 
 import apli.DbConnectionService
+import groovy.time.TimeCategory
 
 class ObraFPController {
 
@@ -118,6 +119,7 @@ class ObraFPController {
 
     def matrizFP() {
         println "matriz fp " + params
+        def inicio = new Date()
         /* --------------------- parámetros que se requieren para correr el proceso  --------------------- */
         def obra__id = params.obra.toInteger()         // obra de pruebas dos rubros: 550, varios 921. Pruebas 886
         def sbpr = params.sub.toInteger()              // todos los subpresupuestos
@@ -284,6 +286,8 @@ class ObraFPController {
         //guarda subpresupuestos
 //        guardaSbpr(obra__id, sbpr)
         println "fin de poner sbpr"
+        def fin = new Date()
+        println "cronogramaObraEjec: totales --> ${TimeCategory.minus(fin, inicio)}"
 
         render "ok_${sbpr}"
     }

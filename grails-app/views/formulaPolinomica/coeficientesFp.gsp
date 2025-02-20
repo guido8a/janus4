@@ -156,12 +156,22 @@
         </g:link>
 
         <g:if test="${(obra?.responsableObra?.departamento?.direccion?.id == persona?.departamento?.direccion?.id && duenoObra == 1)}">
-            <a href="#" class="btn " title="Borrar la Fórmula Polinómica"
+            <a href="#" class="btn" title="Borrar la Fórmula Polinómica"
                style="margin-top: -10px;" id="btnEliminarFP">
                 <i class="fa fa-trash"></i>
                 Eliminar Fórmula
             </a>
         </g:if>
+    </div>
+    <div class="btn-group"  style="margin-top: 10px">
+        <g:if test="${session?.perfil?.nombre == 'CRFC'}">
+            <a href="#" class="btn text-success" title="Borrar la Fórmula Polinómica"
+               style="margin-top: -10px;" id="btnAprender">
+                <i class="fa fa-user"></i>
+                Aprender Fórmulas
+            </a>
+        </g:if>
+
     </div>
 </div>
 
@@ -1175,6 +1185,39 @@
                             async   : false,
                             type    : "POST",
                             url     : "${createLink(action:'borrarFP')}",
+                            data    : {
+                                obra : ${obra.id}
+                            },
+                            success : function (msg) {
+                                location.reload();
+                            }
+                        });
+                    }
+                }
+            });
+        });
+
+        $("#btnAprender").click(function () {
+            bootbox.confirm({
+                title: "Actualizar el aprendizaje de la FP",
+                message: "Está seguro que desea actualizar el aprendizaje de las fórmulas polinómicas?",
+                buttons: {
+                    cancel: {
+                        label: '<i class="fa fa-times"></i> Cancelar',
+                        className: 'btn-primary'
+                    },
+                    confirm: {
+                        label: '<i class="fa fa-user"></i> Aprender',
+                        className: 'btn-success'
+                    }
+                },
+                callback: function (result) {
+                    if(result){
+                        var dialog = cargarLoader("Borrando...");
+                        $.ajax({
+                            async   : false,
+                            type    : "POST",
+                            url     : "${createLink(action:'aprenderFP')}",
                             data    : {
                                 obra : ${obra.id}
                             },

@@ -18,9 +18,11 @@
         </div>
 
         <div class="col-md-12" style="margin-bottom: 10px">
-            <div class="alert-warning col-md-12" style="font-size: 14px; font-weight: bold">
+            <div class="alert-warning col-md-12" style="font-size: 12px; font-weight: bold; padding: 5px">
                 <div class="col-md-12">
-                    <i class="fa fa-file-pdf fa-2x"></i> Especificación PDF: ${!ares?.ruta ? 'No se ha cargado ninguna especificación PDF para este material' : ares?.ruta}
+                    <i class="fa fa-file-pdf fa-2x"></i>
+                    Especificación PDF: ${!ares?.ruta ? 'No se ha cargado ninguna especificación PDF para este material'
+                            : ares?.ruta + ' (' + ares?.persona?.nombre + ares?.persona?.apellido + ')'}
                 </div>
             </div>
 

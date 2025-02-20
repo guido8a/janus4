@@ -1068,5 +1068,23 @@ class FormulaPolinomicaController {
         }
     }
 
+    def aprenderFP() {
+        def cn = dbConnectionService.getConnection()
+        def sql = "delete from itin"
+        def resl = cn.execute(sql.toString())
+        println " borrado itin $resl"
+        sql = "insert into itin(indc__id, item__id, itinnmro) " +
+                "select indc__id, item__id, count(*) " +
+                "from itfp, fpob " +
+                "where itfp.fpob__id = fpob.fpob__id " +
+                "group by indc__id, item__id " +
+                "having count(*) > 1 " +
+                "order by 1, 3 desc"
+//        println "sql: $sql"
+        resl = cn.execute(sql.toString())
+//        println "resultado: $resl"
+        cn.close()
+        render "ok"
+    }
 
 } //fin controller
