@@ -31,7 +31,29 @@ class NumeroController {
         }else{
             render "ok_Guardado correctamente"
         }
+    }
 
+    def reiniciar_ajax(){
+
+        def numeros = Numero.list()
+        def errores = ''
+
+        numeros.each {
+            it.valor = 1
+            if(!it.save(flush:true)){
+                println("error al reiniciar el numero " + it.errors)
+                errores += it.errors
+            }else{
+                errores += ''
+            }
+        }
+
+        if(errores != ''){
+            println("error " + errores)
+            render "no_Error al guardar el valor"
+        }else{
+            render "ok_Guardado correctamente"
+        }
     }
 
 }

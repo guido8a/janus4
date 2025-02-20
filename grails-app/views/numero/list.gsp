@@ -11,7 +11,7 @@
 <body>
 
 <div class="col-md-2 btn-group" role="navigation">
-    <g:link class="link btn btn-info" controller="inicio" action="parametros">
+    <g:link class="link btn btn-primary" controller="inicio" action="parametros">
         <i class="fa fa-arrow-left"></i>
         Parámetros
     </g:link>
@@ -19,10 +19,9 @@
 <div class="col-md-2 btn-group" role="navigation">
 </div>
 <div class="col-md-2 btn-group" role="navigation">
-    <g:link class="link btn btn-warning" controller="inicio" action="parametros">
-        <i class="fa fa-edit"></i>
-        Reiniciar todos los valores
-    </g:link>
+    <a class="btn btn-warning btnReiniciar" href="#"  title="Reiniciar valores">
+        <i class="fa fa-recycle"></i> Reiniciar todos los valores
+    </a>
 </div>
 
 <div class="col-md-12" role="main" style="margin-top: 10px;">
@@ -54,6 +53,46 @@
 
 
 <script type="text/javascript">
+
+    $(".btnReiniciar").click(function () {
+        bootbox.dialog({
+            title   : "Alerta",
+            message : "<i class='fa fa-trash fa-2x pull-left text-danger text-shadow'></i><p style='font-weight: bold; font-size: 14px'> ¿Está seguro que desea reiniciar todos los valores a 1?.</p>",
+            buttons : {
+                cancelar : {
+                    label     : "Cancelar",
+                    className : "btn-primary",
+                    callback  : function () {
+                    }
+                },
+                eliminar : {
+                    label     : "<i class='fa fa-check'></i> Aceptar",
+                    className : "btn-success",
+                    callback  : function () {
+                        $.ajax({
+                            type    : "POST",
+                            url     : '${createLink(controller: 'numero', action:'reiniciar_ajax')}',
+                            data    : {
+
+                            },
+                            success : function (msg) {
+                                var parts = msg.split("_");
+                                if(parts[0] === 'ok'){
+                                    log(parts[1], "success");
+                                    setTimeout(function () {
+                                        location.reload();
+                                    }, 800);
+                                }else{
+                                    bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
+                                    return false;
+                                }
+                            }
+                        });
+                    }
+                }
+            }
+        });
+    });
 
     function createEditRow(id) {
         var title = id ? "Editar " : "Crear ";
