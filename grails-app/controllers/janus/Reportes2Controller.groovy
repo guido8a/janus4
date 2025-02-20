@@ -360,6 +360,22 @@ class Reportes2Controller {
             }
         }
 
+
+        /** firmas */
+        PdfPTable firmas = new PdfPTable(5);
+        firmas.setWidths(arregloEnteros([20, 5, 20, 5, 20]))
+        firmas.setWidthPercentage(100);
+
+        firmas.setSpacingAfter(5f);
+
+        addCellTabla(firmas, new Paragraph("Firma 1", fontTh), [border: Color.BLACK, bg: Color.LIGHT_GRAY, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE, colspan: 2])
+        addCellTabla(firmas, new Paragraph("", fontTh), [border: Color.BLACK, bg: Color.LIGHT_GRAY, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE, colspan: 2])
+        addCellTabla(firmas, new Paragraph("Firma 1", fontTh), [border: Color.BLACK, bg: Color.LIGHT_GRAY, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE, colspan: 2])
+        addCellTabla(firmas, new Paragraph("", fontTh), [border: Color.BLACK, bg: Color.LIGHT_GRAY, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE, colspan: 2])
+        addCellTabla(firmas, new Paragraph("Firma 1", fontTh), [border: Color.BLACK, bg: Color.LIGHT_GRAY, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE, colspan: 2])
+
+        document.add(firmas)
+
         println "...termina reporte"
         document.close();
         pdfw.close()

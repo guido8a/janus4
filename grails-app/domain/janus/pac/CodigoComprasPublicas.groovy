@@ -8,7 +8,10 @@ class CodigoComprasPublicas {
     int nivel = 1
     Date fecha
     int movimiento
+    double umbralVae
+
     static auditable = true
+
     static mapping = {
         table 'cpac'
         cache usage: 'read-write', include: 'non-lazy'
@@ -23,6 +26,7 @@ class CodigoComprasPublicas {
             nivel column: 'cpacnvel'
             fecha column: 'cpacfcha'
             movimiento column: 'cpacmvnt'
+            umbralVae column: 'cpacumve'
         }
     }
     static constraints = {
@@ -30,6 +34,7 @@ class CodigoComprasPublicas {
         descripcion(nullable: true,blank: true,size: 1..512)
         fecha(nullable: true,blank:true)
         padre(nullable: true,blank:true)
+        umbralVae(nullable: true, blank:true)
     }
 
 }

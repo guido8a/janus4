@@ -10,15 +10,25 @@
     </head>
     <body>
 
-        <div class="span12 btn-group" role="navigation">
+        <div class="col-md-2 btn-group" role="navigation">
             <a href="#" class="btn btn-success btn-new">
                 <i class="fa fa-file"></i>
                 Nuevo Código Compras Publicas
             </a>
         </div>
 
+        <div class="col-md-8 btn-group" role="navigation">
+        </div>
 
-    <div id="listaRbro" style="overflow: hidden; margin-top: 10px">
+        <div class="col-md-2 btn-group" role="navigation">
+            <a href="#" class="btn btn-success btn-new">
+                <i class="fa fa-file-excel"></i>
+                Cargar valores desde Excel
+            </a>
+        </div>
+
+
+    <div class="col-md-12" id="listaRbro" style="overflow: hidden; margin-top: 10px">
         <fieldset class="borde" style="border-radius: 4px">
             <div class="row-fluid" style="margin-left: 10px">
                 <span class="grupo">

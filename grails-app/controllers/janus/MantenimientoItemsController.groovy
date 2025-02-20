@@ -2679,6 +2679,8 @@ itemId: item.id
             archivEsp.codigo = rubro.codigoEspecificacion
         }
 
+        println "existe: $existe, espc: $archivEsp"
+
         def f = request.getFile('file')  //archivo = name del input type file
         if (f && !f.empty) {
             def fileName = f.getOriginalFilename() //nombre original del archivo
@@ -2727,6 +2729,8 @@ itemId: item.id
                         archivEsp?.especificacion =  fileName
                         break;
                 }
+
+                println "antes de grabar ares: ${archivEsp?.ruta}"
 
                 if(archivEsp.save(flush: true)){
                     rubro.especificaciones = archivEsp?.ruta
