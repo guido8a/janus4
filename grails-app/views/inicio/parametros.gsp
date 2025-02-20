@@ -6,15 +6,6 @@
 
     <style type="text/css">
 
-    /*.tab-content, .left, .right {*/
-    /*    height : 710px;*/
-    /*}*/
-
-    /*.tab-content {*/
-    /*    background  : #EEEEEE;*/
-    /*    border      : solid 1px #DDDDDD;*/
-    /*    padding-top : 10px;*/
-    /*}*/
     .descripcion h4 {
         color      : cadetblue;
         text-align : center;
@@ -416,6 +407,20 @@
                                             <strong style="font-size: 14px"> </strong>
                                         </div>
                                     </div>
+
+                                    <div class="col-md-12" style="margin-bottom: 10px">
+                                        <div class="col-md-4">
+                                            <g:link class="link btn btn-success btn-xs" controller="numero" action="list">
+                                                <i class="fa fa-globe fa-2x"></i>
+                                                Numeración
+                                            </g:link>
+                                        </div>
+
+                                        <div class="col-md-8">
+                                            <strong style="font-size: 14px"> </strong>
+                                        </div>
+                                    </div>
+
                                 </div>
                             </div>
                         </div>

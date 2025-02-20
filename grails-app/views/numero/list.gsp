@@ -1,0 +1,120 @@
+
+<%@ page import="janus.EstadoObra" %>
+<!doctype html>
+<html>
+<head>
+    <meta name="layout" content="main">
+    <title>
+        Numeración
+    </title>
+</head>
+<body>
+
+<div class="span12 btn-group" role="navigation">
+    <g:link class="link btn btn-info" controller="inicio" action="parametros">
+        <i class="fa fa-arrow-left"></i>
+        Parámetros
+    </g:link>
+</div>
+
+<div class="span12" role="main" style="margin-top: 10px;">
+    <table class="table table-bordered table-striped table-condensed table-hover">
+        <thead>
+        <tr>
+            <th>Tipo de número</th>
+            <th>Descripción</th>
+            <th>Número</th>
+            <th style="width: 130px">Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        <g:each in="${numeros}" status="i" var="numero">
+            <tr>
+                <td>${numero?.tipoNumero?.descripcion}</td>
+                <td>${numero?.descripcion}</td>
+                <td>${numero?.valor}</td>
+                <td>
+                    <a class="btn btn-success btn-xs btn-edit" href="#"  title="Editar" data-id="${numero.id}">
+                        <i class="fa fa-edit"></i>
+                    </a>
+                </td>
+            </tr>
+        </g:each>
+        </tbody>
+    </table>
+</div>
+
+
+<script type="text/javascript">
+
+    function createEditRow(id) {
+        var title = id ? "Editar " : "Crear ";
+        var data = id ? {id : id} : {};
+
+        $.ajax({
+            type    : "POST",
+            url: "${createLink(action:'form_ajax')}",
+            data    : data,
+            success : function (msg) {
+                var b = bootbox.dialog({
+                    id      : "dlgCreateEdit",
+                    title   : title + "Numeración",
+                    message : msg,
+                    class: "modal-sm",
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        },
+                        guardar  : {
+                            id        : "btnSave",
+                            label     : "<i class='fa fa-save'></i> Guardar",
+                            className : "btn-success",
+                            callback  : function () {
+                                return submitFormNumero();
+                            } //callback
+                        } //guardar
+                    } //buttons
+                }); //dialog
+            } //success
+        }); //ajax
+    } //createEdit
+
+    function submitFormNumero() {
+        var $form = $("#frmNumero");
+        if ($form.valid()) {
+            var data = $form.serialize();
+            var dialog = cargarLoader("Guardando...");
+            $.ajax({
+                type    : "POST",
+                url     : $form.attr("action"),
+                data    : data,
+                success : function (msg) {
+                    dialog.modal('hide');
+                    var parts = msg.split("_");
+                    if(parts[0] === 'ok'){
+                        log(parts[1], "success");
+                        setTimeout(function () {
+                            location.reload();
+                        }, 800);
+                    }else{
+                        bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
+                        return false;
+                    }
+                }
+            });
+        } else {
+            return false;
+        }
+    }
+
+    $(".btn-edit").click(function () {
+        var id = $(this).data("id");
+        createEditRow(id);
+    }); //click btn edit
+
+</script>
+</body>
+</html>
