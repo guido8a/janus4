@@ -367,6 +367,7 @@ class Reportes2Controller {
         tablaFirmas.setWidths(arregloEnteros([40, 3, 40, 3, 40]))
         tablaFirmas.totalHeight = 100f
         com.lowagie.text.Font fontThFirmas = new com.lowagie.text.Font(com.lowagie.text.Font.TIMES_ROMAN, 10, com.lowagie.text.Font.BOLD);
+        def frmtCol5 = [height: 10, bcb: Color.BLACK, border: Color.WHITE, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE, colspan: 5]
 
         addCellTabla(tablaFirmas, new Paragraph("", fontThFirmas), frmtCol5)
 
