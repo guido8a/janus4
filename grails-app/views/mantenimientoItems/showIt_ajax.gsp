@@ -58,7 +58,7 @@
         <g:if test="${itemInstance?.estado}">
             <div class="row">
                 <div class="col-md-3 text-info">
-                    Unidad
+                    Estado
                 </div>
                 <div class="col-md-6 negrita">
                     ${itemInstance.estado == 'A' ? 'ACTIVO' : itemInstance.estado == 'B' ? 'DADO DE BAJA' : ''}

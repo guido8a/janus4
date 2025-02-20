@@ -34,7 +34,7 @@
 <div id="tabs">
     <ul>
         <li><a href="#tab-rubro">Rubros Vigentes</a></li>
-        <li><a href="#tab-precioRubro">Precio Rubros</a></li>
+        <li><a href="#tab-precioRubro">Precios del Ítem</a></li>
         <li><a href="#tab-formula">Fórmula Polinómica</a></li>
         <li><a href="#tab-historicos">Rubros Históricos</a></li>
     </ul>

@@ -26,7 +26,7 @@
     %{--    <g:if test="${obra?.formulaPolinomica && obra?.formulaPolinomica != ''}">--}%
     <g:textField name="formulaPolinomica" class="allCaps"  maxlength="20" title="Fórmula Polinómica" style="width: 120px;" value="${obra?.formulaPolinomica}" readonly=""/>
 
-        <g:if test="${!obra?.formulaPolinomica}">
+        <g:if test="${obra?.formulaPolinomica?.size() < 10}">
             <a href="#" class="btn btn-xs btn-success btnGenerarCodigoFP" data-id="${obra?.id}" title="Generar código de la formula polinómica">
                 <i class="fa fa-check"></i>
             </a>

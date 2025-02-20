@@ -18,7 +18,7 @@
     </div>
 
     <div class="col-md-8 breadcrumb" style="font-weight: bold; font-size: 16px">
-        ${"Código: " +  rubro?.codigo + " - " + "Nombre: " + rubro?.nombre}
+        ${"APU Código: " +  rubro?.codigo + " - " + "Nombre: " + rubro?.nombre}
     </div>
 
 </div>

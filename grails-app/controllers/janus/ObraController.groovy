@@ -1316,24 +1316,28 @@ class ObraController {
 
         }//es edit
         else {
-
+            def numero = ""
             switch (session.perfil.codigo) {
                 case "CSTO":
                     ultimo = Numero.findByDescripcion('CO')
-                    params.codigo = "CO-${ultimo?.valor + 1}-CRFC-${anioActual}" /* todo poner en 3 cifras */
+                    numero = completa(ultimo?.valor + 1)
+//                    params.codigo = "CO-${ultimo?.valor + 1}-CRFC-${anioActual}" /* todo poner en 3 cifras */
+                    params.codigo = "CO-${numero}-CRFC-${anioActual}"
 
                     ultimo.valor = (ultimo.valor+1)
 
                     break;
                 case "ADDI":
                     ultimo = Numero.findByDescripcion('PAD')
-                    params.codigo = "PAD-${ultimo?.valor + 1}-GADPP-${anioActual}"
+                    numero = completa(ultimo?.valor + 1)
+                    params.codigo = "PAD-${numero}-GADPP-${anioActual}"
 
                     ultimo.valor = (ultimo.valor+1)
                     break;
                 case "OBRA":
                     ultimo = Numero.findByDescripcion('PB')
-                    params.codigo = "PB-${ultimo?.valor + 1}-GADPP-${anioActual}"
+                    numero = completa(ultimo?.valor + 1)
+                    params.codigo = "PB-${numero}-GADPP-${anioActual}"
 
                     ultimo.valor = (ultimo.valor+1)
                     break;
@@ -1706,8 +1710,11 @@ class ObraController {
         def codigo
         def anioActual = new Date().format("yy")
 
+
+        def numero = ""
         def ultimo = Numero.findByDescripcion('FP')
-        codigo = "FP-${ultimo?.valor + 1}-CRFC-${anioActual}"
+        numero = completa(ultimo?.valor + 1)
+        codigo = "FP-${numero}-CRFC-${anioActual}"
 
         obra.formulaPolinomica = codigo
         ultimo.valor = (ultimo.valor+1)
@@ -1912,6 +1919,12 @@ class ObraController {
         }else{
             render "ok_Guardado correctamente"
         }
+    }
+
+    def completa(valor) {
+        def txto = '0'*(3-valor.toString().size())
+        println "txto: $txto"
+        return "${txto}${valor}"
     }
 
 } //fin controller

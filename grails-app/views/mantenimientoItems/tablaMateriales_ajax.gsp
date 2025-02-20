@@ -48,7 +48,7 @@
         <tbody>
         <g:if test="${materiales}">
             <g:each in="${materiales}" status="i" var="material">
-                <tr data-id="${material?.id}">
+                <tr data-id="${material?.id}" class="${material?.estado == 'B'? 'dadoDeBaja': ''}">
                     <td style="width: 7%">${material?.departamento?.subgrupo?.codigo}</td>
                     <td style="width: 15%">${material?.departamento?.subgrupo?.descripcion}</td>
                     <td style="width: 7%">${material?.departamento?.codigo}</td>

@@ -10,6 +10,9 @@
     /*.modal-body {*/
         /*background-color: #e0e0e0;*/
     /*}*/
+        .dadoDeBaja {
+            color: #b21f2d;
+        }
     </style>
 </head>
 
@@ -21,12 +24,14 @@
             <span class="grupo">
                 <span class="col-md-2">
                     <label class="control-label text-info">Buscar Por</label>
-                    <g:select name="buscarPor" class="buscarPor col-md-12 form-control btn-success" from="${[1: 'Materiales', 2: 'Mano de Obra', 3: 'Equipos']}" optionKey="key"
+                    <g:select name="buscarPor" class="buscarPor col-md-12 form-control btn-success"
+                              from="${[1: 'Materiales', 2: 'Mano de Obra', 3: 'Equipos']}" optionKey="key"
                               optionValue="value"/>
                 </span>
                 <span class="col-md-2">
                     <label class="control-label text-info">Tipo</label>
-                    <g:select name="tipo" class="tipo col-md-12 form-control btn-info" from="${[1: 'Grupo', 2: 'Subgrupo', 3: 'Items']}" optionKey="key"
+                    <g:select name="tipo" class="tipo col-md-12 form-control btn-info"
+                              from="${[1: 'Grupo', 2: 'Subgrupo', 3: 'Items']}" optionKey="key"
                               optionValue="value"/>
                 </span>
                 <span class="col-md-3">
@@ -36,7 +41,8 @@
             </span>
             <div class="col-md-2" style="margin-top: 20px">
                 <button class="btn btn-info" id="btnBuscar"><i class="fa fa-search"></i></button>
-                <button class="btn btn-warning" id="btnLimpiar" title="Limpiar Búsqueda"><i class="fa fa-eraser"></i></button>
+                <button class="btn btn-warning" id="btnLimpiar" title="Limpiar Búsqueda">
+                    <i class="fa fa-eraser"></i></button>
             </div>
             <div class="col-md-2" style="width: 260px; margin-top: 21px">
                 <ol class="breadcrumb">

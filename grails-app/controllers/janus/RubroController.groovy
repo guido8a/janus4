@@ -115,6 +115,7 @@ class RubroController {
             items.sort { it.item.codigo }
             resps = rubro.responsable
 
+            println "items: $items"
             def volumenes =  verificarVolumnesXRubro(rubro?.id)
 
             [campos: campos, rubro: rubro, grupos: grupos, items: items, choferes: choferes, volquetes: volquetes,

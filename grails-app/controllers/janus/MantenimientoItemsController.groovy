@@ -2502,9 +2502,7 @@ itemId: item.id
     }
 
     def tablaMateriales_ajax(){
-
-//        println("params " + params)
-
+        println "tablaMateriales_ajax $params"
         def grupo = Grupo.get(params.buscarPor)
         def grupos = SubgrupoItems.findAllByGrupo(grupo)
         def subgrupos = DepartamentoItem.findAllBySubgrupoInList(grupos)
