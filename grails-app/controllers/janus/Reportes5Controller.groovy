@@ -37,6 +37,14 @@ class Reportes5Controller{
         }
     }
 
+    private String printFechaMes(Date fecha) {
+        if (fecha) {
+            return (meses[fecha.format("MM").toInteger()] + ' de ' + fecha.format("yyyy"))
+        } else {
+            return "Error: no hay fecha que mostrar"
+        }
+    }
+
     private filasAvance(params) {
         def sqlBase = "SELECT\n" +
                 "  c.cntr__id               id,\n" +
@@ -913,10 +921,15 @@ class Reportes5Controller{
 
         label = new Label(1, salto3 + 4, nota, times16format); sheet.addCell(label);
 
+        label = new Label(1, salto3 + 5, "NOTA : La presente Fórmula Polinómica se sujetará a lo establecido en la Ley de Contratación Pública", times16format); sheet.addCell(label);
+        label = new Label(2, salto3 + 5,  "Índice So: " + printFechaMes(obra?.fechaOficioSalida), times16format); sheet.addCell(label);
+
         label = new Label(1, salto3 + 6, "Fecha de actualización", times16format); sheet.addCell(label);
         label = new Label(2, salto3 + 6, printFecha(obra?.fechaPreciosRubros), times16format); sheet.addCell(label);
-        label = new Label(3, salto3 + 6, "Monto del Contrato", times16format); sheet.addCell(label);
-        label = new Label(4, salto3 + 6, "\$" + g.formatNumber(number: totalBase, minFractionDigits: 2, maxFractionDigits: 2, format: "##,##0", locale: "ec"), times16format);
+//        sheet.addCell(label);
+
+        label = new Label(1, salto3 + 7, "Monto del Contrato", times16format); sheet.addCell(label);
+        label = new Label(2, salto3 + 7, "\$" + g.formatNumber(number: totalBase, minFractionDigits: 2, maxFractionDigits: 2, format: "##,##0", locale: "ec"), times16format);
         sheet.addCell(label);
 
         label = new Label(1, salto3 + 8, "Atentamente,  ", times16format); sheet.addCell(label);
@@ -925,7 +938,6 @@ class Reportes5Controller{
         sheet.addCell(label);
 
         def firmaC
-
 
         if(params.firmaCoordinador != ''){
             def personaRol = PersonaRol.get(params.firmaCoordinador)

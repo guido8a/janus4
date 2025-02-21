@@ -80,7 +80,7 @@
             </div>
             <div class="col-md-2">
                 <a href="#" class="btn btn-success" id="btnSubmitCrono"><i class="fa fa-upload"></i>
-                    Subir cronograma</a>
+                    Subir archivo</a>
             </div>
         </div>
     </div>

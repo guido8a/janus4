@@ -37,6 +37,14 @@ class ReportesController {
         }
     }
 
+    private String printFechaMes(Date fecha) {
+        if (fecha) {
+            return (meses[fecha.format("MM").toInteger()] + ' de ' + fecha.format("yyyy"))
+        } else {
+            return "Error: no hay fecha que mostrar"
+        }
+    }
+
     def _garantiasContrato() {
 //        println "reporte garantiasContrato $params"
         def auxiliar = Auxiliar.get(1)
@@ -4674,6 +4682,13 @@ class ReportesController {
         txtIzqPie.add(new Paragraph(nota?.texto, times10normal));
         txtIzqPie.add(new Paragraph(" ", times10bold));
         document.add(txtIzqPie)
+
+        Paragraph notaPie = new Paragraph();
+        notaPie.setAlignment(Element.ALIGN_LEFT);
+        notaPie.setIndentationLeft(16)
+        notaPie.add(new Paragraph("NOTA : La presente Fórmula Polinómica se sujetará a lo establecido en la Ley de Contratación Pública               Índice So: ${printFechaMes(obra?.fechaOficioSalida).toUpperCase()}", times8normal));
+        notaPie.setSpacingAfter(10)
+        document.add(notaPie);
 
         PdfPTable tablaPie = new PdfPTable(4);
         tablaPie.setWidthPercentage(90);
