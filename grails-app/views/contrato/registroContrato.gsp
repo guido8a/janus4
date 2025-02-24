@@ -1237,7 +1237,9 @@
                 if (parts[0] === "ok") {
 
 
-                    bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' +  "La obra no puede ser registrada, no tiene fórmula polinómica" + '</strong>');
+                    bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' +
+                        '<strong style="font-size: 14px">' +
+                        "El contrato no puede ser registrado porque no tiene fórmula polinómica" + '</strong>');
 
                     %{--bootbox.confirm({--}%
                     %{--    title: "Registrar obra",--}%

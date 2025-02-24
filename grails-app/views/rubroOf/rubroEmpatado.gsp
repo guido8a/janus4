@@ -4,7 +4,7 @@
 <head>
     <meta name="layout" content="main">
     <title>
-        Lista de Rubros
+        Correspondencia de ítems
     </title>
 </head>
 <body>

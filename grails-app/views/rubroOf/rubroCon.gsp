@@ -10,21 +10,42 @@
 
 <body>
 
-<div class="span6 btn-group" role="navigation">
+<div class="col-md-1 btn-group" role="navigation">
     <a href="#" class="btn  btn-primary" id="btnRegresar">
         <i class="fa fa-arrow-left"></i>
         Regresar
     </a>
 </div>
 
-<div class="span6 btn-group" role="navigation">
+<div class="col-md-4 btn-group" role="navigation">
+    <div class="col-md-4">
+        <label></label>
+    </div>
+    <div class="col-md-4">
+        <label>Costos indirectos</label>
+    </div>
+    <div class="col-md-3" style="margin-left: -40px">
+        <g:textField name="indi" class="form-control" value="22.5"/>
+    </div>
+    <div class="col-md-1" style="margin-left: -30px; margin-top: 7px">
+        %
+    </div>
+</div>
+
+<div class="col-md-2 btn-group" role="navigation">
     <a href="#" class="btn  btn-info" id="btnProcesar">
         <i class="fa fa-check-circle"></i>
         Validar rubros importados de excel
     </a>
 </div>
 
-<div class="span6 btn-group" role="navigation">
+<div class="col-md-2 btn-group" role="navigation">
+    <div class="col-md-4">
+        <label></label>
+    </div>
+</div>
+
+<div class="col-md-2 btn-group" role="navigation">
     <a href="#" class="btn  btn-success" id="btnEmpatar">
         <i class="fa fa-check-circle"></i>
         Emparejamiento de Items
@@ -88,7 +109,8 @@
 
     $("#btnProcesar").click(function () {
         var cntr = $("#obra").val();
-        location.href = "${createLink(controller: 'rubroOf', action: 'procesarRubrosOf')}?contrato=" + cntr
+        var indi = $("#indi").val();
+        location.href = "${createLink(controller: 'rubroOf', action: 'procesarRubrosOf')}?contrato=" + cntr + '&indi=' + indi
     });
 
     $("#btnEmpatar").click(function () {

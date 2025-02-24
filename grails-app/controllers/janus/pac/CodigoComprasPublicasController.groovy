@@ -256,7 +256,7 @@ class CodigoComprasPublicasController {
         def filasNO = [0, 1]
         def path = "/var/janus/" + "xls/"   //web-app/archivos
         new File(path).mkdirs()
-        def fecha = new Date().parse("dd-MM-yyyy", params.fecha_input).format('yyyy-MM-dd')
+        def fecha = new Date().parse("MM/dd/yyyy", params.fecha_input).format('yyyy-MM-dd')
         def sql = ""
         def cuenta = 0
 
@@ -363,7 +363,8 @@ class CodigoComprasPublicasController {
                                     println " no se pudo insertar $rgst: ${e.erros()}"
                                 }
                             } else {
-                                sql = "update cpac set cpacdscr = '${dscr}' where cpac__id = ${cp_id}"
+                                sql = "update cpac set cpacdscr = '${dscr}', cpacfcha = '${fecha}' " +
+                                        "where cpac__id = ${cp_id}"
                                 println "actualiza $cp_id $sql"
                                 try {
                                     cn.execute(sql.toString())
@@ -413,6 +414,25 @@ class CodigoComprasPublicasController {
 
     def subirExcel_ajax(){
 
+    }
+
+    def actualizaVae(){
+        def cn = dbConnectionService.getConnection()
+        def sql = "select max(cpacfcha) fcha from cpac"
+        def fcha = cn.rows(sql.toString())[0]?.fcha
+
+        sql = "select itvafcha from itva where itvafcha = '${fcha}' "
+        def existe = cn.rows(sql.toString())[0]?.itvafcha
+
+        if(!existe) {
+            sql = "insert into itva(itvafcha, itvafcin, item__id, itvapcnt, itvargst) " +
+                    "select '${fcha}', now()::date, item__id, cpacumve, 'N' from item, cpac " +
+                    "where item.cpac__id = cpac.cpac__id and cpacfcha = '${fcha}' "
+            println "sql. $sql"
+            cn.execute(sql.toString())
+        }
+        cn.close()
+        render "ok"
     }
 
     def mensajeUploadContrato() {

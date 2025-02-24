@@ -4453,7 +4453,8 @@ class ReportesController {
         Font times12bold = new Font(Font.TIMES_ROMAN, 12, Font.BOLD);
         Font times18bold = new Font(Font.TIMES_ROMAN, 18, Font.BOLD);
         Font times10bold = new Font(Font.TIMES_ROMAN, 10, Font.BOLD);
-        Font times10normal = new Font(Font.TIMES_ROMAN, 10, Font.NORMAL);
+//        Font times10normal = new Font(Font.TIMES_ROMAN, 10, Font.NORMAL);
+        Font times10normal = new Font(Font.TIMES_ROMAN, 9, Font.NORMAL);
         Font times8bold = new Font(Font.TIMES_ROMAN, 8, Font.BOLD)
         Font times8normal = new Font(Font.TIMES_ROMAN, 8, Font.NORMAL)
         Font times10boldWhite = new Font(Font.TIMES_ROMAN, 10, Font.BOLD);
@@ -4478,14 +4479,15 @@ class ReportesController {
 
         headers.setAlignment(Element.ALIGN_CENTER);
         headers.add(new Paragraph(auxiliar?.titulo, times14bold));
-        headers.add(new Paragraph(auxiliar?.memo1, times12bold))
+//        headers.add(new Paragraph(auxiliar?.memo1, times12bold))
         headers.add(new Paragraph("FÓRMULA POLINÓMICA " + obra?.formulaPolinomica, times12bold))
         document.add(headers);
 
         Paragraph txtIzq = new Paragraph();
         txtIzq.setAlignment(Element.ALIGN_CENTER);
         txtIzq.setIndentationLeft(15)
-        txtIzq.add(new Paragraph("De existir variaciones en los costos de los componentes de precios unitarios estipulados en el contrato para la construcción de: ", times10normal));
+        txtIzq.add(new Paragraph("De existir variaciones en los costos de los componentes de precios unitarios " +
+                "estipulados en el contrato para la construcción de: ", times10normal));
         txtIzq.setSpacingAfter(10)
         document.add(txtIzq);
 
@@ -4621,6 +4623,7 @@ class ReportesController {
         PdfPTable tablaCoeficiente = new PdfPTable(4);
         tablaCoeficiente.setWidthPercentage(90);
         tablaCoeficiente.setWidths(arregloEnteros([10, 8, 25, 53]))
+//        tablaCoeficiente.setWidths(arregloEnteros([6, 6, 25, 59]))
 
         def valorTotal = 0
 
@@ -4676,17 +4679,20 @@ class ReportesController {
         document.add(tablaCuadrillaHeader)
         document.add(tablaCuadrilla)
 
-        Paragraph txtIzqPie = new Paragraph();
-        txtIzqPie.setAlignment(Element.ALIGN_LEFT);
-        txtIzqPie.setIndentationLeft(28);
-        txtIzqPie.add(new Paragraph(nota?.texto, times10normal));
-        txtIzqPie.add(new Paragraph(" ", times10bold));
-        document.add(txtIzqPie)
+//        Paragraph txtIzqPie = new Paragraph();
+//        txtIzqPie.setAlignment(Element.ALIGN_LEFT);
+//        txtIzqPie.setIndentationLeft(28);
+//        txtIzqPie.add(new Paragraph(nota?.texto, times10normal));
+//        txtIzqPie.add(new Paragraph(" ", times10bold));
+//        document.add(txtIzqPie)
 
         Paragraph notaPie = new Paragraph();
         notaPie.setAlignment(Element.ALIGN_LEFT);
         notaPie.setIndentationLeft(16)
-        notaPie.add(new Paragraph("NOTA : La presente Fórmula Polinómica se sujetará a lo establecido en la Ley de Contratación Pública               Índice So: ${printFechaMes(obra?.fechaOficioSalida).toUpperCase()}", times8normal));
+        notaPie.add(new Paragraph("NOTA : La presente Fórmula Polinómica se sujetará a lo establecido en la Ley de Contratación " +
+                "Pública                Índice So: ${printFechaMes(obra?.fechaOficioSalida).toUpperCase()}", times8normal));
+//        notaPie.add(new Paragraph("NOTA : La presente Fórmula Polinómica se sujetará a lo establecido en la Ley de Contratación Pública               Índice So: " +
+//                "${printFechaMes(obra?.fechaOficioSalida).toUpperCase()}", times10bold));
         notaPie.setSpacingAfter(10)
         document.add(notaPie);
 

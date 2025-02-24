@@ -90,7 +90,7 @@
         </div>
 
         <div class="col-md-2">
-            <label>Celda texto FRubro</label>
+            <label>Celda texto Rubro</label>
         </div>
         <div class="col-md-1" style="margin-left: -40px">
             <g:textField name="cldarbro" class="form-control" value="A"/>

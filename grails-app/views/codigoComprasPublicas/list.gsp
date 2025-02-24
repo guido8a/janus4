@@ -23,13 +23,17 @@
     </a>
 </div>
 
-<div class="col-md-6 btn-group" role="navigation">
+<div class="col-md-3 btn-group" role="navigation">
 </div>
 
-<div class="col-md-2 btn-group" role="navigation">
+<div class="col-md-5 btn-group" role="navigation">
     <a href="#" class="btn btn-success btnSubirExcelCPC">
         <i class="fa fa-upload"></i>
         Cargar valores desde Excel
+    </a>
+    <a href="#" class="btn btn-info btnActualiza">
+        <i class="fa fa-upload"></i>
+        Actualizar VAE de CPC subidos de Excel
     </a>
 </div>
 
@@ -68,6 +72,10 @@
 
     $(".btnSubirExcelCPC").click(function () {
         location.href="${createLink(controller: 'codigoComprasPublicas', action: 'subirExcel_ajax')}"
+    });
+
+    $(".btnActualiza").click(function () {
+        location.href="${createLink(controller: 'codigoComprasPublicas', action: 'actualizaVae')}"
     });
 
     buscarCPC();
