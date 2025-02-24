@@ -9,14 +9,6 @@
 </head>
 <body>
 
-%{--<div class="row" style="margin-bottom: 1px">--}%
-
-%{--    <div class="col-md-8 breadcrumb" style="font-weight: bold; font-size: 16px">--}%
-%{--        ${"Código: " +  rubro?.codigo + " - " + "Nombre: " + rubro?.nombre}--}%
-%{--    </div>--}%
-
-%{--</div>--}%
-
 <div id="busqueda" style="overflow: hidden">
     <fieldset class="borde" style="border-radius: 4px">
         <div class="row-fluid">
@@ -62,12 +54,21 @@
     <fieldset class="borde">
         <div id="divTablaBusqueda">
         </div>
+
+        <div class="col-md-12" id="" style="margin-top: 10px">
+            <a href="#" class="col-md-4 btn btn-info" id="btnCopiar" style="text-align: center">
+                <i class="fa fa-arrow-left"></i>
+                Copiar composición a los APU del Oferente
+            </a>
+        </div>
+
     </fieldset>
 </div>
 
 <div class="col-md-12" id="divTablaEmpatados" style="margin-top: 10px">
 
 </div>
+
 
 <script type="text/javascript">
     var di;
