@@ -54,14 +54,6 @@
     <fieldset class="borde">
         <div id="divTablaBusqueda">
         </div>
-
-        <div class="col-md-12" id="" style="margin-top: 10px">
-            <a href="#" class="col-md-4 btn btn-info" id="btnCopiar" style="text-align: center">
-                <i class="fa fa-arrow-left"></i>
-                Copiar composición a los APU del Oferente
-            </a>
-        </div>
-
     </fieldset>
 </div>
 
@@ -128,7 +120,7 @@
 
     function cargarTablaEmpatados() {
         var d = cargarLoader("Cargando...");
-        var tipo = $("#buscarGrupo").val()
+        var tipo = $("#buscarGrupo").val();
         $.ajax({
             type: "POST",
             url: "${createLink(controller: 'rubroOf', action:'tablaEmpatados_ajax')}",

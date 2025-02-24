@@ -256,7 +256,7 @@ class CodigoComprasPublicasController {
         def filasNO = [0, 1]
         def path = "/var/janus/" + "xls/"   //web-app/archivos
         new File(path).mkdirs()
-        def fecha = new Date().parse("MM/dd/yyyy", params.fecha_input).format('yyyy-MM-dd')
+        def fecha = new Date().parse("dd-MM-yyyy", params.fecha).format('yyyy-MM-dd')
         def sql = ""
         def cuenta = 0
 

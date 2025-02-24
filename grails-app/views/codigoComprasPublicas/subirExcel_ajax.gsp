@@ -58,23 +58,20 @@
                         <td></td>
                     </tr>
                 </table>
-
                 <br/>
             </div>
         </div>
 
-        <div class="col-md-12" style="margin-top: 20px">
-                <div class="col-md-2">
-                    <div><b>Fecha de Registro:</b></div>
-                    <div>
-                        <elm:datepicker name="fecha" class="fechaRegistro datepicker input-small required"
-                                        value="${new java.util.Date()}" title="Fecha Registro"/>
-                    </div>
-
-                </div>
-
+        <div class="col-md-12" style="margin-top: 20px;  height: 300px">
+            <div class="col-md-1">
+                <div><b>Fecha de Registro:</b></div>
+            </div>
+            <div class="col-md-2">
+                <input aria-label="" name="fecha" id='fechaRegistro' type='text' class="form-control required"
+                       value="${new Date().format("dd-MM-yyyy")}" title="Fecha Registro"/>
+            </div>
             <div class="col-md-2" style="text-align: right"><b>Archivo Excel a subir:</b></div>
-            <div class="col-md-6">
+            <div class="col-md-5">
                 <input type="file" class="required" id="fileCrono" name="file" multiple accept=".xlsx"
                        style="width: 100%; font-size: 12pt" value="Arch"/>
             </div>
@@ -89,6 +86,14 @@
 </g:uploadForm>
 
 <script type="text/javascript">
+
+    $('#fechaRegistro').datetimepicker({
+        locale: 'es',
+        format: 'DD-MM-YYYY',
+        sideBySide: true,
+        icons: {
+        }
+    });
 
     $(".btnRegresar").click(function () {
         location.href="${createLink(controller: 'codigoComprasPublicas', action: 'list')}"
