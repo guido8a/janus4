@@ -6,8 +6,8 @@
                     Fecha
                 </label>
                 <span class="col-md-3">
-                    <input aria-label="" name="fecha" id='datetimepicker3' type='text' class="form-control required"
-                           value="${new Date().format("dd-MM-yyyy")}"/>
+                    <g:select name="fecha" class="form-control" from="${fechas}"
+                              optionKey='value' optionValue="value" style="width: 120px"/>
                 </span>
             </span>
         </div>
@@ -24,16 +24,21 @@
     </div>
 </div>
 
-
-
 <script type="text/javascript">
 
-    $('#datetimepicker3').datetimepicker({
-        locale: 'es',
-        format: 'DD-MM-YYYY',
-        sideBySide: true,
-        icons: {
-        }
+
+    function validarNum(ev) {
+        return ((ev.keyCode >= 48 && ev.keyCode <= 57) ||
+            (ev.keyCode >= 96 && ev.keyCode <= 105) ||
+            ev.keyCode === 8 || ev.keyCode === 46 || ev.keyCode === 9 ||
+            ev.keyCode === 37 || ev.keyCode === 39);
+    }
+
+    $("#precio").keydown(function (ev) {
+        return validarNum(ev);
     });
 
+
 </script>
+
+

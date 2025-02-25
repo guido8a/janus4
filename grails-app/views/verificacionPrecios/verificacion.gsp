@@ -68,7 +68,7 @@
                 var tbr= bootbox.dialog({
                     id    : "dlgEditarPrecios",
                     title : "Editar",
-                    class : "modal-lg",
+                    // class : "modal-lg",
                     message : msg,
                     buttons : {
                         cancelar : {
@@ -76,13 +76,48 @@
                             className : "btn-primary",
                             callback  : function () {
                             }
+                        },
+                        acpetar : {
+                            label     : "Guardar",
+                            className : "btn-success",
+                            callback  : function () {
+                                guardarValor(id)
+                            }
                         }
                     } //buttons
                 }); //dialog
             } //success
         }); //ajax
-
     });
+
+    function guardarValor(id){
+        var g = cargarLoader("Cargando...");
+        var valor = $("#precio").val();
+        var fecha = $("#fecha option:selected").val();
+        $.ajax({
+            type    : "POST",
+            url     : "${createLink(action:'savePrecio_ajax')}",
+            data    : {
+                id: id,
+                fecha: fecha,
+                valor: valor
+            },
+            success : function (msg) {
+                g.modal("hide");
+                var parts = msg.split("_");
+                if(parts[0] === 'ok'){
+                    log("Guardado correctamente", "success");
+                    setTimeout(function () {
+                       location.reload()
+                    }, 800);
+                }else{
+                    bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + "Error al guardar" + '</strong>');
+                    return false;
+                }
+            } //success
+        }); //ajax
+    }
+
 
 </script>
 

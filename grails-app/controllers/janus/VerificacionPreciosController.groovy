@@ -37,7 +37,22 @@ class VerificacionPreciosController {
     }
 
     def editarPrecio_ajax() {
+        def fechas = poneFechaPrecios()
+        [fechas: fechas]
+    }
 
+    def poneFechaPrecios() {
+        def anio = new Date().format('yyyy')
+        def fechas = [1: '15/01/' + anio, 2: '1/05/' + anio, 3: '1/09/' + anio]
+        return fechas
+    }
+
+
+    def savePrecio_ajax(){
+
+        println("parmasw " + params)
+
+        render "ok"
 
 
     }
