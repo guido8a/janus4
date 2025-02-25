@@ -86,7 +86,8 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
         <i class="fa fa-book"></i>
         Especificaciones
     </a>
-    <g:if test="${rubro && volumenes > 0}">
+    %{--<g:if test="${rubro && volumenes > 0}">--}%
+    <g:if test="${rubro && volumenes > 0 && !(rubro?.codigo[0] == 'H')}">
         <a href="#" id="btnCrearHistorico" class="btn btn-warning">
             <i class="fa fa-book"></i>
             Transformar a Histórico
