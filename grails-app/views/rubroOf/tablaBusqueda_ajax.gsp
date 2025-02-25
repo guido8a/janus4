@@ -38,11 +38,15 @@
 
 
 <g:if test="${!datos}">
-    <div class="col-md-12" id="" style="margin-top: 10px">
-        <a href="#" class="col-md-4 btn btn-info" id="btnCopiar" style="text-align: center">
-            <i class="fa fa-arrow-left"></i>
+    <div class="row-fluid">
+    <div class="col-md-4" style="margin-top: 10px">
+    </div>
+    <div class="col-md-4" style="margin-top: 10px; width: 33%">
+        <a href="#" class="btn btn-info" id="btnCopiar" style="text-align: center; width: 100%">
+            <i class="fa fa-edit"></i>
             Copiar composición a los APU del Oferente
         </a>
+    </div>
     </div>
 </g:if>
 
@@ -83,5 +87,11 @@
     function cerrarDialogoBusquedaRubro(){
         tbr.modal("hide");
     }
+
+    $("#btnCopiar").click(function () {
+        var obra = $("#obra").val();
+        location.href = "${createLink(controller: 'rubroOf', action: 'copiarRubros')}?obra=" + obra
+    });
+
 
 </script>

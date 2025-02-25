@@ -2452,8 +2452,19 @@ itemId: item.id
         def grupo = Grupo.get(params.buscarPor)
 //        def grupos = SubgrupoItems.findAllByGrupoAndDescripcionIlike(grupo, '%' + params.criterio + '%', [sort: 'codigo',
 //                     order: 'asc']).take(50)
+        def campo, busca
+        params.criterio = params.criterio?.toString()?.trim()
+        try {
+            busca = params.criterio.toString().replaceAll("[.!?]+", "")?.toInteger()
+            campo = 'sbgrcdgo' }
+        catch (e) {
+            campo = 'sbgrdscr'
+        }
+
         def sql = "select * from sbgr where grpo__id = ${grupo?.id} and " +
-                "sbgrdscr ilike '%${params.criterio}%' order by sbgrcdgo"
+//                "sbgrdscr ilike '%${params.criterio}%' order by sbgrcdgo"
+                "${campo} ilike '%${params.criterio}%' order by sbgrcdgo"
+        println "sql: $sql"
         def grupos = cn.rows(sql.toString());
         cn.close()
         return [grupos: grupos, grupo: grupo]
@@ -2465,12 +2476,21 @@ itemId: item.id
         def grupo = Grupo.get(params.buscarPor)
         def grupos = SubgrupoItems.findAllByGrupo(grupo, [sort: 'codigo'])
 
+        def campo, busca
+        params.criterio = params.criterio?.toString()?.trim()
+        try {
+            busca = params.criterio.toString().replaceAll("[.!?]+", "")?.toInteger()
+            campo = 'dprtcdgo' }
+        catch (e) {
+            campo = 'dprtdscr'
+        }
+
 
         def subgrupos = []
 //        def subgrupos2 = []
         def sql = "select sbgrcdgo, sbgrdscr, dprtcdgo, dprtdscr, dprt.dprt__id, sbgr.sbgr__id from dprt, sbgr where grpo__id = ${params.buscarPor} and " +
                 "dprt.sbgr__id = sbgr.sbgr__id and " +
-                "dprtdscr ilike '%${params.criterio}%' or (sbgr.sbgr__id = ${params.id}) order by sbgrcdgo"
+                "${campo} ilike '%${params.criterio}%' or (sbgr.sbgr__id = ${params.id}) order by sbgrcdgo"
         if(params.id) {
 //            sql = "select sbgrcdgo, sbgrdscr, dprtcdgo, dprtdscr, dprt.dprt__id, sbgr.sbgr__id " +
 //                    "from dprt, sbgr where grpo__id = ${params.buscarPor} and " +
@@ -2480,7 +2500,7 @@ itemId: item.id
             sql = "select sbgrcdgo, sbgrdscr, dprtcdgo, dprtdscr, dprt.dprt__id, sbgr.sbgr__id " +
                     "from dprt, sbgr where grpo__id = ${params.buscarPor} and " +
                     "dprt.sbgr__id = sbgr.sbgr__id and sbgr.sbgr__id = ${params.id} and " +
-                    "dprtdscr ilike '%${params.criterio}%' order by sbgrcdgo"
+                    "${campo} ilike '%${params.criterio}%' order by sbgrcdgo"
         }
 //        if(params.id){
 //            def grupoBuscar = SubgrupoItems.get(params.id)
@@ -2503,20 +2523,46 @@ itemId: item.id
 
     def tablaMateriales_ajax(){
         println "tablaMateriales_ajax $params"
+        def cn = dbConnectionService.getConnection()
         def grupo = Grupo.get(params.buscarPor)
-        def grupos = SubgrupoItems.findAllByGrupo(grupo)
-        def subgrupos = DepartamentoItem.findAllBySubgrupoInList(grupos)
+//        def grupos = SubgrupoItems.findAllByGrupo(grupo)
+//        def subgrupos = DepartamentoItem.findAllBySubgrupoInList(grupos)
         def materiales = []
         def subgrupoBuscar = null
         def perfil = Persona.get(session.usuario.id).departamento?.codigo == 'CRFC'
 
-        if(params.id){
-            subgrupoBuscar = DepartamentoItem.get(params.id)
-            materiales = Item.findAllByDepartamento(subgrupoBuscar).sort{a,b -> a.departamento.descripcion <=> b.departamento.descripcion ?: a.codigo <=> b.codigo }.take(50)
-        }else{
-            materiales = Item.findAllByDepartamentoInListAndNombreIlike(subgrupos, '%' + params.criterio + '%').sort{a,b -> a.departamento.descripcion <=> b.departamento.descripcion ?: a.codigo <=> b.codigo }.take(50)
+        def campo, busca
+        params.criterio = params.criterio?.toString()?.trim()
+        try {
+            busca = params.criterio.toString().replaceAll("[.!?]+", "")?.toInteger()
+            campo = 'itemcdgo' }
+        catch (e) {
+            campo = 'itemnmbr'
         }
 
+        def sql = "select sbgrcdgo, sbgrdscr, dprtcdgo, dprtdscr, dprt.dprt__id, sbgr.sbgr__id, " +
+                "itemcdgo, itemnmbr, item__id, itemetdo, itemespc " +
+                "from dprt, sbgr, item where grpo__id = ${params.buscarPor} and " +
+                "dprt.sbgr__id = sbgr.sbgr__id and item.dprt__id = dprt.dprt__id and " +
+                "${campo} ilike '%${params.criterio}%' order by dprtcdgo limit 100"
+        if(params.id) {
+            sql = "select sbgrcdgo, sbgrdscr, dprtcdgo, dprtdscr, dprt.dprt__id, sbgr.sbgr__id, " +
+                    "itemcdgo, itemnmbr, item__id, itemetdo,itemespc " +
+                    "from dprt, sbgr, item where grpo__id = ${params.buscarPor} and " +
+                    "dprt.sbgr__id = sbgr.sbgr__id and dprt.dprt__id = ${params.id} and item.dprt__id = dprt.dprt__id and " +
+                    "${campo} ilike '%${params.criterio}%' order by dprtcdgo"
+        }
+
+        println "sql:, $sql"
+
+//        if(params.id){
+//            subgrupoBuscar = DepartamentoItem.get(params.id)
+//            materiales = Item.findAllByDepartamento(subgrupoBuscar).sort{a,b -> a.departamento.descripcion <=> b.departamento.descripcion ?: a.codigo <=> b.codigo }.take(50)
+//        }else{
+//            materiales = Item.findAllByDepartamentoInListAndNombreIlike(subgrupos, '%' + params.criterio + '%').sort{a,b -> a.departamento.descripcion <=> b.departamento.descripcion ?: a.codigo <=> b.codigo }.take(50)
+//        }
+
+        materiales = cn.rows(sql.toString())
         return [materiales: materiales, grupo: grupo, id: params.id, departamento: subgrupoBuscar, perfil: perfil]
     }
 

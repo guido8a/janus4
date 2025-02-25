@@ -1332,7 +1332,15 @@ class RubroOfController {
 
         println("item " + item)
         println("rubro " + rubro?.nombre)
-
     }
+
+    def copiarRubros() {
+        println "copiarRubros: $params"
+        def cn = dbConnectionService.getConnection()
+        def sql = "select * from sp_rubro_of(${params.obra})"
+        def resl = cn.execute(sql.toString())
+        render "ok"
+    }
+
 
 } //fin controller

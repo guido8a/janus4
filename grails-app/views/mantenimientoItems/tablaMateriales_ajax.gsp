@@ -47,16 +47,17 @@
     <table class="table-bordered table-striped table-condensed table-hover" style="width: 100%">
         <tbody>
         <g:if test="${materiales}">
-            <g:each in="${materiales}" status="i" var="material">
-                <tr data-id="${material?.id}" class="${material?.estado == 'B'? 'dadoDeBaja': ''}">
-                    <td style="width: 7%">${material?.departamento?.subgrupo?.codigo}</td>
-                    <td style="width: 15%">${material?.departamento?.subgrupo?.descripcion}</td>
-                    <td style="width: 7%">${material?.departamento?.codigo}</td>
-                    <td style="width: 15%">${material?.departamento?.descripcion}</td>
-                    <td style="width: 10%">${material?.codigo}</td>
-                    <td style="width: 28%">${material?.nombre}</td>
+            <g:each in="${materiales}" status="i" var="m">
+                %{--<tr data-id="${material?.id}" class="${material?.estado == 'B'? 'dadoDeBaja': ''}">--}%
+                <tr data-id="${m.item__id}" class="${m.itemetdo == 'B'? 'dadoDeBaja': ''}">
+                    <td style="width: 7%">${m.sbgrcdgo}</td>
+                    <td style="width: 15%">${m.sbgrdscr}</td>
+                    <td style="width: 7%">${m.dprtcdgo}</td>
+                    <td style="width: 15%">${m.dprtdscr}</td>
+                    <td style="width: 10%">${m.itemcdgo}</td>
+                    <td style="width: 28%">${m.itemnmbr}</td>
                     <td style="width: 5%; text-align: center">
-                        <g:if test="${janus.apus.ArchivoEspecificacion.findByItem(janus.Item.get(material?.id))?.ruta}">
+                        <g:if test="${janus.apus.ArchivoEspecificacion.findByItem(janus.Item.get(m.item__id))?.ruta}">
                             <i class="fa fa-check text-success"></i>
                         </g:if>
                         <g:else>
@@ -64,21 +65,23 @@
                         </g:else>
                     </td>
                     <td style="width: 14%; text-align: center">
-                        <a href="#" class="btn btn-xs btn-info btnVerMaterial" data-id="${material?.id}" title="Datos del material">
+                        <a href="#" class="btn btn-xs btn-info btnVerMaterial" data-id="${m.item__id}" title="Datos del material">
                             <i class="fas fa-search"></i>
                         </a>
-                        <a href="#" class="btn btn-xs btn-success btnVerInfo" data-id="${material?.id}" title="Ver información del item">
+                        <a href="#" class="btn btn-xs btn-success btnVerInfo" data-id="${m.item__id}" title="Ver información del item">
                             <i class="fas fa-info"></i>
                         </a>
                         <g:if test="${perfil}">
-                            <a href="#" class="btn btn-xs btn-warning btnEspecificacionesMaterial" data-id="${material?.id}" title="Especificaciones e Ilustración" ${material?.codigoEspecificacion ?: 'disabled'}>
+                            <a href="#" class="btn btn-xs btn-warning btnEspecificacionesMaterial" data-id="${m.item__id}"
+                               title="Especificaciones e Ilustración" ${m.itemespc ?: 'disabled'}>
                                 <i class="fas fa-book"></i>
                             </a>
                         </g:if>
-                        <a href="#" class="btn btn-xs btn-success btnEditarMaterial" data-id="${material?.id}" data-sub="${material?.departamento?.id}" title="Editar">
+                        <a href="#" class="btn btn-xs btn-success btnEditarMaterial" data-id="${m.item__id}"
+                           data-sub="${m.dprt__id}" title="Editar">
                             <i class="fas fa-edit"></i>
                         </a>
-                        <a href="#" class="btn btn-xs btn-danger btnEliminarMaterial" data-id="${material?.id}" title="Eliminar">
+                        <a href="#" class="btn btn-xs btn-danger btnEliminarMaterial" data-id="${m.item__id}" title="Eliminar">
                             <i class="fas fa-trash"></i>
                         </a>
                     </td>
@@ -87,7 +90,8 @@
         </g:if>
         <g:else>
             <tr style="text-align: center">
-                <td class="alert alert-warning"><i class="fa fa-exclamation-triangle fa-2x text-info"></i> <strong style="font-size: 16px"> No existen registros </strong></td>
+                <td class="alert alert-warning"><i class="fa fa-exclamation-triangle fa-2x text-info"></i>
+                    <strong style="font-size: 16px"> No existen registros </strong></td>
             </tr>
         </g:else>
 
