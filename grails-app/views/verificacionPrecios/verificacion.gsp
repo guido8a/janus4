@@ -42,7 +42,8 @@
                     <td style="text-align: right"><g:formatNumber number="${r?.punitario}" minFractionDigits="5" maxFractionDigits="5" format="##,##0" locale="ec"/></td>
                     <td style="text-align: center"><g:formatDate date="${r?.fecha}" format="dd-MM-yyyy"/></td>
                     <td style="text-align: center">
-                        <a href="#" class="btn btn-success btn-xs btnEditar" data-id="${r?.item__id}"><i class="fa fa-edit"></i></a>
+                        <a href="#" class="btn btn-success btn-xs btnEditar" data-id="${r?.item__id}"
+                           data-nmbr="${r?.item}<br>Precio actual: $${r?.punitario}"><i class="fa fa-edit"></i></a>
                     </td>
                 </tr>
             </g:each>
@@ -56,6 +57,7 @@
 
     $(".btnEditar").click(function () {
         var id = $(this).data("id");
+        var item = $(this).data("nmbr");
         var g = cargarLoader("Cargando...");
         $.ajax({
             type    : "POST",
@@ -67,7 +69,7 @@
                 g.modal("hide");
                 var tbr= bootbox.dialog({
                     id    : "dlgEditarPrecios",
-                    title : "Editar",
+                    title : "Item: " + item,
                     // class : "modal-lg",
                     message : msg,
                     buttons : {
@@ -100,7 +102,8 @@
             data    : {
                 id: id,
                 fecha: fecha,
-                valor: valor
+                valor: valor,
+                obra: "${obra?.id}"
             },
             success : function (msg) {
                 g.modal("hide");

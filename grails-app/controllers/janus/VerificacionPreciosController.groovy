@@ -48,13 +48,34 @@ class VerificacionPreciosController {
     }
 
 
+    /**
+     * se debe actualizar elprecio a la fecha obra.rbpcfcha para que no salga en la lista de valores
+     * de Precios no Act.
+     * */
     def savePrecio_ajax(){
-
         println("parmasw " + params)
+        def cn = dbConnectionService.getConnection()
+        def item = Item.get(params.id)
+        def fcha = new Date().parse("dd/MM/yyyy", params.fecha)?.format('yyyy-MM-dd')
+        def sql = ""
+        def listas = ['MQ': 'lgarlsmq', 'P1': 'lgarps01', 'V1': 'lgarvl01', 'V2': 'lgarvl02', 'V': 'lgarvl00']
+        params.valor = params.valor?.toDouble()
+        println "listas: $listas --> ${item?.tipoLista.codigo} --> ${listas[item?.tipoLista.codigo]}"
 
+        if(item?.tipoLista.codigo.trim() == 'P') {
+            sql = "insert into rbpc(item__id, lgar__id, rbpcfcha, rbpcpcun, rbpcfcin, rbpcrgst) " +
+                    "select ${params.id}, lgar__id, '${fcha}', ${params.valor}, now(), 'N' from lgar " +
+                    "where tpls__id = 1 order by lgar__id"
+        } else {
+            sql = "insert into rbpc(item__id, lgar__id, rbpcfcha, rbpcpcun, rbpcfcin, rbpcrgst) " +
+                    "select ${params.id}, ${listas[item?.tipoLista.codigo]}, '${fcha}', ${params.valor}, now(), 'N' from obra " +
+                    "where obra__id = ${params.obra} order by lgar__id"
+        }
+
+        println "sql: $sql"
+        cn.execute(sql.toString())
+        cn.close()
         render "ok"
-
-
     }
 
 }

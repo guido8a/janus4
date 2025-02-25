@@ -1711,19 +1711,20 @@ class ObraController {
         def anioActual = new Date().format("yy")
 
 
-        def numero = ""
-        def ultimo = Numero.findByDescripcion('FP')
-        numero = completa(ultimo?.valor + 1)
-        codigo = "FP-${numero}-CRFC-${anioActual}"
+//        def numero = ""
+//        def ultimo = Numero.findByDescripcion('FP')
+//        numero = completa(ultimo?.valor + 1)
+//        codigo = "FP-${numero}-CRFC-${anioActual}"
+//        obra.formulaPolinomica = codigo
+//        ultimo.valor = (ultimo.valor+1)
 
-        obra.formulaPolinomica = codigo
-        ultimo.valor = (ultimo.valor+1)
+        obra.formulaPolinomica = "FP-${obra?.codigo}"
 
         if(!obra.save(flush:true)){
             println("error al generar el código de la FP " + obra?.errors)
             render "no_Error al generar el código de la FP"
         }else{
-            ultimo.save(flush:true)
+//            ultimo.save(flush:true)
             render "ok_Código creado correctamente"
         }
     }

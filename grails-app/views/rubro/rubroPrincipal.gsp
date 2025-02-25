@@ -231,9 +231,10 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                 <div class="col-md-2">
                     <label> Rendimiento </label>
                     <br>
-                    <g:textField style="width: 70px;" name="rendimientoValorDefecto" value="${1}"/>
+                    <g:textField style="width: 90px; margin-left: -20px" name="rendimientoValorDefecto" value="${1}"/>
                     <g:if test="${!volumenes}">
-                        <a class="btn btn-xs btn-success btnRendimientoTodos" href="#" rel="tooltip" title="Aplicar rendimiento a todos">
+                        <a class="btn btn-xs btn-success btnRendimientoTodos" href="#" rel="tooltip"
+                           title="Aplicar rendimiento a todos">
                             <i class="fa fa-check"></i>
                         </a>
                     </g:if>
@@ -839,7 +840,8 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
     $(".btnRendimientoTodos").click(function () {
         bootbox.confirm({
             title: "Rendimiento",
-            message: "<i class='fa fa-exclamation-triangle text-info fa-3x'></i> <strong style='font-size: 14px'> Está seguro de colocar este rendimiento a TODOS los rubros?</strong> ",
+            message: "<i class='fa fa-exclamation-triangle text-info fa-3x'></i> <strong style='font-size: 14px'>" +
+            " Está seguro de colocar este rendimiento a TODOS los ítems del rubro?</strong> ",
             buttons: {
                 cancel: {
                     label: '<i class="fa fa-times"></i> Cancelar',
