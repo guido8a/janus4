@@ -427,6 +427,8 @@ class VolumenObraController {
 
     def tablaBusqueda_ajax(){
 
+        println("params bu " + params)
+
         def obra = Obra.get(params.obra)
         def duenoObra = esDuenoObra(obra)? 1 : 0
         def datos;

@@ -35,9 +35,16 @@
                 </div>
 
                 <div class="col-md-2"> <label> Subpresupuesto de la obra</label> </div>
-                <div class="col-md-6" id="divSubpresupuesto">
+                <div class="col-md-4" id="divSubpresupuesto">
 
                 </div>
+
+                <div class="col-md-1"> <label> Tipo Rubro</label> </div>
+                <div class="col-md-2">
+                    <g:select name="tipoRubroName" id="tipoRubro" class="form-control btn-success" from="${['N': 'Normal', 'C':  'Complementario']}"
+                              optionKey="key" optionValue="value" />
+                </div>
+
             </div>
         </div>
 
@@ -149,6 +156,7 @@
         var buscarPor = $("#buscarPor option:selected").val();
         var criterio = $(".criterio").val();
         var ordenar = $("#ordenar option:selected").val();
+        var tipoRubro = $("#tipoRubro option:selected").val();
 
         $.ajax({
             type: "POST",
@@ -157,7 +165,8 @@
                 buscarPor: buscarPor,
                 criterio: criterio,
                 ordenar: ordenar,
-                obra: '${obra?.id}'
+                obra: '${obra?.id}',
+                tipoRubro: tipoRubro
             },
             success: function (msg) {
                 d.modal("hide");
