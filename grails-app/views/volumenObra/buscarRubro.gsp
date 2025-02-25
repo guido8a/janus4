@@ -34,12 +34,12 @@
                               optionKey="id" optionValue="descripcion" />
                 </div>
 
-                <div class="col-md-2"> <label> Subpresupuesto de la obra</label> </div>
-                <div class="col-md-4" id="divSubpresupuesto">
+                <div class="col-md-1"> <label> Subpresupuesto de la obra</label> </div>
+                <div class="col-md-5" id="divSubpresupuesto">
 
                 </div>
 
-                <div class="col-md-1"> <label> Tipo Rubro</label> </div>
+                <div class="col-md-1"> <label> Tipo Contrato</label> </div>
                 <div class="col-md-2">
                     <g:select name="tipoRubroName" id="tipoRubro" class="form-control btn-success" from="${['N': 'Normal', 'C':  'Complementario']}"
                               optionKey="key" optionValue="value" />
