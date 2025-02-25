@@ -68,7 +68,7 @@
         </div>
 
         <div class="col-md-12" style="margin-bottom: 10px">
-            <g:if test="${sessio?.perfil?.codigo == 'CRFC'}">
+            %{--<g:if test="${sessio?.perfil?.codigo == 'CRFC'}">--}%
                 <div class="alert-info col-md-12" style="font-size: 14px; font-weight: bold">
                     <div class="col-md-12">
                         <i class="fa fa-file-word fa-2x"></i> Especificación WORD: ${!ares?.especificacion ? 'No se ha cargado ninguna especificación WORD para este material' : ares?.especificacion}
@@ -118,7 +118,7 @@
                         </g:else>
                     </div>
                 </g:if>
-            </g:if>
+            %{--</g:if>--}%
 
         </div>
 
