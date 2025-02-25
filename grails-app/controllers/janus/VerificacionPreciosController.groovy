@@ -9,7 +9,7 @@ class VerificacionPreciosController {
         def cn = dbConnectionService.getConnection()
         def obra = Obra.get(params.id)
 
-        def sql = "SELECT distinct itemcdgo codigo, itemnmbr item, unddcdgo unidad, rbpcpcun  punitario, " +
+        def sql = "SELECT distinct itemcdgo codigo, itemnmbr item, item__id, unddcdgo unidad, rbpcpcun  punitario, " +
                 "rbpcfcha fecha FROM obra_rbpc(${params.id}) " +
                 "where rbpcfcha <= (cast('${obra.fechaPreciosRubros.format('yyyy-MM-dd')}' as date) - 1) or " +
                 "rbpcfcha is null " +
@@ -34,6 +34,12 @@ class VerificacionPreciosController {
         def res = cn.rows(sql.toString())
 
         return[res: res, obra: obra]
+    }
+
+    def editarPrecio_ajax() {
+
+
+
     }
 
 }

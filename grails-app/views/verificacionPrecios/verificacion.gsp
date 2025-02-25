@@ -30,7 +30,7 @@
                 <th>U</th>
                 <th>P. Unitario</th>
                 <th>Fecha</th>
-
+                <th>Acciones</th>
             </tr>
             </thead>
             <tbody>
@@ -41,12 +41,50 @@
                     <td style="text-align: center">${r?.unidad}</td>
                     <td style="text-align: right"><g:formatNumber number="${r?.punitario}" minFractionDigits="5" maxFractionDigits="5" format="##,##0" locale="ec"/></td>
                     <td style="text-align: center"><g:formatDate date="${r?.fecha}" format="dd-MM-yyyy"/></td>
+                    <td style="text-align: center">
+                        <a href="#" class="btn btn-success btn-xs btnEditar" data-id="${r?.item__id}"><i class="fa fa-edit"></i></a>
+                    </td>
                 </tr>
             </g:each>
             </tbody>
         </table>
-
     </div>
 </div>
+
+
+<script type="text/javascript">
+
+    $(".btnEditar").click(function () {
+        var id = $(this).data("id");
+        var g = cargarLoader("Cargando...");
+        $.ajax({
+            type    : "POST",
+            url     : "${createLink(action:'editarPrecio_ajax')}",
+            data    : {
+                id: id
+            },
+            success : function (msg) {
+                g.modal("hide");
+                var tbr= bootbox.dialog({
+                    id    : "dlgEditarPrecios",
+                    title : "Editar",
+                    class : "modal-lg",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        }
+                    } //buttons
+                }); //dialog
+            } //success
+        }); //ajax
+
+    });
+
+</script>
+
 </body>
 </html>
