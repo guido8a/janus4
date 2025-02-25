@@ -2541,13 +2541,13 @@ itemId: item.id
         }
 
         def sql = "select sbgrcdgo, sbgrdscr, dprtcdgo, dprtdscr, dprt.dprt__id, sbgr.sbgr__id, " +
-                "itemcdgo, itemnmbr, item__id, itemetdo, itemespc " +
+                "itemcdgo, itemnmbr, item__id, itemetdo, itemcdes " +
                 "from dprt, sbgr, item where grpo__id = ${params.buscarPor} and " +
                 "dprt.sbgr__id = sbgr.sbgr__id and item.dprt__id = dprt.dprt__id and " +
                 "${campo} ilike '%${params.criterio}%' order by dprtcdgo limit 100"
         if(params.id) {
             sql = "select sbgrcdgo, sbgrdscr, dprtcdgo, dprtdscr, dprt.dprt__id, sbgr.sbgr__id, " +
-                    "itemcdgo, itemnmbr, item__id, itemetdo,itemespc " +
+                    "itemcdgo, itemnmbr, item__id, itemetdo,itemcdes " +
                     "from dprt, sbgr, item where grpo__id = ${params.buscarPor} and " +
                     "dprt.sbgr__id = sbgr.sbgr__id and dprt.dprt__id = ${params.id} and item.dprt__id = dprt.dprt__id and " +
                     "${campo} ilike '%${params.criterio}%' order by dprtcdgo"
@@ -2582,7 +2582,7 @@ itemId: item.id
         if(usuario.departamento?.codigo == 'CRFC'){
             existeUtfpu = true
         }
-
+        println "dpto: ${usuario.departamento?.codigo} --> $existeUtfpu, tipo: ${params.tipo}"
         return [item: item, ares: ares, existe: existeUtfpu, tipo: params.tipo]
     }
 

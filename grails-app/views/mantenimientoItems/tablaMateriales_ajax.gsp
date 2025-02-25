@@ -73,7 +73,7 @@
                         </a>
                         <g:if test="${perfil}">
                             <a href="#" class="btn btn-xs btn-warning btnEspecificacionesMaterial" data-id="${m.item__id}"
-                               title="Especificaciones e Ilustración" ${m.itemespc ?: 'disabled'}>
+                               title="Especificaciones e Ilustración" ${m.itemcdes ?: 'disabled'}>
                                 <i class="fas fa-book"></i>
                             </a>
                         </g:if>
