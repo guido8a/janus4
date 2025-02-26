@@ -1164,9 +1164,10 @@ class RubroController {
     def getPrecioOferente(){
 //        println "get precio of "+params
         def item = Item.get(params.id)
+        def obra = Obra.findByOferente(session.usuario)
         def precio = 0
         def vae = 100
-        def tmp = Precio.findByItemAndOferente(item,session.usuario)
+        def tmp = Precio.findByItemAndOferenteAndObra(item,session.usuario, obra)
         if (tmp){
             precio = tmp.precio
             vae = tmp.vae

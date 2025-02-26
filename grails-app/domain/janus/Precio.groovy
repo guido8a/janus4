@@ -6,9 +6,12 @@ class Precio {
 
     Persona oferente
     Item item
+    Obra obra
     double precio
     double vae
     Date fecha
+
+
     static auditable = true
 
     static mapping = {
@@ -24,6 +27,7 @@ class Precio {
             precio column: 'prcoprco'
             vae column: 'prco_vae'
             fecha column: 'prcofcha'
+            obra column: 'obra__id'
         }
     }
 
@@ -33,5 +37,6 @@ class Precio {
         precio(blank: false, nullable: false)
         vae(blank: false, nullable: false)
         fecha(blank: true, nullable: true)
+        obra(blank: true, nullable: true)
     }
 }

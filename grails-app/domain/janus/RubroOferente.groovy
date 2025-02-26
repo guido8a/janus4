@@ -7,6 +7,7 @@ class RubroOferente {
     Item rubro
     Item item
     Persona oferente
+    Obra obra
     Date fecha
     double cantidad
     double rendimiento = 1
@@ -27,6 +28,7 @@ class RubroOferente {
             cantidad column: 'rbofcntd'
             rendimiento column: 'rbofrndt'
             oferente column: 'prsn__id'
+            obra column: 'obra__id'
         }
     }
 
@@ -37,5 +39,6 @@ class RubroOferente {
         fecha(blank: true, nullable: true, attributes: [title: 'fecha'])
         rendimiento(blank: true, nullable: true)
         oferente(blank: false, nullable: false)
+        obra(blank: true, nullable: true)
     }
 }

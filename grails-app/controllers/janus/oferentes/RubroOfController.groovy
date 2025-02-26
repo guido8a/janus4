@@ -90,7 +90,7 @@ class RubroOfController {
         grupos.add(Grupo.get(6))
         if (params.idRubro) {
             rubro = Item.get(params.idRubro)
-            def items = RubroOferente.findAllByRubro(rubro)
+            def items = RubroOferente.findAllByRubroAndObra(rubro, obra)
             items.sort { it.item.codigo }
             [campos  : campos, listaRbro: listaRbro, listaItems: listaItems, rubro: rubro, grupos: grupos, items: items,
              choferes: choferes, volquetes: volquetes, aux: aux, obra: obra]
