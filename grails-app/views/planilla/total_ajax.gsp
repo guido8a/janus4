@@ -1,0 +1,1 @@
+<g:formatNumber number="${planilla?.valor}" maxFractionDigits="2" minFractionDigits="2" format="##,##0" locale="ec"/>

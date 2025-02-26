@@ -1,3 +1,15 @@
+<style type="text/css">
+table {
+    table-layout: fixed;
+    overflow-x: scroll;
+}
+th, td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+}
+</style>
+
 <div class="col-md-12" style="margin-left: 0px; margin-top: 15px; margin-bottom: 10px">
     <div class="col-md-6">
         <div class="col-md-3">
@@ -29,27 +41,30 @@
     <table class="table table-bordered table-striped table-condensed table-hover">
         <thead>
         <tr>
-            <th style="width: 20px;">
+            <th style="width: 3%;">
                 #
             </th>
-            <th style="width: 200px;">
+            <th style="width: 10%;">
                 Subpresupuesto
             </th>
-            <th style="width: 80px;">
+            <th style="width: 8%;">
                 Código
             </th>
-            <th style="width: 400px;">
+            <th style="width: 31%;">
                 Rubro
             </th>
-            <th style="width: 60px" class="col_unidad">
+            <th style="width: 5%;" class="col_unidad">
                 Unidad
             </th>
-            <th style="width: 80px">
+            <th style="width: 7%;">
                 Cantidad
             </th>
-            <th class="col_precio" >Unitario
+            <th style="width: 7%;" class="col_precio" >Unitario
             </th>
-            <th class="col_total">C.Total
+            <th style="width: 7%;" class="col_total">C.Total
+            </th>
+            <th style="width: 1%">
+
             </th>
         </tr>
         </thead>
@@ -66,20 +81,22 @@
             <g:set var="total" value="${0}"/>
             <g:each in="${valores}" var="val" status="j">
                 <tr class="item_row" id="${val.item__id}" item="${val}" sub="${val.sbpr__id}">
-                    <td style="width: 20px" class="orden">${val.vlobordn}</td>
-                    <td style="width: 200px" class="sub">${val.sbprdscr.trim()}</td>
-                    <td class="cdgo">${val.rbrocdgo.trim()}</td>
-                    <td class="nombre">${val.rbronmbr.trim()}</td>
-                    <td style="width: 60px !important;text-align: center" class="col_unidad">${val.unddcdgo.trim()}</td>
-                    <td style="text-align: right" class="cant">
+                    <td style="width: 3%;" class="orden">${val.vlobordn}</td>
+                    <td style="width: 10%;" class="sub">${val.sbprdscr.trim()}</td>
+                    <td style="width: 8%;" class="cdgo">${val.rbrocdgo.trim()}</td>
+                    <td style="width: 31%;" class="nombre">${val.rbronmbr.trim()}</td>
+                    <td style="width: 5%;text-align: center" class="col_unidad">${val.unddcdgo.trim()}</td>
+                    <td style="width: 7%;text-align: right" class="cant">
                         <g:formatNumber number="${val.vlobcntd}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/>
                     </td>
-                    <td class="col_precio" style="text-align: right" id="i_${val.item__id}">
+                    <td class="col_precio" style="width: 7%; text-align: right" id="i_${val.item__id}">
                         <g:formatNumber number="${val.pcun}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/>
                     </td>
-                    <td class="col_total total" style="text-align: right">
+                    <td class="col_total total" style="width: 7%;text-align: right">
                         <g:set var="total" value="${total += val.totl}"/>
                         <g:formatNumber number="${val.totl}" format="##,##0" minFractionDigits="4"  maxFractionDigits="4"  locale="ec"/>
+                    </td>
+                    <td style="width: 1%">
                     </td>
                 </tr>
             </g:each>
@@ -88,7 +105,7 @@
                 <td colspan="7" style="text-align: right; font-weight: bold; font-size: 16px">
                     TOTAL
                 </td>
-                <td style="text-align: right; font-weight: bold; font-size: 16px">
+                <td style="text-align: right; font-weight: bold; font-size: 14px">
                     <g:formatNumber number="${total}" format="##,##0" minFractionDigits="4"  maxFractionDigits="4"  locale="ec"/>
                 </td>
             </tr>

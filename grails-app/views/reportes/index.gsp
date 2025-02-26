@@ -71,87 +71,89 @@
                     <i class="fa fa-print"></i> Obras ingresadas
                 </g:link>
                 <p class="col-md-8">Listado de obras que se encuentran en el sistema, estas obras están an la fase inicial de estructuración de presupuestos
-                y de documentos precontractuales. Estado = 'N'</p>
+                y de documentos precontractuales. Estado = 'N'
+                </p>
             </li>
-            <li text="obraprsp" class="item" texto="obraprsp">
-                <g:link controller="reportes4" action="presuestadasFinal" class="btn btn-primary btn-xs" style="color: #FFFDF4">
+            <li text="obraprsp" class="item col-md-12" texto="obraprsp">
+                <g:link controller="reportes4" action="presuestadasFinal" class="btn btn-primary btn-xs col-md-4" style="color: #FFFDF4">
                     <i class="fa fa-print"></i> Obras presupuestadas:
                 </g:link>
-                Listado de obras que ya poseen un presupuesto elaborado y se encuentran listas para entrar en </br>  <span style="margin-left: 150px">  el proceso de
-            contratación. Estado = 'N'</span>
+                <p class="col-md-8">  Listado de obras que ya poseen un presupuesto elaborado y se encuentran listas para entrar en el proceso de
+                contratación. Estado = 'N'
+                </p>
             </li>
-            <li text="obraprsp1" class="item" texto="obraprsp1">
-                <g:link controller="reportes4" action="presupuesto" class="btn btn-primary btn-xs" style="color: #FFFDF4">
+            <li text="obraprsp1" class="item col-md-12" texto="obraprsp1">
+                <g:link controller="reportes4" action="presupuesto" class="btn btn-primary btn-xs col-md-4" style="color: #FFFDF4">
                     <i class="fa fa-print"></i> Obras para presupuesto:
                 </g:link>
-                Listado de obras que ya poseen un presupuesto elaborado y se encuentran listas para entrar en </br>  <span style="margin-left: 150px">  el proceso de
-            contratación. Estado = 'R'</span>
+                <p class="col-md-8">  Listado de obras que ya poseen un presupuesto elaborado y se encuentran listas para entrar en el proceso de
+                contratación. Estado = 'R'
+                </p>
             </li>
-            <li text="cncr" class="item" texto="cncr">
-                <g:link controller="concurso" action="concursos" file="concursos" class="btn btn-primary btn-xs" style="color: #FFFDF4"
+            <li text="cncr" class="item col-md-12" texto="cncr">
+                <g:link controller="concurso" action="concursos" file="concursos" class="btn btn-primary btn-xs col-md-4" style="color: #FFFDF4"
                         dialog="dlgContabilidadPeriodo">
                     <i class="fa fa-print"></i> Procesos de contratación:
                 </g:link>
-                Listado de procesos de contratación para la construcción de obras y para consultorías.
+                <p class="col-md-8">Listado de procesos de contratación para la construcción de obras y para consultorías.</p>
             </li>
-            <li text="obracntr" class="item" texto="obracntr">
-                <g:link controller="reportes4" action="contratadas" class="btn btn-primary btn-xs" style="color: #FFFDF4"
+            <li text="obracntr" class="item col-md-12" texto="obracntr">
+                <g:link controller="reportes4" action="contratadas" class="btn btn-primary btn-xs col-md-4" style="color: #FFFDF4"
                         dialog="dlgContabilidad">
                     <i class="fa fa-print"></i> Obras contratadas:
                 </g:link>
-                Listado de obras que se encuentran contratadas
+                <p class="col-md-8"> Listado de obras que se encuentran contratadas </p>
             </li>
-            <li text="cntr" class="item" texto="cntr">
-                <g:link controller="reportes4" action="contratos" class="btn btn-primary btn-xs" style="color: #FFFDF4">
+            <li text="cntr" class="item col-md-12" texto="cntr">
+                <g:link controller="reportes4" action="contratos" class="btn btn-primary btn-xs col-md-4" style="color: #FFFDF4">
                     <i class="fa fa-print"></i> Contratos:
                 </g:link>
-                Listado de contratos de obras y consultorías registrados en el sistema.
+                <p class="col-md-8">Listado de contratos de obras y consultorías registrados en el sistema.</p>
             </li>
 
-            <li text="prve" class="item" texto="prve">
-                <g:link controller="reportes4" action="contratistas" class="btn btn-primary btn-xs" style="color: #FFFDF4">
+            <li text="prve" class="item col-md-12" texto="prve">
+                <g:link controller="reportes4" action="contratistas" class="btn btn-primary btn-xs col-md-4" style="color: #FFFDF4">
                     <i class="fa fa-print"></i> Contratistas:
                 </g:link>
-                Listado de contratistas que han firmado contratos de obras y consultoría con el GADLR.
+                <p class="col-md-8"> Listado de contratistas que han firmado contratos de obras y consultoría con el GADLR. </p>
             </li>
 
-            <li text="asgr" class="item" texto="asgr">
-                <g:link controller="reportes4" action="aseguradoras" class="btn btn-primary btn-xs" style="color: #FFFDF4">
+            <li text="asgr" class="item col-md-12" texto="asgr">
+                <g:link controller="reportes4" action="aseguradoras" class="btn btn-primary btn-xs col-md-4" style="color: #FFFDF4">
                     <i class="fa fa-print"></i> Aseguradoras:
                 </g:link>
-                Listado de aseguradoras que se encuentran registradas en el sistema que han emitido garantías.
+                <p class="col-md-8">Listado de aseguradoras que se encuentran registradas en el sistema que han emitido garantías.</p>
             </li>
 
-            <li text="grnt" class="item" texto="grnt">
-                <g:link controller="reportes4" action="garantias" class="btn btn-primary btn-xs" style="color: #FFFDF4">
+            <li text="grnt" class="item col-md-12" texto="grnt">
+                <g:link controller="reportes4" action="garantias" class="btn btn-primary btn-xs col-md-4" style="color: #FFFDF4">
                     <i class="fa fa-print"></i> Garantías
                 </g:link>
-                Listado de garantías registradas de los distintos contratos para obras y cosultoría, detalladas por contrato.
+                <p class="col-md-8"> Listado de garantías registradas de los distintos contratos para obras y cosultoría, detalladas por contrato. </p>
             </li>
-            <li text="avob" class="item" texto="avob">
-                <g:link controller="reportes5" action="avance" file="Estado_Cambios_Patrimonio.pdf" class="btn btn-primary btn-xs" style="color: #FFFDF4" dialog="dlgVentas">
+            <li text="avob" class="item col-md-12" texto="avob">
+                <g:link controller="reportes5" action="avance" file="Estado_Cambios_Patrimonio.pdf" class="btn btn-primary btn-xs col-md-4" style="color: #FFFDF4" dialog="dlgVentas">
                     <i class="fa fa-print"></i> Avance de obras:
                 </g:link>
-                Listado de obras con el respectivo porcentaje de avance.
+                <p class="col-md-8">Listado de obras con el respectivo porcentaje de avance.</p>
             </li>
-            <li text="obrasus" class="item" texto="obrasus">
-                <g:link controller="reportes4" action="suspendidas" class="btn btn-primary btn-xs" style="color: #FFFDF4">
+            <li text="obrasus" class="item col-md-12" texto="obrasus">
+                <g:link controller="reportes4" action="suspendidas" class="btn btn-primary btn-xs col-md-4" style="color: #FFFDF4">
                     <i class="fa fa-print"></i> Obras suspendidas:
                 </g:link>
-                Listado de obras que se encuentran suspendidas
+                <p class="col-md-8"> Listado de obras que se encuentran suspendidas </p>
             </li>
-
-            <li text="obfn" class="item" texto="obfn">
-                <g:link controller="obra" action="obrasFinalizadas" file="" class="btn btn-primary btn-xs" style="color: #FFFDF4" dialog="dlgVentas">
+            <li text="obfn" class="item col-md-12" texto="obfn">
+                <g:link controller="obra" action="obrasFinalizadas" file="" class="btn btn-primary btn-xs col-md-4" style="color: #FFFDF4" dialog="dlgVentas">
                     <i class="fa fa-print"></i> Obras finalizadas:
                 </g:link>
-                Listado de obras finalizadas.
+                <p class="col-md-8">Listado de obras finalizadas.</p>
             </li>
-            <li text="obcp" class="item" texto="obcp">
-                <g:link controller="reportes4" action="obrasComparadas" file="" class="btn btn-primary btn-xs" style="color: #FFFDF4">
+            <li text="obcp" class="item col-md-12" texto="obcp">
+                <g:link controller="reportes4" action="obrasComparadas" file="" class="btn btn-primary btn-xs col-md-4" style="color: #FFFDF4">
                     <i class="fa fa-print"></i> Obras comparadas:
                 </g:link>
-                Listado de obras comparadas.
+                <p class="col-md-8">Listado de obras comparadas.</p>
             </li>
             <li text="cnfc" class="item col-md-12" texto="cnfc">
                 <g:link controller="reportesExcel" style="color: #FFFDF4" action="contratoFechas" file=""
@@ -161,17 +163,16 @@
                 <p class="col-md-8">Reporte en Excel de los contratos y obras contratadas inluyendo valores planillados y fechas de las actas</p>
             </li>
             <li text="cob" class="item col-md-12" texto="cob">
-                <g:link controller="reportes5" style="color: #FFFDF4" action="componentesObraPdf" file=""
-                        class="btn btn-warning btn-xs col-md-4">
+                <g:link controller="reportes5" style="color: #FFFDF4" action="componentesObraPdf" file=""  class="btn btn-warning btn-xs col-md-4">
                     <i class="fa fa-print"></i> Componentes de obra
                 </g:link>
                 <p class="col-md-8">Genera el reporte PDF de componentes de obra</p>
             </li>
-            <li text="inu" class="item" texto="inu">
-                <g:link controller="reportes5" style="color: #FFFDF4" action="itemsNoUsadosPdf" file="" class="btn btn-warning btn-xs">
+            <li text="inu" class="item col-md-12" texto="inu">
+                <g:link controller="reportes5" style="color: #FFFDF4" action="itemsNoUsadosPdf" file="" class="btn btn-warning btn-xs col-md-4">
                     <i class="fa fa-print"></i> Items no usados
                 </g:link>
-                Genera el reporte PDF de items no usados
+                <p class="col-md-8"> Genera el reporte PDF de items no usados </p>
             </li>
         </ul>
     </div>

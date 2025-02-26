@@ -125,7 +125,6 @@
         </td>
         <td colspan="3" class="espacio borderLeft borderTop">
             <b>A) TOTAL AVANCE DE OBRA</b>
-            %{--                        <a href="#" id="btnUpdate" class="btn btn-xs btn-success"><i class="fa fa-retweet"></i> Actualizar suma</a>--}%
         </td>
         <td class="borderLeft borderTop num totalAnt" data-valor="${totalAnterior}" data-valoro="${totalAnterior}" style="font-size: larger">
             <elm:numero number="${totalAnterior}" cero="hide"/>
@@ -135,6 +134,14 @@
         </td>
         <td class="borderTop num totalAcu" data-valor="${totalAcumulado}" data-valoro="${totalAcumulado}" data-max="${contrato.monto + cmpl}" style="font-size: larger">
             <elm:numero number="${totalAcumulado}" cero="hide"/>
+        </td>
+    </tr>
+    <tr class="breadcrumb">
+        <td colspan="9" style="text-align: right; font-weight: bold; font-size: 14px">
+            TOTAL
+        </td>
+        <td colspan="2" id="divTotal">
+
         </td>
     </tr>
     </tfoot>
@@ -170,7 +177,7 @@
         var $antVal = $row.find(".ant.num.val");
         var $acuVal = $row.find(".acu.num.val");
 
-        if (val != "") {
+        if (val !== "") {
             val = parseFloat(val);
             //si no es vacio calcula
             var precio = $row.find(".precioU").data("valor");
@@ -225,6 +232,22 @@
                 $item.text("").data("valor", 0);
             }
         }
+    }
+
+    cargarTotal();
+
+    function cargarTotal(){
+        var id = '${planilla?.id}';
+        $.ajax({
+            type: 'POST',
+            url: '${createLink(controller: 'planilla', action: 'total_ajax')}',
+            data:{
+               id: id
+            },
+            success: function (msg) {
+                  $("#divTotal").html(msg)
+            }
+        })
     }
 
     $(function () {
@@ -294,6 +317,7 @@
                 },
                 success: function (msg) {
                     var parts = msg.split("_");
+                    cargarTotal();
                     if(parts[0] === 'ok'){
                         log(parts[1], "success")
                     }else{
@@ -412,7 +436,6 @@
                 numero($(".totalAcu"), totalAcu);
             } //blur
         });
-
     });
 </script>
 

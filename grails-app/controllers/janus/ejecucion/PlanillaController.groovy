@@ -5765,9 +5765,13 @@ class PlanillaController {
         }
     }
 
-
     def cambiaTipo() {
         render 'Cambia'
+    }
+
+    def total_ajax(){
+        def planilla = Planilla.get(params.id)
+        return [planilla: planilla]
     }
 
 }
