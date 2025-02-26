@@ -65,12 +65,13 @@
 
     <div class="ui-widget-content ui-corner-all lista">
         <ul class="noBullet">
-            <li text="obrargst" class="item" texto="obrargst">
-                <g:link controller="reportes4" action="registradas" class="btn btn-primary btn-xs" style="color: #FFFDF4" dialog="dlgContabilidad">
+            <li text="obrargst" class="item col-md-12" texto="obrargst">
+                <g:link controller="reportes4" action="registradas" class="btn btn-primary btn-xs col-md-4"
+                        style="color: #FFFDF4" dialog="dlgContabilidad">
                     <i class="fa fa-print"></i> Obras ingresadas
                 </g:link>
-                Listado de obras que se encuentran en el sistema, estas obras están an la fase inicial de  </br>  <span style="margin-left: 130px"> estructuración de presupuestos
-            y de documentos precontractuales. Estado = 'N'</span>
+                <p class="col-md-8">Listado de obras que se encuentran en el sistema, estas obras están an la fase inicial de estructuración de presupuestos
+                y de documentos precontractuales. Estado = 'N'</p>
             </li>
             <li text="obraprsp" class="item" texto="obraprsp">
                 <g:link controller="reportes4" action="presuestadasFinal" class="btn btn-primary btn-xs" style="color: #FFFDF4">
@@ -152,17 +153,19 @@
                 </g:link>
                 Listado de obras comparadas.
             </li>
-            <li text="cnfc" class="item" texto="cnfc">
-                <g:link controller="reportesExcel" style="color: #FFFDF4" action="contratoFechas" file="" class="btn btn-warning btn-xs">
+            <li text="cnfc" class="item col-md-12" texto="cnfc">
+                <g:link controller="reportesExcel" style="color: #FFFDF4" action="contratoFechas" file=""
+                        class="btn btn-warning btn-xs col-md-4">
                     <i class="fa fa-print"></i> Detalle de Contratos <br> y Obras contratadas
                 </g:link>
-                Reporte en Excel de los contratos y obras contratadas inluyendo valores planillados y fechas de las actas
+                <p class="col-md-8">Reporte en Excel de los contratos y obras contratadas inluyendo valores planillados y fechas de las actas</p>
             </li>
-            <li text="cob" class="item" texto="cob">
-                <g:link controller="reportes5" style="color: #FFFDF4" action="componentesObraPdf" file="" class="btn btn-warning btn-xs">
+            <li text="cob" class="item col-md-12" texto="cob">
+                <g:link controller="reportes5" style="color: #FFFDF4" action="componentesObraPdf" file=""
+                        class="btn btn-warning btn-xs col-md-4">
                     <i class="fa fa-print"></i> Componentes de obra
                 </g:link>
-                Genera el reporte PDF de componentes de obra
+                <p class="col-md-8">Genera el reporte PDF de componentes de obra</p>
             </li>
             <li text="inu" class="item" texto="inu">
                 <g:link controller="reportes5" style="color: #FFFDF4" action="itemsNoUsadosPdf" file="" class="btn btn-warning btn-xs">

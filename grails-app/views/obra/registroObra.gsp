@@ -228,7 +228,8 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                     </g:if>
                     <g:else>
                         <div class="span 12"
-                             style="margin-top: -15px; margin-left: 500px; color: #008; font-size: 14px;">ADMINISTRACIÓN DIRECTA / COGESTIÓN</div>
+                             style="margin-top: -15px; margin-left: 400px; color: #008; font-size: 18px;
+                             font-family: 'lucida grande', tahoma, verdana, arial, sans-serif ">ADMINISTRACIÓN DIRECTA / COGESTIÓN</div>
                     </g:else>
                 </g:else>
             </g:if>

@@ -1945,10 +1945,11 @@ class ReportePlanillas4Controller {
         def sql = "select count(distinct(sbpr__id)) cnta from detalle(${cntr.id}, ${obra.id}, ${planilla.id}, " +
                 "'${tipoRprt}')"
 
+        println "+++sql: $sql"
+
         def sps = cn.rows(sql.toString())[0].cnta
         sql = "select * from detalle(${cntr.id}, ${obra.id}, ${planilla.id}, '${tipoRprt}')"
 
-        println "+++sql: $sql"
         def vocr = cn.rows(sql.toString())
 
         println "registros: ${vocr.size()}, ln: ${vocr.vocrlnea.sum()} sps: $sps, extra: $extraRows --> num: ${(vocr.vocrlnea.sum() + sps )} / $maxRows + 0.3 "

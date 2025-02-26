@@ -757,8 +757,9 @@ class PlanillaController {
 
     def listFiscalizador() {
         println "listFiscalizador: $params"
-//        params.max = 15 //controlao por javascript $(".paginate").paginate(...
+        def cn = dbConnectionService.getConnection()
         def codigoPerfil = session.perfil.codigo
+        def noCuadra = false
 //        println codigoPerfil
         switch (codigoPerfil) {
             case "FINA":
@@ -780,33 +781,31 @@ class PlanillaController {
         def contrato = Contrato.get(params.id)
         def obra = contrato.oferta.concurso.obra
 
-//        def fp = janus.FormulaPolinomica.findAllByObra(obra)
-//        println fp
         def firma = seguridad.Persona.findAllByCargoIlike("Direct%");
 //        def planillaInstanceList = Planilla.findAllByContrato(contrato, [sort: 'id'], [max: 25])
         def planillaInstanceList = Planilla.findAllByContrato(contrato, [sort: 'id'])
 
-//        def tipoAvance = TipoPlanilla.findByCodigo('P')
         def liquidacion = Planilla.findByContratoAndTipoPlanilla(contrato, TipoPlanilla.findByCodigo('Q'))?.id > 0
 
         println "---> ..1"
         def listaAdicionales = []
 
-//        planillaInstanceList.each {
-//            def cn = dbConnectionService.getConnection()
-//            def sql = "select rbrocdgo, rbronmbr, unddcdgo, vocrcntd, cntdacml - cntdantr - vocrcntd diff, vocrpcun, " +
-//                    "vloracml-vlorantr-vocrsbtt vlor from detalle(${it.contrato.id}, ${it.contrato.obra.id}, ${it.id}, 'P') " +
-//                    "where (cntdacml - cntdantr) > vocrcntd ;"
-//            def res = cn.rows(sql.toString())
-//
-//            if (res) {
-//                listaAdicionales.add(it.id)
-//            }
-//        }
         println "---> ..2"
+        def sql = "select plnl__id from plnl where tppl__id = 9 and cntr__id = ${contrato?.id}"
+        println "sql: $sql"
+        def plnlLq = cn.rows(sql.toString())[0]?.plnl__id
+
+        if(plnlLq) {
+            sql = "select sum(rjplvlpo) suma from  rjpl where plnl__id = ${plnlLq}"
+            def sumaPo = cn.rows(sql.toString())[0]?.suma
+            sql = "select rjplplac from rjpl where plnl__id = ${plnlLq} and plnlrjst = ${plnlLq}"
+            def sumaRj = cn.rows(sql.toString())[0]?.rjplplac
+            noCuadra = sumaPo == sumaRj
+            println "sumaPo: $sumaPo != $sumaRj"
+        }
 
         return [contrato: contrato, obra: contrato.oferta.concurso.obra, planillaInstanceList: planillaInstanceList,
-                firma   : firma, liquidacion: liquidacion, adicionales: listaAdicionales]
+                firma   : firma, liquidacion: liquidacion, adicionales: listaAdicionales, noCuardra: noCuadra]
     }
 
     def listAdmin() {
@@ -5764,6 +5763,11 @@ class PlanillaController {
         } else {
             render "ok"
         }
+    }
+
+
+    def cambiaTipo() {
+        render 'Cambia'
     }
 
 }

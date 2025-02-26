@@ -77,6 +77,7 @@
                                 <i class="fas fa-book"></i>
                             </a>
                         </g:if>
+                        <g:if test="${session.perfil.nombre == 'CRFC'}">
                         <a href="#" class="btn btn-xs btn-success btnEditarMaterial" data-id="${m.item__id}"
                            data-sub="${m.dprt__id}" title="Editar">
                             <i class="fas fa-edit"></i>
@@ -84,6 +85,7 @@
                         <a href="#" class="btn btn-xs btn-danger btnEliminarMaterial" data-id="${m.item__id}" title="Eliminar">
                             <i class="fas fa-trash"></i>
                         </a>
+                        </g:if>
                     </td>
                 </tr>
             </g:each>

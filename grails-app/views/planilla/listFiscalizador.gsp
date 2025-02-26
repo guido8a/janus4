@@ -12,6 +12,10 @@
         color: #0067df;
         font-weight: bold;
     }
+    .no-cuadra {
+        color: #bb4040;
+        font-weight: bold;
+    }
     </style>
 </head>
 
@@ -122,7 +126,8 @@
                 <g:set var="periodosOk" value="${janus.ejecucion.ReajustePlanilla.findAllByPlanilla(planillaInstance)}"/>
                 <g:set var="eliminable" value="${planillaInstance.fechaMemoSalidaPlanilla == null}"/>
 
-                <tr style="font-size: 10px" class="${planillaInstance.tipoContrato == 'C' ? 'cmplcss' : ''}">
+                <tr style="font-size: 10px" class="${planillaInstance.tipoContrato == 'C' ? 'cmplcss' : ''}
+                  ${((planillaInstance?.tipoPlanilla?.codigo == 'Q') && noCuardra )? 'no-cuadra' : ''}">
                     <td style="width: 15%">${fieldValue(bean: planillaInstance, field: "numero")}</td>
                     <td style="width: 13%">
                         ${planillaInstance.tipoPlanilla.nombre}
@@ -170,6 +175,12 @@
                             <g:link controller="planilla" action="form" params="[id: planillaInstance.id, contrato: planillaInstance.contrato.id]"
                                     rel="tooltip" title="Editar" class="btn btn-xs btn-success">
                                 <i class="fa fa-edit"></i>
+                            </g:link>
+                        </g:if>
+                        <g:if test="${planillaInstance.tipoPlanilla.codigo in ['P', 'Q'] && !planillaInstance.fechaMemoSalidaPlanilla && contrato?.fiscalizador?.id == session.usuario.id}">
+                            <g:link action="cambiaTipo" class="btn btn-xs btn-success" rel="tooltip" title="Cambiar el tipo"
+                                    params="[contrato: contrato.id]" id="${planillaInstance.id}">
+                                <i class="fa fa-undo"></i>
                             </g:link>
                         </g:if>
                         <g:if test="${planillaInstance.tipoPlanilla.codigo in ['P', 'Q', 'O', 'L', 'R']}">

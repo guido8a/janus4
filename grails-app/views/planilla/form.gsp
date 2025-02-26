@@ -364,7 +364,24 @@
                                     <g:textField type="text" name="noPagoValor" value="${planillaInstance?.noPagoValor}" class="form-control" />
                                 </span>
                             </span>
+                            <span class="grupo col-md-12">
+
+                            </span>
+
+                            <span class="grupo">
+                                <label for="combustible" class="col-md-2 control-label text-info">
+                                    ¿Forzar el descuento de todo el anticipo en esta planilla?
+                                </label>
+                                <span class="col-md-1">
+                                    <g:select name="combustible" from="${['S': 'Sí', 'N': 'No']}" optionValue="value"
+                                              optionKey="key" class="form-control" value="${planillaInstance?.noPagoValor?:'N'}" />
+                                    <p class="help-block ui-helper-hidden"></p>
+                                </span>
+                            </span>
+
                         </div>
+
+
 
                     </fieldset>
                 </g:form>
