@@ -33,7 +33,7 @@
                 </tr>
             </g:each>
                 <tr class="breadcrumb">
-                    <td colspan="2" style="text-align: right; font-weight: bold">TOTAL</td>
+                    <td colspan="3" style="text-align: right; font-weight: bold">TOTAL</td>
                     <td style="text-align: right; font-weight: bold">${total}</td>
                     <td colspan="2"></td>
                 </tr>
