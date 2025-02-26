@@ -24,53 +24,87 @@
         </a>
     </div>
 </div>
-<table class="table table-bordered table-striped table-condensed table-hover">
-    <thead>
-      <tr>
-        <th style="width: 20px;">
-            #
-        </th>
-        <th style="width: 200px;">
-            Subpresupuesto
-        </th>
-        <th style="width: 80px;">
-            Código
-        </th>
-        <th style="width: 400px;">
-            Rubro
-        </th>
-        <th style="width: 60px" class="col_unidad">
-            Unidad
-        </th>
-        <th style="width: 80px">
-            Cantidad
-        </th>
-        <th class="col_precio" style="display: none;">Unitario</th>
-        <th class="col_total" style="display: none;">C.Total</th>
-        %{--<th style="width: 40px" class="col_delete"></th>--}%
-    </tr>
-    </thead>
-    <tbody id="tabla_material">
-    <g:each in="${valores}" var="val" status="j">
-    <tr class="item_row" id="${val.item__id}" item="${val}" sub="${val.sbpr__id}">
-            <td style="width: 20px" class="orden">${val.vlobordn}</td>
-            <td style="width: 200px" class="sub">${val.sbprdscr.trim()}</td>
-            <td class="cdgo">${val.rbrocdgo.trim()}</td>
-            <td class="nombre">${val.rbronmbr.trim()}</td>
-            <td style="width: 60px !important;text-align: center" class="col_unidad">${val.unddcdgo.trim()}</td>
-            <td style="text-align: right" class="cant">
-                <g:formatNumber number="${val.vlobcntd}" format="##,##0" minFractionDigits="2" maxFractionDigits="2"
-                                locale="ec"/>
-            </td>
-            <td class="col_precio" style="display: none;text-align: right" id="i_${val.item__id}"><g:formatNumber
-                    number="${val.pcun}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/></td>
-            <td class="col_total total" style="display: none;text-align: right">
-                <g:formatNumber number="${val.totl}" format="##,##0" minFractionDigits="4"  maxFractionDigits="4"  locale="ec"/>
-            </td>
+
+<div role="main" style="margin-top: 10px;">
+    <table class="table table-bordered table-striped table-condensed table-hover">
+        <thead>
+        <tr>
+            <th style="width: 20px;">
+                #
+            </th>
+            <th style="width: 200px;">
+                Subpresupuesto
+            </th>
+            <th style="width: 80px;">
+                Código
+            </th>
+            <th style="width: 400px;">
+                Rubro
+            </th>
+            <th style="width: 60px" class="col_unidad">
+                Unidad
+            </th>
+            <th style="width: 80px">
+                Cantidad
+            </th>
+            <th class="col_precio" >Unitario
+            </th>
+            <th class="col_total">C.Total
+            </th>
         </tr>
-    </g:each>
-    </tbody>
-</table>
+        </thead>
+        <tbody id="tabla_material">
+
+        </tbody>
+    </table>
+</div>
+
+<div class="" style="width: 99.7%;height: 400px; overflow-y: auto; margin-top: -20px">
+    <table class="table-bordered table-striped table-condensed table-hover" style="width: 100%">
+        <tbody>
+        <g:if test="${valores}">
+            <g:set var="total" value="${0}"/>
+            <g:each in="${valores}" var="val" status="j">
+                <tr class="item_row" id="${val.item__id}" item="${val}" sub="${val.sbpr__id}">
+                    <td style="width: 20px" class="orden">${val.vlobordn}</td>
+                    <td style="width: 200px" class="sub">${val.sbprdscr.trim()}</td>
+                    <td class="cdgo">${val.rbrocdgo.trim()}</td>
+                    <td class="nombre">${val.rbronmbr.trim()}</td>
+                    <td style="width: 60px !important;text-align: center" class="col_unidad">${val.unddcdgo.trim()}</td>
+                    <td style="text-align: right" class="cant">
+                        <g:formatNumber number="${val.vlobcntd}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/>
+                    </td>
+                    <td class="col_precio" style="text-align: right" id="i_${val.item__id}">
+                        <g:formatNumber number="${val.pcun}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/>
+                    </td>
+                    <td class="col_total total" style="text-align: right">
+                        <g:set var="total" value="${total += val.totl}"/>
+                        <g:formatNumber number="${val.totl}" format="##,##0" minFractionDigits="4"  maxFractionDigits="4"  locale="ec"/>
+                    </td>
+                </tr>
+            </g:each>
+
+            <tr class="breadcrumb">
+                <td colspan="7" style="text-align: right; font-weight: bold; font-size: 16px">
+                    TOTAL
+                </td>
+                <td style="text-align: right; font-weight: bold; font-size: 16px">
+                    <g:formatNumber number="${total}" format="##,##0" minFractionDigits="4"  maxFractionDigits="4"  locale="ec"/>
+                </td>
+            </tr>
+
+        </g:if>
+        <g:else>
+            <div class="alert alert-info" style="text-align: center">
+                <i class="fa fa-exclamation-triangle text-info fa-2x"></i> <strong style="font-size: 14px"> No se encontraron registros </strong>
+            </div>
+        </g:else>
+        </tbody>
+    </table>
+</div>
+
+
+
 <script type="text/javascript">
 
     $.contextMenu({
@@ -91,32 +125,10 @@
                 var datos = "?fecha=${obra.fechaPreciosRubros?.format('dd-MM-yyyy')}&id=" + clickImprimir + "&obra=${obra.id}" + "&fechaSalida=" + fechaSalida1+ "&oferente=${session.usuario.id}"
                 location.href = "${g.createLink(controller: 'reportes6',action: '_imprimirRubroVolObraVaeOferente')}" + datos
             }
-
-            %{--if (key === "foto") {--}%
-            %{--    var datosFoto = "Wid=" + $(this).attr("item")--}%
-            %{--    var child = window.open('${createLink(controller:"rubro", action:"showFoto")}/' + $(this).attr("item") +--}%
-            %{--            '?tipo=il', 'GADPP', 'width=850,height=800,toolbar=0,resizable=0,menubar=0,scrollbars=1,status=0');--}%
-            %{--    if (child.opener == null)--}%
-            %{--        child.opener = self;--}%
-            %{--    window.toolbar.visible = false;--}%
-            %{--    window.menubar.visible = false;--}%
-            %{--}--}%
-
-            %{--if (key === "espc") {--}%
-            %{--    var child = window.open('${createLink(controller:"rubro", action:"showFoto")}/' + $(this).attr("item") +--}%
-            %{--            '?tipo=dt', 'GADPP', 'width=850,height=800,toolbar=0,resizable=0,menubar=0,scrollbars=1,status=0');--}%
-            %{--    if (child.opener == null)--}%
-            %{--        child.opener = self;--}%
-            %{--    window.toolbar.visible = false;--}%
-            %{--    window.menubar.visible = false;--}%
-            %{--}--}%
         },
         items: {
-//            "edit": {name: "Editar", icon: "edit"},
             "print": {name: "Imprimir", icon: "print"},
-            "vae": {name: "Imprimir Vae", icon: "print"},
-            // "foto": {name: "Ilustración", icon: "doc"},
-            // "espc": {name: "Especificaciones", icon: "doc"}
+            "vae": {name: "Imprimir Vae", icon: "print"}
         }
     });
 
@@ -126,7 +138,6 @@
         } else {
             bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + "Seleccione un subpresupuesto" + '</strong>');
         }
-
     });
 
     $("#imprimir_sub_vae").click(function(){
@@ -168,20 +179,19 @@
         });
     });
 
-    $(".item_row").dblclick(function(){
-        $("#calcular").removeClass("active");
-        $(".col_precio").hide();
-        $(".col_total").hide();
-        $("#divTotal").html("");
-        $("#vol_id").val($(this).attr("id"));
-        $("#item_codigo").val($(this).find(".cdgo").html());
-        $("#item_id").val($(this).attr("item"));
-        $("#subPres").val($(this).attr("sub"));
-        $("#item_nombre").val($(this).find(".nombre").html());
-        $("#item_cantidad").val($(this).find(".cant").html().toString().trim());
-        $("#item_orden").val($(this).find(".orden").html());
-
-    });
+    // $(".item_row").dblclick(function(){
+    //     $("#calcular").removeClass("active");
+    //     $(".col_precio").hide();
+    //     $(".col_total").hide();
+    //     $("#divTotal").html("");
+    //     $("#vol_id").val($(this).attr("id"));
+    //     $("#item_codigo").val($(this).find(".cdgo").html());
+    //     $("#item_id").val($(this).attr("item"));
+    //     $("#subPres").val($(this).attr("sub"));
+    //     $("#item_nombre").val($(this).find(".nombre").html());
+    //     $("#item_cantidad").val($(this).find(".cant").html().toString().trim());
+    //     $("#item_orden").val($(this).find(".orden").html());
+    // });
 
 
 </script>
