@@ -10,7 +10,8 @@
 
     <div class="btn-toolbar" style="margin-top: 15px;">
         <div class="btn-group">
-            <a href="${g.createLink(controller: 'obra', action: 'registroObra', params: [obra: obra?.id])}" class="btn btn-primary" title="Regresar a la obra">
+            <a href="${g.createLink(controller: 'obra', action: 'registroObra', params: [obra: obra?.id])}"
+               class="btn btn-primary" title="Regresar a la obra">
                 <i class="fa fa-arrow-left"></i>
                 Regresar
             </a>
@@ -18,7 +19,9 @@
     </div>
 
     <div class="tituloGrande" style="width: 100%">
-        <div  class="alert alert-info" style="margin-top: 5px">  Verificación de precios en obra: ${obra?.descripcion}: Precios no actualizados o sin valor</div>
+        <div  class="alert alert-info" style="margin-top: 5px">  Verificación de precios en obra: ${obra?.descripcion} <br>
+        Precios no actualizados o sin valor a la <strong>fecha de referencia:
+            ${obra.fechaPreciosRubros.format('dd-MM-yyyy')} (Fecha Lista de Precios)</strong></div>
     </div>
 
     <div class="body">
@@ -63,7 +66,8 @@
             type    : "POST",
             url     : "${createLink(action:'editarPrecio_ajax')}",
             data    : {
-                id: id
+                id: id,
+                obra: "${obra.id}"
             },
             success : function (msg) {
                 g.modal("hide");

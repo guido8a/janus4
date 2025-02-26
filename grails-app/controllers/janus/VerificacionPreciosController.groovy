@@ -37,16 +37,28 @@ class VerificacionPreciosController {
     }
 
     def editarPrecio_ajax() {
-        def fechas = poneFechaPrecios()
+        println "editarPrecio_ajax: $params"
+        def cn = dbConnectionService.getConnection()
+        def obra = Obra.get(params.obra)
+        def sql = "select distinct rbpcfcha from rbpc " +
+                "where rbpcfcha <= '${obra.fechaPreciosRubros.format('yyyy-MM-dd')}' " +
+                "order by rbpcfcha desc limit 5"
+        println "sql: $sql"
+        def fechas = [:]
+        def i = 0
+        cn.eachRow(sql.toString()) { d ->
+            fechas[i] = d.rbpcfcha.format('dd/MM/yyyy')
+            i++
+        }
         [fechas: fechas]
     }
 
-    def poneFechaPrecios() {
-        def anio = new Date().format('yyyy')
-        def fechas = [1: '15/01/' + anio, 2: '1/05/' + anio, 3: '1/09/' + anio]
-        return fechas
-    }
-
+//    def poneFechaPrecios() {
+//        def anio = new Date().format('yyyy')
+//        def fechas = [1: '15/01/' + anio, 2: '1/05/' + anio, 3: '1/09/' + anio]
+//        return fechas
+//    }
+//
 
     /**
      * se debe actualizar elprecio a la fecha obra.rbpcfcha para que no salga en la lista de valores

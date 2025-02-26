@@ -5,11 +5,14 @@
                 <label class="col-md-1 control-label text-info">
                     Fecha
                 </label>
-                <span class="col-md-3">
+                <span class="col-md-4">
                     <g:select name="fecha" class="form-control" from="${fechas}"
-                              optionKey='value' optionValue="value" style="width: 120px"/>
+                              optionKey='value' optionValue="value"/>
                 </span>
             </span>
+        </div>
+        <div class="col-md-2">
+
         </div>
         <div class="form-group">
             <span class="grupo">
