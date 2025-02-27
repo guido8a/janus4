@@ -124,13 +124,6 @@
                 </g:link>
                 <p class="col-md-8">Listado de aseguradoras que se encuentran registradas en el sistema que han emitido garantías.</p>
             </li>
-
-            %{--<li text="grnt" class="item col-md-12" texto="grnt">--}%
-                %{--<g:link controller="reportes4" action="garantias" class="btn btn-primary btn-xs col-md-4" style="color: #FFFDF4">--}%
-                    %{--<i class="fa fa-print"></i> Garantías--}%
-                %{--</g:link>--}%
-                %{--<p class="col-md-8"> Listado de garantías registradas de los distintos contratos para obras y cosultoría, detalladas por contrato. </p>--}%
-            %{--</li>--}%
             <li text="avob" class="item col-md-12" texto="avob">
                 <g:link controller="reportes5" action="avance" file="Estado_Cambios_Patrimonio.pdf" class="btn btn-primary btn-xs col-md-4" style="color: #FFFDF4" dialog="dlgVentas">
                     <i class="fa fa-print"></i> Avance de obras:
@@ -200,6 +193,13 @@
         polinómica, la fórmula polinómica, el cronograma y los documentos precontractuales.</p>
     </div>
 
+    <div id="obraprsp1" style="display: none;">
+        <h3>Obras para presupuesto</h3><br>
+
+        <p>Listado de obras que ya poseen un presupuesto elaborado y se encuentran listas para entrar en el proceso de
+        contratación. Estado = 'R'</p>
+    </div>
+
     <div id="cncr" style="display: none">
         <h3>Proceso de contratación</h3><br>
         <p>Listado de procesos para la contratación de obras y consultorías. </p>
@@ -237,14 +237,17 @@
 
     <div id="trnf" style="display: none">
         <h3>Trasferencias y/o cheques pagados</h3><br>
-
         <p>Listado de pagos de planillas realizados de las distintas obras contratadas. </p>
     </div>
 
     <div id="avob" style="display: none">
         <h3>Avance de obras</h3><br>
-
         <p>  Listado de obras con el respectivo porcentaje de avance físico y económico.</p>
+    </div>
+
+    <div id="obrasus" style="display: none">
+        <h3>Obras suspendidas</h3><br>
+        <p>Listado de obras con que se encuentran suspendias.</p>
     </div>
 
     <div id="obfn" style="display: none">
