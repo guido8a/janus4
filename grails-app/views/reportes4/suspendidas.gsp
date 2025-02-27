@@ -68,13 +68,13 @@
     <table class="table table-bordered table-hover table-condensed" style="width: 100%; background-color: #a39e9e">
         <thead>
         <tr>
-            <th style="width: 10%">
+            <th style="width: 8%">
                 Código
             </th>
-            <th style="width: 24%;">
+            <th style="width: 16%;">
                 Nombre
             </th>
-            <th style="width: 14%">
+            <th style="width: 12%">
                 Cantón-Parroquia-Comunidad
             </th>
             <th style="width: 8%">
@@ -83,14 +83,17 @@
             <th style="width: 10%">
                 Contratista
             </th>
-            <th style="width: 8%">
+            <th style="width: 7%">
                 Monto
             </th>
-            <th style="width: 8%">
+            <th style="width: 7%">
                 Fecha suscripción
             </th>
-            <th style="width: 8%">
+            <th style="width: 7%">
                 Fecha Inicio Obra
+            </th>
+            <th style="width: 7%">
+                Fecha Suspensión
             </th>
             <th style="width: 6%">
                 Plazo
@@ -154,7 +157,8 @@
         $("#buscador_con").change();
         var d = cargarLoader("Cargando...");
         var datos = "si=${"si"}&buscador=" + $("#buscador_con").val() + "&criterio=" + $("#criterio_con").val() +
-            "&operador=" + $("#oprd").val() + "&departamento=" + $("#departamento option:selected").val() + "&fi=" + $("#fechaInicio").val() + "&ff=" + $("#fechaFin").val();
+            "&operador=" + $("#oprd").val() + "&departamento=" + $("#departamento option:selected").val() + "&fi=" +
+            $("#fechaInicio").val() + "&ff=" + $("#fechaFin").val();
         $.ajax({
             type : "POST",
             url : "${g.createLink(controller: 'reportes4', action: 'tablaSuspendidas')}",

@@ -151,11 +151,12 @@
             </li>
             <li text="obcp" class="item col-md-12" texto="obcp">
                 <g:link controller="reportes4" action="obrasComparadas" file="" class="btn btn-primary btn-xs col-md-4" style="color: #FFFDF4">
-                    <i class="fa fa-print"></i> Obras comparadas:
+                    <i class="fa fa-print"></i> Comparación de rubros <br>contratados vs Presupuestados
                 </g:link>
-                <p class="col-md-8">Listado de obras comparadas.</p>
+                <p class="col-md-8">Rubros contratados comparados con los rubros presupuestados para verificación
+                de precios y rendimientos. </p>
             </li>
-            <li text="cnfc" class="item col-md-12" texto="cnfc">
+            <li text="comp" class="item col-md-12" texto="comp">
                 <g:link controller="reportesExcel" style="color: #FFFDF4" action="contratoFechas" file=""
                         class="btn btn-warning btn-xs col-md-4">
                     <i class="fa fa-print"></i> Detalle de Contratos <br> y Obras contratadas
@@ -260,6 +261,13 @@
         <p>Listado de contratos</p>
         <p>Obras contratadas, monto, plazo y valores totales planillados</p>
         <p>Fechas de contrato, inicio de obra, recepción de obra y actas de entrega - recepción provisional y definitiva</p>
+    </div>
+
+    <div id="comp" style="display: none">
+        <h3>Comparación de rubros</h3><br>
+
+        <p>Listado de contratos con preupuesto externo</p>
+        <p>Rubros contratados comparados con los rubros presupuestados para verificación de precios y rendimientos.</p>
     </div>
 
     <div id="cob" style="display: none">
