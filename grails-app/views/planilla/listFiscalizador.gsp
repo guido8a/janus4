@@ -112,9 +112,9 @@
             <th style="width: 8%">Fecha Presentación</th>
             <th style="width: 7%">Fecha Inicio</th>
             <th style="width: 7%">Fecha Fin</th>
-            <th style="width: 22%">Descripción</th>
-            <th style="width: 8%">Valor</th>
-            <th style="width: 12%">Acciones</th>
+            <th style="width: 20%">Descripción</th>
+            <th style="width: 7%">Valor</th>
+            <th style="width: 15%">Acciones</th>
             <th style="width: 8%">Pagos</th>
         </tr>
         </thead>
@@ -147,11 +147,11 @@
                     <td style="width: 7%">
                         <g:formatDate date="${planillaInstance.fechaFin}" format="dd-MM-yyyy"/>
                     </td>
-                    <td style="width: 22%">${planillaInstance?.id} ${fieldValue(bean: planillaInstance, field: "descripcion")}</td>
-                    <td class="numero" style="width: 8%">
+                    <td style="width: 20%">${planillaInstance?.id} ${fieldValue(bean: planillaInstance, field: "descripcion")}</td>
+                    <td class="numero" style="width: 7%; text-align: right; font-weight: bold">
                         <g:formatNumber number="${planillaInstance.valor}" maxFractionDigits="2" minFractionDigits="2" format="##,##0" locale="ec"/>
                     </td>
-                    <td style="width: 12%; text-align: center">
+                    <td style="width: 15%; text-align: center">
                         <g:if test="${eliminable && planillaInstance.tipoPlanilla.codigo in ['A', 'B']}">
                             <g:link action="form" class="btn btn-xs btn-success" rel="tooltip" title="Editar"
                                     params="[contrato: contrato.id]" id="${planillaInstance.id}">
@@ -178,10 +178,9 @@
                             </g:link>
                         </g:if>
                         <g:if test="${planillaInstance.tipoPlanilla.codigo in ['P', 'Q'] && !planillaInstance.fechaMemoSalidaPlanilla && contrato?.fiscalizador?.id == session.usuario.id}">
-                            <g:link action="cambiaTipo" class="btn btn-xs btn-success" rel="tooltip" title="Cambiar el tipo"
-                                    params="[contrato: contrato.id]" id="${planillaInstance.id}">
-                                <i class="fa fa-undo"></i>
-                            </g:link>
+                            <a href="#" class="btn btn-xs btn-success btnCambiarTipo" title="Cambiar el tipo" data-id="${planillaInstance.id}" data-tipo="${planillaInstance?.tipoPlanilla?.nombre}">
+                                <i class="fa fa-retweet"></i>
+                            </a>
                         </g:if>
                         <g:if test="${planillaInstance.tipoPlanilla.codigo in ['P', 'Q', 'O', 'L', 'R']}">
                             <g:if test="${(contrato?.fiscalizador?.id == session.usuario.id)}">
@@ -373,6 +372,50 @@
 
 <script type="text/javascript">
 
+
+    $(".btnCambiarTipo").click(function () {
+        var tipo = $(this).data("tipo");
+        var otroTipo = tipo === 'AVANCE DE OBRA' ? 'LIQUIDACIÓN' : 'AVANCE DE OBRA';
+        var id = $(this).data("id") ;
+        bootbox.dialog({
+            title   : "Alerta",
+            message : "<i class='fa fa-exclamation-triangle fa-2x pull-left text-warning text-shadow'></i><p style='font-weight: bold; font-size: 14px'> Está seguro que desea cambiar el tipo de planilla de " + tipo + " a " + otroTipo + "?"  + "</p>",
+            buttons : {
+                cancelar : {
+                    label     : "Cancelar",
+                    className : "btn-primary",
+                    callback  : function () {
+                    }
+                },
+                cambiar : {
+                    label     : "<i class='fa fa-retweet'></i> Cambiar",
+                    className : "btn-success",
+                    callback  : function () {
+                        var v = cargarLoader("Eliminando...");
+                        $.ajax({
+                            type    : "POST",
+                            url     : '${createLink(action:'cambiarTipo_ajax')}',
+                            data    : {
+                                id : id
+                            },
+                            success : function (msg) {
+                                v.modal("hide");
+                                var parts = msg.split("_");
+                                if(parts[0] === 'ok'){
+                                    log(parts[1],"success");
+                                    setTimeout(function () {
+                                        location.reload()
+                                    }, 800);
+                                }else{
+                                    log(parts[1],"error")
+                                }
+                            }
+                        });
+                    }
+                }
+            }
+        });
+    });
 
     $("#garantias").click(function () {
         var d = cargarLoader("Cargando...");

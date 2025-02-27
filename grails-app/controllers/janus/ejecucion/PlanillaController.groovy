@@ -3816,30 +3816,30 @@ class PlanillaController {
 
         params.nuevoValor = params.nuevoValor?:0
 //        if(params.nuevoValor) {
-            if(params.id != 'nuevo'){
-                detalle = DetallePlanillaEjecucion.get(params.id)
-                detalle.cantidad = params.nuevoValor?.toDouble()
+        if(params.id != 'nuevo'){
+            detalle = DetallePlanillaEjecucion.get(params.id)
+            detalle.cantidad = params.nuevoValor?.toDouble()
 //                detalle.monto = params.val?.toDouble()
-                detalle.monto = vol.volumenPrecio * detalle.cantidad
-            }else{
-                detalle = new DetallePlanillaEjecucion()
-                detalle.cantidad = params.nuevoValor?.toDouble()
+            detalle.monto = vol.volumenPrecio * detalle.cantidad
+        }else{
+            detalle = new DetallePlanillaEjecucion()
+            detalle.cantidad = params.nuevoValor?.toDouble()
 //                detalle.monto = params.val?.toDouble()
-                detalle.monto = vol.volumenPrecio * detalle.cantidad
-                detalle.planilla = planilla
-                detalle.volumenContrato = vol
-            }
+            detalle.monto = vol.volumenPrecio * detalle.cantidad
+            detalle.planilla = planilla
+            detalle.volumenContrato = vol
+        }
 
-            if(!detalle.save(flush:true)){
-                println("Error al guardar " + detalle.errors)
-                render "no_Error al guardar"
-            }else{
-                render "ok_Guardado correctamente"
-                sql = "update plnl set plnlmnto = (select sum(dtpemnto) from dtpe where plnl__id = ${params.planilla}) " +
-                        "where plnl__id = ${params.planilla}"
-                println "actualiza $sql"
-                cn.execute(sql.toString())
-            }
+        if(!detalle.save(flush:true)){
+            println("Error al guardar " + detalle.errors)
+            render "no_Error al guardar"
+        }else{
+            render "ok_Guardado correctamente"
+            sql = "update plnl set plnlmnto = (select sum(dtpemnto) from dtpe where plnl__id = ${params.planilla}) " +
+                    "where plnl__id = ${params.planilla}"
+            println "actualiza $sql"
+            cn.execute(sql.toString())
+        }
 //        } else {
 //            render "no_No hay valor que guardar"
 //        }
@@ -5772,6 +5772,23 @@ class PlanillaController {
     def total_ajax(){
         def planilla = Planilla.get(params.id)
         return [planilla: planilla]
+    }
+
+    def cambiarTipo_ajax(){
+
+        def planilla = Planilla.get(params.id)
+        def avance = TipoPlanilla.get(3)
+        def liquidacion = TipoPlanilla.get(9)
+
+        planilla.tipoPlanilla == avance ? (planilla.tipoPlanilla = liquidacion) : (planilla.tipoPlanilla = avance)
+
+        if(!planilla.save(flush:true)){
+            println("error al guardar la planilla " + planilla.errors)
+            render "no_Error al guardar la planilla"
+        }else{
+            render "ok_Guardado correctamente"
+        }
+
     }
 
 }
