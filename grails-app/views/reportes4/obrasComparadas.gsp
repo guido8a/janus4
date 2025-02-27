@@ -10,6 +10,14 @@
     <title>
         Obras comparadas
     </title>
+    <style>
+    #blink {
+        font-size: 20px;
+        font-weight: bold;
+        color: #2d38be;
+        transition: 0.5s;
+    }
+    </style>
 </head>
 
 <body>
@@ -32,6 +40,9 @@
             <i class="fa fa-search"></i>
             Reporte
         </a>
+        <span style="margin-left: 70px">
+            Para ver la comparación de precios haga clic sobre la <span style="font-size: 14px;" id="blink">Lupa</span>
+        </span>
     </div>
     %{--    <div class="span12">--}%
     %{--        <a href="#" class="btn btn-success" id="buscar">--}%
