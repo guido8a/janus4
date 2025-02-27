@@ -125,12 +125,12 @@
                 <p class="col-md-8">Listado de aseguradoras que se encuentran registradas en el sistema que han emitido garantías.</p>
             </li>
 
-            <li text="grnt" class="item col-md-12" texto="grnt">
-                <g:link controller="reportes4" action="garantias" class="btn btn-primary btn-xs col-md-4" style="color: #FFFDF4">
-                    <i class="fa fa-print"></i> Garantías
-                </g:link>
-                <p class="col-md-8"> Listado de garantías registradas de los distintos contratos para obras y cosultoría, detalladas por contrato. </p>
-            </li>
+            %{--<li text="grnt" class="item col-md-12" texto="grnt">--}%
+                %{--<g:link controller="reportes4" action="garantias" class="btn btn-primary btn-xs col-md-4" style="color: #FFFDF4">--}%
+                    %{--<i class="fa fa-print"></i> Garantías--}%
+                %{--</g:link>--}%
+                %{--<p class="col-md-8"> Listado de garantías registradas de los distintos contratos para obras y cosultoría, detalladas por contrato. </p>--}%
+            %{--</li>--}%
             <li text="avob" class="item col-md-12" texto="avob">
                 <g:link controller="reportes5" action="avance" file="Estado_Cambios_Patrimonio.pdf" class="btn btn-primary btn-xs col-md-4" style="color: #FFFDF4" dialog="dlgVentas">
                     <i class="fa fa-print"></i> Avance de obras:
