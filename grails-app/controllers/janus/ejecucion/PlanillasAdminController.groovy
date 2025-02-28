@@ -10,8 +10,7 @@ class PlanillasAdminController {
 
         def obra = Obra.get(params.id)
 
-        def fp = janus.FormulaPolinomica.findAllByObra(obra)
-//        println fp
+//        def fp = janus.FormulaPolinomica.findAllByObra(obra)
 
         def planillaInstanceList = PlanillaAdmin.findAllByObra(obra, [sort: 'id'])
         return [obra: obra, list: planillaInstanceList]
@@ -78,9 +77,11 @@ class PlanillasAdminController {
         if (params.oficioEntradaPlanilla) {
             params.oficioEntradaPlanilla = params.oficioEntradaPlanilla.toString().toUpperCase()
         }
+
         if (params.numero) {
             params.numero = params.numero.toString().toUpperCase()
         }
+
         def planillaInstance
 
         if (params.id) {
@@ -116,22 +117,22 @@ class PlanillasAdminController {
 
         if (params.id) {
             flash.clase = "alert-success"
-            flash.message = "Se ha actualizado correctamente Planilla " + planillaInstance.id
+            flash.message = "Se ha actualizado correctamente Planilla "
         } else {
             flash.clase = "alert-success"
-            flash.message = "Se ha creado correctamente Planilla " + planillaInstance.id
+            flash.message = "Se ha creado correctamente Planilla "
         }
 
-        switch (planillaInstance.tipoPlanilla.codigo) {
-            case 'P':
-                redirect(action: 'detalle', id: planillaInstance.id)
-                break;
-            case 'M':
-                redirect(controller: "detallePlanillaCostoAdmin", action: 'detalleCosto', id: planillaInstance.id)
-                break;
-            default:
+//        switch (planillaInstance.tipoPlanilla.codigo) {
+//            case 'P':
+//                redirect(action: 'detalle', id: planillaInstance.id)
+//                break;
+//            case 'M':
+//                redirect(controller: "detallePlanillaCostoAdmin", action: 'detalleCosto', id: planillaInstance.id)
+//                break;
+//            default:
                 redirect(action: 'list', id: planillaInstance.obra.id)
-        }
+//        }
     }
 
     def detalle() {

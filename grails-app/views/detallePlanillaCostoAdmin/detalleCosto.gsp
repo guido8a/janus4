@@ -1,18 +1,11 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: luz
-  Date: 7/24/13
-  Time: 1:09 PM
-  To change this template use File | Settings | File Templates.
---%>
 
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
     <head>
         <meta name="layout" content="main">
-        <script src="${resource(dir: 'js/jquery/plugins/box/js', file: 'jquery.luz.box.js')}"></script>
-        <script src="${resource(dir: 'js/jquery/plugins/', file: 'jquery.livequery.min.js')}"></script>
-        <link href="${resource(dir: 'js/jquery/plugins/box/css', file: 'jquery.luz.box.css')}" rel="stylesheet">
+%{--        <script src="${resource(dir: 'js/jquery/plugins/box/js', file: 'jquery.luz.box.js')}"></script>--}%
+%{--        <script src="${resource(dir: 'js/jquery/plugins/', file: 'jquery.livequery.min.js')}"></script>--}%
+%{--        <link href="${resource(dir: 'js/jquery/plugins/box/css', file: 'jquery.luz.box.css')}" rel="stylesheet">--}%
         <title>Detalle de planilla</title>
 
         <style type="text/css">
@@ -31,7 +24,6 @@
         .num {
             text-align : right !important;
             width      : 60px;
-            /*background : #c71585 !important;*/
         }
 
         .borderLeft {
@@ -52,10 +44,6 @@
 
         <div class="row" style="margin-bottom: 10px;">
             <div class="span9 btn-group" role="navigation">
-            %{--<g:link controller="contrato" action="verContrato" params="[contrato: contrato?.id]" class="btn btn-ajax btn-new" title="Regresar al contrato">--}%
-            %{--<i class="icon-double-angle-left"></i>--}%
-            %{--Contrato--}%
-            %{--</g:link>--}%
                 <g:link controller="obra" action="registroObra" params="[obra: obra?.id]" class="btn btn-ajax btn-new" title="Regresar a la obra">
                     <i class="icon-double-angle-left"></i>
                     Obra
@@ -74,7 +62,7 @@
             <div class="span3" id="busqueda-Planilla"></div>
         </div>
 
-        <elm:headerPlanillaAdmin planilla="${planilla}"/>
+%{--        <elm:headerPlanillaAdmin planilla="${planilla}"/>--}%
 
         <g:if test="${editable}">
             <div id="divError" class="alert alert-error hide">
@@ -261,12 +249,12 @@
                 }
             }
 
-            function check($elm) {
+            // function check($elm) {
+            function check() {
                 var error = false;
-                if ($elm.attr("id") == "txtValor") {
-                    updateVal(3);
-                }
-//                } else if ($elm.attr("id") == "txtValorIva" || $(this).attr("id") == "txtValorIndi") {
+                // if ($elm.attr("id") == "txtValor") {
+                //     updateVal(3);
+                // }
                 var str = "";
                 $("#txtValorIva, #txtIndirectos").each(function () {
                     var valor = parseFloat($.trim($(this).val()));
@@ -282,9 +270,7 @@
                     $("#tdTotal").text("0.00").data("val", 0);
                     $("#divError").html(str).show();
                 }
-//                }
 
-//                var factura = $.trim($("#txtFactura").val());
                 var rubro = $.trim($("#txtRubro").val());
                 var unidadId = $("#selUnidad").val();
                 var unidadText = $("#selUnidad option:selected").text();
@@ -323,9 +309,6 @@
                 $("#tbRubros").children("tr").each(function () {
                     var trData = $(this).data();
 
-//                    if (trData.factura == data.factura) {
-//                        msg += "<li>El número de factura " + trData.factura + " ya ha sido ingresado. Si necesita hacer cambios modifique el item ingresado.</li>";
-//                    }
                     if (trData.rubro == data.rubro) {
                         msg += "<li>El rubro " + trData.rubro + " ya ha sido ingresado. Si necesita hacer cambios modifique el item ingresado.</li>";
                     }
