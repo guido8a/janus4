@@ -68,6 +68,17 @@ class RubroOfController {
 
     def rubroPrincipalOf() {
         println("params  " + params)
+        def oferente = session.usuario
+        def cn = dbConnectionService.getConnection()
+        def obras = [:]
+        def sql = "select distinct obra.obra__id id, obracdgo||' - '||obranmbr nombre " +
+                "from obra, obof " +
+                "where obof.obra__id = obra.obra__id and obof.prsn__id = ${oferente.id}" +
+                "order by 1"
+        cn.eachRow(sql.toString()) { r ->
+            obras[r.id] = r.nombre
+        }
+
         def rubro
         def campos = ["codigo": ["Código", "string"], "nombre": ["Descripción", "string"]]
         def grupos = []
@@ -75,7 +86,7 @@ class RubroOfController {
         def choferes = []
         def aux = Parametros.get(1)
         def grupoTransporte = DepartamentoItem.findAllByTransporteIsNotNull()
-        def obra = Obra.findByOferente(session.usuario)
+//        def obra = Obra.findByOferente(session.usuario)
         def listaRbro = [1: 'Materiales', 2: 'Mano de obra', 3: 'Equipos']
         def listaItems = [1: 'Nombre', 2: 'Código']
 
@@ -88,15 +99,18 @@ class RubroOfController {
         grupos.add(Grupo.get(4))
         grupos.add(Grupo.get(5))
         grupos.add(Grupo.get(6))
+        def obra
         if (params.idRubro) {
+            obra = Obra.get(params.obra)
             rubro = Item.get(params.idRubro)
             def items = RubroOferente.findAllByRubroAndObra(rubro, obra)
             items.sort { it.item.codigo }
+            println "items: ${items.id} ${items.item.id} rend: ${items.rendimiento}"
             [campos  : campos, listaRbro: listaRbro, listaItems: listaItems, rubro: rubro, grupos: grupos, items: items,
-             choferes: choferes, volquetes: volquetes, aux: aux, obra: obra]
+             choferes: choferes, volquetes: volquetes, aux: aux, obra: obra, obras: obras]
         } else {
             [campos   : campos, listaRbro: listaRbro, listaItems: listaItems, grupos: grupos, choferes: choferes,
-             volquetes: volquetes, aux: aux, obra: obra]
+             volquetes: volquetes, aux: aux, obra: obra, obras: obras]
         }
     }
 
@@ -421,14 +435,15 @@ class RubroOfController {
     } //delete
 
     def getPrecios() {
-//        println "get precios sin item " + params
+        println "get precios sin item " + params
         def items = []
         def parts = params.ids.split("#")
+        def obra = Obra.get(params.obra)
         def res = ""
         parts.each {
             if (it.size() > 0) {
                 def item = RubroOferente.get(it).item
-                def precio = Precio.findByItemAndOferente(item, session.usuario)
+                def precio = Precio.findByItemAndOferenteAndObra(item, session.usuario, obra)
                 if (!precio) {
                     res += item.id + ";0&"
                 } else {
@@ -633,7 +648,7 @@ class RubroOfController {
 
 
     def listaRubros() {
-//        println "listaItems" + params
+        println "listaItems" + params
         def datos;
         def listaRbro = ['grpo__id', 'grpo__id', 'grpo__id']
         def listaItems = ['itemnmbr', 'itemcdgo']
@@ -643,7 +658,7 @@ class RubroOfController {
         def txwh = "where tpit__id = 2 and undd.undd__id = item.undd__id and dprt.dprt__id = item.dprt__id and " +
                 "sbgr.sbgr__id = dprt.sbgr__id and item.item__id in (select item__id from vlof, obra, obof " +
                 "where obof.prsn__id =  ${session.usuario.id} and obra.obra__id = obof.obra__id and " +
-                "obratipo in ('F', 'O') and vlof.obra__id = obra.obra__id)"
+                "obratipo in ('F', 'O') and vlof.obra__id = obra.obra__id and obra.obra__id = ${params.obra} ) "
         def sqlTx = ""
 //        def item = listaRbro[params.buscarTipo.toInteger()-1]
         def bsca = listaItems[params.buscarPor.toInteger() - 1]
@@ -656,7 +671,7 @@ class RubroOfController {
         def cn = dbConnectionService.getConnection()
         datos = cn.rows(sqlTx)
 //        println "data: ${datos[0]}"
-        [data: datos, tipo: params.tipo, rubro: params.rubro]
+        [data: datos, tipo: params.tipo, rubro: params.rubro, obra_id: params.obra]
     }
 
     def buscadorItemsOferente_ajax() {
@@ -907,18 +922,18 @@ class RubroOfController {
                                 }
                             }
 
-                            println "reg: $rgst"
+//                            println "reg: $rgst"
 
                             /** va antes que ssnRbro = true porque se analiza en la siguiente pasada **/
                             if (sccnRubro) {
                                 rbroundd = rgst[cols[params.rbroundd]]
                                 sccnEq = false; sccnMo = false; sccnMt = false; sccnTr = false; sccnRubro = false
-                                println "Rubro: $rbronmbr $rbroundd"
+//                                println "Rubro: $rbronmbr $rbroundd"
                                 /** insertar rubro */
                                 if (rbroundd) {
                                     rbronmbr = rbronmbr.toString().replaceAll("'", "''")
-                                    sql = "select item__id from vlob where obra__id = ${params.obra} and vlobordn = ${ordn}"
-                                    def item_id = cn.rows(sql.toString())[0].item__id
+                                    sql = "select item__id from vlof where obra__id = ${params.obra} and vlofordn = ${ordn}"
+                                    def item_id = cn.rows(sql.toString())[0]?.item__id
                                     if (!item_id) {
                                         errores += "<li>No se encontró rurbo ${ordn} (linea: ${row.rowNum + 1})</li>"
                                         println "No se encontró rubro con id ${ordn}"
@@ -954,7 +969,7 @@ class RubroOfController {
                             /** --------------- Equipos del rbro ordn ---------------**/
                             if ( rgst[cols[params.cldaEq]] == params.titlEq) {
                                 sccnEq = true; sccnMo = false; sccnMt = false; sccnTr = false; sccnRubro = false
-                                println "Equipos..... $sccnEq --> rbro: $ordn $rbronmbr"
+//                                println "Equipos..... $sccnEq --> rbro: $ordn $rbronmbr"
                             }
                             if (sccnEq) {
 //                                cdgo, undd, nmbr, cntd, trfa, pcun, rndm, csto
@@ -978,7 +993,7 @@ class RubroOfController {
                             /** --------------- Mano de Obra del rbro ordn ---------------**/
                             if ( rgst[cols[params.cldaMo]] == params.titlMo) {
                                 sccnEq = false; sccnMo = true; sccnMt = false; sccnTr = false; sccnRubro = false
-                                println "Mano de Obra.... $sccnMo --> rbro: $ordn $rbronmbr"
+//                                println "Mano de Obra.... $sccnMo --> rbro: $ordn $rbronmbr"
                             }
                             if (sccnMo) {
 //                                cdgo, undd, nmbr, cntd, trfa, pcun, rndm, csto
@@ -1002,7 +1017,7 @@ class RubroOfController {
                             /** --------------- Materiales del rbro ordn ---------------**/
                             if ( rgst[cols[params.cldaMt]] == params.titlMt) {
                                 sccnEq = false; sccnMo = false; sccnMt = true; sccnTr = false; sccnRubro = false
-                                println "Mano de Mat... $sccnMt --> rbro: $ordn $rbronmbr"
+//                                println "Mano de Mat... $sccnMt --> rbro: $ordn $rbronmbr"
                             }
                             if (sccnMt) {
 //                                cdgo, undd, nmbr, cntd, trfa, pcun, rndm, csto
@@ -1019,35 +1034,40 @@ class RubroOfController {
                                     cntd = 0
                                 }
                                 if (cntd && sccnMt) {
-                                    errores += insertaDtrb(oferente.id, obra, ordn, cdgo, nmbr, undd, cntd, trfa, pcun, rndm, csto, "MT")
+                                    errores += insertaDtrb(oferente.id, obra, ordn, cdgo, nmbr, undd, cntd, pcun, pcun, 0, csto, "MT")
                                 }
                             }
 
                             /** --------- Transporte de Materiales del rbro ordn ---------**/
                             if ( rgst[cols[params.cldaTr]] == params.titlTr) {
                                 sccnEq = false; sccnMo = false; sccnMt = false; sccnTr = true; sccnRubro = false
-                                println "Transp... $sccnTr --> rbro: $ordn $rbronmbr"
+//                                println "Transp... $sccnTr --> rbro: $ordn $rbronmbr"
                             }
                             if (sccnTr) {
 //                                cdgo, undd, nmbr, cntd, trfa, pcun, rndm, csto
-                                println "transporte: $rgst"
+//                                println "transporte: $rgst"
                                 try {
                                     cdgo = rgst[cols[params.cdgoTr]]
                                     nmbr = rgst[cols[params.nmbrTr]]
                                     undd   = params.unddTr? rgst[cols[params.unddTr]] : ''
                                     peso   = params.pesoTr? rgst[cols[params.pesoTr]].toDouble() : ''
+                                    println "ok-peso"
                                     dstn   = params.dstnTr? rgst[cols[params.dstnTr]].toDouble() : ''
+                                    println "ok-dstn"
                                     cntd = rgst[cols[params.cntdTr]].toDouble() //cantidad
-//                                    trfa = rgst[cols[params.trfaTr]].toDouble() //tarifa, jornal dtrbpcun
-                                    pcun = rgst[cols[params.pcunTr]].toDouble() //costo
-//                                    rndm = rgst[cols[params.rndmTr]].toDouble()
+                                    println "ok-cntd"
+                                    trfa = rgst[cols[params.pcunTr]].toDouble() //tarifa, jornal dtrbpcun
+                                    println "ok-trfa"
+//                                    pcun = rgst[cols[params.pcunTr]].toDouble() //costo
                                     csto = rgst[cols[params.cstoTr]].toDouble()
+                                    println "ok-transporte"
                                 } catch (e) {
                                     csto = 0
                                 }
                                 if (csto  && sccnTr) {
-                                    println "inserta transporte $ordn $nmbr"
-                                    errores += insertaTrnp(oferente.id, obra, ordn, cdgo, nmbr, undd, peso, cntd, trfa, pcun, rndm, csto, dstn)
+//                                    println "inserta transporte $ordn $nmbr $csto"
+//                                    insertaTrnp(oferente, obra, ordn, cdgo, nmbr, undd, peso, cntd, trfa, pcun, csto, dstn)
+                                    errores += insertaTrnp(oferente.id, obra, ordn, cdgo, nmbr, undd, peso, cntd, trfa, trfa, csto, dstn)
                                 }
                             }
 
@@ -1092,7 +1112,7 @@ class RubroOfController {
                 "obra__id = ${obra} and ofrbordn = ${ordn}"
         def ofrb_id = cn.rows(sql.toString())[0]?.ofrb__id ?: 0
         if (!ofrb_id) {
-            errores += "<li>No se encontró rurbo ${ordn} (linea: ${row.rowNum + 1})</li>"
+            errores += "<li>No se encontró rurbo ${ordn}</li>"
             println "No se encontró rubro con id ${ordn}"
         } else {
             sql = "select dtrb__id from dtrb where ofrb__id = ${ofrb_id} and " +
@@ -1102,14 +1122,14 @@ class RubroOfController {
                 sql = "update dtrb set dtrbcdgo = '${cdgo}', dtrbnmbr = '${nmbr}', " +
                         "dtrbundd = '${undd}', dtrbcntd = $cntd, dtrbpcun = $trfa, " +
                         "dtrbcsto = $pcun, dtrbrndm = $rndm, dtrbsbtt = $csto, dtrbtipo = '${tipo}' " +
-                        "where dtrb__id = ${ofrb_id}"
+                        "where dtrb__id = ${dtrb_id}"
             } else {
                 sql = "insert into dtrb(ofrb__id, dtrbcdgo, dtrbnmbr, dtrbundd, dtrbcntd, dtrbpcun, " +
                         "dtrbcsto, dtrbrndm, dtrbsbtt, dtrbtipo) " +
-                        "values (${ofrb_id}, '${cdgo}', '${nmbr}', '${undd}', $cntd, $pcun, " +
+                        "values (${ofrb_id}, '${cdgo}', '${nmbr}', '${undd}', $cntd, $trfa, " +
                         "$pcun, $rndm, $csto, '${tipo}' )"
             }
-            println "sql: $sql"
+            println "sql $tipo: $sql"
             try {
                 cn.execute(sql.toString())
             } catch (e) {
@@ -1119,15 +1139,15 @@ class RubroOfController {
         return errores
     }
 
-    def insertaTrnp(oferente, obra, ordn, cdgo, nmbr, undd, peso, cntd, trfa, pcun, rndm, csto, dstn) {
+    def insertaTrnp(oferente, obra, ordn, cdgo, nmbr, undd, peso, cntd, trfa, pcun, csto, dstn) {
         def cn = dbConnectionService.getConnection()
         def errores = ""
         def sql = "select ofrb__id from ofrb where prsn__id = ${oferente} and " +
                 "obra__id = ${obra} and ofrbordn = ${ordn}"
         def ofrb_id = cn.rows(sql.toString())[0]?.ofrb__id ?: 0
-        println "insertaTrnp $oferente, $obra, $ordn, $cdgo, $nmbr, $undd, $peso, $cntd, $trfa, $pcun, $rndm, $csto, $dstn"
+        println "insertaTrnp $oferente, $obra, $ordn, $cdgo, $nmbr, $undd, $peso, $cntd, $trfa, $pcun, $csto, $dstn"
         if (!ofrb_id) {
-            errores += "<li>No se encontró rurbo ${ordn} (linea: ${row.rowNum + 1})</li>"
+            errores += "<li>No se encontró rurbo ${ordn}</li>"
             println "No se encontró rubro con id ${ordn}"
         } else {
             println "porcesa transporte: dstn: $dstn"
@@ -1137,14 +1157,14 @@ class RubroOfController {
             if (dtrb_id) {
                 sql = "update dtrb set dtrbcdgo = '${cdgo}', dtrbnmbr = '${nmbr}', " +
                         "dtrbundd = '${undd}', dtrbcntd = $cntd, dtrbpcun = $trfa, " +
-                        "dtrbcsto = $pcun, dtrbrndm = $rndm, dtrbsbtt = $csto, dtrbpeso = $peso," +
+                        "dtrbcsto = $pcun, dtrbrndm = 1, dtrbsbtt = $csto, dtrbpeso = $peso," +
                         "dtrbdstn = $dstn" +
                         "where dtrb__id = ${ofrb_id}"
             } else {
                 sql = "insert into dtrb(ofrb__id, dtrbcdgo, dtrbnmbr, dtrbundd, dtrbcntd, dtrbpcun, " +
                         "dtrbcsto, dtrbrndm, dtrbsbtt, dtrbpeso, dtrbdstn, dtrbtipo) " +
                         "values (${ofrb_id}, '${cdgo}', '${nmbr}', '${undd}', $cntd, $trfa, " +
-                        "$pcun, $rndm, $csto, $peso, $dstn, 'TR' )"
+                        "$pcun, 1, $csto, $peso, $dstn, 'TR' )"
             }
             println "sql: $sql"
             try {

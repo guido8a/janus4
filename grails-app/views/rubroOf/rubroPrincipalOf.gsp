@@ -4,7 +4,7 @@
 <head>
     <meta name="layout" content="main">
     <title>
-        Rubros
+        Rubros Oferente
     </title>
 </head>
 
@@ -57,6 +57,21 @@
     </div>
 
 </div>
+
+<div class="col-md-12" role="main" style="margin-top: 10px;margin-left: 10px; margin-bottom: 0px;
+  border-bottom: 1px solid black;height: 30px; width: 97%">
+    <div class="col-md-12">
+        <div class="col-md-2">
+            <b style="margin-left: 20px">Obra Ofertada:</b>
+        </div>
+        <div class="col-md-10">
+            <g:select name="obra"
+                      from="${obras}" optionKey="key" optionValue="value"
+                      style="width: 100%; margin-left: -80px; background-color: #ddeddd"/>
+        </div>
+    </div>
+</div>
+
 
 
 <div id="list-grupo" class="col-md-12" role="main" style="margin-top: 10px;margin-left: -10px">
@@ -161,8 +176,9 @@
     <input type="hidden" id="actual_row">
     <div style="border-bottom: 1px solid black;padding-left: 50px;position: relative;float: left;width: 95%" id="tablas">
         <p class="css-vertical-text">Composición</p>
-
         <div class="linea" style="height: 98%;"></div>
+
+        %{--Equipos--}%
         <table class="table table-bordered table-striped table-condensed table-hover" style="margin-top: 10px;">
             <thead>
             <tr>
@@ -211,6 +227,8 @@
             </g:each>
             </tbody>
         </table>
+
+        %{--Mano de Obra--}%
         <table class="table table-bordered table-striped table-condensed table-hover">
             <thead>
             <tr>
@@ -242,6 +260,7 @@
                         </td>
 
                         <td class="col_jornal" style="display: none;text-align: right" id="i_${rub.item.id}"></td>
+
                         <td class="col_hora" style="display: none;text-align: right"></td>
                         <td class="col_rend rend" style="width: 50px;text-align: right"  valor="${rub.rendimiento}">
                             <g:formatNumber number="${rub.rendimiento}" format="##,#####0" minFractionDigits="5" maxFractionDigits="7" locale="ec"  />
@@ -620,7 +639,8 @@
                 criterio: criterio,
                 ordenar: ordenar,
                 band: band,
-                rubro: '${rubro?.id}'
+                rubro: '${rubro?.id}',
+                obra: $("#obra").val()
             },
             success: function (msg) {
                 if(band === 'composicion'){
@@ -1201,7 +1221,8 @@
                     listas+=$("#lista_1").val()+"#"+$("#lista_2").val()+"#"+$("#lista_3").val()+"#"+$("#lista_4").val()+
                         "#"+$("#lista_5").val()+"#"+$("#ciudad").val();
 
-                    var datos = "tipo=" + tipo+"&listas="+listas+"&ids=";
+//                    var datos = "tipo=" + tipo+"&listas="+listas+"&ids=";
+                    var datos = "obra=" + ${obra.id} + "&tipo=" + tipo+"&listas="+listas+"&ids=";
                     $.each(items, function () {
                         datos += $(this).attr("id") + "#"
                     });

@@ -60,7 +60,8 @@
         }else{
             $("#listaRbro").dialog("close");
             var cd = cargarLoader("Cargando...");
-            location.href = "${g.createLink(controller: 'rubroOf', action: 'rubroPrincipalOf')}?idRubro=" + ad
+            location.href = "${g.createLink(controller: 'rubroOf', action: 'rubroPrincipalOf')}?idRubro=" + ad +
+                    '&obra=' + ${obra_id}
         }
 
         // $("#modal-rubro").dialog("close");
