@@ -28,17 +28,19 @@
                         <a href="#" class="btn btn-xs btn-info btnVerMaterial" data-id="${item?.item__id}" title="Ver">
                             <i class="fas fa-search"></i>
                         </a>
-                        <a href="#" class="btn btn-xs btn-success btnHistorico" data-item="${item?.item__id}" data-lugar="${item?.lgar__id}" title="Histórico de Precios">
-                            <i class="fas fa-edit"></i>
-                        </a>
-                        <g:if test="${perfil}">
-                            <a href="#" class="btn btn-xs btn-warning btnEspecificacionesMaterial" data-id="${item?.item__id}" title="Especificaciones e Ilustración" ${janus.Item.get(item?.item__id)?.codigoEspecificacion ?: 'disabled'}>
-                                <i class="fas fa-book"></i>
+                        <g:if test="${session.perfil.codigo == 'CSTO'}">
+                            <a href="#" class="btn btn-xs btn-success btnHistorico" data-item="${item?.item__id}" data-lugar="${item?.lgar__id}" title="Histórico de Precios">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <g:if test="${perfil}">
+                                <a href="#" class="btn btn-xs btn-warning btnEspecificacionesMaterial" data-id="${item?.item__id}" title="Especificaciones e Ilustración" ${janus.Item.get(item?.item__id)?.codigoEspecificacion ?: 'disabled'}>
+                                    <i class="fas fa-book"></i>
+                                </a>
+                            </g:if>
+                            <a href="#" class="btn btn-xs btn-danger btnEliminarVarios" data-item="${item?.item__id}" data-nombre="${item.itemnmbr}" title="Borrar varios precios">
+                                <i class="fas fa-trash"></i>
                             </a>
                         </g:if>
-                        <a href="#" class="btn btn-xs btn-danger btnEliminarVarios" data-item="${item?.item__id}" data-nombre="${item.itemnmbr}" title="Borrar varios precios">
-                            <i class="fas fa-trash"></i>
-                        </a>
                     </td>
                 </tr>
                 <g:set var="itemIDAnterior" value="${item.item__id}"/>
@@ -176,8 +178,8 @@
         bootbox.confirm({
             title: "Eliminar varios precios",
             message: '<i class="fa fa-trash text-danger fa-3x"></i>' + '<p style="font-size: 14px; margin-left: 40px">' +
-            'Está seguro de borrar los precios del item: <strong>' + nombre +  '</strong> registrados a la <br>fecha: <strong>' +
-            $("#datetimepicker2").val() + ' en todas las listas de precios<strong></p>' ,
+                'Está seguro de borrar los precios del item: <strong>' + nombre +  '</strong> registrados a la <br>fecha: <strong>' +
+                $("#datetimepicker2").val() + ' en todas las listas de precios<strong></p>' ,
             buttons: {
                 cancel: {
                     label: '<i class="fa fa-times"></i> Cancelar',

@@ -2876,6 +2876,7 @@ itemId: item.id
 
     def tablaMaterialesPrecios_ajax(){
 //        println("--> " + params)
+        def persona = Persona.get(session.usuario.id)
         def cn = dbConnectionService.getConnection()
         def grupo = Grupo.get(params.buscarPor)
         def grupos = SubgrupoItems.findAllByGrupo(grupo)
@@ -2907,11 +2908,12 @@ itemId: item.id
         def items = cn.rows(sql.toString());
         cn.close()
 
-        return [materiales: materiales, grupo: grupo, id: params.id, departamento: subgrupoBuscar, perfil: perfil, items: items]
+        return [materiales: materiales, grupo: grupo, id: params.id, departamento: subgrupoBuscar, perfil: perfil, items: items, persona: persona]
     }
 
     def tablaPrecios_ajax(){
         println("--> " + params)
+        def persona = Persona.get(session.usuario.id)
         def cn = dbConnectionService.getConnection()
         def grupo = Grupo.get(params.buscarPor)
         def grupos = SubgrupoItems.findAllByGrupo(grupo)
@@ -2934,7 +2936,7 @@ itemId: item.id
         def items = cn.rows(sql.toString());
         cn.close()
 
-        return [materiales: materiales, grupo: grupo, id: params.id, departamento: subgrupoBuscar, perfil: perfil, items: items]
+        return [materiales: materiales, grupo: grupo, id: params.id, departamento: subgrupoBuscar, perfil: perfil, items: items, persona: persona]
     }
 
     def listas_ajax(){

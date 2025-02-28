@@ -782,7 +782,9 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
 
             <a href="#" id="btnMapa" class="btn"><i class="fa fa-map-marker"></i> Mapa</a>
 
-            <a href="#" id="btnVeri" class="btn"><i class="fa fa-check"></i> Precios no Act.</a>
+            <g:if test="${session.perfil.codigo == 'CSTO'}">
+                <a href="#" id="btnVeri" class="btn"><i class="fa fa-check"></i> Precios no Act.</a>
+            </g:if>
 
             <g:if test="${obra?.tipo != 'D'}">
 
