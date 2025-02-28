@@ -269,7 +269,7 @@
     <div id="comp" style="display: none">
         <h3>Comparación de rubros</h3><br>
 
-        <p>Listado de contratos con preupuesto externo</p>
+        <p>Listado de contratos con presupuesto externo</p>
         <p>Rubros contratados comparados con los rubros presupuestados para verificación de precios y rendimientos.</p>
     </div>
 
