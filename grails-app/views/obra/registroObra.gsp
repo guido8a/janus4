@@ -793,12 +793,12 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                 </g:link>
 
             </g:if>
-            <g:if test="${obra?.estado == 'R' && obra?.tipo == 'D' && obra?.fechaInicio}">
-                <a href="${g.createLink(controller: 'planillasAdmin', action: 'list', id: obra?.id)}"
-                   id="btnPlanillas" class="btn">
-                    <i class="fa fa-file"></i> Planillas
-                </a>
-            </g:if>
+%{--            <g:if test="${obra?.estado == 'R' && obra?.tipo == 'D' && obra?.fechaInicio}">--}%
+%{--                <a href="${g.createLink(controller: 'planillasAdmin', action: 'list', id: obra?.id)}"--}%
+%{--                   id="btnPlanillas" class="btn">--}%
+%{--                    <i class="fa fa-file"></i> Planillas--}%
+%{--                </a>--}%
+%{--            </g:if>--}%
     </div>
 </g:if>
 
