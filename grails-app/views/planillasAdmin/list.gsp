@@ -85,24 +85,24 @@
                 <td class="numero" style="width: 10%;">
                     <g:formatNumber number="${planillaInstance.valor}" maxFractionDigits="2" minFractionDigits="2" format="##,##0" locale="ec"/>
                 </td>
-%{--                <td style="width: 15%;">--}%
-%{--                    <g:if test="${planillaInstance.tipoPlanilla.codigo == 'M'}">--}%
-%{--                        <g:link controller="detallePlanillaCostoAdmin" action="detalleCosto" id="${planillaInstance.id}" params="[obra: obra.id]" rel="tooltip" title="Detalles" class="btn btn-xs btn-success">--}%
-%{--                            <i class="fa fa-search"></i>--}%
-%{--                        </g:link>--}%
-%{--                        <g:link controller="reportesPlanillasAdmin" action="reporteMateriales" id="${planillaInstance.id}" params="[obra: obra.id]" rel="tooltip" title="Imprimir" class="btn btn-xs btn-info">--}%
-%{--                            <i class="fa fa-print"></i>--}%
-%{--                        </g:link>--}%
-%{--                    </g:if>--}%
-%{--                    <g:else>--}%
-%{--                        <g:link action="detalle" id="${planillaInstance.id}" params="[obra: obra.id]" rel="tooltip" title="Detalles" class="btn btn-xs btn-success">--}%
-%{--                            <i class="fa fa-search"></i>--}%
-%{--                        </g:link>--}%
-%{--                        <g:link controller="reportesPlanillasAdmin" action="reporteDetalle" id="${planillaInstance.id}" params="[obra: obra.id]" rel="tooltip" title="Imprimir" class="btn btn-xs btn-info">--}%
-%{--                            <i class="fa fa-print"></i>--}%
-%{--                        </g:link>--}%
-%{--                    </g:else>--}%
-%{--                </td>--}%
+                <td style="width: 15%;">
+                    <g:if test="${planillaInstance.tipoPlanilla.codigo == 'M'}">
+                        <g:link controller="detallePlanillaCostoAdmin" action="detalleCosto" id="${planillaInstance.id}" params="[obra: obra.id]" rel="tooltip" title="Detalles" class="btn btn-xs btn-success">
+                            <i class="fa fa-search"></i>
+                        </g:link>
+                        <g:link controller="reportesPlanillasAdmin" action="reporteMateriales" id="${planillaInstance.id}" params="[obra: obra.id]" rel="tooltip" title="Imprimir" class="btn btn-xs btn-info">
+                            <i class="fa fa-print"></i>
+                        </g:link>
+                    </g:if>
+                    <g:else>
+                        <g:link action="detalle" id="${planillaInstance.id}" params="[obra: obra.id]" rel="tooltip" title="Detalles" class="btn btn-xs btn-success">
+                            <i class="fa fa-search"></i>
+                        </g:link>
+                        <g:link controller="reportesPlanillasAdmin" action="reporteDetalle" id="${planillaInstance.id}" params="[obra: obra.id]" rel="tooltip" title="Imprimir" class="btn btn-xs btn-info">
+                            <i class="fa fa-print"></i>
+                        </g:link>
+                    </g:else>
+                </td>
             </tr>
         </g:each>
         </tbody>
