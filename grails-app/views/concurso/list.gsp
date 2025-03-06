@@ -20,6 +20,13 @@
 
 <body>
 
+
+<div class="row">
+    <div class=" col-md-12 breadcrumb" style="font-size: 18px; text-align: center; font-weight: bold">
+        Lista de procesos
+    </div>
+</div>
+
 <g:if test="${flash.message}">
     <div class="span12">
         <div class="alert ${flash.clase ?: 'alert-info'}" role="status">
@@ -75,7 +82,7 @@
 
     </div>
 </div>
-<div class="alert alert-info">
+<div class="alert alert-info" style="font-size: 14px">
     <p> * Haga clic con el botón derecho del ratón sobre el concurso para acceder al menú de acciones.</p>
     <p> * Recuerde que el formato del código del proceso es: MCO-<strong>número</strong>-GADLR-20</p>
 </div>
@@ -86,7 +93,6 @@
 
 <div id="tabla" role="main">
 </div>
-
 
 <div class="modal hide fade" id="modal-Delete">
     <div class="modal-header" id="modalDeleteHeader">

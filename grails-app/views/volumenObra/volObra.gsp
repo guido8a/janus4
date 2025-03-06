@@ -44,7 +44,6 @@
 </div>
 
 <div class="row" role="navigation" style="margin-left: 35px;">
-
     <div class="col-md-1 btn-group" role="navigation">
         <a href="${g.createLink(controller: 'obra', action: 'registroObra', params: [obra: obra?.id])}"
            class="btn btn-info btn-new" id="atras" title="Regresar a la obra">
@@ -53,7 +52,7 @@
         </a>
     </div>
 
-    <div class="alert alert-info col-md-10" style="font-size: 14px;">
+    <div class="alert-info alert col-md-11" style="font-size: 14px;">
         Volúmenes de la obra: ${obra.nombre + " (" + obra.codigo + ")"}
         <input type="hidden" id="override" value="0">
     </div>
@@ -78,24 +77,7 @@
 </div>
 
 <div class="row">
-    %{--    <div class="col-md-6 btn-group" role="navigation" style="margin-left: 35px;">--}%
-    %{--        <a href="${g.createLink(controller: 'obra', action: 'registroObra', params: [obra: obra?.id])}"--}%
-    %{--           class="btn btn-info btn-new" id="atras" title="Regresar a la obra">--}%
-    %{--            <i class="fa fa-arrow-left"></i>--}%
-    %{--            Regresar--}%
-    %{--        </a>--}%
-    %{--        <a href="#" class="btn btn-ajax btn-new" id="calcular" title="Calcular precios">--}%
-    %{--            <i class="fa fa-table"></i>--}%
-    %{--            Calcular--}%
-    %{--        </a>--}%
-    %{--        <a href="#" class="btn btn-ajax btn-new" id="reporteGrupos" title="Reporte Grupos/Subgrupos" style="display: none">--}%
-    %{--            <i class="fa fa-print"></i>--}%
-    %{--            Reporte Grupos/Subgrupos--}%
-    %{--        </a>--}%
-    %{--    </div>--}%
-
     <div class="col-md-12">
-
         <div class="col-md-3" style="width: 135px;">
             <b>Tipo de Obra:</b><g:select name="grupos" id="grupos" class="form-control" from="${grupoFiltrado}" optionKey="id" optionValue="descripcion"
                                           style="margin-left: 0px; width: 130px; font-size: 11px" value="${janus.Grupo.findByDireccion(obra.departamento.direccion)?.id}"/>
@@ -103,29 +85,13 @@
         </div>
 
         <div class="col-md-4">
-            %{--            <b>Crear Subpresupuesto / Ingresar Rubros:</b>--}%
             <b>Crear Subpresupuesto</b>
             <div class="col-md-9" id="sp">
 
                 <span id="div_cmb_sub">
-                    %{--                    <g:select name="subpresupuesto" from="${subpreFiltrado}" optionKey="id" optionValue="descripcion"--}%
-                    %{--                              id="subPres"/>--}%
+
                 </span>
             </div>
-
-            %{--            <div class="col-md-3">--}%
-            %{--                <g:if test="${persona?.departamento?.codigo == 'CRFC'}">--}%
-            %{--                    <a href="#" class="btn btn-success boton" id="btnCrearSP" title="Crear subpresupuesto" style="margin-top: -10px;">--}%
-            %{--                        <i class="fa fa-plus"></i>--}%
-            %{--                    </a>--}%
-            %{--                    <a href="#" class="btn btn-danger boton" id="btnBorrarSP" title="Borrar subpresupuesto" style="margin-top: -10px;">--}%
-            %{--                        <i class="fa fa-minus"></i>--}%
-            %{--                    </a>--}%
-            %{--                    <a href="#" class="btn boton btn-success" id="btnEditarSP" title="Editar subpresupuesto" style="margin-top: -10px;">--}%
-            %{--                        <i class="fa fa-edit"></i>--}%
-            %{--                    </a>--}%
-            %{--                </g:if>--}%
-            %{--            </div>--}%
         </div>
 
         <div class="col-md-2" style="margin-top: 30px">
@@ -143,10 +109,6 @@
         </div>
 
         <div class="col-md-4" style="margin-top: 20px;">
-            %{--            <a href="#" class="btn btn-info" id="calcular" title="Calcular precios">--}%
-            %{--                <i class="fa fa-table"></i>--}%
-            %{--                Calcular--}%
-            %{--            </a>--}%
             <a href="#" class="btn btn-success" id="btnAgregarRubros" title="Agregar rubros">
                 <i class="fa fa-plus-square"></i>
                 Agregar rubros
@@ -160,17 +122,17 @@
 </div>
 
 <g:if test="${obra.valor > vmc}">
-    <div style="margin-top: 10px;" id="tx-aviso">
+    <div class="col-md-12" style="margin-top: 10px;" id="tx-aviso">
         <div class="alert alert-warning" style="font-weight: bold; font-size: 13px;">
-            <i class="icon icon-info-sign icon-2x pull-left"></i>
-            <p>
+            <i class="fa fa-exclamation-triangle fa-2x text-info"></i>
+
                 El presupuesto supera el límite de menor cuantía según lo registrado,
-                por lo que no es obligatoria la elaboración de la fórmula polinómica ni cuadrilla tipo
+                Por lo que no es obligatoria la elaboración de la fórmula polinómica ni cuadrilla tipo
                 para registrar esta obra.
-            </p>
+
             <g:if test="${obra.valor >= valorLicitacion}">
-                <i class="icon icon-info-sign icon-2x pull-left"></i>
-                <p>El presupuesto corresponde a una Licitación por lo que es obligatorio presentar el VAE.</p>
+                <i class="fa fa-exclamation-triangle fa-2x"></i>
+                El presupuesto corresponde a una Licitación por lo que es obligatorio presentar el VAE.
             </g:if>
         </div>
     </div>
@@ -178,74 +140,9 @@
 
 <div id="list-grupo" class="col-md-12" role="main" style="margin-top: 20px;margin-left: 0px">
     <div class="borde_abajo" style="padding-left: 5px;position: relative; height: 92px">
-
         <div class="row-fluid" style="margin-left: 0px">
-            %{--            <div class="col-md-3" style="width: 135px; ">--}%
-            %{--                <b>Tipo de Obra:</b><g:select name="grupos" id="grupos" from="${grupoFiltrado}" optionKey="id" optionValue="descripcion"--}%
-            %{--                                              style="margin-left: 0px; width: 130px; font-size: 11px" value="${janus.Grupo.findByDireccion(obra.departamento.direccion)?.id}"/>--}%
-
-            %{--            </div>--}%
-
             <div class="row-fluid" style="margin-left: 0px">
-                %{--                <div class="col-md-4" style="width: 450px">--}%
-                %{--                    <b>Crear Subpresupuesto / Ingresar Rubros:</b>--}%
-                %{--                    <span id="sp">--}%
-                %{--                        <span id="div_cmb_sub">--}%
-                %{--                            <g:select name="subpresupuesto" from="${subpreFiltrado}" optionKey="id" optionValue="descripcion"--}%
-                %{--                                      id="subPres"/>--}%
-                %{--                        </span>--}%
-                %{--                    </span>--}%
 
-                %{--                    <g:if test="${persona?.departamento?.codigo == 'CRFC'}">--}%
-                %{--                        <a href="#" class="btn btn-success boton" id="btnCrearSP" title="Crear subpresupuesto" style="margin-top: -10px;">--}%
-                %{--                            <i class="fa fa-plus"></i>--}%
-                %{--                        </a>--}%
-                %{--                        <a href="#" class="btn btn-danger boton" id="btnBorrarSP" title="Borrar subpresupuesto" style="margin-top: -10px;">--}%
-                %{--                            <i class="fa fa-minus"></i>--}%
-                %{--                        </a>--}%
-                %{--                        <a href="#" class="btn boton btn-success" id="btnEditarSP" title="Editar subpresupuesto" style="margin-top: -10px;">--}%
-                %{--                            <i class="fa fa-edit"></i>--}%
-                %{--                        </a>--}%
-                %{--                    </g:if>--}%
-                %{--                </div>--}%
-
-                %{--                                <div class="col-md-2">--}%
-                %{--                                    <b>Código</b>--}%
-                %{--                                    <input type="text" style="font-size: 10px" id="item_codigo" class="allCaps">--}%
-                %{--                                    <input type="hidden" id="item_id">--}%
-                %{--                                </div>--}%
-
-                %{--                <div class="col-md-3" style="margin-left: 1px;">--}%
-                %{--                    <b>Rubro</b>--}%
-                %{--                    <input type="text" style="width: 300px;font-size: 10px" id="item_nombre" readonly="">--}%
-                %{--                </div>--}%
-
-                %{--                <div class="col-md-12" role="main" style="margin-top: 20px;margin-left: -10px">--}%
-                %{--                    <div class="col-md-6" style="margin-left: 0px; width: 720px;">--}%
-                %{--                        <b>Descripción:</b>--}%
-                %{--                        <input type="text" style="width: 620px" id="item_descripcion" value="">--}%
-                %{--                    </div>--}%
-                %{--                    <div class="col-md-3" style="margin-left: 0px; width: 180px;" id="lbl_cntd">--}%
-                %{--                        <b>Cantidad:</b>--}%
-                %{--                        <input type="text" style="width: 90px;text-align: right" id="item_cantidad" value="">--}%
-                %{--                    </div>--}%
-
-                %{--                    <div class="col-md-1" style="margin-left: -10px; width: 120px;">--}%
-                %{--                        <b>Orden:</b>--}%
-                %{--                        <input type="text" style="width: 50px;text-align: right" id="item_orden"--}%
-                %{--                               value="${(volumenes?.size() > 0) ? volumenes.size() + 1 : 1}">--}%
-                %{--                    </div>--}%
-
-                %{--                    <div class="col-md-1" style="margin-left: -20px;margin-top:-5px; width: 85px;">--}%
-                %{--                        <input type="hidden" value="" id="vol_id">--}%
-                %{--                        <g:if test="${obra?.estado != 'R' && duenoObra == 1}">--}%
-                %{--                            <a href="#" class="btn btn-xs btn-primary" title="Agregar" id="item_agregar">--}%
-                %{--                                <i class="fa fa-plus"></i></a>--}%
-                %{--                            <a href="#" class="btn btn-xs btn-danger" title="Limpiar" id="item_limpiar">--}%
-                %{--                                <i class="fa fa-ban"></i></a>--}%
-                %{--                        </g:if>--}%
-                %{--                    </div>--}%
-                %{--                </div>--}%
             </div>
         </div>
 

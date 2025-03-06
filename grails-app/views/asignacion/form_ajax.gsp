@@ -10,9 +10,10 @@
 </head>
 
 <body>
-
-<div class="col-md-12 breadcrumb" style="font-size: 18px; text-align: center">
-    <h3>Lista de asignaciones presupuestarias por año</h3>
+<div class="row">
+    <div class="col-md-12 breadcrumb" style="font-size: 18px; text-align: center">
+        <h3>Lista de asignaciones presupuestarias por año</h3>
+    </div>
 </div>
 
 <div class="row" id="busqueda" style="overflow: hidden">
@@ -54,73 +55,73 @@
 
 %{--<div id="list-grupo" class="col-md-12" role="main" style="margin-top: 10px;">--}%
 
-    %{--    <div id="create-Asignacion" style="border-bottom: 1px solid black;margin-bottom: 10px">--}%
-    %{--        <g:form class="form-horizontal frm_asgn" name="frmSave-Asignacion" action="save">--}%
-    %{--            <g:hiddenField name="id" value="${asignacionInstance?.id}"/>--}%
+%{--    <div id="create-Asignacion" style="border-bottom: 1px solid black;margin-bottom: 10px">--}%
+%{--        <g:form class="form-horizontal frm_asgn" name="frmSave-Asignacion" action="save">--}%
+%{--            <g:hiddenField name="id" value="${asignacionInstance?.id}"/>--}%
 
-    %{--            <div class="col-md-12 control-group">--}%
-    %{--                <h3> <span class="col-md-2 badge badge-secondary">Año</span></h3>--}%
+%{--            <div class="col-md-12 control-group">--}%
+%{--                <h3> <span class="col-md-2 badge badge-secondary">Año</span></h3>--}%
 
-    %{--                <div class="col-md-3 controls" style="width: 120px;">--}%
-    %{--                    <g:select id="anio" name="anio.id" from="${janus.pac.Anio.list()}" optionKey="id" optionValue="anio"--}%
-    %{--                              class="form-control required" value="${actual.id}" style="width: 100px;"/>--}%
-    %{--                    <p class="help-block ui-helper-hidden"></p>--}%
-    %{--                </div>--}%
-    %{--            </div>--}%
+%{--                <div class="col-md-3 controls" style="width: 120px;">--}%
+%{--                    <g:select id="anio" name="anio.id" from="${janus.pac.Anio.list()}" optionKey="id" optionValue="anio"--}%
+%{--                              class="form-control required" value="${actual.id}" style="width: 100px;"/>--}%
+%{--                    <p class="help-block ui-helper-hidden"></p>--}%
+%{--                </div>--}%
+%{--            </div>--}%
 
-    %{--            <div class="col-md-12 control-group">--}%
+%{--            <div class="col-md-12 control-group">--}%
 
-    %{--                <h3> <span class="col-md-2 badge badge-secondary">Partida</span></h3>--}%
+%{--                <h3> <span class="col-md-2 badge badge-secondary">Partida</span></h3>--}%
 
-    %{--                <div style="width: 1000px; margin-left: 190px;">--}%
+%{--                <div style="width: 1000px; margin-left: 190px;">--}%
 
-    %{--                    <input class="col-md-3 form-control" type="text" style="width: 300px;font-size: 12px" id="item_presupuesto">--}%
+%{--                    <input class="col-md-3 form-control" type="text" style="width: 300px;font-size: 12px" id="item_presupuesto">--}%
 
-    %{--                    <input type="hidden" id="item_prsp" name="prespuesto.id">--}%
+%{--                    <input type="hidden" id="item_prsp" name="prespuesto.id">--}%
 
-    %{--                    <input class="col-md-4 form-control" type="text" style="width: 400px; font-size: 12px; margin-right: 5px" id="item_desc" disabled>--}%
+%{--                    <input class="col-md-4 form-control" type="text" style="width: 400px; font-size: 12px; margin-right: 5px" id="item_desc" disabled>--}%
 
-    %{--                    <a href="#" class="btn btn-success" title="Crear nueva partida" id="item_agregar_prsp">--}%
-    %{--                        <i class="fa fa-file"></i>--}%
-    %{--                        Nueva partida--}%
-    %{--                    </a>--}%
-    %{--                    <a href="#" class="btn btn-warning" title="Crear nueva partida" id="prsp_editar" disabled>--}%
-    %{--                        <i class="fa fa-edit"></i>--}%
-    %{--                        Editar--}%
-    %{--                    </a>--}%
-    %{--                    <div class="col-md-12"></div>--}%
+%{--                    <a href="#" class="btn btn-success" title="Crear nueva partida" id="item_agregar_prsp">--}%
+%{--                        <i class="fa fa-file"></i>--}%
+%{--                        Nueva partida--}%
+%{--                    </a>--}%
+%{--                    <a href="#" class="btn btn-warning" title="Crear nueva partida" id="prsp_editar" disabled>--}%
+%{--                        <i class="fa fa-edit"></i>--}%
+%{--                        Editar--}%
+%{--                    </a>--}%
+%{--                    <div class="col-md-12"></div>--}%
 
-    %{--                    <div class="col-md-1 dato" >Fuente:</div>--}%
-    %{--                    <input class="form-control col-md-4 dato" type="text" style="width: 510px;font-size: 12px;" id="item_fuente" disabled> <div class="col-md-12"></div>--}%
+%{--                    <div class="col-md-1 dato" >Fuente:</div>--}%
+%{--                    <input class="form-control col-md-4 dato" type="text" style="width: 510px;font-size: 12px;" id="item_fuente" disabled> <div class="col-md-12"></div>--}%
 
-    %{--                    <div class="col-md-1 dato" >Programa:</div>--}%
-    %{--                    <input class="form-control col-md-4 dato" type="text" style="width: 510px;font-size: 12px;" id="item_prog" disabled> <div class="col-md-12"></div>--}%
+%{--                    <div class="col-md-1 dato" >Programa:</div>--}%
+%{--                    <input class="form-control col-md-4 dato" type="text" style="width: 510px;font-size: 12px;" id="item_prog" disabled> <div class="col-md-12"></div>--}%
 
-    %{--                    <div class="col-md-1 dato" >Subprograma:</div>--}%
-    %{--                    <input class="form-control col-md-4 dato" type="text" style="width: 510px;;font-size: 12px;" id="item_spro" disabled> <div class="col-md-12"></div>--}%
+%{--                    <div class="col-md-1 dato" >Subprograma:</div>--}%
+%{--                    <input class="form-control col-md-4 dato" type="text" style="width: 510px;;font-size: 12px;" id="item_spro" disabled> <div class="col-md-12"></div>--}%
 
-    %{--                    <div class="col-md-1 dato" >Proyecto:</div>--}%
-    %{--                    <input class="form-control col-md-4 dato" type="text" style="width: 510px;;font-size: 12px;" id="item_proy" disabled>  <div class="col-md-12"></div>--}%
+%{--                    <div class="col-md-1 dato" >Proyecto:</div>--}%
+%{--                    <input class="form-control col-md-4 dato" type="text" style="width: 510px;;font-size: 12px;" id="item_proy" disabled>  <div class="col-md-12"></div>--}%
 
-    %{--                </div>--}%
-    %{--            </div>--}%
+%{--                </div>--}%
+%{--            </div>--}%
 
-    %{--            <div class="col-md-12 control-group">--}%
-    %{--                <h3> <span class="col-md-2 badge badge-secondary">Valor</span></h3>--}%
+%{--            <div class="col-md-12 control-group">--}%
+%{--                <h3> <span class="col-md-2 badge badge-secondary">Valor</span></h3>--}%
 
-    %{--                <div class="col-md-2 controls">--}%
-    %{--                    <g:textField name="valor" id="valor" class="form-control number required" value="0.00" style="width: 150px;"/>--}%
-    %{--                    <p class="help-block ui-helper-hidden"></p>--}%
-    %{--                </div>--}%
+%{--                <div class="col-md-2 controls">--}%
+%{--                    <g:textField name="valor" id="valor" class="form-control number required" value="0.00" style="width: 150px;"/>--}%
+%{--                    <p class="help-block ui-helper-hidden"></p>--}%
+%{--                </div>--}%
 
-    %{--                <div class="col-md-2" >--}%
-    %{--                    <span>--}%
-    %{--                        <a href="#" id="guardar" class="btn btn-success"><i class="fa fa-save"></i> Guardar</a>--}%
-    %{--                    </span>--}%
-    %{--                </div>--}%
-    %{--            </div>--}%
-    %{--        </g:form>--}%
-    %{--    </div>--}%
+%{--                <div class="col-md-2" >--}%
+%{--                    <span>--}%
+%{--                        <a href="#" id="guardar" class="btn btn-success"><i class="fa fa-save"></i> Guardar</a>--}%
+%{--                    </span>--}%
+%{--                </div>--}%
+%{--            </div>--}%
+%{--        </g:form>--}%
+%{--    </div>--}%
 
 %{--    <div id="list-Asignacion" class="col-md-12" style="border-top: 1px solid black; margin-top: 15px">--}%
 

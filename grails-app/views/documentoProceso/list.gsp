@@ -10,7 +10,7 @@
 
 <body>
 
-<div class="tituloTree">
+<div class="alert alert-info" style="font-size: 14px">
     <g:if test="${contrato}">
         Documentos del contrato de la obra: <span style="font-weight: bold;">${contrato.obra.descripcion?.toUpperCase()}</span>
     </g:if>

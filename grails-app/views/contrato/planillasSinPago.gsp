@@ -6,13 +6,8 @@
 </head>
 <body>
 <div class="row">
-    <div class="col-md-12">
-        <h1>
-            Planillas y Pagos
-        </h1>
-    </div>
-    <div class=" col-md-12 alert alert-info" style="font-size: 16px;">
-        Detalle de planillas odenado por fecha de ingreso.
+    <div class=" col-md-12 breadcrumb" style="font-size: 18px; text-align: center; font-weight: bold">
+        Planillas y pagos
     </div>
 </div>
 <div class="row" style="margin-top:15px">

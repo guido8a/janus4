@@ -6,10 +6,8 @@
 </head>
 <body>
 <div class="row">
-    <div class="col-md-12">
-        <h1>
-            Obras de oferentes
-        </h1>
+    <div class=" col-md-12 breadcrumb" style="font-size: 18px; text-align: center; font-weight: bold">
+       Obras de oferentes
     </div>
 </div>
 <div class="row-fluid" style="margin-top:15px">

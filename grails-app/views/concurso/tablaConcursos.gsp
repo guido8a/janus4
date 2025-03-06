@@ -1,6 +1,4 @@
 <div id="list-Concurso" role="main">
-    ${raw(msg)}
-
     <table class="table table-bordered table-striped table-condensed table-hover">
         <thead>
         <tr style="width: 100%;">
@@ -17,7 +15,7 @@
     </table>
 </div>
 
-<div class="" style="width: 99.7%;height: 600px; overflow-y: auto;float: right; margin-top: -20px">
+<div class="" style="width: 99.7%;height: 500px; overflow-y: auto;float: right; margin-top: -20px">
     <table class="table-bordered table-condensed table-hover" style="width: 100%">
         <tbody>
         <g:each in="${data}" status="i" var="cncr">
@@ -37,6 +35,9 @@
     </table>
 </div>
 
+<g:if test="${data.size() > 20}">
+   <div class="alert alert-warning"> Su búsqueda ha generado más de 20 resultados, use más letras para especificar mejor la búsqueda </div>
+</g:if>
 
 <script type="text/javascript">
 
