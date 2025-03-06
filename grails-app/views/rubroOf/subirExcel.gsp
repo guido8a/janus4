@@ -37,15 +37,19 @@
 <body>
 
 <div class="row">
-    <div class="col-md-1">
-        <a href="#" class="btn btn-primary btnRegresar">
+    <div class="col-md-3">
+        <a href="#" class="btn btn-primary" id="btnRegresar">
             <i class="fa fa-arrow-left"></i>
             Regresar
         </a>
+        <a href="#"  class="btn btn-danger" id="btnBorrar">
+            <i class="fa fa-trash"></i>
+            Eliminar los APU
+        </a>
     </div>
 
-    <div class="col-md-11" style="margin-top: -15px">
-        <h3 style="text-align: center">Cargar valores de los APU del oferente: ${oferente.nombre} ${oferente.apellido}</h3>
+    <div class="col-md-9" style="margin-top: -15px;">
+        <h3>Cargar valores de los APU del oferente: ${oferente.nombre} ${oferente.apellido}</h3>
     </div>
 
 </div>
@@ -346,9 +350,14 @@
 
 <script type="text/javascript">
 
-    $(".btnRegresar").click(function () {
+    $("#btnRegresar").click(function () {
         location.href = "${createLink(controller: 'rubroOf', action: 'rubroPrincipalOf')}?contrato=" +
             '${contrato?.id}'
+    });
+
+    $("#btnBorrar").click(function () {
+        location.href = "${createLink(controller: 'rubroOf', action: 'borrarApus')}?obra=" +
+            $("#obra").val()
     });
 
     $("#btnSubmitCrono").click(function () {

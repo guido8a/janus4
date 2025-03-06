@@ -227,9 +227,11 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                              style="margin-top: -15px; margin-left: 500px; color: #008; font-size: 14px;">COGESTIÓN</div>
                     </g:if>
                     <g:else>
-                        <div class="span 12"
-                             style="margin-top: -15px; margin-left: 400px; color: #008; font-size: 18px;
-                             font-family: 'lucida grande', tahoma, verdana, arial, sans-serif ">ADMINISTRACIÓN DIRECTA / COGESTIÓN</div>
+                        <div class="col-md-12"
+                             style="margin-top: -30px; margin-left: 400px; color: #008; font-size: 18px;
+                             font-family: 'lucida grande', tahoma, verdana, arial, sans-serif; display: block;
+                             background-color: #dddddd; width: 400px; border-style: solid; border-width: 1px;
+                             ">ADMINISTRACIÓN DIRECTA / COGESTIÓN</div>
                     </g:else>
                 </g:else>
             </g:if>

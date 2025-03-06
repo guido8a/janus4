@@ -1222,7 +1222,7 @@
                         "#"+$("#lista_5").val()+"#"+$("#ciudad").val();
 
 //                    var datos = "tipo=" + tipo+"&listas="+listas+"&ids=";
-                    var datos = "obra=" + ${obra.id} + "&tipo=" + tipo+"&listas="+listas+"&ids=";
+                    var datos = "obra=" + ${obra?.id} + "&tipo=" + tipo+"&listas="+listas+"&ids=";
                     $.each(items, function () {
                         datos += $(this).attr("id") + "#"
                     });

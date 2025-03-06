@@ -1362,5 +1362,16 @@ class RubroOfController {
         render "ok"
     }
 
+    def borrarApus() {
+        println "borrarApus: $params"
+        def cn = dbConnectionService.getConnection()
+        def sql = "delete from dtrb where ofrb__id in (select ofrb__id from ofrb where obra__id = ${params.obra})"
+        cn.execute(sql.toString())
+
+        sql = "delete from ofrb where obra__id = ${params.obra}"
+        cn.execute(sql.toString())
+
+        render "Ok"
+    }
 
 } //fin controller
