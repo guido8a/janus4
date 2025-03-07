@@ -272,7 +272,6 @@
 
 <script type="text/javascript">
 
-
     $("#btnMarcarTodos").click(function () {
         clicTodos();
     });
@@ -536,7 +535,7 @@
                                             node.attr("valor", valor).trigger("change_node.jstree");
                                             $("#modal-formula").dialog("close");
                                             updateSumaTotal();
-                                            location.reload();
+                                            // location.reload();
                                         }
                                     }
                                 });
