@@ -41,7 +41,7 @@
 
     function updateCoef($row) {
         var nombreOk = true;
-        if ($.trim($row.attr("nombre")) == "") {
+        if ($.trim($row.attr("nombre")) === "") {
             nombreOk = false;
         }
         $("#spanCoef").text($.trim($row.attr("numero")) + ": " + $.trim($row.attr("nombre"))).parent().data("nombreOk", nombreOk);
@@ -81,6 +81,17 @@
             $("#btnRemoveSelection, #btnAgregarItems").addClass("disabled");
         }
         updateTotal(total);
+    }
+
+    function clicTodos(){
+        // jQuery('table tr td').each( function( cmp ) {
+        //     console.log( jQuery(this).text() );
+        // } );
+
+        $("#tblDisponibles").children("tbody").children("tr").each(function () {
+            clickTr($(this))
+        });
+
     }
 
     $(function () {

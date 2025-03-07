@@ -184,21 +184,7 @@
     </div>
 </div>
 
-%{--<div class="col-md-12">--}%
-%{--    <div class="col-md-4" id="divFormula">--}%
-
-%{--    </div>--}%
-%{--    <div class="col-md-4" id="divIndices">--}%
-
-%{--    </div>--}%
-%{--    <div class="col-md-4" id="divItemsNuevos">--}%
-
-%{--    </div>--}%
-%{--</div>--}%
-
-
 <div id="list-grupo" class="col-md-12" role="main" style="margin-top: 3px;margin-left: 0;">
-
     <div class="area ui-corner-all" id="formula">
 
         <div id="formulaLeft" class="col-md-6">
@@ -217,6 +203,10 @@
                             <a href="#" id="btnRemoveSelection" class="btn disabled">
                                 <i class="fa fa-minus"></i>
                                 Quitar selección
+                            </a>
+                            <a href="#" id="btnMarcarTodos" class="btn btn-info">
+                                <i class="fa fa-plus-circle"></i>
+                                Marcar todos
                             </a>
                         </g:if>
                     </div>
@@ -282,6 +272,11 @@
 
 <script type="text/javascript">
 
+
+    $("#btnMarcarTodos").click(function () {
+        clicTodos();
+    });
+
     cargarFormulaPolinomica('${tipo}');
 
     function cargarFormulaPolinomica(tipo){
@@ -298,20 +293,6 @@
             }
         });
     }
-
-    %{--function cargarIndices(){--}%
-    %{--    $.ajax({--}%
-    %{--        type: 'POST',--}%
-    %{--        url: '${createLink(controller: 'formulaPolinomica', action: 'tablaIndices_ajax')}',--}%
-    %{--        data:{--}%
-    %{--            obra: '${obra?.id}',--}%
-    %{--            subpresupuesto: '${subpre}'--}%
-    %{--        },--}%
-    %{--        success: function (msg) {--}%
-    %{--            $("#divIndices").html(msg)--}%
-    %{--        }--}%
-    %{--    });--}%
-    %{--}--}%
 
     function cargarItemsNuevos(formula){
         $.ajax({
@@ -357,7 +338,6 @@
     var $tabla = $("#tblDisponibles");
 
     var icons = {
-        %{--mover:  "${assetPath(src:"tree/box.lugar_all.png")}",--}%
         mover:  "${assetPath(src:"tree/box.png")}",
         it:  "${assetPath(src:"tree/box.png")}",
         fp:  "${assetPath(src:"tree/boxes.png")}"
@@ -411,7 +391,6 @@
             }
         }
     }
-
 
     function treeNodeEvents($items) {
         $items.bind({
@@ -496,8 +475,6 @@
         var num = $.trim(node.attr("numero"));
         var hijos = node.children("ul").length;
 
-        console.log("id " + nodeStrId.split("_")[1])
-
         switch (nodeTipo) {
             case "fp":
 
@@ -542,7 +519,6 @@
                             cantNombre = 0;
                         }
 
-
                         if (cantNombre === 0) {
                             if (valor !== "") {
                                 btnSave.replaceWith(spinner);
@@ -578,7 +554,6 @@
                         var valor = $.trim($("#valorSgrc").val());
                         var indiceNombre = $("#indice option:selected").text();
                         var cantNombre = 0;
-                        console.log('Compara');
                         var $spans = $("#tree").find("span:contains('" + indiceNombre + "')");
 
                         $spans.each(function () {
@@ -592,10 +567,7 @@
                             cantNombre = 0;
                         }
 
-                        console.log('cantNombre:', cantNombre, ' Valor', valor);
-
                         if (cantNombre === 0) {
-//                            if (valor !== "") {
                                 btnSaveSgrc.replaceWith(spinner);
                                 $.ajax({
                                     type    : "POST",
@@ -617,8 +589,6 @@
                                         }
                                     }
                                 });
-//                            } else {
-//                            }
                         } else {
                             bootbox.alert('<i class="fa fa-exclamation-triangle text-info fa-3x"></i> ' +
                                 '<strong style="font-size: 14px">' + "No puede ingresar dos coeficientes con el mismo nombre" +
@@ -647,10 +617,7 @@
                             cantNombre = 0;
                         }
 
-                        console.log('cantNombre:', cantNombre, ' Valor', valor);
-
                         if (cantNombre === 0) {
-//                            if (valor !== "") {
                                 btnSaveSgrc.replaceWith(spinner);
                                 $.ajax({
                                     type    : "POST",
@@ -672,8 +639,6 @@
                                         }
                                     }
                                 });
-//                            } else {
-//                            }
                         } else {
                             bootbox.alert('<i class="fa fa-exclamation-triangle text-info fa-3x"></i> ' +
                                 '<strong style="font-size: 14px">' + "No puede ingresar dos coeficientes con el mismo nombre" +
@@ -709,8 +674,7 @@
                         }
                     };
 
-                    console.log('sugiere:', sugiere);
-                    if(sugiere === 'false' && num[0] == 'p'){
+                    if(sugiere === 'false' && num[0] === 'p'){
                         menuItems.sugeridos = {
                             label            : "<i class='fa fa-edit'></i> Índices sugeridos",
                             separator_before : false,
@@ -740,7 +704,7 @@
                         };
                     }
 
-                    if(sugiere === 'false' && num[0] == 'c'){
+                    if(sugiere === 'false' && num[0] === 'c'){
                         menuItems.sugeridosCt = {
                             label            : "<i class='fa fa-edit'></i> Índices sugeridos Cuadrilla",
                             separator_before : false,
@@ -820,10 +784,6 @@
                             }
                         };
                     }
-
-
-
-
                 }
                 break;
 
@@ -957,7 +917,6 @@
                                                 var tdPrec = $("<td class='numero'>").append(number_format(nodePrecio, 5, '.', ''));
 
                                                 tr.append(tdItem).append(tdDesc);
-//                                                            if (nodeGrupo.toString() == "2") {
                                                 if ("${params.tipo}" === "c") {
                                                     tr.append(tdPrec);
                                                 }
@@ -993,7 +952,6 @@
                         </g:else>
                     }
                 };
-
                 break;
         }
         return menuItems;
@@ -1033,7 +991,6 @@
     $("#btnMoverCancelar").click(function () {
         $("#modalMover").modal("hide");
     });
-
 
     function clickTr($tr) {
         var $sps = $("#spanSuma");
