@@ -356,8 +356,49 @@
     });
 
     $("#btnBorrar").click(function () {
-        location.href = "${createLink(controller: 'rubroOf', action: 'borrarApus')}?obra=" +
-            $("#obra").val()
+
+
+        bootbox.confirm({
+            title: "Eliminar valores cargados",
+            message: "<i class='fa fa-exclamation-triangle text-warning fa-3x'></i> Está seguro de querer borrar los valores cargados del oferente para esta obra?.",
+            buttons: {
+                cancel: {
+                    label: '<i class="fa fa-times"></i> Cancelar',
+                    className: 'btn-primary'
+                },
+                confirm: {
+                    label: '<i class="fa fa-check"></i> Aceptar',
+                    className: 'btn-success'
+                }
+            },
+            callback: function (result) {
+                if(result){
+                    var g = cargarLoader("Cargando...");
+                    $.ajax({
+                        type: "POST",
+                        url: "${createLink(controller: 'rubroOf', action: 'borrarApus')}",
+                        data: {
+                            obra: $("#obra").val()
+                        },
+                        success: function (msg) {
+                            g.modal("hide");
+                            var parts = msg.split("_");
+                            if(parts[0] === 'Ok'){
+                                log("Borrados correctamente","success");
+                                setTimeout(function () {
+                                    location.reload();
+                                }, 800);
+                            }else{
+                                log("Error al borrar", "error")
+                            }
+                        }
+                    })
+                }
+            }
+        });
+
+        %{--location.href = "${createLink(controller: 'rubroOf', action: 'borrarApus')}?obra=" +--}%
+        %{--    $("#obra").val()--}%
     });
 
     $("#btnSubmitCrono").click(function () {

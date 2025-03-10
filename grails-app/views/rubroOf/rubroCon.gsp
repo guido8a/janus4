@@ -83,23 +83,23 @@
 <script type="text/javascript">
 
     $("#obra").change(function () {
-       cargarRubro();
+        cargarRubro();
     });
 
     cargarRubro();
 
     function cargarRubro() {
         var id = $("#obra").val();
-            $.ajax({
-                type: "POST",
-                url: "${createLink(controller: 'rubroOf', action:'listaRubros_ajax')}",
-                data: {
-                   id: id
-                },
-                success: function (msg) {
-                    $("#divRubros").html(msg);
-                }
-            });
+        $.ajax({
+            type: "POST",
+            url: "${createLink(controller: 'rubroOf', action:'listaRubros_ajax')}",
+            data: {
+                id: id
+            },
+            success: function (msg) {
+                $("#divRubros").html(msg);
+            }
+        });
     }
 
     $("#btnRegresar").click(function () {
@@ -110,7 +110,28 @@
     $("#btnProcesar").click(function () {
         var cntr = $("#obra").val();
         var indi = $("#indi").val();
-        location.href = "${createLink(controller: 'rubroOf', action: 'procesarRubrosOf')}?contrato=" + cntr + '&indi=' + indi
+        %{--location.href = "${createLink(controller: 'rubroOf', action: 'procesarRubrosOf')}?contrato=" + cntr + '&indi=' + indi--}%
+
+        $.ajax({
+            type: "POST",
+            url: "${createLink(controller: 'rubroOf', action:'procesarRubrosOf')}",
+            data: {
+                contrato: cntr,
+                indi: indi
+            },
+            success: function (msg) {
+                var parts = msg.split("_");
+                if(parts[0] === 'ok'){
+                    log("Rubros validados correctamente","success");
+                    setTimeout(function () {
+                        location.reload();
+                    }, 800);
+                }else{
+                    log("Error al validar", "error")
+                }
+            }
+        });
+
     });
 
     $("#btnEmpatar").click(function () {
