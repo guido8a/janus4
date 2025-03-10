@@ -150,6 +150,7 @@ class LoginController {
         byte[] digest = ms_sha1.digest(passp.getBytes())
         def key = digest.encodeBase64()
         println "key: ${digest.encodeBase64()}"
+        println "url: ${url}"
 
         def post = new URL(url).openConnection();
 //        def message = "{'identidadWs':  {" +
