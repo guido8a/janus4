@@ -483,7 +483,7 @@
                     var btnCancelSgrcCt = $('<a href="#" class="btn">Cancelar</a>');
                     var btnSave = $('<a href="#"  class="btn btn-success" style="color: #fff;"><i class="fa fa-save"></i> Guardar</a>');
                     var btnSaveSgrc = $('<a href="#"  class="btn btn-success" style="color: #fff;">' +
-                        '<i class="fa fa-save"></i> Guardar Sgrc</a>');
+                        '<i class="fa fa-save"></i> Guardar Sugerencia</a>');
                     var btnSaveSgrcCt = $('<a href="#"  class="btn btn-success" style="color: #fff;">' +
                         '<i class="fa fa-save"></i> Guardar Sgrc</a>');
 

@@ -359,8 +359,9 @@
 
 
         bootbox.confirm({
-            title: "Eliminar valores cargados",
-            message: "<i class='fa fa-exclamation-triangle text-warning fa-3x'></i> Está seguro de querer borrar los valores cargados del oferente para esta obra?.",
+            title: "Eliminar los APUS del oferente",
+            message: "<i class='fa fa-exclamation-triangle text-warning fa-3x'></i> Está seguro de que desea borrar " +
+            "todos los APU cargados del oferente para la obra:<br><strong>" + $("#obra").text() + "</strong>",
             buttons: {
                 cancel: {
                     label: '<i class="fa fa-times"></i> Cancelar',

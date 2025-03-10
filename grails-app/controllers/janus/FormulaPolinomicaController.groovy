@@ -1078,7 +1078,7 @@ class FormulaPolinomicaController {
                 "from itfp, fpob " +
                 "where itfp.fpob__id = fpob.fpob__id " +
                 "group by indc__id, item__id " +
-                "having count(*) > 1 " +
+                "having count(*) > 2 " +
                 "order by 1, 3 desc"
 //        println "sql: $sql"
         resl = cn.execute(sql.toString())
