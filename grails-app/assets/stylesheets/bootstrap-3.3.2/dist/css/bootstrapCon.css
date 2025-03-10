@@ -51,7 +51,7 @@ a {
 a:active,
 a:hover {
   /*outline: 0;*/
-  color: #1b8e36;
+  color: #519083;
   text-decoration: underline;
 }
 abbr[title] {
@@ -1593,7 +1593,7 @@ pre code {
   padding-left: 15px;
   margin-right: auto;
   margin-left: auto;
-  background-color: #1a7031;
+  background-color: #519083;
 }
 .row {
   margin-right: -15px;
@@ -2309,7 +2309,7 @@ th {
 }
 .table-hover > tbody > tr:hover {
   /*background-color: #bcc3e5;*/
-  background-color: #1b8e36;
+  background-color: #519083;
 }
 table col[class*="col-"] {
   position: static;
@@ -3448,12 +3448,12 @@ tbody.collapse.in {
   /*TODO AQUI DROPDOWN ELEMENTOS BARRA SUPERIOR*/
   text-decoration: none;
   color: #ffffff;
-  background-color: #1a7031;
-  background-image: -moz-linear-gradient(top, #1b8e36, #1a7031);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#1b8e36), to(#1a7031));
-  background-image: -webkit-linear-gradient(top, #1b8e36, #1a7031);
-  background-image: -o-linear-gradient(top, #1b8e36, #1a7031);
-  background-image: linear-gradient(to bottom, #1b8e36, #1a7031);
+  background-color: #519083;
+  background-image: -moz-linear-gradient(top, #519083, #519083);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#519083), to(#519083));
+  background-image: -webkit-linear-gradient(top, #519083, #519083);
+  background-image: -o-linear-gradient(top, #519083, #519083);
+  background-image: linear-gradient(to bottom, #519083, #519083);
   background-repeat: repeat-x;
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff0088cc', endColorstr='#ff0077b3', GradientType=0);
 }
@@ -4093,7 +4093,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   }
 }
 .navbar-collapse {
-  background-color: #1a7031;
+  background-color: #519083;
   padding-right: 15px;
   padding-left: 15px;
   overflow-x: visible;
@@ -4410,7 +4410,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 .navbar-default {
   background-color: #fff;
   /*border-color: #ddd;*/
-  border-color: #1a7031;
+  border-color: #519083;
 }
 .navbar-default .navbar-brand {
   color: #1e2c58;
@@ -4517,7 +4517,7 @@ fieldset[disabled] .navbar-default .btn-link:focus {
   background-image: -webkit-linear-gradient(top, #222222, #111111);
   background-image: -o-linear-gradient(top, #222222, #111111);
   /*TODO AQUI BARRA DE NAVEGACION SUPERIOR*/
-  background-image: linear-gradient(to bottom, #1a7031, #1b8e36);     /*gdo*/
+  background-image: linear-gradient(to bottom, #519083, #519083);     /*gdo*/
   background-repeat: repeat-x;
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff222222', endColorstr='#ff111111', GradientType=0);
   border-color: #252525;
@@ -4526,7 +4526,7 @@ fieldset[disabled] .navbar-default .btn-link:focus {
 .navbar-inverse .nav li.dropdown.open.active > .dropdown-toggle {
   /*background-color: #20a1e2;  /*gdo*/
   /*TODO AQUI CLICK ELEMENTOS BARRA SUPERIOR HOVER*/
-  background-color: #1a7031;  /*gdo*/
+  background-color: #519083;  /*gdo*/
   /*color: #ff981f;*/
   color: #000000;
 }

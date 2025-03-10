@@ -59,7 +59,7 @@
         text-shadow: -2px 2px 1px rgba(0, 0, 0, 0.25);
     <g:if test="${janus.Parametros.findByEmpresaLike('SEP-C-GADPP')}">
     %{--<g:if test="${empr.sigla == message(code: 'ambiente2')}">--}%
-        color: #1a7031;
+        color: #519083;
     </g:if>
     <g:else>
         /*color: #6a5830;*/
@@ -72,7 +72,7 @@
     .bordes {
     <g:if test="${janus.Parametros.findByEmpresaLike('SEP-C-GADPP')}">
     %{--<g:if test="${empr.sigla == message(code: 'ambiente2')}">--}%
-        background: #1a7031;
+        background: #519083;
     </g:if>
     <g:else>
         background: #40525e;
