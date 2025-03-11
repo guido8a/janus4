@@ -248,7 +248,7 @@ class LoginController {
                 println "perfiles: $perf"
                 def perfiles = []
                 perf.each { p ->
-                    println "añade a perfiles $p activo:${p.estaActivo}"
+//                    println "añade a perfiles $p activo:${p.estaActivo}"
                     if (p.estaActivo) {
                         perfiles.add(p)
                     }

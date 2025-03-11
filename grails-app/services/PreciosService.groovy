@@ -219,7 +219,7 @@ class PreciosService {
             }
         }
 
-        println "sql " + sql
+//        println "sql " + sql
         cn.eachRow(sql.toString()) { row ->
             res.add(row.precio)
         }
