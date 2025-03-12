@@ -6,11 +6,11 @@
         <div class="col-md-6">
             <span class="grupo">
                 <label for="cedula" class="col-md-4 control-label">
-                    Cédula o RUC(Empresas)
+                    Cédula
                 </label>
 
                 <span class="col-md-6">
-                    <g:textField name="cedula" maxlength="13" class="form-control input-sm required digits" value="${personaInstance?.cedula}"/>
+                    <g:textField name="cedula" maxlength="10" minlength="10" class="form-control input-sm required digits" value="${personaInstance?.cedula}"/>
                 </span>
             </span>
         </div>
@@ -21,7 +21,6 @@
                 </label>
 
                 <span class="col-md-8">
-%{--                    <g:hiddenField name="departamento" class="" value="${seguridad.Prfl.findByCodigo("OFRT")?.id}"/>--}%
                     <g:textField name="perfilesTxt" class="form-control" value="${seguridad.Prfl.findByCodigo("OFRT")}" readonly="true"/>
                 </span>
             </span>
@@ -186,6 +185,29 @@
 
 <script type="text/javascript">
 
+    function validarNum(ev) {
+        /*
+         48-57      -> numeros
+         96-105     -> teclado numerico
+         188        -> , (coma)
+         190        -> . (punto) teclado
+         110        -> . (punto) teclado numerico
+         8          -> backspace
+         46         -> delete
+         9          -> tab
+         37         -> flecha izq
+         39         -> flecha der
+         */
+        return ((ev.keyCode >= 48 && ev.keyCode <= 57) ||
+            (ev.keyCode >= 96 && ev.keyCode <= 105) ||
+            ev.keyCode === 8 || ev.keyCode === 46 || ev.keyCode === 9 ||
+            ev.keyCode === 37 || ev.keyCode === 39);
+    }
+
+
+    $("#cedula").keydown(function (ev) {
+        return validarNum(ev);
+    });
 
     $('#fechaFin, #fechaInicio').datetimepicker({
         locale: 'es',
