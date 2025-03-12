@@ -68,17 +68,14 @@ th, td {
             </th>
         </tr>
         </thead>
-        <tbody id="tabla_material">
-
-        </tbody>
     </table>
 </div>
 
 <div class="" style="width: 99.7%;height: 400px; overflow-y: auto; margin-top: -20px">
+    <g:set var="total" value="${0}"/>
     <table class="table-bordered table-striped table-condensed table-hover" style="width: 100%">
         <tbody>
         <g:if test="${valores}">
-            <g:set var="total" value="${0}"/>
             <g:each in="${valores}" var="val" status="j">
                 <tr class="item_row" id="${val.item__id}" item="${val}" sub="${val.sbpr__id}">
                     <td style="width: 3%;" class="orden">${val.vlobordn}</td>
@@ -100,16 +97,6 @@ th, td {
                     </td>
                 </tr>
             </g:each>
-
-            <tr class="breadcrumb">
-                <td colspan="7" style="text-align: right; font-weight: bold; font-size: 16px">
-                    TOTAL
-                </td>
-                <td style="text-align: right; font-weight: bold; font-size: 14px">
-                    <g:formatNumber number="${total}" format="##,##0" minFractionDigits="4"  maxFractionDigits="4"  locale="ec"/>
-                </td>
-            </tr>
-
         </g:if>
         <g:else>
             <div class="alert alert-info" style="text-align: center">
@@ -120,7 +107,22 @@ th, td {
     </table>
 </div>
 
-
+<div style="width: 99.7%;height: 50px; margin-top: 5px">
+    <table style="width: 100%">
+        <tbody>
+        <tr class="breadcrumb">
+            <td colspan="7" style="text-align: right; font-weight: bold; font-size: 14px">
+                TOTAL:
+            </td>
+            <td style="text-align: right; font-weight: bold; font-size: 14px">
+                <g:formatNumber number="${total}" format="##,##0" minFractionDigits="4"  maxFractionDigits="4"  locale="ec"/>
+            </td>
+            <td style="width: 1%">
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 
 <script type="text/javascript">
 
