@@ -43,22 +43,22 @@
 
     $(".btnSeleccionarRubro").click(function () {
         var id = $(this).data("id");
-        var nombre = $(this).data("nombre");
-        bootbox.confirm({
-            title: "Empatar rubro ",
-            message: "<i class='fa fa-exclamation-triangle text-info fa-3x'></i> <strong style='font-size: 14px; text-align: center'> Está seguro de empatar ${rubro?.nombre}" + "<br>" + "con el rubro: " + nombre + " ?. </strong> ",
-            buttons: {
-                cancel: {
-                    label: '<i class="fa fa-times"></i> Cancelar',
-                    className: 'btn-primary'
-                },
-                confirm: {
-                    label: '<i class="fa fa-check"></i> Aceptar',
-                    className: 'btn-success'
-                }
-            },
-            callback: function (result) {
-                if(result){
+        // var nombre = $(this).data("nombre");
+        %{--bootbox.confirm({--}%
+        %{--    title: "Empatar rubro ",--}%
+        %{--    message: "<i class='fa fa-exclamation-triangle text-info fa-3x'></i> <strong style='font-size: 14px; text-align: center'> Está seguro de empatar ${rubro?.nombre}" + "<br>" + "con el rubro: " + nombre + " ?. </strong> ",--}%
+            // buttons: {
+            //     cancel: {
+            //         label: '<i class="fa fa-times"></i> Cancelar',
+            //         className: 'btn-primary'
+            //     },
+            //     confirm: {
+            //         label: '<i class="fa fa-check"></i> Aceptar',
+            //         className: 'btn-success'
+            //     }
+            // },
+            // callback: function (result) {
+            //     if(result){
                     var g = cargarLoader("Guardando...");
                     $.ajax({
                         type: "POST",
@@ -85,9 +85,9 @@
                             }
                         }
                     });
-                }
-            }
-        });
+            //     }
+            // }
+        // });
     })
 
 </script>

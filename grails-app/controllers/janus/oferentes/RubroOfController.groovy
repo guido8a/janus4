@@ -1318,7 +1318,7 @@ class RubroOfController {
     def tablaEmpatados_ajax(){
         println "tablaEmpatados_ajax: $params"
         def cn = dbConnectionService.getConnection()
-        def sql = "select distinct dtrbtipo, dtrbcdgo, dtrbnmbr, dtrbundd, dtrbtipo, itemnmbr, itemcdgo from dtrb, item, ofrb " +
+        def sql = "select distinct dtrb__id, dtrbtipo, dtrbcdgo, dtrbnmbr, dtrbundd, dtrbtipo, itemnmbr, itemcdgo from dtrb, item, ofrb " +
                 "where item.item__id = dtrbjnid and dtrbtipo = '${params.tipo}' and ofrb.ofrb__id = dtrb.ofrb__id and " +
                 "obra__id = ${params.obra}" + // "and obra__id = ${params.obra}"
                 "order by itemcdgo"
@@ -1372,6 +1372,17 @@ class RubroOfController {
         cn.execute(sql.toString())
 
         render "Ok"
+    }
+
+
+    def quitarEmpateRubros_ajax(){
+        def original = DetalleRubro.get(params.id)
+        def rubros = DetalleRubro.findAllByIdJanus(original.idJanus)
+
+        println("--> " + rubros.nombre)
+        println("--> " + rubros.codigo)
+
+        render "ok"
     }
 
 } //fin controller

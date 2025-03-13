@@ -44,12 +44,6 @@
 <script type="text/javascript">
     var di;
 
-    %{--cargarGrupo();--}%
-
-    %{--function cargarGrupo(){--}%
-    %{--    $("#buscarGrupoRubro").val('${tipo}')--}%
-    %{--}--}%
-
     $("#btnBuscarRubro").click(function () {
         cargarTablaBusquedaRubro();
     });
@@ -87,7 +81,7 @@
                 ordenar: ordenar,
                 grupo: grupo,
                 rubro: '${rubro?.id}',
-                nmbr:  '${rubro?.nombre}',
+                nmbr:  '${rubro?.nombre}'
             },
             success: function (msg) {
                 d.modal("hide");

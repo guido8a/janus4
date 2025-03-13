@@ -2,15 +2,16 @@
     <table class="table table-bordered table-striped table-condensed table-hover">
         <thead>
         <tr style="width: 100%">
-          <th colspan="7">Rubros Empatados</th>
+          <th colspan="8">Rubros Empatados</th>
         </tr>
         <tr>
             <th style="width: 8%">Tipo</th>
             <th style="width: 8%">Código</th>
-            <th style="width: 37%">Descripción</th>
+            <th style="width: 32%">Descripción</th>
             <th style="width: 8%">Equivale a</th>
             <th style="width: 8%">Código</th>
             <th style="width: 30%">Descripción</th>
+            <th style="width: 5%">Acciones</th>
             <th style="width: 1%"></th>
         </tr>
         </thead>
@@ -25,10 +26,13 @@
                 <tr>
                     <td style="width: 8%">${d?.dtrbtipo == 'EQ' ? 'Equipos' : (d?.dtrbtipo == 'MT' ? 'Materiales' : 'Mano de Obra') }</td>
                     <td style="width: 8%">${d?.dtrbcdgo}</td>
-                    <td style="width: 37%">${d?.dtrbnmbr}</td>
+                    <td style="width: 32%">${d?.dtrbnmbr}</td>
                     <td style="width: 8%; text-align: center"><i class="fa fa-exchange-alt fa-3x text-success"></i> </td>
                     <td style="width: 8%">${d?.itemcdgo}</td>
                     <td style="width: 30%">${d?.itemnmbr}</td>
+                    <td style="width: 5%">
+                        <a href="#" class="btn btn-danger btn-xs btnDesempatar" data-id="${d?.dtrb__id}" title="Quitar empate"><i class="fa fa-trash"></i></a>
+                    </td>
                     <td style="width: 1%"></td>
                 </tr>
             </g:each>
@@ -41,3 +45,37 @@
         </tbody>
     </table>
 </div>
+
+<script type="text/javascript">
+
+    $(".btnDesempatar").click(function () {
+       var id = $(this).data("id");
+        var g = cargarLoader("Guardando...");
+        $.ajax({
+            type: "POST",
+            url: "${createLink(controller: 'rubroOf', action:'quitarEmpateRubros_ajax')}",
+            data: {
+                id: id
+            },
+            success: function (msg) {
+                g.modal("hide");
+                var parts = msg.split("_");
+                if(parts[0] === 'ok'){
+                    log(parts[1], "success");
+                    cargarTablaBusqueda();
+                    cargarTablaEmpatados();
+                }else{
+                    if(parts[0] === 'err'){
+                        bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
+                        return false;
+                    }else{
+                        log(parts[1], "error")
+                    }
+                }
+            }
+        });
+
+    })
+
+
+</script>
