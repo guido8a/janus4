@@ -19,12 +19,6 @@
         <i class="fa fa-times"></i>
         Cancelar
     </a>
-%{--    <g:if test="${rubro}">--}%
-%{--        <a href="#" class="btn btn-success btn-new" id="calcular" title="Calcular precios">--}%
-%{--            <i class="fa fa-table"></i>--}%
-%{--            Calcular--}%
-%{--        </a>--}%
-%{--    </g:if>--}%
 </div>
 
 <div class="col-md-4 btn-group" role="navigation">
@@ -52,14 +46,20 @@
     <div class="col-md-3">
         <a href="${createLink(controller: 'rubroOf', action: 'subirRubros', id: contrato?.id)}" class="btn" id="btnSubirRubros"
            title="Subir archivo excel">
-            <i class="fa fa-upload"></i> Subir Rubros de Oferta
+            <i class="fa fa-upload"></i> Subir Rubros Oferta
+        </a>
+    </div>
+    <div class="col-md-3">
+        <a href="#" class="btn  btn-success" id="btnEmparejar">
+            <i class="fa fa-check-circle"></i>
+            Emparejamiento
         </a>
     </div>
 
     <div class="col-md-3">
         <a href="${createLink(controller: 'rubroOf', action: 'subirExcelApu', id: contrato?.id)}" class="btn" id="btnSubirExcel"
            title="Subir archivo excel">
-            <i class="fa fa-upload"></i> Subir excel de los APU
+            <i class="fa fa-upload"></i> Subir excel APU
         </a>
     </div>
 
@@ -73,7 +73,7 @@
 </div>
 
 <div class="col-md-12" role="main" style="margin-top: 10px;margin-left: 10px; margin-bottom: 0px;
-  border-bottom: 1px solid black;height: 30px; width: 97%">
+border-bottom: 1px solid black;height: 30px; width: 97%">
     <div class="col-md-12">
         <div class="col-md-2">
             <b style="margin-left: 20px">Obra Ofertada:</b>
@@ -611,6 +611,11 @@
 
 <script type="text/javascript">
 
+    $("#btnEmparejar").click(function () {
+        // var obra = $("#obra option:selected").val();
+        location.href = "${createLink(controller: 'rubroOf', action: 'emparejarRubros')}"
+    });
+
     $("#btn-consultar").click(function () {
         busqueda();
     });
@@ -928,640 +933,640 @@
         $("#tabla_costos").show("slide")
     }
 
-        $("#detalle").click(function () {
-            var child = window.open('${createLink(controller:"rubro",action:"showFoto",id: rubro?.id, params:[tipo:"dt"])}', 'Mies', 'width=850,height=800,toolbar=0,resizable=0,menubar=0,scrollbars=1,status=0');
+    $("#detalle").click(function () {
+        var child = window.open('${createLink(controller:"rubro",action:"showFoto",id: rubro?.id, params:[tipo:"dt"])}', 'Mies', 'width=850,height=800,toolbar=0,resizable=0,menubar=0,scrollbars=1,status=0');
 
-            if (child.opener == null)
-                child.opener = self;
-            window.toolbar.visible = false;
-            window.menubar.visible = false;
-        });
-        $("#save-espc").click(function(){
-            if($("#especificaciones").val().trim().length<1024){
-                $.ajax({type : "POST", url : "${g.createLink(controller: 'rubroOf',action:'saveEspc')}",
-                    data     : "id=${rubro?.id}&espc="+$("#especificaciones").val().trim(),
-                    success  : function (msg) {
-                        if(msg==="ok"){
-                            $("#modal-detalle").modal("hide");
-                        }else{
-                            $.box({
-                                imageClass : "box_info",
-                                text       : "Error",
-                                title      : "Alerta",
-                                iconClose  : false,
-                                dialog     : {
-                                    resizable : false,
-                                    draggable : false,
-                                    buttons   : {
-                                        "Aceptar" : function () {
-                                        }
-                                    },
-                                    width     : 500
-                                }
-                            });
-                        }
-                    }
-                });
-            }else{
-                bootbox.alert("<i class='fa fa-exclamation-triangle fa-3x text-danger'></i>" + "<strong style='font-size: 14px'>" +  "Las especificaciones deben tener un máximo de 1024 caracteres" +  "</strong>");
-            }
-        });
-
-        $("#foto").click(function () {
-            var child = window.open('${createLink(controller:"rubro",action:"showFoto",id: rubro?.id, params:[tipo:"il"])}', 'Mies', 'width=850,height=800,toolbar=0,resizable=0,menubar=0,scrollbars=1,status=0');
-            if (child.opener == null)
-                child.opener = self;
-            window.toolbar.visible = false;
-            window.menubar.visible = false;
-        });
-
-        $("#borrar").click(function(){
-            <g:if test="${rubro}">
-            if(confirm("Esta Seguro?")){
-                var g = cargarLoader("Borrando...");
-                $.ajax({type : "POST", url : "${g.createLink(controller: 'rubro',action:'borrarRubro')}",
-                    data     : "id=${rubro?.id}",
-                    success  : function (msg) {
-                        g.modal("hide");
-                        if(msg==="ok"){
-                            location.href="${createLink(action: 'rubroPrincipal')}"
-                        }else{
-                            bootbox.alert("<i class='fa fa-exclamation-triangle fa-3x text-danger'></i>" + "<strong style='font-size: 14px'>" +  "El rubro seleccionado no se pudo eliminar. Esta referenciado en las siguientes obras: <br>"+msg, +  "</strong>");
-                        }
-                    }
-                });
-            }
-            </g:if>
-        });
-
-        <g:if test="${!rubro?.departamento?.subgrupo?.grupo?.id}">
-        $("#selClase").val("");
-        </g:if>
-
-        $("#costo_indi").blur(function(){
-            var indi = $(this).val();
-            if(isNaN(indi) || indi*1<0){
-                bootbox.alert("<i class='fa fa-exclamation-triangle fa-3x text-danger'></i>" +
-                    "<strong style='font-size: 14px'>" +  "El porcentaje de costos indirectos debe ser un número positvo" +
-                    "</strong>");
-                //$("#costo_indi").val("21")
-            }
-        });
-
-        $("#excel").click(function(){
-            datos="id=${rubro?.id}&indi="+$("#costo_indi").val()+"&oferente=${session.usuario.id}" + "&obra=${obra?.id}";
-            location.href="${g.createLink(controller: 'reportesExcel2',action: 'imprimirRubroOferentesExcel')}?"+datos;
-        });
-
-        $("#imprimir").click(function(){
-            var dsp0=$("#dist_p1").val();
-            var dsp1=$("#dist_p2").val();
-            var dsv0=$("#dist_v1").val();
-            var dsv1=$("#dist_v2").val();
-            var dsv2=$("#dist_v3").val();
-            var listas = $("#lista_1").val()+","+$("#lista_2").val()+","+$("#lista_3").val()+","+$("#lista_4").val()+
-                ","+$("#lista_5").val()+","+$("#ciudad").val();
-            var volqueta=$("#costo_volqueta").val();
-            var chofer=$("#costo_chofer").val();
-
-            datos="dsp0="+dsp0+"&dsp1="+dsp1+"&dsv0="+dsv0+"&dsv1="+dsv1+"&dsv2="+dsv2+"&prvl="+volqueta+"&prch="+chofer+
-                "&oferente=${session.usuario.id}&id=${rubro?.id}&lugar="+$("#ciudad").val()+"&listas="+listas+
-                "&chof="+$("#cmb_chof").val()+"&volq="+$("#cmb_vol").val()+"&indi="+$("#costo_indi").val()+"&obra2=${obra?.id}";
-            location.href = "${g.createLink(controller: 'reportes6',action: '_imprimirRubroOferentes')}?"+datos;
-        });
-
-        $("#vae").click(function () {
-            var dsp0=$("#dist_p1").val();
-            var dsp1=$("#dist_p2").val();
-            var dsv0=$("#dist_v1").val();
-            var dsv1=$("#dist_v2").val();
-            var dsv2=$("#dist_v3").val();
-            var listas = $("#lista_1").val()+","+$("#lista_2").val()+","+$("#lista_3").val()+","+$("#lista_4").val()+
-                ","+$("#lista_5").val()+","+$("#ciudad").val();
-            var volqueta=$("#costo_volqueta").val();
-            var chofer=$("#costo_chofer").val();
-
-            datos="dsp0="+dsp0+"&dsp1="+dsp1+"&dsv0="+dsv0+"&dsv1="+dsv1+"&dsv2="+dsv2+"&prvl="+volqueta+"&prch="+
-                chofer+"&oferente=${session.usuario.id}&id=${rubro?.id}&lugar="+$("#ciudad").val()+"&listas="+listas+
-                "&chof="+$("#cmb_chof").val()+"&volq="+$("#cmb_vol").val()+"&indi="+$("#costo_indi").val()+"&obra2=${obra?.id}";
-            location.href = "${g.createLink(controller: 'reportes6',action: '_imprimirRubroOferentesVae')}?"+datos;
-        });
-
-        $("#excelVae").click(function(){
-            datos="id=${rubro?.id}&indi="+$("#costo_indi").val()+"&oferente=${session.usuario.id}" + "&obra=${obra?.id}";
-            location.href= "${g.createLink(controller: 'reportesExcel2',action: 'imprimirRubroOferentesExcelVae')}?"+datos
-        });
-
-        $("#transporte").click(function(){
-            if ($("#fecha_precios").val().length < 8) {
-                bootbox.alert("<i class='fa fa-exclamation-triangle fa-3x text-warning'></i>" +
-                    "<strong style='font-size: 14px'>" +  "Seleccione una fecha para determinar la lista de precios" +  "</strong>");
-                $(this).removeClass("active")
-            }else{
-                $("#modal-transporte").modal("show");
-            }
-        });
-
-        $("#cmb_vol").change(function(){
-            if($("#cmb_vol").val() !== "-1"){
-                var datos = "fecha=" + $("#fecha_precios").val() + "&ciudad=" + $("#ciudad").val() + "&ids="+$("#cmb_vol").val();
-                $.ajax({type : "POST", url : "${g.createLink(controller: 'rubro',action:'getPreciosTransporte')}",
-                    data     : datos,
-                    success  : function (msg) {
-                        var precios = msg.split("&");
-                        for(i=0;i<precios.length;i++){
-                            var parts = precios[i].split(";");
-                            if(parts.length>1)
-                                $("#costo_volqueta").val(parts[1].trim())
-                        }
-                    }
-                });
-            }else{
-                $("#costo_volqueta").val("0.00")
-            }
-        });
-
-        $("#cmb_chof").change(function(){
-            if($("#cmb_chof").val() !== "-1"){
-                var datos = "fecha=" + $("#fecha_precios").val() + "&ciudad=" + $("#ciudad").val()  + "&ids="+$("#cmb_chof").val();
-                $.ajax({
-                    type : "POST",
-                    url : "${g.createLink(controller: 'rubro',action:'getPreciosTransporte')}",
-                    data     : datos,
-                    success  : function (msg) {
-                        var precios = msg.split("&");
-                        for(i=0;i<precios.length;i++){
-                            var parts = precios[i].split(";");
-                            if(parts.length>1)
-                                $("#costo_chofer").val(parts[1].trim())
-                        }
-                    }
-                });
-            }else{
-                $("#costo_chofer").val("0.00")
-            }
-        });
-
-
-        $(".btnEditar").click(function () {
-
-            var cantidadHerramientaMenor =   number_format($("#total_mano").find(".valor_total").html(), 5, ".", "");
-            var item = $(this).data("item");
-            var tipo = $(this).data("tipo");
-            var codigo = $(this).data("codigo");
-            var unidad = $(this).data("unidad");
-            var descripcion = $(this).data("desc");
-            var cantidad =$(this).data("cant");
-            var rendimiento =$(this).data("rend");
-
-            $("#item_id").val(item);
-            $("#item_id").attr("tipo", tipo);
-            $("#cdgo_buscar").val(codigo);
-            $("#item_desc").val(descripcion);
-            $("#item_unidad").val(unidad);
-            $("#item_rendimiento").val(rendimiento);
-
-            if(tipo === 3){
-                if(codigo === '103.001.002'){
-                    $("#item_cantidad").val(cantidadHerramientaMenor);
-                }else{
-                    $("#item_cantidad").val(cantidad);
-                }
-            }else{
-                $("#item_cantidad").val(cantidad);
-            }
-
-            getPrecio();
-        });
-
-        $(".item_row").dblclick(function(){
-            var hijos = $(this).children();
-            var desc=$(hijos[1]).html();
-            var cant;
-            var codigo=$(hijos[0]).html();
-            var unidad = $(this).data("unidad");
-            var rendimiento;
-            var item;
-            var tipo = $(this).data("tipo");
-
-            for(i=2;i<hijos.length;i++){
-                if($(hijos[i]).hasClass("cant"))
-                    cant=$(hijos[i]).html();
-                if($(hijos[i]).hasClass("col_rend"))
-                    rendimiento=$(hijos[i]).attr("valor");
-            }
-
-            item = $(this).data("item");
-
-            $("#item_cantidad").val(cant.toString().trim());
-
-            // if(rendimiento){
-                if(tipo === 1 ){
-                    $("#item_rendimiento").val(1);
-                }else{
-                    $("#item_rendimiento").val(rendimiento.toString().trim());
-                }
-            // }
-
-            $("#item_id").val(item);
-            $("#item_id").attr("tipo", $(this).attr("tipo"));
-            $("#cdgo_buscar").val(codigo);
-            $("#item_desc").val(desc);
-            $("#item_unidad").val(unidad);
-
-            getPrecio();
-        });
-
-        $("#selClase").change(function () {
-            var clase = $(this).val();
-            var $subgrupo = $("<select id='selSubgrupo' class='span12'></select>");
-            $("#selSubgrupo").replaceWith($subgrupo);
-            $.ajax({
-                type    : "POST",
-                url     : "${createLink(action:'gruposPorClase')}",
-                data    : {
-                    id : clase
-                },
-                success : function (msg) {
-                    $("#selGrupo").replaceWith(msg);
-                }
-            });
-        });
-
-        $("#selGrupo").change(function () {
-            var grupo = $(this).val();
-            $.ajax({
-                type    : "POST",
-                url     : "${createLink(action:'subgruposPorGrupo')}",
-                data    : {
-                    id : grupo
-                },
-                success : function (msg) {
-                    $("#selSubgrupo").replaceWith(msg);
-                }
-            });
-        });
-
-        calcularSiempre();
-
-        function calcularSiempre(){
-            if ($(this).hasClass("active")) {
-                $(this).removeClass("active");
-                // $(".col_delete").show();
-                $(".col_unidad").show();
-                $(".col_tarifa").hide();
-                $(".col_hora").hide();
-                $(".col_total").hide();
-                $(".col_jornal").hide();
-                $(".col_precioUnit").hide();
-                $(".col_vacio").hide();
-                $(".total").remove();
-                $("#tabla_indi").html("");
-                $("#tabla_costos").html("");
-                $("#tabla_transporte").html("")
-            } else {
-                $(this).addClass("active");
-                var items = $(".item_row");
-                // if (items.size() < 1) {
-                //     bootbox.alert("<i class='fa fa-exclamation-triangle fa-3x text-warning'></i>" +
-                //         "<strong style='font-size: 14px'>" +  "Añada items a la composición del rubro antes de calcular los precios" +
-                //         "</strong>");
-                //     $(this).removeClass("active")
-                // } else {
-                    var tipo = "C";
-                    if ($("#V").hasClass("active"))
-                        tipo = "V";
-                    var listas ="";
-                    listas+=$("#lista_1").val()+"#"+$("#lista_2").val()+"#"+$("#lista_3").val()+"#"+$("#lista_4").val()+
-                        "#"+$("#lista_5").val()+"#"+$("#ciudad").val();
-
-//                    var datos = "tipo=" + tipo+"&listas="+listas+"&ids=";
-                    var datos = "obra=" + ${obra?.id} + "&tipo=" + tipo+"&listas="+listas+"&ids=";
-                    $.each(items, function () {
-                        datos += $(this).attr("id") + "#"
-                    });
-
-                    $.ajax({
-                        type : "POST",
-                        url : "${g.createLink(controller: 'rubroOf',action:'getPrecios')}",
-                        data     : datos,
-                        success  : function (msg) {
-                            var precios = msg.split("&");
-                            for(i=0;i<precios.length;i++){
-                                var parts = precios[i].split(";");
-                                var celda =$("#i_"+parts[0]);
-                                celda.html(number_format(parts[1], 5, ".", ""));
-                                var padre = celda.parent();
-                                var celdaRend = padre.find(".col_rend");
-                                var celdaTotal = padre.find(".col_total");
-                                var celdaCant = padre.find(".cant");
-                                var celdaHora =  padre.find(".col_hora");
-                                var rend = 1;
-                                if(celdaHora.hasClass("col_hora")){
-                                    celdaHora.html(number_format(parseFloat(celda.html())*parseFloat(celdaCant.html()), 5, ".", ""))
-                                }
-                                if (celdaRend.html()) {
-                                    rend = celdaRend.attr("valor") * 1
-                                }
-                                celdaTotal.html(number_format(parseFloat(celda.html())*parseFloat(celdaCant.html())*parseFloat(rend), 5, ".", ""))
-                            }
-                            calcularTotales()
-                        }
-                    });
-                    // $(".col_delete").hide();
-                    $(".col_tarifa").show();
-                    $(".col_hora").show();
-                    $(".col_total").show();
-                    $(".col_jornal").show();
-                    $(".col_precioUnit").show();
-                    $(".col_vacio").show();
-                // }
-            }
-        }
-
-        // $("#btn_copiarComp").click(function () {
-        //     if ($("#rubro__id").val() * 1 > 0) {
-        //         var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cerrar</a>');
-        //         $("#modalTitle").html("Lista de rubros");
-        //         $("#modalFooter").html("").append(btnOk);
-        //         $(".contenidoBuscador").html("");
-        //         $("#modal-rubro").modal("show");
-        //         $("#buscarDialog").unbind("click");
-        //         $("#buscarDialog").bind("click", enviarCopiar)
-        //     } else {
-        //         bootbox.alert("<i class='fa fa-exclamation-triangle fa-3x text-warning'></i>" + "<strong style='font-size: 14px'>" +  "Primero guarde el rubro o seleccione uno para editar" +  "</strong>");
-        //     }
-        // });
-
-        $(".borrarItem").click(function () {
-            var tr = $(this).parent().parent();
-            var id = $(this).data("id");
-            bootbox.confirm({
-                title: "Eliminar Rubro",
-                message: "Esta seguro de eliminar este registro? Esta acción es irreversible",
-                buttons: {
-                    cancel: {
-                        label: '<i class="fa fa-times"></i> Cancelar',
-                        className: 'btn-primary'
-                    },
-                    confirm: {
-                        label: '<i class="fa fa-trash"></i> Borrar',
-                        className: 'btn-danger'
-                    }
-                },
-                callback: function (result) {
-                    if(result){
-                        var g = cargarLoader("Borrando...");
-                        $.ajax({
-                            type : "POST",
-                            url : "${g.createLink(controller: 'rubroOf',action:'eliminarRubroDetalle')}",
-                            data:{
-                                id: id
-                            },
-                            success  : function (msg) {
-                                g.modal("hide");
-                                if (msg === "Registro eliminado correctamente") {
-                                    log(msg, "success");
-                                    setTimeout(function () {
-                                        location.reload();
-                                    }, 800);
-                                    // tr.remove()
-                                }else{
-                                    log(msg, "error");
-                                }
+        if (child.opener == null)
+            child.opener = self;
+        window.toolbar.visible = false;
+        window.menubar.visible = false;
+    });
+    $("#save-espc").click(function(){
+        if($("#especificaciones").val().trim().length<1024){
+            $.ajax({type : "POST", url : "${g.createLink(controller: 'rubroOf',action:'saveEspc')}",
+                data     : "id=${rubro?.id}&espc="+$("#especificaciones").val().trim(),
+                success  : function (msg) {
+                    if(msg==="ok"){
+                        $("#modal-detalle").modal("hide");
+                    }else{
+                        $.box({
+                            imageClass : "box_info",
+                            text       : "Error",
+                            title      : "Alerta",
+                            iconClose  : false,
+                            dialog     : {
+                                resizable : false,
+                                draggable : false,
+                                buttons   : {
+                                    "Aceptar" : function () {
+                                    }
+                                },
+                                width     : 500
                             }
                         });
                     }
                 }
             });
-        });
+        }else{
+            bootbox.alert("<i class='fa fa-exclamation-triangle fa-3x text-danger'></i>" + "<strong style='font-size: 14px'>" +  "Las especificaciones deben tener un máximo de 1024 caracteres" +  "</strong>");
+        }
+    });
 
-        $("#busqueda").dialog({
-            autoOpen: false,
-            resizable: false,
-            modal: true,
-            draggable: false,
-            width: 1000,
-            height: 500,
-            position: 'center',
-            title: 'Items'
-        });
+    $("#foto").click(function () {
+        var child = window.open('${createLink(controller:"rubro",action:"showFoto",id: rubro?.id, params:[tipo:"il"])}', 'Mies', 'width=850,height=800,toolbar=0,resizable=0,menubar=0,scrollbars=1,status=0');
+        if (child.opener == null)
+            child.opener = self;
+        window.toolbar.visible = false;
+        window.menubar.visible = false;
+    });
 
-        $("#cdgo_buscar").dblclick(function () {
-            $("#busqueda").dialog("open");
-            $(".ui-dialog-titlebar-close").html("x");
-            return false;
-        });
-
-        $("#cdgo_buscar").blur(function(){
-            if($("#item_id").val()==="" && $("#cdgo_buscar").val()!==""){
-                $.ajax({
-                    type : "POST",
-                    url : "${g.createLink(controller: 'rubro',action:'buscarRubroCodigo')}",
-                    data     : "codigo=" + $("#cdgo_buscar").val(),
-                    success  : function (msg) {
-                        if (msg !== "-1") {
-                            var parts = msg.split("&&");
-                            $("#item_tipoLista").val(parts[1]);
-                            $("#item_id").val(parts[0]);
-                            $("#item_desc").val(parts[2]);
-                            $("#item_unidad").val(parts[3]);
-                        }else{
-                            $("#item_tipoLista").val("");
-                            $("#item_id").val("");
-                            $("#item_desc").val("");
-                            $("#item_unidad").val("")
-                        }
-                    }
-                });
-            }
-        });
-
-        $("#cdgo_buscar").keydown(function(ev){
-            if(ev.keyCode*1!==9 && (ev.keyCode*1<37 || ev.keyCode*1>40)){
-                $("#item_tipoLista").val("");
-                $("#item_id").val("");
-                $("#item_desc").val("");
-                $("#item_unidad").val("")
-            }else{
-            }
-        });
-
-        $("#btn_lista").click(function () {
-            $("#listaRbro").dialog("open");
-            $(".ui-dialog-titlebar-close").html("x")
-        }); //click btn new
-
-        $("#listaRbro").dialog({
-            autoOpen: false,
-            resizable: true,
-            modal: true,
-            draggable: false,
-            width: 1000,
-            height: 550,
-            position: 'center',
-            title: 'Rubros'
-        });
-
-        $("#rubro_registro").click(function () {
-            if ($(this).hasClass("active")) {
-                if (confirm("Esta seguro de desregistrar este rubro?")) {
-                    $("#registrado").val("N")
-                    $("#fechaReg").val("")
-                }
-            } else {
-                if (confirm("Esta seguro de registrar este rubro?")) {
-                    $("#registrado").val("R")
-                    var fecha = new Date()
-                    $("#fechaReg").val(fecha.toString("dd/mm/yyyy"))
-                }
-            }
-        });
-
-        $("#guardar").click(function () {
-
-            var cod = $("#input_codigo").val();
-            var desc = $("#input_descripcion").val();
-            var subGr = $("#selSubgrupo").val();
-            var msg ="";
-            if(cod.trim().length>20 || cod.trim().length<1){
-                msg="<br>Error: La propiedad código debe tener entre 1 y 20 caracteres."
-            }
-
-            if(desc.trim().length>160 || desc.trim().length<1){
-                if(msg==="")
-                    msg="<br>Error: La propiedad descripción debe tener entre 1 y 160 caracteres."
-                else
-                    msg+="<br>La propiedad descripción debe tener entre 1 y 160 caracteres."
-            }
-
-            if(msg===""){
-                $(".frmRubro").submit()
-            }else{
-                bootbox.alert("<i class='fa fa-exclamation-triangle fa-3x text-warning'></i>" +
-                    "<strong style='font-size: 14px'>" +  msg +  "</strong>");
-            }
-        });
-
+    $("#borrar").click(function(){
         <g:if test="${rubro}">
-        $("#btn_agregarItem").click(function () {
-            if ($("#calcular").hasClass("active")){
-                bootbox.alert("<i class='fa fa-exclamation-triangle fa-3x text-warning'></i>" +
-                    "<strong style='font-size: 14px'>" +
-                    "Antes de agregar items, por favor desactive la opción calcular precios en el menú superior." +  "</strong>");
-                return false
-            }
-            agregar(${rubro?.id},"");
-        });
-        </g:if>
-        <g:else>
-        $("#btn_agregarItem").click(function () {
-            bootbox.alert("<i class='fa fa-exclamation-triangle fa-3x text-warning'></i>" +
-                "<strong style='font-size: 14px'>" +  "Primero guarde el rubro o seleccione uno para editar" +  "</strong>");
-        });
-        </g:else>
-
-        $("#imprimirTransporteDialog").dialog({
-
-            autoOpen: false,
-            resizable: false,
-            modal: true,
-            dragable: false,
-            width: 350,
-            height: 220,
-            position: 'center',
-            title: 'Imprimir con o sin transporte',
-            buttons: {
-                "Si" : function () {
-                    var dsp0=$("#dist_p1").val();
-                    var dsp1=$("#dist_p2").val();
-                    var dsv0=$("#dist_v1").val();
-                    var dsv1=$("#dist_v2").val();
-                    var dsv2=$("#dist_v3").val();
-                    var listas = $("#lista_1").val()+","+$("#lista_2").val()+","+$("#lista_3").val()+","+
-                        $("#lista_4").val()+","+$("#lista_5").val()+","+$("#ciudad").val();
-                    var volqueta=$("#costo_volqueta").val();
-                    var chofer=$("#costo_chofer").val();
-
-                    datos="dsp0="+dsp0+"Wdsp1="+dsp1+"Wdsv0="+dsv0+"Wdsv1="+dsv1+"Wdsv2="+dsv2+"Wprvl="+volqueta+
-                        "Wprch="+chofer+"Woferente=${session.usuario.id}Wid=${rubro?.id}Wlugar="+$("#ciudad").val()+
-                        "Wlistas="+listas+"Wchof="+$("#cmb_chof").val()+"Wvolq="+$("#cmb_vol").val()+"Windi="+$("#costo_indi").val()
-                    var url = "${g.createLink(controller: 'reportes3',action: 'imprimirRubro')}?"+datos;
-                    location.href="${g.createLink(controller: 'pdf',action: 'pdfLink')}?url="+url;
-                    $("#imprimirTransporteDialog").dialog("close");
-                },
-                "No" : function () {
-                    var dsp0=$("#dist_p1").val();
-                    var dsp1=$("#dist_p2").val();
-                    var dsv0=$("#dist_v1").val();
-                    var dsv1=$("#dist_v2").val();
-                    var dsv2=$("#dist_v3").val();
-                    var listas = $("#lista_1").val()+","+$("#lista_2").val()+","+$("#lista_3").val()+","+
-                        $("#lista_4").val()+","+$("#lista_5").val()+","+$("#ciudad").val();
-                    var volqueta=$("#costo_volqueta").val();
-                    var chofer=$("#costo_chofer").val();
-
-                    datos="dsp0="+dsp0+"Wdsp1="+dsp1+"Wdsv0="+dsv0+"Wdsv1="+dsv1+"Wdsv2="+dsv2+"Wprvl="+volqueta+
-                        "Wprch="+chofer+"Wfecha="+$("#fecha_precios").val()+"Wid=${rubro?.id}Wlugar="+
-                        $("#ciudad").val()+"Wlistas="+listas+"Wchof="+$("#cmb_chof").val()+"Wvolq="+
-                        $("#cmb_vol").val()+"Windi="+$("#costo_indi").val()+"Wtrans=no"
-                    var url = "${g.createLink(controller: 'reportes3',action: 'imprimirRubro')}?"+datos;
-                    location.href="${g.createLink(controller: 'pdf',action: 'pdfLink')}?url="+url;
-                    $("#imprimirTransporteDialog").dialog("close");
-                }
-            }
-        });
-
-        $("#modal-rubro").dialog({
-            autoOpen: false,
-            resizable: false,
-            modal: true,
-            draggable: false,
-            width: 1000,
-            height: 540,
-            position: 'center',
-            title: 'Copiar rubros'
-        });
-
-        $("#btn_copiarComp").click(function () {
-            var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cerrar</a>');
-            $("#modalTitle").html("Lista de rubros");
-            $("#modalFooter").html("").append(btnOk);
-            $(".contenidoBuscador").html("");
-            $("#tipos").hide();
-            $("#modal-rubro").dialog("open");
-        });
-
-        $("#cnsl-rubros-composicion").click(function () {
-            buscaRubrosComposicion();
-        });
-
-        function buscaRubrosComposicion() {
-            var buscarPor = $("#buscarPorComposicion").val();
-            var criterio = $("#criterioComposicion").val();
-            var ordenar = $("#ordenarComposicion").val();
-            $.ajax({
-                type: "POST",
-                url: "${createLink(controller: 'rubroOf', action:'listaRubros')}",
-                data: {
-                    buscarPor: buscarPor,
-                    criterio: criterio,
-                    ordenar: ordenar,
-                    rubro: '${rubro?.id}',
-                    tipo: "composicion",
-                    oferente: true
-                },
-                success: function (msg) {
-                    $("#divTablaRbroComposicion").html(msg);
+        if(confirm("Esta Seguro?")){
+            var g = cargarLoader("Borrando...");
+            $.ajax({type : "POST", url : "${g.createLink(controller: 'rubro',action:'borrarRubro')}",
+                data     : "id=${rubro?.id}",
+                success  : function (msg) {
+                    g.modal("hide");
+                    if(msg==="ok"){
+                        location.href="${createLink(action: 'rubroPrincipal')}"
+                    }else{
+                        bootbox.alert("<i class='fa fa-exclamation-triangle fa-3x text-danger'></i>" + "<strong style='font-size: 14px'>" +  "El rubro seleccionado no se pudo eliminar. Esta referenciado en las siguientes obras: <br>"+msg, +  "</strong>");
+                    }
                 }
             });
         }
+        </g:if>
+    });
 
-        $("#criterio").keydown(function (ev) {
-            if (ev.keyCode === 13) {
-                busqueda();
+    <g:if test="${!rubro?.departamento?.subgrupo?.grupo?.id}">
+    $("#selClase").val("");
+    </g:if>
+
+    $("#costo_indi").blur(function(){
+        var indi = $(this).val();
+        if(isNaN(indi) || indi*1<0){
+            bootbox.alert("<i class='fa fa-exclamation-triangle fa-3x text-danger'></i>" +
+                "<strong style='font-size: 14px'>" +  "El porcentaje de costos indirectos debe ser un número positvo" +
+                "</strong>");
+            //$("#costo_indi").val("21")
+        }
+    });
+
+    $("#excel").click(function(){
+        datos="id=${rubro?.id}&indi="+$("#costo_indi").val()+"&oferente=${session.usuario.id}" + "&obra=${obra?.id}";
+        location.href="${g.createLink(controller: 'reportesExcel2',action: 'imprimirRubroOferentesExcel')}?"+datos;
+    });
+
+    $("#imprimir").click(function(){
+        var dsp0=$("#dist_p1").val();
+        var dsp1=$("#dist_p2").val();
+        var dsv0=$("#dist_v1").val();
+        var dsv1=$("#dist_v2").val();
+        var dsv2=$("#dist_v3").val();
+        var listas = $("#lista_1").val()+","+$("#lista_2").val()+","+$("#lista_3").val()+","+$("#lista_4").val()+
+            ","+$("#lista_5").val()+","+$("#ciudad").val();
+        var volqueta=$("#costo_volqueta").val();
+        var chofer=$("#costo_chofer").val();
+
+        datos="dsp0="+dsp0+"&dsp1="+dsp1+"&dsv0="+dsv0+"&dsv1="+dsv1+"&dsv2="+dsv2+"&prvl="+volqueta+"&prch="+chofer+
+            "&oferente=${session.usuario.id}&id=${rubro?.id}&lugar="+$("#ciudad").val()+"&listas="+listas+
+            "&chof="+$("#cmb_chof").val()+"&volq="+$("#cmb_vol").val()+"&indi="+$("#costo_indi").val()+"&obra2=${obra?.id}";
+        location.href = "${g.createLink(controller: 'reportes6',action: '_imprimirRubroOferentes')}?"+datos;
+    });
+
+    $("#vae").click(function () {
+        var dsp0=$("#dist_p1").val();
+        var dsp1=$("#dist_p2").val();
+        var dsv0=$("#dist_v1").val();
+        var dsv1=$("#dist_v2").val();
+        var dsv2=$("#dist_v3").val();
+        var listas = $("#lista_1").val()+","+$("#lista_2").val()+","+$("#lista_3").val()+","+$("#lista_4").val()+
+            ","+$("#lista_5").val()+","+$("#ciudad").val();
+        var volqueta=$("#costo_volqueta").val();
+        var chofer=$("#costo_chofer").val();
+
+        datos="dsp0="+dsp0+"&dsp1="+dsp1+"&dsv0="+dsv0+"&dsv1="+dsv1+"&dsv2="+dsv2+"&prvl="+volqueta+"&prch="+
+            chofer+"&oferente=${session.usuario.id}&id=${rubro?.id}&lugar="+$("#ciudad").val()+"&listas="+listas+
+            "&chof="+$("#cmb_chof").val()+"&volq="+$("#cmb_vol").val()+"&indi="+$("#costo_indi").val()+"&obra2=${obra?.id}";
+        location.href = "${g.createLink(controller: 'reportes6',action: '_imprimirRubroOferentesVae')}?"+datos;
+    });
+
+    $("#excelVae").click(function(){
+        datos="id=${rubro?.id}&indi="+$("#costo_indi").val()+"&oferente=${session.usuario.id}" + "&obra=${obra?.id}";
+        location.href= "${g.createLink(controller: 'reportesExcel2',action: 'imprimirRubroOferentesExcelVae')}?"+datos
+    });
+
+    $("#transporte").click(function(){
+        if ($("#fecha_precios").val().length < 8) {
+            bootbox.alert("<i class='fa fa-exclamation-triangle fa-3x text-warning'></i>" +
+                "<strong style='font-size: 14px'>" +  "Seleccione una fecha para determinar la lista de precios" +  "</strong>");
+            $(this).removeClass("active")
+        }else{
+            $("#modal-transporte").modal("show");
+        }
+    });
+
+    $("#cmb_vol").change(function(){
+        if($("#cmb_vol").val() !== "-1"){
+            var datos = "fecha=" + $("#fecha_precios").val() + "&ciudad=" + $("#ciudad").val() + "&ids="+$("#cmb_vol").val();
+            $.ajax({type : "POST", url : "${g.createLink(controller: 'rubro',action:'getPreciosTransporte')}",
+                data     : datos,
+                success  : function (msg) {
+                    var precios = msg.split("&");
+                    for(i=0;i<precios.length;i++){
+                        var parts = precios[i].split(";");
+                        if(parts.length>1)
+                            $("#costo_volqueta").val(parts[1].trim())
+                    }
+                }
+            });
+        }else{
+            $("#costo_volqueta").val("0.00")
+        }
+    });
+
+    $("#cmb_chof").change(function(){
+        if($("#cmb_chof").val() !== "-1"){
+            var datos = "fecha=" + $("#fecha_precios").val() + "&ciudad=" + $("#ciudad").val()  + "&ids="+$("#cmb_chof").val();
+            $.ajax({
+                type : "POST",
+                url : "${g.createLink(controller: 'rubro',action:'getPreciosTransporte')}",
+                data     : datos,
+                success  : function (msg) {
+                    var precios = msg.split("&");
+                    for(i=0;i<precios.length;i++){
+                        var parts = precios[i].split(";");
+                        if(parts.length>1)
+                            $("#costo_chofer").val(parts[1].trim())
+                    }
+                }
+            });
+        }else{
+            $("#costo_chofer").val("0.00")
+        }
+    });
+
+
+    $(".btnEditar").click(function () {
+
+        var cantidadHerramientaMenor =   number_format($("#total_mano").find(".valor_total").html(), 5, ".", "");
+        var item = $(this).data("item");
+        var tipo = $(this).data("tipo");
+        var codigo = $(this).data("codigo");
+        var unidad = $(this).data("unidad");
+        var descripcion = $(this).data("desc");
+        var cantidad =$(this).data("cant");
+        var rendimiento =$(this).data("rend");
+
+        $("#item_id").val(item);
+        $("#item_id").attr("tipo", tipo);
+        $("#cdgo_buscar").val(codigo);
+        $("#item_desc").val(descripcion);
+        $("#item_unidad").val(unidad);
+        $("#item_rendimiento").val(rendimiento);
+
+        if(tipo === 3){
+            if(codigo === '103.001.002'){
+                $("#item_cantidad").val(cantidadHerramientaMenor);
+            }else{
+                $("#item_cantidad").val(cantidad);
+            }
+        }else{
+            $("#item_cantidad").val(cantidad);
+        }
+
+        getPrecio();
+    });
+
+    $(".item_row").dblclick(function(){
+        var hijos = $(this).children();
+        var desc=$(hijos[1]).html();
+        var cant;
+        var codigo=$(hijos[0]).html();
+        var unidad = $(this).data("unidad");
+        var rendimiento;
+        var item;
+        var tipo = $(this).data("tipo");
+
+        for(i=2;i<hijos.length;i++){
+            if($(hijos[i]).hasClass("cant"))
+                cant=$(hijos[i]).html();
+            if($(hijos[i]).hasClass("col_rend"))
+                rendimiento=$(hijos[i]).attr("valor");
+        }
+
+        item = $(this).data("item");
+
+        $("#item_cantidad").val(cant.toString().trim());
+
+        // if(rendimiento){
+        if(tipo === 1 ){
+            $("#item_rendimiento").val(1);
+        }else{
+            $("#item_rendimiento").val(rendimiento.toString().trim());
+        }
+        // }
+
+        $("#item_id").val(item);
+        $("#item_id").attr("tipo", $(this).attr("tipo"));
+        $("#cdgo_buscar").val(codigo);
+        $("#item_desc").val(desc);
+        $("#item_unidad").val(unidad);
+
+        getPrecio();
+    });
+
+    $("#selClase").change(function () {
+        var clase = $(this).val();
+        var $subgrupo = $("<select id='selSubgrupo' class='span12'></select>");
+        $("#selSubgrupo").replaceWith($subgrupo);
+        $.ajax({
+            type    : "POST",
+            url     : "${createLink(action:'gruposPorClase')}",
+            data    : {
+                id : clase
+            },
+            success : function (msg) {
+                $("#selGrupo").replaceWith(msg);
             }
         });
+    });
+
+    $("#selGrupo").change(function () {
+        var grupo = $(this).val();
+        $.ajax({
+            type    : "POST",
+            url     : "${createLink(action:'subgruposPorGrupo')}",
+            data    : {
+                id : grupo
+            },
+            success : function (msg) {
+                $("#selSubgrupo").replaceWith(msg);
+            }
+        });
+    });
+
+    calcularSiempre();
+
+    function calcularSiempre(){
+        if ($(this).hasClass("active")) {
+            $(this).removeClass("active");
+            // $(".col_delete").show();
+            $(".col_unidad").show();
+            $(".col_tarifa").hide();
+            $(".col_hora").hide();
+            $(".col_total").hide();
+            $(".col_jornal").hide();
+            $(".col_precioUnit").hide();
+            $(".col_vacio").hide();
+            $(".total").remove();
+            $("#tabla_indi").html("");
+            $("#tabla_costos").html("");
+            $("#tabla_transporte").html("")
+        } else {
+            $(this).addClass("active");
+            var items = $(".item_row");
+            // if (items.size() < 1) {
+            //     bootbox.alert("<i class='fa fa-exclamation-triangle fa-3x text-warning'></i>" +
+            //         "<strong style='font-size: 14px'>" +  "Añada items a la composición del rubro antes de calcular los precios" +
+            //         "</strong>");
+            //     $(this).removeClass("active")
+            // } else {
+            var tipo = "C";
+            if ($("#V").hasClass("active"))
+                tipo = "V";
+            var listas ="";
+            listas+=$("#lista_1").val()+"#"+$("#lista_2").val()+"#"+$("#lista_3").val()+"#"+$("#lista_4").val()+
+                "#"+$("#lista_5").val()+"#"+$("#ciudad").val();
+
+//                    var datos = "tipo=" + tipo+"&listas="+listas+"&ids=";
+            var datos = "obra=" + ${obra?.id} + "&tipo=" + tipo+"&listas="+listas+"&ids=";
+            $.each(items, function () {
+                datos += $(this).attr("id") + "#"
+            });
+
+            $.ajax({
+                type : "POST",
+                url : "${g.createLink(controller: 'rubroOf',action:'getPrecios')}",
+                data     : datos,
+                success  : function (msg) {
+                    var precios = msg.split("&");
+                    for(i=0;i<precios.length;i++){
+                        var parts = precios[i].split(";");
+                        var celda =$("#i_"+parts[0]);
+                        celda.html(number_format(parts[1], 5, ".", ""));
+                        var padre = celda.parent();
+                        var celdaRend = padre.find(".col_rend");
+                        var celdaTotal = padre.find(".col_total");
+                        var celdaCant = padre.find(".cant");
+                        var celdaHora =  padre.find(".col_hora");
+                        var rend = 1;
+                        if(celdaHora.hasClass("col_hora")){
+                            celdaHora.html(number_format(parseFloat(celda.html())*parseFloat(celdaCant.html()), 5, ".", ""))
+                        }
+                        if (celdaRend.html()) {
+                            rend = celdaRend.attr("valor") * 1
+                        }
+                        celdaTotal.html(number_format(parseFloat(celda.html())*parseFloat(celdaCant.html())*parseFloat(rend), 5, ".", ""))
+                    }
+                    calcularTotales()
+                }
+            });
+            // $(".col_delete").hide();
+            $(".col_tarifa").show();
+            $(".col_hora").show();
+            $(".col_total").show();
+            $(".col_jornal").show();
+            $(".col_precioUnit").show();
+            $(".col_vacio").show();
+            // }
+        }
+    }
+
+    // $("#btn_copiarComp").click(function () {
+    //     if ($("#rubro__id").val() * 1 > 0) {
+    //         var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cerrar</a>');
+    //         $("#modalTitle").html("Lista de rubros");
+    //         $("#modalFooter").html("").append(btnOk);
+    //         $(".contenidoBuscador").html("");
+    //         $("#modal-rubro").modal("show");
+    //         $("#buscarDialog").unbind("click");
+    //         $("#buscarDialog").bind("click", enviarCopiar)
+    //     } else {
+    //         bootbox.alert("<i class='fa fa-exclamation-triangle fa-3x text-warning'></i>" + "<strong style='font-size: 14px'>" +  "Primero guarde el rubro o seleccione uno para editar" +  "</strong>");
+    //     }
+    // });
+
+    $(".borrarItem").click(function () {
+        var tr = $(this).parent().parent();
+        var id = $(this).data("id");
+        bootbox.confirm({
+            title: "Eliminar Rubro",
+            message: "Esta seguro de eliminar este registro? Esta acción es irreversible",
+            buttons: {
+                cancel: {
+                    label: '<i class="fa fa-times"></i> Cancelar',
+                    className: 'btn-primary'
+                },
+                confirm: {
+                    label: '<i class="fa fa-trash"></i> Borrar',
+                    className: 'btn-danger'
+                }
+            },
+            callback: function (result) {
+                if(result){
+                    var g = cargarLoader("Borrando...");
+                    $.ajax({
+                        type : "POST",
+                        url : "${g.createLink(controller: 'rubroOf',action:'eliminarRubroDetalle')}",
+                        data:{
+                            id: id
+                        },
+                        success  : function (msg) {
+                            g.modal("hide");
+                            if (msg === "Registro eliminado correctamente") {
+                                log(msg, "success");
+                                setTimeout(function () {
+                                    location.reload();
+                                }, 800);
+                                // tr.remove()
+                            }else{
+                                log(msg, "error");
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    });
+
+    $("#busqueda").dialog({
+        autoOpen: false,
+        resizable: false,
+        modal: true,
+        draggable: false,
+        width: 1000,
+        height: 500,
+        position: 'center',
+        title: 'Items'
+    });
+
+    $("#cdgo_buscar").dblclick(function () {
+        $("#busqueda").dialog("open");
+        $(".ui-dialog-titlebar-close").html("x");
+        return false;
+    });
+
+    $("#cdgo_buscar").blur(function(){
+        if($("#item_id").val()==="" && $("#cdgo_buscar").val()!==""){
+            $.ajax({
+                type : "POST",
+                url : "${g.createLink(controller: 'rubro',action:'buscarRubroCodigo')}",
+                data     : "codigo=" + $("#cdgo_buscar").val(),
+                success  : function (msg) {
+                    if (msg !== "-1") {
+                        var parts = msg.split("&&");
+                        $("#item_tipoLista").val(parts[1]);
+                        $("#item_id").val(parts[0]);
+                        $("#item_desc").val(parts[2]);
+                        $("#item_unidad").val(parts[3]);
+                    }else{
+                        $("#item_tipoLista").val("");
+                        $("#item_id").val("");
+                        $("#item_desc").val("");
+                        $("#item_unidad").val("")
+                    }
+                }
+            });
+        }
+    });
+
+    $("#cdgo_buscar").keydown(function(ev){
+        if(ev.keyCode*1!==9 && (ev.keyCode*1<37 || ev.keyCode*1>40)){
+            $("#item_tipoLista").val("");
+            $("#item_id").val("");
+            $("#item_desc").val("");
+            $("#item_unidad").val("")
+        }else{
+        }
+    });
+
+    $("#btn_lista").click(function () {
+        $("#listaRbro").dialog("open");
+        $(".ui-dialog-titlebar-close").html("x")
+    }); //click btn new
+
+    $("#listaRbro").dialog({
+        autoOpen: false,
+        resizable: true,
+        modal: true,
+        draggable: false,
+        width: 1000,
+        height: 550,
+        position: 'center',
+        title: 'Rubros'
+    });
+
+    $("#rubro_registro").click(function () {
+        if ($(this).hasClass("active")) {
+            if (confirm("Esta seguro de desregistrar este rubro?")) {
+                $("#registrado").val("N")
+                $("#fechaReg").val("")
+            }
+        } else {
+            if (confirm("Esta seguro de registrar este rubro?")) {
+                $("#registrado").val("R")
+                var fecha = new Date()
+                $("#fechaReg").val(fecha.toString("dd/mm/yyyy"))
+            }
+        }
+    });
+
+    $("#guardar").click(function () {
+
+        var cod = $("#input_codigo").val();
+        var desc = $("#input_descripcion").val();
+        var subGr = $("#selSubgrupo").val();
+        var msg ="";
+        if(cod.trim().length>20 || cod.trim().length<1){
+            msg="<br>Error: La propiedad código debe tener entre 1 y 20 caracteres."
+        }
+
+        if(desc.trim().length>160 || desc.trim().length<1){
+            if(msg==="")
+                msg="<br>Error: La propiedad descripción debe tener entre 1 y 160 caracteres."
+            else
+                msg+="<br>La propiedad descripción debe tener entre 1 y 160 caracteres."
+        }
+
+        if(msg===""){
+            $(".frmRubro").submit()
+        }else{
+            bootbox.alert("<i class='fa fa-exclamation-triangle fa-3x text-warning'></i>" +
+                "<strong style='font-size: 14px'>" +  msg +  "</strong>");
+        }
+    });
+
+    <g:if test="${rubro}">
+    $("#btn_agregarItem").click(function () {
+        if ($("#calcular").hasClass("active")){
+            bootbox.alert("<i class='fa fa-exclamation-triangle fa-3x text-warning'></i>" +
+                "<strong style='font-size: 14px'>" +
+                "Antes de agregar items, por favor desactive la opción calcular precios en el menú superior." +  "</strong>");
+            return false
+        }
+        agregar(${rubro?.id},"");
+    });
+    </g:if>
+    <g:else>
+    $("#btn_agregarItem").click(function () {
+        bootbox.alert("<i class='fa fa-exclamation-triangle fa-3x text-warning'></i>" +
+            "<strong style='font-size: 14px'>" +  "Primero guarde el rubro o seleccione uno para editar" +  "</strong>");
+    });
+    </g:else>
+
+    $("#imprimirTransporteDialog").dialog({
+
+        autoOpen: false,
+        resizable: false,
+        modal: true,
+        dragable: false,
+        width: 350,
+        height: 220,
+        position: 'center',
+        title: 'Imprimir con o sin transporte',
+        buttons: {
+            "Si" : function () {
+                var dsp0=$("#dist_p1").val();
+                var dsp1=$("#dist_p2").val();
+                var dsv0=$("#dist_v1").val();
+                var dsv1=$("#dist_v2").val();
+                var dsv2=$("#dist_v3").val();
+                var listas = $("#lista_1").val()+","+$("#lista_2").val()+","+$("#lista_3").val()+","+
+                    $("#lista_4").val()+","+$("#lista_5").val()+","+$("#ciudad").val();
+                var volqueta=$("#costo_volqueta").val();
+                var chofer=$("#costo_chofer").val();
+
+                datos="dsp0="+dsp0+"Wdsp1="+dsp1+"Wdsv0="+dsv0+"Wdsv1="+dsv1+"Wdsv2="+dsv2+"Wprvl="+volqueta+
+                    "Wprch="+chofer+"Woferente=${session.usuario.id}Wid=${rubro?.id}Wlugar="+$("#ciudad").val()+
+                    "Wlistas="+listas+"Wchof="+$("#cmb_chof").val()+"Wvolq="+$("#cmb_vol").val()+"Windi="+$("#costo_indi").val()
+                var url = "${g.createLink(controller: 'reportes3',action: 'imprimirRubro')}?"+datos;
+                location.href="${g.createLink(controller: 'pdf',action: 'pdfLink')}?url="+url;
+                $("#imprimirTransporteDialog").dialog("close");
+            },
+            "No" : function () {
+                var dsp0=$("#dist_p1").val();
+                var dsp1=$("#dist_p2").val();
+                var dsv0=$("#dist_v1").val();
+                var dsv1=$("#dist_v2").val();
+                var dsv2=$("#dist_v3").val();
+                var listas = $("#lista_1").val()+","+$("#lista_2").val()+","+$("#lista_3").val()+","+
+                    $("#lista_4").val()+","+$("#lista_5").val()+","+$("#ciudad").val();
+                var volqueta=$("#costo_volqueta").val();
+                var chofer=$("#costo_chofer").val();
+
+                datos="dsp0="+dsp0+"Wdsp1="+dsp1+"Wdsv0="+dsv0+"Wdsv1="+dsv1+"Wdsv2="+dsv2+"Wprvl="+volqueta+
+                    "Wprch="+chofer+"Wfecha="+$("#fecha_precios").val()+"Wid=${rubro?.id}Wlugar="+
+                    $("#ciudad").val()+"Wlistas="+listas+"Wchof="+$("#cmb_chof").val()+"Wvolq="+
+                    $("#cmb_vol").val()+"Windi="+$("#costo_indi").val()+"Wtrans=no"
+                var url = "${g.createLink(controller: 'reportes3',action: 'imprimirRubro')}?"+datos;
+                location.href="${g.createLink(controller: 'pdf',action: 'pdfLink')}?url="+url;
+                $("#imprimirTransporteDialog").dialog("close");
+            }
+        }
+    });
+
+    $("#modal-rubro").dialog({
+        autoOpen: false,
+        resizable: false,
+        modal: true,
+        draggable: false,
+        width: 1000,
+        height: 540,
+        position: 'center',
+        title: 'Copiar rubros'
+    });
+
+    $("#btn_copiarComp").click(function () {
+        var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cerrar</a>');
+        $("#modalTitle").html("Lista de rubros");
+        $("#modalFooter").html("").append(btnOk);
+        $(".contenidoBuscador").html("");
+        $("#tipos").hide();
+        $("#modal-rubro").dialog("open");
+    });
+
+    $("#cnsl-rubros-composicion").click(function () {
+        buscaRubrosComposicion();
+    });
+
+    function buscaRubrosComposicion() {
+        var buscarPor = $("#buscarPorComposicion").val();
+        var criterio = $("#criterioComposicion").val();
+        var ordenar = $("#ordenarComposicion").val();
+        $.ajax({
+            type: "POST",
+            url: "${createLink(controller: 'rubroOf', action:'listaRubros')}",
+            data: {
+                buscarPor: buscarPor,
+                criterio: criterio,
+                ordenar: ordenar,
+                rubro: '${rubro?.id}',
+                tipo: "composicion",
+                oferente: true
+            },
+            success: function (msg) {
+                $("#divTablaRbroComposicion").html(msg);
+            }
+        });
+    }
+
+    $("#criterio").keydown(function (ev) {
+        if (ev.keyCode === 13) {
+            busqueda();
+        }
+    });
 
 </script>
 </body>
