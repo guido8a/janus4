@@ -1,1 +1,1 @@
-<g:textField name="indi" class="form-control" value="${obra.totales}"/>
+<g:textField name="indi" class="form-control" readonly="" value="${obra.totales}"/>
