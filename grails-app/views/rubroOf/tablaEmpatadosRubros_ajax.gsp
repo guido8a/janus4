@@ -22,7 +22,7 @@
     <table class="table-bordered table-striped table-condensed table-hover" width="100%">
         <tbody>
         <g:if test="${data}">
-%{--            <g:each in="${data}" var="d" status="i">--}%
+            <g:each in="${data}" var="d" status="i">
 %{--                <tr>--}%
 %{--                    <td style="width: 8%">${d?.dtrbtipo == 'EQ' ? 'Equipos' : (d?.dtrbtipo == 'MT' ? 'Materiales' : 'Mano de Obra') }</td>--}%
 %{--                    <td style="width: 8%">${d?.dtrbcdgo}</td>--}%
@@ -35,7 +35,7 @@
 %{--                    </td>--}%
 %{--                    <td style="width: 1%"></td>--}%
 %{--                </tr>--}%
-%{--            </g:each>--}%
+            </g:each>
         </g:if>
         <g:else>
             <div class="alert alert-info" style="text-align: center">
@@ -54,7 +54,7 @@
         var g = cargarLoader("Guardando...");
         $.ajax({
             type: "POST",
-            url: "${createLink(controller: 'rubroOf', action:'quitarEmpateRubros_ajax')}",
+            url: "${createLink(controller: 'rubroOf', action:'quitarEmpateRubrosRubros_ajax')}",
             data: {
                 id: id,
                 obra: obra

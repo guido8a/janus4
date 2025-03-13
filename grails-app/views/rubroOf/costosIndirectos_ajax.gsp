@@ -1,0 +1,1 @@
+<g:textField name="indi" class="form-control" value="${obra.totales}"/>

@@ -1912,13 +1912,13 @@ class RubroOfController {
     }
 
     def tablaBusquedaRubros_ajax(){
+        println "tablaBusquedaRubros_ajax: $params"
         def cn = dbConnectionService.getConnection()
         def obra = Obra.get(params.obra)
         def oferente = session.usuario
         //        def oferente = session.usuario
-        println "tablaBusquedaRubros_ajax: $params"
 //        def obra = Obra.get(params.id)
-        def listaItems = ['dtrbnmbr', 'dtrbcdgo']
+//        def listaItems = ['dtrbnmbr', 'dtrbcdgo']
         def sql = "select * from ofrb " +
                 "where ofrb.obra__id = ${params.obra} and ofrbjnid = 0 and " +
                 "prsn__id = ${oferente.id}"
@@ -1934,7 +1934,7 @@ class RubroOfController {
         println "tablaEmpatadosRubros_ajax: $params"
         def cn = dbConnectionService.getConnection()
         def sql = "select ofrb.*, itemcdgo, itemnmbr from ofrb, item " +
-                "where item.item__id = ofrbjnid and obra__id = ${params.obra}" + // "and obra__id = ${params.obra}"
+                "where item.item__id = ofrbjnid and obra__id = ${params.obra} " + // "and obra__id = ${params.obra}"
                 "order by itemnmbr"
         println "sql: $sql"
         def empatados = cn.rows(sql.toString())
@@ -1948,6 +1948,11 @@ class RubroOfController {
 
     def tablaBuscarRubrosRubros_ajax(){
 
+    }
+
+    def costosIndirectos_ajax(){
+        def obra = Obra.get(params.id)
+        return [obra: obra]
     }
 
 } //fin controller

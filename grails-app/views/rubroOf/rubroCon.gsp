@@ -24,8 +24,8 @@
     <div class="col-md-4">
         <label>Costos indirectos</label>
     </div>
-    <div class="col-md-3" style="margin-left: -40px">
-        <g:textField name="indi" class="form-control" value="${obras.inditotl}"/>
+    <div class="col-md-3" style="margin-left: -40px" id="divCostosIndirectos">
+
     </div>
     <div class="col-md-1" style="margin-left: -30px; margin-top: 7px">
         %
@@ -87,7 +87,6 @@
 
     cargarRubro();
 
-
     function cargarRubro() {
         var id = $("#obra").val();
         $.ajax({
@@ -137,6 +136,26 @@
     $("#btnEmpatar").click(function () {
         var cntr = $("#obra").val();
         location.href = "${createLink(controller: 'rubroOf', action: 'rubroEmpatado')}?contrato=" + cntr
+    });
+
+    cargarCostosIndirectos();
+
+    function cargarCostosIndirectos(){
+        var obra = $("#obra option:selected").val();
+        $.ajax({
+            type: "POST",
+            url: "${createLink(controller: 'rubroOf', action:'costosIndirectos_ajax')}",
+            data: {
+                id: obra
+            },
+            success: function (msg) {
+             $("#divCostosIndirectos").html(msg)
+            }
+        });
+    }
+
+    $("#obra").change(function (){
+        cargarCostosIndirectos();
     });
 
 </script>
