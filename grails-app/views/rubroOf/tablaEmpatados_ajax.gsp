@@ -50,12 +50,14 @@
 
     $(".btnDesempatar").click(function () {
        var id = $(this).data("id");
+       var obra = '${obra}';
         var g = cargarLoader("Guardando...");
         $.ajax({
             type: "POST",
             url: "${createLink(controller: 'rubroOf', action:'quitarEmpateRubros_ajax')}",
             data: {
-                id: id
+                id: id,
+                obra: obra
             },
             success: function (msg) {
                 g.modal("hide");

@@ -1811,7 +1811,7 @@ class RubroOfController {
                 "order by itemcdgo"
         println "sql: $sql"
         def empatados = cn.rows(sql.toString())
-        return [data: empatados]
+        return [data: empatados, obra: params.obra]
     }
 
 
