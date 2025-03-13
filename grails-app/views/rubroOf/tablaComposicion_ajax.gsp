@@ -281,7 +281,8 @@
                     Costos indirectos
                 </td>
                 <td style="text-align: right; font-weight: bold">
-                    <g:formatNumber number="${precioUnitario*0.1}" format="##,#####0" minFractionDigits="5" maxFractionDigits="5"  locale="ec" />
+                    <g:formatNumber number="${precioUnitario*0.1}" format="##,#####0" minFractionDigits="5"
+                                    maxFractionDigits="5"  locale="ec" />
                 </td>
             </tr>
             <tr>

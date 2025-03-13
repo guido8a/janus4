@@ -17,7 +17,8 @@
             type: "POST",
             url: "${createLink(controller: 'rubroOf', action:'tablaComposicion_ajax')}",
             data: {
-                id: id
+                id: id,
+                obra: ${obra}
             },
             success: function (msg) {
                 $("#divComposicion").html(msg);

@@ -1676,15 +1676,19 @@ class RubroOfController {
     def rubroCon() {
         def oferente = session.usuario
         def cn = dbConnectionService.getConnection()
-        def obras = [:]
-        def sql = "select distinct obra.obra__id id, obracdgo||' - '||obranmbr nombre " +
+        def obras = []
+        def sql = "select distinct obra.obra__id id, obracdgo||' - '||obranmbr nombre, inditotl " +
                 "from obra, obof " +
                 "where obof.obra__id = obra.obra__id and obof.prsn__id = ${oferente.id}" +
 //                "where obof.obrajnid = obra.obra__id " +
                 "order by 1"
         cn.eachRow(sql.toString()) { r ->
-            obras[r.id] = r.nombre
+            obras.add([id: r.id, nombre: r.nombre, indi: r.inditotl])
+//            obras[r.id] = r.nombre + "_" + r.inditotl
         }
+
+        println "obras: $obras"
+
         [obras: obras, oferente: oferente]
 
     }
@@ -1703,12 +1707,13 @@ class RubroOfController {
         cn.eachRow(sql.toString()) { r ->
             rubros[r.id] = r.nombre
         }
-        return [rubros: rubros]
+        return [rubros: rubros, obra: params.id]
     }
 
     def tablaComposicion_ajax() {
         println "tablaComposicion_ajax $params"
         def rubro = RubroOferta.get(params.id)
+        def obra = Obra.get(params.obra)
 //        def detalles = DetalleRubro.findAllByRubroOferta(rubro, [sort: 'tipo'])
         def equipos = DetalleRubro.findAllByRubroOfertaAndTipo(rubro, 'EQ')
         def manos = DetalleRubro.findAllByRubroOfertaAndTipo(rubro, 'MO')
@@ -1719,7 +1724,8 @@ class RubroOfController {
 
 
         println "mano: $manos"
-        return [equipos: equipos, manos: manos, materiales: materiales, transporte: transporte, precioUnitario: precioUnitario]
+        return [equipos: equipos, manos: manos, materiales: materiales, transporte: transporte,
+                precioUnitario: precioUnitario, indirectos: obra.indiceCostosIndirectosObra]
     }
 
     def procesarRubrosOf() {

@@ -25,7 +25,7 @@
         <label>Costos indirectos</label>
     </div>
     <div class="col-md-3" style="margin-left: -40px">
-        <g:textField name="indi" class="form-control" value="22.5"/>
+        <g:textField name="indi" class="form-control" value="${obras.inditotl}"/>
     </div>
     <div class="col-md-1" style="margin-left: -30px; margin-top: 7px">
         %
@@ -59,9 +59,8 @@
             <b style="margin-left: 20px">Obra Ofertada:</b>
         </div>
         <div class="col-md-10">
-            <g:select name="obra"
-                      from="${obras}" optionKey="key" optionValue="value"
-                      style="width: 100%; margin-left: -80px"/>
+            %{--<g:select name="obra" from="${obras}" optionKey="key" optionValue="value" style="width: 100%; margin-left: -80px"/>--}%
+            <g:select name="obra" from="${obras}" optionKey="id" optionValue="nombre" style="width: 100%; margin-left: -80px"/>
         </div>
     </div>
 
@@ -87,6 +86,7 @@
     });
 
     cargarRubro();
+
 
     function cargarRubro() {
         var id = $("#obra").val();
