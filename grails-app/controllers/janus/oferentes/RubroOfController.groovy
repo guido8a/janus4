@@ -1906,15 +1906,38 @@ class RubroOfController {
     }
 
     def tablaBusquedaRubros_ajax(){
-
+        def cn = dbConnectionService.getConnection()
+        def obra = Obra.get(params.obra)
+        def oferente = session.usuario
+        //        def oferente = session.usuario
+        println "tablaBusquedaRubros_ajax: $params"
+//        def obra = Obra.get(params.id)
+        def listaItems = ['dtrbnmbr', 'dtrbcdgo']
+        def sql = "select * from ofrb " +
+                "where ofrb.obra__id = ${params.obra} and ofrbjnid = 0 and " +
+                "prsn__id = ${oferente.id}"
+//        def bsca = listaItems[params.buscarPor.toInteger() - 1]
+//        sql += " and $bsca ilike '%${params.criterio}%' and dtrb.dtrbtipo = '${params.grupo}' "
+        def sqlTx = "${sql} order by ofrbnmbr".toString()
+        println "sql: $sqlTx"
+        def datos = cn.rows(sqlTx)
+        return [datos: datos, obra: obra]
     }
 
     def tablaEmpatadosRubros_ajax(){
-
+        println "tablaEmpatadosRubros_ajax: $params"
+        def cn = dbConnectionService.getConnection()
+        def sql = "select ofrb.*, itemcdgo, itemnmbr from ofrb, item " +
+                "where item.item__id = ofrbjnid and obra__id = ${params.obra}" + // "and obra__id = ${params.obra}"
+                "order by itemnmbr"
+        println "sql: $sql"
+        def empatados = cn.rows(sql.toString())
+        return [data: empatados, obra: params.obra]
     }
 
     def buscarRubrosRubros_ajax(){
-
+        def rubro = RubroOferta.findAllByNombre(params.dscr)
+        return [rubro: rubro, obra: params.obra]
     }
 
     def tablaBuscarRubrosRubros_ajax(){
