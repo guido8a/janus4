@@ -10,7 +10,7 @@
 
 <body>
 
-<div class="span6 btn-group" role="navigation">
+<div class="col-md-2 btn-group" role="navigation">
     <a href="#" class="btn  btn-primary" id="btn_lista">
         <i class="fa fa-list"></i>
         Lista
@@ -27,7 +27,7 @@
 %{--    </g:if>--}%
 </div>
 
-<div class="span6 btn-group" role="navigation">
+<div class="col-md-4 btn-group" role="navigation">
     <g:if test="${rubro}">
         <a href="#" class="btn btn-ajax btn-info" id="imprimir" title="Imprimir">
             <i class="fa fa-print"></i>
@@ -48,11 +48,25 @@
     </g:if>
 </div>
 
-<div class="span6 btn-group" role="navigation">
-    <div class="col-md-2">
-        <a href="${createLink(controller: 'rubroOf', action: 'subirExcel', id: contrato?.id)}" class="btn" id="btnSubirExcel"
+<div class="col-md-6 btn-group" role="navigation">
+    <div class="col-md-3">
+        <a href="${createLink(controller: 'rubroOf', action: 'subirRubros', id: contrato?.id)}" class="btn" id="btnSubirRubros"
            title="Subir archivo excel">
-            <i class="fa fa-upload"></i> Subir excel
+            <i class="fa fa-upload"></i> Subir Rubros de Oferta
+        </a>
+    </div>
+
+    <div class="col-md-3">
+        <a href="${createLink(controller: 'rubroOf', action: 'subirExcelApu', id: contrato?.id)}" class="btn" id="btnSubirExcel"
+           title="Subir archivo excel">
+            <i class="fa fa-upload"></i> Subir excel de los APU
+        </a>
+    </div>
+
+    <div class="col-md-3">
+        <a href="${createLink(controller: 'rubroOf', action: 'subirExcel', id: contrato?.id)}" class="btn"
+           title="Subir archivo excel">
+            <i class="fa fa-upload"></i> Subir excel anterior
         </a>
     </div>
 

@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta name="layout" content="main">
-    <title>Subir archivo excel contrato</title>
+    <title>Subir excel APU</title>
     <style type="text/css">
     table, th, td {
         border: 1px solid white;
@@ -60,7 +60,7 @@
     </div>
 </g:if>
 
-<g:uploadForm controller="rubroOf" action="uploadApus" method="post" name="frmUpload" id="${contrato?.id}"
+<g:uploadForm controller="rubroOf" action="uploadAPU" method="post" name="frmUpload" id="${contrato?.id}"
               style="padding: 10px">
     <div id="list-grupo" class="col-md-12" role="main">
         <div class="col-md-2">
@@ -86,36 +86,54 @@
             </div>
         </div>
 
-        <div class="col-md-2">
-            <label>Texto para Rubro</label>
-        </div>
-        <div class="col-md-2" style="margin-left: -90px">
-            <g:textField name="rbro" class="form-control" value="RUBRO:"/>
+        <div>
         </div>
 
         <div class="col-md-2">
+            <label>Texto para Rubro</label>
+        </div>
+        <div class="col-md-1" style="margin-left: -90px">
+            <g:textField name="rbro" class="form-control" value="Detalle:"/>
+        </div>
+        <div class="col-md-1">
+            <input type="checkbox" id="prefijo" name="prefijo" checked />
+            <label for="prefijo">Prefijo</label>
+        </div>
+
+        <div class="col-md-1">
             <label>Celda texto Rubro</label>
         </div>
         <div class="col-md-1" style="margin-left: -40px">
             <g:textField name="cldarbro" class="form-control" value="A"/>
         </div>
 
-        <div class="col-md-2">
-            <label>Celda del Nombre del rubro</label>
+        <div class="col-md-1">
+            <label>Celda Nombre rubro</label>
         </div>
-        <div class="col-md-1" style="margin-left: -40px">
-            <g:textField name="rbronmbr" class="form-control" value="B"/>
+        <div class="col-md-1" style="margin-left: -20px">
+            <g:textField name="rbronmbr" class="form-control" value="A"/>
         </div>
 
         <div class="col-md-1">
-            <label>Celda Unidad</label>
+            <label>Título hoja</label>
         </div>
-        <div class="col-md-1" style="margin-left: -20px">
-            <g:textField name="rbroundd" class="form-control" value="H"/>
+        <div class="col-md-3" style="margin-left: -40px">
+            <g:textField name="rbrotitl" class="form-control" value="ANÁLISIS DE PRECIOS UNITARIOS"/>
         </div>
 
-        %{--<div style="text-align: center; margin-left: -180px; margin-bottom: 20px"><h3>Celdas y Columnas del APU</h3></div>--}%
-        %{--<div style="text-align: center; margin-left: -180px; margin-bottom: 20px"><h3>ss</h3></div>--}%
+        <div class="col-md-1">
+            <label>Celda título</label>
+        </div>
+        <div class="col-md-1" style="margin-left: -20px">
+            <g:textField name="cldatitl" class="form-control" value="A"/>
+        </div>
+
+        %{--<div class="col-md-1">--}%
+            %{--<label>Celda Unidad</label>--}%
+        %{--</div>--}%
+        %{--<div class="col-md-1" style="margin-left: -20px">--}%
+            %{--<g:textField name="rbroundd" class="form-control" value="H"/>--}%
+        %{--</div>--}%
 
         <div style="background-color: #e0e0e8; height: 105px; margin-top: 150px">
             <div class="contenedor">
@@ -135,37 +153,37 @@
             <div class="row-fluid">
                 <div class="col-md-2">
                     <label>Código del Ítem</label>
-                    <g:textField name="cdgoEq" class="form-control" value="A"/>
+                    <g:textField name="cdgoEq" class="form-control" value=""/>
                 </div>
 
                 <div class="col-md-2">
                     <label>Descripción del Ítem</label>
-                    <g:textField name="nmbrEq" class="form-control" value="B"/>
+                    <g:textField name="nmbrEq" class="form-control" value="A"/>
                 </div>
 
                 <div class="col-md-1">
                     <label>Cantidad</label>
-                    <g:textField name="cntdEq" class="form-control" value="D"/>
+                    <g:textField name="cntdEq" class="form-control" value="B"/>
                 </div>
 
                 <div class="col-md-1">
                     <label>Tarifa</label>
-                    <g:textField name="trfaEq" class="form-control" value="E"/>
+                    <g:textField name="trfaEq" class="form-control" value="C"/>
                 </div>
 
                 <div class="col-md-2">
                     <label>Costo Hora</label>
-                    <g:textField name="pcunEq" class="form-control" value="F"/>
+                    <g:textField name="pcunEq" class="form-control" value="D"/>
                 </div>
 
                 <div class="col-md-2">
                     <label>Rendimiento</label>
-                    <g:textField name="rndmEq" class="form-control" value="G"/>
+                    <g:textField name="rndmEq" class="form-control" value="E"/>
                 </div>
 
                 <div class="col-md-2">
                     <label>Costo (subtotal)</label>
-                    <g:textField name="cstoEq" class="form-control" value="H"/>
+                    <g:textField name="cstoEq" class="form-control" value="G"/>
                 </div>
             </div>
         </div>

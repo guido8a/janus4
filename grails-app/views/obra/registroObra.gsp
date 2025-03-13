@@ -76,7 +76,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
     %{--<button class="btn" id="nuevo"><i class="fa fa-plus"></i> Nuevo ${perfil?.codigo}</button>--}%
 
     %{--<g:if test="${persona?.departamento?.codigo != 'CRFC'}">--}%
-    <g:if test="${perfil?.codigo in ['OBRA', 'ADDI', 'COGS', 'RBRO'] }">
+    <g:if test="${perfil?.codigo in ['OBRA', 'ADDI', 'COGS', 'RBRO', 'CNTR'] }">
 
         <g:if test="${obra?.estado != 'R'}">
             <g:if test="${(obra?.responsableObra?.departamento?.direccion?.id == persona?.departamento?.direccion?.id && duenoObra == 1) || obra?.id == null}">
@@ -105,12 +105,12 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
             <g:if test="${obra?.id != null}">
                 <button class="btn" id="copiarObra"><i class="fa fa-copy"></i> Copiar Obra</button>
             </g:if>
-
+            %{---------- "${obra?.id} ${obra?.estado} == 'R' ${perfil.codigo} == 'CNTR' ${concurso}"--}%
             <g:if test="${obra?.id != null && obra?.estado == 'R' && perfil.codigo == 'CNTR' && concurso}">
                 <g:if test="${!existeObraOferente}">
                     <button class="btn" id="copiarObraOfe"><i class="fa fa-copy"></i> Copiar Obra a Oferentes
                     </button>
-                </g:if>g
+                </g:if>
             </g:if>
         </g:if>
         <g:if test="${obra?.estado == 'R' && obra?.tipo == 'D'}">
