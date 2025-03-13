@@ -52,13 +52,13 @@
     <div class="col-md-3">
         <a href="#" class="btn  btn-success" id="btnEmparejar">
             <i class="fa fa-check-circle"></i>
-            Emparejamiento
+            Emparejamiento Rubros
         </a>
     </div>
 
     <div class="col-md-3">
-        <a href="${createLink(controller: 'rubroOf', action: 'subirExcelApu', id: contrato?.id)}" class="btn" id="btnSubirExcel"
-           title="Subir archivo excel">
+        <a href="${createLink(controller: 'rubroOf', action: 'subirExcelApu', id: contrato?.id)}" class="btn"
+           id="btnSubirExcel" title="Subir archivo excel" style="margin-left: 20px">
             <i class="fa fa-upload"></i> Subir excel APU
         </a>
     </div>
