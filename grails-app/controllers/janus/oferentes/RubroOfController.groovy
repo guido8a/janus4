@@ -1271,7 +1271,6 @@ class RubroOfController {
                                 }
                                 if (sccnEq) {
 //                                cdgo, undd, nmbr, cntd, trfa, pcun, rndm, csto
-                                    println "Equipos -> rbro: $ofrb_id $rbronmbr"
                                     try {
                                         cdgo = rgst[cols[params.cdgoEq]]
                                         nmbr = rgst[cols[params.nmbrEq]]
@@ -1284,6 +1283,7 @@ class RubroOfController {
                                     } catch (e) {
                                         cntd = 0
                                     }
+                                    println "Equipos -> rbro: $ofrb_id $cdgo $nmbr $cntd"
                                     if (cntd && sccnEq) {
                                         println "inserta equipo: $nmbr"
                                         errores += insertaDtrb(oferente.id, obra, ordn, cdgo, nmbr, undd, cntd, trfa, pcun, rndm, csto, "EQ")
@@ -1816,29 +1816,39 @@ class RubroOfController {
 
 
     def empatarRubros_ajax() {
-        def item = Item.get(params.id)
-        def rubro = DetalleRubro.get(params.rubro)
-        def detalles = DetalleRubro.findAllByNombre(rubro.nombre)
-        def errores = ''
+        println "empatar: $params"
+//        def item = Item.get(params.id)
+//        def rubro = DetalleRubro.get(params.rubro)
+//        def detalles = DetalleRubro.findAllByNombre(rubro.nombre)
+//        def errores = ''
+//
+//        detalles.each {
+//            it.idJanus = item?.id?.toInteger()
+//            if (!it.save(flush: true)) {
+//                println("error al empatar el rubro " + it.errors)
+//                errores += it.errors
+//            } else {
+//                errores += ''
+//            }
+//        }
+//
+//        if (errores == '') {
+//            render "ok_Guardado correctamente"
+//        } else {
+//            render "no_Error al guardar"
+//        }
+        def cn = dbConnectionService.getConnection()
+        def oferente = session.usuario
+//        def sql = "select dtrbnmbr from dtrb where dtrb__id = ${params.rubro}"
+//        println "sql: $sql"
 
-        detalles.each {
-            it.idJanus = item?.id?.toInteger()
-            if (!it.save(flush: true)) {
-                println("error al empatar el rubro " + it.errors)
-                errores += it.errors
-            } else {
-                errores += ''
-            }
-        }
+        def sql = "update dtrb set dtrbjnid = ${params.id} where dtrbnmbr = ( select dtrbnmbr from dtrb " +
+                "where dtrb__id = ${params.rubro} ) and ofrb__id in (" +
+                "select ofrb__id from ofrb where prsn__id = ${oferente.id} and obra__id = ${params.obra})"
+        println "sql: $sql"
+        cn.execute(sql.toString())
 
-        if (errores == '') {
-            render "ok_Guardado correctamente"
-        } else {
-            render "no_Error al guardar"
-        }
-
-        println("item " + item)
-        println("rubro " + rubro?.nombre)
+        render "ok_Guardado correctamente"
     }
 
     def copiarRubros() {
@@ -1882,7 +1892,7 @@ class RubroOfController {
         println "quita: $params"
         def cn = dbConnectionService.getConnection()
         def oferente = session.usuario
-        def sql = "update dtrb set dtrbjnid = null where dtrbjnid = ${params.id} and ofrb__id in (" +
+        def sql = "update dtrb set dtrbjnid = 0 where dtrbjnid = ${params.id} and ofrb__id in (" +
                 "select ofrb__id from ofrb where prsn__id = ${oferente.id} and obra__id = ${params.obra})"
         println "sql: $sql"
         cn.execute(sql.toString())
