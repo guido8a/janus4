@@ -65,7 +65,8 @@
                         url: "${createLink(controller: 'rubroOf', action:'empatarRubros_ajax')}",
                         data: {
                             id: id,
-                            rubro: '${rubro?.id}'
+                            rubro: '${rubro?.id}',
+                            obra: '${obra}'
                         },
                         success: function (msg) {
                             g.modal("hide");

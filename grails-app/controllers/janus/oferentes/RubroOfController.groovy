@@ -1765,13 +1765,13 @@ class RubroOfController {
         def sqlTx = "${sql} order by 3, 1".toString()
 //        println("sql " + sqlTx)
         def datos = cn.rows(sqlTx)
-        return [datos: datos]
+        return [datos: datos, obra: obra]
     }
 
     def buscarRubros_ajax() {
         def rubro = DetalleRubro.findAllByNombreAndTipoNotEqual(params.dscr, 'TR')?.first()
         def tipo = rubro.tipo == 'EQ' ? ['3': 'Equipos'] : (rubro.tipo == 'MT' ? ['1': 'Materiales'] : ['2': 'Mano de obra'])
-        return [rubro: rubro, tipo: tipo]
+        return [rubro: rubro, tipo: tipo, obra: params.obra]
     }
 
     def tablaBuscarRubros_ajax() {
@@ -1799,7 +1799,7 @@ class RubroOfController {
 //        println "sql: $sqlTx"
         datos = cn.rows(sqlTx)
 //        println "data: ${datos[0]}"
-        [data: datos, rubro: rubro]
+        [data: datos, rubro: rubro, obra: params.obra]
     }
 
     def tablaEmpatados_ajax() {
@@ -1817,26 +1817,6 @@ class RubroOfController {
 
     def empatarRubros_ajax() {
         println "empatar: $params"
-//        def item = Item.get(params.id)
-//        def rubro = DetalleRubro.get(params.rubro)
-//        def detalles = DetalleRubro.findAllByNombre(rubro.nombre)
-//        def errores = ''
-//
-//        detalles.each {
-//            it.idJanus = item?.id?.toInteger()
-//            if (!it.save(flush: true)) {
-//                println("error al empatar el rubro " + it.errors)
-//                errores += it.errors
-//            } else {
-//                errores += ''
-//            }
-//        }
-//
-//        if (errores == '') {
-//            render "ok_Guardado correctamente"
-//        } else {
-//            render "no_Error al guardar"
-//        }
         def cn = dbConnectionService.getConnection()
         def oferente = session.usuario
 //        def sql = "select dtrbnmbr from dtrb where dtrb__id = ${params.rubro}"
@@ -1897,7 +1877,7 @@ class RubroOfController {
         println "sql: $sql"
         cn.execute(sql.toString())
 
-        render "ok"
+        render "ok_Guardado correctamente"
     }
 
 } //fin controller

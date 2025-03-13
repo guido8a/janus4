@@ -81,7 +81,8 @@
                 ordenar: ordenar,
                 grupo: grupo,
                 rubro: '${rubro?.id}',
-                nmbr:  '${rubro?.nombre}'
+                nmbr:  '${rubro?.nombre}',
+                obra: '${obra}'
             },
             success: function (msg) {
                 d.modal("hide");

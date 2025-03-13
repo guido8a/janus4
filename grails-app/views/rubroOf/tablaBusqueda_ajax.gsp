@@ -22,7 +22,7 @@
                     <td style="width: 20%">${dt.codigo}</td>
                     <td style="width: 60%">${dt.nombre}</td>
                     <td style="width: 10%; text-align: center">
-                            <a href="#" class="btn btn-success btn-xs btnSeleccionar" data-dscr="${dt?.nombre}"><i class="fa fa-search"></i></a>
+                        <a href="#" class="btn btn-success btn-xs btnSeleccionar" data-dscr="${dt?.nombre}"><i class="fa fa-search"></i></a>
                     </td>
                 </tr>
             </g:each>
@@ -39,14 +39,14 @@
 
 <g:if test="${!datos}">
     <div class="row-fluid">
-    <div class="col-md-4" style="margin-top: 10px">
-    </div>
-    <div class="col-md-4" style="margin-top: 10px; width: 33%">
-        <a href="#" class="btn btn-info" id="btnCopiar" style="text-align: center; width: 100%">
-            <i class="fa fa-edit"></i>
-            Copiar composición a los APU del Oferente
-        </a>
-    </div>
+        <div class="col-md-4" style="margin-top: 10px">
+        </div>
+        <div class="col-md-4" style="margin-top: 10px; width: 33%">
+            <a href="#" class="btn btn-info" id="btnCopiar" style="text-align: center; width: 100%">
+                <i class="fa fa-edit"></i>
+                Copiar composición a los APU del Oferente
+            </a>
+        </div>
     </div>
 </g:if>
 
@@ -62,7 +62,8 @@
             type    : "POST",
             url     : "${createLink(action:'buscarRubros_ajax')}",
             data    : {
-                dscr: dscr
+                dscr: dscr,
+                obra: '${obra?.id}'
             },
             success : function (msg) {
                 g.modal("hide");
