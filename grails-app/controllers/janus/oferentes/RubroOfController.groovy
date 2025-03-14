@@ -1916,14 +1916,9 @@ class RubroOfController {
         def cn = dbConnectionService.getConnection()
         def obra = Obra.get(params.obra)
         def oferente = session.usuario
-        //        def oferente = session.usuario
-//        def obra = Obra.get(params.id)
-//        def listaItems = ['dtrbnmbr', 'dtrbcdgo']
         def sql = "select * from ofrb " +
                 "where ofrb.obra__id = ${params.obra} and ofrbjnid = 0 and " +
                 "prsn__id = ${oferente.id}"
-//        def bsca = listaItems[params.buscarPor.toInteger() - 1]
-//        sql += " and $bsca ilike '%${params.criterio}%' and dtrb.dtrbtipo = '${params.grupo}' "
         def sqlTx = "${sql} order by ofrbnmbr".toString()
         println "sql: $sqlTx"
         def datos = cn.rows(sqlTx)
@@ -1953,6 +1948,10 @@ class RubroOfController {
     def costosIndirectos_ajax(){
         def obra = Obra.get(params.id)
         return [obra: obra]
+    }
+
+    def quitarEmpateRubrosRubros_ajax(){
+
     }
 
 } //fin controller

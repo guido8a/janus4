@@ -15,7 +15,7 @@
 <div style="width: 100%;height: 300px; overflow-y: auto;float: right; margin-top: -20px">
     <table class="table-bordered table-striped table-condensed table-hover" style="width: 100%">
         <tbody>
-        <g:if test="${datos}">
+        <g:if test="${datos.size() > 0}">
             <g:each in="${datos}" var="dt" status="i">
                 <tr style="width: 100%">
                     <td style="width: 10%">${dt.tipo == 'EQ' ? 'Equipo' : (dt.tipo == 'MT' ? 'Materiales' : 'Mano de obra')}</td>
