@@ -16,18 +16,18 @@
     <table class="table-bordered table-striped table-condensed table-hover">
         <tbody>
         <g:if test="${data}">
-%{--            <g:each in="${data}" var="dt" status="i">--}%
-%{--                <tr>--}%
-%{--                    <td style="width: 9%">${dt.itemcdgo}</td>--}%
-%{--                    <td style="width: 69%">${dt.itemnmbr}</td>--}%
-%{--                    <td style="width: 10%">--}%
-%{--                        ${dt.unddcdgo}--}%
-%{--                    </td>--}%
-%{--                    <td style="width: 9%">--}%
-%{--                        <a href="#" class="btn btn-success btn-xs btnSeleccionarRubroRubro" data-id="${dt?.item__id}" data-nombre="${dt?.itemnmbr}"><i class="fa fa-check"></i></a>--}%
-%{--                    </td>--}%
-%{--                </tr>--}%
-%{--            </g:each>--}%
+            <g:each in="${data}" var="dt" status="i">
+                <tr>
+                    <td style="width: 9%">${dt.itemcdgo}</td>
+                    <td style="width: 69%">${dt.itemnmbr}</td>
+                    <td style="width: 10%">
+                        ${dt.unddcdgo}
+                    </td>
+                    <td style="width: 9%">
+                        <a href="#" class="btn btn-success btn-xs btnSeleccionarRubroRubro" data-id="${dt?.item__id}" data-nombre="${dt?.itemnmbr}"><i class="fa fa-check"></i></a>
+                    </td>
+                </tr>
+            </g:each>
         </g:if>
         <g:else>
             <div class="alert alert-info" style="text-align: center">
