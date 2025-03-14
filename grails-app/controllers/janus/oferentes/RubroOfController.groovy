@@ -1962,7 +1962,7 @@ class RubroOfController {
         println "sql: $sqlTx"
         datos = cn.rows(sqlTx)
         println "data: ${datos[0]}"
-        [data: datos, obra: params.obra]
+        [data: datos, obra: params.obra, rubro: params.rubro]
 
     }
 

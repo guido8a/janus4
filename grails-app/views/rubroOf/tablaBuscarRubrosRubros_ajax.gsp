@@ -49,7 +49,7 @@
             url: "${createLink(controller: 'rubroOf', action:'emparejarRubros_ajax')}",
             data: {
                 id: id,
-                rubro: '${rubro?.id}',
+                rubro: '${rubro}',
                 obra: '${obra}'
             },
             success: function (msg) {
