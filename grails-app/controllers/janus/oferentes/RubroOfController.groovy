@@ -1942,6 +1942,27 @@ class RubroOfController {
     }
 
     def tablaBuscarRubrosRubros_ajax(){
+        println "tablaBuscar Rubros: $params"
+        def cn = dbConnectionService.getConnection()
+//        def rubro = Item.get(params.rubro)
+        def datos;
+
+        def longitud = params.nmbr.size()
+        def recorte = longitud > 10 ? longitud * 0.25 : longitud - 2
+        params.criterio = params.criterio ?: params.nmbr[0..(recorte)]
+        println "crite:  ${params.criterio}"
+
+        def select = "select item.item__id, itemcdgo, itemnmbr, unddcdgo " +
+                "from item, undd "
+        def txwh = "where tpit__id = 2 and undd.undd__id = item.undd__id and itemcdgo not like 'H%'"
+        def sqlTx = ""
+        txwh += " and itemnmbr ilike '%${params.criterio}%' "
+
+        sqlTx = "${select} ${txwh} order by itemnmbr limit 100 ".toString()
+        println "sql: $sqlTx"
+        datos = cn.rows(sqlTx)
+        println "data: ${datos[0]}"
+        [data: datos, obra: params.obra]
 
     }
 
@@ -1951,7 +1972,13 @@ class RubroOfController {
     }
 
     def quitarEmpateRubrosRubros_ajax(){
-
+        println "quita rurbos: $params"
+        def cn = dbConnectionService.getConnection()
+        def oferente = session.usuario
+        def sql = "update ofrb set ofrbjnid = 0 where ofrbjnid = ${params.id} and obra__id = ${params.obra}"
+        println "sql: $sql"
+        cn.execute(sql.toString())
+        render "ok_Guardado correctamente"
     }
 
     def emparejarRubros_ajax(){
