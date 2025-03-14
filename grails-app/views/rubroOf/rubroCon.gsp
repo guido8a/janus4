@@ -107,7 +107,7 @@
     });
 
     $("#btnProcesar").click(function () {
-        var cntr = $("#obra").val();
+        var obra = $("#obra").val();
         var indi = $("#indi").val();
         %{--location.href = "${createLink(controller: 'rubroOf', action: 'procesarRubrosOf')}?contrato=" + cntr + '&indi=' + indi--}%
 
@@ -115,7 +115,7 @@
             type: "POST",
             url: "${createLink(controller: 'rubroOf', action:'procesarRubrosOf')}",
             data: {
-                contrato: cntr,
+                obra: obra,
                 indi: indi
             },
             success: function (msg) {

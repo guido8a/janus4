@@ -1262,6 +1262,10 @@ class RubroOfController {
                                         break
                                     } else {
                                         println "---OFRB: $ofrb_id"
+                                        if(ordn > 0) {
+                                            sql = "update ofrb set ofrbordn = ${ordn} where ofrb__id = '${ofrb_id}'"
+                                            cn.execute(sql.toString())
+                                        }
                                     }
 
                                 }
@@ -1725,7 +1729,7 @@ class RubroOfController {
 
         println "mano: $manos"
         return [equipos: equipos, manos: manos, materiales: materiales, transporte: transporte,
-                precioUnitario: precioUnitario, indirectos: obra.indiceCostosIndirectosObra]
+                precioUnitario: precioUnitario, indirectos: obra.totales]
     }
 
     def procesarRubrosOf() {
@@ -1742,8 +1746,10 @@ class RubroOfController {
         }
         def indi = 1 + params.indi.toDouble() / 100
 
-        sql = "update ofrb set ofrbpcun = (select sum(dtrbsbtt* ${indi} ) from dtrb where dtrb.ofrb__id = ofrb.ofrb__id)"
-        cn.execute(sql.toString())
+//        sql = "update ofrb set ofrbpcun = (select sum(dtrbsbtt* ${indi} ) from dtrb " +
+//                "where dtrb.ofrb__id = ofrb.ofrb__id) where obra__id = ${params.obra}"
+//        println "sql: $sql"
+//        cn.execute(sql.toString())
         sql = "update ofrb set ofrbjnid = 0 where ofrbjnid is null"
         cn.execute(sql.toString())
         sql = "update dtrb set dtrbjnid = 0 where dtrbjnid is null"
@@ -1916,7 +1922,10 @@ class RubroOfController {
         def cn = dbConnectionService.getConnection()
         def obra = Obra.get(params.obra)
         def oferente = session.usuario
-        def sql = "select * from ofrb " +
+        def sql = "update ofrb set ofrbjnid = 0 where ofrbjnid is null"
+        cn.execute(sql.toString())
+
+        sql = "select * from ofrb " +
                 "where ofrb.obra__id = ${params.obra} and ofrbjnid = 0 and " +
                 "prsn__id = ${oferente.id}"
         def sqlTx = "${sql} order by ofrbnmbr".toString()
