@@ -16,18 +16,18 @@
     <table class="table-bordered table-striped table-condensed table-hover">
         <tbody>
         <g:if test="${data}">
-            <g:each in="${data}" var="dt" status="i">
-                <tr>
-                    <td style="width: 9%">${dt.itemcdgo}</td>
-                    <td style="width: 69%">${dt.itemnmbr}</td>
-                    <td style="width: 10%">
-                        ${dt.unddcdgo}
-                    </td>
-                    <td style="width: 9%">
-                        <a href="#" class="btn btn-success btn-xs btnSeleccionarRubro" data-id="${dt?.item__id}" data-nombre="${dt?.itemnmbr}"><i class="fa fa-check"></i></a>
-                    </td>
-                </tr>
-            </g:each>
+%{--            <g:each in="${data}" var="dt" status="i">--}%
+%{--                <tr>--}%
+%{--                    <td style="width: 9%">${dt.itemcdgo}</td>--}%
+%{--                    <td style="width: 69%">${dt.itemnmbr}</td>--}%
+%{--                    <td style="width: 10%">--}%
+%{--                        ${dt.unddcdgo}--}%
+%{--                    </td>--}%
+%{--                    <td style="width: 9%">--}%
+%{--                        <a href="#" class="btn btn-success btn-xs btnSeleccionarRubroRubro" data-id="${dt?.item__id}" data-nombre="${dt?.itemnmbr}"><i class="fa fa-check"></i></a>--}%
+%{--                    </td>--}%
+%{--                </tr>--}%
+%{--            </g:each>--}%
         </g:if>
         <g:else>
             <div class="alert alert-info" style="text-align: center">
@@ -41,28 +41,12 @@
 
 <script type="text/javascript">
 
-    $(".btnSeleccionarRubro").click(function () {
+    $(".btnSeleccionarRubroRubro").click(function () {
         var id = $(this).data("id");
-        // var nombre = $(this).data("nombre");
-        %{--bootbox.confirm({--}%
-        %{--    title: "Empatar rubro ",--}%
-        %{--    message: "<i class='fa fa-exclamation-triangle text-info fa-3x'></i> <strong style='font-size: 14px; text-align: center'> Está seguro de empatar ${rubro?.nombre}" + "<br>" + "con el rubro: " + nombre + " ?. </strong> ",--}%
-        // buttons: {
-        //     cancel: {
-        //         label: '<i class="fa fa-times"></i> Cancelar',
-        //         className: 'btn-primary'
-        //     },
-        //     confirm: {
-        //         label: '<i class="fa fa-check"></i> Aceptar',
-        //         className: 'btn-success'
-        //     }
-        // },
-        // callback: function (result) {
-        //     if(result){
         var g = cargarLoader("Guardando...");
         $.ajax({
             type: "POST",
-            url: "${createLink(controller: 'rubroOf', action:'empatarRubros_ajax')}",
+            url: "${createLink(controller: 'rubroOf', action:'emparejarRubros_ajax')}",
             data: {
                 id: id,
                 rubro: '${rubro?.id}',
@@ -74,8 +58,8 @@
                 if(parts[0] === 'ok'){
                     log(parts[1], "success");
                     cerrarDialogoBusquedaRubro();
-                    cargarTablaBusqueda();
-                    cargarTablaEmpatados();
+                    cargarTablaBusquedaRubros();
+                    cargarTablaEmpatadosRubros();
                 }else{
                     if(parts[0] === 'err'){
                         bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
@@ -86,9 +70,6 @@
                 }
             }
         });
-        //     }
-        // }
-        // });
     })
 
 </script>

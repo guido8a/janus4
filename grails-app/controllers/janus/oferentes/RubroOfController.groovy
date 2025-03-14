@@ -1937,7 +1937,7 @@ class RubroOfController {
     }
 
     def buscarRubrosRubros_ajax(){
-        def rubro = RubroOferta.findAllByNombre(params.dscr)
+        def rubro = RubroOferta.get(params.id)
         return [rubro: rubro, obra: params.obra]
     }
 
@@ -1951,6 +1951,10 @@ class RubroOfController {
     }
 
     def quitarEmpateRubrosRubros_ajax(){
+
+    }
+
+    def emparejarRubros_ajax(){
 
     }
 

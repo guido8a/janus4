@@ -2,8 +2,6 @@
     <table class="table table-bordered table-striped table-condensed table-hover">
         <thead>
         <tr>
-            <th style="width: 10%">Tipo</th>
-            <th style="width: 20%">Código</th>
             <th style="width: 60%">Descripción</th>
             <th style="width: 9%">Seleccionar</th>
             <th style="width: 1%"></th>
@@ -18,11 +16,9 @@
         <g:if test="${datos.size() > 0}">
             <g:each in="${datos}" var="dt" status="i">
                 <tr style="width: 100%">
-%{--                    <td style="width: 10%">${dt.tipo == 'EQ' ? 'Equipo' : (dt.tipo == 'MT' ? 'Materiales' : 'Mano de obra')}</td>--}%
-%{--                    <td style="width: 20%">${dt.codigo}</td>--}%
                     <td style="width: 60%">${dt.ofrbnmbr}</td>
                     <td style="width: 10%; text-align: center">
-                        <a href="#" class="btn btn-success btn-xs btnSeleccionar" data-dscr="${dt?.ofrbnmbr}"><i class="fa fa-search"></i></a>
+                        <a href="#" class="btn btn-success btn-xs btnSeleccionarRubro" data-id="${dt?.ofrb__id}"><i class="fa fa-search"></i></a>
                     </td>
                 </tr>
             </g:each>
@@ -55,14 +51,14 @@
 
     var tbr;
 
-    $(".btnSeleccionar").click(function () {
-        var dscr = $(this).data("dscr");
+    $(".btnSeleccionarRubro").click(function () {
+        var id = $(this).data("id");
         var g = cargarLoader("Cargando...");
         $.ajax({
             type    : "POST",
             url     : "${createLink(action:'buscarRubrosRubros_ajax')}",
             data    : {
-                dscr: dscr,
+                id: id,
                 obra: '${obra?.id}'
             },
             success : function (msg) {
