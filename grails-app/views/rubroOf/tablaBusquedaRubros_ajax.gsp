@@ -18,11 +18,11 @@
         <g:if test="${datos.size() > 0}">
             <g:each in="${datos}" var="dt" status="i">
                 <tr style="width: 100%">
-                    <td style="width: 10%">${dt.tipo == 'EQ' ? 'Equipo' : (dt.tipo == 'MT' ? 'Materiales' : 'Mano de obra')}</td>
-                    <td style="width: 20%">${dt.codigo}</td>
-                    <td style="width: 60%">${dt.nombre}</td>
+%{--                    <td style="width: 10%">${dt.tipo == 'EQ' ? 'Equipo' : (dt.tipo == 'MT' ? 'Materiales' : 'Mano de obra')}</td>--}%
+%{--                    <td style="width: 20%">${dt.codigo}</td>--}%
+                    <td style="width: 60%">${dt.ofrbnmbr}</td>
                     <td style="width: 10%; text-align: center">
-                        <a href="#" class="btn btn-success btn-xs btnSeleccionar" data-dscr="${dt?.nombre}"><i class="fa fa-search"></i></a>
+                        <a href="#" class="btn btn-success btn-xs btnSeleccionar" data-dscr="${dt?.ofrbnmbr}"><i class="fa fa-search"></i></a>
                     </td>
                 </tr>
             </g:each>
