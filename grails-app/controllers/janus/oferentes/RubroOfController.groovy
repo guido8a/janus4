@@ -1948,7 +1948,7 @@ class RubroOfController {
         def datos;
 
         def longitud = params.nmbr.size()
-        def recorte = longitud > 10 ? longitud * 0.25 : longitud - 2
+        def recorte = longitud > 10 ? longitud * 0.5 : longitud - 2
         params.criterio = params.criterio ?: params.nmbr[0..(recorte)]
         println "crite:  ${params.criterio}"
 
@@ -1982,6 +1982,17 @@ class RubroOfController {
     }
 
     def emparejarRubros_ajax(){
+        println "empareja rubro: $params"
+        def cn = dbConnectionService.getConnection()
+        def oferente = session.usuario
+//        def sql = "select dtrbnmbr from dtrb where dtrb__id = ${params.rubro}"
+//        println "sql: $sql"
+
+        def sql = "update ofrb set ofrbjnid = ${params.id} where ofrb__id = ${params.rubro} "
+        println "sql: $sql"
+        cn.execute(sql.toString())
+
+        render "ok_Guardado correctamente"
 
     }
 
