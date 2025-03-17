@@ -674,6 +674,7 @@ border-bottom: 1px solid black;height: 30px; width: 97%">
 
     function agregar(id,tipo){
         var tipoItem=$("#item_id").attr("tipo");
+        var rndm=$("#rendimiento").val();
         var cant = $("#item_cantidad").val();
         if (cant === "")
             cant = 0;
@@ -720,7 +721,7 @@ border-bottom: 1px solid black;height: 30px; width: 97%">
                 });
             } else {
                 var msg = "La cantidad debe ser un número positivo.";
-                if(tipoItem*1>1){
+                if(rndm < 0){
                     msg="Para mano de obra y equipos, la cantidad debe ser un número entero positivo."
                 }
                 bootbox.alert("<i class='fa fa-exclamation-triangle fa-3x text-warning'></i>" + "<strong style='font-size: 14px'>" +  msg +  "</strong>");

@@ -1952,7 +1952,7 @@ class RubroOfController {
     def tablaBuscarRubrosRubros_ajax(){
         println "tablaBuscar Rubros: $params"
         def cn = dbConnectionService.getConnection()
-//        def rubro = Item.get(params.rubro)
+        def obrajnid = cn.rows("select obrajnid from obof where obra__id = ${params.obra}".toString())[0].obrajnid
         def datos;
 
         def longitud = params.nmbr.size()
@@ -1960,13 +1960,13 @@ class RubroOfController {
         params.criterio = params.criterio ?: params.nmbr[0..(recorte)]
         println "crite:  ${params.criterio}"
 
-        def select = "select item.item__id, itemcdgo, itemnmbr, unddcdgo " +
-                "from item, undd "
-        def txwh = "where tpit__id = 2 and undd.undd__id = item.undd__id and itemcdgo not like 'H%'"
+        def select = "select distinct item.item__id, itemcdgo, itemnmbr, unddcdgo " +
+                "from item, undd, vlob "
+        def txwh = "where item.item__id = vlob.item__id and undd.undd__id = item.undd__id and obra__id = $obrajnid "
         def sqlTx = ""
         txwh += " and itemnmbr ilike '%${params.criterio}%' "
 
-        sqlTx = "${select} ${txwh} order by itemnmbr limit 100 ".toString()
+        sqlTx = "${select} ${txwh} order by itemnmbr".toString()
         println "sql: $sqlTx"
         datos = cn.rows(sqlTx)
         println "data: ${datos[0]}"
@@ -2029,6 +2029,10 @@ class RubroOfController {
         println "sql: $sql"
         cn.execute(sql.toString())
 
+        sql = "update dtrb set dtrbjnid = 0 where dtrbjnid is null"
+        cn.execute(sql.toString())
+        cn.close()
+
         render "ok_Guardado correctamente"
     }
 
@@ -2041,6 +2045,9 @@ class RubroOfController {
         println "sql: $sql"
         cn.execute(sql.toString())
 
+        sql = "update dtrb set dtrbjnid = 0 where dtrbjnid is null"
+        cn.execute(sql.toString())
+        cn.close()
         render "ok_Guardado correctamente"
     }
 
