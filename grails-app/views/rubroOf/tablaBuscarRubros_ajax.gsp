@@ -1,31 +1,44 @@
+<style type="text/css">
+table {
+    table-layout: fixed;
+    overflow-x: scroll;
+}
+th, td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+}
+</style>
+
 <div role="main" style="margin-top: 5px;">
     <table class="table table-bordered table-striped table-condensed table-hover">
         <thead>
         <tr>
             <th style="width: 12%">Código</th>
-            <th style="width: 72%">Descripción</th>
+            <th style="width: 68%">Descripción</th>
             <th style="width: 10%">Unidad</th>
-            <th style="width: 8%">Seleccionar</th>
+            <th style="width: 10%">Seleccionar</th>
             <th style="width: 1%"></th>
         </tr>
         </thead>
     </table>
 </div>
 
-<div class="" style="width: 99.7%;height: 400px; overflow-y: auto;float: right; margin-top: -20px">
+<div class="" style="width:100%;height: 400px; overflow-y: auto;float: right; margin-top: -20px">
     <table class="table-bordered table-striped table-condensed table-hover">
         <tbody>
         <g:if test="${data}">
             <g:each in="${data}" var="dt" status="i">
-                <tr>
-                    <td style="width: 9%">${dt.itemcdgo}</td>
-                    <td style="width: 69%">${dt.itemnmbr}</td>
+                <tr style="width: 100%">
+                    <td style="width: 12%">${dt.itemcdgo}</td>
+                    <td style="width: 68%">${dt.itemnmbr}</td>
                     <td style="width: 10%">
                         ${dt.unddcdgo}
                     </td>
-                    <td style="width: 9%">
+                    <td style="width: 10%; text-align: center">
                         <a href="#" class="btn btn-success btn-xs btnSeleccionarRubro" data-id="${dt?.item__id}" data-nombre="${dt?.itemnmbr}"><i class="fa fa-check"></i></a>
                     </td>
+                    <td style="width: 1%;"></td>
                 </tr>
             </g:each>
         </g:if>
