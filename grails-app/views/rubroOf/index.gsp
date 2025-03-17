@@ -240,7 +240,7 @@
             </div>
         </a>
 
-        <a href= "${createLink(controller:'rubroOf', action: 'rubroCon')}" style="text-decoration: none">
+        <a href= "${createLink(controller:'rubroOf', action: 'rubroCon', params: [tipo: 1])}" style="text-decoration: none">
             <div class="col-lg-6 mbr-col-md-10">
                 <div class="wrap">
                     <div style="width: 200px; height: 140px; text-align: center">

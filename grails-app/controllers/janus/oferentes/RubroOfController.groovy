@@ -1688,7 +1688,7 @@ class RubroOfController {
 
         println "obras: $obras"
 
-        [obras: obras, oferente: oferente]
+        [obras: obras, oferente: oferente, tipo: params.tipo]
 
     }
 

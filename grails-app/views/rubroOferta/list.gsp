@@ -19,12 +19,12 @@
 <div id="busqueda" style="overflow: hidden">
     <fieldset class="borde" style="border-radius: 4px">
         <div class="row-fluid">
-%{--            <div class="col-md-1 btn-group" role="navigation">--}%
-%{--                <a href="#" class="btn btn-primary" id="btnRegresarPrincipal">--}%
-%{--                    <i class="fa fa-arrow-left"></i>--}%
-%{--                    Regresar--}%
-%{--                </a>--}%
-%{--            </div>--}%
+            <div class="col-md-1 btn-group" role="navigation">
+                <a href="#" class="btn btn-primary" id="btnRegresar">
+                    <i class="fa fa-arrow-left"></i>
+                    Regresar
+                </a>
+            </div>
 
             <div id="list-grupo" class="col-md-10" role="main" style="margin-top: 10px;margin-left: 5px">
                 <div class="col-md-12">
@@ -50,6 +50,10 @@
 
 <script type="text/javascript">
     var di;
+
+    $("#btnRegresar").click(function () {
+        location.href = "${createLink(controller: 'rubroOf', action: 'index')}";
+    });
 
     $("#obra").change(function () {
         cargarTabla();
