@@ -16,11 +16,6 @@ class RubroOfController {
     def preciosService
     def dbConnectionService
 
-    def index() {
-        redirect(action: "list", params: params)
-    } //index
-
-
     def gruposPorClase() {
         def clase = Grupo.get(params.id)
         def grupos = SubgrupoItems.findAllByGrupo(clase)
@@ -2067,5 +2062,10 @@ class RubroOfController {
             render "no"
         }
     }
+
+    def index(){
+
+    }
+
 
 } //fin controller
