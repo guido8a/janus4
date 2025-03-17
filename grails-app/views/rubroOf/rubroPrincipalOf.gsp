@@ -731,11 +731,13 @@ border-bottom: 1px solid black;height: 30px; width: 97%">
         }
     }
     function getPrecio(){
+        var obra = $("#obra option:selected").val();
         $.ajax({
             type : "POST",
             url : "${g.createLink(controller: 'rubro',action:'getPrecioOferente')}",
             data:{
-                id: $("#item_id").val()
+                id: $("#item_id").val(),
+                obra: obra
             },
             success  : function (msg) {
                 $("#item_precio").val(number_format(msg.split('_')[0], 5, ".", ""));
