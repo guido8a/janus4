@@ -45,7 +45,7 @@
                            data-rend="${item.rendimiento}">
                             <i class="fa fa-edit"></i>
                         </a>
-                        <a class="btn btn-xs btn-danger borrarItem" href="#" rel="tooltip" title="Eliminar" iden="${item.id}" data-id="${item.id}">
+                        <a class="btn btn-xs btn-danger borrarItem" href="#" rel="tooltip" title="Eliminar" data-nombre="${item.nombre}" data-id="${item.id}">
                             <i class="fa fa-trash"></i>
                         </a>
                     </td>
@@ -111,7 +111,7 @@
                            data-cant="${item.cantidad}" data-rend="${item.rendimiento}">
                             <i class="fa fa-edit"></i>
                         </a>
-                        <a class="btn btn-xs btn-danger borrarItem" href="#" rel="tooltip" title="Eliminar" iden="${item.id}" data-id="${item.id}">
+                        <a class="btn btn-xs btn-danger borrarItem" href="#" rel="tooltip" title="Eliminar" data-nombre="${item.nombre}" data-id="${item.id}">
                             <i class="fa fa-trash"></i></a>
                     </td>
                 </tr>
@@ -173,7 +173,7 @@
                            data-unidad="${item.unidad}" data-codigo="${item.codigo}" data-desc="${item.nombre}" data-cant="${item.cantidad}" data-rend="${1}">
                             <i class="fa fa-edit"></i>
                         </a>
-                        <a class="btn btn-xs btn-danger borrarItem" href="#" rel="tooltip" title="Eliminar material" iden="${item.id}" data-id="${item.id}">
+                        <a class="btn btn-xs btn-danger borrarItem" href="#" rel="tooltip" title="Eliminar material" data-nombre="${item.nombre}" data-id="${item.id}">
                             <i class="fa fa-trash"></i></a>
                     </td>
                 </tr>
@@ -247,7 +247,7 @@
                            data-unidad="${item.unidad}" data-codigo="${item.codigo}" data-desc="${item.nombre}" data-cant="${item.cantidad}" data-rend="${1}">
                             <i class="fa fa-edit"></i>
                         </a>
-                        <a class="btn btn-xs btn-danger borrarItem" href="#" rel="tooltip" title="Eliminar material" iden="${item.id}" data-id="${item.id}">
+                        <a class="btn btn-xs btn-danger borrarItem" href="#" rel="tooltip" title="Eliminar material" data-nombre="${item.nombre}" data-id="${item.id}">
                             <i class="fa fa-trash"></i></a>
                     </td>
                 </tr>
@@ -358,7 +358,7 @@
             success : function (msg) {
                 dfg = bootbox.dialog({
                     id    : "dlgCreateEditM",
-                    title : title + " ",
+                    title : title + " Material",
                     class: 'modal-lg',
                     message : msg,
                     buttons : {
@@ -392,7 +392,7 @@
             success : function (msg) {
                 dfg = bootbox.dialog({
                     id    : "dlgCreateEditT",
-                    title : title + " ",
+                    title : title + " Transporte",
                     class: 'modal-lg',
                     message : msg,
                     buttons : {
@@ -442,6 +442,47 @@
             return false;
         }
     }
+
+    $(".borrarItem").click(function () {
+        var id = $(this).data("id");
+        var nombre = $(this).data("nombre");
+        bootbox.confirm({
+            title: "Eliminar rubro",
+            message: "<i class='fa fa-exclamation-triangle text-warning fa-3x'></i> Está seguro de que desea borrar el rubro: <br><strong>" + nombre + "</strong>",
+            buttons: {
+                cancel: {
+                    label: '<i class="fa fa-times"></i> Cancelar',
+                    className: 'btn-primary'
+                },
+                confirm: {
+                    label: '<i class="fa fa-check"></i> Aceptar',
+                    className: 'btn-success'
+                }
+            },
+            callback: function (result) {
+                if(result){
+                    var g = cargarLoader("Cargando...");
+                    $.ajax({
+                        type: "POST",
+                        url: "${createLink(controller: 'rubroOf', action: 'borrarRubroOferente_ajax')}",
+                        data: {
+                            id: id
+                        },
+                        success: function (msg) {
+                            g.modal("hide");
+                            var parts = msg.split("_");
+                            if(parts[0] === 'ok'){
+                                log("Borrado correctamente","success");
+                                cargarComposicion($("#rubro option:selected").val());
+                            }else{
+                                log("Error al borrar", "error")
+                            }
+                        }
+                    })
+                }
+            }
+        });
+    });
 
 </script>
 

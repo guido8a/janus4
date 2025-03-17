@@ -2055,4 +2055,17 @@ class RubroOfController {
         return [detalle: detalle]
     }
 
+    def borrarRubroOferente_ajax(){
+
+        def detalle = DetalleRubro.get(params.id)
+
+        try{
+            detalle.delete(flush:true)
+            render "ok"
+        }catch(e){
+            println("error al borrar el rubro " + detalle.errors)
+            render "no"
+        }
+    }
+
 } //fin controller
