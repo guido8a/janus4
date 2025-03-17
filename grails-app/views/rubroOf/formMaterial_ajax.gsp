@@ -14,8 +14,7 @@
                         Cantidad
                     </label>
                     <span  class="col-md-2">
-                        <g:textField name="cantidad" class="required form-control" value="${g.formatNumber(number: detalle?.cantidad ?: 0, maxFractionDigits: 5,
-                                minFractionDigits: 2, locale: 'ec')}"/>
+                        <g:textField name="cantidad" class="required form-control" value="${detalle?.cantidad ?: 0}"/>
                         <p class="help-block ui-helper-hidden"></p>
                     </span>
                     <label for="precio" class="col-md-1 control-label">
@@ -29,8 +28,7 @@
                         C.Total
                     </label>
                     <span  class="col-md-2">
-                        <g:textField name="subtotal" class="required form-control" value="${g.formatNumber(number: detalle?.subtotal ?: 0, maxFractionDigits: 5,
-                                minFractionDigits: 2, locale: 'ec')}"/>
+                        <g:textField name="subtotal" class="required form-control" value="${detalle?.subtotal ?: 0}"/>
                         <p class="help-block ui-helper-hidden"></p>
                     </span>
                 </span>
@@ -60,7 +58,6 @@
             ev.keyCode === 8 || ev.keyCode === 46 || ev.keyCode === 9 ||
             ev.keyCode === 37 || ev.keyCode === 39);
     }
-
 
     $("#subtotal, #precio, #cantidad").keydown(function (ev) {
         return validarNum(ev);

@@ -32,7 +32,7 @@
                         <g:formatNumber number="${item.cantidad}" format="##,#####0" minFractionDigits="5" maxFractionDigits="7"  locale="ec"  />
                     </td>
                     <td class="col_tarifa" style="text-align: right"><g:formatNumber number="${item.precio}" format="##,#####0" minFractionDigits="5" maxFractionDigits="7" locale="ec" /></td>
-                    <td class="col_hora" style="text-align: right">${item.cantidad}</td>
+                    <td class="col_hora" style="text-align: right">${item.precio}</td>
                     <td class="col_rend rend" style="width: 50px;text-align: right"  valor="${item.rendimiento}">
                         <g:formatNumber number="${item.rendimiento}" format="##,#####0" minFractionDigits="5" maxFractionDigits="7" locale="ec" />
                     </td>

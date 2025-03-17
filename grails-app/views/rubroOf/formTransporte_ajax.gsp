@@ -14,16 +14,14 @@
                         Peso
                     </label>
                     <span  class="col-md-2">
-                        <g:textField name="peso" class="required form-control" value="${g.formatNumber(number: detalle?.peso ?: 0, maxFractionDigits: 5,
-                                minFractionDigits: 2, locale: 'ec')}"/>
+                        <g:textField name="peso" class="required form-control" value="${detalle?.peso ?: 0}"/>
                         <p class="help-block ui-helper-hidden"></p>
                     </span>
                     <label for="cantidad" class="col-md-1 control-label">
                         Cantidad
                     </label>
                     <span  class="col-md-2">
-                        <g:textField name="cantidad" class="required form-control" value="${g.formatNumber(number: detalle?.cantidad ?: 0, maxFractionDigits: 5,
-                                minFractionDigits: 2, locale: 'ec')}"/>
+                        <g:textField name="cantidad" class="required form-control" value="${detalle?.cantidad ?: 0}"/>
                         <p class="help-block ui-helper-hidden"></p>
                     </span>
                     <label for="distancia" class="col-md-1 control-label">
@@ -37,8 +35,7 @@
                         Unitario
                     </label>
                     <span  class="col-md-2">
-                        <g:textField name="precio" class="required form-control" value="${g.formatNumber(number: detalle?.precio ?: 0, maxFractionDigits: 5,
-                                minFractionDigits: 2, locale: 'ec')}"/>
+                        <g:textField name="precio" class="required form-control" value="${detalle?.precio ?: 0}"/>
                         <p class="help-block ui-helper-hidden"></p>
                     </span>
                 </span>
@@ -49,16 +46,14 @@
                         Tarifa
                     </label>
                     <span  class="col-md-2">
-                        <g:textField name="costo" class="required form-control" value="${g.formatNumber(number: detalle?.costo ?: 0, maxFractionDigits: 5,
-                                minFractionDigits: 2, locale: 'ec')}"/>
+                        <g:textField name="costo" class="required form-control" value="${detalle?.costo ?: 0}"/>
                         <p class="help-block ui-helper-hidden"></p>
                     </span>
                     <label for="subtotal" class="col-md-1 control-label">
                         C.Total
                     </label>
                     <span  class="col-md-2">
-                        <g:textField name="subtotal" class="required form-control" value="${g.formatNumber(number: detalle?.subtotal ?: 0, maxFractionDigits: 5,
-                                minFractionDigits: 2, locale: 'ec')}"/>
+                        <g:textField name="subtotal" class="required form-control" value="${detalle?.subtotal ?: 0}"/>
                         <p class="help-block ui-helper-hidden"></p>
                     </span>
                 </span>
