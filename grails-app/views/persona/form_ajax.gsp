@@ -170,7 +170,7 @@ option[selected]{
                         </label>
 
                         <div class="col-md-2">
-                            <g:textField name="sigla" maxlength="8" class="form-control input-sm" value="${personaInstance?.sigla}"/>
+                            <g:textField name="sigla" maxlength="3" class="form-control input-sm" value="${personaInstance?.sigla}"/>
                         </div>
 
                         <label for="activo" class="col-md-2 control-label">

@@ -2002,7 +2002,24 @@ class RubroOfController {
         cn.execute(sql.toString())
 
         render "ok_Guardado correctamente"
+    }
 
+    def formEquipo_ajax(){
+        def detalle = DetalleRubro.get(params.id)
+        return [detalle: detalle]
+    }
+
+    def save_ajax(){
+
+        def detalle = DetalleRubro.get(params.id)
+        detalle.properties = params
+
+        if(!detalle.save(flush:true)){
+            println("error al guardar el rubro " + detalle.errors)
+            render "no_Error al guardar el rubro"
+        }else{
+            render "ok_Guardado correctamente"
+        }
     }
 
 } //fin controller

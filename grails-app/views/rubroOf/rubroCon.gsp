@@ -59,8 +59,7 @@
             <b style="margin-left: 20px">Obra Ofertada:</b>
         </div>
         <div class="col-md-10">
-            %{--<g:select name="obra" from="${obras}" optionKey="key" optionValue="value" style="width: 100%; margin-left: -80px"/>--}%
-            <g:select name="obra" from="${obras}" optionKey="id" optionValue="nombre" style="width: 100%; margin-left: -80px"/>
+            <g:select name="obra" from="${obras}" optionKey="${{it.id}}" optionValue="${{it.nombre}}" style="width: 100%; margin-left: -80px"/>
         </div>
     </div>
 
@@ -76,7 +75,6 @@
     <div class="col-md-12" id="divComposicion">
 
     </div>
-
 </div>
 
 <script type="text/javascript">
@@ -109,7 +107,6 @@
     $("#btnProcesar").click(function () {
         var obra = $("#obra").val();
         var indi = $("#indi").val();
-        %{--location.href = "${createLink(controller: 'rubroOf', action: 'procesarRubrosOf')}?contrato=" + cntr + '&indi=' + indi--}%
 
         $.ajax({
             type: "POST",
