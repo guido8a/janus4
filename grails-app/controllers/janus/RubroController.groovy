@@ -1,6 +1,7 @@
 package janus
 
 import com.lowagie.text.pdf.PdfReader
+import groovy.io.FileType
 import janus.apus.ArchivoEspecificacion
 
 import org.springframework.dao.DataIntegrityViolationException
@@ -1429,11 +1430,28 @@ class RubroController {
 
     def faltan() {
         def ares = ArchivoEspecificacion.findAllByRutaIsNotNull()
-        def extEspecificacion = "", pathEspecificacion = "", cntaexiste = 0, cntafalta = 0, archivo
+        def extEspecificacion = "", pathEspecificacion = "", cntaexiste = 0, cntafalta = 0, archivo, arch = ""
         def existe = new File('/tmp/existe.csv')
         def falta = new File('/tmp/falta.csv')
+        def dir = new File("/var/janus/rubros")
+        def busca = ""
+        def archivos = [], nombre
         println "ares: ${ares.size()}"
+
+        dir.eachFileRecurse (FileType.FILES) { file ->
+            nombre = file.toString()
+            if(nombre.contains('.pdf')) {
+                nombre = nombre.replaceAll('/var/janus/rubros/', '')
+                archivos.add(nombre)
+            }
+        }
+
+        println "<<<< $archivos"
+        println "--${archivos.contains('r_dt_907_24_04_2014_10_43_59.pdf')}"
+        println "--${archivos.contains('907')}"
+
         ares.each { a ->
+            arch = ""
 //            println "procesa: ${a.item.codigo}"
             if (a?.ruta?.size() > 4) {
 //                println "rubro: ${a?.item?.codigo}ruta: ${ares.ruta}"
@@ -1448,7 +1466,15 @@ class RubroController {
                         existe.append("${a.item.codigo}|${a.item.nombre}|${a.ruta}\n\r")
                         cntaexiste++
                     } catch (e) {
-                        falta.append("${a.item.codigo}|${a.item.nombre}|${a.ruta}\n\r")
+                        busca = a?.ruta.split('_')[2]
+                        busca = busca.toString().replaceAll('.pdf', '')
+                        archivos.each { ar ->
+                            //println l
+                            if(ar.toString().indexOf(busca) >= 0) {
+                                arch += '|' + ar
+                            }
+                        }
+                        falta.append("${a.item.codigo}|${a.item.nombre}|${a.ruta}|${arch}\n\r")
                         cntafalta++
                     }
                 }
