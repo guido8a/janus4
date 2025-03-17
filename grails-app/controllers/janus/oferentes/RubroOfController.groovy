@@ -830,7 +830,7 @@ class RubroOfController {
         cn.eachRow(sql.toString()) { r ->
             obras[r.id] = r.nombre
         }
-        [obras: obras, oferente: oferente]
+        [obras: obras, oferente: oferente, tipo: params.tipo]
     }
 
     def uploadApus() {
@@ -1768,7 +1768,7 @@ class RubroOfController {
         cn.eachRow(sql.toString()) { r ->
             obras[r.id] = r.nombre
         }
-        [obras: obras, oferente: oferente]
+        [obras: obras, oferente: oferente, tipo: params.tipo]
     }
 
     def tablaBusqueda_ajax() {
@@ -1873,6 +1873,7 @@ class RubroOfController {
     }
 
     def subirRubros() {
+        println("params " + params)
         def oferente = session.usuario
         def cn = dbConnectionService.getConnection()
         def obras = [:]
@@ -1884,7 +1885,7 @@ class RubroOfController {
         cn.eachRow(sql.toString()) { r ->
             obras[r.id] = r.nombre
         }
-        [obras: obras, oferente: oferente]
+        [obras: obras, oferente: oferente, tipo: params.tipo]
     }
 
 
@@ -1912,7 +1913,7 @@ class RubroOfController {
         cn.eachRow(sql.toString()) { r ->
             obras[r.id] = r.nombre
         }
-        [obras: obras, oferente: oferente]
+        [obras: obras, oferente: oferente, tipo: params.tipo]
     }
 
     def tablaBusquedaRubros_ajax(){

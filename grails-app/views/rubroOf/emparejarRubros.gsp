@@ -66,7 +66,12 @@
     var di;
 
     $("#btnRegresarPrincipal").click(function () {
-        location.href="${createLink(controller: 'rubroOf', action: 'rubroPrincipalOf')}"
+        <g:if test="${tipo == '1'}">
+        location.href = "${createLink(controller: 'rubroOf', action: 'index')}";
+        </g:if>
+        <g:else>
+        location.href="${createLink(controller: 'rubroOf', action: 'rubroPrincipalOf')}";
+        </g:else>
     });
 
     // $("#buscarGrupo").change(function () {

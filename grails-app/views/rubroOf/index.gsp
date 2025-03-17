@@ -143,7 +143,7 @@
     }
     .display-6 {
         font-family: 'Source Sans Pro',sans-serif;
-        font-size: 1re
+        font-size: 1rem;
     }
 
 
@@ -160,7 +160,7 @@
 
     <div class="row mbr-justify-content-center">
 
-        <a href= "${createLink(controller:'rubroOf', action: 'subirRubros')}" style="text-decoration: none">
+        <a href= "${createLink(controller:'rubroOf', action: 'subirRubros', params: [tipo: 1])}" style="text-decoration: none">
             <div class="col-lg-6 mbr-col-md-10">
                 <div class="wrap">
                     <div style="width: 200px; height: 140px; text-align: center">
@@ -176,7 +176,7 @@
             </div>
         </a>
 
-        <a href= "${createLink(controller:'rubroOf', action: 'emparejarRubros')}" style="text-decoration: none">
+        <a href= "${createLink(controller:'rubroOf', action: 'emparejarRubros', params: [tipo: 1])}" style="text-decoration: none">
             <div class="col-lg-6 mbr-col-md-10">
                 <div class="wrap">
                     <div style="width: 200px; height: 140px; text-align: center">
@@ -192,7 +192,7 @@
             </div>
         </a>
 
-        <a href= "${createLink(controller:'rubroOf', action: 'subirExcelApu')}" style="text-decoration: none">
+        <a href= "${createLink(controller:'rubroOf', action: 'subirExcelApu', params: [tipo: 1])}" style="text-decoration: none">
             <div class="col-lg-6 mbr-col-md-10">
                 <div class="wrap">
                     <div style="width: 200px; height: 140px; text-align: center">
@@ -208,7 +208,7 @@
             </div>
         </a>
 
-        <a href= "${createLink(controller:'rubroOf', action: 'rubroEmpatado')}" style="text-decoration: none">
+        <a href= "${createLink(controller:'rubroOf', action: 'rubroEmpatado', params: [tipo: 1])}" style="text-decoration: none">
             <div class="col-lg-6 mbr-col-md-10">
                 <div class="wrap">
                     <div style="width: 200px; height: 140px; text-align: center">

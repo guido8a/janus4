@@ -71,7 +71,12 @@
     var di;
 
     $("#btnRegresarPrincipal").click(function () {
-        location.href="${createLink(controller: 'rubroOf', action: 'rubroCon')}/${rubro?.id}"
+        <g:if test="${tipo == '1'}">
+        location.href = "${createLink(controller: 'rubroOf', action: 'index')}";
+        </g:if>
+        <g:else>
+        location.href="${createLink(controller: 'rubroOf', action: 'rubroCon')}";
+        </g:else>
     });
 
     $("#buscarGrupo").change(function () {
@@ -91,7 +96,7 @@
     });
 
     $("#btnEmparejaCdgo").click(function  () {
-        var obra = $("#obra").val()
+        var obra = $("#obra").val();
         bootbox.dialog({
             title   : "Alerta",
             message : "<i class='fa fa-trash fa-2x pull-left text-danger text-shadow'></i>" +
@@ -135,7 +140,7 @@
     });
 
     $("#btnEmparejaNmbr").click(function  () {
-        var obra = $("#obra").val()
+        var obra = $("#obra").val();
         bootbox.dialog({
             title   : "Alerta",
             message : "<i class='fa fa-trash fa-2x pull-left text-danger text-shadow'></i>" +

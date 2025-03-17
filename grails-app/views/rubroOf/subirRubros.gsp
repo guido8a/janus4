@@ -154,13 +154,15 @@
 <script type="text/javascript">
 
     $("#btnRegresar").click(function () {
-        location.href = "${createLink(controller: 'rubroOf', action: 'rubroPrincipalOf')}?contrato=" +
-            '${contrato?.id}'
+        <g:if test="${tipo == '1'}">
+        location.href = "${createLink(controller: 'rubroOf', action: 'index')}";
+        </g:if>
+        <g:else>
+        location.href = "${createLink(controller: 'rubroOf', action: 'rubroPrincipalOf')}";
+        </g:else>
     });
 
     $("#btnBorrar").click(function () {
-
-
         bootbox.confirm({
             title: "Eliminar los APUS del oferente",
             message: "<i class='fa fa-exclamation-triangle text-warning fa-3x'></i> Está seguro de que desea borrar " +
