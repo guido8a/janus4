@@ -2022,26 +2022,37 @@ class RubroOfController {
         }
     }
 
-        def empjCdgo() {
-            println "empareja rubro: $params"
-            def cn = dbConnectionService.getConnection()
-            def sql = "update dtrb set dtrbjnid = (select item__id from item where item.itemcdgo = dtrb.dtrbcdgo) " +
-                    "where dtrbjnid = 0 and obra__id = ${params.obra})"
-            println "sql: $sql"
-            cn.execute(sql.toString())
+    def empjCdgo() {
+        println "empareja rubro: $params"
+        def cn = dbConnectionService.getConnection()
+        def sql = "update dtrb set dtrbjnid = (select item__id from item where item.itemcdgo = dtrb.dtrbcdgo) " +
+                "where dtrbjnid = 0 and obra__id = ${params.obra})"
+        println "sql: $sql"
+        cn.execute(sql.toString())
 
-            render "ok_Guardado correctamente"
-        }
+        render "ok_Guardado correctamente"
+    }
 
-        def empjNmbr() {
-            println "empareja por nombre: $params"
-            def cn = dbConnectionService.getConnection()
-            def sql = "update dtrb set dtrbjnid = (select item__id from item where item.itemnmbr = dtrb.dtrbnmbr and " +
-                    "tpit__id = 1) where dtrbjnid = 0 and ofrb__id in (select ofrb__id from ofrb " +
-                    "where dtrbjnid = 0 and obra__id = ${params.obra})"
-            println "sql: $sql"
-            cn.execute(sql.toString())
+    def empjNmbr() {
+        println "empareja por nombre: $params"
+        def cn = dbConnectionService.getConnection()
+        def sql = "update dtrb set dtrbjnid = (select item__id from item where item.itemnmbr = dtrb.dtrbnmbr and " +
+                "tpit__id = 1) where dtrbjnid = 0 and ofrb__id in (select ofrb__id from ofrb " +
+                "where dtrbjnid = 0 and obra__id = ${params.obra})"
+        println "sql: $sql"
+        cn.execute(sql.toString())
 
-            render "ok_Guardado correctamente"
-        }
+        render "ok_Guardado correctamente"
+    }
+
+    def formMaterial_ajax(){
+        def detalle = DetalleRubro.get(params.id)
+        return [detalle: detalle]
+    }
+
+    def formTransporte_ajax(){
+        def detalle = DetalleRubro.get(params.id)
+        return [detalle: detalle]
+    }
+
 } //fin controller

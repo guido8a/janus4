@@ -169,7 +169,7 @@
                     <td class="col_total" style="text-align: right"> <g:formatNumber number="${item.subtotal}" format="##,#####0" minFractionDigits="5" maxFractionDigits="7"  locale="ec"  /></td>
                     <g:set var="subtotalMateriales" value="${subtotalMateriales += (item?.subtotal ?: 0)}"/>
                     <td style="width: 70px;text-align: center" class="col_delete">
-                        <a class="btn btn-xs btn-success btnEditar" href="#" rel="tooltip" title="Editar" data-id="${item.id}" data-tipo="${item.tipo}"
+                        <a class="btn btn-xs btn-success btnEditarMaterial" href="#" rel="tooltip" title="Editar" data-id="${item.id}" data-tipo="${item.tipo}"
                            data-unidad="${item.unidad}" data-codigo="${item.codigo}" data-desc="${item.nombre}" data-cant="${item.cantidad}" data-rend="${1}">
                             <i class="fa fa-edit"></i>
                         </a>
@@ -243,7 +243,7 @@
                     </td>
                     <g:set var="subtotalTransporte" value="${subtotalTransporte += (item?.subtotal ?: 0)}"/>
                     <td style="width: 75px;text-align: center" class="col_delete">
-                        <a class="btn btn-xs btn-success btnEditar" href="#" rel="tooltip" title="Editar" data-id="${item.id}" data-tipo="${item.tipo}"
+                        <a class="btn btn-xs btn-success btnEditarTransporte" href="#" rel="tooltip" title="Editar" data-id="${item.id}" data-tipo="${item.tipo}"
                            data-unidad="${item.unidad}" data-codigo="${item.codigo}" data-desc="${item.nombre}" data-cant="${item.cantidad}" data-rend="${1}">
                             <i class="fa fa-edit"></i>
                         </a>
@@ -304,6 +304,16 @@
         createEditEquipo(id);
     });
 
+    $(".btnEditarMaterial").click(function () {
+        var id = $(this).data("id");
+        createEditMaterial(id);
+    });
+
+    $(".btnEditarTransporte").click(function () {
+        var id = $(this).data("id");
+        createEditTransporte(id);
+    });
+
     function createEditEquipo(id) {
         var title = id ? "Editar" : "Crear";
         var data = id ? {id : id} : {};
@@ -315,7 +325,7 @@
                 dfg = bootbox.dialog({
                     id    : "dlgCreateEditE",
                     title : title + " ",
-                    class: 'modal-sm',
+                    class: 'modal-lg',
                     message : msg,
                     buttons : {
                         cancelar : {
@@ -338,6 +348,73 @@
         }); //ajax
     } //createEdit
 
+    function createEditMaterial(id) {
+        var title = id ? "Editar" : "Crear";
+        var data = id ? {id : id} : {};
+        $.ajax({
+            type    : "POST",
+            url     : "${createLink(controller: 'rubroOf', action:'formMaterial_ajax')}",
+            data    : data,
+            success : function (msg) {
+                dfg = bootbox.dialog({
+                    id    : "dlgCreateEditM",
+                    title : title + " ",
+                    class: 'modal-lg',
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        },
+                        guardar  : {
+                            id        : "btnSave",
+                            label     : "<i class='fa fa-save'></i> Guardar",
+                            className : "btn-success",
+                            callback  : function () {
+                                return submitFormEquipo();
+                            } //callback
+                        } //guardar
+                    } //buttons
+                }); //dialog
+            } //success
+        }); //ajax
+    } //createEdit
+
+    function createEditTransporte(id) {
+        var title = id ? "Editar" : "Crear";
+        var data = id ? {id : id} : {};
+        $.ajax({
+            type    : "POST",
+            url     : "${createLink(controller: 'rubroOf', action:'formTransporte_ajax')}",
+            data    : data,
+            success : function (msg) {
+                dfg = bootbox.dialog({
+                    id    : "dlgCreateEditT",
+                    title : title + " ",
+                    class: 'modal-lg',
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        },
+                        guardar  : {
+                            id        : "btnSave",
+                            label     : "<i class='fa fa-save'></i> Guardar",
+                            className : "btn-success",
+                            callback  : function () {
+                                return submitFormEquipo();
+                            } //callback
+                        } //guardar
+                    } //buttons
+                }); //dialog
+            } //success
+        }); //ajax
+    } //createEdit
 
     function submitFormEquipo() {
         var $form = $("#frmSave");

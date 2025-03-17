@@ -10,6 +10,14 @@
         <div class="form-group keeptogether">
             <div class="col-md-12">
                 <span class="grupo">
+                    <label for="peso" class="col-md-1 control-label">
+                        Peso
+                    </label>
+                    <span  class="col-md-2">
+                        <g:textField name="peso" class="required form-control" value="${g.formatNumber(number: detalle?.peso ?: 0, maxFractionDigits: 5,
+                                minFractionDigits: 2, locale: 'ec')}"/>
+                        <p class="help-block ui-helper-hidden"></p>
+                    </span>
                     <label for="cantidad" class="col-md-1 control-label">
                         Cantidad
                     </label>
@@ -18,18 +26,31 @@
                                 minFractionDigits: 2, locale: 'ec')}"/>
                         <p class="help-block ui-helper-hidden"></p>
                     </span>
-                    <label for="precio" class="col-md-1 control-label">
-                        ${detalle?.tipo == 'EQ' ? 'Tarifa' : 'Jornal'}
+                    <label for="distancia" class="col-md-1 control-label">
+                        Distancia
                     </label>
                     <span  class="col-md-2">
-                        <g:textField name="precio" class="required form-control" value="${detalle?.precio}"/>
+                        <g:textField name="distancia" class="required form-control" value="${detalle?.distancia}"/>
                         <p class="help-block ui-helper-hidden"></p>
                     </span>
-                    <label for="rendimiento" class="col-md-1 control-label">
-                        Rendimiento
+                    <label for="subtotal" class="col-md-1 control-label">
+                        Unitario
                     </label>
                     <span  class="col-md-2">
-                        <g:textField name="rendimiento" class="required form-control" value="${detalle?.rendimiento}"/>
+                        <g:textField name="precio" class="required form-control" value="${g.formatNumber(number: detalle?.precio ?: 0, maxFractionDigits: 5,
+                                minFractionDigits: 2, locale: 'ec')}"/>
+                        <p class="help-block ui-helper-hidden"></p>
+                    </span>
+                </span>
+            </div>
+            <div class="col-md-12" style="margin-top: 10px">
+                <span class="grupo">
+                    <label for="costo" class="col-md-1 control-label">
+                        Tarifa
+                    </label>
+                    <span  class="col-md-2">
+                        <g:textField name="costo" class="required form-control" value="${g.formatNumber(number: detalle?.costo ?: 0, maxFractionDigits: 5,
+                                minFractionDigits: 2, locale: 'ec')}"/>
                         <p class="help-block ui-helper-hidden"></p>
                     </span>
                     <label for="subtotal" class="col-md-1 control-label">
@@ -43,7 +64,6 @@
                 </span>
             </div>
         </div>
-
     </g:form>
 </div>
 
@@ -69,7 +89,8 @@
             ev.keyCode === 37 || ev.keyCode === 39);
     }
 
-    $("#rendimiento, #precio, #cantidad, #subtotal").keydown(function (ev) {
+
+    $("#peso, #precio, #cantidad, #costo, #distancia").keydown(function (ev) {
         return validarNum(ev);
     });
 

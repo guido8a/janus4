@@ -19,17 +19,10 @@
                         <p class="help-block ui-helper-hidden"></p>
                     </span>
                     <label for="precio" class="col-md-1 control-label">
-                        ${detalle?.tipo == 'EQ' ? 'Tarifa' : 'Jornal'}
+                        Unitario
                     </label>
                     <span  class="col-md-2">
                         <g:textField name="precio" class="required form-control" value="${detalle?.precio}"/>
-                        <p class="help-block ui-helper-hidden"></p>
-                    </span>
-                    <label for="rendimiento" class="col-md-1 control-label">
-                        Rendimiento
-                    </label>
-                    <span  class="col-md-2">
-                        <g:textField name="rendimiento" class="required form-control" value="${detalle?.rendimiento}"/>
                         <p class="help-block ui-helper-hidden"></p>
                     </span>
                     <label for="subtotal" class="col-md-1 control-label">
@@ -43,7 +36,6 @@
                 </span>
             </div>
         </div>
-
     </g:form>
 </div>
 
@@ -69,7 +61,8 @@
             ev.keyCode === 37 || ev.keyCode === 39);
     }
 
-    $("#rendimiento, #precio, #cantidad, #subtotal").keydown(function (ev) {
+
+    $("#subtotal, #precio, #cantidad").keydown(function (ev) {
         return validarNum(ev);
     });
 
