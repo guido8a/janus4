@@ -6,6 +6,13 @@
     <title>
         Emparejar rubros
     </title>
+
+    <style>
+        .noCuadra {
+            color: #9c1e27 !important;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
 

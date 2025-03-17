@@ -171,6 +171,7 @@ class Reportes2Controller {
         def persona = Persona.get(session.usuario.id)
         def tama = VolumenesObra.findAllByObra(obra, [sort: 'orden']).item.unique().size()
         def rubros
+        def falta = ""
 
         if((tama -1) >= 100){
             rubros = VolumenesObra.findAllByObra(obra, [sort: 'orden']).item.unique()[0..100]
@@ -258,14 +259,19 @@ class Reportes2Controller {
                 pathEspecificacion = "/var/janus/" + "rubros" + File.separatorChar + ares?.ruta
                 println "ruta: --> ${ares?.ruta} path: ${pathEspecificacion.toLowerCase()}"
                 if (pathEspecificacion.toLowerCase().contains("pdf")) {
-                    readerEspecificacion = new PdfReader(new FileInputStream(pathEspecificacion));
-                    println "pags: ${readerEspecificacion.getNumberOfPages()}"
-                    pagesEspecificacion = readerEspecificacion.getNumberOfPages()
+                    try {
+                        readerEspecificacion = new PdfReader(new FileInputStream(pathEspecificacion));
+                        println "pags: ${readerEspecificacion.getNumberOfPages()}"
+                        pagesEspecificacion = readerEspecificacion.getNumberOfPages()
+                    } catch (e) {
+                        falta += "item: ${ares.item.codigo} ${ares.item.nombre} archivo: ${ares.ruta}\n"
+                    }
                 }else{
                     //redirect(controller: "contrato", action: "verContrato", params: [contrato: params.id])
                 }
             }
 
+            println "...2-- faltan: $falta"
             println "...2--"
             def maxImageSize = 400
 

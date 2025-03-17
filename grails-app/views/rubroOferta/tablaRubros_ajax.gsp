@@ -1,14 +1,14 @@
 <div role="main" style="margin-top: 5px;">
-    <table class="table table-bordered table-striped table-condensed table-hover">
+    <table class="table table-bordered table-striped table-condensed table-hover" style="margin-top: 20px">
         <thead>
         <tr style="width: 100%">
-            <th colspan="8">Rubros Empatados</th>
+            <th colspan="8">Rubros Cargados de la Oferta</th>
         </tr>
         <tr>
             <th style="width: 5%">Orden</th>
             <th style="width: 64%">Descripción</th>
-            <th style="width: 10%">Precio</th>
-            <th style="width: 10%">Sum</th>
+            <th style="width: 10%">Precio Oferente</th>
+            <th style="width: 10%">Precio APU</th>
             <th style="width: 10%">Diferencia</th>
             <th style="width: 1%"></th>
         </tr>
@@ -16,12 +16,12 @@
     </table>
 </div>
 
-<div class="" style="width: 99.7%;height: 350px; overflow-y: auto;float: right; margin-top: -20px">
+<div class="" style="width: 99.7%; height: 450px; overflow-y: auto;float: right; margin-top: -20px">
     <table class="table-bordered table-striped table-condensed table-hover" width="100%">
         <tbody>
         <g:if test="${data}">
             <g:each in="${data}" var="d" status="i">
-                <tr>
+                <tr class="${Math.abs(d?.diff) > 0.009 ? 'noCuadra' : ''}">
                     <td style="width: 5%">${d?.ofrbordn}</td>
                     <td style="width: 64%">${d?.ofrbnmbr}</td>
                     <td style="width: 10%; text-align: right">${d?.ofrbpcun}</td>

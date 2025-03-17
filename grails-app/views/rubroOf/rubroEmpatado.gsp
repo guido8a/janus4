@@ -4,7 +4,7 @@
 <head>
     <meta name="layout" content="main">
     <title>
-        Correspondencia de ítems
+        Emparejar items
     </title>
 </head>
 <body>
@@ -12,13 +12,13 @@
 <div id="busqueda" style="overflow: hidden">
     <fieldset class="borde" style="border-radius: 4px">
         <div class="row-fluid">
-            <div class="col-md-2 btn-group" role="navigation">
+            <div class="col-md-1 btn-group" role="navigation">
                 <a href="#" class="btn btn-primary" id="btnRegresarPrincipal">
                     <i class="fa fa-arrow-left"></i>
                     Regresar
                 </a>
             </div>
-            <div id="list-grupo" class="col-md-10" role="main" style="margin-top: 10px;margin-left: -10px">
+            <div id="list-grupo" class="col-md-11" role="main" style="margin-top: 10px;margin-left: -10px">
 
                 <div class="col-md-12">
                     <div class="col-md-3">
@@ -36,17 +36,22 @@
                 Grupo
                 <g:select name="buscarGrupo_name" id="buscarGrupo" from="['MT': 'Materiales', 'MO': 'Mano de Obra', 'EQ': 'Equipos']" optionKey="key" optionValue="value" class="form-control" />
             </div>
-            <div class="col-md-2">
+            <div class="col-md-1" style="width: 140px">
                 Buscar Por
                 <g:select name="buscarPor" class="buscarPor form-control" from="${[1: 'Nombre', 2: 'Código']}" style="width: 100%" optionKey="key" optionValue="value"/>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
                 Criterio
                 <g:textField name="criterio" class="criterio form-control"/>
             </div>
-            <div class="col-md-2 btn-group" style="margin-top: 20px">
+            <div class="col-md-1 btn-group" style="margin-top: 20px; width: 120px">
                 <button class="btn btn-info" id="btnBuscar"><i class="fa fa-search"></i></button>
                 <button class="btn btn-warning" id="btnLimpiar" title="Limpiar Búsqueda"><i class="fa fa-eraser"></i></button>
+            </div>
+            <div class="col-md-3 btn-group" style="margin-top: 20px">
+                <button class="btn btn-success" id="btnEmparejaCdgo"><i class="fa fa-edit"></i>Emp. por Código</button>
+                <button class="btn btn-success" id="btnEmparejaNmbr" title="Limpiar Búsqueda">
+                    <i class="fa fa-edit"></i>Emp. por Nombre</button>
             </div>
         </div>
     </fieldset>
@@ -84,6 +89,95 @@
         $("#ordenar").val(1);
         cargarTablaBusqueda();
     });
+
+    $("#btnEmparejaCdgo").click(function  () {
+        var obra = $("#obra").val()
+        bootbox.dialog({
+            title   : "Alerta",
+            message : "<i class='fa fa-trash fa-2x pull-left text-danger text-shadow'></i>" +
+                    "<p style='font-weight: bold'> Está seguro que desea emparejar items del mismo nombre?</p>",
+            buttons : {
+                cancelar : {
+                    label     : "Cancelar",
+                    className : "btn-primary",
+                    callback  : function () {
+                    }
+                },
+                aceptar : {
+                    label     : "<i class='fa fa-check'></i> Emparejar",
+                    className : "btn-info",
+                    callback  : function () {
+                        var v = cargarLoader("Emparejando...");
+                        $.ajax({
+                            type    : "POST",
+                            url     : '${createLink(controller: 'rubroOf', action: 'empjCdgo')}',
+                            data    : {
+                                obra : obra
+                            },
+                            success : function (msg) {
+                                v.modal("hide");
+                                var parts = msg.split("_");
+                                if(parts[0] === 'ok'){
+                                    log(parts[1],"success");
+                                    setTimeout(function () {
+                                        location.reload()
+                                    }, 1000);
+                                }else{
+                                    log(parts[1],"error")
+                                }
+                            }
+                        });
+                    }
+                }
+            }
+        });
+        return false;
+    });
+
+    $("#btnEmparejaNmbr").click(function  () {
+        var obra = $("#obra").val()
+        bootbox.dialog({
+            title   : "Alerta",
+            message : "<i class='fa fa-trash fa-2x pull-left text-danger text-shadow'></i>" +
+                    "<p style='font-weight: bold'> Está seguro que desea emparejar items del mismo nombre?</p>",
+            buttons : {
+                cancelar : {
+                    label     : "Cancelar",
+                    className : "btn-primary",
+                    callback  : function () {
+                    }
+                },
+                aceptar : {
+                    label     : "<i class='fa fa-check'></i> Emparejar",
+                    className : "btn-info",
+                    callback  : function () {
+                        var v = cargarLoader("Emparejando...");
+                        $.ajax({
+                            type    : "POST",
+                            url     : '${createLink(controller: 'rubroOf', action: 'empjNmbr')}',
+                            data    : {
+                                obra : obra
+                            },
+                            success : function (msg) {
+                                v.modal("hide");
+                                var parts = msg.split("_");
+                                if(parts[0] === 'ok'){
+                                    log(parts[1],"success");
+                                    setTimeout(function () {
+                                        location.reload()
+                                    }, 1000);
+                                }else{
+                                    log(parts[1],"error")
+                                }
+                            }
+                        });
+                    }
+                }
+            }
+        });
+        return false;
+    });
+
 
     $("#criterio").keydown(function (ev) {
         if (ev.keyCode === 13) {

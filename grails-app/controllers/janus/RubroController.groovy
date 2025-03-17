@@ -1,5 +1,6 @@
 package janus
 
+import com.lowagie.text.pdf.PdfReader
 import janus.apus.ArchivoEspecificacion
 
 import org.springframework.dao.DataIntegrityViolationException
@@ -1423,6 +1424,41 @@ class RubroController {
         }else{
             render "no_Error al borrar"
         }
+    }
+
+
+    def faltan() {
+        def ares = ArchivoEspecificacion.findAllByRutaIsNotNull()
+        def extEspecificacion = "", pathEspecificacion = "", cntaexiste = 0, cntafalta = 0, archivo
+        def existe = new File('/tmp/existe.csv')
+        def falta = new File('/tmp/falta.csv')
+        println "ares: ${ares.size()}"
+        ares.each { a ->
+//            println "procesa: ${a.item.codigo}"
+            if (a?.ruta?.size() > 4) {
+//                println "rubro: ${a?.item?.codigo}ruta: ${ares.ruta}"
+                extEspecificacion = a.ruta.split("\\.")
+                extEspecificacion = extEspecificacion[extEspecificacion.size() - 1]
+                pathEspecificacion = "/var/janus/" + "rubros" + File.separatorChar + a?.ruta
+//                println "ruta: --> ${a?.ruta} path: ${pathEspecificacion.toLowerCase()}"
+                if (pathEspecificacion.toLowerCase().contains("pdf")) {
+                    try {
+                        archivo = new FileInputStream(pathEspecificacion)
+//                        salida.append = "${a.item.codigo},${a.item.nombre},${a.ruta}"
+                        existe.append("${a.item.codigo}|${a.item.nombre}|${a.ruta}\n\r")
+                        cntaexiste++
+                    } catch (e) {
+                        falta.append("${a.item.codigo}|${a.item.nombre}|${a.ruta}\n\r")
+                        cntafalta++
+                    }
+                }
+            }
+        }
+
+//        println "...2-- faltan: $falta"
+
+        render "existe ${cntaexiste} y <hr> falta: ${cntafalta}"
+
     }
 
 
