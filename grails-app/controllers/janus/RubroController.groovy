@@ -1483,7 +1483,8 @@ class RubroController {
 
 //        println "...2-- faltan: $falta"
 
-        render "existe ${cntaexiste} y <hr> falta: ${cntafalta}"
+        render "existe ${cntaexiste} y falta: ${cntafalta} <hr> Se ha generado los archivos /tmp/existe.csv y falta.csv " +
+                "utilizando '|' como separador CSV"
 
     }
 

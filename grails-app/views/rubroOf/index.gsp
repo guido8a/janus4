@@ -11,62 +11,141 @@
 
     .item {
         width: 260px;
-        height: 220px;
+        height: 225px;
         float: left;
         margin: 4px;
         font-family: 'open sans condensed';
-        border: none;
+        background-color: #e7f5f1;
+        border: 1px;
+        border-color: #5c6e80;
+        border-style: solid;
+    }
+    .item2 {
+        width: 660px;
+        height: 160px;
+        float: left;
+        margin: 4px;
+        font-family: 'open sans condensed';
+        background-color: #eceeff;
+        border: 1px;
+        border-color: #5c6e80;
+        border-style: solid;
     }
 
     .imagen {
-        width: 167px;
-        height: 100px;
+        width: 200px;
+        height: 140px;
         margin: auto;
         margin-top: 10px;
+    }
+    .imagen2 {
+        width: 200px;
+        height: 140px;
+        margin: auto;
+        margin-top: 10px;
+        margin-right: 40px;
+        float: right;
     }
 
     .texto {
         width: 90%;
-        height: 50px;
+        /*height: 50px;*/
         padding-top: 0px;
         margin: auto;
         margin: 8px;
-        font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
-        font-size: 13px;
+        font-size: 16px;
         font-style: normal;
     }
 
     .fuera {
         margin-left: 15px;
         margin-top: 20px;
-        background-color: rgba(200, 200, 200, 0.9);
+        /*background-color: #317fbf; */
+        background-color: rgba(114, 131, 147, 0.9);
         border: none;
-
     }
 
     .titl {
         font-family: 'open sans condensed';
         font-weight: bold;
         text-shadow: -2px 2px 1px rgba(0, 0, 0, 0.25);
-    <g:if test="${janus.Parametros.findByEmpresaLike('SEP-C-GADPP')}">
-        color: #418073;
-    </g:if>
-    <g:else>
-        color: #00485a;
-    </g:else>
-
+        color: #0070B0;
         margin-top: 20px;
     }
 
-    .bordes {
-    <g:if test="${janus.Parametros.findByEmpresaLike('SEP-C-GADPP')}">
-        background: #317063;
-    </g:if>
-    <g:else>
-        background: #40525e;
-    </g:else>
-
+    body {
+        background : #e5e4e7;
     }
+
+    .color1 {
+        background : #e7f5f1;
+    }
+
+    .color2 {
+        background : #FFF;
+    }
+
+
+    section {
+        padding-top: 4rem;
+        padding-bottom: 5rem;
+        background-color: #f1f4fa;
+    }
+    .wrap {
+        display: flex;
+        background: white;
+        padding: 1rem 1rem 1rem 1rem;
+        border-radius: 0.5rem;
+        box-shadow: 7px 7px 30px -5px rgba(0,0,0,0.1);
+        margin-bottom: 1rem;
+        width: 553px; height: 130px
+    }
+
+    .wrap:hover {
+        /*background: linear-gradient(135deg,#6394ff 0%,#0a193b 100%);*/
+        background: linear-gradient(135deg, #e0fff8 0%,#e6f0f8 100%);
+        /*color: white;*/
+    }
+
+    .ico-wrap {
+        margin: auto;
+    }
+
+    .mbr-iconfont {
+        font-size: 4.5rem !important;
+        color: #313131;
+        margin: 1rem;
+        padding-right: 1rem;
+    }
+    .vcenter {
+        margin: auto;
+    }
+
+    .mbr-section-title3 {
+        text-align: left;
+    }
+    h2 {
+        margin-top: 0.5rem;
+        margin-bottom: 0.5rem;
+    }
+    .display-5 {
+        font-family: 'Source Sans Pro',sans-serif;
+        font-size: 1.4rem;
+    }
+    .mbr-bold {
+        font-weight: 700;
+    }
+
+    p {
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
+        line-height: 25px;
+    }
+    .display-6 {
+        font-family: 'Source Sans Pro',sans-serif;
+        font-size: 1re
+    }
+
 
     </style>
 </head>
@@ -75,90 +154,78 @@
 <div class="dialog">
     <div style="text-align: center;">
         <h1 class="titl" style="font-size: 26px;">
-            <elm:poneHtml textoHtml="${"SEGUIMIENTO Y EJECUCIÓN DE PROYECTOS DE OBRAS Y CONSULTORÍAS GOBIERNO AUTÓNOMO DESCENTRALIZADO PROVINCIA DE PICHINCHA"}"/>
+            <elm:poneHtml textoHtml="Cargado del presupuesto y rubros desde los archivos excel del Oferente"/>
         </h1>
     </div>
 
-    <div class="body ui-corner-all bordes" style="width: 850px;position: relative;margin: auto;margin-top: 0px;height: 510px;">
+    <div class="row mbr-justify-content-center">
 
-        <div class="ui-corner-all  item fuera">
-            <div class="ui-corner-all ui-widget-content item">
-                <a href="${createLink(controller: 'rubroOf', action: 'subirRubros')}" title="Subir Rubros">
-                    <div class="imagen">
-                        <img src="${resource(dir: 'images', file: 'apu1.png')}" width="100%" height="100%"/>
+        <a href= "${createLink(controller:'rubroOf', action: 'subirRubros')}" style="text-decoration: none">
+            <div class="col-lg-6 mbr-col-md-10">
+                <div class="wrap">
+                    <div style="width: 200px; height: 140px; text-align: center">
+                        <span style="font-size: 72px">1</span>
                     </div>
 
-                    <div class="texto"><b>Subir rubros</b>: ...</div>
-                </a>
-            </div>
-        </div>
-
-        <div class="ui-corner-all item fuera">
-            <div class="ui-corner-all ui-widget-content item">
-                <a href="${createLink(controller: 'rubroOf', action: 'emparejarRubros')}" title="Emparejar Rubros">
-                    <div class="imagen">
-                        <img src="${resource(dir: 'images', file: 'obra100.png')}" width="100%" height="100%"/>
+                    <div style="width: 450px; height: 220px">
+                        <h2 class="mbr-fonts-style mbr-bold mbr-section-title3 display-5"><span>Subir Rubros</span></h2>
+                        <p class="mbr-fonts-style text1 mbr-text display-6">Desde una hoja donde se hallen todos los rubros
+                        que figuran en la obra se suben los nombres y precios unitarios. Los rubros no deben repetirse.</p>
                     </div>
-
-                    <div class="texto"><b>Emparejar rubros</b>: ...</div>
-                </a>
-            </div>
-        </div>
-
-        <div class="ui-corner-all item fuera">
-            <div class="ui-corner-all ui-widget-content item">
-                <a href="${createLink(controller: 'rubroOf', action: 'subirExcelApu')}" title="Cargar excel apu">
-                    <div class="imagen">
-                        <img src="${resource(dir: 'images', file: 'bodega.png')}" width="100%" height="100%"/>
-                    </div>
-
-                    <div class="texto"><b>Subir Excel APU</b>: ...</div>
-                </a>
-            </div>
-        </div>
-
-        <div class="ui-corner-all  item fuera">
-            <div class="ui-corner-all ui-widget-content item">
-                <a href="${createLink(controller: 'rubroOf', action: 'subirExcel')}" title="Cargar excel anterior">
-                    <div class="imagen">
-                        <img src="${resource(dir: 'images', file: 'fiscalizar.png')}" width="100%" height="100%"/>
-                    </div>
-
-                    <div class="texto"><b>Subir Excel anterior</b>: ...</div>
-                </a>
-            </div>
-        </div>
-
-        <div class="ui-corner-all  item fuera">
-            <div class="ui-corner-all ui-widget-content item">
-                <a href="${createLink(controller: 'rubroOferta', action: 'list')}" title="Comprobar rubros">
-                    <div class="imagen">
-                        <img src="${resource(dir: 'images', file: 'reporte.png')}" width="100%" height="100%"/>
-                    </div>
-
-                    <div class="texto"><b>Comprobar rubros</b>: ...</div>
-                </a>
-            </div>
-        </div>
-
-
-
-        <div class="ui-corner-all  item fuera">
-
-            <div class="ui-corner-all ui-widget-content item">
-                <div class="imagen">
-                    <img src="${resource(dir: 'images', file: 'manuales1.png')}" width="100%" height="100%" title="Manuales del sistema"/>
-                </div>
-
-                <div class="texto"><b></b>
-
                 </div>
             </div>
-        </div>
+        </a>
 
-        <div style="text-align: center ; color:#ffffff"> Desarrollado por: TEDEIN S.A. Versión ${message(code: 'version', default: '1.1.0x')} </div>
+        <a href= "${createLink(controller:'rubroOf', action: 'emparejarRubros')}" style="text-decoration: none">
+            <div class="col-lg-6 mbr-col-md-10">
+                <div class="wrap">
+                    <div style="width: 200px; height: 140px; text-align: center">
+                        <span style="font-size: 72px">2</span>
+                    </div>
+
+                    <div style="width: 450px; height: 220px">
+                        <h2 class="mbr-fonts-style mbr-bold mbr-section-title3 display-5"><span>Emparejar Rubros</span></h2>
+                        <p class="mbr-fonts-style text1 mbr-text display-6">Se determina la correspondencia entre los rubros
+                        del contratista con los rubros del presupeusto preparado en el sistemas SEP-GADPP.</p>
+                    </div>
+                </div>
+            </div>
+        </a>
+
+        <a href= "${createLink(controller:'rubroOf', action: 'subirExcelApu')}" style="text-decoration: none">
+            <div class="col-lg-6 mbr-col-md-10">
+                <div class="wrap">
+                    <div style="width: 200px; height: 140px; text-align: center">
+                        <span style="font-size: 72px">3</span>
+                    </div>
+
+                    <div style="width: 450px; height: 220px">
+                        <h2 class="mbr-fonts-style mbr-bold mbr-section-title3 display-5"><span>Cargar el excel de los APU</span></h2>
+                        <p class="mbr-fonts-style text1 mbr-text display-6">Cargar datos desde el excel que contiene
+                        la composciión de LOS APU del contratista.</p>
+                    </div>
+                </div>
+            </div>
+        </a>
+
+        <a href= "${createLink(controller:'rubroOf', action: 'rubroEmpatado')}" style="text-decoration: none">
+            <div class="col-lg-6 mbr-col-md-10">
+                <div class="wrap">
+                    <div style="width: 200px; height: 140px; text-align: center">
+                        <span style="font-size: 72px">4</span>
+                    </div>
+
+                    <div style="width: 450px; height: 220px">
+                        <h2 class="mbr-fonts-style mbr-bold mbr-section-title3 display-5"><span>Emparejamiento de Ítems</span></h2>
+                        <p class="mbr-fonts-style text1 mbr-text display-6">Se determina la correspondencia entre los ítems
+                        del contratista con los del presupeusto preparado en el sistemas SEP-GADPP.</p>
+                    </div>
+                </div>
+            </div>
+        </a>
 
     </div>
+
 </div>
 
 <script type="text/javascript">

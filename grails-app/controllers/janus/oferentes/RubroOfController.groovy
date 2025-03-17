@@ -1741,6 +1741,9 @@ class RubroOfController {
         }
         def indi = 1 + params.indi.toDouble() / 100
 
+        /** los valores se cargan al cargar el presupuesto para cuadrar valores del APU
+         * si no cuadran hay que corregir --- ? */
+
 //        sql = "update ofrb set ofrbpcun = (select sum(dtrbsbtt* ${indi} ) from dtrb " +
 //                "where dtrb.ofrb__id = ofrb.ofrb__id) where obra__id = ${params.obra}"
 //        println "sql: $sql"
@@ -1979,7 +1982,7 @@ class RubroOfController {
         println "quita rurbos: $params"
         def cn = dbConnectionService.getConnection()
         def oferente = session.usuario
-        def sql = "update ofrb set ofrbjnid = 0 where ofrbjnid = ${params.id} and obra__id = ${params.obra}"
+        def sql = "update ofrb set ofrbjnid = 0 where ofrb__id = ${params.id} and obra__id = ${params.obra}"
         println "sql: $sql"
         cn.execute(sql.toString())
         render "ok_Guardado correctamente"
