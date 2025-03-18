@@ -1863,10 +1863,20 @@ class RubroOfController {
     def borrarApus() {
         println "borrarApus: $params"
         def cn = dbConnectionService.getConnection()
-        def sql = "delete from dtrb where ofrb__id in (select ofrb__id from ofrb where obra__id = ${params.obra})"
+        def sql = "delete from dtrb where ofrb__id in (select ofrb__id from ofrb " +
+                "where obra__id = ${params.obra})"
         cn.execute(sql.toString())
 
+        /* borra los rubros subidos */
         sql = "delete from ofrb where obra__id = ${params.obra}"
+        cn.execute(sql.toString())
+
+        /* borra los rubros migrados */
+        sql = "delete from rbof where obra__id = ${params.obra}"
+        cn.execute(sql.toString())
+
+        /* borra los precios migrados */
+        sql = "delete from prco where obra__id = ${params.obra}"
         cn.execute(sql.toString())
 
         render "Ok"

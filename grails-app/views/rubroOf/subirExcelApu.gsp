@@ -307,20 +307,21 @@
     });
 
     $("#btnBorrar").click(function () {
-
-
         bootbox.confirm({
             title: "Eliminar los APUS del oferente",
-            message: "<i class='fa fa-exclamation-triangle text-warning fa-3x'></i> Está seguro de que desea borrar " +
-            "todos los APU cargados del oferente para la obra:<br><strong>" + $("#obra").text() + "</strong>",
+            message: "<i class='fa fa-exclamation-triangle text-warning fa-3x'></i> " +
+            "Está seguro de que desea borrar " +
+            "todos los APU cargados del oferente para la obra:<br><strong>" + $("#obra").text() + "</strong>" +
+            "<br>Se borrarán: <ul><li>Todos los APU cargados</li><li>El emparejamiento de rubros</li>" +
+            "<li>Emparejamiento de ítems</li><li>Los APU migrados a cantidades de obra</li></ul>",
             buttons: {
                 cancel: {
                     label: '<i class="fa fa-times"></i> Cancelar',
                     className: 'btn-primary'
                 },
                 confirm: {
-                    label: '<i class="fa fa-check"></i> Aceptar',
-                    className: 'btn-success'
+                    label: '<i class="fa fa-trash"></i> Borrar',
+                    className: 'btn-danger'
                 }
             },
             callback: function (result) {

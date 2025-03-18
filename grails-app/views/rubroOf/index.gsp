@@ -232,7 +232,7 @@
                     </div>
 
                     <div style="width: 450px; height: 220px">
-                        <h2 class="mbr-fonts-style mbr-bold mbr-section-title3 display-5"><span>Comprobar valors de rubros</span></h2>
+                        <h2 class="mbr-fonts-style mbr-bold mbr-section-title3 display-5"><span>Comprobar valores de rubros</span></h2>
                         <p class="mbr-fonts-style text1 mbr-text display-6">Se comprueba los valores presentados por el oferente
                         con el precio unitario de cda APU.</p>
                     </div>
@@ -248,9 +248,25 @@
                     </div>
 
                     <div style="width: 450px; height: 220px">
-                        <h2 class="mbr-fonts-style mbr-bold mbr-section-title3 display-5"><span>Revisar los APU del Oferetne</span></h2>
-                        <p class="mbr-fonts-style text1 mbr-text display-6">Se visualiza la composición delos APU para
+                        <h2 class="mbr-fonts-style mbr-bold mbr-section-title3 display-5"><span>Revisar los APU del Oferente</span></h2>
+                        <p class="mbr-fonts-style text1 mbr-text display-6">Se visualiza la composición de los APU para
                         poder corregir valores y su composición</p>
+                    </div>
+                </div>
+            </div>
+        </a>
+
+        <a href= "${createLink(controller:'rubroOf', action: 'rubroPrincipalOf', params: [tipo: 1])}" style="text-decoration: none">
+            <div class="col-lg-6 mbr-col-md-10">
+                <div class="wrap">
+                    <div style="width: 200px; height: 140px; text-align: center">
+                        <span style="font-size: 72px">7</span>
+                    </div>
+
+                    <div style="width: 450px; height: 220px">
+                        <h2 class="mbr-fonts-style mbr-bold mbr-section-title3 display-5"><span>Revisar los APU sistema</span></h2>
+                        <p class="mbr-fonts-style text1 mbr-text display-6">Se visualiza la composición de los APU
+                        con los items del sisema para comprobar valores y su composición</p>
                     </div>
                 </div>
             </div>
