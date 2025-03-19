@@ -171,7 +171,8 @@ class Reportes2Controller {
         def persona = Persona.get(session.usuario.id)
         def tama = VolumenesObra.findAllByObra(obra, [sort: 'orden']).item.unique().size()
         def rubros
-        def falta = ""
+        def falta = []
+        def cnta = 0
 
         if((tama -1) >= 100){
             rubros = VolumenesObra.findAllByObra(obra, [sort: 'orden']).item.unique()[0..100]
@@ -264,15 +265,16 @@ class Reportes2Controller {
                         println "pags: ${readerEspecificacion.getNumberOfPages()}"
                         pagesEspecificacion = readerEspecificacion.getNumberOfPages()
                     } catch (e) {
-                        falta += "item: ${ares.item.codigo} ${ares.item.nombre} archivo: ${ares.ruta}\n"
+                        falta.add("item: " + rubro.codigo + " archivo: " + ares.ruta)
+                        cnta++
                     }
                 }else{
                     //redirect(controller: "contrato", action: "verContrato", params: [contrato: params.id])
                 }
             }
 
-            println "...2-- faltan: $falta"
-            println "...2--"
+//            println "...2-- faltan: $falta"
+//            println "...2--"
             def maxImageSize = 400
 
             addCellTabla(tablaRubro, new Paragraph("Código", fontTh), prmsTh)
@@ -367,6 +369,16 @@ class Reportes2Controller {
 
         }
 
+        /** pdfs que faltan */
+        if(falta != "") {
+            falta = falta.unique()
+            def tx = "Archivos que faltan: <br>"
+            falta.each { f ->
+                tx += f + '<br>'
+            }
+            render "${tx}"
+            return
+        }
 
         /** firmas */
         def tablaFirmas = new PdfPTable(5);
