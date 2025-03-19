@@ -2,7 +2,7 @@
 
 <div class="row" style="margin-bottom: 1px">
     <div class="col-md-12">
-        <div class="col-md-12 breadcrumb" style="font-weight: bold; font-size: 16px">
+        <div class="col-md-12 alert alert-info" style="font-weight: bold; font-size: 16px">
             ${"Nombre: " + rubro?.nombre}
         </div>
     </div>

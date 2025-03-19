@@ -2,8 +2,8 @@
 
 <div class="row" style="margin-bottom: 1px">
     <div class="col-md-12">
-        <div class="col-md-12 breadcrumb" style="font-weight: bold; font-size: 16px">
-            ${"Código: " +  rubro?.codigo + " - " + "Nombre: " + rubro?.nombre}
+        <div class="col-md-12 alert alert-info" style="font-weight: bold; font-size: 16px">
+            ${ rubro?.codigo ? ("Código: " +  rubro?.codigo + " - ") : '' + "Nombre: " + rubro?.nombre}
         </div>
     </div>
 </div>
