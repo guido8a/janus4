@@ -64,28 +64,28 @@
     <g:each in="${rubros}" var="rubro">
 
 
-        %{--<tr id="rubro_${rubro[0]}" data-vol="${rubro[1]}" data-vocr="${rubro[0]}">--}%
-                    %{--<tr id="rubro_8709" onclick="cargarFila(${rubro[0]})">--}%
-            %{--<td colspan="10">${rubro[0]}</td>--}%
-            %{--<td colspan="10"></td>--}%
-        %{--</tr>--}%
-            <tr class="click item_row   rowSelected" data-vol="${rubro[1]}" data-vocr="${rubro[0]}">
-                <g:each in="${rubro}" var="val" status="i">
-                    <g:if test="${i > 0}">
-                        <g:if test="${i == 3}">
-                            <td class="valor2">${raw(val)}</td>
+    %{--<tr id="rubro_${rubro[0]}" data-vol="${rubro[1]}" data-vocr="${rubro[0]}">--}%
+    %{--<tr id="rubro_8709" onclick="cargarFila(${rubro[0]})">--}%
+    %{--<td colspan="10">${rubro[0]}</td>--}%
+    %{--<td colspan="10"></td>--}%
+    %{--</tr>--}%
+        <tr class="click item_row   rowSelected" data-vol="${rubro[1]}" data-vocr="${rubro[0]}">
+            <g:each in="${rubro}" var="val" status="i">
+                <g:if test="${i > 0}">
+                    <g:if test="${i == 3}">
+                        <td class="valor2">${raw(val)}</td>
+                    </g:if>
+                    <g:else>
+                        <g:if test="${i < 5}">
+                            <td class="valor">${raw(val)}</td>
                         </g:if>
                         <g:else>
-                            <g:if test="${i < 5}">
-                                <td class="valor">${raw(val)}</td>
-                            </g:if>
-                            <g:else>
-                                <td class="numero">${raw(val)}</td>
-                            </g:else>
+                            <td class="numero">${raw(val)}</td>
                         </g:else>
-                    </g:if>
-                </g:each>
-            </tr>
+                    </g:else>
+                </g:if>
+            </g:each>
+        </tr>
     </g:each>
 
 
@@ -130,13 +130,13 @@
 
 <script type="text/javascript">
 
-    <g:each in="${rubros}" var="rubro">
-    document.getElementById("rubro_${rubro[0]}").addEventListener("load", cargarFila(${rubro[0]}));
-    </g:each>
+%{--    <g:each in="${rubros}" var="rubro">--}%
+%{--        document.getElementById("rubro_${rubro[0]}").addEventListener("load", cargarFila(${rubro[0]}));--}%
+%{--    </g:each>--}%
 
     function editarFila(vol){
         $.ajax({
-            type: "POST",temu
+            type: "POST",
             url: "${createLink(action: 'modificacionNuevo_ajax')}",
             data: {
                 contrato: "${contrato}",
@@ -204,7 +204,7 @@
         });
     }
 
-    cargarTotalesTabla();
+    // cargarTotalesTabla();
 
     function cargarTotalesTabla () {
         $.ajax({
@@ -218,5 +218,49 @@
             }
         });
     }
+
+    function createContextMenu(node) {
+        var $tr = $(node);
+        var items = {
+            header: {
+                label: "Acciones",
+                header: true
+            }
+        };
+
+        var id = $tr.data("vocr");
+
+        var editar = {
+            label: "Modificación",
+            icon: "fa fa-edit",
+            action : function ($element) {
+                editarFila(id);
+            }
+        };
+        var cargar = {
+            label: "Cargar",
+            icon: "fa fa-check",
+            action : function ($element) {
+                cargarFila(id);
+            }
+        };
+
+        if(${janus.Contrato.get(contrato)?.fiscalizador?.id == session.usuario.id}){
+            items.editar = editar;
+            items.cargar = cargar;
+        }
+
+        return items
+    }
+
+    $("tr").contextMenu({
+        items  : createContextMenu,
+        onShow : function ($element) {
+            $element.addClass("trHighlight");
+        },
+        onHide : function ($element) {
+            $(".trHighlight").removeClass("trHighlight");
+        }
+    });
 
 </script>

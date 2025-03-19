@@ -33,10 +33,10 @@
                         <i class="fa fa-expand"></i>
                         Ampliación
                     </a>
-%{--                    <a href="#" class="btn btn-info" id="btnModif">--}%
-%{--                        <i class="fa fa-retweet"></i>--}%
-%{--                        Modificación--}%
-%{--                    </a>--}%
+                %{--                    <a href="#" class="btn btn-info" id="btnModif">--}%
+                %{--                        <i class="fa fa-retweet"></i>--}%
+                %{--                        Modificación--}%
+                %{--                    </a>--}%
                     <a href="#" class="btn btn-warning" id="btnSusp">
                         <i class="fa fa-clock"></i>
                         Suspensión
@@ -135,10 +135,10 @@
          39         -> flecha der
          */
         return ((ev.keyCode >= 48 && ev.keyCode <= 57) ||
-        (ev.keyCode >= 96 && ev.keyCode <= 105) ||
-        //                        ev.keyCode == 190 || ev.keyCode == 110 ||
-        ev.keyCode == 8 || ev.keyCode == 46 || ev.keyCode == 9 ||
-        ev.keyCode == 37 || ev.keyCode == 39);
+            (ev.keyCode >= 96 && ev.keyCode <= 105) ||
+            //                        ev.keyCode == 190 || ev.keyCode == 110 ||
+            ev.keyCode == 8 || ev.keyCode == 46 || ev.keyCode == 9 ||
+            ev.keyCode == 37 || ev.keyCode == 39);
     }
 
     function updateTabla() {
@@ -148,7 +148,7 @@
             type: "POST",
             url: "${createLink(action: 'tabla_jx')}",
             data: {
-                id: ${contrato.id}
+                id: "${contrato.id}"
             },
             success: function (msg) {
                 g.modal("hide");
@@ -227,7 +227,7 @@
                             } //guardar
                         } //buttons
                     }); //dialog
-                  }
+                }
             });
             return false;
         });
@@ -306,7 +306,6 @@
                     url: "${createLink(action:'terminaSuspensionNuevo')}",
                     data    : data,
                     success : function (msg) {
-                        console.log("msg " + msg)
                         dialog.modal('hide');
                         var parts = msg.split("_");
                         if(parts[0] === 'okOK'){
@@ -325,7 +324,6 @@
             }
         }
 
-
         $("#actualizaPrej").click(function () {
             $.ajax({
                 type: "POST",
@@ -334,7 +332,7 @@
                     cntr: "${contrato.id}"
                 },
                 success: function (msg) {
-                    location.reload(true);
+                    location.reload();
                 }
             });
             return false;
@@ -387,15 +385,12 @@
                     success : function (msg) {
                         dialog.modal('hide');
                         var parts = msg.split("_");
-                        console.log("---> " + parts[0])
                         if(parts[0] === 'OK'){
-
                             log("Suspensión guardada correctamente", "success");
                             setTimeout(function () {
                                 location.reload();
                             }, 800);
                         }else{
-                            // bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + "Error al guardar la suspensión" + '</strong>');
                             bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' +
                                 '<strong style="font-size: 14px">' + "Error al guardar la suspensión: " + parts[1] +
                                 '</strong>');
@@ -407,8 +402,6 @@
                 return false;
             }
         }
-
-
 
         $("#btnModif").click(function () {
             var vol = $(".rowSelected").first().data("vol");
@@ -547,8 +540,8 @@
         });
 
         $("#btnRango").click(function () {
-            var dsde = $("#desde").val()
-            var hsta = $("#hasta").val()
+            var dsde = $("#desde").val();
+            var hsta = $("#hasta").val();
             location.href = "${createLink(action:'indexNuevo', id:contrato.id)}" + "?desde=" + dsde + "&hasta=" + hsta;
             return false;
         });
