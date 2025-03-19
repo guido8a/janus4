@@ -1984,7 +1984,8 @@ class CronogramaEjecucionController {
 
 //        println "finalizado creaCrngEjec"
 
-        redirect(action: "indexNuevo", params: [obra: obra, id: contrato.id, ini: fcin])
+//        redirect(action: "indexNuevo", params: [obra: obra, id: contrato.id, ini: fcin])
+        redirect(action: "index_jx", params: [obra: obra, id: contrato.id, ini: fcin])
     }
 
     def insertaPrej(prmt) {
