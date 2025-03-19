@@ -42,10 +42,10 @@
             <i class="fa fa-arrow-left"></i>
             Regresar
         </a>
-        <a href="#"  class="btn btn-danger" id="btnBorrar">
-            <i class="fa fa-trash"></i>
-            Eliminar los APU
-        </a>
+        %{--<a href="#"  class="btn btn-danger" id="btnBorrar">--}%
+            %{--<i class="fa fa-trash"></i>--}%
+            %{--Eliminar los APU--}%
+        %{--</a>--}%
     </div>
 
     <div class="col-md-9" style="margin-top: -15px;">
@@ -306,53 +306,50 @@
         </g:else>
     });
 
-    $("#btnBorrar").click(function () {
-        bootbox.confirm({
-            title: "Eliminar los APUS del oferente",
-            message: "<i class='fa fa-exclamation-triangle text-warning fa-3x'></i> " +
-            "Está seguro de que desea borrar " +
-            "todos los APU cargados del oferente para la obra:<br><strong>" + $("#obra").text() + "</strong>" +
-            "<br>Se borrarán: <ul><li>Todos los APU cargados</li><li>El emparejamiento de rubros</li>" +
-            "<li>Emparejamiento de ítems</li><li>Los APU migrados a cantidades de obra</li></ul>",
-            buttons: {
-                cancel: {
-                    label: '<i class="fa fa-times"></i> Cancelar',
-                    className: 'btn-primary'
-                },
-                confirm: {
-                    label: '<i class="fa fa-trash"></i> Borrar',
-                    className: 'btn-danger'
-                }
-            },
-            callback: function (result) {
-                if(result){
-                    var g = cargarLoader("Cargando...");
-                    $.ajax({
-                        type: "POST",
-                        url: "${createLink(controller: 'rubroOf', action: 'borrarApus')}",
-                        data: {
-                            obra: $("#obra").val()
-                        },
-                        success: function (msg) {
-                            g.modal("hide");
-                            var parts = msg.split("_");
-                            if(parts[0] === 'Ok'){
-                                log("Borrados correctamente","success");
-                                setTimeout(function () {
-                                    location.reload();
-                                }, 800);
-                            }else{
-                                log("Error al borrar", "error")
-                            }
-                        }
-                    })
-                }
-            }
-        });
-
-        %{--location.href = "${createLink(controller: 'rubroOf', action: 'borrarApus')}?obra=" +--}%
-        %{--    $("#obra").val()--}%
-    });
+    %{--$("#btnBorrar").click(function () {--}%
+        %{--bootbox.confirm({--}%
+            %{--title: "Eliminar los APUS del oferente",--}%
+            %{--message: "<i class='fa fa-exclamation-triangle text-warning fa-3x'></i> " +--}%
+            %{--"Está seguro de que desea borrar " +--}%
+            %{--"todos los APU cargados del oferente para la obra:<br><strong>" + $("#obra").text() + "</strong>" +--}%
+            %{--"<br>Se borrarán: <ul><li>Todos los APU cargados</li><li>El emparejamiento de rubros</li>" +--}%
+            %{--"<li>Emparejamiento de ítems</li><li>Los APU migrados a cantidades de obra</li></ul>",--}%
+            %{--buttons: {--}%
+                %{--cancel: {--}%
+                    %{--label: '<i class="fa fa-times"></i> Cancelar',--}%
+                    %{--className: 'btn-primary'--}%
+                %{--},--}%
+                %{--confirm: {--}%
+                    %{--label: '<i class="fa fa-trash"></i> Borrar',--}%
+                    %{--className: 'btn-danger'--}%
+                %{--}--}%
+            %{--},--}%
+            %{--callback: function (result) {--}%
+                %{--if(result){--}%
+                    %{--var g = cargarLoader("Cargando...");--}%
+                    %{--$.ajax({--}%
+                        %{--type: "POST",--}%
+                        %{--url: "${createLink(controller: 'rubroOf', action: 'borrarApus')}",--}%
+                        %{--data: {--}%
+                            %{--obra: $("#obra").val()--}%
+                        %{--},--}%
+                        %{--success: function (msg) {--}%
+                            %{--g.modal("hide");--}%
+                            %{--var parts = msg.split("_");--}%
+                            %{--if(parts[0] === 'Ok'){--}%
+                                %{--log("Borrados correctamente","success");--}%
+                                %{--setTimeout(function () {--}%
+                                    %{--location.reload();--}%
+                                %{--}, 800);--}%
+                            %{--}else{--}%
+                                %{--log("Error al borrar", "error")--}%
+                            %{--}--}%
+                        %{--}--}%
+                    %{--})--}%
+                %{--}--}%
+            %{--}--}%
+        %{--});--}%
+    %{--});--}%
 
     $("#btnSubmitCrono").click(function () {
         if ($("#frmUpload").valid()) {
