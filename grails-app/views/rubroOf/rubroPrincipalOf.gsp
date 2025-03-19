@@ -1571,6 +1571,18 @@ border-bottom: 1px solid black;height: 30px; width: 97%">
         }
     });
 
+    $("#criterioCriterio").keydown(function (ev) {
+        if (ev.keyCode === 13) {
+            buscaRubros(null);
+        }
+    });
+
+    $("#criterioComposicion").keydown(function (ev) {
+        if (ev.keyCode === 13) {
+            buscaRubrosComposicion();
+        }
+    });
+
 </script>
 </body>
 </html>

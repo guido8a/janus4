@@ -87,7 +87,6 @@
         <i class="fa fa-print"></i>
         Imprimir A4
     </a>
-%{--    <a href="${g.createLink(controller: 'reportes', action: 'matrizExcel', id: "${obra}")}" class="btn btn-ajax btn-new" id="excelReporte" title="Exportar matriz a Excel">--}%
     <a href="${g.createLink(controller: 'reportesExcel', action: 'matrizExcel', id: "${obra}")}" class="btn btn-ajax btn-new" id="excelReporte" title="Exportar matriz a Excel">
         <i class="fa fa-file-excel"></i>
         Excel
@@ -132,8 +131,7 @@
             <tbody id="tableBody" class="scroll-content">
             </tbody>
             <tfoot>
-            %{--<tr id="bandera">--}%
-            </tr>
+
             </tfoot>
         </table>
     </div>
@@ -351,7 +349,12 @@
                 $(".scroll-pane").animate({scrollLeft : leftPos + 300 + ctrl}, 800);
             }
         });
+
         $("#buscar").click(function () {
+            buscarColumna();
+        });
+
+        function buscarColumna(){
             var par = $("#texto_busqueda").val();
             var primero = null;
             if (par.length > 0) {
@@ -378,7 +381,7 @@
                     $(".scroll-pane").animate({scrollLeft : leftPos + pos - 500}, 800);
                 }
             }
-        });
+        }
 
         $("#reset").click(function () {
             $(".activo").addClass($(".activo").attr("color")).removeClass("activo");
@@ -434,11 +437,11 @@
                                 if(result){
                                     var g = cargarLoader("Borrando...");
                                     <g:if test="${params.sbpr}">
-                                          fp(url);
+                                    fp(url);
                                     </g:if>
                                     <g:else>
-                                          g.modal("hide");
-                                          bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + "No existen valores ingresados" + '</strong>');
+                                    g.modal("hide");
+                                    bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + "No existen valores ingresados" + '</strong>');
                                     </g:else>
                                 }
                             }
@@ -448,7 +451,19 @@
             });
             return false;
         });
+
+        $("#texto_busqueda").keydown(function (ev) {
+            if (ev.keyCode === 13) {
+                buscarColumna();
+            }
+        });
+
+
     });
+
+
+
+
 </script>
 </body>
 </html>
