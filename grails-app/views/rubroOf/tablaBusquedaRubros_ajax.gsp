@@ -2,7 +2,7 @@
     <table class="table table-bordered table-striped table-condensed table-hover">
         <thead>
         <tr>
-            <th style="width: 60%">Descripción</th>
+            <th style="width: 60%">Rubros del Oferente por ser Emparejados</th>
             <th style="width: 9%">Seleccionar</th>
             <th style="width: 1%"></th>
         </tr>
@@ -18,7 +18,8 @@
                 <tr style="width: 100%">
                     <td style="width: 60%">${dt.ofrbnmbr}</td>
                     <td style="width: 10%; text-align: center">
-                        <a href="#" class="btn btn-success btn-xs btnSeleccionarRubro" data-id="${dt?.ofrb__id}"><i class="fa fa-search"></i></a>
+                        <a href="#" class="btn btn-success btn-xs btnSeleccionarRubro" data-id="${dt?.ofrb__id}">
+                            <i class="fa fa-search"></i></a>
                     </td>
                 </tr>
             </g:each>

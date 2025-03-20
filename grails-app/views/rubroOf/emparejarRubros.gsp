@@ -11,6 +11,7 @@
 
 <div id="busqueda" style="overflow: hidden">
     <fieldset class="borde" style="border-radius: 4px">
+        <h3 style="margin-top: -5px; text-align: center">Emparejar los rubros del oferente con los del sistema</h3>
         <div class="row-fluid">
             <div class="col-md-1 btn-group" role="navigation">
                 <a href="#" class="btn btn-primary" id="btnRegresarPrincipal">
@@ -21,15 +22,21 @@
 
             <div id="list-grupo" class="col-md-10" role="main" style="margin-top: 10px;margin-left: 5px">
                 <div class="col-md-12">
-                    <div class="col-md-2">
+                    <div class="col-md-1">
                         <b>Obra Ofertada:</b>
                     </div>
-                    <div class="col-md-10">
+                    <div class="col-md-11">
                         <g:select name="obra" class="form-control"
                                   from="${obras}" optionKey="key" optionValue="value"
                                   style="width: 100%;"/>
                     </div>
                 </div>
+            </div>
+            <div class="col-md-1 btn-group" role="navigation" style="margin-left: -20px">
+                <a href="#" class="btn btn-primary" id="btnSiguiente">
+                    Continuar
+                    <i class="fa fa-arrow-right"></i>
+                </a>
             </div>
 
 %{--            <div class="col-md-2">--}%
@@ -66,12 +73,16 @@
     var di;
 
     $("#btnRegresarPrincipal").click(function () {
-        <g:if test="${tipo == '1'}">
+        %{--<g:if test="${tipo == '1'}">--}%
         location.href = "${createLink(controller: 'rubroOf', action: 'index')}";
-        </g:if>
-        <g:else>
-        location.href="${createLink(controller: 'rubroOf', action: 'rubroPrincipalOf')}";
-        </g:else>
+        %{--</g:if>--}%
+        %{--<g:else>--}%
+        %{--location.href="${createLink(controller: 'rubroOf', action: 'rubroPrincipalOf')}";--}%
+        %{--</g:else>--}%
+    });
+
+    $("#btnSiguiente").click(function () {
+        location.href = "${createLink(controller: 'rubroOf', action: 'subirExcelApu')}";
     });
 
     // $("#buscarGrupo").change(function () {

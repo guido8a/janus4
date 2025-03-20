@@ -2,13 +2,13 @@
     <table class="table table-bordered table-striped table-condensed table-hover">
         <thead>
         <tr style="width: 100%">
-            <th colspan="8">Rubros Empatados</th>
+            <th colspan="8">Rubros Emparejados</th>
         </tr>
         <tr>
-            <th style="width: 32%">Descripción</th>
+            <th style="width: 32%">Descripción - Oferente</th>
             <th style="width: 8%">Equivale a</th>
             <th style="width: 8%">Código</th>
-            <th style="width: 30%">Descripción</th>
+            <th style="width: 30%">Descripción - Sistema</th>
             <th style="width: 5%">Acciones</th>
             <th style="width: 1%"></th>
         </tr>

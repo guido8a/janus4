@@ -13,9 +13,25 @@
 </head>
 
 <body>
-<div class="well">
-    <g:link class="btn btn-primary" controller="rubroOf" action="subirRubros" id="${contrato?.id}">Regresar</g:link>
-    <elm:poneHtml textoHtml="${flash.message}"/>
+<div class="col-md-12">
+    <div class="col-md-2">
+        <g:link class="btn btn-primary" controller="rubroOf" action="index" id="${contrato?.id}">
+            <i class="fa fa-arrow-left"></i> Regresar
+        </g:link>
+    </div>
+
+    <div class="col-md-2">
+        <g:link class="btn btn-danger" controller="rubroOf" action="subirRubros" id="${contrato?.id}">
+            <i class="fa fa-arrow-left"></i> Regresar a Subir Rubros
+        </g:link>
+    </div>
+
+    <div class="col-md-2">
+        <g:link class="btn btn-info" controller="rubroOf" action="emparejarRubros" id="${contrato?.id}">
+            Continuar: Emparejar Rubros <i class="fa fa-arrow-right"></i>
+        </g:link>
+    </div>
 </div>
+<elm:poneHtml textoHtml="${flash.message}"/>
 </body>
 </html>

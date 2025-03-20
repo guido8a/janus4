@@ -1534,7 +1534,7 @@ class RubroOfController {
                             }
                             fila++
                         } //sheets.each
-                        htmlInfo += "<p>Se ha procesado la Hoja: " + sheet.getSheetName() + "</p>"
+                        htmlInfo += "<h3>Se ha procesado la Hoja: " + sheet.getSheetName() + "</h3>"
                     }
 
                 } //sheets.each
@@ -1965,9 +1965,11 @@ class RubroOfController {
         def obrajnid = cn.rows("select obrajnid from obof where obra__id = ${params.obra}".toString())[0].obrajnid
         def datos;
 
+        def txto = params.nmbr.toString().replaceAll('  ', ' ')
         def longitud = params.nmbr.size()
-        def recorte = longitud > 10 ? longitud * 0.5 : longitud - 2
-        params.criterio = params.criterio ?: params.nmbr[0..(recorte)]
+        def recorte = longitud > 10 ? longitud * 0.44 : longitud - 2
+//        params.criterio = params.criterio ?: params.nmbr[0..(recorte)]
+        params.criterio = params.criterio ?: txto[0..(recorte)]
         println "crite:  ${params.criterio}"
 
         def select = "select distinct item.item__id, itemcdgo, itemnmbr, unddcdgo " +

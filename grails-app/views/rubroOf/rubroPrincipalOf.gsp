@@ -42,35 +42,35 @@
     </g:if>
 </div>
 
-<div class="col-md-6 btn-group" role="navigation">
-    <div class="col-md-3">
-        <a href="${createLink(controller: 'rubroOf', action: 'subirRubros', id: contrato?.id)}" class="btn" id="btnSubirRubros"
-           title="Subir archivo excel">
-            <i class="fa fa-upload"></i> Subir Rubros Oferta
-        </a>
-    </div>
-    <div class="col-md-3">
-        <a href="#" class="btn  btn-success" id="btnEmparejar">
-            <i class="fa fa-check-circle"></i>
-            Emparejamiento Rubros
-        </a>
-    </div>
+%{--<div class="col-md-6 btn-group" role="navigation">--}%
+    %{--<div class="col-md-3">--}%
+        %{--<a href="${createLink(controller: 'rubroOf', action: 'subirRubros', id: contrato?.id)}" class="btn" id="btnSubirRubros"--}%
+           %{--title="Subir archivo excel">--}%
+            %{--<i class="fa fa-upload"></i> Subir Rubros Oferta--}%
+        %{--</a>--}%
+    %{--</div>--}%
+    %{--<div class="col-md-3">--}%
+        %{--<a href="#" class="btn  btn-success" id="btnEmparejar">--}%
+            %{--<i class="fa fa-check-circle"></i>--}%
+            %{--Emparejamiento Rubros--}%
+        %{--</a>--}%
+    %{--</div>--}%
 
-    <div class="col-md-3">
-        <a href="${createLink(controller: 'rubroOf', action: 'subirExcelApu', id: contrato?.id)}" class="btn"
-           id="btnSubirExcel" title="Subir archivo excel" style="margin-left: 20px">
-            <i class="fa fa-upload"></i> Subir excel APU
-        </a>
-    </div>
+    %{--<div class="col-md-3">--}%
+        %{--<a href="${createLink(controller: 'rubroOf', action: 'subirExcelApu', id: contrato?.id)}" class="btn"--}%
+           %{--id="btnSubirExcel" title="Subir archivo excel" style="margin-left: 20px">--}%
+            %{--<i class="fa fa-upload"></i> Subir excel APU--}%
+        %{--</a>--}%
+    %{--</div>--}%
 
-    <div class="col-md-3">
-        <a href="${createLink(controller: 'rubroOf', action: 'subirExcel', id: contrato?.id)}" class="btn"
-           title="Subir archivo excel">
-            <i class="fa fa-upload"></i> Subir excel anterior
-        </a>
-    </div>
+    %{--<div class="col-md-3">--}%
+        %{--<a href="${createLink(controller: 'rubroOf', action: 'subirExcel', id: contrato?.id)}" class="btn"--}%
+           %{--title="Subir archivo excel">--}%
+            %{--<i class="fa fa-upload"></i> Subir excel anterior--}%
+        %{--</a>--}%
+    %{--</div>--}%
 
-</div>
+%{--</div>--}%
 
 <div class="col-md-12" role="main" style="margin-top: 10px;margin-left: 10px; margin-bottom: 0px;
 border-bottom: 1px solid black;height: 30px; width: 97%">

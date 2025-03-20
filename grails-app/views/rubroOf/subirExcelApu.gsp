@@ -298,12 +298,12 @@
 <script type="text/javascript">
 
     $("#btnRegresar").click(function () {
-        <g:if test="${tipo == '1'}">
+        %{--<g:if test="${tipo == '1'}">--}%
         location.href = "${createLink(controller: 'rubroOf', action: 'index')}";
-        </g:if>
-        <g:else>
-        location.href="${createLink(controller: 'rubroOf', action: 'rubroPrincipalOf')}";
-        </g:else>
+        %{--</g:if>--}%
+        %{--<g:else>--}%
+        %{--location.href="${createLink(controller: 'rubroOf', action: 'rubroPrincipalOf')}";--}%
+        %{--</g:else>--}%
     });
 
     %{--$("#btnBorrar").click(function () {--}%
