@@ -51,6 +51,9 @@
 
 
 </head>
+
+<elm:pagination total="${rubros.size()}" params="${params}" />
+
 <table class="table table-bordered table-condensed table-hover table-striped">
     <thead>
     <tr>

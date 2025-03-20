@@ -3303,6 +3303,9 @@ class CronogramaEjecucionController {
 
     def tablax() {
         println "params: $params"
+
+        params.max = Math.min(params.max ? params.int('max') : 10, 100)
+
         def cn = dbConnectionService.getConnection()
         def cn1 = dbConnectionService.getConnection()
         def cnp = dbConnectionService.getConnection()
@@ -3396,17 +3399,15 @@ class CronogramaEjecucionController {
         cnp.close()
         cne.close()
 
-        println("N-->"  + rubros)
+        println("N-->"  + rubros.subList(0,3))
 
         [titulo1: titulo1, titulo2: titulo2, rubros: rubros, totales: totales, suma: suma, total_ac: total_ac,
-         ttpc: total_pc, ttpa: total_pa, contrato: params.id]
+         ttpc: total_pc, ttpa: total_pa, contrato: params.id, params: params]
 
     }
 
     def tabla_jx() {
         println "params: $params"
-
-        params.max = Math.min(params.max ? params.int('max') : 10, 100)
 
         def cn = dbConnectionService.getConnection()
         def cn1 = dbConnectionService.getConnection()
@@ -3501,7 +3502,7 @@ class CronogramaEjecucionController {
         cnp.close()
         cne.close()
         [titulo1: titulo1, titulo2: titulo2, rubros: rubros, totales: totales, suma: suma, total_ac: total_ac,
-         ttpc: total_pc, ttpa: total_pa, contrato: params.id, params: params]
+         ttpc: total_pc, ttpa: total_pa, contrato: params.id]
 
     }
 
