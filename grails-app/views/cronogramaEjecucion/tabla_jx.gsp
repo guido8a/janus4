@@ -40,6 +40,9 @@
 
 
 </head>
+
+<elm:pagination total="${rubros.size()}" params="${params}" />
+
 <table class="table table-bordered table-condensed table-hover table-striped">
     <thead>
     <tr>
@@ -60,85 +63,31 @@
     </tr>
     </thead>
 
-    <tbody>
+    <tbody class="paginate">
+
     <g:each in="${rubros}" var="rubro">
-
-
-    <tr id="rubro_${rubro[0]}" data-vol="${rubro[1]}" data-vocr="${rubro[0]}">
-    <tr id="rubro_8709" onclick="cargarFila(${rubro[0]})">
-%{--    <td colspan="10">${rubro[0]}</td>--}%
-%{--    <td colspan="10"></td>--}%
-    </tr>
-
-
-%{--        <tr class="click item_row   rowSelected" data-vol="${rubro[1]}" data-vocr="${rubro[0]}">--}%
-%{--            <g:each in="${rubro}" var="val" status="i">--}%
-%{--                <g:if test="${i > 0}">--}%
-%{--                    <g:if test="${i == 3}">--}%
-%{--                        <td class="valor2">${raw(val)}</td>--}%
-%{--                    </g:if>--}%
-%{--                    <g:else>--}%
-%{--                        <g:if test="${i < 5}">--}%
-%{--                            <td class="valor">${raw(val)}</td>--}%
-%{--                        </g:if>--}%
-%{--                        <g:else>--}%
-%{--                            <td class="numero">${raw(val)}</td>--}%
-%{--                        </g:else>--}%
-%{--                    </g:else>--}%
-%{--                </g:if>--}%
-%{--            </g:each>--}%
-%{--        </tr>--}%
-
-
+        <tr id="rubro_${rubro[0]}" data-vol="${rubro[1]}" data-vocr="${rubro[0]}">
+        <tr id="rubro_8709" onclick="cargarFila(${rubro[0]})">
+            %{--    <td colspan="10">${rubro[0]}</td>--}%
+            %{--    <td colspan="10"></td>--}%
+        </tr>
     </g:each>
-
-
-
-%{--    <tr class="pie">--}%
-%{--        <td class="valor" colspan="3" style="text-align: right; font-weight: bold">TOTAL PARCIAL</td>--}%
-%{--        <td class="valor" colspan="2" style="text-align: right; font-weight: bold">${suma}</td>--}%
-%{--        <g:each in="${totales}" var="tot" status="i">--}%
-%{--            <td class="totales">${raw(tot)}</td>--}%
-%{--        </g:each>--}%
-%{--    </tr>--}%
-%{--    <tr class="pie2">--}%
-%{--        <td class="valor" colspan="3" style="text-align: right; font-weight: bold">TOTAL ACUMULADO</td>--}%
-%{--        <td colspan="2"></td>--}%
-%{--        <g:each in="${total_ac}" var="tot" status="i">--}%
-%{--            <td class="totales">${raw(tot)}</td>--}%
-%{--        </g:each>--}%
-%{--    </tr>--}%
-%{--    <tr class="pie">--}%
-%{--        <td class="valor" colspan="3" style="text-align: right; font-weight: bold">% TOTAL PARCIAL</td>--}%
-%{--        <td colspan="2"></td>--}%
-%{--        <g:each in="${ttpc}" var="tot" status="i">--}%
-%{--            <td class="totales">${raw(tot)}</td>--}%
-%{--        </g:each>--}%
-%{--    </tr>--}%
-%{--    <tr class="pie2">--}%
-%{--        <td class="valor" colspan="3" style="text-align: right; font-weight: bold">% TOTAL ACUMULADO</td>--}%
-%{--        <td colspan="2"></td>--}%
-%{--        <g:each in="${ttpa}" var="tot" status="i">--}%
-%{--            <td class="totales">${raw(tot)}</td>--}%
-%{--        </g:each>--}%
-%{--    </tr>--}%
-
     </tbody>
 </table>
 
 <div class="row"  style="margin-top: -10px">
     <div class="col-md-12" id="divTotalesTabla">
-
     </div>
-
 </div>
+
+
 
 </html>
 
 <script type="text/javascript">
 
     <g:each in="${rubros}" var="rubro">
-        document.getElementById("rubro_${rubro[0]}").addEventListener("load", cargarFila(${rubro[0]}));
+    document.getElementById("rubro_${rubro[0]}").addEventListener("load", cargarFila(${rubro[0]}));
     </g:each>
 
     function editarFila(vol){
