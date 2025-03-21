@@ -35,23 +35,6 @@
     </fieldset>
 </div>
 
-<g:if test="${!datos}">
-    <div class="row-fluid">
-        <div class="col-md-4" style="margin-top: 10px">
-        </div>
-        <div class="col-md-4" style="margin-top: 10px; width: 33%">
-            <a href="#" class="btn btn-info" id="btnCopiar" style="text-align: center; width: 100%">
-                <i class="fa fa-edit"></i>
-                Copiar composición a los APU del Oferente
-            </a>
-        </div>
-    </div>
-</g:if>
-<g:else>
-    <i class="fa fa-exclamation-triangle text-info fa-2x"></i> <strong style="font-size: 14px"> No se puede copiar la composición </strong>
-</g:else>
-
-
 <div class="col-md-12" id="divTablaEmpatados" style="margin-top: 10px">
 
 </div>

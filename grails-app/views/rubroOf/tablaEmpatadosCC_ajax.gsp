@@ -1,3 +1,22 @@
+
+<g:if test="${!datos}">
+    <div class="row-fluid">
+        <div class="col-md-4" style="margin-top: 10px">
+        </div>
+        <div class="col-md-4" style="margin-top: 10px; width: 33%">
+            <a href="#" class="btn btn-info" id="btnCopiar" style="text-align: center; width: 100%">
+                <i class="fa fa-edit"></i>
+                Copiar composición a los APU del Oferente
+            </a>
+        </div>
+    </div>
+</g:if>
+<g:else>
+    <div class="alert alert-warning" style="text-align: center; font-size: 14px">
+        <i class="fa fa-exclamation-triangle text-info fa-2x"></i> <strong style="font-size: 14px"> No se puede copiar la composición </strong>
+    </div>
+</g:else>
+
 <div role="main" style="margin-top: 5px;">
     <table class="table table-bordered table-striped table-condensed table-hover">
         <thead>

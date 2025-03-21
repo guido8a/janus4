@@ -2119,14 +2119,7 @@ class RubroOfController {
             obras[r.id] = r.nombre
         }
 
-        def obra = Obra.get(params.obra)
-        def sql2 = "select distinct dtrbcdgo codigo, dtrbnmbr nombre, dtrbtipo tipo from dtrb, ofrb " +
-                "where ofrb.obra__id = ${obra?.id} and dtrb.ofrb__id = ofrb.ofrb__id and dtrbjnid = 0 and " +
-                "dtrbtipo != 'TR'"
-        def sqlTx = "${sql2} order by 3, 1".toString()
-        def datos = cn.rows(sqlTx)
-
-        [obras: obras, oferente: oferente, tipo: params.tipo, datos: datos]
+        [obras: obras, oferente: oferente, tipo: params.tipo]
     }
 
     def tablaEmpatadosCC_ajax(){
@@ -2138,7 +2131,16 @@ class RubroOfController {
                 "order by itemcdgo"
         println "sql: $sql"
         def empatados = cn.rows(sql.toString())
-        return [data: empatados, obra: params.obra]
+
+
+        def obra = Obra.get(params.obra)
+        def sql2 = "select distinct dtrbcdgo codigo, dtrbnmbr nombre, dtrbtipo tipo from dtrb, ofrb " +
+                "where ofrb.obra__id = ${obra?.id} and dtrb.ofrb__id = ofrb.ofrb__id and dtrbjnid = 0 and " +
+                "dtrbtipo != 'TR'"
+        def sqlTx = "${sql2} order by 3, 1".toString()
+        def datos = cn.rows(sqlTx)
+
+        return [data: empatados, obra: params.obra, datos: datos]
     }
 
 
