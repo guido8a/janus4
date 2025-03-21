@@ -244,7 +244,7 @@
             </div>
         </a>
 
-        <a href= "${createLink(controller:'rubroOferta', action: 'list')}" style="text-decoration: none">
+        <a href= "${createLink(controller:'rubroOf', action: 'copiarComposicionOferente')}" style="text-decoration: none">
             <div class="col-lg-6 mbr-col-md-10">
                 <div class="wrap">
                     <div style="width: 120px; height: 140px; text-align: center">

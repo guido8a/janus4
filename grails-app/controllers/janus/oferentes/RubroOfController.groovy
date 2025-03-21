@@ -2107,5 +2107,39 @@ class RubroOfController {
 
     }
 
+    def copiarComposicionOferente() {
+        def oferente = session.usuario
+        def cn = dbConnectionService.getConnection()
+        def obras = [:]
+        def sql = "select distinct obra.obra__id id, obracdgo||' - '||obranmbr nombre " +
+                "from obra, obof " +
+                "where obof.obra__id = obra.obra__id and obof.prsn__id = ${oferente.id}" +
+                "order by 1"
+        cn.eachRow(sql.toString()) { r ->
+            obras[r.id] = r.nombre
+        }
+
+        def obra = Obra.get(params.obra)
+        def sql2 = "select distinct dtrbcdgo codigo, dtrbnmbr nombre, dtrbtipo tipo from dtrb, ofrb " +
+                "where ofrb.obra__id = ${obra?.id} and dtrb.ofrb__id = ofrb.ofrb__id and dtrbjnid = 0 and " +
+                "dtrbtipo != 'TR'"
+        def sqlTx = "${sql2} order by 3, 1".toString()
+        def datos = cn.rows(sqlTx)
+
+        [obras: obras, oferente: oferente, tipo: params.tipo, datos: datos]
+    }
+
+    def tablaEmpatadosCC_ajax(){
+        println "tablaEmpatados_ajax: $params"
+        def cn = dbConnectionService.getConnection()
+        def sql = "select distinct dtrbjnid dtrb__id, dtrbtipo, dtrbcdgo, dtrbnmbr, dtrbundd, dtrbtipo, itemnmbr, itemcdgo from dtrb, item, ofrb " +
+                "where item.item__id = dtrbjnid and ofrb.ofrb__id = dtrb.ofrb__id and " +
+                "obra__id = ${params.obra} " +
+                "order by itemcdgo"
+        println "sql: $sql"
+        def empatados = cn.rows(sql.toString())
+        return [data: empatados, obra: params.obra]
+    }
+
 
 } //fin controller
