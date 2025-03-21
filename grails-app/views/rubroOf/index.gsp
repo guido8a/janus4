@@ -252,7 +252,8 @@
                     </div>
 
                     <div style="width: 450px; height: 220px">
-                        <h2 class="mbr-fonts-style mbr-bold mbr-section-title3 display-5"><span>Ingresar la composición de los APU</span></h2>
+                        <h2 class="mbr-fonts-style mbr-bold mbr-section-title3 display-5">
+                            <span>Ingreso automático de la composición de los APU</span></h2>
                         <p class="mbr-fonts-style text1 mbr-text display-6">En base a los ítems emparejados, se ingresa
                         la composición de los APU ofertados, utilizando los ítems del sistema, para poder <strong>
                             generar la matriz de la fórmula polinómica</strong> y comprobar la Fórmula Polinómica.</p>
