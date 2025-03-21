@@ -139,10 +139,10 @@
 </g:if>
 
 
-<div class="alert alert-success" style="font-size: 14px">
-    <i class="fa fa-check" style="color: #cf0e21"></i>
-    La ruta crítica se muestra con los rubros marcados en amarillo
-</div>
+%{--<div class="alert alert-success" style="font-size: 14px">--}%
+    %{--<i class="fa fa-check" style="color: #cf0e21"></i>--}%
+    %{--La ruta crítica se muestra con los rubros marcados en amarillo--}%
+%{--</div>--}%
 
 <g:if test="${(suspensiones.size() != 0) && ini}">
     <div class="alert alert-danger">
@@ -154,10 +154,11 @@
     <div class="col-md-12 pagination">
         <g:each in="${paginas}" var="pg">
             <a href="#" class="btn btn-info btnPg" id="btn_${pg}" data-valor="${pg}">
-                <i class="fa fa-edit"></i> ${pg}
+                <i class="fa fa-file"></i> ${pg}
             </a>
         </g:each>
-        <div class="btn" style="float: right">Páginas de 10 rubros: Página actual: <strong id="divActual"></strong> </div>
+        %{--<div class="btn" style="float: right">Páginas de 10 rubros: Página actual: <strong id="divActual"></strong> </div>--}%
+        <div class="btn" style="position: absolute; top: -115px; right: 2%">Páginas de 10 rubros: Página actual: <strong id="divActual"></strong> </div>
     </div>
 </div>
 

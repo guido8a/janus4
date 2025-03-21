@@ -1219,10 +1219,14 @@ class ItemController {
     }
 
     def historicoEspecificaciones(){
-        def rubro = Item.get(params.id)
-        println("--> " + rubro?.codigoEspecificacion)
-        def ares = ArchivoEspecificacion.findAllByEspecificacion(rubro?.codigoEspecificacion)
-        return [datos: ares, rubro: rubro]
+        def cn = dbConnectionService.getConnection()
+        def sql = "select item.item__id, itemcdgo, itemnmbr, ares.itemcdes, aresruta, aresespe, itemfoto " +
+                "from item, ares where ares.itemcdes = item.itemcdes and itemnmbr ilike '%PVC%'"
+        println "sql: $sql"
+        def data = cn.rows(sql.toString())
+
+        return [datos: data]
+
     }
 
 } //fin controller

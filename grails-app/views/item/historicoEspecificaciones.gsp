@@ -24,7 +24,12 @@
         <thead>
         <tr>
 %{--            <th style="width: 10%">Fecha</th>--}%
-            <th style="width: 80%">Nombre</th>
+            <th style="width: 10%">Código</th>
+            <th style="width: 10%">Cód. Esp.</th>
+            <th style="width: 20%">Nombre</th>
+            <th style="width: 20%">Especificación</th>
+            <th style="width: 20%">Ilustración</th>
+            <th style="width: 10%">Word</th>
             <th style="width: 10%">Acciones</th>
         </tr>
         </thead>
@@ -35,12 +40,17 @@
     <table class="table-bordered table-striped table-condensed table-hover" style="width: 100%">
         <tbody>
         <g:if test="${datos}">
-                    <g:each in="${datos}" status="i" var="dato">
+                    <g:each in="${datos}" status="i" var="rb">
                         <tr>
 %{--                            <td style="width: 10%">${dato?.}</td>--}%
-                            <td style="width: 80%">${dato?.ruta}</td>
+                            <td style="width: 10%">${rb?.itemcdgo}</td>
+                            <td style="width: 10%">${rb?.itemcdes}</td>
+                            <td style="width: 20%">${rb?.itemnmbr}</td>
+                            <td style="width: 20%">${rb?.aresruta}</td>
+                            <td style="width: 20%">${rb?.itemfoto}</td>
+                            <td style="width: 20%">${rb?.aresespe}</td>
                             <td style="width: 10%; text-align: center">
-                                <a href="#" class="btn btn-xs btn-warning btnDownload" data-id="${dato?.id}" title="Descargar">
+                                <a href="#" class="btn btn-xs btn-warning btnDownload" data-id="${rb?.item__id}" title="Descargar">
                                     <i class="fas fa-download"></i>
                                 </a>
                             </td>
