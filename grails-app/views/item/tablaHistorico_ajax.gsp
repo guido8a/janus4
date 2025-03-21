@@ -46,12 +46,12 @@ th, td {
                             </g:link>
                         </g:if>
                         <g:if test="${rb?.aresruta}">
-                            <g:link action="downloadFile" id="${rb?.item__id}" params="[tipo: 'il']" class="btn btn-success btn-xs" title="Descargar imagen">
+                            <g:link controller="rubro" action="downloadFile" id="${rb?.item__id}" params="[tipo: 'il']" class="btn btn-success btn-xs" title="Descargar imagen">
                                 <i class="fa fa-download"></i>
                             </g:link>
                         </g:if>
                         <g:if test="${rb?.aresespe}">
-                            <g:link action="downloadFile" id="${rb?.item__id}" params="[tipo: 'wd']" class="btn btn-warning btn-xs" title="Descargar Word">
+                            <g:link controller="rubro" action="downloadFile" id="${rb?.item__id}" params="[tipo: 'wd']" class="btn btn-warning btn-xs" title="Descargar Word">
                                 <i class="fa fa-download"></i>
                             </g:link>
                         </g:if>
