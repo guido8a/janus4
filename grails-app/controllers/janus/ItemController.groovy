@@ -1,5 +1,6 @@
 package janus
 
+import janus.apus.ArchivoEspecificacion
 import org.apache.poi.xssf.usermodel.XSSFCell
 import org.apache.poi.xssf.usermodel.XSSFRow
 import org.apache.poi.xssf.usermodel.XSSFSheet
@@ -1215,6 +1216,13 @@ class ItemController {
 //        println "a convertir: $fechas --> $tx ${fechas[1]}"
         def fecha = new Date().parse("dd/MM/yyyy", fechas[id])
         return fecha
+    }
+
+    def historicoEspecificaciones(){
+        def rubro = Item.get(params.id)
+        println("--> " + rubro?.codigoEspecificacion)
+        def ares = ArchivoEspecificacion.findAllByEspecificacion(rubro?.codigoEspecificacion)
+        return [datos: ares, rubro: rubro]
     }
 
 } //fin controller
