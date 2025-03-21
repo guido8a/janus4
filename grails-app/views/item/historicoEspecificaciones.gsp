@@ -9,65 +9,57 @@
 
 <body>
 
+<div>
+    <fieldset class="borde" style="border-radius: 4px; margin-bottom: 10px">
+        <div class="row-fluid" style="margin-left: 10px">
+            <span class="grupo">
+                <span class="col-md-3">
+                    <label class="control-label text-info">Criterio</label>
+                    <g:textField name="criterio" id="criterio" class="form-control"/>
+                </span>
+            </span>
+            <div class="col-md-2" style="margin-top: 20px">
+                <button class="btn btn-info" id="btnBuscar"><i class="fa fa-search"></i></button>
+                <button class="btn btn-warning" id="btnLimpiar" title="Limpiar Búsqueda"><i class="fa fa-eraser"></i></button>
+            </div>
+        </div>
+    </fieldset>
 
-<div class="col-md-12" style="text-align: center; font-size: 14px; font-weight: bold; margin-top: -30px">
-    <div class="col-md-2">
-
-    </div>
-    <div class="col-md-8 alert alert-info">
-        ${rubro?.nombre}
-    </div>
+    <fieldset class="borde" style="border-radius: 4px">
+        <div id="divTablaHistorico" >
+        </div>
+    </fieldset>
 </div>
 
-<div role="main" style="margin-top: 5px;">
-    <table class="table table-bordered table-striped table-condensed table-hover">
-        <thead>
-        <tr>
-%{--            <th style="width: 10%">Fecha</th>--}%
-            <th style="width: 10%">Código</th>
-            <th style="width: 10%">Cód. Esp.</th>
-            <th style="width: 20%">Nombre</th>
-            <th style="width: 20%">Especificación</th>
-            <th style="width: 20%">Ilustración</th>
-            <th style="width: 10%">Word</th>
-            <th style="width: 10%">Acciones</th>
-        </tr>
-        </thead>
-    </table>
-</div>
-
-<div class="" style="width: 99.7%;height: 600px; overflow-y: auto;float: right; margin-top: -20px">
-    <table class="table-bordered table-striped table-condensed table-hover" style="width: 100%">
-        <tbody>
-        <g:if test="${datos}">
-                    <g:each in="${datos}" status="i" var="rb">
-                        <tr>
-%{--                            <td style="width: 10%">${dato?.}</td>--}%
-                            <td style="width: 10%">${rb?.itemcdgo}</td>
-                            <td style="width: 10%">${rb?.itemcdes}</td>
-                            <td style="width: 20%">${rb?.itemnmbr}</td>
-                            <td style="width: 20%">${rb?.aresruta}</td>
-                            <td style="width: 20%">${rb?.itemfoto}</td>
-                            <td style="width: 20%">${rb?.aresespe}</td>
-                            <td style="width: 10%; text-align: center">
-                                <a href="#" class="btn btn-xs btn-warning btnDownload" data-id="${rb?.item__id}" title="Descargar">
-                                    <i class="fas fa-download"></i>
-                                </a>
-                            </td>
-                        </tr>
-                    </g:each>
-        </g:if>
-        <g:else>
-            <td class="alert alert-warning"><i class="fa fa-exclamation-triangle fa-2x text-info"></i>
-                <strong style="font-size: 16px"> No existen registros </strong>
-            </td>
-        </g:else>
-        </tbody>
-    </table>
-</div>
 
 <script type="text/javascript">
 
+    $("#btnLimpiar").click(function () {
+        $("#criterio").val('');
+        cargarTabla();
+    });
+
+    $("#btnBuscar").click(function () {
+        cargarTabla();
+    });
+
+    cargarTabla();
+
+    function cargarTabla() {
+        var d = cargarLoader("Cargando...");
+        var criterio = $("#criterio").val();
+        $.ajax({
+            type : "POST",
+            url : "${g.createLink(controller: 'item',action:'tablaHistorico_ajax')}",
+            data     : {
+                criterio:criterio
+            },
+            success  : function (msg) {
+                $("#divTablaHistorico").html(msg);
+                d.modal("hide");
+            }
+        });
+    }
 
 </script>
 
