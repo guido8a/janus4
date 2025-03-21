@@ -1805,7 +1805,8 @@ class RubroOfController {
 
         def longitud = params.nmbr.size()
         def recorte = longitud > 10 ? longitud * 0.75 : longitud - 2
-        params.criterio = params.criterio ?: params.nmbr[0..(recorte)]
+//        params.criterio = params.criterio ?: params.nmbr[0..(recorte)]
+        params.criterio = params.criterio ?: params.nmbr
 
         def select = "select item.item__id, itemcdgo, itemnmbr, item.tpls__id, unddcdgo " +
                 "from item, undd, dprt, sbgr "
@@ -1814,10 +1815,16 @@ class RubroOfController {
         def sqlTx = ""
         def bsca = listaItems[params.buscarPor.toInteger() - 1]
         def ordn = listaItems[params.ordenar.toInteger() - 1]
-        txwh += " and $bsca ilike '%${params.criterio}%' and grpo__id = ${params.grupo}"
+//        txwh += " and $bsca ilike '%${params.criterio}%' and grpo__id = ${params.grupo}"
+        if(params.criterio != params.nmbr) {
+            txwh += " and grpo__id = ${params.grupo} and itemnmbr ilike '%${params.criterio}%' "
+        } else {
+            txwh += " and grpo__id = ${params.grupo} and levenshtein(itemnmbr, '${params.nmbr}') < 3 "
+        }
+
 
         sqlTx = "${select} ${txwh} order by ${ordn} limit 100 ".toString()
-//        println "sql: $sqlTx"
+        println "sql: $sqlTx"
         datos = cn.rows(sqlTx)
 //        println "data: ${datos[0]}"
         [data: datos, rubro: rubro, obra: params.obra]
@@ -1965,18 +1972,28 @@ class RubroOfController {
         def obrajnid = cn.rows("select obrajnid from obof where obra__id = ${params.obra}".toString())[0].obrajnid
         def datos;
 
-        def txto = params.nmbr.toString().replaceAll('  ', ' ')
+//        def txto = params.nmbr.toString().replaceAll('  ', ' ')
         def longitud = params.nmbr.size()
         def recorte = longitud > 10 ? longitud * 0.44 : longitud - 2
 //        params.criterio = params.criterio ?: params.nmbr[0..(recorte)]
-        params.criterio = params.criterio ?: txto[0..(recorte)]
+        params.criterio = params.criterio ?: params.nmbr
         println "crite:  ${params.criterio}"
 
+//        def select = "select distinct item.item__id, itemcdgo, itemnmbr, unddcdgo " +
+//                "from item, undd, vlob "
+//        def txwh = "where item.item__id = vlob.item__id and undd.undd__id = item.undd__id and obra__id = $obrajnid "
+//        def sqlTx = ""
+//        txwh += " and itemnmbr ilike '%${params.criterio}%' "
         def select = "select distinct item.item__id, itemcdgo, itemnmbr, unddcdgo " +
                 "from item, undd, vlob "
         def txwh = "where item.item__id = vlob.item__id and undd.undd__id = item.undd__id and obra__id = $obrajnid "
         def sqlTx = ""
-        txwh += " and itemnmbr ilike '%${params.criterio}%' "
+//        txwh += " and levenshtein(itemnmbr, '${params.criterio}') < 2 "
+        if(params.criterio != params.nmbr) {
+            txwh += " and itemnmbr ilike '%${params.criterio}%' "
+        } else {
+            txwh += " and levenshtein(itemnmbr, '${params.nmbr}') < 3 "
+        }
 
         sqlTx = "${select} ${txwh} order by itemnmbr".toString()
         println "sql: $sqlTx"
