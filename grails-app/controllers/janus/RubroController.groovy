@@ -1491,4 +1491,23 @@ class RubroController {
     }
 
 
+    def listarArchivos() {
+        File[] archivos
+        def ruta = '/var/janus/rubros'
+        File carpeta = new File(ruta)
+        if(carpeta.exists()) {
+            if(carpeta.isDirectory()) {
+                archivos = carpeta.listFiles()
+                for(int i=0; i<archivos.length; i++) {
+                    if(i<100){
+                        println "${archivos[i].getName()}"
+                        println "${archivos[i].getName().endsWith('pdf')}"
+                    }
+                }
+            }
+        }
+        println "se han halla ${archivos.size()} archivos en la carpeta: $ruta"
+        render "se han hallado ${archivos.size()} archivos en la carpeta: $ruta"
+    }
+
 } //fin controller
