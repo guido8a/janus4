@@ -14,16 +14,16 @@ th, td {
     <div class="col-md-12">
 
         <div class="col-md-12 alert alert-info">
-              ${rubro?.codigo + " - " + rubro?.nombre}
+              Código de especificación: <strong>${cdes}</strong> Códigos de items: <strong>${codigos}</strong>
         </div>
 
         <div role="main" style="margin-top: 5px;">
             <table class="table table-bordered table-striped table-condensed table-hover">
                 <thead>
                 <tr>
-                    <th style="width: 20%">Cód. Especi.</th>
-                    <th style="width: 70%">Especificación</th>
-                    <th style="width: 10%">Acciones</th>
+                    <th style="width: 64%">Rubros</th>
+                    <th style="width: 27%">Especificación</th>
+                    <th style="width: 8%">Acciones</th>
                     <th style="width: 1%;"></th>
                 </tr>
                 </thead>
@@ -36,10 +36,11 @@ th, td {
                 <g:if test="${datos}">
                     <g:each in="${datos}" status="i" var="dato">
                         <tr>
-                            <td style="width: 20%">${rubro?.codigoEspecificacion}</td>
-                            <td style="width: 70%">${dato}</td>
-                            <td style="width: 10%; text-align: center">
-                                <g:link controller="item" action="downloadFile" id="${dato}" params="[tipo: 'dt']" class="btn btn-info btn-xs" title="Descargar Especificación">
+                            <td style="width: 64%">${raw(nombres)}</td>
+                            <td style="width: 27%">${dato}</td>
+                            <td style="width: 8%; text-align: center">
+                                <g:link controller="item" action="downloadFile" id="${dato}" params="[tipo: 'dt']"
+                                        class="btn btn-info btn-xs" title="Descargar Especificación">
                                     <i class="fa fa-download"></i>
                                 </g:link>
                             </td>

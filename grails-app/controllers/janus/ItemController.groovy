@@ -1,5 +1,6 @@
 package janus
 
+import groovy.json.JsonSlurper
 import janus.apus.ArchivoEspecificacion
 import org.apache.poi.xssf.usermodel.XSSFCell
 import org.apache.poi.xssf.usermodel.XSSFRow
@@ -1218,11 +1219,11 @@ class ItemController {
         return fecha
     }
 
-    def historicoEspecificaciones(){
+    def historicoEspecificaciones() {
 
     }
 
-    def tablaHistorico_ajax(){
+    def tablaHistorico_ajax() {
         def cn = dbConnectionService.getConnection()
         def sql = "select item.item__id, itemcdgo, itemnmbr, ares.itemcdes, aresruta, aresespe, itemfoto " +
                 "from item, ares where ares.itemcdes = item.itemcdes and tpit__id = 2 and " +
@@ -1233,29 +1234,39 @@ class ItemController {
         return [datos: data]
     }
 
-    def tablaArchivosHistoricos_ajax(){
+    def tablaArchivosHistoricos_ajax() {
         def item = Item.get(params.id)
-        def filtrados = []
+        def cdes = item.codigoEspecificacion
+//        println "cdes: $cdes"
+        def items = Item.findAllByCodigoEspecificacion(cdes)
+        def ids = items.id.flatten().join(' ')
+        def codigos = items.codigo.flatten().join(', ')
+        def nombres = items.nombre.flatten().join('<br>')
+        def arch = ""
 
+        def filtrados = []
+//        println "códigos: ids"
         File[] archivos
         def ruta = '/var/janus/rubros'
         File carpeta = new File(ruta)
-        if(carpeta.exists()) {
-            if(carpeta.isDirectory()) {
+        def partes
+        if (carpeta.exists()) {
+            if (carpeta.isDirectory()) {
                 archivos = carpeta.listFiles()
-                for(int i=0; i<archivos.length; i++) {
-                    if(i<100){
-//                        println "${archivos[i].getName()}"
-//                        println "${archivos[i].getName().endsWith('pdf')}"
-
-                        if(archivos[i].getName().endsWith('pdf')){
-                            def partes = archivos[i].getName().split("_")
-//                            if(archivos[i].getName().toString().contains(item?.id?.toString())){
-//                            if(partes[2]?.toString()?.contains(item?.id?.toString())){
-                            if(partes[2]?.toString() == item?.id?.toString()){
-                                def filtrado =archivos[i].getName()
-                                filtrados.add(filtrado)
-                            }
+                for (int i = 0; i < archivos.length; i++) {
+                    if (archivos[i].getName().endsWith('pdf')) {
+                        arch = archivos[i].getName()
+                        println "$arch"
+                        try {
+                            partes = arch.split("_")[2]
+                        } catch (e) {
+                            partes = ""
+                        }
+//                        if (arch.contains('800')) println "----------- $arch  --> $partes"
+                        if ((partes != "") && ids.contains(partes)) {
+//                            println "añade: $arch"
+                            def filtrado = arch
+                            filtrados.add(filtrado)
                         }
                     }
                 }
@@ -1264,11 +1275,10 @@ class ItemController {
         println "se han halla ${archivos.size()} archivos en la carpeta: $ruta"
         println(" > " + filtrados)
 
-        return [rubro: item, datos: filtrados]
+        return [cdes: cdes, datos: filtrados, codigos: codigos, ids: ids, nombres: nombres]
     }
 
     def downloadFile() {
-
 
 //        def ext = filePath.split("\\.")
 //        ext = ext[ext.size() - 1]
@@ -1276,15 +1286,15 @@ class ItemController {
         def nombre = params.id + "." + ext
         def folder = "rubros"
         def path = "/var/janus/" + folder + File.separatorChar + nombre
-        println "path "+path
+        println "path " + path
         def file = new File(path)
-        if(file.exists()){
+        if (file.exists()) {
             def b = file.getBytes()
             response.setContentType(ext == 'pdf' ? "application/pdf" : "image/" + "pdf")
             response.setHeader("Content-disposition", "attachment; filename=" + params.id)
             response.setContentLength(b.length)
             response.getOutputStream().write(b)
-        }else{
+        } else {
 //            flash.message="El archivo seleccionado no se encuentra en el servidor."
 //            redirect(action: "especificaciones_ajax",params: [id:rubro.id])
         }
