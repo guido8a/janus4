@@ -334,7 +334,8 @@
                     if(parts[0] === 'ok'){
 
                         $(".trTodos").removeClass("marcado");
-                        $("#" + id).addClass("marcado");
+//                        $("#" + id).addClass("marcado");
+                        $("#val_" + volumen + "_" + planilla).focus();
 
                         log(parts[1], "success")
                     }else{
