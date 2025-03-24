@@ -2125,22 +2125,37 @@ class RubroOfController {
     def tablaEmpatadosCC_ajax(){
         println "tablaEmpatados_ajax: $params"
         def cn = dbConnectionService.getConnection()
-        def sql = "select distinct dtrbjnid dtrb__id, dtrbtipo, dtrbcdgo, dtrbnmbr, dtrbundd, dtrbtipo, itemnmbr, itemcdgo from dtrb, item, ofrb " +
-                "where item.item__id = dtrbjnid and ofrb.ofrb__id = dtrb.ofrb__id and " +
-                "obra__id = ${params.obra} " +
-                "order by itemcdgo"
-        println "sql: $sql"
-        def empatados = cn.rows(sql.toString())
+//        def sql = "select distinct dtrbjnid dtrb__id, dtrbtipo, dtrbcdgo, dtrbnmbr, dtrbundd, dtrbtipo, itemnmbr, itemcdgo from dtrb, item, ofrb " +
+//                "where item.item__id = dtrbjnid and ofrb.ofrb__id = dtrb.ofrb__id and " +
+//                "obra__id = ${params.obra} " +
+//                "order by itemcdgo"
+//        println "sql: $sql"
+//        def empatados = cn.rows(sql.toString())
 
 
         def obra = Obra.get(params.obra)
+
         def sql2 = "select distinct dtrbcdgo codigo, dtrbnmbr nombre, dtrbtipo tipo from dtrb, ofrb " +
                 "where ofrb.obra__id = ${obra?.id} and dtrb.ofrb__id = ofrb.ofrb__id and dtrbjnid = 0 and " +
-                "dtrbtipo != 'TR'"
+                "dtrbtipo != 'TR'   and dtrb.dtrbtipo = 'MT' "
         def sqlTx = "${sql2} order by 3, 1".toString()
-        def datos = cn.rows(sqlTx)
+        def materiales = cn.rows(sqlTx)
 
-        return [data: empatados, obra: params.obra, datos: datos]
+        def sql3 = "select distinct dtrbcdgo codigo, dtrbnmbr nombre, dtrbtipo tipo from dtrb, ofrb " +
+                "where ofrb.obra__id = ${obra?.id} and dtrb.ofrb__id = ofrb.ofrb__id and dtrbjnid = 0 and " +
+                "dtrbtipo != 'TR'   and dtrb.dtrbtipo = 'MO' "
+        def sqlTx3 = "${sql3} order by 3, 1".toString()
+        def mano = cn.rows(sqlTx3)
+
+
+        def sql4 = "select distinct dtrbcdgo codigo, dtrbnmbr nombre, dtrbtipo tipo from dtrb, ofrb " +
+                "where ofrb.obra__id = ${obra?.id} and dtrb.ofrb__id = ofrb.ofrb__id and dtrbjnid = 0 and " +
+                "dtrbtipo != 'TR'   and dtrb.dtrbtipo = 'EQ' "
+        def sqlTx4 = "${sql4} order by 3, 1".toString()
+        def equipos = cn.rows(sqlTx4)
+
+//        return [data: empatados, obra: params.obra, datos: datos]
+        return [obra: params.obra, materiales: materiales, mano: mano, equipos: equipos]
     }
 
 
