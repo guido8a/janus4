@@ -333,7 +333,7 @@
                     cargarTotal();
                     if(parts[0] === 'ok'){
 
-                        $(".trTodos").removeClass("marcado");
+//                        $(".trTodos").removeClass("marcado");
 //                        $("#" + id).addClass("marcado");
                         $("#val_" + volumen + "_" + planilla).focus();
 
