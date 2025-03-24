@@ -1251,7 +1251,8 @@ class ItemController {
                         if(archivos[i].getName().endsWith('pdf')){
                             def partes = archivos[i].getName().split("_")
 //                            if(archivos[i].getName().toString().contains(item?.id?.toString())){
-                            if(partes[2]?.toString()?.contains(item?.id?.toString())){
+//                            if(partes[2]?.toString()?.contains(item?.id?.toString())){
+                            if(partes[2]?.toString() == item?.id?.toString()){
                                 def filtrado =archivos[i].getName()
                                 filtrados.add(filtrado)
                             }
