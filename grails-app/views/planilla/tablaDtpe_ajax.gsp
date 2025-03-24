@@ -1,8 +1,18 @@
+
+<style>
+
+    .marcado{
+        background-color: #5e9cff;
+    }
+
+</style>
+
+
 <%@ page import="janus.SubPresupuesto" contentType="text/html;charset=UTF-8" %>
 
 <body>
 
-<table class="table table-bordered table-striped table-condensed table-hover">
+<table class="table table-bordered table-condensed table-hover">
     <thead>
     <tr>
         <th rowspan="2">N.</th>
@@ -65,7 +75,7 @@
             </tr>
             <g:set var="sp" value="${vol.subPresupuestoId}"/>
         </g:if>
-        <tr data-id="${det ? det.id : 'nuevo'}" data-vol="${vol.id}" data-cant="${cant}" data-val="${val}" data-canto="${cant}" data-valo="${val}" data-valacu="${val + valAnt}">
+        <tr class="trTodos" id="${det?.id}" style="border-bottom: black solid" data-id="${det ? det.id : 'nuevo'}" data-vol="${vol.id}" data-cant="${cant}" data-val="${val}" data-canto="${cant}" data-valo="${val}" data-valacu="${val + valAnt}">
             <td class="codigo">
                 ${vol.item.codigo}
             </td>
@@ -176,6 +186,9 @@
         var $acuCant = $row.find(".acu.num.cant");
         var $antVal = $row.find(".ant.num.val");
         var $acuVal = $row.find(".acu.num.val");
+
+        // $("#trTodos").removeClass("marcado");
+        // $row.addClass("marcado");
 
         if (val !== "") {
             val = parseFloat(val);
@@ -319,6 +332,10 @@
                     var parts = msg.split("_");
                     cargarTotal();
                     if(parts[0] === 'ok'){
+
+                        $(".trTodos").removeClass("marcado");
+                        $("#" + id).addClass("marcado");
+
                         log(parts[1], "success")
                     }else{
                         log(parts[1], "error")
