@@ -1225,7 +1225,8 @@ class ItemController {
     def tablaHistorico_ajax(){
         def cn = dbConnectionService.getConnection()
         def sql = "select item.item__id, itemcdgo, itemnmbr, ares.itemcdes, aresruta, aresespe, itemfoto " +
-                "from item, ares where ares.itemcdes = item.itemcdes and itemnmbr ilike '%${params.criterio}%'"
+                "from item, ares where ares.itemcdes = item.itemcdes and tpit__id = 2 and " +
+                "itemnmbr ilike '%${params.criterio}%'"
         println "sql: $sql"
         def data = cn.rows(sql.toString())
 
