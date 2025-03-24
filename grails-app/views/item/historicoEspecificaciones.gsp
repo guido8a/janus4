@@ -9,16 +9,18 @@
 
 <body>
 
-<div>
+<div class="col-md-12">
     <fieldset class="borde" style="border-radius: 4px; margin-bottom: 10px">
         <div class="row-fluid" style="margin-left: 10px">
             <span class="grupo">
-                <span class="col-md-3">
-                    <label class="control-label text-info">Criterio</label>
+                <span class="col-md-1">
+                    <label class="control-label text-info">Nombre</label>
+                </span>
+                <span class="col-md-5">
                     <g:textField name="criterio" id="criterio" class="form-control"/>
                 </span>
             </span>
-            <div class="col-md-2" style="margin-top: 20px">
+            <div class="col-md-2">
                 <button class="btn btn-info" id="btnBuscar"><i class="fa fa-search"></i></button>
                 <button class="btn btn-warning" id="btnLimpiar" title="Limpiar Búsqueda"><i class="fa fa-eraser"></i></button>
             </div>
@@ -60,6 +62,14 @@
             }
         });
     }
+
+    $("#criterio").keydown(function (ev) {
+        if (ev.keyCode === 13) {
+            cargarTabla();
+            return false;
+        }
+        return true;
+    });
 
 </script>
 
