@@ -14,7 +14,7 @@
         <div class="row-fluid" style="margin-left: 10px">
             <span class="grupo">
                 <span class="col-md-1">
-                    <label class="control-label text-info">Nombre</label>
+                    <label class="control-label text-info">Nombre del Rubro</label>
                 </span>
                 <span class="col-md-5">
                     <g:textField name="criterio" id="criterio" class="form-control"/>
