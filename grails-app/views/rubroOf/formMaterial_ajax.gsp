@@ -39,6 +39,20 @@
 
 <script type="text/javascript">
 
+    $("#precio, #cantidad").keyup(function () {
+        calcularSubtotal();
+    });
+
+    function calcularSubtotal(){
+        var precio = $("#precio").val();
+        var cantidad = $("#cantidad").val();
+
+        var subtotal = (precio * cantidad);
+
+        $("#subtotal").val(subtotal);
+
+    }
+
     function validarNum(ev) {
         /*
          48-57      -> numeros

@@ -64,6 +64,22 @@
 
 <script type="text/javascript">
 
+    $("#peso, #precio, #cantidad, #distancia").keyup(function () {
+        calcularSubtotal();
+    });
+
+    function calcularSubtotal(){
+        var peso = $("#peso").val();
+        var precio = $("#precio").val();
+        var cantidad = $("#cantidad").val();
+        var distancia = $("#distancia").val();
+
+        var subtotal = (peso * precio * cantidad * distancia);
+
+        $("#subtotal").val(subtotal);
+
+    }
+
     function validarNum(ev) {
         /*
          48-57      -> numeros
