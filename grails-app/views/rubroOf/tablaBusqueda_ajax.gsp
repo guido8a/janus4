@@ -22,7 +22,7 @@
                     <td style="width: 20%">${dt.codigo}</td>
                     <td style="width: 60%">${dt.nombre}</td>
                     <td style="width: 10%; text-align: center">
-                        <a href="#" class="btn btn-success btn-xs btnSeleccionar" data-dscr="${dt?.nombre}"><i class="fa fa-search"></i></a>
+                        <a href="#" class="btn btn-success btn-xs btnSeleccionar" data-id="${dt?.dtrb__id}" data-dscr="${dt?.nombre}"><i class="fa fa-search"></i></a>
                     </td>
                 </tr>
             </g:each>
@@ -57,13 +57,15 @@
 
     $(".btnSeleccionar").click(function () {
         var dscr = $(this).data("dscr");
+        var id = $(this).data("id");
         var g = cargarLoader("Cargando...");
         $.ajax({
             type    : "POST",
             url     : "${createLink(action:'buscarRubros_ajax')}",
             data    : {
                 dscr: dscr,
-                obra: '${obra?.id}'
+                obra: '${obra?.id}',
+                rubro: id
             },
             success : function (msg) {
                 g.modal("hide");

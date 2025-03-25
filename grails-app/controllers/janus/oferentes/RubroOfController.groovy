@@ -1778,7 +1778,7 @@ class RubroOfController {
         println "tablaBusqueda_ajax: $params"
 //        def obra = Obra.get(params.id)
         def listaItems = ['dtrbnmbr', 'dtrbcdgo']
-        def sql = "select distinct dtrbcdgo codigo, dtrbnmbr nombre, dtrbtipo tipo from dtrb, ofrb " +
+        def sql = "select distinct dtrb__id, dtrbcdgo codigo, dtrbnmbr nombre, dtrbtipo tipo from dtrb, ofrb " +
                 "where ofrb.obra__id = ${obra?.id} and dtrb.ofrb__id = ofrb.ofrb__id and dtrbjnid = 0 and " +
                 "dtrbtipo != 'TR'"
         def bsca = listaItems[params.buscarPor.toInteger() - 1]
@@ -1790,7 +1790,8 @@ class RubroOfController {
     }
 
     def buscarRubros_ajax() {
-        def rubro = DetalleRubro.findAllByNombreAndTipoNotEqual(params.dscr, 'TR')?.first()
+//        def rubro = DetalleRubro.findAllByNombreAndTipoNotEqual(params.dscr, 'TR')?.first()
+        def rubro = DetalleRubro.get(params.rubro)
         def tipo = rubro.tipo == 'EQ' ? ['3': 'Equipos'] : (rubro.tipo == 'MT' ? ['1': 'Materiales'] : ['2': 'Mano de obra'])
         return [rubro: rubro, tipo: tipo, obra: params.obra]
     }
@@ -2155,7 +2156,7 @@ class RubroOfController {
         def equipos = cn.rows(sqlTx4)
 
 //        return [data: empatados, obra: params.obra, datos: datos]
-        return [obra: params.obra, materiales: materiales, mano: mano, equipos: equipos]
+        return [obra: obra, materiales: materiales, mano: mano, equipos: equipos]
     }
 
 

@@ -95,6 +95,31 @@
 
 <script type="text/javascript">
 
+    $("#btnCopiar").click(function () {
+        var v = cargarLoader("Copiando...");
+        var obra = '${obra?.id}';
+        %{--location.href = "${createLink(controller: 'rubroOf', action: 'copiarRubros')}?obra=" + obra--}%
+
+        $.ajax({
+            type    : "POST",
+            url     : '${createLink(controller: 'rubroOf', action: 'copiarRubros')}',
+            data    : {
+                obra : obra
+            },
+            success : function (msg) {
+                v.modal("hide");
+                var parts = msg.split("_");
+                if(parts[0] === 'ok'){
+                    log("Copiados correctamente","success");
+                    setTimeout(function () {
+                        location.reload()
+                    }, 1000);
+                }else{
+                    log("Error al copiar","error")
+                }
+            }
+        });
+    });
 
 
 </script>
