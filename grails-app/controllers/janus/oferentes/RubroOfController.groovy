@@ -2040,7 +2040,18 @@ class RubroOfController {
 
     def save_ajax(){
 
+        println("params rb" + params)
+
+
         def detalle = DetalleRubro.get(params.id)
+
+        params.cantidad = params.cantidad.toDouble()
+        params.precio = params.precio.toDouble()
+        params.rendimiento =  (params.rendimiento.toDouble() != 0 || params.rendimiento.toDouble() != 0.0)  ? params.rendimiento?.toDouble() : 1
+
+        params.subtotal = params.subtotal ? params.subtotal.toDouble() : ( (params.cantidad.toDouble() * params.precio.toDouble()) * (params.rendimiento.toDouble() != 0 ? params.rendimiento.toDouble() : 1) )
+
+
         detalle.properties = params
 
         if(!detalle.save(flush:true)){
