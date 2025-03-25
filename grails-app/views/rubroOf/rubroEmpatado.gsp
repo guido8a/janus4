@@ -100,7 +100,7 @@
         bootbox.dialog({
             title   : "Alerta",
             message : "<i class='fa fa-trash fa-2x pull-left text-danger text-shadow'></i>" +
-                    "<p style='font-weight: bold'> Está seguro que desea emparejar items del mismo nombre?</p>",
+                    "<p style='font-weight: bold'> Está seguro que desea emparejar items del mismo código?</p>",
             buttons : {
                 cancelar : {
                     label     : "Cancelar",
