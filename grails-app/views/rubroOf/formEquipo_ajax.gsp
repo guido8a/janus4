@@ -47,6 +47,22 @@
 
 <script type="text/javascript">
 
+    $("#precio, #cantidad, #rendimiento").keyup(function () {
+        calcularSubtotal();
+    });
+
+    function calcularSubtotal(){
+        var precio = $("#precio").val();
+        var cantidad = $("#cantidad").val();
+        var rendimiento = $("#rendimiento").val();
+
+         // var subtotal = Math.round(((precio * cantidad) * rendimiento) * 100) / 100;
+        var subtotal = (precio * cantidad) * ((rendimiento !== 0 || rendimiento !== 0.0) ? rendimiento : 1);
+
+        $("#subtotal").val(subtotal);
+
+    }
+
     function validarNum(ev) {
         /*
          48-57      -> numeros
