@@ -13,10 +13,6 @@
 </head>
 
 <body>
-<div class="well">
-    <g:link class="btn btn-primary" controller="rubroOf" action="subirExcel" id="${contrato?.id}">Regresar</g:link>
-    <elm:poneHtml textoHtml="${flash.message}"/>
-</div>
 <div class="col-md-12">
     <div class="col-md-2">
         <g:link class="btn btn-primary" controller="rubroOf" action="index" id="${contrato?.id}">
@@ -31,10 +27,14 @@
     </div>
 
     <div class="col-md-2">
-        <g:link class="btn btn-info" controller="rubroOf" action="rubroEmpatado" id="${contrato?.id}">
+        <g:link class="btn btn-info" controller="rubroOf" action="rubroCon" id="${contrato?.id}">
             Continuar: Validar Ítems <i class="fa fa-arrow-right"></i>
         </g:link>
     </div>
+</div>
+
+<div class="well">
+    <elm:poneHtml textoHtml="${flash.message}"/>
 </div>
 
 </body>

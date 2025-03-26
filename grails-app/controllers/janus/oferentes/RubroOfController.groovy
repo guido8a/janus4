@@ -120,12 +120,13 @@ class RubroOfController {
     }
 
     def addItem() {
-        println("params " + params)
+        println "addItem $params"
+        def obra = Obra.get(params.obra)
         def rubro = Item.get(params.rubro)
         def item = Item.get(params.item)
         def oferente = seguridad.Persona.get(session.usuario.id)
         def detalle
-        detalle = RubroOferente.findByItemAndRubro(item, rubro)
+        detalle = RubroOferente.findByItemAndRubroAndObra(item, rubro, obra)
         if (!detalle)
             detalle = new RubroOferente()
         detalle.oferente = oferente
@@ -148,6 +149,8 @@ class RubroOfController {
         detalle.fecha = new Date()
         if (detalle.item.departamento.subgrupo.grupo.id == 1)
             detalle.rendimiento = 1
+
+        println "antes de grabar: ${detalle.cantidad}"
         if (!detalle.save(flush: true)) {
             println "detalle " + detalle.errors
         } else {
@@ -163,7 +166,8 @@ class RubroOfController {
             precio.precio = params.precio.toDouble()
             precio.vae = params.vae.toDouble()
             if (precio.save(flush: true))
-                render "" + item.departamento.subgrupo.grupo.id + ";" + detalle.id + ";" + detalle.item.id + ";" + detalle.cantidad + ";" + detalle.rendimiento + ";" + ((item.tipoLista) ? item.tipoLista?.id : "0")
+                render "" + item.departamento.subgrupo.grupo.id + ";" + detalle.id + ";" + detalle.item.id + ";" +
+                        detalle.cantidad + ";" + detalle.rendimiento + ";" + ((item.tipoLista) ? item.tipoLista?.id : "0")
         }
     }
 
@@ -991,12 +995,13 @@ class RubroOfController {
                                     cntd = rgst[cols[params.cntdEq]].toDouble() //cantidad
                                     trfa = rgst[cols[params.trfaEq]].toDouble() //tarifa, jornal dtrbpcun
                                     pcun = rgst[cols[params.pcunEq]].toDouble() //costo
-                                    rndm = rgst[cols[params.rndmEq]].toDouble()
+                                    rndm = rgst[cols[params.rndmEq]] ? rgst[cols[params.rndmEq]].toDouble() : 1
                                     csto = rgst[cols[params.cstoEq]].toDouble()
                                 } catch (e) {
                                     cntd = 0
                                 }
                                 if (cntd && sccnEq) {
+//                                    insertaDtrb(oferente, obra, ordn, cdgo, nmbr, undd, cntd, trfa, pcun, rndm, csto, tipo) {
                                     errores += insertaDtrb(oferente.id, obra, ordn, cdgo, nmbr, undd, cntd, trfa, pcun, rndm, csto, "EQ")
                                 }
                             }
@@ -1277,14 +1282,18 @@ class RubroOfController {
 //                                            rgst[cols[params.pcunEq]] + "rndm: " +
 //                                            rgst[cols[params.rndmEq]] + "csto: " +
 //                                            rgst[cols[params.cstoEq]]
+                                    if(ordn == 1) println "...1"
                                     try {
                                         cdgo = params.cdgoEq ? rgst[cols[params.cdgoEq]] : ''
+                                        if(ordn == 1) println "..2"
                                         nmbr = rgst[cols[params.nmbrEq]]
+                                        if(ordn == 1) println "..3"
                                         cntd = rgst[cols[params.cntdEq]].toDouble() //cantidad
                                         trfa = rgst[cols[params.trfaEq]] == '' ? 0 : rgst[cols[params.trfaEq]].toDouble()
-                                        pcun = rgst[cols[params.pcunEq]] ? pcun.toDouble() : trfa //costo
-                                        rndm = rgst[cols[params.rndmEq]] ? rndm.toDouble() : 1
+                                        pcun = rgst[cols[params.pcunEq]] ? rgst[cols[params.pcunEq]].toDouble() : trfa //costo
+                                        rndm = rgst[cols[params.rndmEq]] ? rgst[cols[params.rndmEq]].toDouble() : 1
                                         csto = rgst[cols[params.cstoEq]].toDouble()
+                                        if(ordn == 1) println "..8 -- rndm: ${rgst[cols[params.rndmEq]]}"
                                     } catch (e) {
                                         cntd = 0
                                     }
@@ -1292,7 +1301,7 @@ class RubroOfController {
                                     nmbr = nmbr.toString().replaceAll("'", "''")
                                     println "Equipos -> rbro: $ofrb_id nombre: $nmbr cantidad: $cntd"
                                     if (cntd && sccnEq) {
-                                        println "inserta equipo: $nmbr"
+                                        println "inserta equipo: $nmbr, $cntd, $trfa, $rndm, $csto"
 //                                        insertaEq(ofrb_id, cdgo, nmbr, undd, cntd, trfa, pcun, rndm, csto, tipo)
                                         errores += insertaEq(ofrb_id, cdgo, nmbr, undd, cntd, trfa, pcun, rndm, csto, "EQ")
                                     }
@@ -1500,27 +1509,26 @@ class RubroOfController {
                                     /** insertar rubro */
                                     if (undd) {
                                         nmbr = nmbr.toString().replaceAll("'", "''")
-                                        sql = "select item__id from item where itemnmbr ilike '%${nmbr}%' and itemcdgo not like 'H%'"
-                                        println "sql: $sql"
-                                        def item_id = cn.rows(sql.toString())[0]?.item__id
-                                        if (!item_id) {
-                                            errores += "<li>No se encontró el nombre del rubro: ${nmbr} (linea: ${row.rowNum + 1})</li>"
-                                            println "No se encontró rubro con id ${hoja}"
-                                            ok = false
-                                        }
+//                                        sql = "select item__id from item where itemnmbr ilike '%${nmbr}%' and itemcdgo not like 'H%'"
+//                                        println "sql: $sql"
+//                                        def item_id = cn.rows(sql.toString())[0]?.item__id
+//                                        if (!item_id) {
+//                                            errores += "<li>No se encontró el nombre del rubro: ${nmbr} (linea: ${row.rowNum + 1})</li>"
+//                                            println "No se encontró rubro con id ${hoja}"
+//                                            ok = false
+//                                        }
                                         sql = "select ofrb__id from ofrb where prsn__id = ${oferente.id} and " +
                                                 "obra__id = ${params.obra} and ofrbordn = $nmro"
                                         def ofrb_id = cn.rows(sql.toString())[0]?.ofrb__id ?: 0
                                         if (ofrb_id) {
                                             sql = "update ofrb set ofrbordn = ${nmro}, ofrbnmbr = '${nmbr}', " +
-                                                    "ofrbundd = '${undd}', ofrbpcun = ${pcun}, ofrbindi = ${indi}, " +
-                                                    "ofrbcntd = '${cntd}', ofrbsbtt = ${pctt} " +
+                                                    "ofrbundd = '${undd}', ofrbpcun = ${pcun}, ofrbindi = ${indi} " +
                                                     "where ofrb__id = ${ofrb_id}"
                                         } else {
                                             sql = "insert into ofrb(prsn__id, obra__id, ofrbnmbr, ofrbundd, ofrbordn, ofrbjnid, " +
                                                     "ofrbpcun, ofrbindi) " +
                                                     "values (${oferente.id}, ${params.obra}, '${nmbr}', '${undd}', " +
-                                                    "$nmro, $item_id, $pcun, $indi)"
+                                                    "$nmro, 0, $pcun, $indi)"
                                         }
                                         println "sql: $sql"
                                         try {
@@ -1673,6 +1681,7 @@ class RubroOfController {
 
 
     def rubroCon() {
+        println "rubroCon: $params"
         def oferente = session.usuario
         def cn = dbConnectionService.getConnection()
         def obras = []
@@ -1719,7 +1728,8 @@ class RubroOfController {
         def materiales = DetalleRubro.findAllByRubroOfertaAndTipo(rubro, 'MT')
         def transporte = DetalleRubro.findAllByRubroOfertaAndTipo(rubro, 'TR')
 
-        def precioUnitario = (equipos.subtotal.sum() ?: 0) + (manos.subtotal.sum() ?: 0) + (materiales.subtotal.sum() ?: 0) + (transporte.subtotal.sum() ?: 0)
+        def precioUnitario = (equipos.subtotal.sum() ?: 0) + (manos.subtotal.sum() ?: 0) +
+                (materiales.subtotal.sum() ?: 0) + (transporte.subtotal.sum() ?: 0)
 
 
         println "mano: $manos"
@@ -1948,7 +1958,12 @@ class RubroOfController {
         def sqlTx = "${sql} order by ofrbnmbr".toString()
         println "sql: $sqlTx"
         def datos = cn.rows(sqlTx)
-        return [datos: datos, obra: obra]
+
+
+        sql = "select count(*) cnta from vlof where item__id not in " +
+                "(select ofrbjnid from ofrb where obra__id = 5225) and obra__id = ${params.obra}"
+        def faltan = cn.rows(sql.toString())[0].cnta
+        return [datos: datos, obra: obra, faltan: faltan]
     }
 
     def tablaEmpatadosRubros_ajax(){
@@ -1986,8 +2001,9 @@ class RubroOfController {
 //        def sqlTx = ""
 //        txwh += " and itemnmbr ilike '%${params.criterio}%' "
         def select = "select distinct item.item__id, itemcdgo, itemnmbr, unddcdgo " +
-                "from item, undd, vlob "
-        def txwh = "where item.item__id = vlob.item__id and undd.undd__id = item.undd__id and obra__id = $obrajnid "
+                "from item, undd, vlof "
+//        def txwh = "where item.item__id = vlof.item__id and undd.undd__id = item.undd__id and obra__id = $obrajnid "
+        def txwh = "where item.item__id = vlof.item__id and undd.undd__id = item.undd__id and obra__id = ${params.obra} "
         def sqlTx = ""
 //        txwh += " and levenshtein(itemnmbr, '${params.criterio}') < 2 "
         if(params.criterio != params.nmbr) {

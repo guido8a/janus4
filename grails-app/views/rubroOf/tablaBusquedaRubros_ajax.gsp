@@ -1,3 +1,4 @@
+<span>Faltan: ${faltan}</span>
 <div role="main" style="margin-top: 5px;">
     <table class="table table-bordered table-striped table-condensed table-hover">
         <thead>

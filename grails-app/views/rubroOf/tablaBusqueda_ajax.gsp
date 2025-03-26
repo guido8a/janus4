@@ -37,18 +37,18 @@
 </div>
 
 
-<g:if test="${!datos}">
-    <div class="row-fluid">
-        <div class="col-md-4" style="margin-top: 10px">
-        </div>
-        <div class="col-md-4" style="margin-top: 10px; width: 33%">
-            <a href="#" class="btn btn-info" id="btnCopiar" style="text-align: center; width: 100%">
-                <i class="fa fa-edit"></i>
-                Copiar composición a los APU del Oferente
-            </a>
-        </div>
-    </div>
-</g:if>
+%{--<g:if test="${!datos}">--}%
+    %{--<div class="row-fluid">--}%
+        %{--<div class="col-md-4" style="margin-top: 10px">--}%
+        %{--</div>--}%
+        %{--<div class="col-md-4" style="margin-top: 10px; width: 33%">--}%
+            %{--<a href="#" class="btn btn-info" id="btnCopiar" style="text-align: center; width: 100%">--}%
+                %{--<i class="fa fa-edit"></i>--}%
+                %{--Copiar composición a los APU del Oferente--}%
+            %{--</a>--}%
+        %{--</div>--}%
+    %{--</div>--}%
+%{--</g:if>--}%
 
 
 <script type="text/javascript">

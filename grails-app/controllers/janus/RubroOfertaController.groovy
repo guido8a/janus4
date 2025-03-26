@@ -25,7 +25,7 @@ class RubroOfertaController {
         def sql = "select ofrb.ofrb__id, ofrbordn, ofrbnmbr, ofrbpcun, sum(dtrbsbtt*(1+ofrbindi/100)), " +
                 "ofrbpcun - sum(dtrbsbtt*(1+ofrbindi/100))::numeric(14,5) as diff from ofrb, dtrb where obra__id = ${obra?.id} " +
                 "and dtrb.ofrb__id = ofrb.ofrb__id group by ofrb.ofrb__id, ofrbordn, ofrbnmbr, ofrbpcun order by ofrbordn;"
-
+        println "sql. $sql"
         def data = cn.rows(sql.toString())
 
         return [data:data]

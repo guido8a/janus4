@@ -676,6 +676,7 @@ border-bottom: 1px solid black;height: 30px; width: 97%">
         var tipoItem=$("#item_id").attr("tipo");
         var rndm=$("#rendimiento").val();
         var cant = $("#item_cantidad").val();
+        var obra = $("#obra option:selected").val();
         if (cant === "")
             cant = 0;
         if (isNaN(cant))
@@ -701,10 +702,11 @@ border-bottom: 1px solid black;height: 30px; width: 97%">
         if ($("#item_id").val() * 1 > 0) {
             if (cant > 0 && precio>0) {
                 var g = cargarLoader("Guardando...");
-                var data = "rubro=${rubro?.id}&item=" + $("#item_id").val() + "&cantidad=" + cant + "&rendimiento=" + rend+"&precio="+precio+"&vae="+vae;
+                var data = "rubro=${rubro?.id}&item=" + $("#item_id").val() + "&cantidad=" + cant + "&rendimiento=" +
+                    rend+"&precio="+precio+"&vae="+vae + "&obra=" + obra;
                 $.ajax({
                     type : "POST",
-                    url : "${g.createLink(controller: 'rubroOf',action:'addItem')}",
+                    url : "${g.createLink(controller: 'rubroOf', action:'addItem')}",
                     data     : data,
                     success  : function (msg) {
                         g.modal("hide");
@@ -927,10 +929,12 @@ border-bottom: 1px solid black;height: 30px; width: 97%">
         $("#tabla_indi").append(tabla)
         tabla = $('<table class="table table-bordered table-striped table-condensed table-hover" style="width: 360px;float: right;border: 1px solid #FFAC37">')
         tabla.append("<tbody>");
-        tabla.append("<tr><td style='width: 300px;font-weight: bolder;'>Costo unitario directo</td><td style='text-align: right;font-weight: bold'>"+number_format(total, 5, ".", "")+"</td></tr>")
+        tabla.append("<tr><td style='width: 300px;font-weight: bolder;'>Costo unitario directo</td>" +
+            "<td style='text-align: right;font-weight: bold'>"+number_format(total, 5, ".", "")+"</td></tr>")
         tabla.append("<tr><td style='font-weight: bolder'>Costos indirectos</td><td style='text-align: right;font-weight: bold'>"+number_format(total*indi/100, 5, ".", "")+"</td></tr>")
         tabla.append("<tr><td style='font-weight: bolder'>Costos total del rubro</td><td style='text-align: right;font-weight: bold'>"+number_format(total*indi/100+total, 5, ".", "")+"</td></tr>")
-        tabla.append("<tr><td style='font-weight: bolder'>Precio unitario ($USD)</td><td style='text-align: right;font-weight: bold'>"+number_format(total*indi/100+total, 5, ".", "")+"</td></tr>")
+        tabla.append("<tr><td style='font-weight: bolder'>Precio unitario ($USD)</td>" +
+            "<td style='text-align: right;font-weight: bold'>"+number_format(total*indi/100+total, 5, ".", "")+"</td></tr>")
         tabla.append("</tbody>");
         $("#tabla_costos").append(tabla)
         $("#tabla_costos").show("slide")

@@ -218,10 +218,27 @@
                     </div>
 
                     <div style="width: 450px; height: 220px">
-                        <h2 class="mbr-fonts-style mbr-bold mbr-section-title3 display-5"><span>Validar Items</span></h2>
+                        <h2 class="mbr-fonts-style mbr-bold mbr-section-title3 display-5"><span>Validar Items y Revisar APU del Oferente</span></h2>
                         <p class="mbr-fonts-style text1 mbr-text display-6">Validar los valores y la estructura
                         del los APUS subidos al sistema desde el archivo de excel. Al validarse se debe porder <strong>
                             visualizar</strong> la composición de los APU en pantalla</p>
+                    </div>
+                </div>
+            </div>
+        </a>
+
+        <a href= "${createLink(controller:'rubroOferta', action: 'list')}" style="text-decoration: none">
+            <div class="col-lg-6 mbr-col-md-10">
+                <div class="wrap">
+                    <div style="width: 120px; height: 140px; text-align: center">
+                        <span style="font-size: 56px">5</span>
+                    </div>
+
+                    <div style="width: 450px; height: 220px">
+                        <h2 class="mbr-fonts-style mbr-bold mbr-section-title3 display-5"><span>Comprobar valores de rubros</span></h2>
+                        <p class="mbr-fonts-style text1 mbr-text display-6">Se comprueba los valores presentados por el oferente
+                        en la composición del APU, con el precio unitario usado en su presupuesto. Los valores que descuadran
+                        con más de $0.01, aparecen en <span style="color: #8d2124">texto rojo</span></p>
                     </div>
                 </div>
             </div>
@@ -231,7 +248,7 @@
             <div class="col-lg-6 mbr-col-md-10">
                 <div class="wrap">
                     <div style="width: 120px; height: 140px; text-align: center">
-                        <span style="font-size: 56px">5</span>
+                        <span style="font-size: 56px">6</span>
                     </div>
 
                     <div style="width: 450px; height: 220px">
@@ -248,7 +265,7 @@
             <div class="col-lg-6 mbr-col-md-10">
                 <div class="wrap">
                     <div style="width: 120px; height: 140px; text-align: center">
-                        <span style="font-size: 56px">6</span>
+                        <span style="font-size: 56px">7</span>
                     </div>
 
                     <div style="width: 450px; height: 220px">
@@ -262,24 +279,23 @@
             </div>
         </a>
 
-        <a href= "${createLink(controller:'rubroOferta', action: 'list')}" style="text-decoration: none">
-            <div class="col-lg-6 mbr-col-md-10">
-                <div class="wrap">
-                    <div style="width: 120px; height: 140px; text-align: center">
-                        <span style="font-size: 56px">7</span>
-                    </div>
+        %{--<a href= "${createLink(controller:'rubroOf', action: 'rubroCon', params: [tipo: 1])}" style="text-decoration: none">--}%
+            %{--<div class="col-lg-6 mbr-col-md-10">--}%
+                %{--<div class="wrap">--}%
+                    %{--<div style="width: 120px; height: 140px; text-align: center">--}%
+                        %{--<span style="font-size: 56px">8</span>--}%
+                    %{--</div>--}%
 
-                    <div style="width: 450px; height: 220px">
-                        <h2 class="mbr-fonts-style mbr-bold mbr-section-title3 display-5"><span>Comprobar valores de rubros</span></h2>
-                        <p class="mbr-fonts-style text1 mbr-text display-6">Se comprueba los valores presentados por el oferente
-                        en la composición del APU, con el precio unitario usado en su presupuesto. Los valores que descuadran
-                        con más de $0.01, aparecen en <span style="color: #8d2124">texto rojo</span></p>
-                    </div>
-                </div>
-            </div>
-        </a>
+                    %{--<div style="width: 450px; height: 220px">--}%
+                        %{--<h2 class="mbr-fonts-style mbr-bold mbr-section-title3 display-5"><span>Revisar los APU del Oferente</span></h2>--}%
+                        %{--<p class="mbr-fonts-style text1 mbr-text display-6">Se visualiza la composición de los APU para--}%
+                        %{--poder corregir valores y su composición en caso de ser necesario.</p>--}%
+                    %{--</div>--}%
+                %{--</div>--}%
+            %{--</div>--}%
+        %{--</a>--}%
 
-        <a href= "${createLink(controller:'rubroOf', action: 'rubroCon', params: [tipo: 1])}" style="text-decoration: none">
+        <a href= "${createLink(controller:'rubroOf', action: 'rubroPrincipalOf', params: [tipo: 1])}" style="text-decoration: none">
             <div class="col-lg-6 mbr-col-md-10">
                 <div class="wrap">
                     <div style="width: 120px; height: 140px; text-align: center">
@@ -287,23 +303,7 @@
                     </div>
 
                     <div style="width: 450px; height: 220px">
-                        <h2 class="mbr-fonts-style mbr-bold mbr-section-title3 display-5"><span>Revisar los APU del Oferente</span></h2>
-                        <p class="mbr-fonts-style text1 mbr-text display-6">Se visualiza la composición de los APU para
-                        poder corregir valores y su composición en caso de ser necesario.</p>
-                    </div>
-                </div>
-            </div>
-        </a>
-
-        <a href= "${createLink(controller:'rubroOf', action: 'rubroPrincipalOf', params: [tipo: 1])}" style="text-decoration: none">
-            <div class="col-lg-6 mbr-col-md-10">
-                <div class="wrap">
-                    <div style="width: 120px; height: 140px; text-align: center">
-                        <span style="font-size: 56px">9</span>
-                    </div>
-
-                    <div style="width: 450px; height: 220px">
-                        <h2 class="mbr-fonts-style mbr-bold mbr-section-title3 display-5"><span>Revisar los APU sistema</span></h2>
+                        <h2 class="mbr-fonts-style mbr-bold mbr-section-title3 display-5"><span>Revisar los APU ingresados al sistema</span></h2>
                         <p class="mbr-fonts-style text1 mbr-text display-6">Se visualiza la composición de los APU
                         con los items del sisema para comprobar valores y su composición</p>
                     </div>

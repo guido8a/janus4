@@ -107,13 +107,13 @@
                             kg
                         </td>
                         <td style="border: 1px solid #ddd; text-align: center">
-                            1200
+                            -
                         </td>
                         <td style="border: 1px solid #ddd; text-align: center">
                             2.01
                         </td>
                         <td style="border: 1px solid #ddd; text-align: center">
-                            2412.00
+                            -
                         </td>
                     </tr>
                 </table>

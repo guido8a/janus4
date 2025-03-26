@@ -101,12 +101,12 @@
 
     $("#btnRegresar").click(function () {
         var cntr = $("#obra").val();
-        <g:if test="${tipo == '1'}">
+        %{--<g:if test="${tipo == '1'}">--}%
         location.href = "${createLink(controller: 'rubroOf', action: 'index')}";
-        </g:if>
-        <g:else>
-        location.href = "${createLink(controller: 'rubroOf', action: 'rubroPrincipalOf')}?contrato=" + cntr;
-        </g:else>
+        %{--</g:if>--}%
+        %{--<g:else>--}%
+        %{--location.href = "${createLink(controller: 'rubroOf', action: 'rubroPrincipalOf')}?contrato=" + cntr;--}%
+        %{--</g:else>--}%
     });
 
     $("#btnProcesar").click(function () {

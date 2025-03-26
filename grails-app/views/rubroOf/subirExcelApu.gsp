@@ -89,6 +89,21 @@
         <div>
         </div>
 
+        <div class="col-md-1">
+            <label class="text-info">Título hoja</label>
+        </div>
+        <div class="col-md-3" style="margin-left: -40px">
+            <g:textField name="rbrotitl" class="form-control" value="ANÁLISIS DE PRECIOS UNITARIOS" style="color: #0b2c89"/>
+        </div>
+
+        <div class="col-md-1">
+            <label>Celda título</label>
+        </div>
+        <div class="col-md-1" style="margin-left: -20px">
+            <g:textField name="cldatitl" class="form-control" value="A"/>
+        </div>
+
+
         <div class="col-md-2">
             <label>Texto para Rubro</label>
         </div>
@@ -114,19 +129,6 @@
             <g:textField name="rbronmbr" class="form-control" value="A"/>
         </div>
 
-        <div class="col-md-1">
-            <label>Título hoja</label>
-        </div>
-        <div class="col-md-3" style="margin-left: -40px">
-            <g:textField name="rbrotitl" class="form-control" value="ANÁLISIS DE PRECIOS UNITARIOS"/>
-        </div>
-
-        <div class="col-md-1">
-            <label>Celda título</label>
-        </div>
-        <div class="col-md-1" style="margin-left: -20px">
-            <g:textField name="cldatitl" class="form-control" value="A"/>
-        </div>
 
         <div style="background-color: #e0e0e8; height: 105px; margin-top: 150px">
             <div class="contenedor">
@@ -291,6 +293,72 @@
                 </div>
             </div>
         </div>
+
+        <div style="background-color: #e8e8e0; height: 105px; margin-top: 20px">
+            <div class="contenedor">
+                <div class="inside" style="width: 30%; font-weight: bold">Transporte</div>
+
+                <div class="inside" style="width: 70%">
+                    <span style="display: inline-block">Tìtulo para Transporte de Materiales</span>
+                    <g:textField name="titlTr" class="form-control" value="TRANSPORTE"
+                                 style="width: 400px; display: inline-block; height: 26px"/>
+                    <span style="display: inline-block; margin-left: 20px">Celda:</span>
+                    <g:textField name="cldaTr" class="form-control" value="A"
+                                 style="width: 80px; display: inline-block; height: 26px"/>
+                </div>
+            </div>
+
+
+            <div class="row-fluid">
+                <div class="col-md-2">
+                    <label>Código del Ítem</label>
+                    <g:textField name="cdgoTr" class="form-control" value="A"/>
+                </div>
+
+                <div class="col-md-2">
+                    <label>Descripción del Ítem</label>
+                    <g:textField name="nmbrTr" class="form-control" value="B"/>
+                </div>
+
+                <div class="col-md-1">
+                    <label>Unidad</label>
+                    <g:textField name="unddTr" class="form-control" value="C"/>
+                </div>
+
+                <div class="col-md-1">
+                    <label>Peso</label>
+                    <g:textField name="pesoTr" class="form-control" value="D"/>
+                </div>
+
+                <div class="col-md-1">
+                    <label>Cantidad</label>
+                    <g:textField name="cntdTr" class="form-control" value="E"/>
+                </div>
+
+                <div class="col-md-1">
+                    <label>Distancia</label>
+                    <g:textField name="dstnTr" class="form-control" value="F"/>
+                </div>
+
+                <div class="col-md-2">
+                    <label>Tarifa</label>
+                    <g:textField name="pcunTr" class="form-control" value="G"/>
+                </div>
+
+                %{--<div class="col-md-2">--}%
+                %{--<label>Rendimiento</label>--}%
+                %{--<g:textField name="rndmTr" class="form-control" value="G"/>--}%
+                %{--</div>--}%
+
+                <div class="col-md-2">
+                    <label>Costo</label>
+                    <g:textField name="cstoTr" class="form-control" value="H"/>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
     </div>
 
 </g:uploadForm>
