@@ -112,7 +112,7 @@ from obra where obra__id = ${params.obra} returning obra__id
         cn.execute(sql.toString())
 
 
-        render "OK_Obra importada correctamente"
+        render "ok"
     }
 
 }

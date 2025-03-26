@@ -542,6 +542,7 @@
                         success  : function (msg) {
                             if(msg === 'ok'){
                                 log("Obra migrada a Proyectos correctamente", "success");
+                                location.reload()
                             }else {
                                 bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' +
                                     '<strong style="font-size: 14px">' + "Error al migrar la obra" + '</strong>');
