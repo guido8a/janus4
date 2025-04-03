@@ -4536,7 +4536,7 @@ class ReportesController {
         txtIzqHeader.setIndentationLeft(20)
         txtIzqHeader.add(new Paragraph("Los costos se reajustarán para efecto de pago, mediante la fórmula general: ", times10normal));
 
-        txtIzqHeader.add(new Paragraph("Pr = Po (p01B1/Bo + p02C1/Co + p03D1/Do + p04E1/Eo + p05F1/Fo + p06G1/Go + p07H1/Ho + p08I1/Io + p09J1/Jo + p10K1/Ko + pxX1/Xo) ", times10normal));
+        txtIzqHeader.add(new Paragraph("Pr = Po (p01B1/Bo + p02C1/Co + p03D1/Do + p04E1/Eo + p05F1/Fo + p06G1/Go + p07H1/Ho + p08I1/Io + p09J1/Jo + p10K1/Ko + pxX1/Xo) ", times8normal));
 
         def textoFormula = "Pr=Po(";
         def txInicio = "Pr = Po (";
@@ -4614,7 +4614,6 @@ class ReportesController {
             }
         }
         formulaStr += txFin
-//        println "forstr "+formulaStr
         txtIzqHeader.add(new Paragraph(formulaStr, times10bold));
         txtIzqHeader.add(new Paragraph(" ", times10bold));
 
@@ -4622,8 +4621,7 @@ class ReportesController {
 
         PdfPTable tablaCoeficiente = new PdfPTable(4);
         tablaCoeficiente.setWidthPercentage(90);
-        tablaCoeficiente.setWidths(arregloEnteros([10, 8, 25, 53]))
-//        tablaCoeficiente.setWidths(arregloEnteros([6, 6, 25, 59]))
+        tablaCoeficiente.setWidths(arregloEnteros([5, 8, 25, 53]))
 
         def valorTotal = 0
 
@@ -4639,6 +4637,11 @@ class ReportesController {
                 }
             }
         }
+
+//        PdfPTable tablaTotalesCoeficientes = new PdfPTable(4);
+//        tablaTotalesCoeficientes.setWidthPercentage(90);
+//        tablaTotalesCoeficientes.setWidths(arregloEnteros([5, 8, 25, 53]))
+
 
         addCellTabla(tablaCoeficiente, new Paragraph("SUMAN : ", times10bold), prmsHeaderHoja4)
         addCellTabla(tablaCoeficiente, new Paragraph(g.formatNumber(number: valorTotal, format: "##,##0", minFractionDigits: 3, maxFractionDigits: 3, locale: "ec"), times10bold), prmsHeaderHoja4)
