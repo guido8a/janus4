@@ -616,6 +616,7 @@ class ReportePlanillas4Controller {
 //        document.add(titlLogo())
         document.add(titlInst(1, planilla, obra));
         document.add(titlSbtt(planilla.fechaIngreso));
+//        document.add(encabezado(2, 10, planilla, ""))
         document.add(encabezado(2, 10, planilla, ""))
 
         /* ********************************************* Tabla B0 *****************************************************/
@@ -984,9 +985,9 @@ class ReportePlanillas4Controller {
 //            headerPlanilla([size: 10, espacio: 2])
 //        document.add(titlLogo())
         document.add(titlInst(1, planilla, obra));
-        document.add(titlSbtt(planilla.fechaIngreso));
+//        document.add(titlSbtt(planilla.fechaIngreso));
+        document.add(titlSbttContrato(planilla.fechaIngreso, contrato));
         document.add(encabezado(2, 10, planilla, ""))
-
 
         Paragraph titulo = new Paragraph();
         addEmptyLine(titulo, 1);
@@ -3014,6 +3015,30 @@ class ReportePlanillas4Controller {
         return preface2
     }
 
+    def titlSbttContrato(fcha, contrato) {
+        Font info = new Font(Font.TIMES_ROMAN, 9, Font.NORMAL)
+        Font fontThUsar = new Font(Font.TIMES_ROMAN, 8, Font.BOLD);
+        Font fontTdUsar = new Font(Font.TIMES_ROMAN, 8, Font.NORMAL);
+        def bordeTdSinBorde = [border: Color.WHITE, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE]
+
+        PdfPTable tablaHeaderPlanilla = new PdfPTable(5);
+        tablaHeaderPlanilla.setWidthPercentage(100);
+        tablaHeaderPlanilla.setWidths(arregloEnteros([14, 55, 5, 13, 13]))
+
+        addCellTabla(tablaHeaderPlanilla, new Paragraph("Generado por", fontThUsar), bordeTdSinBorde)
+        addCellTabla(tablaHeaderPlanilla, new Paragraph((session.usuario?.toString() + "   el: " + fcha.format("dd/MM/yyyy hh:mm")?.toString()), fontTdUsar), bordeTdSinBorde)
+        addCellTabla(tablaHeaderPlanilla, new Paragraph("", fontThUsar), bordeTdSinBorde)
+        addCellTabla(tablaHeaderPlanilla, new Paragraph("Contrato", fontThUsar), bordeTdSinBorde)
+        addCellTabla(tablaHeaderPlanilla, new Paragraph(contrato?.codigo, fontTdUsar), bordeTdSinBorde)
+
+//        Paragraph preface2 = new Paragraph()
+//        preface2.add(new Paragraph("Generado por: " + session.usuario + "   el: " + fcha.format("dd/MM/yyyy hh:mm"), info))
+//        preface2.setSpacingAfter(5);
+
+//        return preface2
+        return tablaHeaderPlanilla
+    }
+
     def encabezado(espacio, size, planilla, tipo) {
         def obra = planilla.contrato.obra
         def contrato = planilla.contrato
@@ -3654,9 +3679,64 @@ class ReportePlanillas4Controller {
         response.getOutputStream().write(b)
     }
 
+    def encabezadoContrato(espacio, size, planilla, tipo) {
+        def obra = planilla.contrato.obra
+        def contrato = planilla.contrato
+        def monto = planilla.contrato.monto
+        def valorObra = ReajustePlanilla.executeQuery("select max(acumuladoPlanillas) from ReajustePlanilla " +
+                "where planilla = :p", [p: planilla])[0]?:0
+        def valorCmpl = Planilla.executeQuery("select sum(valor) from Planilla where tipoContrato = 'C' and " +
+                "contrato = :c and tipoPlanilla != :t", [c: planilla.contrato, t: TipoPlanilla.get(10)])[0]?:0
 
+        if(tipo == 'T') {
+            def cmpl = Contrato.findByPadre(planilla.contrato)
+            monto += cmpl.monto
+            valorObra += valorCmpl
+        }
+        if(planilla.tipoContrato == 'C') {
+            contrato = janus.Contrato.findByPadre(planilla.contrato)
+            monto = contrato.monto
+            valorObra = valorCmpl
+        }
 
+        Font fontThUsar = new Font(Font.TIMES_ROMAN, size, Font.BOLD);
+        Font fontTdUsar = new Font(Font.TIMES_ROMAN, size, Font.NORMAL);
+        def bordeTdSinBorde = [border: Color.WHITE, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE]
 
+        PdfPTable tablaHeaderPlanilla = new PdfPTable(5);
+        tablaHeaderPlanilla.setWidthPercentage(100);
+        tablaHeaderPlanilla.setWidths(arregloEnteros([12, 24, 10, 12, 24]))
+        tablaHeaderPlanilla.setWidthPercentage(100);
+
+        addCellTabla(tablaHeaderPlanilla, new Paragraph("Obra", fontThUsar), bordeTdSinBorde)
+        addCellTabla(tablaHeaderPlanilla, new Paragraph(obra.nombre, fontTdUsar), [border: Color.WHITE, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE, colspan: 4])
+
+        addCellTabla(tablaHeaderPlanilla, new Paragraph("Lugar", fontThUsar), bordeTdSinBorde)
+        addCellTabla(tablaHeaderPlanilla, new Paragraph((obra.lugar?.descripcion ?: ""), fontTdUsar), bordeTdSinBorde)
+        addCellTabla(tablaHeaderPlanilla, new Paragraph("", fontThUsar), bordeTdSinBorde)
+        addCellTabla(tablaHeaderPlanilla, new Paragraph("Planilla", fontThUsar), bordeTdSinBorde)
+        addCellTabla(tablaHeaderPlanilla, new Paragraph(planilla.numero, fontTdUsar), bordeTdSinBorde)
+
+        addCellTabla(tablaHeaderPlanilla, new Paragraph("Ubicación", fontThUsar), bordeTdSinBorde)
+        addCellTabla(tablaHeaderPlanilla, new Paragraph(obra.parroquia?.nombre + " - Cantón " + obra.parroquia?.canton?.nombre, fontTdUsar), bordeTdSinBorde)
+        addCellTabla(tablaHeaderPlanilla, new Paragraph("", fontThUsar), bordeTdSinBorde)
+        addCellTabla(tablaHeaderPlanilla, new Paragraph("Monto contrato", fontThUsar), bordeTdSinBorde)
+        addCellTabla(tablaHeaderPlanilla, new Paragraph(numero(monto, 2), fontTdUsar), bordeTdSinBorde)
+
+        addCellTabla(tablaHeaderPlanilla, new Paragraph("Contratista", fontThUsar), bordeTdSinBorde)
+        addCellTabla(tablaHeaderPlanilla, new Paragraph(planilla.contrato.oferta.proveedor.nombre, fontTdUsar), bordeTdSinBorde)
+        addCellTabla(tablaHeaderPlanilla, new Paragraph("", fontThUsar), bordeTdSinBorde)
+        addCellTabla(tablaHeaderPlanilla, new Paragraph("Período", fontThUsar), bordeTdSinBorde)
+
+        addCellTabla(tablaHeaderPlanilla, new Paragraph(ponePeriodoPlanilla(planilla), fontTdUsar), bordeTdSinBorde)
+        addCellTabla(tablaHeaderPlanilla, new Paragraph("Plazo", fontThUsar), bordeTdSinBorde)
+        addCellTabla(tablaHeaderPlanilla, new Paragraph(numero(planilla.contrato.plazo, 0) + " días", fontTdUsar), bordeTdSinBorde)
+        addCellTabla(tablaHeaderPlanilla, new Paragraph("", fontThUsar), bordeTdSinBorde)
+        addCellTabla(tablaHeaderPlanilla, new Paragraph("Valor obra", fontThUsar), bordeTdSinBorde)
+        addCellTabla(tablaHeaderPlanilla, new Paragraph(numero(valorObra, 2), fontTdUsar), bordeTdSinBorde)
+
+        return tablaHeaderPlanilla
+    }
 
 
 }
