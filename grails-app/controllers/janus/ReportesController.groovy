@@ -4427,6 +4427,7 @@ class ReportesController {
         def prmsHeaderHojaCenter = [border: Color.WHITE, valign: Element.ALIGN_MIDDLE]
         def prmsHeaderHojaRight = [border: Color.WHITE, align : Element.ALIGN_RIGHT]
         def prmsHeaderHoja4 = [border: Color.WHITE, bordeTop: "1"]
+        def prmsHeaderHoja5 = [border: Color.WHITE, bordeBot: "1"]
 
         def prmsHeaderHoja2 = [border: Color.WHITE, colspan: 9]
         def prmsHeaderHoja3 = [border: Color.WHITE, colspan: 2]
@@ -4625,6 +4626,11 @@ class ReportesController {
         tablaCoeficiente.setWidthPercentage(90);
         tablaCoeficiente.setWidths(arregloEnteros([5, 8, 25, 53]))
 
+        addCellTabla(tablaCoeficiente, new Paragraph("", times10normal), prmsHeaderHoja4)
+        addCellTabla(tablaCoeficiente, new Paragraph("", times10normal), prmsHeaderHoja4)
+        addCellTabla(tablaCoeficiente, new Paragraph("", times10normal), prmsHeaderHoja4)
+        addCellTabla(tablaCoeficiente, new Paragraph("", times10normal), prmsHeaderHoja4)
+
         def valorTotal = 0
 
         valores.each { i ->
@@ -4644,10 +4650,11 @@ class ReportesController {
         addCellTabla(tablaCoeficiente, new Paragraph(g.formatNumber(number: valorTotal, format: "##,##0", minFractionDigits: 3, maxFractionDigits: 3, locale: "ec"), times10bold), prmsHeaderHoja4)
         addCellTabla(tablaCoeficiente, new Paragraph("(Suma total) ", times10bold), prmsHeaderHojaCenter)
         addCellTabla(tablaCoeficiente, new Paragraph(" ", times10normal), prmsHeaderHoja)
-        addCellTabla(tablaCoeficiente, new Paragraph(" ", times10normal), prmsHeaderHoja)
-        addCellTabla(tablaCoeficiente, new Paragraph(" ", times10normal), prmsHeaderHoja)
-        addCellTabla(tablaCoeficiente, new Paragraph(" ", times10normal), prmsHeaderHoja)
-        addCellTabla(tablaCoeficiente, new Paragraph(" ", times10normal), prmsHeaderHoja)
+
+        addCellTabla(tablaCoeficiente, new Paragraph(" ", times10normal), prmsHeaderHoja4)
+        addCellTabla(tablaCoeficiente, new Paragraph(" ", times10normal), prmsHeaderHoja4)
+        addCellTabla(tablaCoeficiente, new Paragraph(" ", times10normal), prmsHeaderHoja4)
+        addCellTabla(tablaCoeficiente, new Paragraph(" ", times10normal), prmsHeaderHoja4)
 
         PdfPTable tablaCuadrillaHeader = new PdfPTable(2);
         tablaCuadrillaHeader.setWidthPercentage(90);
@@ -4675,47 +4682,44 @@ class ReportesController {
         addCellTabla(tablaCuadrilla, new Paragraph(g.formatNumber(number: valorTotalCuadrilla, format: "##,##0", minFractionDigits: 3, maxFractionDigits: 3, locale: "ec"), times10bold), prmsHeaderHoja4)
         addCellTabla(tablaCuadrilla, new Paragraph("(Suma total) ", times10bold), prmsHeaderHojaCenter)
 
+        addCellTabla(tablaCuadrilla, new Paragraph(" ", times10normal), prmsHeaderHoja4)
+        addCellTabla(tablaCuadrilla, new Paragraph(" ", times10normal), prmsHeaderHoja4)
+        addCellTabla(tablaCuadrilla, new Paragraph(" ", times10normal), prmsHeaderHoja4)
+
         document.add(tablaCoeficiente)
         document.add(tablaCuadrillaHeader)
         document.add(tablaCuadrilla)
 
-        PdfPTable tablaNota = new PdfPTable(4);
-        tablaNota.setWidthPercentage(100);
-        tablaNota.setWidths(arregloEnteros([8, 69, 3, 20]))
-
-        addCellTabla(tablaNota, new Paragraph("NOTA: ", times8bold), prmsHeaderHojaRight)
-        addCellTabla(tablaNota, new Paragraph("La presente Fórmula Polinómica se sujetará a lo establecido en la Ley de Contratación Pública ", times8normal), prmsHeaderHoja)
-        addCellTabla(tablaNota, new Paragraph(" ", times10bold), prmsHeaderHoja)
-        addCellTabla(tablaNota, new Paragraph("Índice So: ${printFechaMes(obra?.fechaOficioSalida).toUpperCase()}", times8bold), prmsHeaderHoja)
-
-//        Paragraph notaPie = new Paragraph();
-//        notaPie.setAlignment(Element.ALIGN_LEFT);
-//        notaPie.setIndentationLeft(16)
-//        notaPie.add(new Paragraph("NOTA : La presente Fórmula Polinómica se sujetará a lo establecido en la Ley de Contratación " +
-//                "Pública                Índice So: ${printFechaMes(obra?.fechaOficioSalida).toUpperCase()}", times8normal));
-//        notaPie.setSpacingAfter(10)
-//        document.add(notaPie);
-
-        document.add(tablaNota);
-
         PdfPTable tablaPie = new PdfPTable(4);
         tablaPie.setWidthPercentage(90);
 
-        addCellTabla(tablaPie, new Paragraph("Monto del Contrato : ", times10bold), prmsHeaderHoja)
-        addCellTabla(tablaPie, new Paragraph("\$ " + g.formatNumber(number: totalBase, minFractionDigits: 2, maxFractionDigits: 2, format: "##,##0", locale: "ec"), fonts.times10normal), prmsHeaderHoja)
+        addCellTabla(tablaPie, new Paragraph("Monto del Contrato : ", times10bold), prmsHeaderHojaCenter)
+        addCellTabla(tablaPie, new Paragraph("\$ " + g.formatNumber(number: totalBase, minFractionDigits: 2, maxFractionDigits: 2, format: "##,##0", locale: "ec"), fonts.times10normal), prmsHeaderHojaCenter)
         addCellTabla(tablaPie, new Paragraph("", times10normal), prmsHeaderHoja)
         addCellTabla(tablaPie, new Paragraph("", times10normal), prmsHeaderHoja)
-
-        addCellTabla(tablaPie, new Paragraph(" ", times10normal), prmsHeaderHoja)
-        addCellTabla(tablaPie, new Paragraph(" ", times10normal), prmsHeaderHoja)
-        addCellTabla(tablaPie, new Paragraph(" ", times10bold), prmsHeaderHoja)
-        addCellTabla(tablaPie, new Paragraph(" ", times10bold), prmsHeaderHoja)
-        addCellTabla(tablaPie, new Paragraph("Atentamente,  ", times10normal), prmsHeaderHoja)
-        addCellTabla(tablaPie, new Paragraph(" ", times10normal), prmsHeaderHoja)
-        addCellTabla(tablaPie, new Paragraph(" ", times10bold), prmsHeaderHoja)
-        addCellTabla(tablaPie, new Paragraph(" ", times10bold), prmsHeaderHoja)
 
         document.add(tablaPie)
+
+        PdfPTable tablaNota = new PdfPTable(4);
+        tablaNota.setWidthPercentage(90);
+        tablaNota.setWidths(arregloEnteros([8, 66, 3, 23]))
+
+        addCellTabla(tablaNota, new Paragraph("NOTA: ", times8bold), prmsHeaderHoja4)
+        addCellTabla(tablaNota, new Paragraph("La presente Fórmula Polinómica se sujetará a lo establecido en la Ley de Contratación Pública ", times8normal), prmsHeaderHoja4)
+        addCellTabla(tablaNota, new Paragraph(" ", times10bold), prmsHeaderHoja4)
+        addCellTabla(tablaNota, new Paragraph("Índice So: ${printFechaMes(obra?.fechaOficioSalida).toUpperCase()}", times8bold), prmsHeaderHoja4)
+
+        addCellTabla(tablaNota, new Paragraph(" ", times10normal), prmsHeaderHoja)
+        addCellTabla(tablaNota, new Paragraph(" ", times10normal), prmsHeaderHoja)
+        addCellTabla(tablaNota, new Paragraph(" ", times10bold), prmsHeaderHoja)
+        addCellTabla(tablaNota, new Paragraph(" ", times10bold), prmsHeaderHoja)
+
+        addCellTabla(tablaNota, new Paragraph("", times10normal), prmsHeaderHoja)
+        addCellTabla(tablaNota, new Paragraph("Atentamente,   ", times10normal), prmsHeaderHoja)
+        addCellTabla(tablaNota, new Paragraph(" ", times10bold), prmsHeaderHoja)
+        addCellTabla(tablaNota, new Paragraph(" ", times10bold), prmsHeaderHoja)
+
+        document.add(tablaNota);
 
         PdfPTable tablaFirmas = new PdfPTable(2);
         tablaFirmas.setWidthPercentage(90);
