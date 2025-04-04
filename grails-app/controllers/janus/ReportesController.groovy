@@ -391,7 +391,7 @@ class ReportesController {
 //                    if (funciones[j])
 //                        campo = tagLib.operacion([propiedad: c, funcion: funciones[j], registro: d]).toString()
 //                    else
-                        campo = d.properties[c].toString()
+                    campo = d.properties[c].toString()
                 } else {
                     campo = d.properties[c].toString()
                 }
@@ -598,7 +598,7 @@ class ReportesController {
             campos.eachWithIndex { c, j ->
                 def campo
                 if (funciones) {
-                        campo = d.properties[c].toString()
+                    campo = d.properties[c].toString()
                 } else {
                     campo = d.properties[c].toString()
                 }
@@ -3053,7 +3053,7 @@ class ReportesController {
 //        if(session.perfil.id != 16){
 //            addCellTabla(tablaFirmas, new Paragraph("______________________________________", times8bold), prmsHeaderHoja)
 //        }else{
-            addCellTabla(tablaFirmas, new Paragraph(" ", times8bold), prmsHeaderHoja)
+        addCellTabla(tablaFirmas, new Paragraph(" ", times8bold), prmsHeaderHoja)
 //        }
 
         def arregloFirmas = []
@@ -3091,13 +3091,13 @@ class ReportesController {
 //                addCellTabla(tablaFirmas, new Paragraph("Coordinador no asignado", times8bold), prmsHeaderHoja)
 //            }
 //        }else{
-            addCellTabla(tablaFirmas, new Paragraph("", times8bold), prmsHeaderHoja)
+        addCellTabla(tablaFirmas, new Paragraph("", times8bold), prmsHeaderHoja)
 //        }
 
         addCellTabla(tablaFirmas, new Paragraph("ELABORÓ", times8bold), prmsHeaderHoja)
         addCellTabla(tablaFirmas, new Paragraph(" ", times8bold), prmsHeaderHoja)
 //        if(session.perfil.id == 16){
-            addCellTabla(tablaFirmas, new Paragraph("", times8bold), prmsHeaderHoja)
+        addCellTabla(tablaFirmas, new Paragraph("", times8bold), prmsHeaderHoja)
 //        }else{
 //            addCellTabla(tablaFirmas, new Paragraph("COORDINADOR", times8bold), prmsHeaderHoja)
 //        }
@@ -3495,7 +3495,7 @@ class ReportesController {
 
         subPres.each { s ->
             total2 = 0
-              addCellTabla(tablaVolObra, new Paragraph(s.descripcion, times10bold), [border: Color.WHITE, align: Element.ALIGN_LEFT, valign: Element.ALIGN_LEFT, colspan: 11])
+            addCellTabla(tablaVolObra, new Paragraph(s.descripcion, times10bold), [border: Color.WHITE, align: Element.ALIGN_LEFT, valign: Element.ALIGN_LEFT, colspan: 11])
             valores.each {
                 if (it.sbprdscr == s.descripcion) {
                     def textoC = (it.rbronmbr ?: '')
@@ -4424,6 +4424,7 @@ class ReportesController {
         }
 
         def prmsHeaderHoja = [border: Color.WHITE]
+        def prmsHeaderHojaRight = [border: Color.WHITE, align : Element.ALIGN_RIGHT]
         def prmsHeaderHoja4 = [border: Color.WHITE, bordeTop: "1"]
 
         def prmsHeaderHoja2 = [border: Color.WHITE, colspan: 9]
@@ -4638,14 +4639,9 @@ class ReportesController {
             }
         }
 
-//        PdfPTable tablaTotalesCoeficientes = new PdfPTable(4);
-//        tablaTotalesCoeficientes.setWidthPercentage(90);
-//        tablaTotalesCoeficientes.setWidths(arregloEnteros([5, 8, 25, 53]))
-
-
-        addCellTabla(tablaCoeficiente, new Paragraph("SUMAN : ", times10bold), prmsHeaderHoja4)
+        addCellTabla(tablaCoeficiente, new Paragraph(" ", times10bold), prmsHeaderHoja4)
         addCellTabla(tablaCoeficiente, new Paragraph(g.formatNumber(number: valorTotal, format: "##,##0", minFractionDigits: 3, maxFractionDigits: 3, locale: "ec"), times10bold), prmsHeaderHoja4)
-        addCellTabla(tablaCoeficiente, new Paragraph(" ", times10normal), prmsHeaderHoja)
+        addCellTabla(tablaCoeficiente, new Paragraph("(Suma total) ", times10bold), prmsHeaderHoja)
         addCellTabla(tablaCoeficiente, new Paragraph(" ", times10normal), prmsHeaderHoja)
         addCellTabla(tablaCoeficiente, new Paragraph(" ", times10normal), prmsHeaderHoja)
         addCellTabla(tablaCoeficiente, new Paragraph(" ", times10normal), prmsHeaderHoja)
@@ -4660,57 +4656,59 @@ class ReportesController {
 
         PdfPTable tablaCuadrilla = new PdfPTable(3);
         tablaCuadrilla.setWidthPercentage(90);
-        tablaCuadrilla.setWidths(arregloEnteros([10, 10, 70]))
+        tablaCuadrilla.setWidths(arregloEnteros([6, 8, 86]))
 
         def valorTotalCuadrilla = 0;
 
         cuadrilla.each { i ->
 
             if (i.valor != 0.0 || i.valor != 0) {
-                addCellTabla(tablaCuadrilla, new Paragraph(i?.numero, times10normal), prmsHeaderHoja)
+                addCellTabla(tablaCuadrilla, new Paragraph(i?.numero + " = ", times10normal), prmsHeaderHoja)
                 addCellTabla(tablaCuadrilla, new Paragraph(g.formatNumber(number: i?.valor.toFloat(), format: "##,##0", minFractionDigits: 3, maxFractionDigits: 3, locale: "ec"), times10normal), prmsHeaderHoja)
                 addCellTabla(tablaCuadrilla, new Paragraph(i?.indice?.descripcion, times10normal), prmsHeaderHoja)
                 valorTotalCuadrilla = i.valor + valorTotalCuadrilla
             } else {  }
         }
 
-        addCellTabla(tablaCuadrilla, new Paragraph("SUMAN : ", times10bold), prmsHeaderHoja4)
+        addCellTabla(tablaCuadrilla, new Paragraph(" ", times10bold), prmsHeaderHoja4)
         addCellTabla(tablaCuadrilla, new Paragraph(g.formatNumber(number: valorTotalCuadrilla, format: "##,##0", minFractionDigits: 3, maxFractionDigits: 3, locale: "ec"), times10bold), prmsHeaderHoja4)
-        addCellTabla(tablaCuadrilla, new Paragraph(" ", times10normal), prmsHeaderHoja)
+        addCellTabla(tablaCuadrilla, new Paragraph("(Suma total) ", times10bold), prmsHeaderHoja)
 
         document.add(tablaCoeficiente)
         document.add(tablaCuadrillaHeader)
         document.add(tablaCuadrilla)
 
-//        Paragraph txtIzqPie = new Paragraph();
-//        txtIzqPie.setAlignment(Element.ALIGN_LEFT);
-//        txtIzqPie.setIndentationLeft(28);
-//        txtIzqPie.add(new Paragraph(nota?.texto, times10normal));
-//        txtIzqPie.add(new Paragraph(" ", times10bold));
-//        document.add(txtIzqPie)
+        PdfPTable tablaNota = new PdfPTable(4);
+        tablaNota.setWidthPercentage(100);
+        tablaNota.setWidths(arregloEnteros([8, 69, 3, 20]))
 
-        Paragraph notaPie = new Paragraph();
-        notaPie.setAlignment(Element.ALIGN_LEFT);
-        notaPie.setIndentationLeft(16)
-        notaPie.add(new Paragraph("NOTA : La presente Fórmula Polinómica se sujetará a lo establecido en la Ley de Contratación " +
-                "Pública                Índice So: ${printFechaMes(obra?.fechaOficioSalida).toUpperCase()}", times8normal));
-//        notaPie.add(new Paragraph("NOTA : La presente Fórmula Polinómica se sujetará a lo establecido en la Ley de Contratación Pública               Índice So: " +
-//                "${printFechaMes(obra?.fechaOficioSalida).toUpperCase()}", times10bold));
-        notaPie.setSpacingAfter(10)
-        document.add(notaPie);
+        addCellTabla(tablaNota, new Paragraph("NOTA: ", times8bold), prmsHeaderHojaRight)
+        addCellTabla(tablaNota, new Paragraph("La presente Fórmula Polinómica se sujetará a lo establecido en la Ley de Contratación Pública ", times8normal), prmsHeaderHoja)
+        addCellTabla(tablaNota, new Paragraph(" ", times10bold), prmsHeaderHoja)
+        addCellTabla(tablaNota, new Paragraph("Índice So: ${printFechaMes(obra?.fechaOficioSalida).toUpperCase()}", times8bold), prmsHeaderHoja)
+
+//        Paragraph notaPie = new Paragraph();
+//        notaPie.setAlignment(Element.ALIGN_LEFT);
+//        notaPie.setIndentationLeft(16)
+//        notaPie.add(new Paragraph("NOTA : La presente Fórmula Polinómica se sujetará a lo establecido en la Ley de Contratación " +
+//                "Pública                Índice So: ${printFechaMes(obra?.fechaOficioSalida).toUpperCase()}", times8normal));
+//        notaPie.setSpacingAfter(10)
+//        document.add(notaPie);
+
+        document.add(tablaNota);
 
         PdfPTable tablaPie = new PdfPTable(4);
         tablaPie.setWidthPercentage(90);
 
-//        addCellTabla(tablaPie, new Paragraph("Fecha de actualización: ", times10bold), prmsHeaderHoja)
-//        addCellTabla(tablaPie, new Paragraph(" ", times10bold), prmsHeaderHoja)
-//        addCellTabla(tablaPie, new Paragraph(printFecha(obra?.fechaPreciosRubros), times10normal), prmsHeaderHoja)
-//        addCellTabla(tablaPie, new Paragraph("", times10normal), prmsHeaderHoja)
         addCellTabla(tablaPie, new Paragraph("Monto del Contrato : ", times10bold), prmsHeaderHoja)
         addCellTabla(tablaPie, new Paragraph("\$ " + g.formatNumber(number: totalBase, minFractionDigits: 2, maxFractionDigits: 2, format: "##,##0", locale: "ec"), fonts.times10normal), prmsHeaderHoja)
         addCellTabla(tablaPie, new Paragraph("", times10normal), prmsHeaderHoja)
         addCellTabla(tablaPie, new Paragraph("", times10normal), prmsHeaderHoja)
 
+        addCellTabla(tablaPie, new Paragraph(" ", times10normal), prmsHeaderHoja)
+        addCellTabla(tablaPie, new Paragraph(" ", times10normal), prmsHeaderHoja)
+        addCellTabla(tablaPie, new Paragraph(" ", times10bold), prmsHeaderHoja)
+        addCellTabla(tablaPie, new Paragraph(" ", times10bold), prmsHeaderHoja)
         addCellTabla(tablaPie, new Paragraph("Atentamente,  ", times10normal), prmsHeaderHoja)
         addCellTabla(tablaPie, new Paragraph(" ", times10normal), prmsHeaderHoja)
         addCellTabla(tablaPie, new Paragraph(" ", times10bold), prmsHeaderHoja)
