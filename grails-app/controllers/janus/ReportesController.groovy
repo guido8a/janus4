@@ -4424,6 +4424,7 @@ class ReportesController {
         }
 
         def prmsHeaderHoja = [border: Color.WHITE]
+        def prmsHeaderHojaCenter = [border: Color.WHITE, valign: Element.ALIGN_MIDDLE]
         def prmsHeaderHojaRight = [border: Color.WHITE, align : Element.ALIGN_RIGHT]
         def prmsHeaderHoja4 = [border: Color.WHITE, bordeTop: "1"]
 
@@ -4641,7 +4642,7 @@ class ReportesController {
 
         addCellTabla(tablaCoeficiente, new Paragraph(" ", times10bold), prmsHeaderHoja4)
         addCellTabla(tablaCoeficiente, new Paragraph(g.formatNumber(number: valorTotal, format: "##,##0", minFractionDigits: 3, maxFractionDigits: 3, locale: "ec"), times10bold), prmsHeaderHoja4)
-        addCellTabla(tablaCoeficiente, new Paragraph("(Suma total) ", times10bold), prmsHeaderHoja)
+        addCellTabla(tablaCoeficiente, new Paragraph("(Suma total) ", times10bold), prmsHeaderHojaCenter)
         addCellTabla(tablaCoeficiente, new Paragraph(" ", times10normal), prmsHeaderHoja)
         addCellTabla(tablaCoeficiente, new Paragraph(" ", times10normal), prmsHeaderHoja)
         addCellTabla(tablaCoeficiente, new Paragraph(" ", times10normal), prmsHeaderHoja)
@@ -4672,7 +4673,7 @@ class ReportesController {
 
         addCellTabla(tablaCuadrilla, new Paragraph(" ", times10bold), prmsHeaderHoja4)
         addCellTabla(tablaCuadrilla, new Paragraph(g.formatNumber(number: valorTotalCuadrilla, format: "##,##0", minFractionDigits: 3, maxFractionDigits: 3, locale: "ec"), times10bold), prmsHeaderHoja4)
-        addCellTabla(tablaCuadrilla, new Paragraph("(Suma total) ", times10bold), prmsHeaderHoja)
+        addCellTabla(tablaCuadrilla, new Paragraph("(Suma total) ", times10bold), prmsHeaderHojaCenter)
 
         document.add(tablaCoeficiente)
         document.add(tablaCuadrillaHeader)
