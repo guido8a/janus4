@@ -1239,14 +1239,17 @@ class RubroOfController {
                             if (hojaRubro) { //ANÁLISIS DE PRECIOS UNITARIOS
                                 println "Procesa: " + sheet.getSheetName().toString()
 
-                                if (rgst[cols[params.cldarbro]].size() > params.rbro.size()) {
-                                    txRubro = rgst[cols[params.cldarbro]] ? rgst[cols[params.cldarbro]][0..(params.rbro.size() - 1)] : ''
+                                if (rgst[cols[params.cldarbro]]?.size() >= params.rbro.size()) {
+                                    if(params.prefijo) {
+                                        txRubro = rgst[cols[params.cldarbro]] ? rgst[cols[params.cldarbro]][0..(params.rbro.size() - 1)] : ''
+                                    } else {
+                                        txRubro = rgst[cols[params.rbronmbr]] ? rgst[cols[params.rbronmbr]] : ''
+                                    }
                                 } else {
                                     txRubro = ''
                                 }
                                 println "--> $txRubro"
-//                                if (rgst[cols[params.cldarbro]] == params.rbro) {
-                                if (txRubro == params.rbro) {
+                                if (rgst[cols[params.cldarbro]] == params.rbro) {
                                     rbronmbr = rgst[cols[params.rbronmbr]]
                                     rbronmbr = rbronmbr.toString().replaceAll(txRubro, '').trim()
                                     rbronmbr = rbronmbr.toString().replaceAll("'", "''")
@@ -1276,13 +1279,10 @@ class RubroOfController {
 //                                println "Equipos..... $sccnEq --> rbro: $ordn $rbronmbr"
                                 }
                                 if (sccnEq) {
-//                                    println "Eq: " + rgst[cols[params.nmbrEq]] + "cntd: " +
-//                                            rgst[cols[params.cntdEq]] + "trfa: " +
-//                                            rgst[cols[params.trfaEq]] + "pcun: " +
-//                                            rgst[cols[params.pcunEq]] + "rndm: " +
-//                                            rgst[cols[params.rndmEq]] + "csto: " +
-//                                            rgst[cols[params.cstoEq]]
-                                    if(ordn == 1) println "...1"
+                                    rgst.each { r ->
+                                        rgst[]
+                                    }
+                                    if(ordn == 1) println "...1 id: $ofrb_id"
                                     try {
                                         cdgo = params.cdgoEq ? rgst[cols[params.cdgoEq]] : ''
                                         if(ordn == 1) println "..2"
@@ -1296,6 +1296,9 @@ class RubroOfController {
                                         if(ordn == 1) println "..8 -- rndm: ${rgst[cols[params.rndmEq]]}"
                                     } catch (e) {
                                         cntd = 0
+                                        trfa = 0
+                                        pcun = 0
+                                        rndm = 0
                                     }
                                     nmbr = nmbr.replaceAll("\\n|\r", "").trim()
                                     nmbr = nmbr.toString().replaceAll("'", "''")
@@ -1402,7 +1405,7 @@ class RubroOfController {
 //        params.obra = 4255
         def obra = params.obra
         def cn = dbConnectionService.getConnection()
-        def filasNO = [0, 1]
+        def filasNO = []
         def oferente = session.usuario
         def path = "/var/janus/" + "xlsOfertas/" + params.obra + "/"   //web-app/archivos
         new File(path).mkdirs()
@@ -1460,7 +1463,7 @@ class RubroOfController {
                 def indi = cn.rows(sql.toString())[0]?.inditotl
 
                 //for que recorre las hojas existentes
-                for (int hj = 1; hj < hojas; hj++) {
+                for (int hj = 0; hj < hojas; hj++) {
                     XSSFSheet sheet = workbook.getSheetAt(hj);
                     sheet = workbook.getSheetAt(hj);
                     def hoja = sheet.getSheetName().toString()
@@ -1491,7 +1494,7 @@ class RubroOfController {
                                     }
                                 }
 
-                                println "reg: $rgst"
+                                println "reg: $rgst --> ${rgst[3]}"
 
                                 try {
                                     nmro = rgst[0]
@@ -1499,12 +1502,13 @@ class RubroOfController {
                                     undd = rgst[2]
                                     cntd = rgst[3].toDouble() //cantidad
                                     pcun = rgst[4].toDouble() //costo
-                                    pctt = rgst[5].toDouble()
+//                                    pctt = rgst[5].toDouble()
                                 } catch (e) {
                                     cntd = 0
                                 }
 
                                 /** va antes que ssnRbro = true porque se analiza en la siguiente pasada **/
+                                println "cntd: $cntd, undd: $undd --> nmbr: $nmbr"
                                 if (cntd != 0) {
                                     /** insertar rubro */
                                     if (undd) {
@@ -1961,7 +1965,8 @@ class RubroOfController {
 
 
         sql = "select count(*) cnta from vlof where item__id not in " +
-                "(select ofrbjnid from ofrb where obra__id = 5225) and obra__id = ${params.obra}"
+                "(select ofrbjnid from ofrb where obra__id = ${params.obra}) and obra__id = ${params.obra}"
+        println "sql: $sql"
         def faltan = cn.rows(sql.toString())[0].cnta
         return [datos: datos, obra: obra, faltan: faltan]
     }
