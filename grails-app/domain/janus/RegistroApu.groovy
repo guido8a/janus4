@@ -47,6 +47,7 @@ class RegistroApu {
     String dstnTr
     String pcunTr
     String cstoTr
+    String nombre
 
     static auditable = true
     static mapping = {
@@ -100,6 +101,7 @@ class RegistroApu {
             dstnTr column: 'rgapdstr'
             pcunTr column: 'rgappctr'
             cstoTr column: 'rgapcttr'
+            nombre column: 'rgapnmbr'
 
         }
     }
@@ -147,5 +149,6 @@ class RegistroApu {
         dstnTr(blank: true, nullable: true)
         pcunTr(blank: true, nullable: true)
         cstoTr(blank: true, nullable: true)
+        nombre(blank: false, nullable: false)
     }
 }

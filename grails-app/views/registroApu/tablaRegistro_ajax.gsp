@@ -25,6 +25,17 @@
 %{--<g:form class="form-horizontal" name="frmRegistro" action="saveRegistroApu_ajax">--}%
     <g:hiddenField name="persona" value="${oferente?.id}" />
     <g:hiddenField name="id" value="${registro?.id}" />
+
+    <div class="col-md-12" style="margin-bottom: 10px">
+        <div class="col-md-3"></div>
+        <div class="col-md-2">
+            <label class="text-info" style="font-size: 14px">Nombre de la composición</label>
+        </div>
+        <div class="col-md-4">
+            <g:textField name="nombre" class="form-control" value="${registro?.nombre ?: 'Nueva composición'}" style="color: #0b2c89"/>
+        </div>
+    </div>
+
     <div id="list-grupo" class="col-md-12" role="main">
         <div class="col-md-1">
             <label class="text-info">Título hoja</label>
@@ -291,14 +302,18 @@
     });
 
     function submitFormRegistro() {
-        var $form = $("#frmRegistro");
-        if ($form.valid()) {
+        // var $form = $("#frmRegistro");
+        var $form = $("#frmUpload");
+        // if ($form.valid()) {
         var data = $form.serialize();
         var dialog = cargarLoader("Guardando...");
         $.ajax({
             type    : "POST",
-            url     : $form.attr("action"),
+            // url     : $form.attr("action"),
+            url     : "${createLink(controller: 'registroApu', action: 'saveRegistroApu_ajax')}",
             data    : data,
+            // contentType: false,
+            processData: false,
             success : function (msg) {
                 dialog.modal('hide');
                 var parts = msg.split("_");
@@ -313,9 +328,9 @@
                 }
             }
         });
-        } else {
-            return false;
-        }
+        // } else {
+        //     return false;
+        // }
     }
 
     $("#btnSubmitCrono").click(function () {
@@ -323,6 +338,5 @@
             $("#frmUpload").submit();
         }
     });
-
 
 </script>

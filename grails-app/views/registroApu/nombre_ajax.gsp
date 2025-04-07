@@ -1,0 +1,1 @@
+<g:textField name="nombre" class="form-control" value="${registro?.nombre}" />

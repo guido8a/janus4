@@ -31,13 +31,18 @@ class RegistroApuController {
     }
 
     def saveRegistroApu_ajax(){
-        println("-- " + params)
         def registro
 
         if(params.id){
             registro = RegistroApu.get(params.id)
         }else{
             registro = new RegistroApu()
+        }
+
+        if(params.prefijo){
+            params.prefijo = 1
+        }else{
+            params.prefijo = 0
         }
 
         registro.properties = params
@@ -48,6 +53,12 @@ class RegistroApuController {
         }else{
             render "ok_Guardado correctamente"
         }
+    }
+
+    def nombre_ajax(){
+        def registro = RegistroApu.get(params.id)
+
+        return[registro: registro]
     }
 
 
