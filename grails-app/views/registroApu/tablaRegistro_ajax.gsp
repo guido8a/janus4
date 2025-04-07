@@ -227,7 +227,8 @@
             <div class="row-fluid">
                 <div class="col-md-2">
                     <label>Código del Ítem</label>
-                    <g:textField name="cdgoTr" class="form-control" value="${registro?.cdgoTr ?: 'A'}"/>
+                    %{--<g:textField name="cdgoTr" class="form-control" value="${registro?.cdgoTr ?: 'A'}"/>--}%
+                    <g:textField name="cdgoTr" class="form-control" value="${registro?.cdgoTr}"/>
                 </div>
 
                 <div class="col-md-2">
@@ -242,7 +243,8 @@
 
                 <div class="col-md-1">
                     <label>Peso</label>
-                    <g:textField name="pesoTr" class="form-control" value="${registro?.pesoTr ?: 'D'}"/>
+                    %{--<g:textField name="pesoTr" class="form-control" value="${registro?.pesoTr ?: 'D'}"/>--}%
+                    <g:textField name="pesoTr" class="form-control" value="${registro?.pesoTr}"/>
                 </div>
 
                 <div class="col-md-1">
@@ -252,7 +254,8 @@
 
                 <div class="col-md-1">
                     <label>Distancia</label>
-                    <g:textField name="dstnTr" class="form-control" value="${registro?.dstnTr ?: 'F'}"/>
+                    %{--<g:textField name="dstnTr" class="form-control" value="${registro?.dstnTr ?: 'F'}"/>--}%
+                    <g:textField name="dstnTr" class="form-control" value="${registro?.dstnTr}"/>
                 </div>
 
                 <div class="col-md-2">

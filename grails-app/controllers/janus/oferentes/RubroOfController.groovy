@@ -1240,20 +1240,32 @@ class RubroOfController {
                             if (hojaRubro) { //ANÁLISIS DE PRECIOS UNITARIOS
                                 println "Procesa: " + sheet.getSheetName().toString()
 
-                                if (rgst[cols[params.cldarbro]]?.size() >= params.rbro.size()) {
-                                    if(params.prefijo) {
-                                        txRubro = rgst[cols[params.cldarbro]] ? rgst[cols[params.cldarbro]][0..(params.rbro.size() - 1)] : ''
+                                if(rgst[cols[params.cldarbro]]){
+//                                    if (rgst[cols[params.cldarbro]]?.size() >= params.rbro.size()) {
+                                    if ( (rgst[cols[params.cldarbro]] == params.rbro) && (txRubro == '')) {
+                                        if(params.prefijo) {
+                                            txRubro = rgst[cols[params.cldarbro]] ? rgst[cols[params.cldarbro]][0..(params.rbro.size() - 1)] : ''
+                                        } else {
+                                            txRubro = rgst[cols[params.rbronmbr]] ? rgst[cols[params.rbronmbr]] : ''
+                                        }
                                     } else {
-                                        txRubro = rgst[cols[params.rbronmbr]] ? rgst[cols[params.rbronmbr]] : ''
+                                        txRubro = ''
                                     }
-                                } else {
-                                    txRubro = ''
+
                                 }
-                                println "--> $txRubro"
-                                if (rgst[cols[params.cldarbro]] == params.rbro) {
-                                    rbronmbr = rgst[cols[params.rbronmbr]]
-                                    rbronmbr = rbronmbr.toString().replaceAll(txRubro, '').trim()
-                                    rbronmbr = rbronmbr.toString().replaceAll("'", "''")
+                                println "txRubro --> $txRubro"
+//                                if (rgst[cols[params.cldarbro]] == params.rbro) {
+                                if ( (txRubro != '') && (ofrb_id == 0) ) {
+//                                    rbronmbr = rgst[cols[params.rbronmbr]]
+//                                    rbronmbr = rbronmbr.toString().replaceAll(txRubro, '').trim()
+//                                    rbronmbr = rbronmbr.toString().replaceAll("'", "''")
+                                    rbronmbr = txRubro
+                                    if(params.prefijo) {
+                                        rbronmbr = rbronmbr.toString().replaceAll(txRubro, '').trim()
+                                        rbronmbr = rbronmbr.toString().replaceAll("'", "''")
+                                    } else {
+                                        rbronmbr = rbronmbr.toString().replaceAll("'", "''")
+                                    }
                                     sccnRubro = true
                                     println "Rubro: $rbronmbr"
                                     sql = "select ofrb__id from ofrb where prsn__id = ${oferente.id} and " +
@@ -1301,8 +1313,12 @@ class RubroOfController {
                                         pcun = 0
                                         rndm = 0
                                     }
-                                    nmbr = nmbr.replaceAll("\\n|\r", "").trim()
-                                    nmbr = nmbr.toString().replaceAll("'", "''")
+                                    try {
+                                        nmbr = nmbr.replaceAll("\\n|\r", "").trim()
+                                        nmbr = nmbr.toString().replaceAll("'", "''")
+                                    } catch (e) {
+                                        nmbr = ''
+                                    }
                                     println "Equipos -> rbro: $ofrb_id nombre: $nmbr cantidad: $cntd"
                                     if (cntd && sccnEq) {
                                         println "inserta equipo: $nmbr, $cntd, $trfa, $rndm, $csto"
@@ -1329,8 +1345,12 @@ class RubroOfController {
                                     } catch (e) {
                                         cntd = 0
                                     }
-                                    nmbr = nmbr.replaceAll("\\n|\r", "").trim()
-                                    nmbr = nmbr.toString().replaceAll("'", "''")
+                                    try {
+                                        nmbr = nmbr.replaceAll("\\n|\r", "").trim()
+                                        nmbr = nmbr.toString().replaceAll("'", "''")
+                                    } catch (e) {
+                                        nmbr = ''
+                                    }
                                     println "MO -> rbro: $ofrb_id nombre: $nmbr cantidad: $cntd"
                                     if (cntd && sccnMo) {
 //                                        errores += insertaDtrb(oferente.id, obra, ordn, cdgo, nmbr, undd, cntd, trfa, pcun, rndm, csto, "MO")
@@ -1355,11 +1375,45 @@ class RubroOfController {
                                     } catch (e) {
                                         cntd = 0
                                     }
-                                    nmbr = nmbr.replaceAll("\\n|\r", "").trim()
-                                    nmbr = nmbr.toString().replaceAll("'", "''")
+                                    try {
+                                        nmbr = nmbr.replaceAll("\\n|\r", "").trim()
+                                        nmbr = nmbr.toString().replaceAll("'", "''")
+                                    } catch (e) {
+                                        nmbr = ''
+                                    }
                                     if (cntd && sccnMt) {
 //                                        errores += insertaDtrb(oferente.id, obra, ordn, cdgo, nmbr, undd, cntd, pcun, pcun, 0, csto, "MT")
                                         errores += insertaEq(ofrb_id, cdgo, nmbr, undd, cntd, pcun, pcun, rndm, csto, "MT")
+                                    }
+                                }
+
+                                /** --------------- Transporte ---------------**/
+                                if (rgst[cols[params.cldaTr]] == params.titlTr) {
+                                    sccnEq = false; sccnMo = false; sccnMt = false; sccnTr = true; sccnRubro = false
+//                                println "Mano de Mat... $sccnMt --> rbro: $ordn $rbronmbr"
+                                }
+                                if (sccnTr) {
+//                                cdgo, undd, nmbr, cntd, trfa, pcun, rndm, csto
+                                    try {
+                                        cdgo = params.cdgoTr ? rgst[cols[params.cdgoTr]] : ''
+                                        nmbr = rgst[cols[params.nmbrTr]]
+                                        undd = params.unddTr ? rgst[cols[params.unddTr]] : ''
+                                        cntd = rgst[cols[params.cntdTr]].toDouble() //cantidad
+                                        pcun = rgst[cols[params.pcunTr]].toDouble() //costo
+                                        csto = rgst[cols[params.cstoTr]].toDouble()
+                                    } catch (e) {
+                                        cntd = 0
+                                    }
+                                    try {
+                                        nmbr = nmbr.replaceAll("\\n|\r", "").trim()
+                                        nmbr = nmbr.toString().replaceAll("'", "''")
+                                    } catch (e) {
+                                        nmbr = ''
+                                    }
+                                    if (csto && sccnTr) {
+//                                    println "inserta transporte $ordn $nmbr $csto"
+//                                    insertaTrnp(oferente, obra, ordn, cdgo, nmbr, undd, peso, cntd, trfa, pcun, csto, dstn)
+                                        errores += insertaTrnp(oferente.id, obra, ordn, cdgo, nmbr, undd, peso, cntd, trfa, trfa, csto, dstn)
                                     }
                                 }
 
@@ -1375,6 +1429,7 @@ class RubroOfController {
                     htmlInfo += "<p>Hoja : " + sheet.getSheetName() + " Rubro: " + rbronmbr + "</p>"
                     hj++
                     hojaRubro = false
+                    ofrb_id = 0
 //                    }
                 } //sheets.each
                 if (done > 0) {
@@ -1766,6 +1821,11 @@ class RubroOfController {
         sql = "update ofrb set ofrbjnid = 0 where ofrbjnid is null"
         cn.execute(sql.toString())
         sql = "update dtrb set dtrbjnid = 0 where dtrbjnid is null"
+        cn.execute(sql.toString())
+
+        sql = "update ofrb set ofrbindi = ( select inditotl from obra where obra.obra__id = ${params.obra} and " +
+                "ofrb.obra__id = obra.obra__id )"
+        println "sql: $sql"
         cn.execute(sql.toString())
         cn.close()
         render "ok"
