@@ -1241,6 +1241,7 @@ class RubroOfController {
                                 println "Procesa: " + sheet.getSheetName().toString()
 
                                 if(rgst[cols[params.cldarbro]]){
+                                    println "${rgst[cols[params.cldarbro]]} == ${params.rbro} && txRubro: ${txRubro}"
 //                                    if (rgst[cols[params.cldarbro]]?.size() >= params.rbro.size()) {
                                     if ( (rgst[cols[params.cldarbro]] == params.rbro) && (txRubro == '')) {
                                         if(params.prefijo) {
