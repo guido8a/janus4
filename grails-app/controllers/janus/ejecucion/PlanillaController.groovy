@@ -3959,6 +3959,7 @@ class PlanillaController {
                     flash.message = "No se ingresado el acta de entrega recepción de esta obra, por lo que no procede " +
                             "la lanilla de liquidación del reajuuste"
                     flash.clase = "alert-error"
+                    render "ok" //debe retornar a planillas y habilitar botón de resumen.
                     return
                 }
             }
