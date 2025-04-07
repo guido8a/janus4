@@ -430,11 +430,11 @@
     %{--});--}%
     %{--});--}%
 
-    $("#btnSubmitCrono").click(function () {
-        if ($("#frmUpload").valid()) {
-            $("#frmUpload").submit();
-        }
-    });
+    // $("#btnSubmitCrono").click(function () {
+    //     if ($("#frmUpload").valid()) {
+    //         $("#frmUpload").submit();
+    //     }
+    // });
 
 </script>
 </body>

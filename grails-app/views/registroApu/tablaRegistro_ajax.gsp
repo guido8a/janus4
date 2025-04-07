@@ -314,5 +314,11 @@
         }
     }
 
+    $("#btnSubmitCrono").click(function () {
+        if ($("#frmUpload").valid()) {
+            $("#frmUpload").submit();
+        }
+    });
+
 
 </script>
