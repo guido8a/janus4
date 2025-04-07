@@ -20,9 +20,9 @@
             </div>
         </div>
     </div>
-</g:uploadForm>
+%{--</g:uploadForm>--}%
 
-<g:form class="form-horizontal" name="frmRegistro" action="saveRegistroApu_ajax">
+%{--<g:form class="form-horizontal" name="frmRegistro" action="saveRegistroApu_ajax">--}%
     <g:hiddenField name="persona" value="${oferente?.id}" />
     <g:hiddenField name="id" value="${registro?.id}" />
     <div id="list-grupo" class="col-md-12" role="main">
@@ -267,7 +267,8 @@
             </div>
         </div>
     </div>
-</g:form>
+%{--</g:form>--}%
+</g:uploadForm>
 
 
 <div class="col-md-12" style="margin-top: 10px">
