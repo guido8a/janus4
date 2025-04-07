@@ -834,6 +834,7 @@ class RubroOfController {
         cn.eachRow(sql.toString()) { r ->
             obras[r.id] = r.nombre
         }
+
         [obras: obras, oferente: oferente, tipo: params.tipo]
     }
 
