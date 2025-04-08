@@ -757,7 +757,8 @@ class ReportesPlanillasController {
         preface.setAlignment(Element.ALIGN_CENTER);
         preface.add(new Paragraph("SEP - G.A.D. PROVINCIA DE PICHINCHA", fontTituloGad));
 //        preface.add(new Paragraph("AVANCE DE LA OBRA " + obra.nombre + " AL " + fechaConFormato(plnl.fechaFin, "dd MMMM yyyy").toUpperCase(), fontTituloGad));
-        preface.add(new Paragraph("AVANCE DE LA OBRA " + obra.nombre + " AL " + fechaConFormato(contrato?.fechaPedidoRecepcionFiscalizador, "dd MMMM yyyy").toUpperCase(), fontTituloGad));
+        preface.add(new Paragraph("AVANCE DE LA OBRA " + obra.nombre, fontTituloGad));
+//                " AL " + fechaConFormato(contrato?.fechaPedidoRecepcionFiscalizador, "dd MMMM yyyy").toUpperCase(), fontTituloGad));
         addEmptyLine(preface, 1);
         Paragraph preface2 = new Paragraph();
         Paragraph titulo = new Paragraph("INFORME DE FISCALIZACIÓN N°: " + plnl.numero, fontTituloGad);
@@ -1057,7 +1058,9 @@ class ReportesPlanillasController {
         /* **************************************************************** FIN RESUMEN ******************************************************************************/
 
         /* **************************************************************** FIRMA ******************************************************************************/
-        def strFiscalizador = planillasService.nombrePersona(plnl.fiscalizador, 'pers') + "\n                FISCALIZADOR"
+//        def strFiscalizador = planillasService.nombrePersona(plnl.fiscalizador, 'pers') + "\n                FISCALIZADOR"
+        def strFiscalizador = planillasService.nombrePersona(plnl.fiscalizador, 'pers') + "\n                  Fiscalizador" + (plnl.fiscalizador.sexo == 'F' ? 'a' :'')
+//        def strFiscalizador = nombrePersona(fiscalizador) + "\nFiscalizador" + (fiscalizador.sexo == 'F' ? 'a' :'')
         document.add(new Paragraph(" ", fontTd))
         document.add(new Paragraph(" ", fontTd))
         document.add(new Paragraph(" ", fontTd))
