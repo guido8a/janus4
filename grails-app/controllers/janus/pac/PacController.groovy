@@ -557,6 +557,9 @@ class PacController {
             pac= new Pac()
         }
 
+        params.cantidad = params.cantidad.toDouble()
+        params.costo = params.costo.toDouble()
+
         pac.properties = params
 
         if(!pac.save(flush:true)){
