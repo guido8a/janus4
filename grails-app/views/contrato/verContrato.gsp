@@ -376,7 +376,7 @@
                 <i class=" fa fa-paperclip"></i> Informe de avance
             </g:link>
             <g:if test="${esDirFis == 'S'}">
-                <a href="#" cesDirFislass="btn" id="btnFisc">
+                <a href="#" class="btn" id="btnFisc">
                     <i class="fa fa-user"></i> Fiscalizador
                 </a>
             </g:if>
