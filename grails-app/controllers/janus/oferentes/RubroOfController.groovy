@@ -1413,8 +1413,11 @@ class RubroOfController {
                                     }
                                     if (csto && sccnTr) {
 //                                    println "inserta transporte $ordn $nmbr $csto"
-//                                    insertaTrnp(oferente, obra, ordn, cdgo, nmbr, undd, peso, cntd, trfa, pcun, csto, dstn)
-                                        errores += insertaTrnp(oferente.id, obra, ordn, cdgo, nmbr, undd, peso, cntd, trfa, trfa, csto, dstn)
+//                                        def insertaTr(ofrb_id, cdgo, nmbr, undd, cntd, trfa, pcun, rndm, csto, peso, dstn)
+
+//                                        errores += insertaTr(oferente.id, obra, ordn, cdgo, nmbr, undd, peso, cntd, trfa, trfa, csto, dstn)
+                                        errores += insertaTr(ofrb_id, cdgo, nmbr, undd, cntd, trfa, trfa, rndm, csto, peso, dstn)
+
                                     }
                                 }
 
@@ -1732,6 +1735,50 @@ class RubroOfController {
                     "$pcun, $rndm, $csto, '${tipo}' )"
         }
         println "sql $tipo: $sql"
+        try {
+            cn.execute(sql.toString())
+        } catch (e) {
+            println " no se pudo guardar dtrb: ${e.erros()}"
+        }
+        return errores
+    }
+
+    def insertaTr(ofrb_id, cdgo, nmbr, undd, cntd, trfa, pcun, rndm, csto, peso, dstn) {
+        println "sinsertaEq++"
+        def cn = dbConnectionService.getConnection()
+        def sql = ""
+        def errores = ""
+        sql = "select dtrb__id from dtrb where ofrb__id = ${ofrb_id} and " +
+                "dtrbnmbr = '${nmbr}' and dtrbtipo = 'TR'"
+        println "sql dtrb: $sql"
+        def dtrb_id = cn.rows(sql.toString())[0]?.dtrb__id ?: 0
+        println "--> dtrb_id: $dtrb_id"
+
+        if (dtrb_id) {
+            sql = "update dtrb set dtrbcdgo = '${cdgo}', dtrbnmbr = '${nmbr}', " +
+                    "dtrbundd = '${undd}', dtrbcntd = $cntd, dtrbpcun = $trfa, " +
+                    "dtrbcsto = $pcun, dtrbrndm = 1, dtrbsbtt = $csto, dtrbpeso = $peso," +
+                    "dtrbdstn = $dstn" +
+                    "where dtrb__id = ${ofrb_id}"
+        } else {
+            sql = "insert into dtrb(ofrb__id, dtrbcdgo, dtrbnmbr, dtrbundd, dtrbcntd, dtrbpcun, " +
+                    "dtrbcsto, dtrbrndm, dtrbsbtt, dtrbpeso, dtrbdstn, dtrbtipo) " +
+                    "values (${ofrb_id}, '${cdgo}', '${nmbr}', '${undd}', $cntd, $trfa, " +
+                    "$pcun, 1, $csto, $peso, $dstn, 'TR' )"
+        }
+
+//        if (dtrb_id) {
+//            sql = "update dtrb set dtrbcdgo = '${cdgo}', dtrbnmbr = '${nmbr}', " +
+//                    "dtrbundd = '${undd}', dtrbcntd = $cntd, dtrbpcun = $trfa, " +
+//                    "dtrbcsto = $pcun, dtrbrndm = $rndm, dtrbsbtt = $csto, dtrbtipo = '${tipo}' " +
+//                    "where dtrb__id = ${dtrb_id}"
+//        } else {
+//            sql = "insert into dtrb(ofrb__id, dtrbcdgo, dtrbnmbr, dtrbundd, dtrbcntd, dtrbpcun, " +
+//                    "dtrbcsto, dtrbrndm, dtrbsbtt, dtrbtipo) " +
+//                    "values (${ofrb_id}, '${cdgo}', '${nmbr}', '${undd}', $cntd, $trfa, " +
+//                    "$pcun, $rndm, $csto, '${tipo}' )"
+//        }
+        println "sql TR: $sql"
         try {
             cn.execute(sql.toString())
         } catch (e) {
