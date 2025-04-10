@@ -1529,7 +1529,7 @@ class RubroOfController {
                     if (params.rbro.toString().toLowerCase() == hoja.toString().toLowerCase()) {
                         println "Porcesando hoja: $hj --> $hoja"
                         def fila = 0
-                        while (rows.hasNext() && (fila < 76)) {
+                        while (rows.hasNext()) {
                             row = (XSSFRow) rows.next()
                             if (!(row.rowNum in filasNO)) {
                                 def ok = true
@@ -2165,6 +2165,22 @@ class RubroOfController {
         cn.execute(sql.toString())
 
         sql = "update dtrb set dtrbjnid = 0 where dtrbjnid is null"
+        cn.execute(sql.toString())
+        cn.close()
+        render "ok_Guardado correctamente"
+    }
+
+    def empjNmbrRbro() {
+        println "empareja por nombre rubros: $params"
+        def cn = dbConnectionService.getConnection()
+        def sql = "update ofrb set ofrbjnid = (select item.item__id from item, vlof " +
+                "where item.item__id = vlof.item__id and vlof.obra__id = ${params.obra} and " +
+                "item.itemnmbr = ofrb.ofrbnmbr and tpit__id = 2) " +
+                "where ofrbjnid = 0 and obra__id = ${params.obra}"
+        println "sql: $sql"
+        cn.execute(sql.toString())
+
+        sql = "update ofrb set ofrbjnid = 0 where ofrbjnid is null"
         cn.execute(sql.toString())
         cn.close()
         render "ok_Guardado correctamente"

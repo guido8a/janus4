@@ -20,7 +20,7 @@
                 </a>
             </div>
 
-            <div id="list-grupo" class="col-md-10" role="main" style="margin-top: 10px;margin-left: 5px">
+            <div id="list-grupo" class="col-md-9" role="main" style="margin-top: 0px;margin-left: -25px">
                 <div class="col-md-12">
                     <div class="col-md-1">
                         <b>Obra Ofertada:</b>
@@ -32,14 +32,21 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-1 btn-group" role="navigation" style="margin-left: -20px">
-                <a href="#" class="btn btn-primary" id="btnSiguiente">
-                    Continuar
-                    <i class="fa fa-arrow-right"></i>
-                </a>
+            <div id="list-grupo" class="col-md-2" role="main" style="margin-top: 0px;margin-left: -35px">
+                <div class="col-md-9 btn-group" >
+                    <button class="btn btn-success" id="btnEmparejaNmbr" title="Limpiar Búsqueda">
+                        <i class="fa fa-edit"></i>Emp. por Nombre</button>
+                </div>
+                <div class="col-md-3 btn-group" role="navigation" style="margin-left: 0px">
+                    <a href="#" class="btn btn-primary" id="btnSiguiente">
+                        Continuar
+                        <i class="fa fa-arrow-right"></i>
+                    </a>
+                </div>
             </div>
 
-%{--            <div class="col-md-2">--}%
+
+            %{--            <div class="col-md-2">--}%
 %{--                Grupo--}%
 %{--                <g:select name="buscarGrupo_name" id="buscarGrupo" from="['MT': 'Materiales', 'MO': 'Mano de Obra', 'EQ': 'Equipos']" optionKey="key" optionValue="value" class="form-control" />--}%
 %{--            </div>--}%
@@ -150,6 +157,51 @@
             }
         });
     }
+
+    $("#btnEmparejaNmbr").click(function  () {
+        var obra = $("#obra").val();
+        bootbox.dialog({
+            title   : "Alerta",
+            message : "<i class='fa fa-check fa-2x pull-left text-danger text-shadow'></i>" +
+            "<p style='font-weight: bold'> Está seguro que desea emparejar items del mismo nombre?</p>",
+            buttons : {
+                cancelar : {
+                    label     : "Cancelar",
+                    className : "btn-primary",
+                    callback  : function () {
+                    }
+                },
+                aceptar : {
+                    label     : "<i class='fa fa-check'></i> Emparejar",
+                    className : "btn-info",
+                    callback  : function () {
+                        var v = cargarLoader("Emparejando...");
+                        $.ajax({
+                            type    : "POST",
+                            url     : '${createLink(controller: 'rubroOf', action: 'empjNmbrRbro')}',
+                            data    : {
+                                obra : obra
+                            },
+                            success : function (msg) {
+                                v.modal("hide");
+                                var parts = msg.split("_");
+                                if(parts[0] === 'ok'){
+                                    log(parts[1],"success");
+                                    setTimeout(function () {
+                                        location.reload()
+                                    }, 1000);
+                                }else{
+                                    log(parts[1],"error")
+                                }
+                            }
+                        });
+                    }
+                }
+            }
+        });
+        return false;
+    });
+
 
 </script>
 

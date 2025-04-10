@@ -28,14 +28,17 @@
 
     <div class="col-md-12" style="margin-bottom: 10px">
         <div class="col-md-3"></div>
-        <div class="col-md-2">
-            <label class="text-info" style="font-size: 14px">Nombre de la composición</label>
+        <div class="col-md-3">
+            <label class="text-info" style="font-size: 14px">Nombre de la composición a utilizar para subir el archivo Excel</label>
         </div>
         <div class="col-md-4">
             <g:textField name="nombre" class="form-control" value="${registro?.nombre ?: 'Nueva composición'}" style="color: #0b2c89"/>
         </div>
     </div>
 
+    <div id="list-grupo" class="col-md-12" style="margin-left: 30px">
+        <strong>El título debe estar en la primera línea de cada hoja de los APU</strong>
+    </div>
     <div id="list-grupo" class="col-md-12" role="main">
         <div class="col-md-1">
             <label class="text-info">Título hoja</label>
@@ -47,14 +50,14 @@
         <div class="col-md-1">
             <label>Celda título</label>
         </div>
-        <div class="col-md-1" style="margin-left: -20px">
+        <div class="col-md-1" style="margin-left: -30px; width: 70px">
             <g:textField name="cldatitl" class="form-control" value="${registro?.cldatitl ?: 'A'}"/>
         </div>
 
-        <div class="col-md-2">
+        <div class="col-md-1">
             <label>Texto para Rubro</label>
         </div>
-        <div class="col-md-1" style="margin-left: -90px">
+        <div class="col-md-2" style="margin-left: -40px; width: 180px">
             <g:textField name="rbro" class="form-control" value="${registro?.rbro ?: 'Detalle:'}"/>
         </div>
         <div class="col-md-1">
