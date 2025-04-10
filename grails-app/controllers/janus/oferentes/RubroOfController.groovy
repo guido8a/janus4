@@ -1274,8 +1274,8 @@ class RubroOfController {
                                     println "---sql: $sql"
                                     ofrb_id = cn.rows(sql.toString())[0]?.ofrb__id ?: 0
                                     if (!ofrb_id) {
-                                        errores += "<li>No se encontró rurbo ${ordn}</li>"
-                                        println "No se encontró rubro con id ${ordn}"
+                                        errores += "<li>No se encontró rurbo ${ordn} de la hoja: <strong>${sheet.getSheetName().toString()}</strong></li>"
+                                        println "No se encontró rubro con id ${ordn} ${sheet.getSheetName().toString()}"
                                         break
                                     } else {
                                         println "---OFRB: $ofrb_id"
@@ -1292,7 +1292,7 @@ class RubroOfController {
                                     sccnEq = true; sccnMo = false; sccnMt = false; sccnTr = false; sccnRubro = false
 //                                println "Equipos..... $sccnEq --> rbro: $ordn $rbronmbr"
                                 }
-                                if (sccnEq) {
+                                if (sccnEq && ofrb_id) {
                                     rgst.each { r ->
                                         rgst[]
                                     }
@@ -1333,7 +1333,7 @@ class RubroOfController {
                                     sccnEq = false; sccnMo = true; sccnMt = false; sccnTr = false; sccnRubro = false
 //                                println "Mano de Obra.... $sccnMo --> rbro: $ordn $rbronmbr"
                                 }
-                                if (sccnMo) {
+                                if (sccnMo && ofrb_id) {
 //                                cdgo, undd, nmbr, cntd, trfa, pcun, rndm, csto
                                     try {
                                         cdgo = params.cdgoMo ? rgst[cols[params.cdgoMo]] : ''
@@ -1364,7 +1364,7 @@ class RubroOfController {
                                     sccnEq = false; sccnMo = false; sccnMt = true; sccnTr = false; sccnRubro = false
 //                                println "Mano de Mat... $sccnMt --> rbro: $ordn $rbronmbr"
                                 }
-                                if (sccnMt) {
+                                if (sccnMt && ofrb_id) {
 //                                cdgo, undd, nmbr, cntd, trfa, pcun, rndm, csto
                                     try {
                                         cdgo = params.cdgoMt ? rgst[cols[params.cdgoMt]] : ''
@@ -1393,7 +1393,7 @@ class RubroOfController {
                                     sccnEq = false; sccnMo = false; sccnMt = false; sccnTr = true; sccnRubro = false
 //                                println "Mano de Mat... $sccnMt --> rbro: $ordn $rbronmbr"
                                 }
-                                if (sccnTr) {
+                                if (sccnTr && ofrb_id) {
 //                                cdgo, undd, nmbr, cntd, trfa, pcun, rndm, csto
                                     try {
                                         cdgo = params.cdgoTr ? rgst[cols[params.cdgoTr]] : ''
