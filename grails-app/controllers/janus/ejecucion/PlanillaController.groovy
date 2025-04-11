@@ -3483,6 +3483,7 @@ class PlanillaController {
         def detalle = [:]
         def obrasAdicionales = 1.25
         def respaldo = DocumentoProceso.findByConcursoAndDescripcionIlike(contrato.oferta.concurso, '%respaldo%adicio%')
+        def cntrcmpl = Contrato.findByPadre(contrato)
 
         /** máximo valor a considerar de obras adicionales desde el 20-mar-2017 --> 5% */
         if (contrato.fechaSubscripcion > Date.parse('dd-MM-yyy', '20-03-2017')) {
@@ -3492,7 +3493,12 @@ class PlanillaController {
         def sbpr = SubPresupuesto.get(params.sbpr)
 
 //        detalle = VolumenContrato.findAllByContratoAndObraAndSubPresupuestoInList(contrato, obra, sbpr, [sort: "volumenOrden"])
-        detalle = VolumenContrato.findAllByContratoAndSubPresupuesto(contrato, sbpr, [sort: "volumenOrden"])
+        if(planilla.tipoContrato == 'C'){
+            detalle = VolumenContrato.findAllByContratoAndSubPresupuestoAndContratoComplementario(contrato,
+                    sbpr, cntrcmpl, [sort: "volumenOrden"])
+        } else {
+            detalle = VolumenContrato.findAllByContratoAndSubPresupuestoAndContratoComplementarioIsNull(contrato, sbpr, [sort: "volumenOrden"])
+        }
 
         def precios = [:]
 
