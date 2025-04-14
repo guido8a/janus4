@@ -861,7 +861,9 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                 <p style="margin-top: 20px">Desea volver a generar la matriz? o generar otra matriz</p>
                 <div class="btn-group col-md-12">
                     <a href="#" class="btn" id="no">No -> Ver la Matriz existente</a>
-                    <g:if test="${(obra?.responsableObra?.departamento?.direccion?.id == persona?.departamento?.direccion?.id && duenoObra == 1)}">
+                    %{--*****"${obra?.departamento?.direccion?.id} == ${persona?.departamento?.direccion?.id} && ${duenoObra}"--}%
+                    %{--<g:if test="${(obra?.responsableObra?.departamento?.direccion?.id == persona?.departamento?.direccion?.id && duenoObra == 1)}">--}%
+                    <g:if test="${(obra?.departamento?.direccion?.id == persona?.departamento?.direccion?.id)}">
                         <a href="#" class="btn btn-azul" id="si">Si -> Generar Matriz</a>
                     </g:if>
                     <a href="#" class="btn" id="cancela" style="margin-left: 5px;"><i class="fa fa-times"></i> Cancelar</a>
