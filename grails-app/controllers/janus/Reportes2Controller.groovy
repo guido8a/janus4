@@ -372,6 +372,7 @@ class Reportes2Controller {
         /** pdfs que faltan */
         if(falta != "") {
             falta = falta.unique()
+            println "falta: $falta"
             def tx = "Archivos que faltan: <br>"
             falta.each { f ->
                 tx += f + '<br>'
