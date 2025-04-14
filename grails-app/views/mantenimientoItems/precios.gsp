@@ -423,14 +423,15 @@
         cargarTablaItemsPrecios();
     });
 
-    function cargarTablaHistoricoPrecios(item, lugar){
+    function cargarTablaHistoricoPrecios(item, lugar, tipo){
         $.ajax({
             type    : "POST",
             url     : "${createLink(controller: 'mantenimientoItems', action:'showLg_ajax')}",
             data    : {
                 id: lugar,
                 item: item,
-                fecha: "all"
+                fecha: "all",
+                tipo: tipo
             },
             success : function (msg) {
                 ths = bootbox.dialog({

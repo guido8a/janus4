@@ -10,16 +10,20 @@
         ${item.nombre} (${item.unidad?.codigo?.trim()})
     </div>
 </div>
-<div class="col-md-12 breadcrumb" style="margin-top: -10px; font-size: 14px">
-    <div class="col-md-2">
-        <label>
-            Lista:
-        </label>
+
+<g:if test="${tipo != '1'}">
+    <div class="col-md-12 breadcrumb" style="margin-top: -10px; font-size: 14px">
+        <div class="col-md-2">
+            <label>
+                Lista:
+            </label>
+        </div>
+        <div class="col-md-8">
+            ${lugarNombre}
+        </div>
     </div>
-    <div class="col-md-8">
-        ${lugarNombre}
-    </div>
-</div>
+</g:if>
+
 
 <div style="height: 35px; width: 100%;">
     <g:if test="${session.perfil.codigo in ['CSTO', 'RBRO']}">
@@ -97,11 +101,11 @@
                                 <i class="fa fa-edit"></i>
                             </a>
                         </g:if>
-                        <g:if test="${precio?.registrado != 'R'}">
-                            <a href="#" class="btn btn-info btn-xs btnEditarCantones" title="Editar valor para todos los cantones" data-id="${precio.id}">
-                                <i class="fa fa-list-ul"></i>
-                            </a>
-                        </g:if>
+%{--                        <g:if test="${precio?.registrado != 'R'}">--}%
+%{--                            <a href="#" class="btn btn-info btn-xs btnEditarCantones" title="Editar valor para todos los cantones" data-id="${precio.id}">--}%
+%{--                                <i class="fa fa-list-ul"></i>--}%
+%{--                            </a>--}%
+%{--                        </g:if>--}%
                         <a href="#" class="btn btn-danger btn-xs ${precio.registrado != 'R' ? 'btnDelete' : 'btnDeleteReg'}" rel="tooltip" title="Borrar precio" id="${precio.id}">
                             <i class="fa fa-trash"></i>
                         </a>

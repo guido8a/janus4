@@ -1960,6 +1960,8 @@ class MantenimientoItemsController {
     def showLg_ajax() {
         println "showLg_ajax... params: $params"
 
+        def tipo = params.tipo
+
         if (params.fecha == "all") {
             params.todasLasFechas = "true"
         } else {
@@ -2007,7 +2009,7 @@ itemId: item.id
 //                params: params, precioRef: r.precioRef, anioRef: r.anioRef]
 
         return [item: item, lugarNombre: lugarNombre, lugarId: lugar?.id ?: 'all', precios: r.precios, lgar: params.id == "all", fecha: operador == "=" ? fecha.format("dd-MM-yyyy") : null,
-                params: params, precioRef: r.precioRef, anioRef: r.anioRef, lugar: lugar]
+                params: params, precioRef: r.precioRef, anioRef: r.anioRef, lugar: lugar, tipo: tipo]
 
 //        return [item: item, lugarNombre: lugarNombre, lugarId: lugar.id, precios: r.precios, lgar: false, fecha: operador == "=" ? fecha.format("dd-MM-yyyy") : null,
 //                params: params, precioRef: r.precioRef, anioRef: r.anioRef]
