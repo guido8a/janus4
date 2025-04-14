@@ -1977,10 +1977,17 @@ class MantenimientoItemsController {
             fecha = null
         }
 
+        def tipoLista
+        if(lugar) {
+            tipoLista = lugar.tipoLista
+        } else {
+            tipoLista = item.tipoLista
+        }
+
         if (params.id == "all") {
             lugarNombre = "todos los lugares"
         } else {
-            lugarNombre = lugar.descripcion + " (" + (lugar.tipoLista ? lugar.tipoLista?.descripcion : 'sin tipo') + ")"
+            lugarNombre = lugar?.descripcion?:'' + " (" + (tipoLista ? tipoLista?.descripcion : 'sin tipo') + ")"
         }
 
         def r = calcPrecio([
@@ -2888,20 +2895,26 @@ itemId: item.id
 
         if(params.id){
             subgrupoBuscar = DepartamentoItem.get(params.id)
-            sql = "select item.item__id, itemcdgo, itemnmbr, p.rbpcfcha, rbpcpcun, rbpc__id,  lgardscr, p.lgar__id " +
-                    "from item, rbpc p, lgar where p.item__id = item.item__id and p.rbpcfcha = (select max(rbpcfcha) " +
-                    "from rbpc r where r.item__id = p.item__id and r.lgar__id = p.lgar__id) and lgar.lgar__id = p.lgar__id and " +
-                    "item.dprt__id = ${subgrupoBuscar?.id} and item.itemnmbr ilike '%${params.criterio}%' " +
-                    "order by item.itemcdgo, lgardscr limit 100";
+//            sql = "select item.item__id, itemcdgo, itemnmbr, p.rbpcfcha, rbpcpcun, rbpc__id,  lgardscr, p.lgar__id " +
+//                    "from item, rbpc p, lgar where p.item__id = item.item__id and p.rbpcfcha = (select max(rbpcfcha) " +
+//                    "from rbpc r where r.item__id = p.item__id and r.lgar__id = p.lgar__id) and lgar.lgar__id = p.lgar__id and " +
+//                    "item.dprt__id = ${subgrupoBuscar?.id} and item.itemnmbr ilike '%${params.criterio}%' " +
+//                    "order by item.itemcdgo, lgardscr limit 100";
+            sql = "select item__id, itemcdgo, itemnmbr, rbpcfcha, rbpcpcun, rbpc__id,  lgardscr, lgar__id " +
+                    "from ls_item(${params.buscarPor}, '${subgrupoBuscar?.id}', '%', '%${params.criterio}%')" +
+                    "order by lgardscr limit 100";
         }else{
-            sql = "select item.item__id, itemcdgo, itemnmbr, p.rbpcfcha, rbpcpcun,  rbpc__id, lgardscr,  p.lgar__id " +
-                    "from item, dprt, sbgr, grpo, rbpc p, lgar where p.item__id = item.item__id and p.rbpcfcha = " +
-                    "(select max(rbpcfcha) " +
-                    "from rbpc r where r.item__id = p.item__id and r.lgar__id = p.lgar__id) and lgar.lgar__id = p.lgar__id and " +
-                    "item.dprt__id = dprt.dprt__id and dprt.sbgr__id = sbgr.sbgr__id and " +
-                    "sbgr.grpo__id = grpo.grpo__id and grpo.grpo__id = ${grupo?.id} and " +
-                    "item.itemnmbr ilike '%${params.criterio}%' " +
-                    "order by item.itemcdgo, lgardscr limit 100"
+//            sql = "select item.item__id, itemcdgo, itemnmbr, p.rbpcfcha, rbpcpcun,  rbpc__id, lgardscr,  p.lgar__id " +
+//                    "from item, dprt, sbgr, grpo, rbpc p, lgar where p.item__id = item.item__id and p.rbpcfcha = " +
+//                    "(select max(rbpcfcha) " +
+//                    "from rbpc r where r.item__id = p.item__id and r.lgar__id = p.lgar__id) and lgar.lgar__id = p.lgar__id and " +
+//                    "item.dprt__id = dprt.dprt__id and dprt.sbgr__id = sbgr.sbgr__id and " +
+//                    "sbgr.grpo__id = grpo.grpo__id and grpo.grpo__id = ${grupo?.id} and " +
+//                    "item.itemnmbr ilike '%${params.criterio}%' " +
+//                    "order by item.itemcdgo, lgardscr limit 100"
+            sql = "select item__id, itemcdgo, itemnmbr, rbpcfcha, rbpcpcun, rbpc__id,  lgardscr, lgar__id " +
+                    "from ls_item(${params.buscarPor}, '%', '%', '%${params.criterio}%')" +
+                    "order by lgardscr limit 100"
         }
 
         println("tablaMaterialesPrecios_ajax sql " + sql)
