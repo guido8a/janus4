@@ -95,7 +95,7 @@
 
         <div class="col-md-2 formato" style="color: #0b2c89;"> Memo de Distribución</div>
 
-        <div class="col-md-3"><g:textField name="memo" class="memo caps allCaps" value="${contrato?.memo}" maxlength="20"/></div>
+        <div class="col-md-4"><g:textField name="memo" class="memo caps allCaps" value="${contrato?.memo}" maxlength="40" style="width: 300px"/></div>
 
         <div class="col-md-2 " style="font-weight: bolder; font-size: 14px; background-color: ${contrato?.estado == 'R' ? 'green' : '#0b2c89'}; color: white; text-align: center">
             <i class="${contrato?.estado == 'R' ? 'fa fa-check' : 'fa fa-exclamation-triangle'}"></i>  Contrato ${contrato?.estado == 'R'? 'Registrado' : 'No Registrado'}

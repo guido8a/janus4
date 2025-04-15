@@ -78,7 +78,7 @@ class Contrato implements Auditable {
 
             oferta column: 'ofrt__id'
             tipoContrato column: 'tpcr__id'
-            tipoPlazo column: 'tppz__id'
+            tipoPlazo column: 'tppz__id'S
             padre column: 'cntrpdre'
             periodoInec column: 'prin__id'
             codigo column: 'cntrcdgo'
@@ -152,7 +152,7 @@ class Contrato implements Auditable {
         cuentaContable(blank: true, nullable: true)
         prorroga(blank: true, nullable: true)
         observaciones(blank: true, nullable: true)
-        memo(blank: true, nullable: true, maxSize: 20)
+        memo(blank: true, nullable: true, maxSize: 40)
         plazo(blank: true, nullable: true)
 
         fechaPedidoRecepcionContratista(blank: true, nullable: true)
