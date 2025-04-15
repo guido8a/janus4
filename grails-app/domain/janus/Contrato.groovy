@@ -78,7 +78,7 @@ class Contrato implements Auditable {
 
             oferta column: 'ofrt__id'
             tipoContrato column: 'tpcr__id'
-            tipoPlazo column: 'tppz__id'S
+            tipoPlazo column: 'tppz__id'
             padre column: 'cntrpdre'
             periodoInec column: 'prin__id'
             codigo column: 'cntrcdgo'

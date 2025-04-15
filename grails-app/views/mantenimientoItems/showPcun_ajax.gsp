@@ -51,9 +51,10 @@
     });
 
     $(".btnHistoricoPcun").click(function () {
+
         var item = $(this).data("item");
         var lugar = $(this).data("lugar");
-        cargarTablaHistoricoPrecios(item, lugar)
+        cargarTablaHistoricoPrecios(item, lugar, 2)
     });
 
 </script>

@@ -28,10 +28,18 @@
 <div style="height: 35px; width: 100%;">
     <g:if test="${session.perfil.codigo in ['CSTO', 'RBRO']}">
         <div class="btn-group pull-left">
-            <a href="#" class="btn btn-primary btnNew" >
-                <i class="fa fa-file"></i>
-                Nuevo Precio
-            </a>
+            <g:if test="${tipo != '1'}">
+                <a href="#" class="btn btn-primary btnNew" >
+                    <i class="fa fa-file"></i>
+                    Nuevo Precio
+                </a>
+            </g:if>
+            <g:else>
+                <a href="#" class="btn btn-primary btnNuevoConLugares" >
+                    <i class="fa fa-file"></i>
+                    Nuevo Precio
+                </a>
+            </g:else>
         </div>
         <div class="btn-group" style="margin-left: 5px">
             <a href="#" class="btn btn-warning btnNewTodos">
@@ -171,6 +179,10 @@
 
 <script type="text/javascript">
 
+    $(".btnNuevoConLugares").click(function () {
+        createEditPrecioConLugares();
+    });
+
     function validarNum(ev) {
         return ((ev.keyCode >= 48 && ev.keyCode <= 57) ||
             (ev.keyCode >= 96 && ev.keyCode <= 105) ||
@@ -196,6 +208,51 @@
         var id = $(this).data("id");
         createEditPrecioCantones(id);
     });
+
+    function createEditPrecioConLugares(precio, todo) {
+        var fechaDefecto = $("#datetimepicker2").val();
+        var title = precio ? "Editar" : "Nuevo";
+        $.ajax({
+            type    : "POST",
+            url     : "${createLink( action:'formPreciosLugares_ajax')}",
+            data    : {
+                item        : "${item.id}",
+                lugar       : "${lugarId}",
+                nombreLugar : "${lugarNombre}",
+                fecha       : "${fecha}",
+                all         : todo,
+                ignore      : "${params.ignore}",
+                id: precio,
+                fd: fechaDefecto
+            },
+            success : function (msg) {
+                var b = bootbox.dialog({
+                    id    : "dlgCreateEditP",
+                    title : title + " precio",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        },
+                        guardar  : {
+                            id        : "btnSave",
+                            label     : "<i class='fa fa-save'></i> Guardar",
+                            className : "btn-success",
+                            callback  : function () {
+                                return submitFormPrecio();
+                            } //callback
+                        } //guardar
+                    } //buttons
+                }); //dialog
+                setTimeout(function () {
+                    b.find(".form-control").first().focus()
+                }, 500);
+            } //success
+        }); //ajax
+    } //createEdit
 
 
     function createEditPrecio(precio, todo) {

@@ -1679,6 +1679,28 @@ class MantenimientoItemsController {
         return [precioRubrosItemsInstance: precioRubrosItemsInstance, lugar: lugar, fecha: params.fecha, params: params, fd: fd, all: params.all]
     }
 
+    def formPreciosLugares_ajax() {
+        println("form precios " + params)
+
+        def fd = new Date().parse("dd-MM-yyyy", params.fd)
+
+        def precioRubrosItemsInstance
+        def lugar
+
+        if(params.id){
+            precioRubrosItemsInstance = PrecioRubrosItems.get(params.id)
+            lugar = precioRubrosItemsInstance?.lugar
+        }else{
+            precioRubrosItemsInstance = new PrecioRubrosItems()
+            def item = Item.get(params.item)
+            lugar = Lugar.get(params.lugar)
+            precioRubrosItemsInstance.item = item
+            precioRubrosItemsInstance.lugar = lugar
+        }
+
+        return [precioRubrosItemsInstance: precioRubrosItemsInstance, lugar: lugar, fecha: params.fecha, params: params, fd: fd, all: params.all]
+    }
+
     def checkFcPr_ajax() {
 //        println params
         if (!params.lugar) {
