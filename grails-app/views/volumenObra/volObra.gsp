@@ -95,7 +95,8 @@
         </div>
 
         <div class="col-md-2" style="margin-top: 30px">
-            <g:if test="${persona?.departamento?.codigo == 'CRFC'}">
+            <g:if test="${(obra?.departamento?.direccion?.id == persona?.departamento?.direccion?.id)}">
+            %{--<g:if test="${persona?.departamento?.codigo == 'CRFC'}">--}%
                 <a href="#" class="btn btn-success boton" id="btnCrearSP" title="Crear subpresupuesto" >
                     <i class="fa fa-plus"></i>
                 </a>
