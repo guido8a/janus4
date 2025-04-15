@@ -1681,8 +1681,9 @@ class MantenimientoItemsController {
 
     def formPreciosLugares_ajax() {
         println("form precios " + params)
-
+        def item = Item.get(params.item)
         def fd = new Date().parse("dd-MM-yyyy", params.fd)
+        def lugares = Lugar.findAllByTipoLista(item.tipoLista, [sort: 'codigo'])
 
         def precioRubrosItemsInstance
         def lugar
@@ -1692,13 +1693,13 @@ class MantenimientoItemsController {
             lugar = precioRubrosItemsInstance?.lugar
         }else{
             precioRubrosItemsInstance = new PrecioRubrosItems()
-            def item = Item.get(params.item)
+
             lugar = Lugar.get(params.lugar)
             precioRubrosItemsInstance.item = item
             precioRubrosItemsInstance.lugar = lugar
         }
 
-        return [precioRubrosItemsInstance: precioRubrosItemsInstance, lugar: lugar, fecha: params.fecha, params: params, fd: fd, all: params.all]
+        return [precioRubrosItemsInstance: precioRubrosItemsInstance, lugar: lugar, fecha: params.fecha, params: params, fd: fd, all: params.all, lugares: lugares]
     }
 
     def checkFcPr_ajax() {
@@ -1783,11 +1784,11 @@ class MantenimientoItemsController {
                 }else{
                     def precioRubrosItemsInstance = new PrecioRubrosItems(params)
                     precioRubrosItemsInstance.precioUnitario = params.precioUnitario.toDouble()
-                    if (precioRubrosItemsInstance.save(flush: true)) {
-                        render "OK_Precio guardado correctamente"
-                    } else {
+                    if (!precioRubrosItemsInstance.save(flush: true)) {
                         println "mantenimiento items controller l 846: " + precioRubrosItemsInstance.errors
                         render "NO_Error al guardar el precio"
+                    } else {
+                        render "OK_Precio guardado correctamente"
                     }
                 }
             }

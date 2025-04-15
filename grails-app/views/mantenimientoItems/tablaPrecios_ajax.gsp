@@ -61,32 +61,32 @@
         cargarTablaHistoricoPrecios(item, lugar)
     });
 
-    function cargarTablaHistoricoPrecios(item, lugar){
-        $.ajax({
-            type    : "POST",
-            url     : "${createLink(controller: 'mantenimientoItems', action:'showLg_ajax')}",
-            data    : {
-                id: lugar,
-                item: item,
-                fecha: "all"
-            },
-            success : function (msg) {
-                ths = bootbox.dialog({
-                    id    : "dlgVerPrecios",
-                    title : "Histórico de Precios",
-                    message : msg,
-                    buttons : {
-                        cancelar : {
-                            label     : "Cancelar",
-                            className : "btn-primary",
-                            callback  : function () {
-                            }
-                        }
-                    } //buttons
-                }); //dialog
-            } //success
-        }); //ajax
-    }
+    %{--function cargarTablaHistoricoPrecios(item, lugar){--}%
+    %{--    $.ajax({--}%
+    %{--        type    : "POST",--}%
+    %{--        url     : "${createLink(controller: 'mantenimientoItems', action:'showLg_ajax')}",--}%
+    %{--        data    : {--}%
+    %{--            id: lugar,--}%
+    %{--            item: item,--}%
+    %{--            fecha: "all"--}%
+    %{--        },--}%
+    %{--        success : function (msg) {--}%
+    %{--            ths = bootbox.dialog({--}%
+    %{--                id    : "dlgVerPrecios",--}%
+    %{--                title : "Histórico de Precios",--}%
+    %{--                message : msg,--}%
+    %{--                buttons : {--}%
+    %{--                    cancelar : {--}%
+    %{--                        label     : "Cancelar",--}%
+    %{--                        className : "btn-primary",--}%
+    %{--                        callback  : function () {--}%
+    %{--                        }--}%
+    %{--                    }--}%
+    %{--                } //buttons--}%
+    %{--            }); //dialog--}%
+    %{--        } //success--}%
+    %{--    }); //ajax--}%
+    %{--}--}%
 
     function cerrarTablaHistoricos(){
         ths.modal("hide");

@@ -242,7 +242,7 @@
                             label     : "<i class='fa fa-save'></i> Guardar",
                             className : "btn-success",
                             callback  : function () {
-                                return submitFormPrecio();
+                                return submitFormPrecio(1);
                             } //callback
                         } //guardar
                     } //buttons
@@ -300,7 +300,7 @@
         }); //ajax
     } //createEdit
 
-    function submitFormPrecio() {
+    function submitFormPrecio(tipo) {
         var lugar = '${lugar?.id}';
         var item = '${item?.id}';
         var $form = $("#frmSave");
@@ -318,7 +318,11 @@
                         log(parts[1], "success");
                         cargarTablaItemsPrecios();
                         cerrarTablaHistoricos();
-                        cargarTablaHistoricoPrecios(item, lugar)
+                        if(tipo !== 1){
+                            cargarTablaHistoricoPrecios(item, lugar)
+                        }else{
+                            cargarTablaHistoricoPrecios(item, lugar, 1)
+                        }
                     }else{
                         bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
                         return false;
