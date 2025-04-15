@@ -107,7 +107,7 @@
                 Email
             </label>
             <span class="col-md-8">
-                <g:textField name="email" maxlength="40" class="form-control email mail" value="${proveedorInstance?.email}"/>
+                <g:textField name="email" maxlength="60" class="form-control email mail" value="${proveedorInstance?.email}"/>
                 <p class="help-block ui-helper-hidden"></p>
             </span>
         </span>

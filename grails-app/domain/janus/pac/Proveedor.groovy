@@ -67,7 +67,7 @@ class Proveedor {
         direccion(blank: true, nullable: true, maxSize: 60)
         telefonos(blank: true, nullable: true, maxSize: 40)
         fechaContacto(blank: true, nullable: true)
-        email(blank: true, nullable: true, maxSize: 40)
+        email(blank: true, nullable: true, maxSize: 60)
         licencia(blank: true, nullable: true, maxSize: 10)
         registro(blank: true, nullable: true, maxSize: 7)
         titulo(blank: true, nullable: true, maxSize: 4)
