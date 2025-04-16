@@ -4,10 +4,10 @@
         <tr>
             <th style="width: 10%">Código</th>
             <th style="width: 38%">Descripción</th>
-            <th style="width: 26%">Lugar</th>
-            <th style="width: 8%">Fecha</th>
+            <th style="width: 24%">Lugar</th>
+            <th style="width: 7%">Fecha</th>
             <th style="width: 8%">Precio</th>
-            <th style="width: 10%">Acciones</th>
+            <th style="width: 13%">Acciones</th>
         </tr>
         </thead>
     </table>
@@ -21,10 +21,13 @@
                 <tr data-id="${item?.rbpc__id}">
                     <td style="width: 10%">${item.itemcdgo}</td>
                     <td style="width: 38%">${item.itemnmbr}</td>
-                    <td style="width: 26%">${item.lgardscr}</td>
-                    <td style="width: 8%">${item.rbpcfcha}</td>
+                    <td style="width: 24%">${item.lgardscr}</td>
+                    <td style="width: 7%">${item.rbpcfcha}</td>
                     <td style="width: 8%">${item.rbpcpcun ?: ''}</td>
-                    <td style="width: 10%; text-align: center">
+                    <td style="width: 13%; text-align: center">
+                        <a href="#" class="btn btn-xs btn-warning btnIrAPrecios" data-id="${item?.item__id}" title="Precios">
+                            <i class="fas fa-list"></i>
+                        </a>
                         <a href="#" class="btn btn-xs btn-info btnVerMaterial" data-id="${item?.item__id}" title="Ver">
                             <i class="fas fa-search"></i>
                         </a>
@@ -59,6 +62,12 @@
 <script type="text/javascript">
 
     var es;
+
+    $(".btnIrAPrecios").click(function () {
+       var id = $(this).data("id");
+        $("#tipo").val(4);
+        cargarTablaItemsPrecios(id);
+    });
 
     $(".btnEspecificacionesMaterial").click(function () {
         var id = $(this).data("id");
