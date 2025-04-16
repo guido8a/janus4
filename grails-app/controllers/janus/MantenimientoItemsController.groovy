@@ -2907,7 +2907,7 @@ itemId: item.id
     }
 
     def tablaMaterialesPrecios_ajax(){
-//        println("--> " + params)
+        println("--> " + params)
         def persona = Persona.get(session.usuario.id)
         def cn = dbConnectionService.getConnection()
         def grupo = Grupo.get(params.buscarPor)
@@ -2926,7 +2926,8 @@ itemId: item.id
 //                    "item.dprt__id = ${subgrupoBuscar?.id} and item.itemnmbr ilike '%${params.criterio}%' " +
 //                    "order by item.itemcdgo, lgardscr limit 100";
             sql = "select item__id, itemcdgo, itemnmbr, rbpcfcha, rbpcpcun, rbpc__id,  lgardscr, lgar__id " +
-                    "from ls_item(${params.buscarPor}, '${subgrupoBuscar?.id}', '%', '%${params.criterio}%')" +
+                    "from ls_item(${params.buscarPor}, '%', '${subgrupoBuscar?.id}', '%${params.criterio}%')" +
+//                    "from ls_item(${params.buscarPor}, '%', '${params.id}', '%', '%${params.criterio}%')" +
                     "order by lgardscr limit 100";
         }else{
 //            sql = "select item.item__id, itemcdgo, itemnmbr, p.rbpcfcha, rbpcpcun,  rbpc__id, lgardscr,  p.lgar__id " +
