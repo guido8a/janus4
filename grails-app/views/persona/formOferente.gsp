@@ -61,7 +61,7 @@
                 </label>
 
                 <span class="col-md-8">
-                    <g:textField name="mail" maxlength="30" class="form-control required email" value="${personaInstance?.mail}"/>
+                    <g:textField name="mail" maxlength="63" class="form-control required email" value="${personaInstance?.mail}"/>
                 </span>
             </span>
         </div>
