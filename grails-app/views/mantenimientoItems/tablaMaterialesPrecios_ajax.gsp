@@ -25,9 +25,9 @@
                     <td style="width: 7%">${item.rbpcfcha}</td>
                     <td style="width: 8%">${item.rbpcpcun ?: ''}</td>
                     <td style="width: 13%; text-align: center">
-                        <a href="#" class="btn btn-xs btn-warning btnIrAPrecios" data-id="${item?.item__id}" title="Precios">
-                            <i class="fas fa-list"></i>
-                        </a>
+%{--                        <a href="#" class="btn btn-xs btn-warning btnIrAPrecios" data-id="${item?.item__id}" title="Precios">--}%
+%{--                            <i class="fas fa-list"></i>--}%
+%{--                        </a>--}%
                         <a href="#" class="btn btn-xs btn-info btnVerMaterial" data-id="${item?.item__id}" title="Ver">
                             <i class="fas fa-search"></i>
                         </a>
