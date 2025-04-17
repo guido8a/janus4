@@ -37,6 +37,7 @@ class DescargasController {
         response.getOutputStream().write(b)
     }
 
+    /* no se usa */
     def manualAdmnOfrt() {
         def nombre = "Manual oferentes.pdf"
         def path = '/var/janus/manual/' + nombre
@@ -70,6 +71,7 @@ class DescargasController {
         response.getOutputStream().write(b)
     }
 
+    /* no se usa */
     def manualFinanciero() {
         def nombre = "Manual financiero.pdf"
         def path = '/var/janus/manual/' + nombre
@@ -125,7 +127,7 @@ class DescargasController {
         response.getOutputStream().write(b)
     }
 
-
+    /* no se usa */
     def materiales() {
         def nombre = "materiales.xlsx"
         def path = '/var/janus/manual/' + nombre
@@ -149,7 +151,7 @@ class DescargasController {
     }
 
     def consultorias() {
-        def nombre = "consultorias.pdf"
+        def nombre = "Manual de consultorias.pdf"
         def path = '/var/janus/manual/' + nombre
         def file = new File(path)
         def b = file.getBytes()
