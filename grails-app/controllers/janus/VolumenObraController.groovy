@@ -482,7 +482,7 @@ class VolumenObraController {
             obra = Obra.get(params.obra)
         }
 
-        return [volumenObra: volumenObra, obra: obra, subpresupuesto: subpresupuesto, rubro: rubro]
+        return [volumenObra: volumenObra, obra: obra, subpresupuesto: subpresupuesto, rubro: rubro, tipo: params.tipo]
     }
 
     def verificarEstado_ajax(){

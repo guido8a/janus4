@@ -53,7 +53,8 @@
                 id: id,
                 rubro: rubro,
                 subpresupuesto: subpresupuesto,
-                obra: '${obra?.id}'
+                obra: '${obra?.id}',
+                tipo: 1
             },
             success : function (msg) {
                 var er = bootbox.dialog({

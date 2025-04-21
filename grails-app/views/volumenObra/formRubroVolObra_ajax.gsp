@@ -1,26 +1,30 @@
 <g:form class="form-horizontal" name="frmRubroVolObra" role="form" controller="volumenObra" action="addItem" method="POST">
     <g:hiddenField name="id" value="${volumenObra?.id}" />
     <g:hiddenField name="obra" value="${obra?.id}" />
-
     <g:hiddenField name="item" value="${rubro?.id}" />
     <g:hiddenField name="cod" value="${rubro?.codigo}" />
 
-    <div class="form-group ${hasErrors(bean: volumenObra, field: 'subPresupuesto', 'error')} required">
-        <span class="grupo">
-            <label for="subPresupuestoName" class="col-md-2 control-label text-info">
-                Subpresupuesto
-            </label>
-            <span class="col-md-8">
-                <g:hiddenField name="sub" value="${subpresupuesto?.id}" />
-                <g:textField name="subPresupuestoName" required="" readonly="" class="form-control required" value="${ (volumenObra?.subPresupuesto?.grupo?.descripcion + " - " +  volumenObra?.subPresupuesto?.descripcion) ?: ''}"/>
+    <g:if test="${tipo == '1'}">
+        <g:hiddenField name="sub" value="${subpresupuesto?.id}" />
+    </g:if>
+    <g:else>
+        <div class="form-group ${hasErrors(bean: volumenObra, field: 'subPresupuesto', 'error')} required">
+            <span class="grupo">
+                <label for="subPresupuestoName" class="col-md-2 control-label text-info">
+                    Subpresupuesto
+                </label>
+                <span class="col-md-8">
+                    <g:hiddenField name="sub" value="${subpresupuesto?.id}" />
+                    <g:textField name="subPresupuestoName" required="" readonly="" class="form-control required" value="${ (volumenObra?.subPresupuesto?.grupo?.descripcion + " - " +  volumenObra?.subPresupuesto?.descripcion) ?: ''}"/>
+                </span>
+                <span class="col-md-2">
+                    <a href="#" class="btn btn-info" id="btnBuscarSub" title="Buscar subpresupuesto">
+                        <i class="fa fa-search"></i> Buscar
+                    </a>
+                </span>
             </span>
-            <span class="col-md-2">
-                <a href="#" class="btn btn-info" id="btnBuscarSub" title="Buscar subpresupuesto">
-                    <i class="fa fa-search"></i> Buscar
-                </a>
-            </span>
-        </span>
-    </div>
+        </div>
+    </g:else>
 
     <div class="form-group ${hasErrors(bean: volumenObra, field: 'cantidad', 'error')} required">
         <span class="grupo">
