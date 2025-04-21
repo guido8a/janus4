@@ -605,4 +605,16 @@ class VolumenObraController {
         }
     }
 
+    def buscarSubpresupuestoRubro_ajax(){
+        def grupos= Grupo.findAllByCodigoNotIlikeAndCodigoNotIlikeAndCodigoNotIlike('1', '2', '3').sort{it.descripcion};
+        return [grupos: grupos]
+    }
+
+    def tablaBuscadorSub_ajax(){
+        def grupo = Grupo.get(params.buscarPor)
+        def subpresupuestos = SubPresupuesto.findAllByGrupoAndDescripcionIlike(grupo, '%' + params.criterio +'%', [sort: 'descripcion'])
+
+        return [subpresupuestos: subpresupuestos]
+    }
+
 }
