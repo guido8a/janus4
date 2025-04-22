@@ -2030,7 +2030,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
             resizable: false,
             modal: true,
             draggable: false,
-            width: 420,
+            width: 540,
             position: 'center',
             title: 'Copiar la obra al sistema de oferentes',
             buttons: {
