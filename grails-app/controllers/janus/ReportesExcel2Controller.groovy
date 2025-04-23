@@ -135,9 +135,9 @@ class ReportesExcel2Controller {
             rowF1.createCell(2).setCellValue(p.sbprdscr ?: '')
             rowF1.createCell(3).setCellValue(p.rbronmbr ?: '')
             rowF1.createCell(4).setCellValue(p.unddcdgo ?: '')
-            rowF1.createCell(5).setCellValue(fmt.format(p.vlobcntd ?: 0))
-            rowF1.createCell(6).setCellValue(fmt4.format(p.pcun ?: 0))
-            rowF1.createCell(7).setCellValue(fmt4.format(p.totl ?: 0))
+            rowF1.createCell(5).setCellValue(fmt.format(p.vlobcntd ?: 0)?.toDouble())
+            rowF1.createCell(6).setCellValue(fmt4.format(p.pcun ?: 0)?.toDouble())
+            rowF1.createCell(7).setCellValue(fmt4.format(p.totl ?: 0)?.toDouble())
             fila++
             totales = p.totl
             totalPresupuesto = (total1 += totales);

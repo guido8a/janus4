@@ -880,7 +880,7 @@ class FormulaPolinomicaController {
 
     def coeficientesFp() {
 
-//        println "coef " + params
+        println "coef " + params
 
         if (!params.tipo) {
             params.tipo = 'p'
@@ -927,7 +927,12 @@ class FormulaPolinomicaController {
 
             def obra = Obra.get(params.id)
             def sbpr = SubPresupuesto.get(params.sbpr)
+
+            println("obra " + obra?.id)
+            println("sub " + sbpr?.id)
+
             def fp = FormulaPolinomica.findAllByObraAndSubPresupuesto(obra, sbpr, [sort: "numero"])
+            println("wwww " + fp)
             def total = 0
             def cof = []
 
@@ -942,7 +947,7 @@ class FormulaPolinomicaController {
                                     numero: f.numero,
                                     sgrc: (f.valor > 0 || children.size() > 0),
                                     nombre: (f.valor > 0 || children.size() > 0 || f.numero == "p01") ? f.indice?.descripcion : "",
-                                    valor: g.formatNumber(number: f.valor, maxFractionDigits: 3, minFractionDigits: 3),
+                                    valor: g.formatNumber(number: f?.valor, maxFractionDigits: 3, minFractionDigits: 3),
                                     rel: "fp",
                                     icon: 'fa fa-user'
                             ]
