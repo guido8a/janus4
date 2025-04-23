@@ -326,12 +326,12 @@ class ReportesExcel2Controller {
                     rowF1.createCell(3).setCellValue(val.rbronmbr.toString() ?: '')
                     rowF1.createCell(4).setCellValue(val?.vlobdscr?.toString() ?: '')
                     rowF1.createCell(5).setCellValue(val.unddcdgo.toString() ?: '')
-                    rowF1.createCell(6).setCellValue(fmt.format(val.vlobcntd ?: 0))
-                    rowF1.createCell(7).setCellValue(fmt4.format(val.pcun?.toDouble() ?: 0))
-                    rowF1.createCell(8).setCellValue(fmt4.format(val.totl?.toDouble() ?: 0))
-                    rowF1.createCell(9).setCellValue(fmt4.format(val.relativo?.toDouble() ?: 0))
-                    rowF1.createCell(10).setCellValue(fmt4.format(val.vae_rbro != null ? val.vae_rbro?.toDouble() : 0))
-                    rowF1.createCell(11).setCellValue(fmt4.format(val.vae_totl != null ? val.vae_totl?.toDouble() : 0))
+                    rowF1.createCell(6).setCellValue(fmt.format(val.vlobcntd ?: 0)?.toDouble())
+                    rowF1.createCell(7).setCellValue(fmt4.format(val.pcun?.toDouble() ?: 0)?.toDouble())
+                    rowF1.createCell(8).setCellValue(fmt4.format(val.totl?.toDouble() ?: 0)?.toDouble())
+                    rowF1.createCell(9).setCellValue(fmt4.format(val.relativo?.toDouble() ?: 0)?.toDouble())
+                    rowF1.createCell(10).setCellValue(fmt4.format(val.vae_rbro != null ? val.vae_rbro?.toDouble() : 0)?.toDouble())
+                    rowF1.createCell(11).setCellValue(fmt4.format(val.vae_totl != null ? val.vae_totl?.toDouble() : 0)?.toDouble())
 
                     fila++
                     filaSub++
@@ -546,7 +546,7 @@ class ReportesExcel2Controller {
             rowF1.createCell(2).setCellValue(it.sbprdscr.toString() ?: '')
             rowF1.createCell(3).setCellValue(it.rbronmbr.toString() ?: '')
             rowF1.createCell(4).setCellValue(it.unddcdgo.toString() ?: '')
-            rowF1.createCell(5).setCellValue(fmt.format(it.vlobcntd ?: ''))
+            rowF1.createCell(5).setCellValue(fmt.format(it.vlobcntd ?: '')?.toDouble())
 
             parcialMano = 0
             parcialEquipo = 0
@@ -573,32 +573,32 @@ class ReportesExcel2Controller {
             }
 
             // mano obra
-            rowF1.createCell(7).setCellValue(fmt4.format(parcialMano))
-            rowF1.createCell(8).setCellValue(fmt4.format((parcialMano * it.vlobcntd) ?: 0))
+            rowF1.createCell(7).setCellValue(fmt4.format(parcialMano)?.toDouble())
+            rowF1.createCell(8).setCellValue(fmt4.format((parcialMano * it.vlobcntd) ?: 0)?.toDouble())
 
             //equipos
-            rowF1.createCell(10).setCellValue(fmt4.format(parcialEquipo))
-            rowF1.createCell(11).setCellValue(fmt4.format((parcialEquipo * it.vlobcntd) ?: 0))
+            rowF1.createCell(10).setCellValue(fmt4.format(parcialEquipo)?.toDouble())
+            rowF1.createCell(11).setCellValue(fmt4.format((parcialEquipo * it.vlobcntd) ?: 0)?.toDouble())
 
             //materiales
-            rowF1.createCell(13).setCellValue(fmt4.format(parcialMateriales))
-            rowF1.createCell(14).setCellValue(fmt4.format((parcialMateriales * it.vlobcntd) ?: 0))
+            rowF1.createCell(13).setCellValue(fmt4.format(parcialMateriales)?.toDouble())
+            rowF1.createCell(14).setCellValue(fmt4.format((parcialMateriales * it.vlobcntd) ?: 0)?.toDouble())
 
             //transporte
-            rowF1.createCell(16).setCellValue(fmt4.format(parcialTransporte))
-            rowF1.createCell(17).setCellValue(fmt4.format((parcialTransporte * it.vlobcntd) ?: 0))
+            rowF1.createCell(16).setCellValue(fmt4.format(parcialTransporte)?.toDouble())
+            rowF1.createCell(17).setCellValue(fmt4.format((parcialTransporte * it.vlobcntd) ?: 0)?.toDouble())
 
             //indirectos
 
             indirectos = parcialMano + parcialEquipo + parcialMateriales + parcialTransporte
             def totalIndirectos = indirectos?.toDouble() * valorIndirectoObra?.toDouble() / 100
-            rowF1.createCell(19).setCellValue(fmt4.format(totalIndirectos))
+            rowF1.createCell(19).setCellValue(fmt4.format(totalIndirectos)?.toDouble())
 
             //totales
 
             def parcialCuTotal = indirectos + totalIndirectos
-            rowF1.createCell(21).setCellValue(fmt4.format(parcialCuTotal))
-            rowF1.createCell(22).setCellValue(fmt4.format(it.totl))
+            rowF1.createCell(21).setCellValue(fmt4.format(parcialCuTotal)?.toDouble())
+            rowF1.createCell(22).setCellValue(fmt4.format(it.totl)?.toDouble())
 
             fila++
             totales = it.totl
