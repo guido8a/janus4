@@ -510,17 +510,22 @@ class PacController {
 
     def tablaPac_ajax(){
 
-//        println("tabla pac " + params)
+        println("tabla pac " + params)
 
         def anio = Anio.get(params.anio)
         def datos;
         def sqlTx = ""
-        def listaItems = ['pacp.pacpdscr', 'prsp.prspnmro']
+        def listaItems = ['prsp.prspnmro', 'pacp.pacpdscr']
         def bsca = listaItems[params.buscarPor.toInteger()-1]
 
         def select = "select pacp__id from pacp, prsp"
-        def txwh = " where pacp.prsp__id = prsp.prsp__id and $bsca ilike '%${params.criterio}%' and pacp.anio__id = ${anio?.id}"
+        def txwh
+
+        txwh = " where pacp.prsp__id = prsp.prsp__id and $bsca ilike '%${params.criterio}%' and pacp.anio__id = ${anio?.id}"
+
         sqlTx = "${select} ${txwh} order by pacp.pacpdscr limit 30 ".toString()
+
+        println("sql " + sqlTx)
 
         def cn = dbConnectionService.getConnection()
         datos = cn.rows(sqlTx)
@@ -589,5 +594,28 @@ class PacController {
         }
     }
 
+    def pac() {
+
+        println("params pac" + params)
+
+        def presupuesto = null
+
+        if(params.asignacion){
+            presupuesto = Asignacion.get(params.asignacion).prespuesto
+        }
+
+        println("---- " + presupuesto)
+
+        def campos = ["numero": ["Código", "string"], "descripcion": ["Descripción", "string"]]
+        def actual
+        if (params.anio)
+            actual = Anio.get(params.anio)
+        else
+            actual = Anio.findByAnio(new Date().format("yyyy"))
+        if (!actual)
+            actual = Anio.list([sort: 'anio', order: 'desc']).pop()
+
+        [campos: campos, actual: actual, presupuesto: presupuesto]
+    }
 
 }

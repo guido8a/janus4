@@ -294,4 +294,38 @@ class AsignacionController {
     }
 
 
+    def asignaciones(){
+            def campos = ["numero": ["Código", "string"], "descripcion": ["Descripción", "string"]]
+            def anio = new Date().format("yyyy")
+            def actual = Anio.findByAnio(anio.toString())
+            if(!actual){
+                actual=Anio.list([sort: "id"])?.pop()
+            }
+
+            return [campos:campos,actual:actual]
+    }
+
+    def tablaAsignaciones_ajax(){
+//        println("tabla ba " + params)
+
+        def anio = Anio.get(params.anio)
+        def asignaciones
+
+        def datos;
+        def sqlTx = ""
+        def listaItems = ['prsp.prspnmro', 'prsp.prspdscr']
+        def bsca = listaItems[params.buscarPor.toInteger()-1]
+
+        def select = "select prspdscr, prspnmro, prspproy, prspprgm, prspsbpr, asgn.prsp__id id, asgnvlor, asgn__id from asgn, prsp"
+        def txwh = " where asgn.prsp__id = prsp.prsp__id and $bsca ilike '%${params.criterio}%' and asgn.anio__id = ${anio?.id}"
+        sqlTx = "${select} ${txwh} order by prsp.prspproy limit 30 ".toString()
+
+        println "sql: $sqlTx"
+
+        def cn = dbConnectionService.getConnection()
+        datos = cn.rows(sqlTx)
+
+        [asignaciones:datos, anio: anio]
+    }
+
 } //fin controller

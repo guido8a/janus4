@@ -1,12 +1,29 @@
+<%@ page import="janus.Item" %>
+
+<style>
+table {
+    table-layout: fixed;
+    overflow-x: scroll;
+}
+th, td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+}
+
+</style>
+
+
 <div role="main" style="margin-top: 10px;">
     <table class="table table-bordered table-striped table-condensed table-hover">
         <thead>
         <tr>
-            <th style="width: 25%">Subpresupuesto</th>
-            <th style="width: 16%">Código</th>
-            <th style="width: 43%">Descripción</th>
-            <th style="width: 10%">Cantidad</th>
-            <th style="width: 8%">Acciones</th>
+%{--            <th style="width: 25%">Subpresupuesto</th>--}%
+            <th style="width: 10%">Orden</th>
+            <th style="width: 15%">Código</th>
+            <th style="width: 55%">Descripción</th>
+            <th style="width: 10%">Cant.</th>
+            <th style="width: 9%"></th>
             <th style="width: 1%"></th>
         </tr>
         </thead>
@@ -19,9 +36,10 @@
         <g:if test="${valores}">
             <g:each in="${valores}" var="val" status="i">
                 <tr>
-                    <td style="width: 24%; font-size: 10px">${val.sbprdscr}</td>
+%{--                    <td style="width: 24%; font-size: 10px">${val.sbprdscr}</td>--}%
+                    <td style="width: 10%; font-size: 10px">${val.vlobordn}</td>
                     <td style="width: 15%; font-size: 10px">${val.rbrocdgo}</td>
-                    <td style="width: 40%; font-size: 12px">${val.rbronmbr}</td>
+                    <td style="width: 55%; font-size: 12px">${val.rbronmbr}</td>
                     <td style="width: 10%"><g:formatNumber number="${val.vlobcntd}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/></td>
                     <td style="width: 9%">
                         <g:if test="${obra.estado!='R' && duenoObra == 1}">
