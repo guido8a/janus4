@@ -73,9 +73,9 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
 
 <div class="col-md-6 btn-group" role="navigation" style="margin-left: 0px;width: 100%;float: left;height: 35px;">
     <button class="btn btn-info" id="lista"><i class="fa fa-list"></i> Lista</button>
-    %{--<button class="btn" id="nuevo"><i class="fa fa-plus"></i> Nuevo ${perfil?.codigo}</button>--}%
+%{--<button class="btn" id="nuevo"><i class="fa fa-plus"></i> Nuevo ${perfil?.codigo}</button>--}%
 
-    %{--<g:if test="${persona?.departamento?.codigo != 'CRFC'}">--}%
+%{--<g:if test="${persona?.departamento?.codigo != 'CRFC'}">--}%
     <g:if test="${perfil?.codigo in ['OBRA', 'ADDI', 'COGS', 'RBRO', 'CNTR'] }">
 
         <g:if test="${obra?.estado != 'R'}">
@@ -105,7 +105,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
             <g:if test="${obra?.id != null}">
                 <button class="btn" id="copiarObra"><i class="fa fa-copy"></i> Copiar Obra</button>
             </g:if>
-            %{---------- "${obra?.id} ${obra?.estado} == 'R' ${perfil.codigo} == 'CNTR' ${concurso}"--}%
+        %{---------- "${obra?.id} ${obra?.estado} == 'R' ${perfil.codigo} == 'CNTR' ${concurso}"--}%
             <g:if test="${obra?.id != null && obra?.estado == 'R' && perfil.codigo == 'CNTR' && concurso}">
                 <g:if test="${!existeObraOferente}">
                     <button class="btn" id="copiarObraOfe"><i class="fa fa-copy"></i> Copiar Obra a Oferentes
@@ -347,15 +347,15 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
         <div class="col-md-12" style="margin-top: 10px">
             <div class="col-md-1">Código:</div>
 
-%{--            <g:if test="${obra?.codigo != null}">--}%
-%{--                <div class="col-md-3"><g:textField name="codigo" class="codigo required allCaps"--}%
-%{--                                                   value="${obra?.codigo}" style="width: 160px" readonly="readonly" maxlength="20"--}%
-%{--                                                   title="Código de la Obra"/></div>--}%
-%{--            </g:if>--}%
-%{--            <g:else>--}%
-                <div class="col-md-3"><g:textField name="codigo" class="codigo" value="${obra?.codigo}"
-                                                   style="width: 160px" maxlength="20" title="Código de la Obra" readonly=""/></div>
-%{--            </g:else>--}%
+            <g:if test="${obra?.codigo != null}">
+                <div class="col-md-3"><g:textField name="codigo" class="codigo required allCaps"
+                                                   value="${obra?.codigo}" style="width: 160px" readonly="" maxlength="20"
+                                                   title="Código de la Obra"/></div>
+            </g:if>
+            <g:else>
+                <div class="col-md-3"><g:textField name="codigo" class="codigo allCaps" value="${obra?.codigo}"
+                                                   style="width: 160px" maxlength="20" title="Código de la Obra" /></div>
+            </g:else>
 
             <div class="col-md-1" style="margin-left: -80px;">Nombre</div>
 
@@ -795,12 +795,12 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                 </g:link>
 
             </g:if>
-%{--            <g:if test="${obra?.estado == 'R' && obra?.tipo == 'D' && obra?.fechaInicio}">--}%
-%{--                <a href="${g.createLink(controller: 'planillasAdmin', action: 'list', id: obra?.id)}"--}%
-%{--                   id="btnPlanillas" class="btn">--}%
-%{--                    <i class="fa fa-file"></i> Planillas--}%
-%{--                </a>--}%
-%{--            </g:if>--}%
+        %{--            <g:if test="${obra?.estado == 'R' && obra?.tipo == 'D' && obra?.fechaInicio}">--}%
+        %{--                <a href="${g.createLink(controller: 'planillasAdmin', action: 'list', id: obra?.id)}"--}%
+        %{--                   id="btnPlanillas" class="btn">--}%
+        %{--                    <i class="fa fa-file"></i> Planillas--}%
+        %{--                </a>--}%
+        %{--            </g:if>--}%
     </div>
 </g:if>
 
@@ -861,8 +861,8 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                 <p style="margin-top: 20px">Desea volver a generar la matriz? o generar otra matriz</p>
                 <div class="btn-group col-md-12">
                     <a href="#" class="btn" id="no">No -> Ver la Matriz existente</a>
-                    %{--*****"${obra?.departamento?.direccion?.id} == ${persona?.departamento?.direccion?.id} && ${duenoObra}"--}%
-                    %{--<g:if test="${(obra?.responsableObra?.departamento?.direccion?.id == persona?.departamento?.direccion?.id && duenoObra == 1)}">--}%
+                %{--*****"${obra?.departamento?.direccion?.id} == ${persona?.departamento?.direccion?.id} && ${duenoObra}"--}%
+                %{--<g:if test="${(obra?.responsableObra?.departamento?.direccion?.id == persona?.departamento?.direccion?.id && duenoObra == 1)}">--}%
                     <g:if test="${(obra?.departamento?.direccion?.id == persona?.departamento?.direccion?.id)}">
                         <a href="#" class="btn btn-azul" id="si">Si -> Generar Matriz</a>
                     </g:if>

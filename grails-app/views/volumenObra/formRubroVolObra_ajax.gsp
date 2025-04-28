@@ -1,8 +1,8 @@
 <g:form class="form-horizontal" name="frmRubroVolObra" role="form" controller="volumenObra" action="addItem" method="POST">
     <g:hiddenField name="id" value="${volumenObra?.id}" />
     <g:hiddenField name="obra" value="${obra?.id}" />
-    <g:hiddenField name="item" value="${rubro?.id}" />
-    <g:hiddenField name="cod" value="${rubro?.codigo}" />
+%{--    <g:hiddenField name="item" value="${rubro?.id}" />--}%
+%{--    <g:hiddenField name="cod" value="${rubro?.codigo}" />--}%
 
     <g:if test="${tipo == '1'}">
         <g:hiddenField name="sub" value="${subpresupuesto?.id}" />
@@ -19,6 +19,30 @@
                 </span>
                 <span class="col-md-2">
                     <a href="#" class="btn btn-info" id="btnBuscarSub" title="Buscar subpresupuesto">
+                        <i class="fa fa-search"></i> Buscar
+                    </a>
+                </span>
+            </span>
+        </div>
+    </g:else>
+
+    <g:if test="${tipo == '1'}">
+        <g:hiddenField name="item" value="${rubro?.id}" />
+        <g:hiddenField name="cod" value="${rubro?.codigo}" />
+    </g:if>
+    <g:else>
+        <div class="form-group ${hasErrors(bean: volumenObra, field: 'rubro', 'error')} required">
+            <span class="grupo">
+                <label for="itemName" class="col-md-2 control-label text-info">
+                    Rubro
+                </label>
+                <span class="col-md-8">
+                    <g:hiddenField name="item" value="${rubro?.id}" />
+                    <g:hiddenField name="cod" value="${rubro?.codigo}" />
+                    <g:textField name="itemName" required="" readonly="" class="form-control required" value="${ (volumenObra?.item?.codigo + " "  + volumenObra?.item?.nombre) ?: ''}"/>
+                </span>
+                <span class="col-md-2">
+                    <a href="#" class="btn btn-info" id="btnBuscarRubroEditar" title="Buscar rubro">
                         <i class="fa fa-search"></i> Buscar
                     </a>
                 </span>
@@ -63,7 +87,7 @@
 
 <script type="text/javascript">
 
-    var bcsb;
+    var bcsb, bcru;
 
     $("#btnBuscarSub").click(function () {
         $.ajax({
@@ -91,6 +115,34 @@
 
     function cerrarBuscardorSubpre() {
         bcsb.modal("hide");
+    }
+
+    $("#btnBuscarRubroEditar").click(function () {
+        $.ajax({
+            type    : "POST",
+            url: "${createLink(controller: 'volumenObra', action:'buscarRubroEditar_ajax')}",
+            data    : {
+            },
+            success : function (msg) {
+                bcru = bootbox.dialog({
+                    id      : "dlgBuscarRubro",
+                    title   : "Buscar rubro",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        }
+                    } //buttons
+                }); //dialog
+            } //success
+        }); //ajax
+    });
+
+    function cerrarBuscardorRubros() {
+        bcru.modal("hide");
     }
 
     function validarNum(ev) {

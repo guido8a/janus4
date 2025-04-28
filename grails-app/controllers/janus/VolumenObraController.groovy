@@ -110,7 +110,7 @@ class VolumenObraController {
 
 
     def addItem() {
-//        println "addItem " + params
+        println "addItem " + params
         def obra = Obra.get(params.obra)
         def rubro = Item.findByCodigoIlike(params.cod)
         def sbpr = SubPresupuesto.get(params.sub)
@@ -615,6 +615,38 @@ class VolumenObraController {
         def subpresupuestos = SubPresupuesto.findAllByGrupoAndDescripcionIlike(grupo, '%' + params.criterio +'%', [sort: 'descripcion'])
 
         return [subpresupuestos: subpresupuestos]
+    }
+
+    def buscarRubroEditar_ajax(){
+
+    }
+
+    def tablaBuscadorRubroEditar_ajax(){
+
+        println("params bu " + params)
+
+//        def obra = Obra.get(params.obra)
+//        def duenoObra = esDuenoObra(obra)? 1 : 0
+        def datos;
+        def listaRbro = ['itemnmbr', 'itemcdgo']
+        def listaItems = ['itemnmbr', 'itemcdgo']
+
+        def select = "select item__id, itemnmbr, itemcdgo, unddcdgo " +
+                "from item, undd, dprt, sbgr "
+        def txwh = "where tpit__id = 2 and undd.undd__id = item.undd__id and dprt.dprt__id = item.dprt__id and " +
+                "sbgr.sbgr__id = dprt.sbgr__id and itemcdgo not ilike 'H%' "
+        def sqlTx = ""
+        def bsca = listaItems[params.buscarPor.toInteger()-1]
+//        def ordn = listaRbro[params.ordenar.toInteger()-1]
+
+        txwh += " and $bsca ilike '%${params.criterio}%'"
+        sqlTx = "${select} ${txwh} limit 100 ".toString()
+//        println "sql: $sqlTx"
+
+        def cn = dbConnectionService.getConnection()
+        datos = cn.rows(sqlTx)
+        [data: datos]
+
     }
 
 }

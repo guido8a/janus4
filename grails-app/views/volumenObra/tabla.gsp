@@ -1,6 +1,17 @@
 <style>
 .desalojo { color: #4d2868; }
 .historico { color: #804a4c; }
+
+table {
+    table-layout: fixed;
+    overflow-x: scroll;
+}
+th, td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+}
+
 </style>
 
 <div class="row-fluid" style="margin-left: 0px">
@@ -68,7 +79,7 @@
                 Código
             </th>
             <th style="width: 6%">
-                Especificación
+                Especifi.
             </th>
             <th style="width: 24%;">
                 Rubro
@@ -90,8 +101,8 @@
     <table class="table-bordered table-striped table-condensed table-hover">
         <tbody>
         <g:each in="${valores}" var="val" status="j">
-            %{--<tr class="item_row ${val.rbrocdgo[0..1] == 'TR'? 'desalojo':''}" id="${val.vlob__id}"  item="${val}"--}%
-            <tr class="item_row ${val.rbrocdgo[0..1] == 'TR'? 'desalojo': (val.rbrocdgo[0] == 'H'? 'historico': '')}" id="${val.vlob__id}"  item="${val}"
+        %{--<tr class="item_row ${val.rbrocdgo[0..1] == 'TR'? 'desalojo':''}" id="${val.vlob__id}"  item="${val}"--}%
+            <tr style="width: 100%" class="item_row ${val.rbrocdgo[0..1] == 'TR'? 'desalojo': (val.rbrocdgo[0] == 'H'? 'historico': '')}" id="${val.vlob__id}"  item="${val}"
             %{--<tr class="item_row ${val.rbrocdgo.contains('H')? 'historico': ''}" id="${val.vlob__id}"  item="${val}"--}%
                 dscr="${val.vlobdscr}" sub="${val.sbpr__id}" cdgo="${val.item__id}" title="${val.vlobdscr}">
                 <td style="width: 5%" class="orden">${val.vlobordn}</td>
@@ -114,7 +125,7 @@
                         <a class="btn btn-xs btn-success editarItem" href="#" rel="tooltip" title="Editar" iden="${val.vlob__id}"
                            data-orden="${val.vlobordn}" data-nom="${val.rbronmbr}" data-can="${val.vlobcntd}"
                            data-cod="${val.rbrocdgo}" item="${val}"  dscr="${val.vlobdscr}" sub="${val.sbpr__id}"
-                           cdgo="${val.item__id}" title="${val.vlobdscr}">
+                           cdgo="${val.item__id}">
                             <i class="fa fa-edit"></i>
                         </a>
                         <a class="btn btn-xs btn-danger borrarItem" href="#" rel="tooltip" title="Eliminar" iden="${val.vlob__id}">

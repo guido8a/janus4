@@ -1317,31 +1317,30 @@ class ObraController {
         }//es edit
         else {
             def numero = ""
-            switch (session.perfil.codigo) {
-                case "CSTO":
-                    ultimo = Numero.findByDescripcion('CO')
-                    numero = completa(ultimo?.valor + 1)
-//                    params.codigo = "CO-${ultimo?.valor + 1}-CRFC-${anioActual}" /* todo poner en 3 cifras */
-                    params.codigo = "CO-${numero}-CRFC-${anioActual}"
-
-                    ultimo.valor = (ultimo.valor+1)
-
-                    break;
-                case "ADDI":
-                    ultimo = Numero.findByDescripcion('PAD')
-                    numero = completa(ultimo?.valor + 1)
-                    params.codigo = "PAD-${numero}-GADPP-${anioActual}"
-
-                    ultimo.valor = (ultimo.valor+1)
-                    break;
-                case "OBRA":
-                    ultimo = Numero.findByDescripcion('PB')
-                    numero = completa(ultimo?.valor + 1)
-                    params.codigo = "PB-${numero}-GADPP-${anioActual}"
-
-                    ultimo.valor = (ultimo.valor+1)
-                    break;
-            }
+//            switch (session.perfil.codigo) {
+//                case "CSTO":
+//                    ultimo = Numero.findByDescripcion('CO')
+//                    numero = completa(ultimo?.valor + 1)
+//                    params.codigo = "CO-${numero}-CRFC-${anioActual}"
+//
+//                    ultimo.valor = (ultimo.valor+1)
+//
+//                    break;
+//                case "ADDI":
+//                    ultimo = Numero.findByDescripcion('PAD')
+//                    numero = completa(ultimo?.valor + 1)
+//                    params.codigo = "PAD-${numero}-GADPP-${anioActual}"
+//
+//                    ultimo.valor = (ultimo.valor+1)
+//                    break;
+//                case "OBRA":
+//                    ultimo = Numero.findByDescripcion('PB')
+//                    numero = completa(ultimo?.valor + 1)
+//                    params.codigo = "PB-${numero}-GADPP-${anioActual}"
+//
+//                    ultimo.valor = (ultimo.valor+1)
+//                    break;
+//            }
 
 
             if(!Obra.findByCodigo(params.codigo)){
@@ -1437,9 +1436,9 @@ class ObraController {
             redirect(action: 'registroObra')
             return
         } else {
-            if(bandera){
-                ultimo.save(flush: true)
-            }
+//            if(bandera){
+//                ultimo.save(flush: true)
+//            }
         }
 
         if (params.id) {
