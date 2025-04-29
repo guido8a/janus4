@@ -1,10 +1,23 @@
+<style type="text/css">
+table {
+    table-layout: fixed;
+    overflow-x: scroll;
+}
+th, td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+}
+</style>
+
+
 <table class="table table-bordered table-striped table-condensed table-hover">
     <thead>
     <tr>
         <th style="width: 5%">Año</th>
         <th style="width: 20%">Partida</th>
-        <th style="width: 6%;">CCP</th>
-        <th style="width: 6%;">Tipo <br>Compra</th>
+        <th style="width: 7%;">CCP</th>
+        <th style="width: 5%;">Tipo <br>Compra</th>
         <th style="width: 22%;">Descripción</th>
         <th style="width: 5%;">Cant.</th>
         <th style="width: 5%">Unidad</th>
@@ -13,6 +26,8 @@
         <th style="width: 3%;">C1</th>
         <th style="width: 3%;">C2</th>
         <th style="width: 3%;">C3</th>
+        <th style="width: 4%;">Asig.</th>
+        <th style="width: 4%;">Conc.</th>
         <th style="width: 6%;">Acciones</th>
         <th style="width: 1%;"></th>
     </tr>
@@ -29,8 +44,8 @@
                 <tr>
                     <td style="width: 5%">${anio?.anio}</td>
                     <td style="width: 20%; font-size: 10px"class="prsp" title="${p.presupuesto.descripcion} - Fuente: ${p.presupuesto.fuente} - Programa: ${p.presupuesto.programa} - Subprograma: ${p.presupuesto.subPrograma} - Proyecto: ${p.presupuesto.proyecto}">${p.presupuesto.numero}</td>
-                    <td style="width: 6%" title="${p.cpp?.descripcion}">${p.cpp?.numero}</td>
-                    <td style="width: 6%" >${p.tipoCompra.descripcion}</td>
+                    <td style="width: 7%" title="${p.cpp?.descripcion}">${p.cpp?.numero}</td>
+                    <td style="width: 5%" >${p.tipoCompra.descripcion}</td>
                     <td style="width: 22%">${p.descripcion}</td>
                     <td style="text-align: right; width: 5%">
                         <g:formatNumber number="${p.cantidad}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/>
@@ -42,6 +57,12 @@
                     <td style="text-align: center; width: 3%; ${p?.c1 ? 'background-color: #c1ffbb' : ''}" class="c1">${p.c1}</td>
                     <td style="text-align: center; width: 3%; ${p?.c2 ? 'background-color: #c1ffbb' : ''}" class="c2">${p.c2}</td>
                     <td style="text-align: center; width: 3%; ${p?.c3 ? 'background-color: #c1ffbb' : ''}" class="c3">${p.c3}</td>
+                    <td style="text-align: center; width: 4%;" >
+                        <a href="#" class="btn btn-success btn-xs btnVolver" data-id="${pac?.pacp__id}" ><i class="fa fa-arrow-left"></i></a>
+                    </td>
+                    <td style="text-align: center; width: 4%;" >
+                        <a href="#" class="btn btn-info btn-xs btnIrConcurso" data-id="${pac?.pacp__id}" ><i class="fa fa-arrow-right"></i></a>
+                    </td>
                     <td style="width: 6%; text-align: center">
                         <a href="#" class="btn btn-success btn-xs btnEditarPac" data-id="${p?.id}" ><i class="fa fa-edit"></i></a>
                         <a href="#" class="btn btn-danger btn-xs btnBorrarPac" data-id="${p?.id}" ><i class="fa fa-trash"></i></a>
@@ -59,6 +80,16 @@
 </div>
 
 <script type="text/javascript">
+
+    $(".btnIrConcurso").click(function () {
+        var id = $(this).data("id");
+        location.href="${createLink(controller: 'concurso', action: 'list')}?pac=" + id
+    });
+
+    $(".btnVolver").click(function () {
+        var id = $(this).data("id");
+        location.href="${createLink(controller: 'asignacion', action: 'asignaciones')}?pac=" + id
+    });
 
     $(".btnEditarPac").click(function () {
         var id = $(this).data("id");

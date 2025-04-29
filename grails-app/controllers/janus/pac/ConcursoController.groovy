@@ -158,13 +158,14 @@ class ConcursoController {
 
     def list() {
         def listaBuscar = [1: 'Descripción', 2: 'Departamento', 3: 'Partida']
-//        println "list: $params"
-//        def campos = ["descripcion": ["Descripción", "string"]]
-//        if (!params.sort) {
-//            params.sort = "id"
-//            params.order = "desc"
-//        }
-        return [listaBuscar: listaBuscar, params: params]
+
+        def pac = null
+
+        if(params.pac){
+            pac = Pac.get(params.pac)
+        }
+
+        return [listaBuscar: listaBuscar, params: params, pac: pac]
     } //list
 
     def listaPac(){

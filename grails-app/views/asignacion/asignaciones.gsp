@@ -21,7 +21,7 @@
         <div class="row-fluid">
             <div class="col-md-2">
                 Año
-                <g:select class="form-control" name="anios" from="${janus.pac.Anio.list(sort: 'anio')}" value="${actual?.id}" optionKey="id" optionValue="anio"/>
+                <g:select class="form-control" name="anios" from="${janus.pac.Anio.list(sort: 'anio')}" value="${pac ?  pac.anio?.id :  actual?.id}" optionKey="id" optionValue="anio"/>
             </div>
             <div class="col-md-2">
                 Buscar Por
@@ -29,7 +29,7 @@
             </div>
             <div class="col-md-3">
                 Criterio
-                <g:textField name="criterio" class="criterio form-control"/>
+                <g:textField name="criterio" class="criterio form-control" value="${partida ? partida?.numero : ''}"/>
             </div>
             <div class="col-md-2 btn-group" style="margin-top: 20px">
                 <button class="btn btn-info" id="btnBuscarAsignacion"><i class="fa fa-search"></i></button>
@@ -57,6 +57,13 @@
 <script type="text/javascript">
 
     var bcpc;
+
+    <g:if test="${partida}">
+    $("#buscarPor").val(1);
+    </g:if>
+    <g:else>
+    $("#buscarPor").val(2);
+    </g:else>
 
     $("#btnLimpiar").click(function () {
         $("#buscarPor").val(2);

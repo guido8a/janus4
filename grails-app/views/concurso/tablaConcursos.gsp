@@ -5,10 +5,12 @@
             <th style="width: 19%;">Obra</th>
             <th style="width: 25%;">Pac</th>
             <th style="width: 10%;">Código</th>
-            <th style="width: 20%;">Objeto</th>
-            <th style="width: 10%;">Costo Bases</th>
-            <th style="width: 8%;">Documentos</th>
-            <th style="width: 8%">Estado</th>
+            <th style="width: 19%;">Objeto</th>
+            <th style="width: 7%;">Costo Bases</th>
+            <th style="width: 7%;">Documentos</th>
+            <th style="width: 7%">Estado</th>
+            <th style="width: 4%">PAC</th>
+            <th style="width: 1%"></th>
         </tr>
         </thead>
 
@@ -23,11 +25,17 @@
                 <td style="width: 19%;">${cncr.obranmbr}</td>
                 <td style="width: 25%;">${cncr.pacpdscr}</td>
                 <td style="width: 10%;">${cncr.cncrcdgo}</td>
-                <td style="width: 20%;">${cncr.cncrobjt}</td>
-                <td style="text-align: right; width: 10%;">${cncr.cncrbase}</td>
-                <td style="text-align: center; width: 8%;">${cncr.cuenta}</td>
-                <td style="width: 8%;">
+                <td style="width: 19%;">${cncr.cncrobjt}</td>
+                <td style="text-align: right; width: 7%;">${cncr.cncrbase}</td>
+                <td style="text-align: center; width: 7%;">${cncr.cuenta}</td>
+                <td style="width: 7%;">
                     <strong style="color: ${cncr.cncretdo == "R" ? '#78b665' : '#c42623'} "> ${(cncr.cncretdo == "R") ? "Registrado" : "No registrado"}</strong>
+                </td>
+                <td style="width: 4%">
+                    <a href="#" class="btn btn-success btn-xs btnVolverPac" data-id="${janus.pac.Concurso.get(cncr.cncr__id)?.pac?.id}" ><i class="fa fa-arrow-left"></i></a>
+                </td>
+                <td style="width: 1%">
+
                 </td>
             </tr>
         </g:each>
@@ -40,6 +48,11 @@
 </g:if>
 
 <script type="text/javascript">
+
+    $(".btnVolverPac").click(function () {
+        var id = $(this).data("id");
+        location.href="${createLink(controller: 'pac', action: 'pac')}?pac=" + id
+    });
 
     $(function () {
         $("tr").contextMenu({

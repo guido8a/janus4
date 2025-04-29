@@ -257,8 +257,8 @@ class AsignacionController {
         }else{
 
             if(existe){
-                    render "err_Ya existe una asignación con esa partida"
-                    return
+                render "err_Ya existe una asignación con esa partida"
+                return
             }
 
             asignacion = new Asignacion()
@@ -295,14 +295,22 @@ class AsignacionController {
 
 
     def asignaciones(){
-            def campos = ["numero": ["Código", "string"], "descripcion": ["Descripción", "string"]]
-            def anio = new Date().format("yyyy")
-            def actual = Anio.findByAnio(anio.toString())
-            if(!actual){
-                actual=Anio.list([sort: "id"])?.pop()
-            }
+        def partida =  null
+        def pac = null
 
-            return [campos:campos,actual:actual]
+        if(params.pac){
+            pac = Pac.get(params.pac)
+            partida = pac.presupuesto
+        }
+
+        def campos = ["numero": ["Código", "string"], "descripcion": ["Descripción", "string"]]
+        def anio = new Date().format("yyyy")
+        def actual = Anio.findByAnio(anio.toString())
+        if(!actual){
+            actual=Anio.list([sort: "id"])?.pop()
+        }
+
+        return [campos:campos,actual:actual, partida: partida, pac: pac]
     }
 
     def tablaAsignaciones_ajax(){

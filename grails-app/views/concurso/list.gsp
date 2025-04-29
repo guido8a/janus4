@@ -40,21 +40,20 @@
 
     <div class="row-fluid">
         <div style="margin-left: 20px;">
-
             <div class="col-md-8">
-                <div class="row-fluid col-md-2">
+                <div class="row-fluid col-md-1">
                     <b>Buscar por: </b>
                 </div>
                 <div class="row-fluid col-md-2">
                     <elm:select name="buscador" from = "${buscadorServ.parmProcesos()}" value="${params.buscador}"
                                 optionKey="campo" optionValue="nombre" optionClass="operador" id="buscador_con"
-                                style="margin-left: -50px; width: 130px" class="form-control"/>
+                                style="" class="form-control"/>
                 </div>
                 <div class="col-md-1">
-                    <b style="margin-left: 10px">Criterio: </b>
+                    <b >Criterio: </b>
                 </div>
-                <div class="col-md-3">
-                    <g:textField name="criterio" style="width: 180px" value="${params.criterio}"
+                <div class="col-md-5">
+                    <g:textField name="criterio" style="" value="${pac ? pac?.descripcion : params.criterio}"
                                  id="criterio_con" class="form-control"/>
                 </div>
 
@@ -64,14 +63,14 @@
                        style="height: 34px; padding: 9px; width: 46px; margin-left: 10px">
                         <i class="fa fa-search"></i></a>
 
-                    <a href="#" name="limpiarBus" class="btn btn-warning" id="btnLimpiarBusqueda"
-                       title="Borrar criterios" style="height: 34px; padding: 9px; width: 34px">
+                    <a href="#" class="btn btn-warning" id="btnLimpiarBusqueda"
+                       title="Borrar criterios" >
                         <i class="fa fa-eraser"></i></a>
                 </div>
 
             </div>
 
-            <div class="col-md-4 btn-group" role="navigation">
+            <div class="col-md-2 btn-group" role="navigation">
                 <a href="#" class="btn btn-success " id="btnPac">
                     <i class="fa fa-file"></i>
                     Nuevo Proceso
@@ -159,6 +158,14 @@
     var url = "${resource(dir:'images', file:'spinner_24.gif')}";
     var spinner = $("<img style='margin-left:15px;' src='" + url + "' alt='Cargando...'/>");
 
+    <g:if test="${pac}">
+    $("#buscador_con").val('pacpdscr');
+    </g:if>
+    <g:else>
+    $("#buscador_con").val('obranmbr');
+    </g:else>
+
+
     function submitForm(btn) {
         if ($("#frmSave-Concurso").valid()) {
             btn.replaceWith(spinner);
@@ -168,184 +175,178 @@
 
     // $(function () {
 
-        $("#criterio_con").keydown(function (ev) {
-            if (ev.keyCode === 13) {
-                ev.preventDefault();
-                cargarBusqueda();
-                return false;
-            }
-        });
-
-        $("#modal-pac").dialog({
-            autoOpen: false,
-            resizable: true,
-            modal: true,
-            draggable: false,
-            width: 800,
-            height: 400,
-            position: 'center',
-            title: 'Seleccionar PAC',
-            buttons   : {
-                "Cerrar": function () {
-                    $("#modal-pac").dialog("close");
-                }
-            }
-        });
-
-        $("#btnPac").click(function () {
-            $("#modal-pac").dialog("open");
-            $(".ui-dialog-titlebar-close").html("x");
-        });
-
-        $(".btn-new").click(function () {
-            $.ajax({
-                type    : "POST",
-                url     : "${createLink(action:'form_ajax')}",
-                success : function (msg) {
-                    var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');
-                    var btnSave = $('<a href="#"  class="btn btn-success"><i class="icon-save"></i> Guardar</a>');
-
-                    btnSave.click(function () {
-                        submitForm(btnSave);
-                        return false;
-                    });
-
-                    $("#modalHeader").removeClass("btn-edit btn-show btn-delete");
-                    $("#modalTitle").html("Crear Proceso");
-                    $("#modalBody").html(msg);
-                    $("#modalFooter").html("").append(btnOk).append(btnSave);
-                    $("#modal-Concurso").modal("show");
-                }
-            });
-            return false;
-        }); //click btn new
-
-        $(".btn-edit").click(function () {
-            var id = $(this).data("id");
-            $.ajax({
-                type    : "POST",
-                url     : "${createLink(action:'form_ajax')}",
-                data    : {
-                    id : id
-                },
-                success : function (msg) {
-                    var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');
-                    var btnSave = $('<a href="#"  class="btn btn-success"><i class="icon-save"></i> Guardar</a>');
-
-                    btnSave.click(function () {
-                        submitForm(btnSave);
-                        return false;
-                    });
-
-                    $("#modalHeader").removeClass("btn-edit btn-show btn-delete").addClass("btn-edit");
-                    $("#modalTitle").html("Editar Proceso");
-                    $("#modalBody").html(msg);
-                    $("#modalFooter").html("").append(btnOk).append(btnSave);
-                    $("#modal-Concurso").modal("show");
-                }
-            });
-            return false;
-        }); //click btn edit
-
-        $(".btn-show").click(function () {
-            var id = $(this).data("id");
-            $.ajax({
-                type    : "POST",
-                url     : "${createLink(action:'show_ajax')}",
-                data    : {
-                    id : id
-                },
-                success : function (msg) {
-                    var btnOk = $('<a href="#" data-dismiss="modal" class="btn btn-primary">Aceptar</a>');
-                    $("#modalHeader").removeClass("btn-edit btn-show btn-delete").addClass("btn-show");
-                    $("#modalTitle").html("Ver Proceso");
-                    $("#modalBody").html(msg);
-                    $("#modalFooter").html("").append(btnOk);
-                    $("#modal-Concurso").modal("show");
-                }
-            });
-            return false;
-        }); //click btn show
-
-        $(".btn-delete").click(function () {
-            var id = $(this).data("id");
-            $("#id").val(id);
-            var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');
-            var btnDelete = $('<a href="#" class="btn btn-danger"><i class="icon-trash"></i> Eliminar</a>');
-
-            btnDelete.click(function () {
-                btnDelete.replaceWith(spinner);
-                $("#frmDelete-Concurso").submit();
-                return false;
-            });
-
-            $("#modalHeader").removeClass("btn-edit btn-show btn-delete").addClass("btn-delete");
-            $("#modalTitle").html("Eliminar Proceso");
-            $("#modalBody").html("<p>¿Está seguro de querer eliminar este Proceso?</p>");
-            $("#modalFooter").html("").append(btnOk).append(btnDelete);
-            $("#modal-Concurso").modal("show");
-            return false;
-        });
-
-        $(function () {
-            $("#limpiaBuscar").click(function () {
-                $("#buscar").val('');
-                cargarBusqueda();
-            });
-        });
-
-        cargarBusqueda();
-
-        function cargarBusqueda () {
-            $("#bandeja").html("").append($("<div style='width:100%; text-align: center;'/>").append(spinner));
-            var desde = $(".fechaD").val();
-            var hasta = $(".fechaH").val();
-            $.ajax({
-                type: "POST",
-                url: "${g.createLink(controller: 'concurso', action: 'tablaConcursos')}",
-                data: {
-                    buscador: $("#buscador_con").val(),
-                    criterio: $("#criterio_con").val(),
-                    operador: $("#oprd").val(),
-                    desde: desde,
-                    hasta: hasta,
-                    tpps: $("#tipo_proceso").val()
-                },
-                success: function (msg) {
-                    $("#tabla").html(msg);
-                },
-                error: function (msg) {
-                    $("#tabla").html("Ha ocurrido un error");
-                }
-            });
-
-        }
-
-        $("#btnLimpiarBusqueda").click(function () {
-            $(".fechaD, .fechaH, #criterio_con").val('');
-        });
-
-        $("#btnBusqueda").click(function () {
+    $("#criterio_con").keydown(function (ev) {
+        if (ev.keyCode === 13) {
+            ev.preventDefault();
             cargarBusqueda();
+            return false;
+        }
+    });
+
+    $("#modal-pac").dialog({
+        autoOpen: false,
+        resizable: true,
+        modal: true,
+        draggable: false,
+        width: 800,
+        height: 400,
+        position: 'center',
+        title: 'Seleccionar PAC',
+        buttons   : {
+            "Cerrar": function () {
+                $("#modal-pac").dialog("close");
+            }
+        }
+    });
+
+    $("#btnPac").click(function () {
+        $("#modal-pac").dialog("open");
+        $(".ui-dialog-titlebar-close").html("x");
+    });
+
+    $(".btn-new").click(function () {
+        $.ajax({
+            type    : "POST",
+            url     : "${createLink(action:'form_ajax')}",
+            success : function (msg) {
+                var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');
+                var btnSave = $('<a href="#"  class="btn btn-success"><i class="icon-save"></i> Guardar</a>');
+
+                btnSave.click(function () {
+                    submitForm(btnSave);
+                    return false;
+                });
+
+                $("#modalHeader").removeClass("btn-edit btn-show btn-delete");
+                $("#modalTitle").html("Crear Proceso");
+                $("#modalBody").html(msg);
+                $("#modalFooter").html("").append(btnOk).append(btnSave);
+                $("#modal-Concurso").modal("show");
+            }
+        });
+        return false;
+    }); //click btn new
+
+    $(".btn-edit").click(function () {
+        var id = $(this).data("id");
+        $.ajax({
+            type    : "POST",
+            url     : "${createLink(action:'form_ajax')}",
+            data    : {
+                id : id
+            },
+            success : function (msg) {
+                var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');
+                var btnSave = $('<a href="#"  class="btn btn-success"><i class="icon-save"></i> Guardar</a>');
+
+                btnSave.click(function () {
+                    submitForm(btnSave);
+                    return false;
+                });
+
+                $("#modalHeader").removeClass("btn-edit btn-show btn-delete").addClass("btn-edit");
+                $("#modalTitle").html("Editar Proceso");
+                $("#modalBody").html(msg);
+                $("#modalFooter").html("").append(btnOk).append(btnSave);
+                $("#modal-Concurso").modal("show");
+            }
+        });
+        return false;
+    }); //click btn edit
+
+    $(".btn-show").click(function () {
+        var id = $(this).data("id");
+        $.ajax({
+            type    : "POST",
+            url     : "${createLink(action:'show_ajax')}",
+            data    : {
+                id : id
+            },
+            success : function (msg) {
+                var btnOk = $('<a href="#" data-dismiss="modal" class="btn btn-primary">Aceptar</a>');
+                $("#modalHeader").removeClass("btn-edit btn-show btn-delete").addClass("btn-show");
+                $("#modalTitle").html("Ver Proceso");
+                $("#modalBody").html(msg);
+                $("#modalFooter").html("").append(btnOk);
+                $("#modal-Concurso").modal("show");
+            }
+        });
+        return false;
+    }); //click btn show
+
+    $(".btn-delete").click(function () {
+        var id = $(this).data("id");
+        $("#id").val(id);
+        var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');
+        var btnDelete = $('<a href="#" class="btn btn-danger"><i class="icon-trash"></i> Eliminar</a>');
+
+        btnDelete.click(function () {
+            btnDelete.replaceWith(spinner);
+            $("#frmDelete-Concurso").submit();
+            return false;
         });
 
-        $("#cnsl-pac").click(function () {
-            var buscarPor = $("#buscarPor").val();
-            var criterio = $("#criterioCriterio").val();
-            var ordenar = $("#ordenar").val();
-            $.ajax({
-                type: "POST",
-                url: "${createLink(controller: 'concurso', action:'listaPac')}",
-                data: {
-                    buscarPor: buscarPor,
-                    criterio: criterio,
-                    ordenar: ordenar
-                },
-                success: function (msg) {
-                    $("#divTablaPac").html(msg);
-                }
-            });
+        $("#modalHeader").removeClass("btn-edit btn-show btn-delete").addClass("btn-delete");
+        $("#modalTitle").html("Eliminar Proceso");
+        $("#modalBody").html("<p>¿Está seguro de querer eliminar este Proceso?</p>");
+        $("#modalFooter").html("").append(btnOk).append(btnDelete);
+        $("#modal-Concurso").modal("show");
+        return false;
+    });
+
+    $("#btnLimpiarBusqueda").click(function () {
+        $("#criterio_con").val('');
+        cargarBusqueda();
+    });
+
+    cargarBusqueda();
+
+    function cargarBusqueda () {
+        $("#bandeja").html("").append($("<div style='width:100%; text-align: center;'/>").append(spinner));
+        var desde = $(".fechaD").val();
+        var hasta = $(".fechaH").val();
+        $.ajax({
+            type: "POST",
+            url: "${g.createLink(controller: 'concurso', action: 'tablaConcursos')}",
+            data: {
+                buscador: $("#buscador_con").val(),
+                criterio: $("#criterio_con").val(),
+                operador: $("#oprd").val(),
+                desde: desde,
+                hasta: hasta,
+                tpps: $("#tipo_proceso").val()
+            },
+            success: function (msg) {
+                $("#tabla").html(msg);
+            },
+            error: function (msg) {
+                $("#tabla").html("Ha ocurrido un error");
+            }
         });
+
+    }
+
+    $("#btnBusqueda").click(function () {
+        cargarBusqueda();
+    });
+
+    $("#cnsl-pac").click(function () {
+        var buscarPor = $("#buscarPor").val();
+        var criterio = $("#criterioCriterio").val();
+        var ordenar = $("#ordenar").val();
+        $.ajax({
+            type: "POST",
+            url: "${createLink(controller: 'concurso', action:'listaPac')}",
+            data: {
+                buscarPor: buscarPor,
+                criterio: criterio,
+                ordenar: ordenar
+            },
+            success: function (msg) {
+                $("#divTablaPac").html(msg);
+            }
+        });
+    });
 
     // });
 

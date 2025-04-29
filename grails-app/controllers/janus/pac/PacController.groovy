@@ -599,12 +599,18 @@ class PacController {
         println("params pac" + params)
 
         def presupuesto = null
+        def asignacion = null
+        def pac = null
 
         if(params.asignacion){
-            presupuesto = Asignacion.get(params.asignacion).prespuesto
+            asignacion = Asignacion.get(params.asignacion)
+            presupuesto = asignacion.prespuesto
         }
 
-        println("---- " + presupuesto)
+        if(params.pac){
+            pac= Pac.get(params.pac)
+            presupuesto = pac.presupuesto
+        }
 
         def campos = ["numero": ["Código", "string"], "descripcion": ["Descripción", "string"]]
         def actual
