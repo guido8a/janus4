@@ -60,7 +60,7 @@
 
 <script type="text/javascript">
 
-    function consultar() {
+    function consultar(id) {
         var v = cargarLoader("Cargando...");
         $("#divTabla").html("");
         var prin = $("#periodoIndices").val();
@@ -70,7 +70,8 @@
             data    : {
                 prin: prin,
                 max: 100,
-                pag: 1
+                pag: 1.,
+                focus: id
             },
             success : function (msg) {
                 v.modal("hide");

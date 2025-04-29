@@ -2,6 +2,8 @@
 
 <script type="text/javascript">
 
+    $("#${focus}").focus();
+
     $(".btnEditar").click(function () {
         var id = $(this).data("id");
         var indice = $(this).data("indc");
@@ -32,7 +34,7 @@
                             label     : "<i class='fa fa-save'></i> Guardar",
                             className : "btn-success",
                             callback  : function () {
-                                return submitFormValorIndices();
+                                return submitFormValorIndices(indice);
                             } //callback
                         } //guardar
                     } //buttons
@@ -41,7 +43,7 @@
         }); //ajax
     });
 
-    function submitFormValorIndices() {
+    function submitFormValorIndices(indice) {
         var $form = $("#frmSave-ValorIndice");
         if ($form.valid()) {
             var data = $form.serialize();
@@ -55,7 +57,7 @@
                     var parts = msg.split("_");
                     if(parts[0] === 'ok'){
                         log(parts[1], "success");
-                        consultar();
+                        consultar(indice);
                     }else{
                         bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
                         return false;

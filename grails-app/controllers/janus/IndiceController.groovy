@@ -297,6 +297,69 @@ class IndiceController {
 
     }
 
+//    def tablaValores() {
+//        def cn = dbConnectionService.getConnection()
+//        def cn1 = dbConnectionService.getConnection()
+//
+//        def sqlTx = "SELECT indc__id, indcdscr, 0 valor from indc order by tpin__id desc, indcdscr"
+//        def txValor = ""
+//        def cont = 0
+//        def editar = ""
+//        def prin = params.prin.toInteger()
+//        // obtiene el periodo anterior
+//        def fcha = PeriodosInec.get(prin).fechaInicio - 1
+//        def prinAnterior = PeriodosInec.findByFechaFinBetween(fcha, fcha + 2)?.id
+//        def periodos = [prinAnterior, prin]
+//
+//
+//        def body = ""
+//        cn.eachRow(sqlTx.toString()) { d ->
+//            body += "<tr>"
+//            body += "<td>${d.indc__id}</td>"
+//            body += "<td>${d.indcdscr}</td>"
+//
+//            cont = 0
+//            def prec = "", p = 0, rubro = null
+//            while (cont < 2) {
+//                rubro = null
+//                txValor = "select vlin__id, vlinvalr, vlin.prin__id from vlin, prin where vlin.prin__id = ${periodos[cont]} and " +
+//                        "vlin.indc__id = ${d.indc__id} and prin.prin__id = vlin.prin__id order by prinfcin"
+//                prec = g.formatNumber(number: 0.0, maxFractionDigits: 2, minFractionDigits: 2, locale: "ec")
+//                p = 0.0
+//                editar = periodos[cont]? "editable" : ""
+//                cn1.eachRow(txValor.toString()) { v ->
+//                    if (v.vlinvalr != null) {
+//                        prec = g.formatNumber(number: v.vlinvalr, maxFractionDigits: 2, minFractionDigits: 2, locale: "ec")
+//                        p = v.vlinvalr
+//                        rubro = v.vlin__id
+//                    }
+//                }
+//
+//                body += "<td class='${editar} number' data-original='${p}' data-prin='${periodos[cont]}' " +
+//                        "data-id='${rubro}' data-indc='${d.indc__id}' data-valor='${p}'>" + prec + '</td>'
+//
+//                if(cont==1){
+//                    body += "<td style='text-align:center' ><a class='btn btn-xs btn-success btnEditar' data-id='${rubro}' data-indc='${d.indc__id}' data-prin='${periodos[cont]}'  href='#' rel='tooltip' title='Editar' " +
+//                            "</a><i class='fa fa-edit'></i>  </td>"
+//                    body += "<td style='text-align:center'><a class='btn btn-xs btn-show btn-info btCopia' data-id='${rubro}' data-indc='${d.indc__id}' data-prin='${periodos[cont]}' href='#' rel='tooltip' title='Copiar' " +
+//                            "</a><i class='fa fa-copy'></i>  Copiar</td>"
+//                }
+//
+//                cont++
+//            }
+//
+//        }
+//        html += "</tr>"
+//        html += "</thead>"
+//        html += "<tbody>"
+//
+//        cn.close()
+//        cn1.close()
+//        html += body
+//        [html: html]
+//    }
+
+
     def tablaValores() {
         def cn = dbConnectionService.getConnection()
         def cn1 = dbConnectionService.getConnection()
@@ -323,7 +386,7 @@ class IndiceController {
 
         def body = ""
         cn.eachRow(sqlTx.toString()) { d ->
-            body += "<tr>"
+            body += "<tr id='${d.indc__id}' tabindex=\"0\">"
             body += "<td>${d.indc__id}</td>"
             body += "<td>${d.indcdscr}</td>"
 
@@ -365,13 +428,15 @@ class IndiceController {
         cn.close()
         cn1.close()
         html += body
-//        html += "<script type=\'text/javascript\'>  \$(function () { \$('.btCopia').click(function () {" +
+        html += "<script type=\'text/javascript\'>  " +
+//                "\$(function () { \$('.btCopia').click(function () {" +
 //                "var vl = \$(this).parent().prev().prev().data('valor');" +
 //                "\$(this).parent().prev().data('valor',vl).text(vl);" +
-//                "}); });</script>"
+//                "}); });" +
+                "</script>"
         html += "</tbody>"
         html += "</table>"
-        [html: html]
+        [html: html, focus: params.focus]
     }
 
     def actualizaVlin() {
