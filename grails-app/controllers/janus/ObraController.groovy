@@ -1489,6 +1489,7 @@ class ObraController {
             obraInstance.memoSif = null
             obraInstance.fechaInicio = null
             obraInstance.fechaFin = null
+            obraInstance.formulaPolinomica = null
 
             def persona = Persona.get(session.usuario.id)
             if(departamento?.codigo != 'CRFC'){
