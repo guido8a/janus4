@@ -26,8 +26,8 @@ th, td {
         <th style="width: 3%;">C1</th>
         <th style="width: 3%;">C2</th>
         <th style="width: 3%;">C3</th>
-        <th style="width: 4%;">Asig.</th>
-        <th style="width: 4%;">Conc.</th>
+        <th style="width: 4%;">Asig-nación</th>
+        <th style="width: 4%;">Con-curso.</th>
         <th style="width: 6%;">Acciones</th>
         <th style="width: 1%;"></th>
     </tr>
