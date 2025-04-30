@@ -1848,8 +1848,10 @@ class ObraController {
         def personasRolInsp = PersonaRol.findAllByFuncionAndPersonaInList(funcionInsp, personas)
         def personasRolResp = PersonaRol.findAllByFuncionAndPersonaInList(funcionResp, personas)
         def personasRolElab = PersonaRol.findAllByFuncionAndPersonaInList(funcionElab, personas)
-        def personasUtfpu1 = Persona.findAllByDepartamento(Departamento.findByCodigo('CRFC'))
+//        def personasUtfpu1 = Persona.findAllByDepartamento(Departamento.findByCodigo('CRFC'))
+        def personasUtfpu1 = Persona.findAllByDepartamento(obra?.departamento)
         def personasUtfpu = PersonaRol.findAllByFuncionAndPersonaInList(funcionElab, personasUtfpu1)
+
 
         def responsableObra
         def duenoObra = 0
