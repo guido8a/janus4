@@ -643,25 +643,30 @@ class VolumenObraController {
     }
 
     def reordenar_ajax(){
-        println("params " + params.rubros)
 
         def ids = params.rubros.toString()?.split(",")
-        def vols
-
+        def vols = []
+        def errores= ''
 
         ids.each {
-//            it.replace("[", "")
-            vols.
-            println("it " + it.replace("[", "").replace("]", ""))
+            vols.add(it.replace("[", "").replace("]", ""))
         }
 
+        for(int i=0; i < vols.size(); i++){
+           def vo = VolumenesObra.get(vols[i])
+            vo.orden = i
+            if(!vo.save(flus:true)){
+                errores += vo.errors
+                return
+            }
+        }
 
+        if(errores == ''){
+            render "ok"
+        }else{
+            render "no_Error al ordenar los rubros, intentelo de nuevo"
+        }
 
-
-
-//        println("-- " + listaVolumenes[0]?.replace("[", ""))
-
-        render "ok"
     }
 
 
