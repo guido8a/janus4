@@ -623,10 +623,6 @@ class VolumenObraController {
 
     def tablaBuscadorRubroEditar_ajax(){
 
-        println("params bu " + params)
-
-//        def obra = Obra.get(params.obra)
-//        def duenoObra = esDuenoObra(obra)? 1 : 0
         def datos;
         def listaRbro = ['itemnmbr', 'itemcdgo']
         def listaItems = ['itemnmbr', 'itemcdgo']
@@ -637,16 +633,36 @@ class VolumenObraController {
                 "sbgr.sbgr__id = dprt.sbgr__id and itemcdgo not ilike 'H%' "
         def sqlTx = ""
         def bsca = listaItems[params.buscarPor.toInteger()-1]
-//        def ordn = listaRbro[params.ordenar.toInteger()-1]
 
         txwh += " and $bsca ilike '%${params.criterio}%'"
         sqlTx = "${select} ${txwh} limit 100 ".toString()
-//        println "sql: $sqlTx"
 
         def cn = dbConnectionService.getConnection()
         datos = cn.rows(sqlTx)
         [data: datos]
-
     }
+
+    def reordenar_ajax(){
+        println("params " + params.rubros)
+
+        def ids = params.rubros.toString()?.split(",")
+        def vols
+
+
+        ids.each {
+//            it.replace("[", "")
+            vols.
+            println("it " + it.replace("[", "").replace("]", ""))
+        }
+
+
+
+
+
+//        println("-- " + listaVolumenes[0]?.replace("[", ""))
+
+        render "ok"
+    }
+
 
 }
