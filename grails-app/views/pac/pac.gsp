@@ -20,7 +20,7 @@
         <div class="row-fluid">
             <div class="col-md-2">
                 Año
-                <g:select class="form-control" name="anios" from="${janus.pac.Anio.list(sort: 'anio')}" value="${actual?.id}" optionKey="id" optionValue="anio"/>
+                <g:select class="form-control" name="anios" from="${janus.pac.Anio.list(sort: 'anio')}" value="${presupuesto ? presupuesto?.anio?.id : actual?.id}" optionKey="id" optionValue="anio"/>
             </div>
             <div class="col-md-2">
                 Buscar Por

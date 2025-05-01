@@ -4,6 +4,8 @@ import janus.pac.DocumentoObra
 import janus.pac.TipoProcedimiento
 import org.springframework.dao.DataIntegrityViolationException
 import seguridad.Persona
+import seguridad.Prfl
+import seguridad.Sesn
 
 class ObraController {
 
@@ -1854,7 +1856,10 @@ class ObraController {
         def personasRolElab = PersonaRol.findAllByFuncionAndPersonaInList(funcionElab, personas)
 //        def personasUtfpu1 = Persona.findAllByDepartamento(Departamento.findByCodigo('CRFC'))
         def personasUtfpu1 = Persona.findAllByDepartamento(obra?.departamento)
-        def personasUtfpu = PersonaRol.findAllByFuncionAndPersonaInList(funcionElab, personasUtfpu1)
+        def perfilCosto = Prfl.findByCodigo('CSTO')
+        def sesion = Sesn.findAllByPerfilAndFechaFinIsNullAndUsuarioInList(perfilCosto, personasUtfpu1)
+//        def personasUtfpu = PersonaRol.findAllByFuncionAndPersonaInList(funcionElab, personasUtfpu1)
+        def personasUtfpu = PersonaRol.findAllByFuncionAndPersonaInList(funcionElab, sesion.usuario)
 
 
         def responsableObra

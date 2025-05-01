@@ -4,8 +4,6 @@
         <th style="width:5%;">Año</th>
         <th style="width:20%;">Proyecto</th>
         <th style="width:42%;">Partida</th>
-%{--        <th style="width:15%;">Programa</th>--}%
-%{--        <th style="width: 15%;">Subprograma</th>--}%
         <th style="width: 10%;">Valor</th>
         <th style="width: 5%;">PAC</th>
         <th style="width: 7%;">Acciones</th>
@@ -23,8 +21,6 @@
                     <td style="text-align: center; width:5%">${anio?.anio}</td>
                     <td style="width:20%;">${asignacion?.prspproy}</td>
                     <td style="width:42%;">${asignacion?.prspdscr} <strong style="color: #0d7bdc">(${asignacion?.prspnmro})</strong> </td>
-%{--                    <td style="width:15%;">${asignacion?.prspprgm}</td>--}%
-%{--                    <td style="width:15%;">${asignacion?.prspsbpr}</td>--}%
                     <td style="text-align: right; font-weight: bold; font-size: 14px;  width:10%">
                         <g:formatNumber number="${asignacion?.asgnvlor}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/>
                     </td>
