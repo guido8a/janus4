@@ -1,6 +1,7 @@
 package janus
 
 import janus.pac.Anio
+import janus.pac.Concurso
 
 class PresupuestoController {
 
@@ -100,7 +101,7 @@ class PresupuestoController {
         if(presupuesto){
 
             try{
-               presupuesto.delete(flush:true)
+                presupuesto.delete(flush:true)
                 render "ok_Borrado correctamente"
             }catch(e){
                 println("Error al borrar la partida " + presupuesto.errors)
@@ -110,8 +111,35 @@ class PresupuestoController {
         }else{
             render "err_No existe la partida"
         }
-
-
     }
+
+    def partida(){
+        def anio = new Date().format("yyyy")
+        def actual = Anio.findByAnio(anio.toString())
+        if(!actual){
+            actual=Anio.list([sort: "id"])?.pop()
+        }
+
+        def concurso = null
+
+        if(params.id){
+            concurso = Concurso.get(params.id)
+        }
+
+        return [actual: actual, concurso: concurso]
+    }
+
+    def listaPartidas_ajax(){
+        def anio = Anio.get(params.anio)
+        def partidas = Presupuesto.findAllByAnio(anio)
+        def concurso = null
+
+        if(params.id){
+            concurso = Concurso.get(params.id)
+        }
+
+        return [partidas:partidas, concurso: concurso]
+    }
+
 
 } //fin controller

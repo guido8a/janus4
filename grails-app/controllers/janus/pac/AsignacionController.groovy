@@ -336,4 +336,8 @@ class AsignacionController {
         [asignaciones:datos, anio: anio]
     }
 
+    def asignacion_ajax(){
+
+    }
+
 } //fin controller
