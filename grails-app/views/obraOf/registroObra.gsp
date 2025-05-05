@@ -49,7 +49,7 @@
         <button class="btn btn-primary" id="lista"><i class="fa fa-list"></i> Lista</button>
         <g:if test="${obra?.id != null}">
             <button class="btn btn-info" id="btnImprimir"><i class="fa fa-print"></i> Imprimir</button>
-            <g:if test="${obraOferente?.estado != 'C'}">
+            <g:if test="${obraOferente?.estado != 'C' && total > 0}">
                 %{--<button class="btn btn-success botonReg" id="cambiarEstado"><i class="fa fa-retweet"></i> Cambiar Estado</button>--}%
                 <button class="btn botonReg" id="cambiarEstado"><i class="fa fa-retweet"></i> Cambiar Estado</button>
             </g:if>
@@ -61,6 +61,12 @@
             <g:if test="${obra?.estado == 'R' && obra?.tipo != 'O'}">
                 <button class="btn btn-success" id="migrarObra"><i class="fa fa-retweet"></i> Migrar obra a Proyectos</button>
             </g:if>
+        </g:if>
+    </div>
+    <div class="span12 btn-group" role="navigation" style="margin-bottom: 15px;">
+        <g:if test="${total == 0}">
+            <button class="btn btn-danger" id="btnImprimir"><i class="fa fa-edit"></i>Cargar datos del Oferente:</button>
+            <button class="btn btn-danger" id="btnImprimir">Valor total de la obra: ${total}</button>
         </g:if>
     </div>
 </div>

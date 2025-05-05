@@ -9,6 +9,7 @@ class ObraOfController {
     def buscadorService
     def obraService
     def dbConnectionService
+    def preciosService
 
 
 
@@ -75,17 +76,23 @@ class ObraOfController {
 
         def persona = Persona.get(usuario)
 
-        def prov = Provincia.list();
+//        def prov = Provincia.list();
         def campos = ["codigo": ["Código", "string"], "nombre": ["Nombre", "string"], "descripcion": ["Descripción", "string"], "oficioIngreso": ["Memo ingreso", "string"], "oficioSalida": ["Memo salida", "string"], "sitio": ["Sitio", "string"], "plazo": ["Plazo", "int"], "parroquia": ["Parroquia", "string"], "comunidad": ["Comunidad", "string"], "canton": ["Canton", "string"]]
         def listaObra = [1: 'Código', 2: 'Nombre', 5: 'Estado']
+
+
         if (params.obra) {
             obra = Obra.get(params.obra)
+            def valores = preciosService.rbro_pcun_v4_of(obra.id, 'asc')?.vlobpcun?.sum()
+            println "valores: ${valores} "
 //            def subs = VolumenesObra.findAllByObra(obra, [sort: "orden"]).subPresupuesto.unique()
 //            def volumen = VolumenesObra.findByObra(obra)
 //            def formula = FormulaPolinomica.findByObra(obra)
             obraOferente = ObraOferente.findByObraAndOferente(obra, persona)
             titulo = "Oferentes - Obra: ${obra.nombre}"
-            [campos: campos, prov: prov, obra: obra, persona: persona, listaObra: listaObra, titulo: titulo, obraOferente: obraOferente]
+//            [campos: campos, prov: prov, obra: obra, persona: persona, listaObra: listaObra, titulo: titulo, obraOferente: obraOferente]
+            [campos: campos, obra: obra, persona: persona, listaObra: listaObra, titulo: titulo, obraOferente: obraOferente,
+            total: valores]
         } else {
 //            obra = new Obra();
 //             si no se listan las obras, carga la primera obra que halle
