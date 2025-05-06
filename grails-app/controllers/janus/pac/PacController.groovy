@@ -624,4 +624,17 @@ class PacController {
         [campos: campos, actual: actual, presupuesto: presupuesto]
     }
 
+    def pac_ajax(){
+
+        def partida = Presupuesto.get(params.partida)
+        def pacs = Pac.findAllByPresupuesto(partida)
+
+        return[pacs: pacs]
+    }
+
+    def tablaDatosPAC_ajax(){
+        def pac = Pac.get(params.id)
+        return [pac: pac]
+    }
+
 }

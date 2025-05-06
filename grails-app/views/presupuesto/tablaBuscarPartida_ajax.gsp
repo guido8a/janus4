@@ -46,6 +46,7 @@
         $("#codigoPartida").val(codigoPartida);
         $("#nombrePartida").val(nombrePartida);
         $("#anio").val(anio);
+        cargarAsignaciones(idPartida);
         cerrarBuscadorPartida();
     });
 </script>

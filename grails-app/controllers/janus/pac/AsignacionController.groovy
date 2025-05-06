@@ -1,7 +1,7 @@
 package janus.pac
 
 import janus.Presupuesto
-
+import janus.PresupuestoController
 import org.springframework.dao.DataIntegrityViolationException
 
 class AsignacionController {
@@ -337,7 +337,15 @@ class AsignacionController {
     }
 
     def asignacion_ajax(){
+        def partida = Presupuesto.get(params.partida)
+        def asignaciones = Asignacion.findAllByPrespuesto(partida)
 
+        return  [asignaciones: asignaciones, partida: partida]
+    }
+
+    def valor_ajax(){
+        def asignacion = Asignacion.get(params.id)
+        return [asignacion: asignacion]
     }
 
 } //fin controller

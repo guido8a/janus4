@@ -1,0 +1,1 @@
+<g:textField name="valor" class="form-control" style="text-align: right" readonly="" value="${g.formatNumber(number: asignacion?.valor, maxFractionDigits: 2, format:"##,##0", minFractionDigits: 2,locale: 'ec')}" />

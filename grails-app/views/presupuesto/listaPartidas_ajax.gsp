@@ -1,1 +1,0 @@
-<g:select class="form-control" name="partida" from="${partidas}" value="${concurso ?: concurso?.pac?.presupuesto?.id}" optionKey="id" optionValue="${{it.descripcion  + " - " + it.numero}}"/>

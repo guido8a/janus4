@@ -113,35 +113,8 @@ class PresupuestoController {
         }
     }
 
+
     def partida(){
-        def anio = new Date().format("yyyy")
-        def actual = Anio.findByAnio(anio.toString())
-        if(!actual){
-            actual=Anio.list([sort: "id"])?.pop()
-        }
-
-        def concurso = null
-
-        if(params.id){
-            concurso = Concurso.get(params.id)
-        }
-
-        return [actual: actual, concurso: concurso]
-    }
-
-    def listaPartidas_ajax(){
-        def anio = Anio.get(params.anio)
-        def partidas = Presupuesto.findAllByAnio(anio)
-        def concurso = null
-
-        if(params.id){
-            concurso = Concurso.get(params.id)
-        }
-
-        return [partidas:partidas, concurso: concurso]
-    }
-
-    def partida2(){
         def concurso = null
 
         if(params.id){

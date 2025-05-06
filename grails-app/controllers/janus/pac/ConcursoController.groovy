@@ -781,4 +781,20 @@ class ConcursoController {
     }
 
 
+    def concurso_ajax(){
+        def pac = Pac.get(params.pac)
+        def concurso = Concurso.findByPac(pac)
+
+        if(!concurso){
+            concurso = new Concurso()
+        }
+
+        return [concurso: concurso]
+    }
+
+    def formConcurso_ajax(){
+
+    }
+
+
 } //fin controller
