@@ -666,7 +666,7 @@
                         url : "${g.createLink(controller: 'contrato',action:'cambiarCodigo_ajax')}",
                         data:{
                             id: contrato,
-                            cdgo: "${contrato.obra.codigo}"
+                            cdgo: "${contrato?.obra?.codigo}"
                         },
                         success  : function (msg) {
                             g.modal("hide");
