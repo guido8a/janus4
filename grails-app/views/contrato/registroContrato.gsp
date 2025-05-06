@@ -120,7 +120,8 @@
                     <strong class="text-info" style="font-size: large">${contrato?.obra?.codigo - contrato?.oferta?.concurso?.obra?.codigo}</strong>
 
                     <g:if test="${contrato?.estado != 'R'}">
-                        <a href="#" class="btn btn-info btn-xs" id="btnCambiarCodigoOF"><i class="fa fa-retweet"></i> Cambiar </a>
+                        <a href="#" class="btn btn-info btn-xs" id="btnCambiarCodigoOF"><i class="fa fa-retweet"></i>
+                            Cambiar a Oferente/Presupuesto</a>
                     </g:if>
 
                 </div>
@@ -664,7 +665,8 @@
                         type : "POST",
                         url : "${g.createLink(controller: 'contrato',action:'cambiarCodigo_ajax')}",
                         data:{
-                            id: contrato
+                            id: contrato,
+                            cdgo: "${contrato.obra.codigo}"
                         },
                         success  : function (msg) {
                             g.modal("hide");

@@ -1573,7 +1573,24 @@ class ContratoController {
     }
 
     def cambiarCodigo_ajax(){
-
+        println "cambiarCodigo_ajax: $params"
+        def cn = dbConnectionService.getConnection()
+        def sql = "select cncr__id from ofrt, cntr where ofrt.ofrt__id = cntr.ofrt__id and cntr__id = ${params.id}"
+        println sql
+        def cncr = cn.rows(sql.toString())[0].cncr__id
+        def cdgo = params.cdgo[-2..-1] == "OF" ? params.cdgo[0..-4] : params.cdgo + '-OF'
+        sql = "select obra__id from obra where obracdgo = '${cdgo}'"
+        println sql
+        def obra = cn.rows(sql.toString())[0].obra__id
+        println "cncr: ${cncr}, obra: $obra"
+        sql = "update cncr set obra__id = $obra where cncr__id = $cncr"
+        println "--> $sql"
+        if(obra > 0) {
+            cn.execute(sql.toString())
+            render "ok"
+        } else {
+            render "No se encontró la obra con código: $cdgo"
+        }
     }
 
 } //fin controller
