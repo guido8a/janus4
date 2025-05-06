@@ -46,7 +46,7 @@
                     <a href="#" class="btn btn-xs btn-success btnEditarSubgrupo" data-id="${subgrupo?.id}" title="Editar">
                         <i class="fas fa-edit"></i>
                     </a>
-                    <a href="#" class="btn btn-xs btn-warning btnEstructuraSubgrupo" data-id="${subgrupo?.id}" title="Materiales">
+                    <a href="#" class="btn btn-xs btn-warning btnEstructuraSubgrupo" data-id="${subgrupo?.id}" title="Rubros">
                         <i class="fas fa-list"></i>
                     </a>
                     <a href="#" class="btn btn-xs btn-primary btnImprimirSubgrupo" data-id="${subgrupo?.id}" title="Imprimir capítulo">

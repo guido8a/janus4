@@ -752,11 +752,11 @@ class GrupoController {
 
         if(params.id){
             def subgrupoBuscar = DepartamentoItem.get(params.id)
-            materiales = Item.findAllByDepartamento(subgrupoBuscar).sort{a,b -> a.departamento.descripcion <=> b.departamento.descripcion ?: a.codigo <=> b.codigo }.take(50)
+            materiales = Item.findAllByDepartamento(subgrupoBuscar).sort{a,b -> a.departamento.descripcion <=> b.departamento.descripcion ?: a.codigo <=> b.codigo }
         }else{
             materiales = Item.findAllByDepartamentoInListAndNombreIlike(subgrupos, '%' + params.criterio + '%').sort{a,b -> a.departamento.descripcion <=> b.departamento.descripcion ?: a.codigo <=> b.codigo }.take(50)
         }
-
+        println "rubros mostrados:  ${materiales.size()}"
         return [materiales: materiales, grupo: grupo, id: params.id]
     }
 
