@@ -117,7 +117,13 @@
                 <div class="col-md-1 formato">Obra</div>
                 <div class="col-md-4"><g:textField name="obra" id="obraCodigo" class="obraCodigo required" autocomplete="off"
                                                    value="${contrato?.oferta?.concurso?.obra?.codigo}" disabled="true"/>
-                    <strong class="text-info" style="font-size: large">${contrato?.obra?.codigo - contrato?.oferta?.concurso?.obra?.codigo}</strong></div>
+                    <strong class="text-info" style="font-size: large">${contrato?.obra?.codigo - contrato?.oferta?.concurso?.obra?.codigo}</strong>
+
+                    <g:if test="${contrato?.estado != 'R'}">
+                        <a href="#" class="btn btn-info btn-xs" id="btnCambiarCodigoOF"><i class="fa fa-retweet"></i> Cambiar </a>
+                    </g:if>
+
+                </div>
 
                 <div class="col-md-1 formato">Nombre</div>
                 <div class="col-md-3">
@@ -634,6 +640,48 @@
 </div>
 
 <script type="text/javascript">
+
+    $("#btnCambiarCodigoOF").click(function () {
+        var contrato = '${contrato?.id}';
+        var codigo = '${contrato?.obra?.codigo?.contains("OF") ? (contrato?.obra?.codigo + " a " +  contrato?.obra?.codigo?.replace("-OF" , " ")) :(contrato?.obra?.codigo + " a " +  contrato?.obra?.codigo + "-OF" ) }';
+        bootbox.confirm({
+            title: "Modificar código",
+            message: "<i class='fa fa-exclamation-triangle text-info fa-3x'></i> Esta seguro de cambiar el código de " + "<strong style='font-size: 14px'>" + codigo + "</strong>" + " ?",
+            buttons: {
+                cancel: {
+                    label: '<i class="fa fa-times"></i> Cancelar',
+                    className: 'btn-primary'
+                },
+                confirm: {
+                    label: '<i class="fa fa-retweet"></i> Cambiar',
+                    className: 'btn-success'
+                }
+            },
+            callback: function (result) {
+                if(result){
+                    var g = cargarLoader("Cambiando...");
+                    $.ajax({
+                        type : "POST",
+                        url : "${g.createLink(controller: 'contrato',action:'cambiarCodigo_ajax')}",
+                        data:{
+                            id: contrato
+                        },
+                        success  : function (msg) {
+                            g.modal("hide");
+                            if (msg === "ok") {
+                                log("Cambiado correctamente", "success");
+                                setTimeout(function () {
+                                    location.reload();
+                                }, 800);
+                            }else{
+                                log("Error al cambiar", "error");
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    });
 
     $('#fecha1').datetimepicker({
         locale: 'es',

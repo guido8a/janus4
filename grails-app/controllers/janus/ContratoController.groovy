@@ -1572,4 +1572,8 @@ class ContratoController {
         }
     }
 
+    def cambiarCodigo_ajax(){
+
+    }
+
 } //fin controller
