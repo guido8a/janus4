@@ -82,6 +82,7 @@
                 </a>
             </g:if>
         </div>
+        "${(obra?.responsableObra?.departamento?.direccion?.id == persona?.departamento?.direccion?.id) || obra?.id != null }"
 
         <div>
             La ruta crítica se muestra con los rubros marcados en amarillo
@@ -411,6 +412,7 @@
             %{--</div>--}%
         </div>
 
+    botones-----
     <div class="modal-footer" id="modalFooter">
     </div>
 </div>
@@ -989,7 +991,8 @@
             });
 
             $("#modalTitle").html("Registro del Cronograma");
-            <g:if test="${(obra?.responsableObra?.departamento?.direccion?.id == persona?.departamento?.direccion?.id && duenoObra == 1) || obra?.id == null }">
+            %{--<g:if test="${(obra?.responsableObra?.departamento?.direccion?.id == persona?.departamento?.direccion?.id && duenoObra == 1) || obra?.id == null }">--}%
+            <g:if test="${(obra?.departamento?.direccion?.id == persona?.departamento?.direccion?.id)}">
             $("#modalFooter").html("").append($btnCancel).append($btnOk);
             </g:if>
             <g:else>
@@ -1183,7 +1186,8 @@
                     %{--</g:if>--}%
 
                     $("#modalTitle").html("Registro del Cronograma");
-                    <g:if test="${(obra?.responsableObra?.departamento?.direccion?.id == persona?.departamento?.direccion?.id && duenoObra == 1) || obra?.id == null }">
+                    %{--<g:if test="${(obra?.responsableObra?.departamento?.direccion?.id == persona?.departamento?.direccion?.id && duenoObra == 1) || obra?.id == null }">--}%
+                    <g:if test="${(obra?.departamento?.direccion?.id == persona?.departamento?.direccion?.id)}">
                     $("#modalFooter").html("").append($btnCancel).append($btnOk);
                     </g:if>
                     <g:else>
