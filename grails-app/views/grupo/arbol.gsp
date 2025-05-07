@@ -36,14 +36,23 @@
                 </span>
             </span>
 
-            <div class="col-md-2" style="margin-top: 20px">
+            <div class="col-md-4" style="margin-top: 20px">
                 <button class="btn btn-info" id="btnBuscar"><i class="fa fa-search"></i>Buscar</button>
                 <button class="btn btn-warning" id="btnLimpiar" title="Limpiar Búsqueda"><i class="fa fa-eraser"></i>Limpiar</button>
+                <button class="btn btn-primary btnImprimirPrincipal" title="Imprimir rubros del grupo"><i class="fa fa-print"></i> Imprimir rubros <strong class="pNombre"></strong>  </button>
             </div>
 
-            <span class="col-md-2" style="margin-top: 20px">
-                <button class="btn btn-primary btnImprimirPrincipal" title="Imprimir rubros del grupo"><i class="fa fa-print"></i> Imprimir rubros <strong class="pNombre"></strong>  </button>
-            </span>
+            <div class="col-md-2" style="width: 260px; margin-top: 0px">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#" id="bc_grpo">Grupo</a></li>
+                    <li class="breadcrumb-item"><a href="#" id="bc_sbgr">Subgrupo</a></li>
+                    <li class="breadcrumb-item" aria-current="page" id="bc_item">Rubros</li>
+                </ol>
+            </div>
+
+%{--            <span class="col-md-2" style="margin-top: 20px">--}%
+
+%{--            </span>--}%
 
         </div>
     </fieldset>
@@ -121,7 +130,42 @@
             },
             success: function (msg){
                 d.modal("hide");
-                $("#divTablaGrupoRubros").html(msg)
+                $("#divTablaGrupoRubros").html(msg);
+
+                switch (tipo) {
+                    case "1":
+                        $('#bc_grpo').html('Grupo');
+                        $('#bc_sbgr').hide();
+                        $('#bc_item').hide();
+                        break;
+                    case "2":
+                        $('#bc_grpo').html('Grupo');
+                        var li = $('#li_sbgr');
+                        var elemento = document.createElement('a');
+                        elemento.id = 'bc_sbgr';
+                        elemento.href = url;
+                        elemento.id_grpo = '#';
+                        li.append(elemento);
+                        $('#bc_sbgr').show();
+                        $('#bc_sbgr').html('Subgrupo');
+                        $('#bc_item').hide();
+                        break;
+                    case "3":
+                        $('#bc_grpo').html('Grupo');
+                        $('#bc_sbgr').show();
+                        $('#bc_sbgr').html('Subgrupo');
+                        $('#bc_item').show();
+                        $('#bc_item').html('Rubros');
+                        break;
+                    case "4":
+                        $('#bc_grpo').html('Grupo');
+                        $('#bc_sbgr').show();
+                        $('#bc_sbgr').html('Subgrupo');
+                        $('#bc_item').show();
+                        $('#bc_item').html('Rubros');
+                        break;
+                }
+
             }
         })
     }
@@ -302,6 +346,18 @@
     function cerrarFormSol(){
         cfs.modal("hide");
     }
+
+    $("#bc_grpo").click(function () {
+        $("#tipo").val(1);
+        $("#criterio").val('');
+        cargarTablaGrupoRubros();
+    });
+
+    $("#bc_sbgr").click(function () {
+        $("#tipo").val(2);
+        $("#criterio").val('');
+        cargarTablaGrupoRubros();
+    });
 
 </script>
 

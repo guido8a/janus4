@@ -1,31 +1,31 @@
-<div style="position: fixed; top: 150px; right: 1100px;">
-    <strong>Número de rubros desplegados: ${numero}</strong>
-</div>
-<div class="col-md-12" style="text-align: center; font-size: 14px; font-weight: bold">
-    <div class="col-md-4"></div>
-    <div class="col-md-2" role="alert">
-        <ol class="breadcrumb" style="font-weight: bold">
-            <li class="active"><i class="fa fa-${grupo?.descripcion == 'OBRAS VIALES' ? 'car' : (grupo?.descripcion == 'OBRAS DE RIEGO' ? 'water' : 'hammer') } text-warning"></i> ${grupo?.descripcion}</li>
-        </ol>
-    </div>
-    <div class="col-md-4" role="alert">
-        <ol class="breadcrumb" style="font-weight: bold">
-            <li class="active">GRUPO</li>
-            <li class="active">SUBGRUPO</li>
-            <li class="active">RUBROS</li>
-        </ol>
-    </div>
+%{--<div style="position: fixed; top: 150px; right: 1100px;">--}%
+%{--    <strong>Número de rubros desplegados: ${numero}</strong>--}%
+%{--</div>--}%
+%{--<div class="col-md-12" style="text-align: center; font-size: 14px; font-weight: bold">--}%
+%{--    <div class="col-md-4"></div>--}%
+%{--    <div class="col-md-2" role="alert">--}%
+%{--        <ol class="breadcrumb" style="font-weight: bold">--}%
+%{--            <li class="active"><i class="fa fa-${grupo?.descripcion == 'OBRAS VIALES' ? 'car' : (grupo?.descripcion == 'OBRAS DE RIEGO' ? 'water' : 'hammer') } text-warning"></i> ${grupo?.descripcion}</li>--}%
+%{--        </ol>--}%
+%{--    </div>--}%
+%{--    <div class="col-md-4" role="alert">--}%
+%{--        <ol class="breadcrumb" style="font-weight: bold">--}%
+%{--            <li class="active">GRUPO</li>--}%
+%{--            <li class="active">SUBGRUPO</li>--}%
+%{--            <li class="active">RUBROS</li>--}%
+%{--        </ol>--}%
+%{--    </div>--}%
     %{--    <div class="col-md-2">--}%
     %{--        <a href="#" class="btn btn-sm btn-success btnNuevoMaterial" title="Crear nuevo material">--}%
     %{--            <i class="fas fa-file"></i> Nuevo Material--}%
     %{--        </a>--}%
     %{--    </div>--}%
-    <div class="col-md-2">
-        <a href="#" class="btn btn-sm btn-success btnRegresarMaterial" title="Regresar">
-            <i class="fas fa-arrow-left"></i>
-        </a>
-    </div>
-</div>
+%{--    <div class="col-md-2">--}%
+%{--        <a href="#" class="btn btn-sm btn-success btnRegresarMaterial" title="Regresar">--}%
+%{--            <i class="fas fa-arrow-left"></i>--}%
+%{--        </a>--}%
+%{--    </div>--}%
+%{--</div>--}%
 
 <div role="main" style="margin-top: 5px;">
     <table class="table table-bordered table-striped table-condensed table-hover">
