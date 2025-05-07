@@ -724,7 +724,7 @@ class GrupoController {
     def tablaGrupos_ajax(){
         def grupo = Grupo.get(params.buscarPor)
         def grupos = SubgrupoItems.findAllByGrupoAndDescripcionIlike(grupo, '%' + params.criterio + '%', [sort: 'codigo', order: 'asc']).take(50)
-        return [grupos: grupos, grupo: grupo]
+        return [grupos: grupos, grupo: grupo, numero: grupos.size()]
     }
 
     def tablaSubgrupos_ajax(){
@@ -739,7 +739,7 @@ class GrupoController {
             subgrupos = DepartamentoItem.findAllBySubgrupoInListAndDescripcionIlike(grupos, '%' + params.criterio + '%').sort{a,b -> a.subgrupo.descripcion <=> b.subgrupo.descripcion ?: a.codigo <=> b.codigo }.take(50)
         }
 
-        return [subgrupos: subgrupos, grupo: grupo]
+        return [subgrupos: subgrupos, grupo: grupo, numero: subgrupos.size()]
     }
 
     def tablaRubros_ajax(){
@@ -757,7 +757,7 @@ class GrupoController {
             materiales = Item.findAllByDepartamentoInListAndNombreIlike(subgrupos, '%' + params.criterio + '%').sort{a,b -> a.departamento.descripcion <=> b.departamento.descripcion ?: a.codigo <=> b.codigo }.take(50)
         }
         println "rubros mostrados:  ${materiales.size()}"
-        return [materiales: materiales, grupo: grupo, id: params.id]
+        return [materiales: materiales, grupo: grupo, id: params.id, numero: materiales.size()]
     }
 
 } //fin controller

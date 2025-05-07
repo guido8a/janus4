@@ -1,3 +1,6 @@
+<div style="position: fixed; top: 150px; right: 1100px;">
+    <strong>Número de rubros desplegados: ${numero}</strong>
+</div>
 <div class="col-md-12" style="text-align: center; font-size: 14px; font-weight: bold">
     <div class="col-md-4"></div>
     <div class="col-md-2" role="alert">
