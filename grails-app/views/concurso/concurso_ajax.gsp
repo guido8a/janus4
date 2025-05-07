@@ -8,18 +8,24 @@
 
             <div class="row" style="margin-bottom: 5px;">
                 <div class="col-md-9 btn-group" role="navigation">
-                    <g:if test="${concurso.estado != 'R'}">
-                        <a href="#" class="btn btn-success" id="btnSave">
-                            <i class="fa fa-save"></i> Guardar
-                        </a>
-                    </g:if>
-                    <g:if test="${concurso}">
-                        <a href="#" class="btn btn-info" id="btnEstado"><i class="fa fa-check"></i> Cambiar Estado</a>
+                    <g:if test="${pac}">
+                        <g:if test="${concurso?.estado != 'R'}">
+                            <a href="#" class="btn btn-success" id="btnSaveConcurso">
+                                <i class="fa fa-save"></i> Guardar
+                            </a>
+                        </g:if>
+
+                        <g:if test="${concurso?.id}">
+                            <a href="#" class="btn btn-info" id="btnCambiarEstado"><i class="fa fa-check"></i> Cambiar Estado</a>
+                        </g:if>
                     </g:if>
                 </div>
             </div>
 
             <g:form class="form-horizontal" name="frmConcurso" action="saveConcurso_ajax">
+                <g:hiddenField name="pac" value="${pac?.id}"/>
+%{--                <g:hiddenField name="obra" value="${pac?.presupuesto?. concurso?.id}"/>--}%
+                <g:hiddenField name="administracion" value="${administracion?.id}"/>
                 <g:hiddenField name="id" value="${concurso?.id}"/>
                 <div class="form-group">
                     <span class="grupo">
@@ -28,7 +34,7 @@
                         </label>
                         <span class="col-md-6">
                             <g:hiddenField name="administracion.id" value="${concurso?.administracion?.id}"/>
-                            <g:textField name="administracionName" class="form-control" value="${concurso?.administracion?.nombrePrefecto}" readonly=""/>
+                            <g:textField name="administracionName" class="form-control" value="${concurso?.administracion?.nombrePrefecto ?: administracion?.nombrePrefecto}" readonly=""/>
                             <p class="help-block ui-helper-hidden"></p>
                         </span>
                     </span>
@@ -37,7 +43,8 @@
                             Estado
                         </label>
                         <span class="col-md-2">
-                            <g:textField name="estado" class="form-control" value="${concurso?.estado == 'R' ? 'REGISTRADO' : 'NO REGISTRADO'}" readonly=""/>
+                            <g:hiddenField name="estado" value="${concurso?.estado ?: null}"/>
+                            <g:textField name="estadoName" class="form-control" value="${concurso?.estado == 'R' ? 'REGISTRADO' : 'NO REGISTRADO'}" readonly=""/>
                             <p class="help-block ui-helper-hidden"></p>
                         </span>
                     </span>
@@ -150,32 +157,88 @@
 
         </div>
 
-        <div id="divDatosConcurso">
-
-        </div>
     </div>
 </div>
 
 <script type="text/javascript">
 
-    %{--$("#pac").change(function () {--}%
-    %{--    cargarDatosPAC();--}%
-    %{--});--}%
+    <g:if test="${concurso?.id}">
 
-    %{--cargarDatosPAC();--}%
+    cargarFechasConcurso('${concurso?.id}');
 
-    %{--function cargarDatosPAC() {--}%
-    %{--    var pac = $("#pac option:selected").val();--}%
-    %{--    $.ajax({--}%
-    %{--        type: "POST",--}%
-    %{--        url: "${createLink(controller: 'pac', action:'tablaDatosPAC_ajax')}",--}%
-    %{--        data: {--}%
-    %{--            id: pac--}%
-    %{--        },--}%
-    %{--        success: function (msg) {--}%
-    %{--            $("#divTablaPAC").html(msg);--}%
-    %{--        }--}%
-    %{--    });--}%
-    %{--}--}%
+    </g:if>
+    <g:else>
+    $("#divFechas").html('');
+    </g:else>
 
+    function cargarFechasConcurso(concurso){
+        $.ajax({
+            type: "POST",
+            url: "${createLink(controller: 'concurso', action:'fechas_ajax')}",
+            data: {
+                concurso: concurso
+            },
+            success: function (msg) {
+                $("#divFechas").html(msg);
+            }
+        });
+    }
+
+    $("#btnSaveConcurso").click(function () {
+       return submitFormConcurso();
+    });
+
+    function submitFormConcurso() {
+        var $form = $("#frmConcurso");
+        if ($form.valid()) {
+            var data = $form.serialize();
+            var dialog = cargarLoader("Guardando...");
+            $.ajax({
+                type    : "POST",
+                url     : $form.attr("action"),
+                data    : data,
+                success : function (msg) {
+                    dialog.modal('hide');
+                    var parts = msg.split("_");
+                    if(parts[0] === 'ok'){
+                        log(parts[1], "success");
+                        cargarConcurso('${pac?.id}');
+                    }else{
+                        if(parts[0] === 'err'){
+                            bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
+                            return false;
+                        }else{
+                            log(parts[1], "error");
+                        }
+                    }
+                }
+            });
+        } else {
+            return false;
+        }
+    }
+
+    $("#btnCambiarEstado").click(function () {
+        bootbox.confirm({
+            title: "Cambiar estado del concurso",
+            message: '<i class="fa fa-retweet text-info fa-3x"></i>' + '<strong style="font-size: 14px">' + "Está seguro de querer cambiar el estado del concurso?. " + '</strong>' ,
+            buttons: {
+                cancel: {
+                    label: '<i class="fa fa-times"></i> Cancelar',
+                    className: 'btn-primary'
+                },
+                confirm: {
+                    label: '<i class="fa fa-retweet"></i> Cambiar',
+                    className: 'btn-success'
+                }
+            },
+            callback: function (result) {
+                if(result){
+                    $("#estado").val() === 'R' ? $("#estado").val('N') : $("#estado").val('R');
+                    return submitFormConcurso();
+                }
+            }
+        });
+    })
+    
 </script>

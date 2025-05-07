@@ -38,14 +38,8 @@
 
 <script type="text/javascript">
     $(".seleccionaPartida").click(function () {
-        var anio = '${anio?.anio}';
         var idPartida = $(this).data("id");
-        var codigoPartida = $(this).data("codigo");
-        var nombrePartida = $(this).data("nombre");
-        $("#partida").val(idPartida);
-        $("#codigoPartida").val(codigoPartida);
-        $("#nombrePartida").val(nombrePartida);
-        $("#anio").val(anio);
+        cargarPartida(idPartida);
         cargarAsignaciones(idPartida);
         cerrarBuscadorPartida();
     });

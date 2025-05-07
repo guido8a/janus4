@@ -629,7 +629,7 @@ class PacController {
         def partida = Presupuesto.get(params.partida)
         def pacs = Pac.findAllByPresupuesto(partida)
 
-        return[pacs: pacs]
+        return[pacs: pacs, partida: partida]
     }
 
     def tablaDatosPAC_ajax(){

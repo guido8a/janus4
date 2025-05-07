@@ -789,12 +789,141 @@ class ConcursoController {
             concurso = new Concurso()
         }
 
+        def administracion = Administracion.list()?.last()
+
+        return [concurso: concurso, pac: pac, administracion: administracion]
+    }
+
+    def fechas_ajax(){
+        def concurso = Concurso.get(params.concurso)
         return [concurso: concurso]
     }
 
-    def formConcurso_ajax(){
+    def saveConcurso_ajax() {
 
-    }
+//        println("parmas concurso " + params)
+
+        if (params.codigo) {
+            params.codigo = params.codigo.toUpperCase()
+        }
+        if (params.fechaInicio) {
+            params.fechaInicio = new Date().parse("dd-MM-yyyy HH:mm", params.fechaInicio)
+        }
+        if (params.fechaLimitePreguntas) {
+            params.fechaLimitePreguntas = new Date().parse("dd-MM-yyyy HH:mm", params.fechaLimitePreguntas)
+        }
+        if (params.fechaPublicacion) {
+            params.fechaPublicacion = new Date().parse("dd-MM-yyyy HH:mm", params.fechaPublicacion)
+        }
+        if (params.fechaLimiteEntregaOfertas) {
+            params.fechaLimiteEntregaOfertas = new Date().parse("dd-MM-yyyy HH:mm", params.fechaLimiteEntregaOfertas)
+        }
+        if (params.fechaLimiteRespuestas) {
+            params.fechaLimiteRespuestas = new Date().parse("dd-MM-yyyy HH:mm", params.fechaLimiteRespuestas)
+        }
+        if (params.fechaLimiteRespuestaConvalidacion) {
+            params.fechaLimiteRespuestaConvalidacion = new Date().parse("dd-MM-yyyy HH:mm", params.fechaLimiteRespuestaConvalidacion)
+        }
+        if (params.fechaLimiteSolicitarConvalidacion) {
+            params.fechaLimiteSolicitarConvalidacion = new Date().parse("dd-MM-yyyy HH:mm", params.fechaLimiteSolicitarConvalidacion)
+        }
+        if (params.fechaInicioPuja) {
+            params.fechaInicioPuja = new Date().parse("dd-MM-yyyy HH:mm", params.fechaInicioPuja)
+        }
+        if (params.fechaCalificacion) {
+            params.fechaCalificacion = new Date().parse("dd-MM-yyyy HH:mm", params.fechaCalificacion)
+        }
+        if (params.fechaAdjudicacion) {
+            params.fechaAdjudicacion = new Date().parse("dd-MM-yyyy HH:mm", params.fechaAdjudicacion)
+        }
+        if (params.fechaFinPuja) {
+            params.fechaFinPuja = new Date().parse("dd-MM-yyyy HH:mm", params.fechaFinPuja)
+        }
+
+        if (params.fechaAperturaOfertas) {
+            params.fechaAperturaOfertas = new Date().parse("dd-MM-yyyy HH:mm", params.fechaAperturaOfertas)
+        }
+        if (params.fechaLimiteResultadosFinales) {
+            params.fechaLimiteResultadosFinales = new Date().parse("dd-MM-yyyy HH:mm", params.fechaLimiteResultadosFinales)
+        }
+        if (params.fechaInicioEvaluacionOferta) {
+            params.fechaInicioEvaluacionOferta = new Date().parse("dd-MM-yyyy HH:mm", params.fechaInicioEvaluacionOferta)
+        }
+        if (params.fechaAceptacionProveedor) {
+            params.fechaAceptacionProveedor = new Date().parse("dd-MM-yyyy HH:mm", params.fechaAceptacionProveedor)
+        }
+
+        if (params.fechaInicioPreparatorio) {
+            params.fechaInicioPreparatorio = new Date().parse("dd-MM-yyyy HH:mm", params.fechaInicioPreparatorio)
+        }
+        if (params.fechaFinPreparatorio) {
+            params.fechaFinPreparatorio = new Date().parse("dd-MM-yyyy HH:mm", params.fechaFinPreparatorio)
+        }
+        if (params.fechaInicioPrecontractual) {
+            params.fechaInicioPrecontractual = new Date().parse("dd-MM-yyyy HH:mm", params.fechaInicioPrecontractual)
+        }
+        if (params.fechaFinPrecontractual) {
+            params.fechaFinPrecontractual = new Date().parse("dd-MM-yyyy HH:mm", params.fechaFinPrecontractual)
+        }
+        if (params.fechaInicioContractual) {
+            params.fechaInicioContractual = new Date().parse("dd-MM-yyyy HH:mm", params.fechaInicioContractual)
+        }
+        if (params.fechaFinContractual) {
+            params.fechaFinContractual = new Date().parse("dd-MM-yyyy HH:mm", params.fechaFinContractual)
+        }
+        if (params.fechaNotificacionAdjudicacion) {
+            params.fechaNotificacionAdjudicacion = new Date().parse("dd-MM-yyyy HH:mm", params.fechaNotificacionAdjudicacion)
+        }
+        if (params.memoRequerimiento) {
+            params.memoRequerimiento = params.memoRequerimiento.toString().toUpperCase()
+        }
+        if (params.memoSif) {
+            params.memoSif = params.memoSif.toString().toUpperCase()
+        }
+
+        if (params.presupuestoReferencial) {
+            params.presupuestoReferencial = params.presupuestoReferencial.toDouble()
+        }
+
+        println "params ${params.presupuestoReferencial}"
+        def concursoInstance
+        if (params.id) {
+            concursoInstance = Concurso.get(params.id)
+            if (!concursoInstance) {
+                render"no_No se encontró el concurso"
+                return
+            }//no existe el objeto
+//            concursoInstance.properties = params
+        }//es edit
+        else {
+            concursoInstance = new Concurso()
+        } //es create
+
+        concursoInstance.properties = params
+
+        if(params.costoBases) {
+            concursoInstance.costoBases = params.costoBases.toDouble()
+        }
+        if(params.costoBases) {
+            concursoInstance.porMilBases = params.porMilBases.toDouble()
+        }
+
+        if (!concursoInstance.save(flush: true)) {
+            println("Error al guardar el concurso" + concursoInstance.errors)
+            render "no_Error al guardar el concurso"
+        }else{
+            if (!concursoInstance.codigo) {
+                def codigo = generaCodigo(concursoInstance)
+                concursoInstance.codigo = codigo
+                if (!concursoInstance.save(flush: true)) {
+                    println "error al guarda el codigo " + codigo + " en el concurso " + concursoInstance.id
+                    println concursoInstance.errors
+                }
+            }
+
+            render "ok_Concurso guardado correctamente"
+        }
+    } //save
 
 
 } //fin controller

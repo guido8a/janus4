@@ -1,5 +1,6 @@
 package janus
 
+import janus.cnsl.PrecioCostos
 import janus.pac.Anio
 import janus.pac.Concurso
 
@@ -151,6 +152,18 @@ class PresupuestoController {
         datos = cn.rows(sqlTx)
 
         return[presupuestos: datos, anio: anio]
+    }
+
+    def partida_ajax(){
+        def partida
+
+        if(params.partida){
+            partida = Presupuesto.get(params.partida)
+        }else{
+            partida = new Presupuesto()
+        }
+
+        return [partida: partida]
     }
 
 } //fin controller

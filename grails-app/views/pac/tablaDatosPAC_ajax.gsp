@@ -64,9 +64,64 @@ th, td {
         </g:if>
         <g:else>
             <tr>
-                <td class="alert alert-info" colspan="7" style="text-align: center"> <h3><i class="fa fa-exclamation-triangle"></i> No exiten registros</h3> </td>
+                <td class="alert alert-warning" colspan="7" style="text-align: center;"> <h3><i class="fa fa-exclamation-triangle"></i> No existen registros</h3> </td>
             </tr>
         </g:else>
         </tbody>
     </table>
 </div>
+
+<script type="text/javascript">
+
+    $(".btnEditarPac").click(function () {
+        var id = $(this).data("id");
+        createEditPac(id);
+    });
+
+    $(".btnBorrarPac").click(function () {
+        var partida = '${pac?.presupuesto?.id}';
+        var id = $(this).data("id");
+        bootbox.confirm({
+            title: "Eliminar PAC",
+            message: "<i class='fa fa-exclamation-triangle text-info fa-3x'></i> <strong style='font-size: 14px'> Está seguro de eliminar este PAC?</strong> ",
+            buttons: {
+                cancel: {
+                    label: '<i class="fa fa-times"></i> Cancelar',
+                    className: 'btn-primary'
+                },
+                confirm: {
+                    label: '<i class="fa fa-trash"></i> Borrar',
+                    className: 'btn-danger'
+                }
+            },
+            callback: function (result) {
+                if(result){
+                    var dialog = cargarLoader("Borrando...");
+                    $.ajax({
+                        type : "POST",
+                        url : "${g.createLink(controller: 'pac',action:'borrarPac_ajax')}",
+                        data     : {
+                            id : id
+                        },
+                        success  : function (msg) {
+                            dialog.modal('hide');
+                            var parts = msg.split("_");
+                            if(parts[0] === 'ok'){
+                                log(parts[1], "success");
+                                cargarPAC(partida);
+                            }else{
+                                if(parts[0] === 'err'){
+                                    bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
+                                    return false;
+                                }else{
+                                    log(parts[1], "error");
+                                }
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    });
+
+</script>
