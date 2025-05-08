@@ -91,7 +91,7 @@ class PresupuestoController {
             println("Error al guardar la partida " + presupuesto.errors)
             render "no_Error al guardar la partida"
         }else{
-            render "ok_Guardado correctamente"
+            render "ok_Guardado correctamente_${presupuesto?.id}"
         }
     }
 

@@ -337,6 +337,7 @@ class AsignacionController {
     }
 
     def asignacion_ajax(){
+
         def partida = Presupuesto.get(params.partida)
         def asignaciones = Asignacion.findAllByPrespuesto(partida)
 
@@ -346,6 +347,30 @@ class AsignacionController {
     def valor_ajax(){
         def asignacion = Asignacion.get(params.id)
         return [asignacion: asignacion]
+    }
+
+    def formNuevaAsignacion_ajax(){
+
+        def asignacion
+        def partida = null
+        def anio = new Date().format("yyyy")
+        def actual = Anio.findByAnio(anio.toString())
+
+        if(!actual){
+            actual=Anio.list([sort: "id"])?.pop()
+        }
+
+        if(params.id){
+            asignacion = Asignacion.get(params.id)
+        }else{
+            asignacion = new Asignacion()
+        }
+
+        if(params.partida){
+            partida = Presupuesto.get(params.partida)
+        }
+
+        return [asignacion:asignacion, actual: actual, partida: partida]
     }
 
 } //fin controller

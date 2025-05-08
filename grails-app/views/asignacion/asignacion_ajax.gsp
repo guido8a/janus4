@@ -26,6 +26,10 @@
 
 <script type="text/javascript">
 
+
+    cargarPAC($("#asignacion option:selected").val());
+
+
     $("#asignacion").change(function () {
         cargarValorAsignacion();
     });
@@ -43,17 +47,18 @@
             },
             success: function (msg) {
                 $("#divValorAsignacion").html(msg);
-                cargarPAC(partida)
+                cargarPAC($("#asignacion option:selected").val());
             }
         });
     }
 
-    function createEditAsignacion(id) {
+    function createEditAsignacion(id, partida) {
         var title = id ? "Editar " : "Crear ";
         var data = id ? {id : id} : {};
+        data.partida = partida;
         $.ajax({
             type    : "POST",
-            url: "${createLink(controller: 'asignacion', action:'formAsignacion_ajax')}",
+            url: "${createLink(controller: 'asignacion', action:'formNuevaAsignacion_ajax')}",
             data    : data,
             success : function (msg) {
                 var b = bootbox.dialog({
@@ -113,8 +118,8 @@
     }
 
     $(".btnNuevaAsignacion").click(function () {
-        createEditAsignacion();
-    })
+        createEditAsignacion(null, '${partida?.id}');
+    });
 
 
 

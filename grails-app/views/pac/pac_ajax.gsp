@@ -1,27 +1,32 @@
-<div class="row alert alert-info">
-    <div class="col-md-12 breadcrumb" style="font-size: 18px; text-align: center; font-weight: bold">
-        P.A.C.
-    </div>
-    <div class="col-md-12" >
-        <div class="col-md-1">
-            <label style="font-size: 18px; text-align: center; font-weight: bold">
-                P.A.C.
-            </label>
+<g:if test="${asignacion}">
+    <div class="row alert alert-info">
+        <div class="col-md-12 breadcrumb" style="font-size: 18px; text-align: center; font-weight: bold">
+            P.A.C.
         </div>
-        <div class="col-md-8">
-            <g:select name="pac" from="${pacs}" value="" optionValue="${{it.descripcion + " - " + (it?.c1 ? " C1 " :( it?.c2 ? "C2" : "C3" )) }}" optionKey="id" class="form-control" />
-        </div>
-        <div class="col-md-2" style="margin-top: 2px; float: right">
-            <a href="#" class="btn btn-success btnNuevoPac"><i class="fa fa-file"></i> Nuevo PAC</a>
-        </div>
+        <div class="col-md-12" >
+            <div class="col-md-1">
+                <label style="font-size: 18px; text-align: center; font-weight: bold">
+                    P.A.C.
+                </label>
+            </div>
+            <div class="col-md-8">
+                <g:select name="pac" from="${pacs}" value="" optionValue="${{it.descripcion + " - " + (it?.c1 ? " C1 " :( it?.c2 ? "C2" : "C3" )) }}" optionKey="id" class="form-control" />
+            </div>
 
-        <div id="divTablaPAC">
+            <div class="col-md-2" style="margin-top: 2px; float: right">
+                <a href="#" class="btn btn-success btnNuevoPac"><i class="fa fa-file"></i> Nuevo PAC</a>
+            </div>
 
+            <div id="divTablaPAC">
+
+            </div>
         </div>
     </div>
-</div>
+</g:if>
 
 <script type="text/javascript">
+
+    cargarConcurso($("#pac option:selected").val());
 
     $("#pac").change(function () {
         cargarDatosPAC();
@@ -39,18 +44,18 @@
             },
             success: function (msg) {
                 $("#divTablaPAC").html(msg);
-                cargarConcurso(pac);
             }
         });
     }
 
-    function createEditPac(id) {
+    function createEditPac(id, asignacion) {
         var title = id ? "Editar " : "Crear ";
         var data = id ? {id : id} : {};
+        data.asignacion = asignacion;
 
         $.ajax({
             type    : "POST",
-            url: "${createLink(controller: 'pac', action:'form_ajax')}",
+            url: "${createLink(controller: 'pac', action:'formNuevoPac_ajax')}",
             data    : data,
             success : function (msg) {
                 var b = bootbox.dialog({
@@ -80,7 +85,7 @@
     } //createEdit
 
     function submitFormPac() {
-        var partida = '${partida?.id}';
+        var asignacion = '${asignacion?.id}';
         var $form = $("#frmPac");
         if ($form.valid()) {
             var data = $form.serialize();
@@ -94,7 +99,7 @@
                     var parts = msg.split("_");
                     if(parts[0] === 'ok'){
                         log(parts[1], "success");
-                        cargarPAC(partida);
+                        cargarPAC(asignacion);
                     }else{
                         if(parts[0] === 'err'){
                             bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
@@ -111,7 +116,9 @@
     }
 
     $(".btnNuevoPac").click(function () {
-        createEditPac();
-    })
+        createEditPac(null, '${asignacion?.id}');
+    });
+
+
 
 </script>

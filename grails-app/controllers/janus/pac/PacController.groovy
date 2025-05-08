@@ -432,6 +432,26 @@ class PacController {
         render "" + techo + ";" + usado
     }
 
+
+    def cargarTechoNuevoPac() {
+//        println "cargarTecho params: $params"
+        def prsp = janus.Presupuesto.get(params.id)
+        def anio = Anio.get(params.anio)
+        def techo = Asignacion.findByAnioAndPrespuesto(anio, prsp)
+        if (!techo)
+            techo = "0.00"
+        else
+            techo = techo.valor
+        def pacs = Pac.findAllByPresupuestoAndAnio(prsp, anio)
+        def usado = 0
+        pacs.each {
+            if(it.id != (params?.pac_id? params?.pac_id?.toInteger() : 0)) {
+                usado += it.costo * it.cantidad
+            }
+        }
+        render "" + techo + ";" + usado
+    }
+
     def tabla() {
 
         def pac
@@ -626,15 +646,40 @@ class PacController {
 
     def pac_ajax(){
 
-        def partida = Presupuesto.get(params.partida)
+        def asignacion = Asignacion.get(params.asignacion)
+        def partida = asignacion?.prespuesto
         def pacs = Pac.findAllByPresupuesto(partida)
 
-        return[pacs: pacs, partida: partida]
+        return[pacs: pacs, partida: partida, asignacion: asignacion]
     }
 
     def tablaDatosPAC_ajax(){
         def pac = Pac.get(params.id)
         return [pac: pac]
+    }
+
+    def formNuevoPac_ajax(){
+
+        def pac
+        def asignacion = null
+
+        def anio = new Date().format("yyyy")
+        def actual = Anio.findByAnio(anio.toString())
+        if(!actual){
+            actual=Anio.list([sort: "id"])?.pop()
+        }
+
+        if(params.id){
+            pac = Pac.get(params.id)
+        }else{
+            pac= new Pac()
+        }
+
+        if(params.asignacion){
+            asignacion = Asignacion.get(params.asignacion)
+        }
+
+        return [pac: pac, actual: actual, asignacion: asignacion]
     }
 
 }

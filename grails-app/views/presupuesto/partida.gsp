@@ -56,12 +56,12 @@
         });
     }
 
-    function cargarPAC(partida){
+    function cargarPAC(asignacion){
         $.ajax({
             type: "POST",
             url: "${createLink(controller: 'pac', action:'pac_ajax')}",
             data: {
-                partida: partida
+                asignacion: asignacion
             },
             success: function (msg) {
                 $("#divPAC").html(msg);

@@ -118,6 +118,8 @@
                     var parts = msg.split("_");
                     if(parts[0] === 'ok'){
                         log(parts[1], "success");
+                        cargarPartida(parts[2]);
+                        cargarAsignaciones(parts[2]);
                     }else{
                         if(parts[0] === 'err'){
                             bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
