@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta name="layout" content="main">
-    <title>Subir archivo excel contrato</title>
+    <title>Subir excel cronograma</title>
     <style type="text/css">
     table, th, td {
         border: 1px solid white;
@@ -32,7 +32,11 @@
 </g:if>
 
 %{--<div class="alert alert-warning">--}%
-    <div class="alert alert-warning"><i class="fa fa-exclamation-triangle fa-2x text-info"></i> <strong style="font-size: 16px"> Ingrese a CRONOGRAMA TOTAL antes de subir cualquier archivo excel </strong></div>
+    <div class="alert alert-warning"><i class="fa fa-exclamation-triangle fa-2x text-info"></i> <strong style="font-size: 16px">
+        1. Ingrese a CRONOGRAMA TOTAL antes de subir cualquier archivo excel<br>
+        2. El archiovo excel no debe contener fórmulas, de ser así use pegado especial en otro archivo excel para eliminarlas.<br>
+        3. La numeración de los rubros debe coincidir con el orden del presupuesto, solo se numeran los rubros (columna A)<br>
+        4. El archivo debe ser XLSX</div>
 %{--</div>--}%
 
 <g:uploadForm controller="cronogramaContrato" action="uploadFile" method="post" name="frmUpload" id="${contrato?.id}" style="padding: 10px">

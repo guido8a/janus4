@@ -189,11 +189,11 @@ class CronogramaContratoController {
             cn.close()
         }
 
-        def obra = obraOld
-//        def obra = Obra.findByCodigo(obraOld.codigo + "-OF")
-//        if (!obra) {
-//            obra = obraOld
-//        }
+
+        def obra = Obra.findByCodigo(obraOld.codigo + "-OF")
+        if (!obra) {
+            obra = obraOld
+        }
         //solo copia si esta vacio el cronograma del contrato
         def cronoCntr = CronogramaContratado.countByContrato(contrato)
         println "cronoCntr: ${cronoCntr}, obra: ${obra.id}"
@@ -205,17 +205,17 @@ class CronogramaContratoController {
         def plazoObra = obra.plazoEjecucionMeses + (obra.plazoEjecucionDias > 0 ? 1 : 0)
 
         println "meses: ${plazoMesesContrato}, dias: ${plazoDiasContrato},cronoCntr: $cronoCntr "
-        println "cronoCntr: $cronoCntr, detalle: ${detalle.size()}"
+//        println "cronoCntr: $cronoCntr, detalle: ${detalle.size()}"
 
         if (cronoCntr == 0) {
             detalle.each { vol ->
 //                def c = CronogramaContratado.findAllByVolumenContrato(vol)
-                println "buscar: ${vol.item.id}, ${vol.volumenOrden}, ${vol.obra.id}"
-                def c = Cronograma.findAllByVolumenObra(VolumenesObra.findByItemAndObraAndOrden(vol.item, vol.obra, vol.volumenOrden))
+//                println "buscar: ${vol.item.id}, ${vol.volumenOrden}, ${vol.obra.id}"
+                def c = Cronograma.findAllByVolumenObra(VolumenesObra.findByItemAndObraAndOrdenAndObra(vol.item, vol.obra, vol.volumenOrden, vol.obra))
                 def resto = c.sum { it.porcentaje }
-                println "....1 ${c.size()}"
+//                println "....1 ${c.size()}"
                 c.eachWithIndex { crono, cont ->
-                    println "procesa: $crono, $cont  plazo: $plazoMesesContrato"
+//                    println "procesa: $crono, $cont  plazo: $plazoMesesContrato"
 //                    if (cont < plazoMesesContrato) {
 //                        println "....2"
                     if (CronogramaContratado.countByPeriodoAndVolumenContrato(crono.periodo, vol) == 0) {
@@ -1238,12 +1238,17 @@ class CronogramaContratoController {
                 redirect(action: "mensajeUploadContrato", id: params.id)
             } else {
                 flash.message = "Seleccione un archivo Excel xlsx para procesar (archivos xls deben ser convertidos a xlsx primero)"
-                redirect(action: 'formArchivo')
+                redirect(action: 'formArchivo', params: params )
             }
         } else {
             flash.message = "Seleccione un archivo para procesar"
             redirect(action: 'subirExcel')
         }
+    }
+
+    def formArchivo() {
+        println "formArchivo. $params"
+        [cntr: params.id]
     }
 
     def subeArchivo() {
