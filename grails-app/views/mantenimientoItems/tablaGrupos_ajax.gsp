@@ -32,6 +32,7 @@
 <div class="" style="width: 99.7%;height: 600px; overflow-y: auto;float: right; margin-top: -20px">
     <table class="table-bordered table-striped table-condensed table-hover" style="width: 100%">
         <tbody>
+        <g:if test="${grupos}">
         <g:each in="${grupos}" status="i" var="grupo">
             <tr data-id="${grupo?.sbgr__id}">
                 <td style="width: 10%">${grupo?.sbgrcdgo}</td>
@@ -51,6 +52,12 @@
                 </td>
             </tr>
         </g:each>
+        </g:if>
+        <g:else>
+            <tr style="text-align: center">
+                <td class="alert alert-warning"><i class="fa fa-exclamation-triangle fa-2x text-info"></i> <strong style="font-size: 16px"> No existen registros </strong></td>
+            </tr>
+        </g:else>
         </tbody>
     </table>
 </div>
