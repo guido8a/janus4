@@ -203,7 +203,8 @@
         </span>
     </div>
 
-    <g:if test="${departamento?.subgrupo?.grupo?.id == 3}">
+%{--    <g:if test="${departamento?.subgrupo?.grupo?.id == 3}">--}%
+    <g:if test="${grupo == 3}">
         <div class="form-group ${hasErrors(bean: itemInstance, field: 'combustible', 'error')} ">
             <span class="grupo">
                 <label for="combustible" class="col-md-2 control-label text-info">
