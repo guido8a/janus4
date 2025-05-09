@@ -95,14 +95,12 @@
                              <p class="help-block ui-helper-hidden"></p>
                          </span>
                      </span>
-                     <span class="grupo">
-                         <label for="fecha9" class="col-md-2 control-label text-info">
-                             Límite Entrega Ofertas
-                         </label>
-                         <span class="col-md-2">
-                             <input aria-label="" name="fechaLimiteEntregaOfertas" id='fecha9' type='text' class="input-small" value="${concurso?.fechaLimiteEntregaOfertas?.format("dd-MM-yyyy HH:mm")}" />
-                             <p class="help-block ui-helper-hidden"></p>
-                         </span>
+                     <label for="fecha16" class="col-md-2 control-label text-info">
+                         Notificación adjudicación
+                     </label>
+                     <span class="col-md-2">
+                         <input aria-label="" name="fechaNotificacionAdjudicacion" id='fecha16' type='text' class="input-small" value="${concurso?.fechaNotificacionAdjudicacion?.format("dd-MM-yyyy HH:mm")}" />
+                         <p class="help-block ui-helper-hidden"></p>
                      </span>
                  </div>
                  <div class="form-group">
@@ -165,13 +163,18 @@
                  </div>
                  <div class="form-group">
                      <span class="grupo">
-                         <span class="col-md-3"></span>
-                         <label for="fecha16" class="col-md-2 control-label text-info">
-                             Notificación adjudicación
-                         </label>
-                         <span class="col-md-2">
-                             <input aria-label="" name="fechaNotificacionAdjudicacion" id='fecha16' type='text' class="input-small" value="${concurso?.fechaNotificacionAdjudicacion?.format("dd-MM-yyyy HH:mm")}" />
-                             <p class="help-block ui-helper-hidden"></p>
+                         <span class="grupo">
+                             <label for="fecha9" class="col-md-1 control-label text-info">
+                                 Límite Entrega Ofertas
+                             </label>
+                             <span class="col-md-2">
+                                 <input aria-label="" name="fechaLimiteEntregaOfertas" id='fecha9' type='text' class="input-small" value="${concurso?.fechaLimiteEntregaOfertas?.format("dd-MM-yyyy HH:mm")}" />
+                                 <p class="help-block ui-helper-hidden"></p>
+                             </span>
+                             <span class="col-md-4" style="margin-left: -40px">
+                                 <label class="text-danger"> <i class="fa fa-arrow-circle-left fa-2x text-danger"></i> <strong style="font-size: 14px"> Necesario para migrar de obras a oferentes </strong></label>
+                             </span>
+
                          </span>
                      </span>
                  </div>

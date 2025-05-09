@@ -3,10 +3,8 @@
         <div class="col-md-12 breadcrumb" style="font-size: 18px; text-align: center; font-weight: bold">
             Concurso
         </div>
-
         <div class="col-md-12" >
             <div style="margin-bottom: 10px; height: 300px">
-
                 <div class="row" style="margin-bottom: 5px;">
                     <div class="col-md-9 btn-group" role="navigation">
                         <g:if test="${pac}">
@@ -109,8 +107,11 @@
                             </label>
                             <span class="col-md-2">
                                 <g:hiddenField name="obra" value="${concurso?.obra?.id}" />
-                                <g:textField name="obraName" class="form-control" value="${concurso?.obra?.codigo}" />
+                                <g:textField name="obraName" class="form-control" value="${concurso?.obra?.codigo}" title="${concurso?.obra?.descripcion}" readonly="" />
                                 <p class="help-block ui-helper-hidden"></p>
+                            </span>
+                            <span class="col-md-1">
+                                <a href="#" class="btn btn-info" id="btnBuscarObra" title="Buscar Obra"><i class="fa fa-search"></i></a>
                             </span>
                         </span>
                     </div>
@@ -162,6 +163,37 @@
 </g:if>
 
 <script type="text/javascript">
+
+    var bcob;
+
+
+    $("#btnBuscarObra").click(function () {
+        $.ajax({
+            type    : "POST",
+            url: "${createLink(controller: 'concurso', action:'buscadorObras_ajax')}",
+            data    : {},
+            success : function (msg) {
+                bcob = bootbox.dialog({
+                    id      : "dlgBuscarobra",
+                    title   : "Buscar Obra",
+                    class: 'modal-lg',
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        }
+                    } //buttons
+                }); //dialog
+            } //success
+        }); //ajax
+    });
+
+    function cerrarBuscadorObras(){
+        bcob.modal("hide");
+    }
 
     <g:if test="${concurso?.id}">
 
@@ -240,6 +272,7 @@
                 }
             }
         });
-    })
-    
+    });
+
+
 </script>

@@ -53,7 +53,7 @@
         });
     }
 
-    $("#criterioCriterio").keydown(function (ev) {
+    $("#criterioCriterioCPP").keydown(function (ev) {
         if (ev.keyCode === 13) {
             ev.preventDefault();
             buscarCPC();

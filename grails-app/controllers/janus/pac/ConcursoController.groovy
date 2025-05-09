@@ -926,5 +926,29 @@ class ConcursoController {
         }
     } //save
 
+    def buscadorObras_ajax(){
+
+    }
+
+    def tablaBuscarObras_ajax(){
+        def datos;
+        def listaObra = ['obracdgo', 'obranmbr', 'obrammig', 'obrammsl', 'obraetdo, obrafcha']
+
+        def select = "select obra__id, obracdgo, obranmbr, obravlor, obraetdo, dptodscr, obrafcha " +
+                "from obra, parr, dpto "
+        def txwh = "where parr.parr__id = obra.parr__id and dpto.dpto__id = obra.dpto__id and obraetdo = 'R' "
+        def sqlTx = ""
+        def bsca = listaObra[params.buscarPor.toInteger()-1]
+//        def ordn = listaObra[params.ordenar.toInteger()-1]
+
+        txwh += " and $bsca ilike '%${params.criterio}%'"
+//        sqlTx = "${select} ${txwh} order by obranmbr, ${ordn} limit 100 ".toString()
+        sqlTx = "${select} ${txwh} order by obranmbr limit 100 ".toString()
+//        println "sql: $sqlTx"
+
+        def cn = dbConnectionService.getConnection()
+        datos = cn.rows(sqlTx)
+        [data: datos]
+    }
 
 } //fin controller

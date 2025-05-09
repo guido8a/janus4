@@ -282,9 +282,7 @@
         return validarNum(ev);
     });
 
-%{--    <g:if test="${pac?.id}">--}%
     cargarTecho();
-%{--    </g:if>--}%
 
     function cargarTecho() {
         $.ajax({
