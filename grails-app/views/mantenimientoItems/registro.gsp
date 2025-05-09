@@ -4,15 +4,10 @@
     <meta name="layout" content="main">
     <title>Registro y Mantenimiento de Items</title>
 
-
     <style>
-    /*.bootbox-body {*/
-    /*.modal-body {*/
-        /*background-color: #e0e0e0;*/
-    /*}*/
-        .dadoDeBaja {
-            color: #b21f2d;
-        }
+    .dadoDeBaja {
+        color: #b21f2d;
+    }
     </style>
 </head>
 
@@ -39,11 +34,21 @@
                     <g:textField name="criterio" id="criterio" class="form-control"/>
                 </span>
             </span>
-            <div class="col-md-2" style="margin-top: 20px">
+
+            <div class="col-md-2" style="margin-top: 20px; width: 120px">
                 <button class="btn btn-info" id="btnBuscar"><i class="fa fa-search"></i></button>
                 <button class="btn btn-warning" id="btnLimpiar" title="Limpiar Búsqueda">
                     <i class="fa fa-eraser"></i></button>
             </div>
+
+            <div class="col-md-2" id="divOrdenar">
+                <label class="control-label text-info">Ordenar</label>
+                <g:select name="ordenar" class="tipo col-md-12 form-control btn-info"  from="${[1: 'Código', 2: 'Descripción']}" optionKey="key" optionValue="value"/>
+            </div>
+
+            <div class="col-md-9">
+            </div>
+
             <div class="col-md-2" style="width: 260px; margin-top: 21px">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="#" id="bc_grpo">Grupo</a></li>
@@ -72,7 +77,7 @@
         cargarTablaItems();
     });
 
-    $("#buscarPor, #tipo").change(function () {
+    $("#buscarPor, #tipo, #ordenar").change(function () {
         cargarTablaItems();
     });
 
@@ -87,17 +92,21 @@
         var buscarPor = $("#buscarPor option:selected").val();
         var tipo = $("#tipo option:selected").val();
         var criterio = $("#criterio").val();
+        var ordenar = $("#ordenar option:selected").val();
         var url = '';
 
         switch (tipo) {
             case "1":
                 url = '${createLink(controller: 'mantenimientoItems', action: 'tablaGrupos_ajax')}';
+                $("#divOrdenar").addClass("hide");
                 break;
             case "2":
                 url = '${createLink(controller: 'mantenimientoItems', action: 'tablaSubgrupos_ajax')}';
+                $("#divOrdenar").addClass("hide");
                 break;
             case "3":
                 url = '${createLink(controller: 'mantenimientoItems', action: 'tablaMateriales_ajax')}';
+                $("#divOrdenar").removeClass("hide");
                 break;
         }
 
@@ -108,6 +117,7 @@
                 buscarPor: buscarPor,
                 tipo: tipo,
                 criterio: criterio,
+                ordenar: ordenar,
                 id: id
             },
             success: function (msg){

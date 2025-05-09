@@ -1,18 +1,7 @@
 <%@ page import="janus.Item" %>
 <div class="col-md-12" style="text-align: center; font-size: 14px; font-weight: bold; margin-top: -30px">
-    <div class="col-md-6"></div>
-    %{--    <div class="col-md-2" role="alert">--}%
-    %{--        <ol class="breadcrumb" style="font-weight: bold">--}%
-    %{--            <li class="active"><i class="fa fa-${grupo?.descripcion == 'MATERIALES' ? 'box' : (grupo?.descripcion == 'MANO DE OBRA' ? 'users' : 'truck') } text-warning"></i> ${grupo?.descripcion}</li>--}%
-    %{--        </ol>--}%
-    %{--    </div>--}%
-    %{--    <div class="col-md-4" role="alert">--}%
-    %{--        <ol class="breadcrumb" style="font-weight: bold">--}%
-    %{--            <li class="active">GRUPO</li>--}%
-    %{--            <li class="active">SUBGRUPO</li>--}%
-    %{--            <li class="active">MATERIALES</li>--}%
-    %{--        </ol>--}%
-    %{--    </div>--}%
+    <div class="col-md-4"></div>
+
     <div class="col-md-3" style="float: right">
         <a href="#" class="btn btn-sm btn-success btnRegresarMaterial" title="Regresar">
             <i class="fas fa-arrow-left"></i>
@@ -48,7 +37,7 @@
         <tbody>
         <g:if test="${materiales}">
             <g:each in="${materiales}" status="i" var="m">
-                %{--<tr data-id="${material?.id}" class="${material?.estado == 'B'? 'dadoDeBaja': ''}">--}%
+            %{--<tr data-id="${material?.id}" class="${material?.estado == 'B'? 'dadoDeBaja': ''}">--}%
                 <tr data-id="${m.item__id}" class="${m.itemetdo == 'B'? 'dadoDeBaja': ''}">
                     <td style="width: 7%">${m.sbgrcdgo}</td>
                     <td style="width: 15%">${m.sbgrdscr}</td>
@@ -78,13 +67,13 @@
                             </a>
                         </g:if>
                         <g:if test="${session.perfil.nombre == 'CRFC'}">
-                        <a href="#" class="btn btn-xs btn-success btnEditarMaterial" data-id="${m.item__id}"
-                           data-sub="${m.dprt__id}" title="Editar">
-                            <i class="fas fa-edit"></i>
-                        </a>
-                        <a href="#" class="btn btn-xs btn-danger btnEliminarMaterial" data-id="${m.item__id}" title="Eliminar">
-                            <i class="fas fa-trash"></i>
-                        </a>
+                            <a href="#" class="btn btn-xs btn-success btnEditarMaterial" data-id="${m.item__id}"
+                               data-sub="${m.dprt__id}" title="Editar">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <a href="#" class="btn btn-xs btn-danger btnEliminarMaterial" data-id="${m.item__id}" title="Eliminar">
+                                <i class="fas fa-trash"></i>
+                            </a>
                         </g:if>
                     </td>
                 </tr>
