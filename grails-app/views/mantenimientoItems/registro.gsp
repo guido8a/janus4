@@ -42,7 +42,7 @@
             </div>
 
             <div class="col-md-2" id="divOrdenar">
-                <label class="control-label text-info">Ordenar</label>
+                <label class="control-label text-info">Ordenado por</label>
                 <g:select name="ordenar" class="tipo col-md-12 form-control btn-info"  from="${[1: 'Código', 2: 'Descripción']}" optionKey="key" optionValue="value"/>
             </div>
 

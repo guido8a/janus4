@@ -1,15 +1,15 @@
 <div class="col-md-12" style="text-align: center; font-size: 14px; font-weight: bold; margin-top: -30px">
     <div class="col-md-6"></div>
-%{--    <div class="col-md-2" role="alert">--}%
-%{--        <ol class="breadcrumb" style="font-weight: bold">--}%
-%{--            <li class="active"><i class="fa fa-${grupo?.descripcion == 'MATERIALES' ? 'box' : (grupo?.descripcion == 'MANO DE OBRA' ? 'users' : 'truck') } text-warning"></i> ${grupo?.descripcion}</li>--}%
-%{--        </ol>--}%
-%{--    </div>--}%
-%{--    <div class="col-md-4" role="alert">--}%
-%{--        <ol class="breadcrumb" style="font-weight: bold">--}%
-%{--            <li class="active">GRUPO</li>--}%
-%{--        </ol>--}%
-%{--    </div>--}%
+    %{--    <div class="col-md-2" role="alert">--}%
+    %{--        <ol class="breadcrumb" style="font-weight: bold">--}%
+    %{--            <li class="active"><i class="fa fa-${grupo?.descripcion == 'MATERIALES' ? 'box' : (grupo?.descripcion == 'MANO DE OBRA' ? 'users' : 'truck') } text-warning"></i> ${grupo?.descripcion}</li>--}%
+    %{--        </ol>--}%
+    %{--    </div>--}%
+    %{--    <div class="col-md-4" role="alert">--}%
+    %{--        <ol class="breadcrumb" style="font-weight: bold">--}%
+    %{--            <li class="active">GRUPO</li>--}%
+    %{--        </ol>--}%
+    %{--    </div>--}%
     <div class="col-md-2" style="float: right">
         <a href="#" class="btn btn-sm btn-success btnNuevoGrupo" title="Crear nuevo grupo">
             <i class="fas fa-file"></i> Nuevo Grupo
@@ -33,25 +33,25 @@
     <table class="table-bordered table-striped table-condensed table-hover" style="width: 100%">
         <tbody>
         <g:if test="${grupos}">
-        <g:each in="${grupos}" status="i" var="grupo">
-            <tr data-id="${grupo?.sbgr__id}">
-                <td style="width: 10%">${grupo?.sbgrcdgo}</td>
-                <td style="width: 80%">${grupo?.sbgrdscr} ${session.perfil.nombre}</td>
-                <td style="width: 10%; text-align: center">
-                    <a href="#" class="btn btn-xs btn-warning btnEstructuraGrupo" data-id="${grupo?.sbgr__id}" title="Subgrupos">
-                        <i class="fas fa-list"></i>
-                    </a>
-                    <g:if test="${session.perfil.nombre == 'CRFC'}">
-                        <a href="#" class="btn btn-xs btn-success btnEditarGrupo" data-id="${grupo?.sbgr__id}" title="Editar">
-                            <i class="fas fa-edit"></i>
+            <g:each in="${grupos}" status="i" var="grupo">
+                <tr data-id="${grupo?.sbgr__id}">
+                    <td style="width: 10%">${grupo?.sbgrcdgo}</td>
+                    <td style="width: 80%">${grupo?.sbgrdscr} ${session.perfil.nombre}</td>
+                    <td style="width: 10%; text-align: center">
+                        <a href="#" class="btn btn-xs btn-warning btnEstructuraGrupo" data-id="${grupo?.sbgr__id}" title="Subgrupos">
+                            <i class="fas fa-list"></i>
                         </a>
-                        <a href="#" class="btn btn-xs btn-danger btnEliminarGrupo" data-id="${grupo?.sbgr__id}" title="Eliminar">
-                            <i class="fas fa-trash"></i>
-                        </a>
-                    </g:if>
-                </td>
-            </tr>
-        </g:each>
+                        <g:if test="${session.perfil.nombre == 'CRFC'}">
+                            <a href="#" class="btn btn-xs btn-success btnEditarGrupo" data-id="${grupo?.sbgr__id}" title="Editar">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <a href="#" class="btn btn-xs btn-danger btnEliminarGrupo" data-id="${grupo?.sbgr__id}" title="Eliminar">
+                                <i class="fas fa-trash"></i>
+                            </a>
+                        </g:if>
+                    </td>
+                </tr>
+            </g:each>
         </g:if>
         <g:else>
             <tr style="text-align: center">
