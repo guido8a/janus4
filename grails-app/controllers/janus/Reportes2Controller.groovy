@@ -220,213 +220,226 @@ class Reportes2Controller {
         def prmsEs = [border: Color.WHITE, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE, colspan: 5]
 
         def pagAct = 1
-
         def rubrosText = "Rubros de la obra " + truncText(obra.nombre)
-
         def tipo = params.tipo //i: ilustraciones, e: especificaciones, ie: ambas
 
         println "rubros: ${rubros.size()}"
+
+        def sinCodigo = true
+
         rubros.eachWithIndex { rubro, ik ->
-
-            Paragraph paragraphRubro = new Paragraph();
-            paragraphRubro.add(new Paragraph(rubro.nombre, fontTitle));
-
-            document.add(paragraphRubro)
-
-            PdfPTable tablaRubro = new PdfPTable(6);
-            tablaRubro.setWidths(arregloEnteros([12, 24, 10, 24, 10, 20]))
-            tablaRubro.setWidthPercentage(100);
-            tablaRubro.setSpacingBefore(10f);
-
-            def extIlustracion = "", extEspecificacion = "", pagesEspecificacion = 0, pagesIlustracion = 0, pathEspecificacion, pathIlustracion
-            PdfReader readerEspecificacion
-            PdfReader readerIlustracion
-
-            if (rubro.foto && tipo.contains("i")) {
-                extIlustracion = rubro.foto.split("\\.")
-                extIlustracion = extIlustracion[extIlustracion.size() - 1]
-                pathIlustracion = "/var/janus/" + "rubros" + File.separatorChar + rubro?.foto
-
-                if (extIlustracion.toLowerCase() in ["pdf"]) {
-                    readerIlustracion = new PdfReader(new FileInputStream(pathIlustracion));
-                    pagesIlustracion = readerIlustracion.getNumberOfPages()
-                }
+            if(!rubro?.codigoEspecificacion || rubro?.codigoEspecificacion == ''){
+                sinCodigo = false
             }
+        }
 
-            def ares = ArchivoEspecificacion.findByCodigo(rubro.codigoEspecificacion)
-//            if (ares && tipo.contains("e")) {
-            if (ares) {
-                extEspecificacion = ares.ruta.split("\\.")
-                extEspecificacion = extEspecificacion[extEspecificacion.size() - 1]
-                pathEspecificacion = "/var/janus/" + "rubros" + File.separatorChar + ares?.ruta
-                println "ruta: --> ${ares?.ruta} path: ${pathEspecificacion.toLowerCase()}"
-                if (pathEspecificacion.toLowerCase().contains("pdf")) {
-                    try {
-                        readerEspecificacion = new PdfReader(new FileInputStream(pathEspecificacion));
-                        println "pags: ${readerEspecificacion.getNumberOfPages()}"
-                        pagesEspecificacion = readerEspecificacion.getNumberOfPages()
-                    } catch (e) {
-                        falta.add("item: " + rubro.codigo + " archivo: " + ares.ruta)
-                        cnta++
+        if(sinCodigo){
+            rubros.eachWithIndex { rubro, ik ->
+
+                Paragraph paragraphRubro = new Paragraph();
+                paragraphRubro.add(new Paragraph(rubro.nombre, fontTitle));
+
+                document.add(paragraphRubro)
+
+                PdfPTable tablaRubro = new PdfPTable(6);
+                tablaRubro.setWidths(arregloEnteros([12, 24, 10, 24, 10, 20]))
+                tablaRubro.setWidthPercentage(100);
+                tablaRubro.setSpacingBefore(10f);
+
+                def extIlustracion = "", extEspecificacion = "", pagesEspecificacion = 0, pagesIlustracion = 0, pathEspecificacion, pathIlustracion
+                PdfReader readerEspecificacion
+                PdfReader readerIlustracion
+
+                if (rubro.foto && tipo.contains("i")) {
+                    extIlustracion = rubro.foto.split("\\.")
+                    extIlustracion = extIlustracion[extIlustracion.size() - 1]
+                    pathIlustracion = "/var/janus/" + "rubros" + File.separatorChar + rubro?.foto
+
+                    if (extIlustracion.toLowerCase() in ["pdf"]) {
+                        readerIlustracion = new PdfReader(new FileInputStream(pathIlustracion));
+                        pagesIlustracion = readerIlustracion.getNumberOfPages()
                     }
-                }else{
-                    //redirect(controller: "contrato", action: "verContrato", params: [contrato: params.id])
                 }
-            }
+
+
+
+                def ares = ArchivoEspecificacion.findByCodigo(rubro?.codigoEspecificacion)
+                if (ares && tipo.contains("e")) {
+                    extEspecificacion = ares.ruta.split("\\.")
+                    extEspecificacion = extEspecificacion[extEspecificacion.size() - 1]
+                    pathEspecificacion = "/var/janus/" + "rubros" + File.separatorChar + ares?.ruta
+                    println "ruta: --> ${ares?.ruta} path: ${pathEspecificacion.toLowerCase()}"
+                    if (pathEspecificacion.toLowerCase().contains("pdf")) {
+                        try {
+                            readerEspecificacion = new PdfReader(new FileInputStream(pathEspecificacion));
+                            println "pags: ${readerEspecificacion.getNumberOfPages()}"
+                            pagesEspecificacion = readerEspecificacion.getNumberOfPages()
+                        } catch (e) {
+                            falta.add("item: " + rubro.codigo + " archivo: " + ares.ruta)
+                            cnta++
+                        }
+                    }else{
+
+                    }
+                }
 
 //            println "...2-- faltan: $falta"
 //            println "...2--"
-            def maxImageSize = 400
+                def maxImageSize = 400
 
-            addCellTabla(tablaRubro, new Paragraph("Código", fontTh), prmsTh)
-            addCellTabla(tablaRubro, new Paragraph(rubro.codigo, fontTd), prmsTd)
-            addCellTabla(tablaRubro, new Paragraph("Unidad", fontTh), prmsTh)
-            addCellTabla(tablaRubro, new Paragraph(rubro.unidad.descripcion, fontTd), prmsTd)
-            addCellTabla(tablaRubro, new Paragraph("", fontTh), prmsTh)
-            addCellTabla(tablaRubro, new Paragraph("", fontTd), prmsTd)
+                addCellTabla(tablaRubro, new Paragraph("Código", fontTh), prmsTh)
+                addCellTabla(tablaRubro, new Paragraph(rubro.codigo, fontTd), prmsTd)
+                addCellTabla(tablaRubro, new Paragraph("Unidad", fontTh), prmsTh)
+                addCellTabla(tablaRubro, new Paragraph(rubro.unidad.descripcion, fontTd), prmsTd)
+                addCellTabla(tablaRubro, new Paragraph("", fontTh), prmsTh)
+                addCellTabla(tablaRubro, new Paragraph("", fontTd), prmsTd)
 
-            addCellTabla(tablaRubro, new Paragraph("Fecha creación", fontTh), prmsTh)
-            addCellTabla(tablaRubro, new Paragraph(rubro.fecha?.format("dd-MM-yyyy"), fontTd), prmsTd)
-            addCellTabla(tablaRubro, new Paragraph("Fecha modificación", fontTh), prmsTh)
-            addCellTabla(tablaRubro, new Paragraph(rubro.fechaModificacion?.format("dd-MM-yyyy"), fontTd), prmsTd)
-            addCellTabla(tablaRubro, new Paragraph("", fontTh), prmsTh)
-            addCellTabla(tablaRubro, new Paragraph("", fontTd), prmsTd)
+                addCellTabla(tablaRubro, new Paragraph("Fecha creación", fontTh), prmsTh)
+                addCellTabla(tablaRubro, new Paragraph(rubro.fecha?.format("dd-MM-yyyy"), fontTd), prmsTd)
+                addCellTabla(tablaRubro, new Paragraph("Fecha modificación", fontTh), prmsTh)
+                addCellTabla(tablaRubro, new Paragraph(rubro.fechaModificacion?.format("dd-MM-yyyy"), fontTd), prmsTd)
+                addCellTabla(tablaRubro, new Paragraph("", fontTh), prmsTh)
+                addCellTabla(tablaRubro, new Paragraph("", fontTd), prmsTd)
 
-            addCellTabla(tablaRubro, new Paragraph("Solicitante", fontTh), prmsTh)
-            addCellTabla(tablaRubro, new Paragraph(rubro?.departamento?.subgrupo?.grupo?.descripcion, fontTd), prmsTd)
-            addCellTabla(tablaRubro, new Paragraph("Grupo", fontTh), prmsTh)
-            addCellTabla(tablaRubro, new Paragraph(rubro?.departamento?.subgrupo?.descripcion, fontTd), prmsTd)
-            addCellTabla(tablaRubro, new Paragraph("Subgrupo", fontTh), prmsTh)
-            addCellTabla(tablaRubro, new Paragraph(rubro?.departamento?.descripcion, fontTd), prmsTd)
+                addCellTabla(tablaRubro, new Paragraph("Solicitante", fontTh), prmsTh)
+                addCellTabla(tablaRubro, new Paragraph(rubro?.departamento?.subgrupo?.grupo?.descripcion, fontTd), prmsTd)
+                addCellTabla(tablaRubro, new Paragraph("Grupo", fontTh), prmsTh)
+                addCellTabla(tablaRubro, new Paragraph(rubro?.departamento?.subgrupo?.descripcion, fontTd), prmsTd)
+                addCellTabla(tablaRubro, new Paragraph("Subgrupo", fontTh), prmsTh)
+                addCellTabla(tablaRubro, new Paragraph(rubro?.departamento?.descripcion, fontTd), prmsTd)
 
-            if (extEspecificacion && extEspecificacion != "") {
-                addCellTabla(tablaRubro, new Paragraph("Especificación", fontTh), prmsTh)
-                if (extEspecificacion.toLowerCase() != "pdf") { //es una imgaen png, jpg...
-                    def img = Image.getInstance(pathEspecificacion);
-                    img.scaleToFit(maxImageSize, maxImageSize);
-                    addCellTabla(tablaRubro, img, prmsEs)
-                } else {
-                    def str = "- PDF de ${pagesEspecificacion} página${pagesEspecificacion == 1 ? '' : 's'} adjunto a partir de la siguiente página -"
-                    if (pagesEspecificacion == 1) {
-                        str = "- PDF de ${pagesEspecificacion} página${pagesEspecificacion == 1 ? '' : 's'} adjunto en la siguiente página -"
+                if (extEspecificacion && extEspecificacion != "") {
+                    addCellTabla(tablaRubro, new Paragraph("Especificación", fontTh), prmsTh)
+                    if (extEspecificacion.toLowerCase() != "pdf") { //es una imgaen png, jpg...
+                        def img = Image.getInstance(pathEspecificacion);
+                        img.scaleToFit(maxImageSize, maxImageSize);
+                        addCellTabla(tablaRubro, img, prmsEs)
+                    } else {
+                        def str = "- PDF de ${pagesEspecificacion} página${pagesEspecificacion == 1 ? '' : 's'} adjunto a partir de la siguiente página -"
+                        if (pagesEspecificacion == 1) {
+                            str = "- PDF de ${pagesEspecificacion} página${pagesEspecificacion == 1 ? '' : 's'} adjunto en la siguiente página -"
+                        }
+                        addCellTabla(tablaRubro, new Paragraph(str, fontTd), prmsEs)
                     }
-                    addCellTabla(tablaRubro, new Paragraph(str, fontTd), prmsEs)
                 }
-            }
 
-            if (extIlustracion && extIlustracion != "") {
-                addCellTabla(tablaRubro, new Paragraph("Ilustración", fontTh), prmsTh)
-                if (extIlustracion.toLowerCase() != "pdf") { //es una imgaen png, jpg...
-                    def img = Image.getInstance(pathIlustracion);
-                    img.scaleToFit(maxImageSize, maxImageSize);
-                    addCellTabla(tablaRubro, img, prmsEs)
-                } else {
-                    def str = "- PDF de ${pagesIlustracion} página${pagesIlustracion == 1 ? '' : 's'} adjunto "
-                    def adj = "a partir de la siguiente página -"
-                    if (pagesIlustracion == 1) {
-                        str = "- PDF de ${pagesIlustracion} página${pagesIlustracion == 1 ? '' : 's'} adjunto "
-                        adj = "en la siguiente página -"
+                if (extIlustracion && extIlustracion != "") {
+                    addCellTabla(tablaRubro, new Paragraph("Ilustración", fontTh), prmsTh)
+                    if (extIlustracion.toLowerCase() != "pdf") { //es una imgaen png, jpg...
+                        def img = Image.getInstance(pathIlustracion);
+                        img.scaleToFit(maxImageSize, maxImageSize);
+                        addCellTabla(tablaRubro, img, prmsEs)
+                    } else {
+                        def str = "- PDF de ${pagesIlustracion} página${pagesIlustracion == 1 ? '' : 's'} adjunto "
+                        def adj = "a partir de la siguiente página -"
+                        if (pagesIlustracion == 1) {
+                            str = "- PDF de ${pagesIlustracion} página${pagesIlustracion == 1 ? '' : 's'} adjunto "
+                            adj = "en la siguiente página -"
+                        }
+
+                        if (pagesEspecificacion > 0) {
+                            adj = "después de la especificación - "
+                        }
+
+                        addCellTabla(tablaRubro, new Paragraph(str + adj, fontTd), prmsEs)
                     }
-
-                    if (pagesEspecificacion > 0) {
-                        adj = "después de la especificación - "
-                    }
-
-                    addCellTabla(tablaRubro, new Paragraph(str + adj, fontTd), prmsEs)
                 }
-            }
 
-            document.add(tablaRubro)
+                document.add(tablaRubro)
 
-            infoText(cb, document, rubrosText, DOC)
-            println "paginas: $pagesEspecificacion"
-            if (extEspecificacion == "pdf") {
-                pagesEspecificacion.times {
+                infoText(cb, document, rubrosText, DOC)
+                println "paginas: $pagesEspecificacion"
+                if (extEspecificacion == "pdf") {
+                    pagesEspecificacion.times {
+                        document.newPage();
+                        PdfImportedPage page = pdfw.getImportedPage(readerEspecificacion, it + 1);
+                        cb.addTemplate(page, 0, 0);
+
+                        infoText(cb, document, "Especificación del rubro " + truncText(rubro.nombre) + " pág. " + (it + 1) + "/" + pagesEspecificacion, ADJ)
+                        infoText(cb, document, rubrosText, DOC)
+                        infoText(cb, document, pagAct.toString(), PAG)
+                        pagAct++
+                    }
                     document.newPage();
-                    PdfImportedPage page = pdfw.getImportedPage(readerEspecificacion, it + 1);
-                    cb.addTemplate(page, 0, 0);
-
-                    infoText(cb, document, "Especificación del rubro " + truncText(rubro.nombre) + " pág. " + (it + 1) + "/" + pagesEspecificacion, ADJ)
-                    infoText(cb, document, rubrosText, DOC)
-                    infoText(cb, document, pagAct.toString(), PAG)
-                    pagAct++
                 }
-                document.newPage();
-            }
 
-            if (extIlustracion == "pdf") {
-                pagesIlustracion.times {
+                if (extIlustracion == "pdf") {
+                    pagesIlustracion.times {
+                        document.newPage();
+                        PdfImportedPage page = pdfw.getImportedPage(readerIlustracion, it + 1);
+                        cb.addTemplate(page, 0, 0);
+
+                        infoText(cb, document, "Ilustración del rubro " + truncText(rubro.nombre) + " pág. " + (it + 1) + "/" + pagesIlustracion, ADJ)
+                        infoText(cb, document, rubrosText, DOC)
+                        infoText(cb, document, pagAct.toString(), PAG)
+                        pagAct++
+                    }
                     document.newPage();
-                    PdfImportedPage page = pdfw.getImportedPage(readerIlustracion, it + 1);
-                    cb.addTemplate(page, 0, 0);
-
-                    infoText(cb, document, "Ilustración del rubro " + truncText(rubro.nombre) + " pág. " + (it + 1) + "/" + pagesIlustracion, ADJ)
-                    infoText(cb, document, rubrosText, DOC)
-                    infoText(cb, document, pagAct.toString(), PAG)
-                    pagAct++
                 }
-                document.newPage();
+
             }
 
-        }
-
-        /** pdfs que faltan */
-        if(falta.size() > 0) {
-            falta = falta.unique()
-            println "faltan archivos: $falta"
-            def tx = "Archivos que faltan: <br>"
-            falta.each { f ->
-                tx += f + '<br>'
+            /** pdfs que faltan */
+            if(falta.size() > 0) {
+                falta = falta.unique()
+                println "faltan archivos: $falta"
+                def tx = "Archivos que faltan: <br>"
+                falta.each { f ->
+                    tx += f + '<br>'
+                }
+                render "${tx}"
+                return
             }
-            render "${tx}"
-            return
-        }
 
-        /** firmas */
-        def tablaFirmas = new PdfPTable(5);
-        tablaFirmas.setWidthPercentage(100);
-        tablaFirmas.setWidths(arregloEnteros([40, 3, 40, 3, 40]))
-        tablaFirmas.totalHeight = 100f
-        com.lowagie.text.Font fontThFirmas = new com.lowagie.text.Font(com.lowagie.text.Font.TIMES_ROMAN, 10, com.lowagie.text.Font.BOLD);
-        def frmtCol5 = [height: 10, bcb: Color.BLACK, border: Color.WHITE, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE, colspan: 5]
+            /** firmas */
+            def tablaFirmas = new PdfPTable(5);
+            tablaFirmas.setWidthPercentage(100);
+            tablaFirmas.setWidths(arregloEnteros([40, 3, 40, 3, 40]))
+            tablaFirmas.totalHeight = 100f
+            com.lowagie.text.Font fontThFirmas = new com.lowagie.text.Font(com.lowagie.text.Font.TIMES_ROMAN, 10, com.lowagie.text.Font.BOLD);
+            def frmtCol5 = [height: 10, bcb: Color.BLACK, border: Color.WHITE, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE, colspan: 5]
 
-        addCellTabla(tablaFirmas, new Paragraph("", fontThFirmas), frmtCol5)
+            addCellTabla(tablaFirmas, new Paragraph("", fontThFirmas), frmtCol5)
 
-        addCellTabla(tablaFirmas, new Paragraph("", fontThFirmas), [height: 40, bwb: 1, bcb: Color.BLACK, border: Color.WHITE, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE])
-        addCellTabla(tablaFirmas, new Paragraph("", fontThFirmas), [height: 40, bcb: Color.BLACK, border: Color.WHITE, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE])
-        addCellTabla(tablaFirmas, new Paragraph("", fontThFirmas), [height: 40, bwb: 1, bcb: Color.BLACK, border: Color.WHITE, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE])
-        /* un espacio en blanco hace que no se imprima la línea para la firma */
-        addCellTabla(tablaFirmas, new Paragraph(" ", fontThFirmas), [height: 40, bcb: Color.BLACK, border: Color.WHITE, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE])
-        // pone linea en blanco //
+            addCellTabla(tablaFirmas, new Paragraph("", fontThFirmas), [height: 40, bwb: 1, bcb: Color.BLACK, border: Color.WHITE, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE])
+            addCellTabla(tablaFirmas, new Paragraph("", fontThFirmas), [height: 40, bcb: Color.BLACK, border: Color.WHITE, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE])
+            addCellTabla(tablaFirmas, new Paragraph("", fontThFirmas), [height: 40, bwb: 1, bcb: Color.BLACK, border: Color.WHITE, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE])
+            /* un espacio en blanco hace que no se imprima la línea para la firma */
+            addCellTabla(tablaFirmas, new Paragraph(" ", fontThFirmas), [height: 40, bcb: Color.BLACK, border: Color.WHITE, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE])
+            // pone linea en blanco //
 //            addCellTabla(tablaFirmas, new Paragraph(" ", fontThFirmas), [height: 40, bwb: 1, bcb: Color.WHITE, border: Color.WHITE, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE])
-        addCellTabla(tablaFirmas, new Paragraph(" ", fontThFirmas), [height: 40, bwb: 1, bcb: Color.BLACK, border: Color.WHITE, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE])
+            addCellTabla(tablaFirmas, new Paragraph(" ", fontThFirmas), [height: 40, bwb: 1, bcb: Color.BLACK, border: Color.WHITE, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE])
 
-        addCellTabla(tablaFirmas, new Paragraph("${obra?.inspector?.nombre + " " + obra?.inspector?.apellido}", fontThFirmas), [border: Color.WHITE, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE])
-        addCellTabla(tablaFirmas, new Paragraph("", fontThFirmas), [border: Color.WHITE, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE])
-        addCellTabla(tablaFirmas, new Paragraph("${obra?.revisor?.nombre + " " + obra?.revisor?.apellido}", fontThFirmas), [border: Color.WHITE, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE])
-        addCellTabla(tablaFirmas, new Paragraph("", fontThFirmas), [border: Color.WHITE, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE])
-        addCellTabla(tablaFirmas, new Paragraph("${obra?.responsableObra?.nombre + " " + obra?.responsableObra?.apellido}", fontThFirmas), [border: Color.WHITE, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE])
+            addCellTabla(tablaFirmas, new Paragraph("${obra?.inspector?.nombre + " " + obra?.inspector?.apellido}", fontThFirmas), [border: Color.WHITE, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE])
+            addCellTabla(tablaFirmas, new Paragraph("", fontThFirmas), [border: Color.WHITE, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE])
+            addCellTabla(tablaFirmas, new Paragraph("${obra?.revisor?.nombre + " " + obra?.revisor?.apellido}", fontThFirmas), [border: Color.WHITE, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE])
+            addCellTabla(tablaFirmas, new Paragraph("", fontThFirmas), [border: Color.WHITE, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE])
+            addCellTabla(tablaFirmas, new Paragraph("${obra?.responsableObra?.nombre + " " + obra?.responsableObra?.apellido}", fontThFirmas), [border: Color.WHITE, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE])
 
-        addCellTabla(tablaFirmas, new Paragraph("(Resp. de las cantidades)", fontThFirmas), [border: Color.WHITE, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE])
-        addCellTabla(tablaFirmas, new Paragraph("", fontThFirmas), [border: Color.WHITE, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE])
-        addCellTabla(tablaFirmas, new Paragraph("(Responsable técnico)", fontThFirmas), [border: Color.WHITE, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE])
-        addCellTabla(tablaFirmas, new Paragraph("", fontThFirmas), [border: Color.WHITE, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE])
-        addCellTabla(tablaFirmas, new Paragraph("(Elaboró presupuesto)", fontThFirmas), [border: Color.WHITE, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE])
+            addCellTabla(tablaFirmas, new Paragraph("(Resp. de las cantidades)", fontThFirmas), [border: Color.WHITE, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE])
+            addCellTabla(tablaFirmas, new Paragraph("", fontThFirmas), [border: Color.WHITE, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE])
+            addCellTabla(tablaFirmas, new Paragraph("(Responsable técnico)", fontThFirmas), [border: Color.WHITE, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE])
+            addCellTabla(tablaFirmas, new Paragraph("", fontThFirmas), [border: Color.WHITE, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE])
+            addCellTabla(tablaFirmas, new Paragraph("(Elaboró presupuesto)", fontThFirmas), [border: Color.WHITE, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE])
 
 
 
-        tablaFirmas.setKeepTogether(true)
+            tablaFirmas.setKeepTogether(true)
 
-        document.add(tablaFirmas)
+            document.add(tablaFirmas)
 
-        println "...termina reporte"
-        document.close();
-        pdfw.close()
-        byte[] b = baos.toByteArray();
-        response.setContentType("application/pdf")
-        response.setHeader("Content-disposition", "attachment; filename=" + name)
-        response.setContentLength(b.length)
-        response.getOutputStream().write(b)
+            println "...termina reporte"
+            document.close();
+            pdfw.close()
+            byte[] b = baos.toByteArray();
+            response.setContentType("application/pdf")
+            response.setHeader("Content-disposition", "attachment; filename=" + name)
+            response.setContentLength(b.length)
+            response.getOutputStream().write(b)
+        }
+
+
+
     }
 
 
