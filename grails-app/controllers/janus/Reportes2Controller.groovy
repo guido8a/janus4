@@ -254,7 +254,8 @@ class Reportes2Controller {
             }
 
             def ares = ArchivoEspecificacion.findByCodigo(rubro.codigoEspecificacion)
-            if (ares && tipo.contains("e")) {
+//            if (ares && tipo.contains("e")) {
+            if (ares) {
                 extEspecificacion = ares.ruta.split("\\.")
                 extEspecificacion = extEspecificacion[extEspecificacion.size() - 1]
                 pathEspecificacion = "/var/janus/" + "rubros" + File.separatorChar + ares?.ruta
