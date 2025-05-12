@@ -2047,7 +2047,8 @@ class ReportePlanillas4Controller {
 //        printFooterDetalle([ant: sumaTotlAntr,  act: sumaTotlActl, acu: sumaTotlAcml, completo: true])
         /* se debería  tomar de monto planillas anteriores el valor total anterior */
         sql = "select sum(plnlmnto) suma from plnl where cntr__id = ${planilla.contrato.id} and " +
-                "tppl__id in (3) and plnlfcfn < '${planilla.fechaInicio.format('yyyy-MM-dd')}'"
+                "tppl__id in (3) and plnlfcfn < '${planilla.fechaInicio.format('yyyy-MM-dd')}' and " +
+                "plnltipo = '${planilla.tipoContrato}'"
 //        println "planillado anterior: $sql, PlanillaAnt: ${planilla.id}"
         sumaTotlAntr = cn.rows(sql.toString())[0].suma?:0
         sumaTotlActl = planilla.valor

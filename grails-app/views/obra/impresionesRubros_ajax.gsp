@@ -88,7 +88,7 @@
                             ou.modal("hide");
                             var b = bootbox.dialog({
                                 id      : "dlgCSR",
-                                title   : "Lista de rubros sin código",
+                                title   : "Existen rubros sin código de especificación ni especificación",
                                 message : msg,
                                 buttons : {
                                     cancelar : {

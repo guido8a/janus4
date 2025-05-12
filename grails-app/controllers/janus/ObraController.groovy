@@ -1940,36 +1940,31 @@ class ObraController {
     }
 
     def comprobarAres_ajax(){
-        def obra = Obra.get(params.id)
-        def rubros = VolumenesObra.findAllByObra(obra, [sort: 'orden']).item.unique()
+        println "comprobarAres_ajax: $params"
+        def cn = dbConnectionService.getConnection()
+        def departamento = [:]
+        def sql = "select itemcdgo, itemnmbr from item where itemcdes is null and item__id in (" +
+                "select item__id from vlob where obra__id = ${params.id}) " +
+                "order by 1"
+        println "sql: $sql"
+        def sinCodigo = cn.rows(sql.toString())
 
-        def sinCodigo = true
-
-        rubros.eachWithIndex { rubro, ik ->
-            if(!rubro?.codigoEspecificacion || rubro?.codigoEspecificacion == ''){
-                sinCodigo = false
-            }
-        }
-
-        if(sinCodigo){
-            render "ok"
-        }else{
+        if(sinCodigo.size() > 0){
             render "no"
+        }else{
+            render "ok"
         }
     }
 
     def listaRubrosSinCodigo_ajax(){
-        def obra = Obra.get(params.id)
-        def rubros = VolumenesObra.findAllByObra(obra, [sort: 'orden']).item.unique()
         def rubrosSin
-
-        rubros.eachWithIndex { rubro, ik ->
-            if(!rubro?.codigoEspecificacion || rubro?.codigoEspecificacion == ''){
-               rubrosSin += rubro
-            }
-        }
-
-        println("-- " + rubrosSin)
+        def cn = dbConnectionService.getConnection()
+        def departamento = [:]
+        def sql = "select itemcdgo, itemnmbr from item where itemcdes is null and item__id in (" +
+                "select item__id from vlob where obra__id = ${params.id}) " +
+                "order by 1"
+        println "sql: $sql"
+        rubrosSin = cn.rows(sql.toString())
 
         return [rubros: rubrosSin]
     }

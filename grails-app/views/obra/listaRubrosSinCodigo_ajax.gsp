@@ -22,8 +22,8 @@
                 <tbody>
                 <g:each in="${rubros}" status="i" var="rubro">
                     <tr>
-                        <td style="width: 25%">${rubro?.codigo}</td>
-                        <td style="width: 75%">${rubro?.nombre}</td>
+                        <td style="width: 25%">${rubro?.itemcdgo}</td>
+                        <td style="width: 75%">${rubro?.itemnmbr}</td>
                     </tr>
                 </g:each>
                 </tbody>
