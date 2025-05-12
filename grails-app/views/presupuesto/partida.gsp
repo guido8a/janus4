@@ -26,6 +26,10 @@
 
 </div>
 
+<div id="divOferta">
+
+</div>
+
 <script type="text/javascript">
 
     cargarPartida();
@@ -70,6 +74,7 @@
     }
 
     function cargarConcurso(pac){
+        var d = cargarLoader("Cargando...");
         $.ajax({
             type: "POST",
             url: "${createLink(controller: 'concurso', action:'concurso_ajax')}",
@@ -77,7 +82,21 @@
                 pac: pac
             },
             success: function (msg) {
+                d.modal("hide");
                 $("#divConcurso").html(msg);
+            }
+        });
+    }
+
+    function cargarOferta(concurso){
+        $.ajax({
+            type: "POST",
+            url: "${createLink(controller: 'oferta', action:'oferta_ajax')}",
+            data: {
+                concurso: concurso
+            },
+            success: function (msg) {
+                $("#divOferta").html(msg);
             }
         });
     }

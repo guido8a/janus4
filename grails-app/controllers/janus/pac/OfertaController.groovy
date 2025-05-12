@@ -104,4 +104,11 @@ class OfertaController {
             render "no_error al borrar la oferta"
         }
     } //delete
+
+
+    def oferta_ajax(){
+        def concurso = Concurso.get(params.concurso)
+        def oferta = Oferta.findByConcurso(concurso)
+        return [concurso: concurso, oferta: oferta]
+    }
 } //fin controller

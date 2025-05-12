@@ -198,10 +198,12 @@
     <g:if test="${concurso?.id}">
 
     cargarFechasConcurso('${concurso?.id}');
+    cargarOferta('${concurso?.id}');
 
     </g:if>
     <g:else>
     $("#divFechas").html('');
+    $("#divOferta").html('');
     </g:else>
 
     function cargarFechasConcurso(concurso){

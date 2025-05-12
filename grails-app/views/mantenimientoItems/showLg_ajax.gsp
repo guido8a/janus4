@@ -79,23 +79,23 @@
     <table class="table table-striped table-bordered table-hover table-condensed" id="tablaPrecios">
         <thead>
         <tr style="width: 100%">
-            <g:if test="${lgar}">
-                <th style="width: 29%">Lugar</th>
-            </g:if>
+%{--            <g:if test="${lgar}">--}%
+                <th style="width: 45%">Lugar</th>
+%{--            </g:if>--}%
             <th style="width: 20%">Fecha</th>
             <th class="precio" style="width: 20%">Precio</th>
-            <th class="delete" style="width: 30%">Acciones</th>
+            <th class="delete" style="width: 15%">Acciones</th>
             <th style="width: 1%"></th>
         </tr>
         </thead>
         <tbody>
         <g:each in="${precios}" var="precio" status="i">
             <tr style="width: 100%">
-                <g:if test="${lgar}">
-                    <td style="width: 29%">
+%{--                <g:if test="${lgar}">--}%
+                    <td style="width: 45%">
                         ${precio.lugar.descripcion}
                     </td>
-                </g:if>
+%{--                </g:if>--}%
                 <td style="width: 20%">
                     <g:formatDate date="${precio.fecha}" format="dd-MM-yyyy"/>
                 </td>
@@ -103,7 +103,7 @@
                     <td class="precio textRight " style="width: 20%; text-align: right" data-original="${precio.precioUnitario}" data-valor="${precio.precioUnitario}" id="${precio.id}" >
                         <g:formatNumber number="${precio.precioUnitario}" maxFractionDigits="5" minFractionDigits="5" format="##,#####0" locale='ec'/>
                     </td>
-                    <td class="delete" style="width: 30%; text-align: center">
+                    <td class="delete" style="width: 15%; text-align: center">
                         <g:if test="${precio?.registrado != 'R'}">
                             <a href="#" class="btn btn-success btn-xs btnEditar" title="Editar valor" data-id="${precio.id}">
                                 <i class="fa fa-edit"></i>
