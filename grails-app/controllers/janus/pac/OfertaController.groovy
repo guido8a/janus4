@@ -6,6 +6,8 @@ import org.springframework.dao.DataIntegrityViolationException
 
 class OfertaController {
 
+    def dbConnectionService
+
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
     def index() {
@@ -105,10 +107,68 @@ class OfertaController {
         }
     } //delete
 
-
     def oferta_ajax(){
         def concurso = Concurso.get(params.concurso)
         def oferta = Oferta.findByConcurso(concurso)
+
         return [concurso: concurso, oferta: oferta]
     }
+
+    def formNuevaOferta_ajax(){
+
+        def oferta
+
+        if(params.id){
+            oferta = Oferta.get(params.id)
+        }else{
+            oferta = new Oferta()
+        }
+
+        def responsablesProceso = PersonaRol.withCriteria {
+            persona {
+                eq("activo", 1)
+                order("apellido", "asc")
+            }
+            funcion {
+                eq("codigo", "C")
+            }
+        }.persona
+
+
+        def concurso = null
+
+        if(params.concurso){
+            concurso = Concurso.get(params.concurso)
+        }
+
+        return [ofertaInstance: oferta, responsablesProceso: responsablesProceso, concurso: concurso]
+    }
+
+
+    def buscarProveedor_ajax(){
+
+    }
+
+    def tablaBuscarProveedores_ajax(){
+        def listaItems = ['prve_ruc', 'prvenmbr']
+        def bsca
+        def sqlTx = ""
+
+        if(params.buscarPor){
+            bsca = listaItems[params.buscarPor?.toInteger()-1]
+        }else{
+            bsca = listaItems[0]
+        }
+        def select = "select * from prve "
+        def txwh = " where prve__id  is not null and " +
+                " $bsca ilike '%${params.criterio}%' "
+        sqlTx = "${select} ${txwh} order by prvenmbr ".toString()
+//        println "sql: $sqlTx"
+        def cn = dbConnectionService.getConnection()
+        def datos = cn.rows(sqlTx)
+
+        [datos: datos]
+    }
+
+
 } //fin controller
