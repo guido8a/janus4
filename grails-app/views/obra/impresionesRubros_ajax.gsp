@@ -67,21 +67,40 @@
     $("#btnIlustraciones").click(function () {
         $.ajax({
             type: "POST",
-            url: "${createLink(controller:'reportes2', action:'comprobarIlustracion')}",
+            %{--url: "${createLink(controller:'reportes2', action:'comprobarIlustracion')}",--}%
+            url: "${createLink(controller:'obra', action:'comprobarAres_ajax')}",
             data: {
-                id: '${obra?.id}',
-                tipo: "ie"
+                id: '${obra?.id}'
             },
             success: function (msg) {
-                console.log(msg);
-                var parts = msg.split('*');
-
-                if (parts[0] === 'SI') {
-                    $("#divError").hide();
-                    console.log("okkkk");
+                var parts = msg.split('_');
+                if (parts[0] === 'ok') {
                     location.href = "${createLink(controller:'reportes2', action:'reporteRubroIlustracion')}?id=${obra?.id}&tipo=ie";
                 } else {
-                    bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + "Archivo no encontrado" + '</strong>');
+                    var ou = cargarLoader("Cargando...");
+                    $.ajax({
+                        type : "POST",
+                        url : "${g.createLink(controller: 'obra',action:'listaRubrosSinCodigo_ajax')}",
+                        data     : {
+                            id: '${obra?.id}'
+                        },
+                        success  : function (msg) {
+                            ou.modal("hide");
+                            var b = bootbox.dialog({
+                                id      : "dlgCSR",
+                                title   : "Lista de rubros sin código",
+                                message : msg,
+                                buttons : {
+                                    cancelar : {
+                                        label     :'<i class="fa fa-times"></i> Cancelar',
+                                        className : "btn-primary",
+                                        callback  : function () {
+                                        }
+                                    }
+                                }
+                            });
+                        }
+                    })
                 }
             }
         });

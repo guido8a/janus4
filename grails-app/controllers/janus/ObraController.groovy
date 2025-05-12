@@ -1351,64 +1351,64 @@ class ObraController {
 
             if(!Obra.findByCodigo(params.codigo)){
 
-            obraInstance = new Obra(params)
+                obraInstance = new Obra(params)
 
-            bandera = true
-            def departamento
+                bandera = true
+                def departamento
 
-            if (session.perfil.codigo == 'ADDI' || session.perfil.codigo == 'COGS') {
-                departamento = Departamento.get(persona?.departamento?.id)
-            } else {
-                departamento = Departamento.get(params.departamento.id)
-            }
+                if (session.perfil.codigo == 'ADDI' || session.perfil.codigo == 'COGS') {
+                    departamento = Departamento.get(persona?.departamento?.id)
+                } else {
+                    departamento = Departamento.get(params.departamento.id)
+                }
 
-            obraInstance.departamento = departamento
+                obraInstance.departamento = departamento
 
-            def par = Parametros.list()
-            if (par.size() > 0)
-                par = par.pop()
+                def par = Parametros.list()
+                if (par.size() > 0)
+                    par = par.pop()
 
-            obraInstance.indiceCostosIndirectosObra = par.indiceCostosIndirectosObra
-            obraInstance.indiceCostosIndirectosPromocion = par.indiceCostosIndirectosPromocion
-            obraInstance.indiceCostosIndirectosMantenimiento = par.indiceCostosIndirectosMantenimiento
-            obraInstance.administracion = par.administracion
-            obraInstance.indiceCostosIndirectosGarantias = par.indiceCostosIndirectosGarantias
-            obraInstance.indiceCostosIndirectosCostosFinancieros = par.indiceCostosIndirectosCostosFinancieros
-            obraInstance.indiceCostosIndirectosVehiculos = par.indiceCostosIndirectosVehiculos
+                obraInstance.indiceCostosIndirectosObra = par.indiceCostosIndirectosObra
+                obraInstance.indiceCostosIndirectosPromocion = par.indiceCostosIndirectosPromocion
+                obraInstance.indiceCostosIndirectosMantenimiento = par.indiceCostosIndirectosMantenimiento
+                obraInstance.administracion = par.administracion
+                obraInstance.indiceCostosIndirectosGarantias = par.indiceCostosIndirectosGarantias
+                obraInstance.indiceCostosIndirectosCostosFinancieros = par.indiceCostosIndirectosCostosFinancieros
+                obraInstance.indiceCostosIndirectosVehiculos = par.indiceCostosIndirectosVehiculos
 
-            obraInstance.impreso = par.impreso
-            obraInstance.indiceUtilidad = par.indiceUtilidad
-            obraInstance.indiceCostosIndirectosTimbresProvinciales = par.indiceCostosIndirectosTimbresProvinciales
+                obraInstance.impreso = par.impreso
+                obraInstance.indiceUtilidad = par.indiceUtilidad
+                obraInstance.indiceCostosIndirectosTimbresProvinciales = par.indiceCostosIndirectosTimbresProvinciales
 
-            obraInstance.indiceAlquiler = par.indiceAlquiler
-            obraInstance.indiceProfesionales = par.indiceProfesionales
-            obraInstance.indiceSeguros = par.indiceSeguros
-            obraInstance.indiceSeguridad = par.indiceSeguridad
-            obraInstance.indiceCampo = par.indiceCampo
-            obraInstance.indiceCampamento = par.indiceCampamento
+                obraInstance.indiceAlquiler = par.indiceAlquiler
+                obraInstance.indiceProfesionales = par.indiceProfesionales
+                obraInstance.indiceSeguros = par.indiceSeguros
+                obraInstance.indiceSeguridad = par.indiceSeguridad
+                obraInstance.indiceCampo = par.indiceCampo
+                obraInstance.indiceCampamento = par.indiceCampamento
 
-            /** variables por defecto para las nuevas obras **/
-            obraInstance.lugar = Lugar.findAll('from Lugar  where tipoLista=1')[0]
-            obraInstance.listaVolumen0 = Lugar.findAll('from Lugar  where tipoLista=3')[0]
-            obraInstance.distanciaPeso = 10
-            obraInstance.distanciaVolumen = 30
+                /** variables por defecto para las nuevas obras **/
+                obraInstance.lugar = Lugar.findAll('from Lugar  where tipoLista=1')[0]
+                obraInstance.listaVolumen0 = Lugar.findAll('from Lugar  where tipoLista=3')[0]
+                obraInstance.distanciaPeso = 10
+                obraInstance.distanciaVolumen = 30
 
 
 //                obraInstance.indiceGastosGenerales = (obraInstance.indiceCostosIndirectosObra + obraInstance.indiceCostosIndirectosPromocion + obraInstance.indiceCostosIndirectosMantenimiento +
 //                        obraInstance.administracion + obraInstance.indiceCostosIndirectosGarantias + obraInstance.indiceCostosIndirectosCostosFinancieros + obraInstance.indiceCostosIndirectosVehiculos)
 
 
-            obraInstance.indiceGastosGenerales = (obraInstance?.indiceAlquiler + obraInstance?.administracion + obraInstance?.indiceProfesionales + obraInstance?.indiceCostosIndirectosMantenimiento + obraInstance?.indiceSeguros + obraInstance?.indiceSeguridad)
+                obraInstance.indiceGastosGenerales = (obraInstance?.indiceAlquiler + obraInstance?.administracion + obraInstance?.indiceProfesionales + obraInstance?.indiceCostosIndirectosMantenimiento + obraInstance?.indiceSeguros + obraInstance?.indiceSeguridad)
 
-            obraInstance.indiceGastoObra = (obraInstance?.indiceCampo + obraInstance?.indiceCostosIndirectosCostosFinancieros + obraInstance?.indiceCostosIndirectosGarantias + obraInstance?.indiceCampamento)
+                obraInstance.indiceGastoObra = (obraInstance?.indiceCampo + obraInstance?.indiceCostosIndirectosCostosFinancieros + obraInstance?.indiceCostosIndirectosGarantias + obraInstance?.indiceCampamento)
 
 //                obraInstance.totales = (obraInstance.impreso + obraInstance.indiceUtilidad + obraInstance.indiceCostosIndirectosTimbresProvinciales + obraInstance.indiceGastosGenerales)
-            obraInstance.totales = (obraInstance.impreso + obraInstance.indiceUtilidad + obraInstance.indiceGastoObra + obraInstance.indiceGastosGenerales)
+                obraInstance.totales = (obraInstance.impreso + obraInstance.indiceUtilidad + obraInstance.indiceGastoObra + obraInstance.indiceGastosGenerales)
 
-            /* si pefiles administración directa o cogestion pone obratipo = 'D' */
-            if (session.perfil.codigo == 'ADDI' || session.perfil.codigo == 'COGS') {
-                obraInstance.tipo = 'D'
-            }
+                /* si pefiles administración directa o cogestion pone obratipo = 'D' */
+                if (session.perfil.codigo == 'ADDI' || session.perfil.codigo == 'COGS') {
+                    obraInstance.tipo = 'D'
+                }
             }else {
                 flash.clase = "alert-error"
                 flash.message = " No se pudo guardar la obra,  código duplicado: " + params.codigo
@@ -1937,6 +1937,41 @@ class ObraController {
         def txto = '0'*(3-valor.toString().size())
         println "txto: $txto"
         return "${txto}${valor}"
+    }
+
+    def comprobarAres_ajax(){
+        def obra = Obra.get(params.id)
+        def rubros = VolumenesObra.findAllByObra(obra, [sort: 'orden']).item.unique()
+
+        def sinCodigo = true
+
+        rubros.eachWithIndex { rubro, ik ->
+            if(!rubro?.codigoEspecificacion || rubro?.codigoEspecificacion == ''){
+                sinCodigo = false
+            }
+        }
+
+        if(sinCodigo){
+            render "ok"
+        }else{
+            render "no"
+        }
+    }
+
+    def listaRubrosSinCodigo_ajax(){
+        def obra = Obra.get(params.id)
+        def rubros = VolumenesObra.findAllByObra(obra, [sort: 'orden']).item.unique()
+        def rubrosSin
+
+        rubros.eachWithIndex { rubro, ik ->
+            if(!rubro?.codigoEspecificacion || rubro?.codigoEspecificacion == ''){
+               rubrosSin += rubro
+            }
+        }
+
+        println("-- " + rubrosSin)
+
+        return [rubros: rubrosSin]
     }
 
 } //fin controller
