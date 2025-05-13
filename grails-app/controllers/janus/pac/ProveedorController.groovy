@@ -106,7 +106,7 @@ class ProveedorController {
             println("error al guardar el proveedor " + proveedorInstance.errors)
             render "no_Error al guardar el proveedor"
         }else{
-            render "ok_Proveedor guardado correctamente"
+            render "ok_Proveedor guardado correctamente_${proveedorInstance?.nombre}"
         }
     } //save
 
