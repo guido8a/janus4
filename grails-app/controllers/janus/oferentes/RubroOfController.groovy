@@ -2222,7 +2222,7 @@ class RubroOfController {
         def cn = dbConnectionService.getConnection()
         def sql = "update ofrb set ofrbjnid = (select item.item__id from item, vlof " +
                 "where item.item__id = vlof.item__id and vlof.obra__id = ${params.obra} and " +
-                "item.itemnmbr = ofrb.ofrbnmbr and tpit__id = 2) " +
+                "item.itemnmbr = ofrb.ofrbnmbr and tpit__id = 2 and item.itemcdgo not ilike 'h%' limit 1) " +
                 "where ofrbjnid = 0 and obra__id = ${params.obra}"
         println "sql: $sql"
         cn.execute(sql.toString())
