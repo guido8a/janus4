@@ -894,6 +894,10 @@ class FormulaPolinomicaController {
 
         def cn = dbConnectionService.getConnection()
         def persona = Persona.get(session.usuario.id)
+        def sqlFP = "update fpob set fpobvlor = 0 where fpobvlor is null"
+        cn.execute(sqlFP.toString())
+        println "arregla valores FP: $sqlFP"
+
         def sqlMatriz = "select count(*) cuantos from mfcl where obra__id=${params.id}"
         def matriz = cn.rows(sqlMatriz.toString())[0].cuantos
         if (matriz == 0) {
