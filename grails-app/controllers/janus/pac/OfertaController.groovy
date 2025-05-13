@@ -103,7 +103,7 @@ class OfertaController {
             render "ok_Oferta borrada correctamente"
         }
         catch (DataIntegrityViolationException e) {
-            render "no_error al borrar la oferta"
+            render "no_Error al borrar la oferta"
         }
     } //delete
 

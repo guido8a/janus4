@@ -136,4 +136,49 @@
         createEditOferta(null, '${concurso?.id}');
     });
 
+    $(".btnBorrarOferta").click(function () {
+        var id = $(this).data("id");
+        deleteRow(id)
+    });
+
+    function deleteRow(itemId) {
+        bootbox.dialog({
+            title   : "Alerta",
+            message : "<i class='fa fa-trash fa-2x pull-left text-danger text-shadow'></i><p style='font-weight: bold; font-size: 14px'> Está seguro que desea eliminar esta oferta?.</p>",
+            buttons : {
+                cancelar : {
+                    label     : "Cancelar",
+                    className : "btn-primary",
+                    callback  : function () {
+                    }
+                },
+                eliminar : {
+                    label     : "<i class='fa fa-trash'></i> Eliminar",
+                    className : "btn-danger",
+                    callback  : function () {
+                        var v = cargarLoader("Eliminando...");
+                        $.ajax({
+                            type    : "POST",
+                            url     : '${createLink(controller: 'oferta', action:'delete')}',
+                            data    : {
+                                id : itemId
+                            },
+                            success : function (msg) {
+                                v.modal("hide");
+                                var parts = msg.split("_");
+                                if(parts[0] === 'ok'){
+                                    log(parts[1],"success");
+                                    cargarOferta(concurso);
+                                    $("#divTablaOferta").focus();
+                                }else{
+                                    log(parts[1],"error")
+                                }
+                            }
+                        });
+                    }
+                }
+            }
+        });
+    }
+
 </script>
