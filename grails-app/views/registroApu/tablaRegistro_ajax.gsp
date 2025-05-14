@@ -1,5 +1,4 @@
 <g:uploadForm controller="rubroOf" action="uploadAPU" method="post" name="frmUpload" id="${contrato?.id}" style="padding: 10px">
-
     <div id="list-grupo" class="col-md-12" role="main">
         <div class="col-md-2">
             <b style="margin-left: 20px">Obra Ofertada:</b>
@@ -20,9 +19,7 @@
             </div>
         </div>
     </div>
-%{--</g:uploadForm>--}%
 
-%{--<g:form class="form-horizontal" name="frmRegistro" action="saveRegistroApu_ajax">--}%
     <g:hiddenField name="persona" value="${oferente?.id}" />
     <g:hiddenField name="id" value="${registro?.id}" />
 
@@ -32,7 +29,7 @@
             <label class="text-info" style="font-size: 14px">Nombre de la composición a utilizar para subir el archivo Excel</label>
         </div>
         <div class="col-md-4">
-            <g:textField name="nombre" class="form-control" value="${registro?.nombre ?: 'Nueva composición'}" style="color: #0b2c89"/>
+            <g:textField name="nombre" class="form-control" value="${registro?.nombre ?: 'Nueva'}" style="color: #0b2c89"/>
         </div>
     </div>
 
@@ -51,7 +48,7 @@
             <label>Celda título</label>
         </div>
         <div class="col-md-1" style="margin-left: -30px; width: 70px">
-            <g:textField name="cldatitl" class="form-control" value="${registro?.cldatitl ?: 'A'}"/>
+            <g:textField name="cldatitl" class="form-control allCaps" value="${registro?.cldatitl ?: 'A'}"/>
         </div>
 
         <div class="col-md-1">
@@ -69,14 +66,14 @@
             <label>Celda texto Rubro</label>
         </div>
         <div class="col-md-1" style="margin-left: -40px">
-            <g:textField name="cldarbro" class="form-control" value="${registro?.cldarbro ?: 'A'}"/>
+            <g:textField name="cldarbro" class="form-control allCaps" value="${registro?.cldarbro ?: 'A'}"/>
         </div>
 
         <div class="col-md-1">
             <label>Celda Nombre rubro</label>
         </div>
         <div class="col-md-1" style="margin-left: -20px">
-            <g:textField name="rbronmbr" class="form-control" value="${registro?.rbronmbr ?: 'A'}"/>
+            <g:textField name="rbronmbr" class="form-control allCaps" value="${registro?.rbronmbr ?: 'A'}"/>
         </div>
 
         <div style="background-color: #e0e0e8; height: 105px; margin-top: 50px">
@@ -87,44 +84,44 @@
                     <span style="display: inline-block; margin-left: 44px">Tìtulo de la sección Equipos</span>
                     <g:textField name="titlEq" class="form-control" value="${registro?.titlEq ?: 'EQUIPOS'}"  style="width: 400px; display: inline-block; height: 26px"/>
                     <span style="display: inline-block; margin-left: 20px">Celda:</span>
-                    <g:textField name="cldaEq" class="form-control" value="${registro?.cldaEq ?: 'A'}" style="width: 80px; display: inline-block; height: 26px"/>
+                    <g:textField name="cldaEq" class="form-control allCaps" value="${registro?.cldaEq ?: 'A'}" style="width: 80px; display: inline-block; height: 26px"/>
                 </div>
             </div>
 
             <div class="row-fluid">
                 <div class="col-md-2">
                     <label>Código del Ítem</label>
-                    <g:textField name="cdgoEq" class="form-control" value="${registro?.cdgoEq ?: ''}"/>
+                    <g:textField name="cdgoEq" class="form-control allCaps" value="${registro?.cdgoEq ?: ''}"/>
                 </div>
 
                 <div class="col-md-2">
                     <label>Descripción del Ítem</label>
-                    <g:textField name="nmbrEq" class="form-control" value="${registro?.nmbrEq ?: 'A'}"/>
+                    <g:textField name="nmbrEq" class="form-control allCaps" value="${registro?.nmbrEq ?: 'A'}"/>
                 </div>
 
                 <div class="col-md-1">
                     <label>Cantidad</label>
-                    <g:textField name="cntdEq" class="form-control" value="${registro?.cntdEq ?: 'B'}"/>
+                    <g:textField name="cntdEq" class="form-control allCaps" value="${registro?.cntdEq ?: 'B'}"/>
                 </div>
 
                 <div class="col-md-1">
                     <label>Tarifa</label>
-                    <g:textField name="trfaEq" class="form-control" value="${registro?.trfaEq ?: 'C'}"/>
+                    <g:textField name="trfaEq" class="form-control allCaps" value="${registro?.trfaEq ?: 'C'}"/>
                 </div>
 
                 <div class="col-md-2">
                     <label>Costo Hora</label>
-                    <g:textField name="pcunEq" class="form-control" value="${registro?.pcunEq ?: 'D'}"/>
+                    <g:textField name="pcunEq" class="form-control allCaps" value="${registro?.pcunEq ?: 'D'}"/>
                 </div>
 
                 <div class="col-md-2">
                     <label>Rendimiento</label>
-                    <g:textField name="rndmEq" class="form-control" value="${registro?.rndmEq ?: 'E'}"/>
+                    <g:textField name="rndmEq" class="form-control allCaps" value="${registro?.rndmEq ?: 'E'}"/>
                 </div>
 
                 <div class="col-md-2">
                     <label>Costo (subtotal)</label>
-                    <g:textField name="cstoEq" class="form-control" value="${registro?.cstoEq ?: 'G'}"/>
+                    <g:textField name="cstoEq" class="form-control allCaps" value="${registro?.cstoEq ?: 'G'}"/>
                 </div>
             </div>
         </div>
@@ -137,44 +134,44 @@
                     <span style="display: inline-block">Tìtulo de la sección Mano de Obra</span>
                     <g:textField name="titlMo" class="form-control" value="${registro?.titlMo ?: 'MANO DE OBRA'}" style="width: 400px; display: inline-block; height: 26px"/>
                     <span style="display: inline-block; margin-left: 20px">Celda:</span>
-                    <g:textField name="cldaMo" class="form-control" value="${registro?.cldaMo ?: 'A'}"  style="width: 80px; display: inline-block; height: 26px"/>
+                    <g:textField name="cldaMo" class="form-control allCaps" value="${registro?.cldaMo ?: 'A'}"  style="width: 80px; display: inline-block; height: 26px"/>
                 </div>
             </div>
 
             <div class="row-fluid">
                 <div class="col-md-2">
                     <label>Código del Ítem</label>
-                    <g:textField name="cdgoMo" class="form-control" value="${registro?.cdgoMo ?: ''}"/>
+                    <g:textField name="cdgoMo" class="form-control allCaps" value="${registro?.cdgoMo ?: ''}"/>
                 </div>
 
                 <div class="col-md-2">
                     <label>Descripción del Ítem</label>
-                    <g:textField name="nmbrMo" class="form-control" value="${registro?.nmbrMo ?: 'A'}"/>
+                    <g:textField name="nmbrMo" class="form-control allCaps" value="${registro?.nmbrMo ?: 'A'}"/>
                 </div>
 
                 <div class="col-md-1">
                     <label>Cantidad</label>
-                    <g:textField name="cntdMo" class="form-control" value="${registro?.cntdMo ?: 'B'}"/>
+                    <g:textField name="cntdMo" class="form-control allCaps" value="${registro?.cntdMo ?: 'B'}"/>
                 </div>
 
                 <div class="col-md-1">
                     <label>Tarifa</label>
-                    <g:textField name="trfaMo" class="form-control" value="${registro?.trfaMo ?: 'C'}"/>
+                    <g:textField name="trfaMo" class="form-control allCaps" value="${registro?.trfaMo ?: 'C'}"/>
                 </div>
 
                 <div class="col-md-2">
                     <label>Costo Hora</label>
-                    <g:textField name="pcunMo" class="form-control" value="${registro?.pcunMo ?: 'D'}"/>
+                    <g:textField name="pcunMo" class="form-control allCaps" value="${registro?.pcunMo ?: 'D'}"/>
                 </div>
 
                 <div class="col-md-2">
                     <label>Rendimiento</label>
-                    <g:textField name="rndmMo" class="form-control" value="${registro?.rndmMo ?: 'E'}"/>
+                    <g:textField name="rndmMo" class="form-control allCaps" value="${registro?.rndmMo ?: 'E'}"/>
                 </div>
 
                 <div class="col-md-2">
                     <label>Costo</label>
-                    <g:textField name="cstoMo" class="form-control" value="${registro?.cstoMo ?: 'G'}"/>
+                    <g:textField name="cstoMo" class="form-control allCaps" value="${registro?.cstoMo ?: 'G'}"/>
                 </div>
             </div>
         </div>
@@ -187,39 +184,39 @@
                     <span style="display: inline-block">Tìtulo de la sección Materiales</span>
                     <g:textField name="titlMt" class="form-control" value="${registro?.titlMt ?: 'MATERIALES'}"   style="width: 400px; display: inline-block; height: 26px"/>
                     <span style="display: inline-block; margin-left: 20px">Celda:</span>
-                    <g:textField name="cldaMt" class="form-control" value="${registro?.cldaMt ?: 'A'}"  style="width: 80px; display: inline-block; height: 26px"/>
+                    <g:textField name="cldaMt" class="form-control allCaps" value="${registro?.cldaMt ?: 'A'}"  style="width: 80px; display: inline-block; height: 26px"/>
                 </div>
             </div>
 
             <div class="row-fluid">
                 <div class="col-md-2">
                     <label>Código del Ítem</label>
-                    <g:textField name="cdgoMt" class="form-control" value="${registro?.cdgoMt ?: ''}"/>
+                    <g:textField name="cdgoMt" class="form-control allCaps" value="${registro?.cdgoMt ?: ''}"/>
                 </div>
 
                 <div class="col-md-2">
                     <label>Descripción del Ítem</label>
-                    <g:textField name="nmbrMt" class="form-control" value="${registro?.nmbrMt ?: 'A'}"/>
+                    <g:textField name="nmbrMt" class="form-control allCaps" value="${registro?.nmbrMt ?: 'A'}"/>
                 </div>
 
                 <div class="col-md-1">
                     <label>Unidad</label>
-                    <g:textField name="unddMt" class="form-control" value="${registro?.unddMt ?: 'C'}"/>
+                    <g:textField name="unddMt" class="form-control allCaps" value="${registro?.unddMt ?: 'C'}"/>
                 </div>
 
                 <div class="col-md-1">
                     <label>Cantidad</label>
-                    <g:textField name="cntdMt" class="form-control" value="${registro?.cntdMt ?: 'D'}"/>
+                    <g:textField name="cntdMt" class="form-control allCaps" value="${registro?.cntdMt ?: 'D'}"/>
                 </div>
 
                 <div class="col-md-2">
                     <label>Precio Unitario</label>
-                    <g:textField name="pcunMt" class="form-control" value="${registro?.pcunMt ?: 'E'}"/>
+                    <g:textField name="pcunMt" class="form-control allCaps" value="${registro?.pcunMt ?: 'E'}"/>
                 </div>
 
                 <div class="col-md-2">
                     <label>Costo</label>
-                    <g:textField name="cstoMt" class="form-control" value="${registro?.cstoMt ?: 'G'}"/>
+                    <g:textField name="cstoMt" class="form-control allCaps" value="${registro?.cstoMt ?: 'G'}"/>
                 </div>
             </div>
         </div>
@@ -233,7 +230,7 @@
                     <g:textField name="titlTr" class="form-control" value="${registro?.titlTr ?: 'TRANSPORTE'}"
                                  style="width: 400px; display: inline-block; height: 26px"/>
                     <span style="display: inline-block; margin-left: 20px">Celda:</span>
-                    <g:textField name="cldaTr" class="form-control" value="${registro?.cldaTr ?: 'A'}"
+                    <g:textField name="cldaTr" class="form-control allCaps" value="${registro?.cldaTr ?: 'A'}"
                                  style="width: 80px; display: inline-block; height: 26px"/>
                 </div>
             </div>
@@ -241,50 +238,46 @@
             <div class="row-fluid">
                 <div class="col-md-2">
                     <label>Código del Ítem</label>
-                    %{--<g:textField name="cdgoTr" class="form-control" value="${registro?.cdgoTr ?: 'A'}"/>--}%
-                    <g:textField name="cdgoTr" class="form-control" value="${registro?.cdgoTr}"/>
+                    <g:textField name="cdgoTr" class="form-control allCaps" value="${registro?.cdgoTr}"/>
                 </div>
 
                 <div class="col-md-2">
                     <label>Descripción del Ítem</label>
-                    <g:textField name="nmbrTr" class="form-control" value="${registro?.nmbrTr ?: 'B'}"/>
+                    <g:textField name="nmbrTr" class="form-control allCaps" value="${registro?.nmbrTr ?: 'B'}"/>
                 </div>
 
                 <div class="col-md-1">
                     <label>Unidad</label>
-                    <g:textField name="unddTr" class="form-control" value="${registro?.unddTr ?: 'C'}"/>
+                    <g:textField name="unddTr" class="form-control allCaps" value="${registro?.unddTr ?: 'C'}"/>
                 </div>
 
                 <div class="col-md-1">
                     <label>Peso</label>
-                    %{--<g:textField name="pesoTr" class="form-control" value="${registro?.pesoTr ?: 'D'}"/>--}%
-                    <g:textField name="pesoTr" class="form-control" value="${registro?.pesoTr}"/>
+                    <g:textField name="pesoTr" class="form-control allCaps" value="${registro?.pesoTr}"/>
                 </div>
 
                 <div class="col-md-1">
                     <label>Cantidad</label>
-                    <g:textField name="cntdTr" class="form-control" value="${registro?.cntdTr ?: 'E'}"/>
+                    <g:textField name="cntdTr" class="form-control allCaps" value="${registro?.cntdTr ?: 'E'}"/>
                 </div>
 
                 <div class="col-md-1">
                     <label>Distancia</label>
-                    %{--<g:textField name="dstnTr" class="form-control" value="${registro?.dstnTr ?: 'F'}"/>--}%
-                    <g:textField name="dstnTr" class="form-control" value="${registro?.dstnTr}"/>
+                    <g:textField name="dstnTr" class="form-control allCaps" value="${registro?.dstnTr}"/>
                 </div>
 
                 <div class="col-md-2">
                     <label>Tarifa</label>
-                    <g:textField name="pcunTr" class="form-control" value="${registro?.pcunTr ?:'G'}"/>
+                    <g:textField name="pcunTr" class="form-control allCaps" value="${registro?.pcunTr ?:'G'}"/>
                 </div>
 
                 <div class="col-md-2">
                     <label>Costo</label>
-                    <g:textField name="cstoTr" class="form-control" value="${registro?.cstoTr ?: 'H'}"/>
+                    <g:textField name="cstoTr" class="form-control allCaps" value="${registro?.cstoTr ?: 'H'}"/>
                 </div>
             </div>
         </div>
     </div>
-%{--</g:form>--}%
 </g:uploadForm>
 
 
