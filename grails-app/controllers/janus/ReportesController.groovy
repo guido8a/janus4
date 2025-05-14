@@ -4618,14 +4618,15 @@ class ReportesController {
 
         document.add(txtIzqHeader)
 
-        PdfPTable tablaCoeficiente = new PdfPTable(4);
+        PdfPTable tablaCoeficiente = new PdfPTable(3);
         tablaCoeficiente.setWidthPercentage(90);
-        tablaCoeficiente.setWidths(arregloEnteros([5, 8, 1, 53]))
+//        tablaCoeficiente.setWidths(arregloEnteros([5, 8, 1, 53]))
+        tablaCoeficiente.setWidths(arregloEnteros([6, 8, 86]))
 
         addCellTabla(tablaCoeficiente, new Paragraph("", times10normal), prmsHeaderHoja4)
         addCellTabla(tablaCoeficiente, new Paragraph("", times10normal), prmsHeaderHoja4)
         addCellTabla(tablaCoeficiente, new Paragraph("", times10normal), prmsHeaderHoja4)
-        addCellTabla(tablaCoeficiente, new Paragraph("", times10normal), prmsHeaderHoja4)
+//        addCellTabla(tablaCoeficiente, new Paragraph("", times10normal), prmsHeaderHoja4)
 
         def valorTotal = 0
 
@@ -4635,7 +4636,7 @@ class ReportesController {
                     addCellTabla(tablaCoeficiente, new Paragraph(i.numero + " = ", times10normal), prmsHeaderHoja)
                     addCellTabla(tablaCoeficiente, new Paragraph(g.formatNumber(number: i.valor, format: "#.###", minFractionDigits: 3, locale: "ec"), times10normal), prmsHeaderHoja)
 //                    addCellTabla(tablaCoeficiente, new Paragraph("Coeficiente del Componente ", times10normal), prmsHeaderHoja)
-                    addCellTabla(tablaCoeficiente, new Paragraph("", times10normal), prmsHeaderHoja)
+//                    addCellTabla(tablaCoeficiente, new Paragraph("", times10normal), prmsHeaderHoja)
                     addCellTabla(tablaCoeficiente, new Paragraph(i?.indice?.descripcion.toUpperCase(), times10normal), prmsHeaderHoja)
 
                     valorTotal = i.valor + valorTotal
@@ -4645,13 +4646,13 @@ class ReportesController {
 
         addCellTabla(tablaCoeficiente, new Paragraph(" ", times10bold), prmsHeaderHoja4)
         addCellTabla(tablaCoeficiente, new Paragraph(g.formatNumber(number: valorTotal, format: "##,##0", minFractionDigits: 3, maxFractionDigits: 3, locale: "ec"), times10bold), prmsHeaderHoja4)
-        addCellTabla(tablaCoeficiente, new Paragraph("", times10bold), prmsHeaderHojaCenter)
+//        addCellTabla(tablaCoeficiente, new Paragraph("", times10bold), prmsHeaderHojaCenter)
         addCellTabla(tablaCoeficiente, new Paragraph(" (Suma total)", times10bold), prmsHeaderHojaCenter)
 
         addCellTabla(tablaCoeficiente, new Paragraph(" ", times10normal), prmsHeaderHoja4)
         addCellTabla(tablaCoeficiente, new Paragraph(" ", times10normal), prmsHeaderHoja4)
         addCellTabla(tablaCoeficiente, new Paragraph(" ", times10normal), prmsHeaderHoja4)
-        addCellTabla(tablaCoeficiente, new Paragraph(" ", times10normal), prmsHeaderHoja4)
+//        addCellTabla(tablaCoeficiente, new Paragraph(" ", times10normal), prmsHeaderHoja4)
 
         PdfPTable tablaCuadrillaHeader = new PdfPTable(2);
         tablaCuadrillaHeader.setWidthPercentage(90);
