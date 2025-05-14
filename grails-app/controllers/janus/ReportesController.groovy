@@ -4362,7 +4362,6 @@ class ReportesController {
             document.add(tablaPie)
         }
 
-
         document.close();
         pdfw.close()
         byte[] b = baos.toByteArray();
@@ -4375,7 +4374,6 @@ class ReportesController {
     def reporteDocumentosObraFormu() {   /* fórmula polinómica */
 //        println("paramsf" + params)
         def auxiliar = Auxiliar.get(1)
-//        println(auxiliar)
         def auxiliarFijo = Auxiliar.get(1)
         def obra = Obra.get(params.id)
         def firma
@@ -4385,7 +4383,6 @@ class ReportesController {
         def formula = FormulaPolinomica.findAllByObra(obra)
         def ps = FormulaPolinomica.findAllByObraAndNumeroIlike(obra, 'p%', [sort: 'numero'])
         def cuadrilla = FormulaPolinomica.findAllByObraAndNumeroIlike(obra, 'c%', [sort: 'numero'])
-//        println("---->>>>>"+ps)
         def c
         def z = []
         def banderafp = 0
@@ -4412,7 +4409,6 @@ class ReportesController {
 
         if (params.firmasFijasFormu.trim().size() > 0) {
             firmaFijaFormu = params.firmasFijasFormu.split(",")
-//            firmaFijaFormu = firmaFijaFormu.toList().unique()
         } else {
             firmaFijaFormu = []
         }
@@ -4458,7 +4454,6 @@ class ReportesController {
         Font times12bold = new Font(Font.TIMES_ROMAN, 12, Font.BOLD);
         Font times18bold = new Font(Font.TIMES_ROMAN, 18, Font.BOLD);
         Font times10bold = new Font(Font.TIMES_ROMAN, 10, Font.BOLD);
-//        Font times10normal = new Font(Font.TIMES_ROMAN, 10, Font.NORMAL);
         Font times10normal = new Font(Font.TIMES_ROMAN, 9, Font.NORMAL);
         Font times8bold = new Font(Font.TIMES_ROMAN, 8, Font.BOLD)
         Font times8normal = new Font(Font.TIMES_ROMAN, 8, Font.NORMAL)
@@ -4484,7 +4479,6 @@ class ReportesController {
 
         headers.setAlignment(Element.ALIGN_CENTER);
         headers.add(new Paragraph(auxiliar?.titulo, times14bold));
-//        headers.add(new Paragraph(auxiliar?.memo1, times12bold))
         headers.add(new Paragraph("FÓRMULA POLINÓMICA " + obra?.formulaPolinomica, times12bold))
         document.add(headers);
 
@@ -4626,7 +4620,7 @@ class ReportesController {
 
         PdfPTable tablaCoeficiente = new PdfPTable(4);
         tablaCoeficiente.setWidthPercentage(90);
-        tablaCoeficiente.setWidths(arregloEnteros([5, 8, 25, 53]))
+        tablaCoeficiente.setWidths(arregloEnteros([5, 8, 1, 53]))
 
         addCellTabla(tablaCoeficiente, new Paragraph("", times10normal), prmsHeaderHoja4)
         addCellTabla(tablaCoeficiente, new Paragraph("", times10normal), prmsHeaderHoja4)
@@ -4640,7 +4634,8 @@ class ReportesController {
                 if (i.valor != 0.0 || i.valor != 0) {
                     addCellTabla(tablaCoeficiente, new Paragraph(i.numero + " = ", times10normal), prmsHeaderHoja)
                     addCellTabla(tablaCoeficiente, new Paragraph(g.formatNumber(number: i.valor, format: "#.###", minFractionDigits: 3, locale: "ec"), times10normal), prmsHeaderHoja)
-                    addCellTabla(tablaCoeficiente, new Paragraph("Coeficiente del Componente ", times10normal), prmsHeaderHoja)
+//                    addCellTabla(tablaCoeficiente, new Paragraph("Coeficiente del Componente ", times10normal), prmsHeaderHoja)
+                    addCellTabla(tablaCoeficiente, new Paragraph("", times10normal), prmsHeaderHoja)
                     addCellTabla(tablaCoeficiente, new Paragraph(i?.indice?.descripcion.toUpperCase(), times10normal), prmsHeaderHoja)
 
                     valorTotal = i.valor + valorTotal
@@ -4650,8 +4645,8 @@ class ReportesController {
 
         addCellTabla(tablaCoeficiente, new Paragraph(" ", times10bold), prmsHeaderHoja4)
         addCellTabla(tablaCoeficiente, new Paragraph(g.formatNumber(number: valorTotal, format: "##,##0", minFractionDigits: 3, maxFractionDigits: 3, locale: "ec"), times10bold), prmsHeaderHoja4)
-        addCellTabla(tablaCoeficiente, new Paragraph("(Suma total) ", times10bold), prmsHeaderHojaCenter)
-        addCellTabla(tablaCoeficiente, new Paragraph(" ", times10normal), prmsHeaderHoja)
+        addCellTabla(tablaCoeficiente, new Paragraph("", times10bold), prmsHeaderHojaCenter)
+        addCellTabla(tablaCoeficiente, new Paragraph(" (Suma total)", times10bold), prmsHeaderHojaCenter)
 
         addCellTabla(tablaCoeficiente, new Paragraph(" ", times10normal), prmsHeaderHoja4)
         addCellTabla(tablaCoeficiente, new Paragraph(" ", times10normal), prmsHeaderHoja4)
@@ -4709,7 +4704,8 @@ class ReportesController {
         addCellTabla(tablaNota, new Paragraph("NOTA: ", times8bold), prmsHeaderHoja4)
         addCellTabla(tablaNota, new Paragraph("La presente Fórmula Polinómica se sujetará a lo establecido en la Ley de Contratación Pública ", times8normal), prmsHeaderHoja4)
         addCellTabla(tablaNota, new Paragraph(" ", times10bold), prmsHeaderHoja4)
-        addCellTabla(tablaNota, new Paragraph("Índice So: ${printFechaMes(obra?.fechaOficioSalida).toUpperCase()}", times8bold), prmsHeaderHoja4)
+//        addCellTabla(tablaNota, new Paragraph("Índice So: ${printFechaMes(obra?.fechaOficioSalida).toUpperCase()}", times8bold), prmsHeaderHoja4)
+        addCellTabla(tablaNota, new Paragraph("", times8bold), prmsHeaderHoja4)
 
         addCellTabla(tablaNota, new Paragraph(" ", times10normal), prmsHeaderHoja)
         addCellTabla(tablaNota, new Paragraph(" ", times10normal), prmsHeaderHoja)
@@ -4730,7 +4726,8 @@ class ReportesController {
         addCellTabla(tablaFirmas, new Paragraph(" ", times10bold), prmsHeaderHoja)
         addCellTabla(tablaFirmas, new Paragraph(" ", times10bold), prmsHeaderHoja)
         addCellTabla(tablaFirmas, new Paragraph("______________________________________", times8bold), prmsHeaderHoja)
-        addCellTabla(tablaFirmas, new Paragraph("______________________________________", times8bold), prmsHeaderHoja)
+//        addCellTabla(tablaFirmas, new Paragraph("______________________________________", times8bold), prmsHeaderHoja)
+        addCellTabla(tablaFirmas, new Paragraph("", times8bold), prmsHeaderHoja)
 
         def arregloFirmas = []
         def el1
@@ -4754,19 +4751,26 @@ class ReportesController {
             addCellTabla(tablaFirmas, new Paragraph(" ", times8bold), prmsHeaderHoja)
         }
 
-        if(params.firmaCoordinador != ''){
-            def personaRol = PersonaRol.get(params.firmaCoordinador)
-            firmaCoordinador = personaRol.persona
-            addCellTabla(tablaFirmas, new Paragraph((firmaCoordinador?.titulo?.toUpperCase() ?: '') + " " + (firmaCoordinador?.nombre?.toUpperCase() ?: '') + " " + (firmaCoordinador?.apellido?.toUpperCase() ?: ''), times8bold), prmsHeaderHoja)
-        }else{
-            addCellTabla(tablaFirmas, new Paragraph("Coordinador no asignado", times8bold), prmsHeaderHoja)
-        }
+        addCellTabla(tablaFirmas, new Paragraph("", times8bold), prmsHeaderHoja)
+
+//        if(params.firmaCoordinador != ''){
+//            def personaRol = PersonaRol.get(params.firmaCoordinador)
+//            firmaCoordinador = personaRol.persona
+//            addCellTabla(tablaFirmas, new Paragraph((firmaCoordinador?.titulo?.toUpperCase() ?: '') + " " + (firmaCoordinador?.nombre?.toUpperCase() ?: '') + " " + (firmaCoordinador?.apellido?.toUpperCase() ?: ''), times8bold), prmsHeaderHoja)
+//        }else{
+//            addCellTabla(tablaFirmas, new Paragraph("Coordinador no asignado", times8bold), prmsHeaderHoja)
+//        }
+
+
+
         //cargos
 
         addCellTabla(tablaFirmas, new Paragraph("ELABORÓ", times8bold), prmsHeaderHoja)
-        addCellTabla(tablaFirmas, new Paragraph("COORDINADOR", times8bold), prmsHeaderHoja)
+//        addCellTabla(tablaFirmas, new Paragraph("COORDINADOR", times8bold), prmsHeaderHoja)
+        addCellTabla(tablaFirmas, new Paragraph("", times8bold), prmsHeaderHoja)
         addCellTabla(tablaFirmas, new Paragraph(personaElaboro?.departamento?.descripcion?.toUpperCase() ?: '', times8bold), prmsHeaderHoja)
-        addCellTabla(tablaFirmas, new Paragraph((firmaCoordinador?.departamento?.descripcion?.toUpperCase() ?: ''), times8bold), prmsHeaderHoja)
+//        addCellTabla(tablaFirmas, new Paragraph((firmaCoordinador?.departamento?.descripcion?.toUpperCase() ?: ''), times8bold), prmsHeaderHoja)
+        addCellTabla(tablaFirmas, new Paragraph('', times8bold), prmsHeaderHoja)
         addCellTabla(tablaFirmas, new Paragraph(" ", times10bold), prmsHeaderHoja)
         addCellTabla(tablaFirmas, new Paragraph(" ", times10bold), prmsHeaderHoja)
         document.add(tablaFirmas);
