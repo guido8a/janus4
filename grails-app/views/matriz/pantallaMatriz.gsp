@@ -399,7 +399,7 @@
                     var msg_ok = arr[0];
                     var sbpr = arr[1];
                     if (msg_ok === "ok" || msg_ok === "OK") {
-                        location.href = "${createLink(controller: 'formulaPolinomica', action: 'coeficientes', id:obra)}?sbpr="+sbpr;
+                        location.href = "${createLink(controller: 'formulaPolinomica', action: 'coeficientesFp', id:obra)}?sbpr="+sbpr;
                     }
                 }
             });
