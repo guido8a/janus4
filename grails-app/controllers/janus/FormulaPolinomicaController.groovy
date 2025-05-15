@@ -110,7 +110,7 @@ class FormulaPolinomicaController {
                 "sbgr.sbgr__id = dprt.sbgr__id and grpo__id <> 2 and mfvl.obra__id = mfcl.obra__id and " +
                 "mfvl.sbpr__id = mfcl.sbpr__id and mfvl.clmncdgo = mfcl.clmncdgo and mfvl.codigo = 'sS3' and " +
                 "item.item__id not in (select item__id from itfp, fpob " +
-                  "where itfp.fpob__id = fpob.fpob__id and obra__id = ${params.obra} and sbpr__id = 0) AND " +
+                "where itfp.fpob__id = fpob.fpob__id and obra__id = ${params.obra} and sbpr__id = 0) AND " +
                 "itemcdgo not in ('EQPO', 'REP', 'COMB', 'SLDO', '103.001.009') order by valor desc limit 1"
 
         println "editarSugeridos... item: $sql"
@@ -141,7 +141,7 @@ class FormulaPolinomicaController {
                 "sbgr.sbgr__id = dprt.sbgr__id and grpo__id = 2 and mfvl.obra__id = mfcl.obra__id and " +
                 "mfvl.sbpr__id = mfcl.sbpr__id and mfvl.clmncdgo = mfcl.clmncdgo and mfvl.codigo = 'sS5' and " +
                 "item.item__id not in (select item__id from itfp, fpob " +
-                  "where itfp.fpob__id = fpob.fpob__id and obra__id = ${params.obra} and sbpr__id = 0) AND " +
+                "where itfp.fpob__id = fpob.fpob__id and obra__id = ${params.obra} and sbpr__id = 0) AND " +
                 "itemcdgo not in ('MO') order by valor desc limit 1"
 
         println "editarSugeridos... item: $sql"
@@ -1095,5 +1095,30 @@ class FormulaPolinomicaController {
         cn.close()
         render "ok"
     }
+
+    def ordenarIndices_ajax(){
+        def obra = Obra.get(params.id)
+        def indices = FormulaPolinomica.findAllByObraAndNumeroNotIlikeAndNumeroNotIlikeAndNumeroNotIlike(obra, '%C%', '%px%', '%p01%', [sort: 'valor', order: 'desc'])
+
+        indices.eachWithIndex{ fp , int i ->
+
+            if(i != 8){
+                fp.numero = 'p0' + (i+2)
+            }else{
+                fp.numero = 'p' + (i+2)
+            }
+
+            fp.save(flush:true)
+
+            println("fp " + fp)
+            println("i " + i)
+
+        }
+
+        println("indices " + indices?.id)
+
+        render "ok"
+    }
+
 
 } //fin controller

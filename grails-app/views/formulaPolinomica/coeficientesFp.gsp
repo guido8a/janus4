@@ -171,7 +171,12 @@
                 Aprender Fórmulas
             </a>
         </g:if>
-
+    </div>
+    <div class="btn-group"  style="margin-top: 10px">
+        <a href="#" class="btn btn-info" style="margin-top: -10px;" id="btnOrdenarIndices">
+            <i class="fa fa-retweet"></i>
+            Ordenar indices
+        </a>
     </div>
 </div>
 
@@ -271,6 +276,25 @@
 </div>
 
 <script type="text/javascript">
+
+    $("#btnOrdenarIndices").click(function () {
+        $.ajax({
+            type: 'POST',
+            url: '${createLink(controller: 'formulaPolinomica', action: 'ordenarIndices_ajax')}',
+            data:{
+                id: '${obra?.id}'
+            },
+            success: function (msg) {
+                if(msg === 'ok'){
+                    log("Ordenado correctamente", "success");
+                    setTimeout(function() {
+                        location.reload();
+                    }, 1000);
+                }
+            }
+        });
+    });
+
 
     $("#btnMarcarTodos").click(function () {
         clicTodos();
@@ -567,27 +591,27 @@
                         }
 
                         if (cantNombre === 0) {
-                                btnSaveSgrc.replaceWith(spinner);
-                                $.ajax({
-                                    type    : "POST",
-                                    url     : "${createLink(action: 'guardarGrupoSgrc')}",
-                                    data    : {
-                                        id     : nodeId,
-                                        indice : indice,
-                                        valor  : valor,
-                                        obra: ${obra.id},
-                                        sbpr: ${subpre}
-                                    },
-                                    success : function (msg) {
-                                        if (msg === "OK") {
-                                            node.attr("nombre", indiceNombre).trigger("change_node.jstree");
-                                            node.attr("valor", valor).trigger("change_node.jstree");
-                                            $("#modal-sugeridos").dialog("close");
-                                            updateSumaTotal();
-                                            location.reload();
-                                        }
+                            btnSaveSgrc.replaceWith(spinner);
+                            $.ajax({
+                                type    : "POST",
+                                url     : "${createLink(action: 'guardarGrupoSgrc')}",
+                                data    : {
+                                    id     : nodeId,
+                                    indice : indice,
+                                    valor  : valor,
+                                    obra: ${obra.id},
+                                    sbpr: ${subpre}
+                                },
+                                success : function (msg) {
+                                    if (msg === "OK") {
+                                        node.attr("nombre", indiceNombre).trigger("change_node.jstree");
+                                        node.attr("valor", valor).trigger("change_node.jstree");
+                                        $("#modal-sugeridos").dialog("close");
+                                        updateSumaTotal();
+                                        location.reload();
                                     }
-                                });
+                                }
+                            });
                         } else {
                             bootbox.alert('<i class="fa fa-exclamation-triangle text-info fa-3x"></i> ' +
                                 '<strong style="font-size: 14px">' + "No puede ingresar dos coeficientes con el mismo nombre" +
@@ -617,27 +641,27 @@
                         }
 
                         if (cantNombre === 0) {
-                                btnSaveSgrc.replaceWith(spinner);
-                                $.ajax({
-                                    type    : "POST",
-                                    url     : "${createLink(action: 'guardarGrupoSgrcCt')}",
-                                    data    : {
-                                        id     : nodeId,
-                                        indice : indice,
-                                        valor  : valor,
-                                        obra: ${obra.id},
-                                        sbpr: ${subpre}
-                                    },
-                                    success : function (msg) {
-                                        if (msg === "OK") {
-                                            node.attr("nombre", indiceNombre).trigger("change_node.jstree");
-                                            node.attr("valor", valor).trigger("change_node.jstree");
-                                            $("#modal-sugeridos").dialog("close");
-                                            updateSumaTotal();
-                                            location.reload();
-                                        }
+                            btnSaveSgrc.replaceWith(spinner);
+                            $.ajax({
+                                type    : "POST",
+                                url     : "${createLink(action: 'guardarGrupoSgrcCt')}",
+                                data    : {
+                                    id     : nodeId,
+                                    indice : indice,
+                                    valor  : valor,
+                                    obra: ${obra.id},
+                                    sbpr: ${subpre}
+                                },
+                                success : function (msg) {
+                                    if (msg === "OK") {
+                                        node.attr("nombre", indiceNombre).trigger("change_node.jstree");
+                                        node.attr("valor", valor).trigger("change_node.jstree");
+                                        $("#modal-sugeridos").dialog("close");
+                                        updateSumaTotal();
+                                        location.reload();
                                     }
-                                });
+                                }
+                            });
                         } else {
                             bootbox.alert('<i class="fa fa-exclamation-triangle text-info fa-3x"></i> ' +
                                 '<strong style="font-size: 14px">' + "No puede ingresar dos coeficientes con el mismo nombre" +
