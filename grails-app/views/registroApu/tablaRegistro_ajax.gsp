@@ -1,4 +1,22 @@
+
 <g:uploadForm controller="rubroOf" action="uploadAPU" method="post" name="frmUpload" id="${contrato?.id}" style="padding: 10px">
+
+    <div class="col-md-12" style="margin-bottom: 10px">
+        <div class="col-md-4">
+            <label class="text-info" style="font-size: 14px">Nombre de la composición a utilizar para subir el archivo Excel: </label>
+        </div>
+        <div class="col-md-4">
+            <g:textField name="nombre" class="form-control" value="${registro?.nombre ?: 'Nueva'}" style="color: #0b2c89"/>
+        </div>
+
+        <div class="col-md-2">
+            <a href="#" class="btn btn-info" id="btnGuardarRegistro"><i class="fa fa-save"></i>
+                Guardar composición
+            </a>
+        </div>
+
+    </div>
+
     <div id="list-grupo" class="col-md-12" role="main">
         <div class="col-md-2">
             <b style="margin-left: 20px">Obra Ofertada:</b>
@@ -24,21 +42,6 @@
     <g:hiddenField name="persona" value="${oferente?.id}" />
     <g:hiddenField name="id" value="${registro?.id}" />
 
-    <div class="col-md-12" style="margin-bottom: 10px">
-        <div class="col-md-4">
-            <label class="text-info" style="font-size: 14px">Nombre de la composición a utilizar para subir el archivo Excel: </label>
-        </div>
-        <div class="col-md-4">
-            <g:textField name="nombre" class="form-control" value="${registro?.nombre ?: 'Nueva'}" style="color: #0b2c89"/>
-        </div>
-
-        <div class="col-md-2">
-            <a href="#" class="btn btn-success" id="btnGuardarRegistro"><i class="fa fa-save"></i>
-                Guardar composición
-            </a>
-        </div>
-
-    </div>
 
     <div id="list-grupo" class="col-md-12" style="margin-left: 30px">
         <strong>El título debe estar en la primera línea de cada hoja de los APU</strong>
