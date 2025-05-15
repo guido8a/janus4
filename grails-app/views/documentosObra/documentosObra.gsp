@@ -2,8 +2,8 @@
 <html lang="es">
 <head>
     <meta name="layout" content="main">
-    <asset:stylesheet src="/summernote-0.8.18-dist/summernote.min.css"/>
-    <asset:javascript src="/summernote-0.8.18-dist/summernote.min.js"/>
+%{--    <asset:stylesheet src="/summernote-0.8.18-dist/summernote.min.css"/>--}%
+%{--    <asset:javascript src="/summernote-0.8.18-dist/summernote.min.js"/>--}%
 
     <style type="text/css">
 
