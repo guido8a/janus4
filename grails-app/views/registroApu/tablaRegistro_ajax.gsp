@@ -4,12 +4,13 @@
             <b style="margin-left: 20px">Obra Ofertada:</b>
         </div>
         <div class="col-md-10">
-            <g:select name="obra" from="${obras}" optionKey="key" optionValue="value" style="width: 100%; margin-left: -80px"/>
+            <g:select name="obra" class="form-control" from="${obras}" optionKey="key" optionValue="value" style="width: 100%; margin-left: -80px"/>
         </div>
 
         <div class="col-md-12" style="margin-top: 20px; margin-bottom: 20px">
+            <div class="col-md-2"></div>
             <div class="col-md-2"><b>Archivo Excel a subir:</b></div>
-            <div class="col-md-8">
+            <div class="col-md-4">
                 <input type="file" class="required" name="file" multiple accept=".xlsx" style="width: 100%; font-size: 12pt" value="Arch"/>
             </div>
             <div class="col-md-2">
@@ -24,19 +25,25 @@
     <g:hiddenField name="id" value="${registro?.id}" />
 
     <div class="col-md-12" style="margin-bottom: 10px">
-        <div class="col-md-3"></div>
-        <div class="col-md-3">
-            <label class="text-info" style="font-size: 14px">Nombre de la composición a utilizar para subir el archivo Excel</label>
+        <div class="col-md-4">
+            <label class="text-info" style="font-size: 14px">Nombre de la composición a utilizar para subir el archivo Excel: </label>
         </div>
         <div class="col-md-4">
             <g:textField name="nombre" class="form-control" value="${registro?.nombre ?: 'Nueva'}" style="color: #0b2c89"/>
         </div>
+
+        <div class="col-md-2">
+            <a href="#" class="btn btn-success" id="btnGuardarRegistro"><i class="fa fa-save"></i>
+                Guardar composición
+            </a>
+        </div>
+
     </div>
 
     <div id="list-grupo" class="col-md-12" style="margin-left: 30px">
         <strong>El título debe estar en la primera línea de cada hoja de los APU</strong>
     </div>
-    <div id="list-grupo" class="col-md-12" role="main">
+    <div id="list-grupo" class="col-md-12">
         <div class="col-md-1">
             <label class="text-info">Título hoja</label>
         </div>
@@ -281,14 +288,14 @@
 </g:uploadForm>
 
 
-<div class="col-md-12" style="margin-top: 10px">
-    <div class="col-md-5"></div>
-    <div class="col-md-2">
-        <a href="#" class="btn btn-success" id="btnGuardarRegistro"><i class="fa fa-save"></i>
-            Guardar composición
-        </a>
-    </div>
-</div>
+%{--<div class="col-md-12" style="margin-top: 10px">--}%
+%{--    <div class="col-md-5"></div>--}%
+%{--    <div class="col-md-2">--}%
+%{--        <a href="#" class="btn btn-success" id="btnGuardarRegistro"><i class="fa fa-save"></i>--}%
+%{--            Guardar composición--}%
+%{--        </a>--}%
+%{--    </div>--}%
+%{--</div>--}%
 
 
 <script type="text/javascript">
