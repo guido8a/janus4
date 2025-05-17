@@ -654,7 +654,7 @@ class ObraOfController {
         println "sql: $sqlTx"
 
         def cn = dbConnectionService.getConnection()
-        datos = cn.rows(sqlTx)
+        datos = cn.rows(sqlTx.toString())
 //        println "data: ${datos[0]}"
         [data: datos, tipo: params.tipo]
 
@@ -665,5 +665,34 @@ class ObraOfController {
 
     }
 
+    def verificaRbof_ajax() {
+        println "verificaRbof_ajax"
+        def cn = dbConnectionService.getConnection()
+        def sql = "select rbofcdgo, item__id from rbof where rbofcdgo in " +
+                "(select item__id from vlof where obra__id = ${params.obra}) and " +
+                "rbof.obra__id = ${params.obra} group by rbofcdgo, item__id having count(*) > 1 "
+        println "sql: $sql"
+        def rubros = "("
+        cn.eachRow(sql.toString()) { d->
+            if(!rubros.contains(d.rbofcdgo.toString())) {
+                rubros += d.rbofcdgo
+            }
+        }
+        rubros += ")"
+        println "rubros: $rubros"
+        def datos = []
+        if(rubros != "()"){
+            sql = "select rbof__id, r.itemnmbr rubro, i.itemnmbr item, rbofcntd, rbofrndt " +
+                    "from rbof, item r, item i where obra__id = ${params.obra} and rbofcdgo in ${rubros} and " +
+                    "r.item__id = rbofcdgo and i.item__id = rbof.item__id order by rbofcdgo, i.item__id"
+            println "sql: $sql"
+        } else {
+
+        }
+
+        datos = cn.rows(sql.toString())
+//        println "data: ${datos[0]}"
+        [datos: datos]
+    }
 
 } //fin controller

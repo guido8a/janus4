@@ -51,6 +51,8 @@
             <button class="btn btn-info" id="btnImprimir"><i class="fa fa-print"></i> Imprimir</button>
             <g:if test="${obraOferente?.estado != 'C' && total > 0}">
                 %{--<button class="btn btn-success botonReg" id="cambiarEstado"><i class="fa fa-retweet"></i> Cambiar Estado</button>--}%
+                <button class="btn btn-success" id="verificaRbof"><i class="fa fa-retweet"></i>
+                    Verificar rubros antes de Registrar Obra</button>
                 <button class="btn botonReg" id="cambiarEstado"><i class="fa fa-retweet"></i> Cambiar Estado</button>
             </g:if>
             <g:else>
@@ -412,6 +414,15 @@
 %{--        </div>--}%
 %{--    </div>--}%
 %{--</g:if>--}%
+
+<div id="modal-verifica">
+    <div id="modal_body_verifica">
+
+    </div>
+
+    <div class="modal-footer" id="modal_footer_verifica">
+    </div>
+</div>
 
 <div id="modal-var">
     <div id="modal_body_var">
@@ -906,6 +917,43 @@
                 }
             });
             return false;
+        });
+
+        $("#modal-verifica").dialog({
+            autoOpen: false,
+            resizable: false,
+            modal: true,
+            draggable: false,
+            width: 800,
+            height: 440,
+            position: 'center',
+            title: 'Rubros Oferente - Repetidos'
+        });
+
+        $("#verificaRbof").click(function () {
+            $.ajax({
+                type: "POST",
+                url: "${createLink(controller: 'obraOf', action:'verificaRbof_ajax')}",
+                data: {
+                    obra: "${obra?.id}"
+                },
+                success: function (msg) {
+                    var btnCancel = $('<a href="#" data-dismiss="modal" class="btn btn-info">' +
+                        '<i class="fa fa-times"></i> Cerrar</a>');
+
+                    btnCancel.click(function () {
+                        $("#modal-verifica").dialog("close");
+                    });
+
+                    $("#modal_body_verifica").html(msg);
+
+                    $("#modal_footer_verifica").html("").append(btnCancel);
+
+                    $("#modal-verifica").dialog("open");
+                    $(".ui-dialog-titlebar-close").html("x")
+                }
+            });
+            return false
         });
 
         $("#btn-consultar").click(function () {
