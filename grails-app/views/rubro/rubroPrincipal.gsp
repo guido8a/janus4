@@ -46,11 +46,14 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
         <i class="fa fa-file"></i>
         Nuevo
     </a>
-    <g:if test="${!volumenes}">
-        <a href="#" class="btn btn-ajax btn-new btn-primary" id="guardar">
-            <i class="fa fa-save"></i>
-            Guardar
-        </a>
+
+    <g:if test="${!contieneH}">
+        <g:if test="${!volumenes}">
+            <a href="#" class="btn btn-ajax btn-new btn-primary" id="guardar">
+                <i class="fa fa-save"></i>
+                Guardar
+            </a>
+        </g:if>
     </g:if>
     <a href="#" class="btn btn-ajax btn-new" id="borrar">
         <i class="fa fa-trash"></i>
@@ -86,7 +89,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
         <i class="fa fa-book"></i>
         Especificaciones
     </a>
-    %{--<g:if test="${rubro && volumenes > 0}">--}%
+%{--<g:if test="${rubro && volumenes > 0}">--}%
     <g:if test="${rubro && volumenes > 0 && !(rubro?.codigo[0] == 'H')}">
         <a href="#" id="btnCrearHistorico" class="btn btn-warning">
             <i class="fa fa-book"></i>
@@ -95,17 +98,23 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
     </g:if>
 
     <g:if test="${rubro}">
-    %{--<g:if test="${(volumenes?.size()?: 0) > 0}">--}%
-        <g:if test="${(volumenes > 0)}">
-            <div class="col-md-2 alert alert-warning" style="margin-left: 5px; font-weight: bold; text-align: center;
-            height: 35px; padding: 10px">
-                <i class="fa fa-times text-danger"></i> &nbsp;&nbsp;&nbsp;No se puede editar
-            </div>
+        <g:if test="${!contieneH}">
+            <g:if test="${(volumenes > 0)}">
+                <div class="col-md-2 alert alert-warning" style="margin-left: 5px; font-weight: bold; text-align: center;
+                height: 35px; padding: 10px">
+                    <i class="fa fa-times text-danger"></i> &nbsp;&nbsp;&nbsp;No se puede editar
+                </div>
+            </g:if>
+            <g:else>
+                <div class="col-md-2 alert alert-success" style="margin-left: 5px; font-weight: bold; text-align: center;
+                height: 35px; padding: 10px">
+                    <i class="fa fa-check"></i> Si se puede editar
+                </div>
+            </g:else>
         </g:if>
         <g:else>
-            <div class="col-md-2 alert alert-success" style="margin-left: 5px; font-weight: bold; text-align: center;
-            height: 35px; padding: 10px">
-                <i class="fa fa-check"></i> Si se puede editar
+            <div class="col-md-2 alert alert-warning" style="margin-left: 5px; font-weight: bold; text-align: center; height: 35px; padding: 10px">
+                <i class="fa fa-times text-danger"></i> &nbsp;&nbsp;&nbsp;No se puede editar
             </div>
         </g:else>
     </g:if>
@@ -200,9 +209,11 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
             <div class="col-md-12">
                 <div class="col-md-1">
                     <g:if test="${rubro}">
-                        <a class="btn btn-xs btn-primary btn-ajax" href="#" rel="tooltip" title="Agregar item" id="btnRubro" ${ !volumenes ?: 'disabled'}>
-                            <i class="fa fa-plus"></i> Agregar Item
-                        </a>
+                        <g:if test="${!contieneH}">
+                            <a class="btn btn-xs btn-primary btn-ajax" href="#" rel="tooltip" title="Agregar item" id="btnRubro" ${ !volumenes ?: 'disabled'}>
+                                <i class="fa fa-plus"></i> Agregar Item
+                            </a>
+                        </g:if>
                     </g:if>
                 </div>
 
@@ -232,11 +243,13 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                     <label> Rendimiento </label>
                     <br>
                     <g:textField style="width: 90px; margin-left: -20px" name="rendimientoValorDefecto" value="${1}"/>
-                    <g:if test="${!volumenes}">
-                        <a class="btn btn-xs btn-success btnRendimientoTodos" href="#" rel="tooltip"
-                           title="Aplicar rendimiento a todos">
-                            <i class="fa fa-check"></i>
-                        </a>
+                    <g:if test="${!contieneH}">
+                        <g:if test="${!volumenes}">
+                            <a class="btn btn-xs btn-success btnRendimientoTodos" href="#" rel="tooltip"
+                               title="Aplicar rendimiento a todos">
+                                <i class="fa fa-check"></i>
+                            </a>
+                        </g:if>
                     </g:if>
                 </div>
 
@@ -269,49 +282,6 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
 
             </div>
         </div>
-
-
-        %{--        <div class="row-fluid" style="margin-bottom: 5px">--}%
-        %{--            <div class="col-md-2">--}%
-        %{--                CÓDIGO--}%
-        %{--                <g:textField name="item.codigo" id="cdgo_buscar" class="col-md-12 allCaps required input-small" readonly="true"/>--}%
-        %{--                <input type="hidden" id="item_id">--}%
-        %{--                <input type="hidden" id="item_tipoLista">--}%
-        %{--            </div>--}%
-
-        %{--            <div class="col-md-1" style="margin-top: 16px; width: 60px; margin-left: -28px">--}%
-        %{--                <a class="btn btn-xs btn-primary btn-ajax" href="#" rel="tooltip" title="Agregar rubro" id="btnRubro">--}%
-        %{--                    <i class="fa fa-search"></i> Buscar--}%
-        %{--                </a>--}%
-        %{--            </div>--}%
-
-        %{--            <div class="col-md-5" style="margin-left: 5px">--}%
-        %{--                DESCRIPCIÓN--}%
-        %{--                <g:textField name="item.descripcion" id="item_desc" class="col-md-12" readonly="true"/>--}%
-        %{--            </div>--}%
-
-        %{--            <div class="col-md-1" style="margin-right: 0px;margin-left: -20px; width: 120px">--}%
-        %{--                UNIDAD--}%
-        %{--                <g:textField name="item.unidad" id="item_unidad" class="col-md-8" readonly="true"/>--}%
-        %{--            </div>--}%
-
-        %{--            <div class="col-md-1" style="margin-left: -50px !important; width: 120px">--}%
-        %{--                CANTIDAD--}%
-        %{--                <g:textField name="item.cantidad" class="col-md-12" id="item_cantidad" value="0" style="text-align: right"/>--}%
-        %{--            </div>--}%
-
-        %{--            <div class="col-md-1" style="width: 160px; margin-left: -20px">--}%
-        %{--                RENDIMIENTO--}%
-        %{--                <g:textField name="item.rendimiento" class="col-md-12" id="item_rendimiento" value="1"--}%
-        %{--                             style="text-align: right; color: #44a;"/>--}%
-        %{--            </div>--}%
-
-        %{--            <div class="col-md-1" style="border: 0px solid black;height: 45px;padding-top: 16px;margin-left: -10px; width: 90px">--}%
-        %{--                <a class="btn btn-xs btn-primary btn-ajax" href="#" rel="tooltip" title="Agregar" id="btn_agregarItem">--}%
-        %{--                    <i class="fa fa-plus"></i>--}%
-        %{--                </a>--}%
-        %{--            </div>--}%
-        %{--        </div>--}%
     </div>
 
     <input type="hidden" id="actual_row">
@@ -364,13 +334,15 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                         %{--                        <td class="col_total" style="text-align: right"></td>--}%
                         <td style="width: 100px;text-align: center" class="col_delete">
                             <g:if test="${rubro}">
-                                <g:if test="${!volumenes}">
-                                    <a class="btn btn-xs btn-success editarItem" href="#" rel="tooltip" title="Editar" data-id="${rub.id}">
-                                        <i class="fa fa-edit"></i>
-                                    </a>
-                                    <a class="btn btn-xs btn-danger borrarItem" href="#" rel="tooltip" title="Eliminar" iden="${rub.id}">
-                                        <i class="fa fa-trash"></i>
-                                    </a>
+                                <g:if test="${!contieneH}">
+                                    <g:if test="${!volumenes}">
+                                        <a class="btn btn-xs btn-success editarItem" href="#" rel="tooltip" title="Editar" data-id="${rub.id}">
+                                            <i class="fa fa-edit"></i>
+                                        </a>
+                                        <a class="btn btn-xs btn-danger borrarItem" href="#" rel="tooltip" title="Eliminar" iden="${rub.id}">
+                                            <i class="fa fa-trash"></i>
+                                        </a>
+                                    </g:if>
                                 </g:if>
                             </g:if>
                         </td>
@@ -417,13 +389,15 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                         <td class="col_total" style="display: none;text-align: right"></td>
                         <td style="width: 100px;text-align: center" class="col_delete">
                             <g:if test="${rubro}">
-                                <g:if test="${!volumenes}">
-                                    <a class="btn btn-xs btn-success editarItem" href="#" rel="tooltip" title="Editar" data-id="${rub.id}">
-                                        <i class="fa fa-edit"></i>
-                                    </a>
-                                    <a class="btn btn-xs btn-danger borrarItem" href="#" rel="tooltip" title="Eliminar" iden="${rub.id}">
-                                        <i class="fa fa-trash"></i>
-                                    </a>
+                                <g:if test="${!contieneH}">
+                                    <g:if test="${!volumenes}">
+                                        <a class="btn btn-xs btn-success editarItem" href="#" rel="tooltip" title="Editar" data-id="${rub.id}">
+                                            <i class="fa fa-edit"></i>
+                                        </a>
+                                        <a class="btn btn-xs btn-danger borrarItem" href="#" rel="tooltip" title="Eliminar" iden="${rub.id}">
+                                            <i class="fa fa-trash"></i>
+                                        </a>
+                                    </g:if>
                                 </g:if>
                             </g:if>
                         </td>
@@ -468,13 +442,15 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                         <td class="col_total" style="display: none;text-align: right"></td>
                         <td style="width: 100px;text-align: center" class="col_delete">
                             <g:if test="${rubro}">
-                                <g:if test="${!volumenes}">
-                                    <a class="btn btn-xs btn-success editarItem" href="#" rel="tooltip" title="Editar" data-id="${rub.id}">
-                                        <i class="fa fa-edit"></i>
-                                    </a>
-                                    <a class="btn btn-xs btn-danger borrarItem" href="#" rel="tooltip" title="Eliminar" iden="${rub.id}">
-                                        <i class="fa fa-trash"></i>
-                                    </a>
+                                <g:if test="${!contieneH}">
+                                    <g:if test="${!volumenes}">
+                                        <a class="btn btn-xs btn-success editarItem" href="#" rel="tooltip" title="Editar" data-id="${rub.id}">
+                                            <i class="fa fa-edit"></i>
+                                        </a>
+                                        <a class="btn btn-xs btn-danger borrarItem" href="#" rel="tooltip" title="Eliminar" iden="${rub.id}">
+                                            <i class="fa fa-trash"></i>
+                                        </a>
+                                    </g:if>
                                 </g:if>
                             </g:if>
                         </td>
@@ -841,7 +817,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
         bootbox.confirm({
             title: "Rendimiento",
             message: "<i class='fa fa-exclamation-triangle text-info fa-3x'></i> <strong style='font-size: 14px'>" +
-            " Está seguro de colocar este rendimiento a TODOS los ítems del rubro?</strong> ",
+                " Está seguro de colocar este rendimiento a TODOS los ítems del rubro?</strong> ",
             buttons: {
                 cancel: {
                     label: '<i class="fa fa-times"></i> Cancelar',

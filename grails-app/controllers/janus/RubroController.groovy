@@ -87,9 +87,9 @@ class RubroController {
         def grupoTransporte = DepartamentoItem.findAllByTransporteIsNotNull()
         def dpto = Departamento.findAllByPermisosIlike("APU")
         def resps = Persona.findAllByDepartamentoInList(dpto)
-
         def listaRbro = [1: 'Materiales', 2: 'Mano de obra', 3: 'Equipos']
         def listaItems = [1: 'Nombre', 2: 'Código']
+        def contieneH
 
         def dptoUser = Persona.get(session.usuario.id).departamento
         def modifica = false
@@ -113,6 +113,9 @@ class RubroController {
 
         if (params.id) {
             rubro = Item.get(params.id)
+
+            contieneH = rubro.codigo?.contains("H")
+
             def items = Rubro.findAllByRubro(rubro)
             items.sort { it.item.codigo }
             resps = rubro.responsable
@@ -122,7 +125,7 @@ class RubroController {
 
             [campos: campos, rubro: rubro, grupos: grupos, items: items, choferes: choferes, volquetes: volquetes,
              aux: aux, volquetes2: volquetes2, dpto: dpto, modifica: modifica, resps: resps,
-             listaRbro: listaRbro, listaItems: listaItems, volumenes:  volumenes]
+             listaRbro: listaRbro, listaItems: listaItems, volumenes:  volumenes, contieneH: contieneH]
         } else {
             [campos: campos, grupos: grupos, choferes: choferes, volquetes: volquetes, aux: aux,
              volquetes2: volquetes2, dpto: dpto, modifica: modifica, resps: resps,
