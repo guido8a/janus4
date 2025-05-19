@@ -31,6 +31,7 @@ class RegistroApuController {
     }
 
     def saveRegistroApu_ajax(){
+
         def registro
 
         if(params.id){
@@ -44,6 +45,42 @@ class RegistroApuController {
         }else{
             params.prefijo = 0
         }
+
+        params.cldatitl = params.cldatitl?.toUpperCase()
+        params.cldarbro = params.cldarbro?.toUpperCase()
+        params.rbronmbr = params.rbronmbr?.toUpperCase()
+        params.cldaEq = params.cldaEq?.toUpperCase()
+        params.cdgoEq = params.cdgoEq?.toUpperCase()
+        params.nmbrEq = params.nmbrEq?.toUpperCase()
+        params.cntdEq = params.cntdEq?.toUpperCase()
+        params.trfaEq = params.trfaEq?.toUpperCase()
+        params.pcunEq = params.pcunEq?.toUpperCase()
+        params.rndmEq = params.rndmEq?.toUpperCase()
+        params.cstoEq = params.cstoEq?.toUpperCase()
+        params.cldaMo = params.cldaMo?.toUpperCase()
+        params.cdgoMo = params.cdgoMo?.toUpperCase()
+        params.nmbrMo = params.nmbrMo?.toUpperCase()
+        params.cntdMo = params.cntdMo?.toUpperCase()
+        params.trfaMo = params.trfaMo?.toUpperCase()
+        params.pcunMo = params.pcunMo?.toUpperCase()
+        params.rndmMo = params.rndmMo?.toUpperCase()
+        params.cstoMo = params.cstoMo?.toUpperCase()
+        params.cldaMt = params.cldaMt?.toUpperCase()
+        params.cdgoMt = params.cdgoMt?.toUpperCase()
+        params.nmbrMt = params.nmbrMt?.toUpperCase()
+        params.unddMt = params.unddMt?.toUpperCase()
+        params.cntdMt = params.cntdMt?.toUpperCase()
+        params.pcunMt = params.pcunMt?.toUpperCase()
+        params.cstoMt = params.cstoMt?.toUpperCase()
+        params.cldaTr = params.cldaTr?.toUpperCase()
+        params.cdgoTr = params.cdgoTr?.toUpperCase()
+        params.nmbrTr = params.nmbrTr?.toUpperCase()
+        params.unddTr = params.unddTr?.toUpperCase()
+        params.pesoTr = params.pesoTr?.toUpperCase()
+        params.cntdTr = params.cntdTr?.toUpperCase()
+        params.dstnTr = params.dstnTr?.toUpperCase()
+        params.pcunTr = params.pcunTr?.toUpperCase()
+        params.cstoTr = params.cstoTr?.toUpperCase()
 
         registro.properties = params
 
