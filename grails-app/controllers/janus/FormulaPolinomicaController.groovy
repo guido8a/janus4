@@ -1104,7 +1104,6 @@ class FormulaPolinomicaController {
             def indices = FormulaPolinomica.findAllByObraAndNumeroNotIlikeAndNumeroNotIlikeAndNumeroNotIlike(obra, '%c%', '%px%', '%p01%', [sort: 'valor', order: 'desc'])
 
             indices.eachWithIndex{ fp , int i ->
-
                 if(i != 8){
                     fp.numero = 'p0' + (i+2)
                 }else{
@@ -1112,14 +1111,11 @@ class FormulaPolinomicaController {
                 }
 
                 fp.save(flush:true)
-
             }
         }else{
             def indices = FormulaPolinomica.findAllByObraAndNumeroNotIlike(obra, '%p%', [sort: 'valor', order: 'desc'])
 
-
             indices.eachWithIndex{ fp , int i ->
-
                 if(i != 9){
                     fp.numero = 'c0' + (i+1)
                 }else{
