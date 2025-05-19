@@ -223,6 +223,7 @@ class LoginController {
         if (user.size() == 0) {
             flash.message = "No se ha encontrado el usuario"
             flash.tipo = "error"
+            flash.icon = "fa fa-exclamation-triangle"
         } else if (user.size() > 1) {
             flash.message = "Ha ocurrido un error grave"
             flash.tipo = "error"
