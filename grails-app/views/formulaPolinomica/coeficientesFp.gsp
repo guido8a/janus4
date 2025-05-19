@@ -175,7 +175,7 @@
     <div class="btn-group"  style="margin-top: 10px">
         <a href="#" class="btn btn-info" style="margin-top: -10px;" id="btnOrdenarIndices">
             <i class="fa fa-retweet"></i>
-            Ordenar indices
+            Ordenar coeficientes
         </a>
     </div>
 </div>
@@ -282,7 +282,8 @@
             type: 'POST',
             url: '${createLink(controller: 'formulaPolinomica', action: 'ordenarIndices_ajax')}',
             data:{
-                id: '${obra?.id}'
+                id: '${obra?.id}',
+                tipo: '${tipo}'
             },
             success: function (msg) {
                 if(msg === 'ok'){

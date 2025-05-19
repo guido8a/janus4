@@ -1097,28 +1097,40 @@ class FormulaPolinomicaController {
     }
 
     def ordenarIndices_ajax(){
+
         def obra = Obra.get(params.id)
-        def indices = FormulaPolinomica.findAllByObraAndNumeroNotIlikeAndNumeroNotIlikeAndNumeroNotIlike(obra, '%C%', '%px%', '%p01%', [sort: 'valor', order: 'desc'])
 
-        indices.eachWithIndex{ fp , int i ->
+        if(params.tipo == 'p'){
+            def indices = FormulaPolinomica.findAllByObraAndNumeroNotIlikeAndNumeroNotIlikeAndNumeroNotIlike(obra, '%c%', '%px%', '%p01%', [sort: 'valor', order: 'desc'])
 
-            if(i != 8){
-                fp.numero = 'p0' + (i+2)
-            }else{
-                fp.numero = 'p' + (i+2)
+            indices.eachWithIndex{ fp , int i ->
+
+                if(i != 8){
+                    fp.numero = 'p0' + (i+2)
+                }else{
+                    fp.numero = 'p' + (i+2)
+                }
+
+                fp.save(flush:true)
+
             }
+        }else{
+            def indices = FormulaPolinomica.findAllByObraAndNumeroNotIlike(obra, '%p%', [sort: 'valor', order: 'desc'])
 
-            fp.save(flush:true)
 
-            println("fp " + fp)
-            println("i " + i)
+            indices.eachWithIndex{ fp , int i ->
 
+                if(i != 9){
+                    fp.numero = 'c0' + (i+1)
+                }else{
+                    fp.numero = 'c' + (i+1)
+                }
+
+                fp.save(flush:true)
+            }
         }
-
-        println("indices " + indices?.id)
 
         render "ok"
     }
-
 
 } //fin controller
