@@ -697,7 +697,7 @@ class ObraOfController {
 
     def borrarRepetido_ajax(){
         def rubro = RubroOferente.get(params.id)
-
+        println "borra: $params --> ${rubro.item.nombre}"
         if(rubro){
             try{
                 rubro.delete(flush:true)
@@ -707,7 +707,7 @@ class ObraOfController {
                 render "no_Error al borrar el rubro"
             }
         }else{
-            render "no_Error al borrar el rubro"
+            render "no_No se ha ubicado el rubro"
         }
     }
 

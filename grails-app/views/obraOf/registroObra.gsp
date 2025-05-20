@@ -969,7 +969,7 @@
             success: function (msg) {
                 dgbr = bootbox.dialog({
                     id      : "dlgVerificar",
-                    title   : "Rubros Oferente - Repetidos",
+                    title   : "Rubros Oferente - Eliminar Repetidos",
                     message : msg,
                     buttons : {
                         cancelar : {

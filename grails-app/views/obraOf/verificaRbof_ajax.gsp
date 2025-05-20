@@ -14,6 +14,7 @@ th, td {
 <div class="row">
     <div class="col-md-12">
         <div role="main">
+            <div style="margin-top: -20px; font-size: large; text-align: center">Importante: Elimine sólo los componentes repetidos</div>
             <table class="table table-bordered table-striped table-condensed table-hover">
                 <thead>
                 <tr>
@@ -50,7 +51,8 @@ th, td {
                 </g:if>
                 <g:else>
                     <div class="alert alert-info" style="text-align: center">
-                        <i class="fa fa-exclamation-triangle text-info fa-2x"></i> <strong style="font-size: 14px"> No se encontraron registros </strong>
+                        <i class="fa fa-exclamation-triangle text-info fa-2x"></i> <strong style="font-size: 14px">
+                        No se encontraron componentes repetidos en los Rubros </strong>
                     </div>
                 </g:else>
                 </tbody>
