@@ -1035,7 +1035,7 @@ class CronogramaContratoController {
     def uploadFile() {
         println "uploadFile $params"
         def cn = dbConnectionService.getConnection()
-        def filasNO = [0, 1]
+        def filasNO = []
         def filasTodasNo = []
         def cntr_id = params.id
         def path = "/var/janus/" + "xlsCronosContratos/" + cntr_id + "/"   //web-app/archivos
@@ -1183,7 +1183,7 @@ class CronogramaContratoController {
                                     println " no se pudo guardar $rgst: ${e.erros()}"
                                 }
 
-                                println "procesa ${meses}"
+//                                println "procesa ${meses}"
                                 /* regsitra cronograma */
                                 prco = 0; prcl = 0; pcnt = 0;
                                 for(m in 0..meses.size()) {
@@ -1194,6 +1194,9 @@ class CronogramaContratoController {
                                         prco = meses[m].toDouble()
                                         prcl = prco / pcun + 0.01
                                         pcnt = Math.round( (prcl / cntd) * 10000) / 100
+//                                        if(vc_id == 13646) {
+//                                            println "13646 ---> ${prco}"
+//                                        }
                                         if(crcr_id){
                                             sql = "update crcr set crcrcntd = ${prcl}, crcrprct = $pcnt, " +
                                                     "crcrprco = $prco where crcr__id = $crcr_id"
