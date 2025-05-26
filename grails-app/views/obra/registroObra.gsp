@@ -332,6 +332,13 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                     <input aria-label="" name="fechaCreacionObra" id='fechaCreacionObra' type='text' class="required input-small"
                            value="${obra?.fechaCreacionObra?.format('dd-MM-yyyy') ?: fcha.format('dd-MM-yyyy')}"/>
                 </div>
+                <div>
+                    <g:if test="${obra?.id}">
+                        <g:if test="${obra?.codigo.contains("-OF")}">
+                            <a href="#" id="btnCambiarFecha" class="btn btn-xs btn-info"><i class="fa fa-calendar"></i> </a>
+                        </g:if>
+                    </g:if>
+                </div>
             </div>
         </div>
         %{--</fieldset>--}%
@@ -958,6 +965,69 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
 
 <script type="text/javascript">
 
+    $("#btnCambiarFecha").click(function () {
+        var obra = '${obra?.id}';
+        $.ajax({
+            type    : "POST",
+            url: "${createLink(controller: 'obra', action:'fecha_ajax')}",
+            data    : {
+                id: obra
+            },
+            success : function (msg) {
+                var b = bootbox.dialog({
+                    id      : "dlgEditFecha",
+                    title   : "Editar fecha",
+                    class : "modal-sm",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        },
+                        guardar  : {
+                            id        : "btnSave",
+                            label     : "<i class='fa fa-save'></i> Guardar",
+                            className : "btn-success",
+                            callback  : function () {
+                                return guardarFecha();
+                            } //callback
+                        } //guardar
+                    } //buttons
+                }); //dialog
+            } //success
+        }); //ajax
+    });
+
+    function guardarFecha(){
+        var obra = '${obra?.id}';
+        var fecha = $("#fechaModificada").val();
+        $.ajax({
+            type    : "POST",
+            url     : "${createLink(controller: 'obra', action: 'guardarFecha_ajax')}",
+            data    : {
+                id: obra,
+                fecha: fecha
+            },
+            success : function (msg) {
+                var parts = msg.split("_");
+                if(parts[0] === 'ok'){
+                    log(parts[1], "success");
+                    setTimeout(function () {
+                        location.href = "${g.createLink(action: 'registroObra')}" + "?obra=" + "${obra?.id}";
+                    }, 1000);
+                }else{
+                    if(parts[0] === 'err'){
+                        bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
+                        return false;
+                    }else{
+                        log(parts[1], "error");
+                    }
+                }
+            }
+        });
+    }
 
     $("#btnCodigoCPC").click(function () {
         $("#dlgLoad").dialog("close");

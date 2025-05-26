@@ -1969,4 +1969,31 @@ class ObraController {
         return [rubros: rubrosSin]
     }
 
+    def fecha_ajax(){
+        def obra = Obra.get(params.id)
+        return [obra: obra]
+    }
+
+    def guardarFecha_ajax(){
+        println("params " + params)
+
+        def obra = Obra.get(params.id)
+        def fecha
+
+        if(params.fecha){
+            fecha = new Date().parse("dd-MM-yyyy", params.fecha)
+        }
+
+        obra.fechaCreacionObra = fecha
+
+        if(!obra.save(flush:true)){
+            println("error al guardar la fecha " + obra.errors)
+            render "no_Error al guardar la fecha"
+        }else{
+            render "ok_Guardado correctamente"
+        }
+
+
+    }
+
 } //fin controller
