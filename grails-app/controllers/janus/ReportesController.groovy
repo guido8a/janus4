@@ -4727,7 +4727,11 @@ class ReportesController {
         addCellTabla(tablaFirmas, new Paragraph(" ", times10bold), prmsHeaderHoja)
         addCellTabla(tablaFirmas, new Paragraph(" ", times10bold), prmsHeaderHoja)
         addCellTabla(tablaFirmas, new Paragraph("______________________________________", times8bold), prmsHeaderHoja)
-//        addCellTabla(tablaFirmas, new Paragraph("______________________________________", times8bold), prmsHeaderHoja)
+
+        if(obra?.codigo?.contains("-OF")){
+            addCellTabla(tablaFirmas, new Paragraph("______________________________________", times8bold), prmsHeaderHoja)
+            addCellTabla(tablaFirmas, new Paragraph("", times8bold), prmsHeaderHoja)
+        }
         addCellTabla(tablaFirmas, new Paragraph("", times8bold), prmsHeaderHoja)
 
         def arregloFirmas = []
@@ -4745,14 +4749,29 @@ class ReportesController {
             arregloFirmas += firmas
         }
 
+
+        if(obra?.codigo?.contains("-OF")){
+            def obraOferente = ObraOferente.findByObra(obra)
+            println("-- " + obraOferente?.id)
+            def oferente = obraOferente?.oferente
+            println("-- " + oferente?.firma)
+//            addCellTabla(tablaFirmas, new Paragraph((firmaCoordinador?.titulo?.toUpperCase() ?: '') + " " + (firmaCoordinador?.nombre?.toUpperCase() ?: '') + " " + (firmaCoordinador?.apellido?.toUpperCase() ?: ''), times8bold), prmsHeaderHoja)
+            addCellTabla(tablaFirmas, new Paragraph((oferente?.firma?.toUpperCase() ?: ''), times8bold), prmsHeaderHoja)
+
+        }
+
         if(params.firmaElaboro){
             personaElaboro = Persona.get(params.firmaElaboro)
             addCellTabla(tablaFirmas, new Paragraph((personaElaboro?.titulo?.toUpperCase() ?: '') + " " + (personaElaboro?.nombre?.toUpperCase() ?: '' ) + " " + (personaElaboro?.apellido?.toUpperCase() ?: ''), times8bold), prmsHeaderHoja)
+
+
         }else{
             addCellTabla(tablaFirmas, new Paragraph(" ", times8bold), prmsHeaderHoja)
         }
 
-        addCellTabla(tablaFirmas, new Paragraph("", times8bold), prmsHeaderHoja)
+        if(!obra?.codigo?.contains("-OF")){
+            addCellTabla(tablaFirmas, new Paragraph("", times8bold), prmsHeaderHoja)
+        }
 
 //        if(params.firmaCoordinador != ''){
 //            def personaRol = PersonaRol.get(params.firmaCoordinador)
@@ -4762,12 +4781,13 @@ class ReportesController {
 //            addCellTabla(tablaFirmas, new Paragraph("Coordinador no asignado", times8bold), prmsHeaderHoja)
 //        }
 
-
-
         //cargos
 
+        if(obra?.codigo?.contains("-OF")){
+            addCellTabla(tablaFirmas, new Paragraph("OFERENTE", times8bold), prmsHeaderHoja)
+        }
         addCellTabla(tablaFirmas, new Paragraph("ELABORÓ", times8bold), prmsHeaderHoja)
-//        addCellTabla(tablaFirmas, new Paragraph("COORDINADOR", times8bold), prmsHeaderHoja)
+        //        addCellTabla(tablaFirmas, new Paragraph("COORDINADOR", times8bold), prmsHeaderHoja)
         addCellTabla(tablaFirmas, new Paragraph("", times8bold), prmsHeaderHoja)
         addCellTabla(tablaFirmas, new Paragraph(personaElaboro?.departamento?.descripcion?.toUpperCase() ?: '', times8bold), prmsHeaderHoja)
 //        addCellTabla(tablaFirmas, new Paragraph((firmaCoordinador?.departamento?.descripcion?.toUpperCase() ?: ''), times8bold), prmsHeaderHoja)

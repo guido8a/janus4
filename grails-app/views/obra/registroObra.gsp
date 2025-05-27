@@ -334,7 +334,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                 </div>
                 <div>
                     <g:if test="${obra?.id}">
-                        <g:if test="${obra?.codigo.contains("-OF")}">
+                        <g:if test="${obra?.codigo?.contains("-OF")}">
                             <a href="#" id="btnCambiarFecha" class="btn btn-xs btn-info"><i class="fa fa-calendar"></i> </a>
                         </g:if>
                     </g:if>
