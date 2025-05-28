@@ -1473,7 +1473,6 @@ class ObraController {
 
         def obraInstance
         def volumenInstance
-        //  def copiaObra
         def obra = Obra.get(params.id);
         def nuevoCodigo = params.nuevoCodigo.toUpperCase()
         def volumenes = VolumenesObra.findAllByObra(obra)
@@ -1498,7 +1497,8 @@ class ObraController {
             obraInstance.formulaPolinomica = null
 
             def persona = Persona.get(session.usuario.id)
-            if(departamento?.codigo != 'CRFC'){
+
+//            if(departamento?.codigo != 'CRFC'){
                 def direccion = Direccion.get(persona.departamento.direccion.id)
                 def departamentos = Departamento.findAllByDireccion(direccion)
                 def personas = Persona.findAllByDepartamentoInList(departamentos, [sort: 'nombre'])
@@ -1512,9 +1512,11 @@ class ObraController {
                 obraInstance.inspector = personasRolInsp.first().persona
                 obraInstance.revisor = personasRolRevi.first().persona
                 obraInstance.responsableObra = personasRolElab.first().persona
-            } else {
-                obraInstance.responsableObra = persona   // cambia de dueño al usuario que copia de la CRFC
-            }
+//            } else {
+//                obraInstance.responsableObra = persona   // cambia de dueño al usuario que copia de la CRFC
+//            }
+
+            obraInstance.responsableObra = persona
 
             if (!obraInstance.save(flush: true)) {
                 flash.clase = "alert-error"
