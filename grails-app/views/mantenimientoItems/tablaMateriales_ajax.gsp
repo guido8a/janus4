@@ -60,7 +60,7 @@
                         <a href="#" class="btn btn-xs btn-success btnVerInfo" data-id="${m.item__id}" title="Ver información del item">
                             <i class="fas fa-info"></i>
                         </a>
-                        <g:if test="${perfil}">
+                        <g:if test="${session.perfil.nombre == 'CRFC'}">
                             <a href="#" class="btn btn-xs btn-warning btnEspecificacionesMaterial" data-id="${m.item__id}"
                                title="Especificaciones e Ilustración" ${m.itemcdes ?: 'disabled'}>
                                 <i class="fas fa-book"></i>

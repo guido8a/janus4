@@ -2611,7 +2611,8 @@ itemId: item.id
         def ares = ArchivoEspecificacion.findByItem(item)
         def usuario = Persona.get(session.usuario.id)
         def existeUtfpu = false
-        if(usuario.departamento?.codigo == 'CRFC'){
+//        if(usuario.departamento?.codigo == 'CRFC'){
+        if(session.perfil.nombre == 'CRFC'){
             existeUtfpu = true
         }
         println "dpto: ${usuario.departamento?.codigo} --> $existeUtfpu, tipo: ${params.tipo}"
@@ -2825,7 +2826,7 @@ itemId: item.id
                 def file = new File(pathFile)
                 f.transferTo(file)
 
-                switch (ext) {
+                switch (tipo) {
                     case "pdf":
                         archivEsp?.ruta =  fileName
                         break;
