@@ -2561,7 +2561,7 @@ itemId: item.id
 //        def subgrupos = DepartamentoItem.findAllBySubgrupoInList(grupos)
         def materiales = []
         def subgrupoBuscar = null
-        def perfil = Persona.get(session.usuario.id).departamento?.codigo == 'CRFC'
+
 
         def campo, busca
         params.criterio = params.criterio?.toString()?.trim()
@@ -2595,7 +2595,7 @@ itemId: item.id
 //        }
 
         materiales = cn.rows(sql.toString())
-        return [materiales: materiales, grupo: grupo, id: params.id, departamento: subgrupoBuscar, perfil: perfil]
+        return [materiales: materiales, grupo: grupo, id: params.id, departamento: subgrupoBuscar]
     }
 
     def codigoGrupo_ajax(){
@@ -2605,8 +2605,6 @@ itemId: item.id
 
     def especificaciones_ajax(){
 
-        println("params es"  + params)
-
         def item = Item.get(params.id)
         def ares = ArchivoEspecificacion.findByItem(item)
         def usuario = Persona.get(session.usuario.id)
@@ -2615,12 +2613,12 @@ itemId: item.id
         if(session.perfil.nombre == 'CRFC'){
             existeUtfpu = true
         }
-        println "dpto: ${usuario.departamento?.codigo} --> $existeUtfpu, tipo: ${params.tipo}"
+//        println "dpto: ${usuario.departamento?.codigo} --> $existeUtfpu, tipo: ${params.tipo}"
         return [item: item, ares: ares, existe: existeUtfpu, tipo: params.tipo]
     }
 
     def uploadFileIlustracion() {
-        println ("subir iamgen " + params)
+//        println ("subir iamgen " + params)
 
         def rubro = Item.get(params.item)
         def acceptedExt = ["jpg", "png", "gif", "jpeg"]
@@ -2684,7 +2682,7 @@ itemId: item.id
     }
 
     def getFoto(){
-        println "getFoto: $params"
+//        println "getFoto: $params"
         def item = Item.get(params.id)
         def path = "/var/janus/item/" + item?.id + "/" +  item?.foto
         def fileext = path.substring(path.indexOf(".")+1, path.length())
@@ -2703,7 +2701,7 @@ itemId: item.id
 
 
     def getFotoRubro(){
-        println "getFoto: $params"
+//        println "getFoto: $params"
         def item = Item.get(params.id)
         def path = "/var/janus/rubros/" +  item?.foto
         def fileext = path.substring(path.indexOf(".")+1, path.length())
@@ -2741,7 +2739,7 @@ itemId: item.id
         def ext = filePath.split("\\.")
         ext = ext[ext.size() - 1]
         def path = "/var/janus/" + "item/" + item.id + File.separatorChar + filePath
-        println "path "+path
+//        println "path "+path
         def file = new File(path)
         if(file.exists()){
             def b = file.getBytes()
@@ -2908,7 +2906,6 @@ itemId: item.id
     }
 
     def tablaMaterialesPrecios_ajax(){
-        println("--> " + params)
         def persona = Persona.get(session.usuario.id)
         def cn = dbConnectionService.getConnection()
         def grupo = Grupo.get(params.buscarPor)
@@ -2917,7 +2914,8 @@ itemId: item.id
         def materiales = []
         def subgrupoBuscar = null
         def sql = ""
-        def perfil = Persona.get(session.usuario.id).departamento?.codigo == 'CRFC'
+//        def perfil = Persona.get(session.usuario.id).departamento?.codigo == 'CRFC'
+        def perfil = session.perfil.nombre == 'CRFC'
 
         if(params.id){
             subgrupoBuscar = DepartamentoItem.get(params.id)
@@ -2961,8 +2959,6 @@ itemId: item.id
         def materiales = []
         def subgrupoBuscar = null
         def sql = ""
-        def perfil = Persona.get(session.usuario.id).departamento?.codigo == 'CRFC'
-
 
 //        if(params.id){
 //            def item = Item.get(params.id)
@@ -2992,7 +2988,7 @@ itemId: item.id
         def items = cn.rows(sql.toString());
         cn.close()
 
-        return [materiales: materiales, grupo: grupo, id: params.id, departamento: subgrupoBuscar, perfil: perfil, items: items, persona: persona]
+        return [materiales: materiales, grupo: grupo, id: params.id, departamento: subgrupoBuscar, items: items, persona: persona]
     }
 
     def listas_ajax(){
