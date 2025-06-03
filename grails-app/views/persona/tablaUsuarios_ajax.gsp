@@ -13,7 +13,7 @@
 </table>
 
 <div class="" style="width: 99.7%;height: 530px; overflow-y: auto;float: right;">
-    <table class="table-bordered table-condensed table-hover" style="width: 100%">
+    <table class="table-bordered table-condensed table-striped table-hover" style="width: 100%">
         <g:each in="${data}" var="dt" status="i">
             <g:set var="usuario" value="${dt.prsn__id}"/>
             <tr data-id="${dt.prsn__id}" class="${dt.prsnactv == 0 ? 'inactivo' : 'activo'}">

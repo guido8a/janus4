@@ -21,7 +21,6 @@
 <g:set var="iconActivar" value="fa-hdd-o"/>
 <g:set var="iconDesactivar" value="fa-power-off"/>
 
-
 <!-- botones -->
 <div class="btn-toolbar toolbar" style="margin-bottom: 15px">
     <div class="btn-group">
@@ -35,7 +34,6 @@
         <a href="#" class="btn btn-success btnReporte" >  <i class="fa fa-print"></i>  Reporte de usuarios</a>
      </div>
 </div>
-
 
 <div style="overflow: hidden">
     <fieldset class="borde" style="border-radius: 4px">
@@ -146,21 +144,9 @@
                 success : function (msg) {
                     var parts = msg.split("_");
                     if (parts[0] !== "INFO") {
-                        // log(parts[1], parts[0] === "SUCCESS" ? "success" : "error");
-                        // if (parts[0] === "SUCCESS") {
-                        //     dialog.modal('hide');
-                        //     setTimeout(function () {
-                        //         location.reload();
-                        //     }, 1000);
-                        // } else {
-                        //     spinner.replaceWith($btn);
-                        //     dialog.modal('hide');
-                        //     return false;
-                        // }
-
-                        if(parts[0] == 'ok'){
+                        if(parts[0] === 'ok'){
                             dialog.modal('hide');
-                            log(parts[1], "success")
+                            log(parts[1], "success");
                             setTimeout(function () {
                                 location.reload();
                             }, 1000);
@@ -168,7 +154,6 @@
                             dialog.modal('hide');
                             log(parts[1], "error")
                         }
-
                     } else {
                         // closeLoader();
                         bootbox.dialog({
@@ -268,7 +253,6 @@
                 url = "${createLink(controller: 'persona',  action:'formUsuario_ajax')}";
                 break;
         }
-
         $.ajax({
             type    : "POST",
             url     : url,
@@ -376,8 +360,14 @@
         }
     }
 
+    $("#criterioCriterio").keydown(function (ev) {
+        if (ev.keyCode === 13) {
+            cargarTablaUsuarios();
+            return false;
+        }
+        return true;
+    });
 
 </script>
-
 </body>
 </html>
