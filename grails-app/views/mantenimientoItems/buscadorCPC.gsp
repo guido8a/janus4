@@ -23,7 +23,7 @@
     </fieldset>
 
     <fieldset class="borde" style="border-radius: 4px">
-        <div id="divTablaCPC" style="height: 460px; overflow: auto; margin-top: 5px">
+        <div id="divTablaCPC" style="height: 500px; overflow: auto; margin-top: 5px">
         </div>
     </fieldset>
 </div>
