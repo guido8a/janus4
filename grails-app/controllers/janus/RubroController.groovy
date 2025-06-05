@@ -1486,13 +1486,9 @@ class RubroController {
             }
         }
 
-//        println "...2-- faltan: $falta"
-
         render "existe ${cntaexiste} y falta: ${cntafalta} <hr> Se ha generado los archivos /tmp/existe.csv y falta.csv " +
                 "utilizando '|' como separador CSV"
-
     }
-
 
     def listarArchivos() {
         File[] archivos
@@ -1511,6 +1507,23 @@ class RubroController {
         }
         println "se han halla ${archivos.size()} archivos en la carpeta: $ruta"
         render "se han hallado ${archivos.size()} archivos en la carpeta: $ruta"
+    }
+
+    def codigoEspecificacion_ajax(){
+        def rubro = Item.get(params.id)
+        return [rubro: rubro]
+    }
+
+    def guardarCodigoEspecificacion_ajax(){
+        def rubro = Item.get(params.id)
+        rubro.codigoEspecificacion = params.codigo
+
+        if(!rubro.save(flush:true)){
+            println("error al guardar el código " + rubro.errors)
+            render "no_Error al guardar el código"
+        }else{
+            render "ok_Código guardado correctamente"
+        }
     }
 
 } //fin controller

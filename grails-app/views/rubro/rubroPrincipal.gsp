@@ -46,7 +46,6 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
         <i class="fa fa-file"></i>
         Nuevo
     </a>
-
     <g:if test="${!contieneH}">
         <g:if test="${!volumenes}">
             <a href="#" class="btn btn-ajax btn-new btn-primary" id="guardar">
@@ -63,11 +62,6 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
         <i class="fa fa-times"></i>
         Cancelar
     </a>
-
-    %{--    <a href="#" class="btn btn-ajax btn-new" id="calcular" title="Calcular precios">--}%
-    %{--        <i class="fa fa-table"></i>--}%
-    %{--        Calcular--}%
-    %{--    </a>--}%
     <a href="#" class="btn btn-ajax btn-new" id="transporte" title="Transporte">
         <i class="fa fa-truck"></i>
         Transporte
@@ -89,7 +83,6 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
         <i class="fa fa-book"></i>
         Especificaciones
     </a>
-%{--<g:if test="${rubro && volumenes > 0}">--}%
     <g:if test="${rubro && volumenes > 0 && !(rubro?.codigo[0] == 'H')}">
         <a href="#" id="btnCrearHistorico" class="btn btn-warning">
             <i class="fa fa-book"></i>
@@ -145,11 +138,19 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                     Código Especificación
                     <g:textField name="rubro.codigoEspecificacion" class="allCaps required input-small"
                                  value="${rubro?.codigoEspecificacion}" id="input_codigo_es" maxlength="30" readonly="${volumenes ? true : false}"/>
-
                     <p class="help-block ui-helper-hidden"></p>
+
                 </div>
 
-                <div class="col-md-5" style="margin-left: -10px">
+                <g:if test="${rubro}">
+                    <g:if test="${!contieneH}">
+                        <div class="col-md-1" style="margin-left: -35px; margin-top: 15px">
+                            <a href="#" class="btn btn-info btn-xs" id="btnEditarCodigoEspecificacion"><i class="fa fa-edit"></i></a>
+                        </div>
+                    </g:if>
+                </g:if>
+
+                <div class="col-md-5" style="margin-left: -45px">
                     Descripción
                     <g:textField name="rubro.nombre" class="col-md-12" value="${rubro?.nombre}" id="input_descripcion" readonly="${volumenes ? true : false}"/>
                 </div>
@@ -778,6 +779,60 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
 <script type="text/javascript">
 
     var es;
+
+    $("#btnEditarCodigoEspecificacion").click(function () {
+        var id = '${rubro?.id}';
+        $.ajax({
+            type    : "POST",
+            url     : "${createLink(controller: 'rubro', action:'codigoEspecificacion_ajax')}",
+            data    : {
+                id: id
+            },
+            success : function (msg) {
+                var e = bootbox.dialog({
+                    id    : "dlgEditCE",
+                    title : "Editar Código Especificación",
+                    class : "modal-sm",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "<i class='fa fa-times'></i> Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        },
+                        guardar : {
+                            label     : "<i class='fa fa-save'></i> Guardar",
+                            className : "btn-success",
+                            callback  : function () {
+                                var ou = cargarLoader("Guardando...");
+                                $.ajax({
+                                    type : "POST",
+                                    url : "${g.createLink(controller: 'rubro',action:'guardarCodigoEspecificacion_ajax')}",
+                                    data     : {
+                                        id: '${rubro?.id}',
+                                        codigo: $("#nuevoCodigoEspecificacion").val()
+                                    },
+                                    success  : function (msg) {
+                                        ou.modal("hide");
+                                        var parts = msg.split("_");
+                                        if(parts[0]=== 'ok'){
+                                            log("Guardado correctamente", "success");
+                                            setTimeout(function () {
+                                                location.reload();
+                                            }, 1000);
+                                        }else{
+                                            bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                    } //buttons
+                }); //dialog
+            } //success
+        }); //ajax
+    });
 
     $("#detalle").click(function () {
         var id = '${rubro?.id}';
