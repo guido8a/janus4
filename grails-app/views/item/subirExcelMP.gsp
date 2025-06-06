@@ -55,6 +55,12 @@
 </div>
 
 <div style="border-style: groove; border-color: #0d7bdc; margin-top: 10px; margin-bottom: 10px">
+    <fieldset style="padding: 0px 20px 0px 20px; text-align: center">
+        <i class="fa fa-exclamation-triangle fa-2x text-warning"></i> <strong style="font-size: 14px">La columna NUEVO PRECIO no debe dejarse en blanco, siempre debe contener un valor.</strong>
+    </fieldset>
+</div>
+
+<div style="border-style: groove; border-color: #0d7bdc; margin-top: 10px; margin-bottom: 10px">
     <fieldset style="margin-bottom: 10px; padding: 0px 20px 0px 20px">
         <h3 style="text-align: center">Mantenimiento de precios de Materiales Pétreos</h3>
         <div class="row">
