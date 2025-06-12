@@ -535,6 +535,8 @@ class ReportesPlanillasController {
                 if(i == 3) {  //la frase 6: F.- Actividades más importantes del periodo va hasta 1023 c
                     html += g.textArea(name: "texto_${i + 1}", value: val, "class": "texto", "data-num": num,
                             "maxLength": 2040, style: "width: 1000px; height:200px;")
+                } else if(i == 4) {  //la frase 5: E
+                    html += g.textArea(name: "texto_${i + 1}", value: val, "class": "texto", "data-num": num, "maxLength":511, style: "width: 1000px; height:150px;")
                 } else if(i == 5) {  //la frase 6: F.- Actividades más importantes del periodo va hasta 1023 c
                     html += g.textArea(name: "texto_${i + 1}", value: val, "class": "texto", "data-num": num, "maxLength":1023, style: "width: 1000px; height:100px;")
                 } else {
