@@ -67,7 +67,7 @@
                 Orden
             </label>
             <span class="col-md-3">
-                <g:textField name="orden" required="" class="form-control required" value="${volumenObra?.orden ?: 1}"/>
+                <g:textField name="orden" required="" class="form-control required" value="${volumenObra?.id ?  volumenObra?.orden  : (max + 1)}"/>
             </span>
         </span>
     </div>

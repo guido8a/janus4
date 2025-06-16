@@ -465,6 +465,7 @@ class VolumenObraController {
 
     def formRubroVolObra_ajax(){
         println("params fvo " + params)
+        def cn = dbConnectionService.getConnection()
         def subpresupuesto
         def obra
         def volumenObra
@@ -482,7 +483,14 @@ class VolumenObraController {
             obra = Obra.get(params.obra)
         }
 
-        return [volumenObra: volumenObra, obra: obra, subpresupuesto: subpresupuesto, rubro: rubro, tipo: params.tipo]
+        def sql = "select max(vlobordn) from rbro_pcun_v2(" + obra?.id + ")"
+        def datos = cn.rows(sql.toString())
+        def maximo = (datos[0].max)
+
+        println("maximo " + maximo)
+        println("maximo " + volumenObra)
+
+        return [volumenObra: volumenObra, obra: obra, subpresupuesto: subpresupuesto, rubro: rubro, tipo: params.tipo, max: maximo]
     }
 
     def verificarEstado_ajax(){
@@ -512,7 +520,7 @@ class VolumenObraController {
     def subpresupuestosObra_ajax () {
         def obra = Obra.get(params.obra)
         def subPresupuestos = VolumenesObra.findAllByObra(obra, [sort: "orden"]).subPresupuesto.unique()
-        return [subPresupuestos: subPresupuestos]
+        return [subPresupuestos: subPresupuestos, seleccionado: params.seleccionado]
     }
 
     def costos(){

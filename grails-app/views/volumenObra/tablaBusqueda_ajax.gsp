@@ -98,9 +98,9 @@
                         log(parts[1], "success");
                         cargarTablaBusqueda();
                         cargarSubpresuspuestosObra();
-                        setTimeout(function () {
-                            cargarTablaSeleccionados();
-                        }, 800);
+                        // setTimeout(function () {
+                        //     cargarTablaSeleccionados();
+                        // }, 800);
                     }else{
                         if(parts[0] === 'err'){
                             bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
