@@ -1,8 +1,6 @@
 <g:form class="form-horizontal" name="frmRubroVolObra" role="form" controller="volumenObra" action="addItem" method="POST">
     <g:hiddenField name="id" value="${volumenObra?.id}" />
     <g:hiddenField name="obra" value="${obra?.id}" />
-%{--    <g:hiddenField name="item" value="${rubro?.id}" />--}%
-%{--    <g:hiddenField name="cod" value="${rubro?.codigo}" />--}%
 
     <g:if test="${tipo == '1'}">
         <g:hiddenField name="sub" value="${subpresupuesto?.id}" />
@@ -15,7 +13,7 @@
                 </label>
                 <span class="col-md-8">
                     <g:hiddenField name="sub" value="${subpresupuesto?.id}" />
-                    <g:textField name="subPresupuestoName" required="" readonly="" class="form-control required" value="${ (volumenObra?.subPresupuesto?.grupo?.descripcion + " - " +  volumenObra?.subPresupuesto?.descripcion) ?: ''}"/>
+                    <g:textField name="subPresupuestoName" required="" readonly="" class="form-control required" value="${ volumenObra?.subPresupuesto?.grupo?.descripcion ? (volumenObra?.subPresupuesto?.grupo?.descripcion + " - " +  volumenObra?.subPresupuesto?.descripcion) : ''}"/>
                 </span>
                 <span class="col-md-2">
                     <a href="#" class="btn btn-info" id="btnBuscarSub" title="Buscar subpresupuesto">
@@ -29,6 +27,28 @@
     <g:if test="${tipo == '1'}">
         <g:hiddenField name="item" value="${rubro?.id}" />
         <g:hiddenField name="cod" value="${rubro?.codigo}" />
+
+        <div class="form-group ">
+            <span class="grupo">
+                <label for="subPresupuestoName" class="col-md-2 control-label text-info">
+                    Subpresupuesto
+                </label>
+                <span class="col-md-10">
+                    <g:textField name="subPresupuestoName" required="" readonly="" class="form-control" value="${ (subpresupuesto?.grupo?.descripcion + " - " +  subpresupuesto?.descripcion) ?: ''}"/>
+                </span>
+            </span>
+        </div>
+
+        <div class="form-group">
+            <span class="grupo">
+                <label for="itemName" class="col-md-2 control-label text-info">
+                    Rubro
+                </label>
+                <span class="col-md-10">
+                    <g:textArea name="itemName" readonly="" class="form-control" value="${(rubro?.codigo + " - "  + rubro?.nombre) ?: ''}" style="resize: none"/>
+                </span>
+            </span>
+        </div>
     </g:if>
     <g:else>
         <div class="form-group ${hasErrors(bean: volumenObra, field: 'rubro', 'error')} required">
@@ -39,7 +59,7 @@
                 <span class="col-md-8">
                     <g:hiddenField name="item" value="${rubro?.id}" />
                     <g:hiddenField name="cod" value="${rubro?.codigo}" />
-                    <g:textField name="itemName" required="" readonly="" class="form-control required" value="${ (volumenObra?.item?.codigo + " "  + volumenObra?.item?.nombre) ?: ''}"/>
+                    <g:textArea name="itemName" required="" readonly="" style="resize: none" class="form-control required" value="${ (volumenObra?.item?.codigo + " "  + volumenObra?.item?.nombre) ?: ''}"/>
                 </span>
                 <span class="col-md-2">
                     <a href="#" class="btn btn-info" id="btnBuscarRubroEditar" title="Buscar rubro">
@@ -49,6 +69,17 @@
             </span>
         </div>
     </g:else>
+
+    <div class="form-group">
+        <span class="grupo">
+            <label for="unidadName" class="col-md-2 control-label text-info">
+                Unidad
+            </label>
+            <span class="col-md-3">
+                <g:textField name="unidadName" readonly="" class="form-control" value="${volumenObra?.item?.unidad?.codigo ?: rubro?.unidad?.codigo}"/>
+            </span>
+        </span>
+    </div>
 
     <div class="form-group ${hasErrors(bean: volumenObra, field: 'cantidad', 'error')} required">
         <span class="grupo">

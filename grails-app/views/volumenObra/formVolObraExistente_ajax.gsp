@@ -10,9 +10,20 @@
     <g:hiddenField name="item" value="${rubro?.id}" />
     <g:hiddenField name="cod" value="${rubro?.codigo}" />
 
+    <div class="form-group">
+        <span class="grupo">
+            <label for="itemName" class="col-md-1 control-label text-info">
+                Rubro
+            </label>
+            <span class="col-md-11">
+                <g:textArea name="itemName" readonly="" class="form-control" value="${(rubro?.codigo + " - "  + rubro?.nombre) ?: ''}" style="resize: none"/>
+            </span>
+        </span>
+    </div>
+
     <div class="form-group ${hasErrors(bean: volumenObra, field: 'cantidad', 'error')} required">
         <span class="grupo">
-            <label for="cantidad" class="col-md-2 control-label text-info">
+            <label for="cantidad" class="col-md-1 control-label text-info">
                 Cantidad
             </label>
             <span class="col-md-3">

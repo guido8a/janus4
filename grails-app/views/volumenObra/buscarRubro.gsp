@@ -28,15 +28,27 @@
 
         <div class="row-fluid">
             <div class="col-md-12">
-                <div class="col-md-1"> <label> Tipo de Obra: </label> </div>
-                <div class="col-md-2">
-                    <g:select name="tipoName" id="tipo" class="form-control btn-success" from="${tipos}"
-                              optionKey="id" optionValue="descripcion" />
-                </div>
+%{--                <div class="col-md-1"> <label> Tipo de Obra: </label> </div>--}%
+%{--                <div class="col-md-2">--}%
+%{--                    <g:select name="tipoName" id="tipo" class="form-control btn-success" from="${tipos}"--}%
+%{--                              optionKey="id" optionValue="descripcion" />--}%
+%{--                </div>--}%
 
                 <div class="col-md-1"> <label> Subpresupuesto de la obra</label> </div>
-                <div class="col-md-5" id="divSubpresupuesto">
+%{--                <div class="col-md-5" id="divSubpresupuesto">--}%
 
+%{--                </div>--}%
+
+                <div class="col-md-6">
+                    <span class="col-md-10">
+                        <g:hiddenField name="subpresupuestoBusqueda" value="" />
+                        <g:textField name="subPresupuestoName" readonly="" class="form-control" value=""/>
+                    </span>
+                    <span class="col-md-2">
+                        <a href="#" class="btn btn-info" id="btnBuscarSubPresupuesto" title="Buscar subpresupuesto">
+                            <i class="fa fa-search"></i> Buscar
+                        </a>
+                    </span>
                 </div>
 
                 <div class="col-md-1"> <label> Tipo Contrato</label> </div>
@@ -50,26 +62,30 @@
 
         <div class="row-fluid" style="margin-top: 50px !important;">
             <div class="col-md-12">
-                <div class="col-md-1"> <label> Buscar Por </label> </div>
-                <div class="col-md-2">
-                    <g:select name="buscarPor" class="buscarPor form-control" from="${[1: 'Nombre', 2: 'Código']}"
-                              optionKey="key" optionValue="value"/>
+                <div class="col-md-7">
+                    <div class="col-md-1"> <label> Buscar Por </label> </div>
+                    <div class="col-md-2">
+                        <g:select name="buscarPor" class="buscarPor form-control" from="${[1: 'Nombre', 2: 'Código']}"
+                                  optionKey="key" optionValue="value"/>
+                    </div>
+                    <div class="col-md-1"> <label> Criterio </label> </div>
+                    <div class="col-md-3">
+                        <g:textField name="criterio" class="criterio form-control"/>
+                    </div>
+                    <div class="col-md-1"> <label> Ordenado por </label> </div>
+                    <div class="col-md-2">
+                        <g:select name="ordenar" class="ordenar form-control" from="${[1: 'Nombre', 2: 'Código']}"  optionKey="key"
+                                  optionValue="value"/>
+                    </div>
+                    <div class="col-md-2 btn-group">
+                        <button class="btn btn-info" id="btnBuscar"><i class="fa fa-search"></i></button>
+                        <button class="btn btn-warning" id="btnLimpiar" title="Limpiar Búsqueda">
+                            <i class="fa fa-eraser"></i></button>
+                    </div>
                 </div>
-                <div class="col-md-1"> <label> Criterio </label> </div>
-                <div class="col-md-3">
-                    <g:textField name="criterio" class="criterio form-control"/>
-                </div>
-                <div class="col-md-1"> <label> Ordenado por </label> </div>
-                <div class="col-md-2">
-                    <g:select name="ordenar" class="ordenar form-control" from="${[1: 'Nombre', 2: 'Código']}"  optionKey="key"
-                              optionValue="value"/>
-                </div>
-                <div class="col-md-2 btn-group">
-                    <button class="btn btn-info" id="btnBuscar"><i class="fa fa-search"></i></button>
-                    <button class="btn btn-warning" id="btnLimpiar" title="Limpiar Búsqueda">
-                        <i class="fa fa-eraser"></i></button>
-                </div>
+
             </div>
+
         </div>
     </fieldset>
 
@@ -102,7 +118,36 @@
 </div>
 
 <script type="text/javascript">
-    var di;
+    var di, bcsb2;
+
+    $("#btnBuscarSubPresupuesto").click(function () {
+            $.ajax({
+                type    : "POST",
+                url: "${createLink(controller: 'volumenObra', action:'buscarSubpresupuestoRubro_ajax')}",
+                data    : {
+                    tipo: 1
+                },
+                success : function (msg) {
+                    bcsb2 = bootbox.dialog({
+                        id      : "dlgBuscarSubPresupuesto",
+                        title   : "Buscar subpresupuesto",
+                        message : msg,
+                        buttons : {
+                            cancelar : {
+                                label     : "Cancelar",
+                                className : "btn-primary",
+                                callback  : function () {
+                                }
+                            }
+                        } //buttons
+                    }); //dialog
+                } //success
+            }); //ajax
+        });
+
+    function cerrarBuscardorSubpre2() {
+        bcsb2.modal("hide");
+    }
 
     $("#btnRegresar").click(function () {
         location.href="${createLink(controller: 'volumenObra', action: 'volObra')}/${obra?.id}"

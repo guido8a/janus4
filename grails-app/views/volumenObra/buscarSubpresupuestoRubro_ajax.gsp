@@ -47,7 +47,8 @@
             url: "${createLink(controller: 'volumenObra', action:'tablaBuscadorSub_ajax')}",
             data: {
                 buscarPor: buscarPor,
-                criterio: criterio
+                criterio: criterio,
+                tipo: '${tipo}'
             },
             success: function (msg) {
                 $("#divTablaBuscadorSub").html(msg);

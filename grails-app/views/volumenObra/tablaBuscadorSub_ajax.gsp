@@ -55,9 +55,15 @@ th, td {
         var descripcion = $(this).data("nombre");
         var grupo = $(this).data("grupo");
 
+        <g:if test="${tipo == '1'}">
+        $("#subpresupuestoBusqueda").val(id);
+        cerrarBuscardorSubpre2();
+        </g:if>
+        <g:else>
         $("#sub").val(id);
+        cerrarBuscardorSubpre();
+        </g:else>
         $("#subPresupuestoName").val(grupo + " - " + descripcion);
 
-        cerrarBuscardorSubpre();
     });
 </script>
