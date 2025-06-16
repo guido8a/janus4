@@ -88,26 +88,20 @@ class VolumenObraController {
     }
 
     def cargaCombosEditar() {
-
         def sub = SubPresupuesto.get(params.id)
         def grupo = sub?.grupo
         def subs = SubPresupuesto.findAllByGrupo(grupo,[sort:"descripcion"])
         [subs: subs, sub: sub]
     }
 
-
     def buscarRubroCodigo() {
-//        println "aqui "+params
         def rubro = Item.findByCodigoAndTipoItem(params.codigo?.trim()?.toUpperCase(), TipoItem.get(2))
         if (rubro) {
             render "" + rubro.id + "&&" + rubro.tipoLista?.id + "&&" + rubro.nombre + "&&" + rubro.unidad?.codigo
-            return
         } else {
             render "-1"
-            return
         }
     }
-
 
     def addItem() {
         println "addItem " + params
@@ -120,15 +114,10 @@ class VolumenObraController {
             volumen = VolumenesObra.get(params.id)
         else {
             volumen = new VolumenesObra()
-//            println "from VolumenesObra where obra=${obra.id} and item=${rubro.id} and subPresupuesto=${sbpr.id}"
             def v = VolumenesObra.findAllByObraAndItemAndSubPresupuesto(obra, rubro, sbpr)
-//            println "----v "+v
             if (v.size() > 0) {
                 v = v.pop()
-//                if (params.override == "1") {
-//                v.cantidad += params.cantidad.toDouble()
                 v.cantidad = params.cantidad.toDouble()
-//                    v.save(flush: true)
                 if(!v.save(flush:true)){
                     println("error al guardar " + v.errors)
                     render "no_Error al guardar"
@@ -137,14 +126,6 @@ class VolumenObraController {
                     render "ok_Guardado correctamente"
                     return
                 }
-
-//                    redirect(action: "tabla", params: [obra: obra.id, sub: v.subPresupuesto.id, ord: 1])
-//                    return
-//                } else {
-//                    msg = "error"
-//                    render msg
-//                    return
-//                }
             }
         }
         volumen.cantidad = params.cantidad.toDouble()
@@ -156,12 +137,10 @@ class VolumenObraController {
 
         if (!volumen.save(flush: true)) {
             println "error volumen obra " + volumen.errors
-//            render "error"
             render "no_Error al guardar"
         } else {
             preciosService.actualizaOrden(volumen, "insert")
-//            redirect(action: "tabla", params: [obra: obra.id, sub: volumen.subPresupuesto.id, ord: 1])
-            render "ok_Guardado correctamente"
+            render "ok_Guardado correctamente_${sbpr?.id}"
         }
     }
 

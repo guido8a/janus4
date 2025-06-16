@@ -198,14 +198,14 @@
 
     cargarSubpresuspuestosObra();
 
-    function cargarSubpresuspuestosObra(){
-        var presupuestoSeleccionado = $("#subpresupuestoBusqueda option:selected").val();
+    function cargarSubpresuspuestosObra(seleccionado){
+        // var presupuestoSeleccionado = $("#subpresupuestoBusqueda option:selected").val();
         $.ajax({
             type: "POST",
             url: "${createLink(controller: 'volumenObra', action:'subpresupuestosObra_ajax')}",
             data: {
                 obra: '${obra?.id}',
-                seleccionado: presupuestoSeleccionado
+                seleccionado: seleccionado
             },
             success: function (msg) {
                 $("#divSubpresupuestoSeleccionado").html(msg);

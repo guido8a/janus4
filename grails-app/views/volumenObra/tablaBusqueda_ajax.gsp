@@ -96,11 +96,12 @@
                     var parts = msg.split("_");
                     if(parts[0] === 'ok'){
                         log(parts[1], "success");
+                        var idCombo = parts[2];
                         cargarTablaBusqueda();
-                        cargarSubpresuspuestosObra();
-                        // setTimeout(function () {
-                        //     cargarTablaSeleccionados();
-                        // }, 800);
+                        cargarSubpresuspuestosObra(idCombo);
+                        setTimeout(function () {
+                            cargarTablaSeleccionados();
+                        }, 800);
                     }else{
                         if(parts[0] === 'err'){
                             bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
