@@ -22,7 +22,6 @@ th, td {
             <th style="width: 15%">Código</th>
             <th style="width: 55%">Descripción</th>
             <th style="width: 10%">Cant.</th>
-            <th style="width: 9%">Mover</th>
             <th style="width: 1%"></th>
         </tr>
         </thead>
@@ -39,11 +38,11 @@ th, td {
                     <td style="width: 15%; font-size: 10px">${val.rbrocdgo}</td>
                     <td style="width: 55%; font-size: 12px">${val.rbronmbr}</td>
                     <td style="width: 10%"><g:formatNumber number="${val.vlobcntd}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/></td>
-                    <td style="width: 9%; text-align: center">
-                        <g:if test="${obra.estado!='R' && duenoObra == 1}">
-                            <a href="#" class="btn btn-success btn-xs btnMoverSeleccion" data-id="${val.vlob__id}" ><i class="fa fa-arrow-circle-right"></i></a>
-                        </g:if>
-                    </td>
+%{--                    <td style="width: 9%; text-align: center">--}%
+%{--                        <g:if test="${obra.estado!='R' && duenoObra == 1}">--}%
+%{--                            <a href="#" class="btn btn-success btn-xs btnMoverSeleccion" data-id="${val.vlob__id}" ><i class="fa fa-arrow-circle-right"></i></a>--}%
+%{--                        </g:if>--}%
+%{--                    </td>--}%
                     <td style="width: 1%"></td>
                 </tr>
             </g:each>
@@ -58,42 +57,6 @@ th, td {
 </div>
 
 <script type="text/javascript">
-
-    $(".btnMoverSeleccion").click(function () {
-        var id = $(this).data("id");
-        moverRubroADestino(id)
-    });
-
-    function moverRubroADestino(volObra) {
-        var d = cargarLoader("Cargando...");
-        var destino = $("#subpresupuestoDestino option:selected").val();
-        $.ajax({
-            type: "POST",
-            url: "${createLink(controller: 'volumenObra', action:'moverRubrosASubpresupuestoDestino_ajax')}",
-            data: {
-                volObra: volObra,
-                obra: '${obra?.id}',
-                destino: destino
-            },
-            success: function (msg) {
-                d.modal("hide");
-                var parts = msg.split("_");
-                if(parts[0] === 'ok'){
-                    log(parts[1], "success");
-                    cargarTablaOrigen();
-                    cargarTablaDestino();
-                }else{
-                    if(parts[0] === 'err'){
-                        bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
-                        return false;
-                    }else{
-                        log(parts[1], "Error al mover el rubro");
-                        return false;
-                    }
-                }
-            }
-        });
-    }
 
     %{--$(".btnBorrarSeleccion").click(function () {--}%
     %{--    var id = $(this).data("id");--}%

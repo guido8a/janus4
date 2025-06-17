@@ -639,7 +639,7 @@ class VolumenObraController {
         }
 
         for(int i=0; i < vols.size(); i++){
-           def vo = VolumenesObra.get(vols[i])
+            def vo = VolumenesObra.get(vols[i])
             vo.orden = i
             if(!vo.save(flus:true)){
                 errores += vo.errors
@@ -668,5 +668,46 @@ class VolumenObraController {
         return [valores: valores, duenoObra: duenoObra, obra: obra]
     }
 
+    def subpresupuestosDestino_ajax(){
+        def obra = Obra.get(params.obra)
+        def subpresupuestoOrigen = SubPresupuesto.get(params.subpresupuesto)
+        def subPresupuestos = VolumenesObra.findAllByObra(obra, [sort: "orden"]).subPresupuesto.unique().sort{it.descripcion}
+        return [subPresupuestosDestino: subPresupuestos - subpresupuestoOrigen]
+    }
+
+    def tablaRubrosDestino_ajax(){
+        def obra = Obra.get(params.obra)
+        def subpresupuesto = SubPresupuesto.get(params.subpresupuesto)
+        def valores = preciosService.rbro_pcun_v5(obra.id,subpresupuesto?.id, "asc")
+        def duenoObra = esDuenoObra(obra)? 1 : 0
+        return [valores: valores, duenoObra: duenoObra, obra: obra]
+    }
+
+    def moverRubrosASubpresupuestoDestino_ajax(){
+        def obra = Obra.get(params.obra)
+        def subpresupuestoDestino = SubPresupuesto.get(params.destino)
+        def rubrosDestino = preciosService.rbro_pcun_v5(obra.id,subpresupuestoDestino?.id, "asc")
+        def rubro = VolumenesObra.get(params.volObra)
+        def existe = false
+
+        rubrosDestino.each {
+            if(it.item__id == rubro?.item?.id){
+                existe = true
+            }
+        }
+
+        if(existe){
+            render "err_El rubro ya se encuentra asignado al subpresupuesto"
+        }else{
+            rubro.subPresupuesto = subpresupuestoDestino
+
+            if(!rubro.save(flush:true)){
+                println("error al cambiar de subpresupuesto el rubro " + rubro.errors)
+                render "no"
+            }else{
+                render "ok_Movido correctamente"
+            }
+        }
+    }
 
 }

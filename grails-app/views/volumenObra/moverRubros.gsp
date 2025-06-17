@@ -30,7 +30,7 @@
         </div>
 
         <div class="col-md-12">
-            <g:select name="subpresupuestoOrigen" class="form-control" from="${subPresupuestosOrigen}" optionKey="${{it.id}}" optionValue="${{it.descripcion}}"/>
+            <g:select name="subpresupuestoOrigen" class="form-control" from="${subPresupuestosOrigen}" optionKey="${{it.id}}" optionValue="${{it.grupo.descripcion + " - " + it.descripcion}}"/>
         </div>
 
         <div class="col-md-12" id="divTablaOrigen" >
@@ -47,7 +47,7 @@
 
         <div class="row-fluid">
             <div class="col-md-12">
-                <div class="col-md-9" id="divSubpresupuestodestino">
+                <div class="col-md-12" id="divSubpresupuestodestino">
 
                 </div>
             </div>
@@ -64,9 +64,11 @@
 <script type="text/javascript">
 
     cargarTablaOrigen();
+    cargarComboSubpresupuestosDestino();
 
     $("#subpresupuestoOrigen").change(function () {
         cargarTablaOrigen();
+        cargarComboSubpresupuestosDestino();
     });
 
     function cargarTablaOrigen(){
@@ -82,6 +84,38 @@
             success: function (msg) {
                 d.modal("hide");
                 $("#divTablaOrigen").html(msg);
+            }
+        });
+    }
+
+    function cargarComboSubpresupuestosDestino(){
+        var subpresupuesto = $("#subpresupuestoOrigen option:selected").val();
+        $.ajax({
+            type: "POST",
+            url: "${createLink(controller: 'volumenObra', action:'subpresupuestosDestino_ajax')}",
+            data: {
+                subpresupuesto: subpresupuesto,
+                obra: '${obra?.id}'
+            },
+            success: function (msg) {
+                $("#divSubpresupuestodestino").html(msg);
+            }
+        });
+    }
+
+    function cargarTablaDestino(){
+        var d = cargarLoader("Cargando...");
+        var subpresupuesto = $("#subpresupuestoDestino option:selected").val();
+        $.ajax({
+            type: "POST",
+            url: "${createLink(controller: 'volumenObra', action:'tablaRubrosDestino_ajax')}",
+            data: {
+                subpresupuesto: subpresupuesto,
+                obra: '${obra?.id}'
+            },
+            success: function (msg) {
+                d.modal("hide");
+                $("#divTablaDestino").html(msg);
             }
         });
     }
