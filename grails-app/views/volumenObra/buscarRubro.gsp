@@ -4,7 +4,7 @@
 <head>
     <meta name="layout" content="main">
     <title>
-        Lista de Rubros
+        Agregar Rubros
     </title>
 </head>
 <body>

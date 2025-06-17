@@ -652,7 +652,20 @@ class VolumenObraController {
         }else{
             render "no_Error al ordenar los rubros, intentelo de nuevo"
         }
+    }
 
+    def moverRubros(){
+        def obra = Obra.get(params.id)
+        def subPresupuestos = VolumenesObra.findAllByObra(obra, [sort: "orden"]).subPresupuesto.unique().sort{it.descripcion}
+        return [obra: obra, subPresupuestosOrigen: subPresupuestos]
+    }
+
+    def tablaRubrosOrigen_ajax(){
+        def obra = Obra.get(params.obra)
+        def subpresupuesto = SubPresupuesto.get(params.subpresupuesto)
+        def valores = preciosService.rbro_pcun_v5(obra.id,subpresupuesto?.id, "asc")
+        def duenoObra = esDuenoObra(obra)? 1 : 0
+        return [valores: valores, duenoObra: duenoObra, obra: obra]
     }
 
 

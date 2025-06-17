@@ -78,7 +78,7 @@
 
 <div class="row">
     <div class="col-md-12">
-        <div class="col-md-3" style="width: 135px;">
+        <div class="col-md-2" style="width: 135px;">
             <b>Tipo de Obra:</b><g:select name="grupos" id="grupos" class="form-control" from="${grupoFiltrado}" optionKey="id" optionValue="descripcion"
                                           style="margin-left: 0px; width: 130px; font-size: 11px" value="${janus.Grupo.findByDireccion(obra.departamento.direccion)?.id}"/>
 
@@ -96,7 +96,6 @@
 
         <div class="col-md-2" style="margin-top: 30px">
             <g:if test="${(obra?.departamento?.direccion?.id == persona?.departamento?.direccion?.id)}">
-            %{--<g:if test="${persona?.departamento?.codigo == 'CRFC'}">--}%
                 <a href="#" class="btn btn-success boton" id="btnCrearSP" title="Crear subpresupuesto" >
                     <i class="fa fa-plus"></i>
                 </a>
@@ -114,9 +113,13 @@
                 <i class="fa fa-plus-square"></i>
                 Agregar rubros
             </a>
+            <a href="#" class="btn btn-warning" id="btnMoverRubros" title="Mover rubros">
+                <i class="fa fa-retweet"></i>
+                Cambiar rubros
+            </a>
             <a href="#" class="btn btn-info btn-new" id="reporteGrupos" title="Reporte Grupos/Subgrupos" style="display: none">
                 <i class="fa fa-print"></i>
-                Reporte Grupos/Subgrupos
+                Rpt. Grupos/Subgrupos
             </a>
         </div>
     </div>
@@ -217,6 +220,10 @@
 
     var aviso = false;  //aviso de TR...
 
+    $("#btnMoverRubros").click(function () {
+        location.href="${createLink(controller: 'volumenObra', action: 'moverRubros')}/" + '${obra?.id}';
+    });
+
     $("#btnAgregarRubros").click(function () {
         location.href="${createLink(controller: 'volumenObra', action: 'buscarRubro')}/" + '${obra?.id}';
     });
@@ -227,10 +234,10 @@
 
     function loading(div) {
         y = 0;
-        $("#" + div).html("<div class='tituloChevere' id='loading'>Sistema Janus - Cargando, Espere por favor</div>")
+        $("#" + div).html("<div class='tituloChevere' id='loading'>Sistema Janus - Cargando, Espere por favor</div>");
         var interval = setInterval(function () {
             if (y === 30) {
-                $("#detalle").html("<div class='tituloChevere' id='loading'>Cargando, Espere por favor</div>")
+                $("#detalle").html("<div class='tituloChevere' id='loading'>Cargando, Espere por favor</div>");
                 y = 0
             }
             $("#loading").append(".");
@@ -270,7 +277,6 @@
             $("#divTotal").html(number_format(total, 4, ".", ","))
         }
     }
-
 
     function cargarTabla() {
         var d = cargarLoader("Cargando...");
