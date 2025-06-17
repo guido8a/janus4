@@ -2,9 +2,9 @@
 <div class="alert-success" style="font-size: 14px; font-weight: bold; text-align: center">Disponibles</div>
 
 <div role="main" style="margin-top: 5px;">
-    <table class="table table-bordered table-striped table-condensed table-hover" style="width: 100%">
+    <table class="table table-bordered table-striped table-condensed table-hover">
         <thead>
-        <tr style="width: 100%">
+        <tr>
             <th style="width: 15%">Código</th>
             <th style="width: 55%">Item</th>
             <th style="width: 15%">Aporte</th>
@@ -15,7 +15,7 @@
 </div>
 
 <div class="" style="width: 99.7%;height: 350px; overflow-y: auto;float: right; margin-top: -20px;">
-    <table class="table-bordered table-striped table-condensed table-hover"  style="width: 100%">
+    <table class="table-bordered table-striped table-condensed table-hover" >
         <tbody>
         <g:if test="${items}">
             <g:each in="${items}" var="item" status="i">
@@ -62,9 +62,8 @@
                 var parts = msg.split("_");
                 if(parts[0] === 'ok'){
                     log(parts[1], "success");
-                    setTimeout(function () {
-                        location.reload();
-                    }, 1000);
+                    cargarItemsNuevos(formula);
+                    cargarItemsAsignados(formula);
                 }else{
                    log(parts[1], "error")
                 }

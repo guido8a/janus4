@@ -92,14 +92,14 @@
                                 Código
                             </label>
                             <span class="col-md-2">
-                                <g:textField name="codigo" maxlength="4" class="form-control required" value="${concurso?.codigo}" />
+                                <g:textField name="codigo" maxlength="20" class="form-control required" value="${concurso?.codigo}" />
                                 <p class="help-block ui-helper-hidden"></p>
                             </span>
                             <label for="objeto" class="col-md-2 control-label text-info">
                                 Memo de requerimiento
                             </label>
                             <span class="col-md-2">
-                                <g:textField name="memoRequerimiento" minlength="1" maxlength="20" class="form-control" value="${concurso?.memoRequerimiento}" />
+                                <g:textField name="memoRequerimiento" maxlength="20" class="form-control" value="${concurso?.memoRequerimiento}" />
                                 <p class="help-block ui-helper-hidden"></p>
                             </span>
                             <label for="objeto" class="col-md-1 control-label text-info">

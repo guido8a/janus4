@@ -193,7 +193,7 @@
     <div class="area ui-corner-all" id="formula">
 
         <div id="formulaLeft" class="col-md-6">
-            <div id="tree">asdada</div>
+            <div id="tree" style="height: 500px">asdada</div>
         </div>
 
         <div id="formulaRight" class="col-md-6">
@@ -221,8 +221,15 @@
 
             </div>
         </div>
+
+        <div class="col-md-6" style="margin-top: -80px">
+            <div class="col-md-12" id="divItemsNuevos">
+
+            </div>
+        </div>
     </div>
 </div>
+
 
 <div id="modal-formula">
     <div class="modal-body" id="modalBody-formula">
@@ -393,13 +400,16 @@
 
         if (tipo === 'fp') {
             if ("${tipo}" === 'p' && index === 0) { //el primero (p01) de la formula no es seleccionable (el de cuadrilla tipo si es)
-                console.log("true");
                 $seleccionados.removeClass("selected editable");
                 $parent.children("a, .jstree-grid-cell").addClass("editable parent");
             } else {
                 $seleccionados.removeClass("selected editable");
                 $parent.children("a, .jstree-grid-cell").addClass("selected editable parent");
                 updateCoef($item.parents("li"));
+
+
+                cargarItemsNuevos(parts[1]);
+
             }
         } else if (tipo === 'it') {
             $seleccionados.removeClass("selected editable");
@@ -409,6 +419,7 @@
                 $seleccionados.removeClass("selected");
                 $upper.children("a, .jstree-grid-cell").addClass("selected editable parent");
                 updateCoef($upper);
+
             } else {
                 $seleccionados.removeClass("selected");
                 $upper.children("a, .jstree-grid-cell").addClass("editable parent");
@@ -964,6 +975,8 @@
                                                 if (parent.children("ul").length === 0) {
                                                     parent.attr("nombre", "").trigger("change_node.jstree");
                                                 }
+
+                                                cargarItemsNuevos(parentId)
                                             }
                                         }
                                     });
