@@ -41,7 +41,7 @@ class WardInterceptor {
             if (isAllowed()) {
                 return true
             } else {
-                println "******Dar permisos a prfl: ${session.perfil.codigo} en acción: $actionName controlador: $controllerName"
+                println "******Dar permisos a prfl: ${session?.perfil?.codigo} en acción: $actionName controlador: $controllerName"
                 return true   /** quitar para manejar permisos **/
             }
         }
