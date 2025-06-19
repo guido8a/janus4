@@ -106,7 +106,7 @@
     }
 
     .contenedorTabla {
-        max-height : 550px;
+        max-height : 500px;
         overflow   : auto;
     }
     </style>
@@ -227,7 +227,7 @@
 <div class="col-md-12" role="main" style="margin-top: 3px;margin-left: 0;">
     <div class="area ui-corner-all" >
 
-        <div class="col-md-6" style="margin-top: -360px">
+        <div class="col-md-6" style="margin-top: -320px">
             <div class="col-md-12" id="divItemsNuevos">
 
             </div>
