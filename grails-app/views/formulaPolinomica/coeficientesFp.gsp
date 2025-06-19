@@ -193,7 +193,7 @@
     <div class="area ui-corner-all" id="formula">
 
         <div id="formulaLeft" class="col-md-6">
-            <div id="tree" style="height: 500px">asdada</div>
+            <div id="tree" style="height: 400px">asdada</div>
         </div>
 
         <div id="formulaRight" class="col-md-6">
@@ -227,7 +227,7 @@
 <div class="col-md-12" role="main" style="margin-top: 3px;margin-left: 0;">
     <div class="area ui-corner-all" >
 
-        <div class="col-md-6" style="margin-top: -220px">
+        <div class="col-md-6" style="margin-top: -360px">
             <div class="col-md-12" id="divItemsNuevos">
 
             </div>
