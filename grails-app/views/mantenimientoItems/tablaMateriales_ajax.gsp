@@ -22,9 +22,10 @@
             <th style="width: 7%">Código Grupo</th>
             <th style="width: 15%">Grupo</th>
             <th style="width: 7%">Código Subgrupo</th>
-            <th style="width: 15%">Subgrupo</th>
-            <th style="width: 10%">Código</th>
+            <th style="width: 12%">Subgrupo</th>
+            <th style="width: 8%">Código</th>
             <th style="width: 28%">Descripción</th>
+            <th style="width: 5%">Unidad</th>
             <th style="width: 5%">PDF</th>
             <th style="width: 14%">Acciones</th>
         </tr>
@@ -37,14 +38,14 @@
         <tbody>
         <g:if test="${materiales}">
             <g:each in="${materiales}" status="i" var="m">
-            %{--<tr data-id="${material?.id}" class="${material?.estado == 'B'? 'dadoDeBaja': ''}">--}%
                 <tr data-id="${m.item__id}" class="${m.itemetdo == 'B'? 'dadoDeBaja': ''}">
                     <td style="width: 7%">${m.sbgrcdgo}</td>
                     <td style="width: 15%">${m.sbgrdscr}</td>
                     <td style="width: 7%">${m.dprtcdgo}</td>
-                    <td style="width: 15%">${m.dprtdscr}</td>
-                    <td style="width: 10%">${m.itemcdgo}</td>
+                    <td style="width: 12%">${m.dprtdscr}</td>
+                    <td style="width: 8%">${m.itemcdgo}</td>
                     <td style="width: 28%">${m.itemnmbr}</td>
+                    <td style="width: 5%">${Item.get(m.item__id)?.unidad?.codigo}</td>
                     <td style="width: 5%; text-align: center">
                         <g:if test="${janus.apus.ArchivoEspecificacion.findByItem(janus.Item.get(m.item__id))?.ruta}">
                             <i class="fa fa-check text-success"></i>

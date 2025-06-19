@@ -2,8 +2,9 @@
     <table class="table table-bordered table-striped table-condensed table-hover">
         <thead>
         <tr>
-            <th style="width: 10%">Código</th>
-            <th style="width: 40%">Descripción</th>
+            <th style="width: 8%">Código</th>
+            <th style="width: 37%">Descripción</th>
+            <th style="width: 5%">Unidad</th>
             <th style="width: 26%">Lugar</th>
             <th style="width: 8%">Fecha</th>
             <th style="width: 8%">Precio</th>
@@ -19,9 +20,9 @@
         <g:if test="${items}">
             <g:each in="${items}" status="i" var="item">
                 <tr data-id="${item?.item__id}">
-                    <td style="width: 10%">${item.itemcdgo}</td>
-                    <td style="width: 40%">${item.itemnmbr}</td>
-                    %{--<td style="width: 26%">${item.lgardscr}</td>--}%
+                    <td style="width: 8%">${item.itemcdgo}</td>
+                    <td style="width: 37%">${item.itemnmbr}</td>
+                    <td style="width: 5%">${janus.Item.get(item.item__id)?.unidad?.codigo}</td>
                     <td style="width: 26%">Todos los lugares</td>
                     <td style="width: 8%">${item.rbpcfcha}</td>
                     <td style="width: 8%">${item.rbpcpcun ?: ''}</td>

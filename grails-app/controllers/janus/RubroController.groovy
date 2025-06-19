@@ -1577,7 +1577,7 @@ class RubroController {
         }
 
         dir.eachFileRecurse (FileType.FILES) { file ->
-           def nombre = file.toString()
+            def nombre = file.toString()
             if(nombre.contains('.png') || nombre.contains('.jpg') || nombre.contains('.jpeg')) {
                 nombre = nombre.replaceAll('/var/janus/rubros/', '')
                 todasImagenes.add(nombre)
@@ -1602,7 +1602,7 @@ class RubroController {
         }
 
         todosWords.each {
-            if(!pdfs?.especificacion?.contains(it)){
+            if(!words?.especificacion?.contains(it)){
                 borrarWords.add(it)
             }
         }
@@ -1614,6 +1614,114 @@ class RubroController {
         }
 
         return [especificaciones: ares, imagenes: imagenes, noImagenes: noImagenes, borrarImagenes: borrarImagenes, pdfs: pdfs, noPdfs: noPdfs, borrarPdfs: borrarPdfs, words: words, noWords: noWords, borrarWords: borrarWords]
+    }
+
+    def borrarArchivoFisico_ajax(){
+        def tipo = TipoItem.get(2)
+        def rubros = Item.findAllByTipoItem(tipo)
+        def ares = ArchivoEspecificacion.findAllByItemInList(rubros).sort{it.item.id}
+        def pdfs = []
+        def noPdfs = []
+        def borrarPdfs = []
+        def todosPdfs = []
+        def words = []
+        def noWords = []
+        def borrarWords = []
+        def todosWords = []
+        def imagenes = []
+        def noImagenes = []
+        def borrarImagenes = []
+        def todasImagenes = []
+        def pathOriginal = "/var/janus/rubros/"
+        def dir = new File("/var/janus/rubros")
+        def texto = ''
+
+        ares.each {
+            def path = pathOriginal + it?.ruta
+            def file = new File(path)
+            if(file.exists()){
+                pdfs.add(it)
+            }else{
+                noPdfs.add(it)
+            }
+        }
+
+        ares.each {
+            def path = pathOriginal + it?.especificacion
+            def file = new File(path)
+            if(file.exists()){
+                words.add(it)
+            }else{
+                noWords.add(it)
+            }
+        }
+
+        rubros.each {
+            def path = pathOriginal + it?.foto
+            def file = new File(path)
+            if(file.exists()){
+                imagenes.add(it)
+            }else{
+                noImagenes.add(it)
+            }
+        }
+
+        dir.eachFileRecurse (FileType.FILES) { file ->
+            def nombre = file.toString()
+            if(nombre.contains('.png') || nombre.contains('.jpg') || nombre.contains('.jpeg')) {
+                nombre = nombre.replaceAll('/var/janus/rubros/', '')
+                todasImagenes.add(nombre)
+            }
+
+            if(nombre.contains('.pdf')) {
+                nombre = nombre.replaceAll('/var/janus/rubros/', '')
+                todosPdfs.add(nombre)
+            }
+
+            if(nombre.contains('.doc') || nombre.contains('.docx')) {
+                nombre = nombre.replaceAll('/var/janus/rubros/', '')
+                todosWords.add(nombre)
+            }
+        }
+
+
+        switch (params.tipo) {
+            case "pdf":
+                todosPdfs.each {
+                    if(!pdfs?.ruta?.contains(it)){
+                        println("--- " + it)
+                        def path = pathOriginal + it
+                        def file = new File(path)
+                        file.delete()
+                    }
+                }
+
+                texto = "ok_Pdfs borrados correctamente"
+
+                break;
+            case "word":
+                todosWords.each {
+                    if(!words?.especificacion?.contains(it)){
+                        def path = pathOriginal + it
+                        def file = new File(path)
+                        file.delete()
+                    }
+                }
+                texto = "ok_Words borrados correctamente"
+                break;
+            case "imas":
+                todasImagenes.each {
+                    if(!imagenes?.foto?.contains(it)){
+                        def path = pathOriginal + it
+                        def file = new File(path)
+                        file.delete()
+                    }
+                }
+                texto = "ok_Imagenes borradas correctamente"
+                break;
+        }
+
+        render texto
     }
 
 } //fin controller

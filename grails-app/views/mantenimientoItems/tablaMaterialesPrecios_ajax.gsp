@@ -1,9 +1,11 @@
+<%@ page import="janus.Item" %>
 <div role="main" style="margin-top: 5px;">
     <table class="table table-bordered table-striped table-condensed table-hover">
         <thead>
         <tr>
-            <th style="width: 10%">Código</th>
-            <th style="width: 38%">Descripción</th>
+            <th style="width: 8%">Código</th>
+            <th style="width: 35%">Descripción</th>
+            <th style="width: 5%">Unidad</th>
             <th style="width: 24%">Lugar</th>
             <th style="width: 7%">Fecha</th>
             <th style="width: 8%">Precio</th>
@@ -19,15 +21,13 @@
         <g:if test="${items}">
             <g:each in="${items}" status="i" var="item">
                 <tr data-id="${item?.rbpc__id}">
-                    <td style="width: 10%">${item.itemcdgo}</td>
-                    <td style="width: 38%">${item.itemnmbr}</td>
+                    <td style="width: 8%">${item.itemcdgo}</td>
+                    <td style="width: 35%">${item.itemnmbr}</td>
+                    <td style="width: 5%">${janus.Item.get(item.item__id)?.unidad?.codigo}</td>
                     <td style="width: 24%">${item.lgardscr}</td>
                     <td style="width: 7%">${item.rbpcfcha}</td>
                     <td style="width: 8%">${item.rbpcpcun ?: ''}</td>
                     <td style="width: 13%; text-align: center">
-%{--                        <a href="#" class="btn btn-xs btn-warning btnIrAPrecios" data-id="${item?.item__id}" title="Precios">--}%
-%{--                            <i class="fas fa-list"></i>--}%
-%{--                        </a>--}%
                         <a href="#" class="btn btn-xs btn-info btnVerMaterial" data-id="${item?.item__id}" title="Ver">
                             <i class="fas fa-search"></i>
                         </a>

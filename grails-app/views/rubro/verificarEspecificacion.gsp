@@ -124,8 +124,17 @@
         </div>
 
         <div class="row">
-            <div class="alert alert-danger" style="margin-top: 10px">
-                Pdfs sueltas que no tienen registro asociado
+            <div class="col-md-12" style="margin-top: 10px">
+                <div class="col-md-10 alert alert-danger">
+                    Pdfs sueltos que no tienen registro asociado
+                </div>
+                <g:if test="${borrarPdfs}">
+                    <div class="col-md-2" style="text-align: center">
+                        <a href="#" class="btn btn-danger btnEliminarPdfs" data-tipo="word" title="Eliminar pdfs">
+                            <i class="fas fa-trash"></i> Borrar pdfs
+                        </a>
+                    </div>
+                </g:if>
             </div>
 
             <div role="main" style="margin-top: 5px;">
@@ -257,8 +266,17 @@
         </div>
 
         <div class="row">
-            <div class="alert alert-danger" style="margin-top: 10px">
-                Words sueltos que no tienen registro asociado
+            <div class="col-md-12" style="margin-top: 10px">
+                <div class="col-md-10 alert alert-danger">
+                    Words sueltos que no tienen registro asociado
+                </div>
+                <g:if test="${borrarWords}">
+                    <div class="col-md-2" style="text-align: center">
+                        <a href="#" class="btn btn-danger btnEliminarWords" data-tipo="word" title="Eliminar words">
+                            <i class="fas fa-trash"></i> Borrar Words
+                        </a>
+                    </div>
+                </g:if>
             </div>
 
             <div role="main" style="margin-top: 5px;">
@@ -387,8 +405,17 @@
         </div>
 
         <div class="row">
-            <div class="alert alert-danger" style="margin-top: 10px">
-                Imágenes sueltas que no tienen registro asociado
+            <div class="col-md-12" style="margin-top: 10px">
+                <div class="col-md-10 alert alert-danger">
+                    Imágenes sueltas que no tienen registro asociado
+                </div>
+                <g:if test="${borrarImagenes}">
+                    <div class="col-md-2" style="text-align: center">
+                        <a href="#" class="btn btn-danger btnEliminarImagenes" data-tipo="imas" title="Eliminar imágenes">
+                            <i class="fas fa-trash"></i> Borrar Imágenes
+                        </a>
+                    </div>
+                </g:if>
             </div>
 
             <div role="main" style="margin-top: 5px;">
@@ -429,6 +456,57 @@
 
 
 <script type="text/javascript">
+
+    $(".btnEliminarPdfs").click(function () {
+        borrarArchivoFisico("pdf")
+    });
+
+    $(".btnEliminarWords").click(function () {
+        borrarArchivoFisico("word")
+    });
+
+    $(".btnEliminarImagenes").click(function () {
+        borrarArchivoFisico("imas")
+    });
+
+    function borrarArchivoFisico(tipo){
+        bootbox.confirm({
+            title: "Eliminar archivo",
+            message: '<i class="fa fa-trash text-danger fa-3x"></i>' + '<strong style="font-size: 14px">' + "Está seguro de borrar estos archivos? Esta acción no puede deshacerse. " + '</strong>' ,
+            buttons: {
+                cancel: {
+                    label: '<i class="fa fa-times"></i> Cancelar',
+                    className: 'btn-primary'
+                },
+                confirm: {
+                    label: '<i class="fa fa-trash"></i> Borrar',
+                    className: 'btn-danger'
+                }
+            },
+            callback: function (result) {
+                if(result){
+                    var dialog = cargarLoader("Borrando...");
+                    $.ajax({
+                        type: 'POST',
+                        url: '${createLink(action: 'borrarArchivoFisico_ajax')}',
+                        data:{
+                            tipo: tipo
+                        },
+                        success: function (msg) {
+                            dialog.modal('hide');
+                            var parts = msg.split("_");
+                            if(parts[0] === 'ok'){
+                                log(parts[1],"success");
+                                location.reload();
+                            }else{
+                                log(parts[1], "error")
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    }
 
 
 </script>
