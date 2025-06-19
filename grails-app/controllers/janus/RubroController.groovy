@@ -1526,4 +1526,33 @@ class RubroController {
         }
     }
 
+
+    def verificarEspecificacion(){
+        def tipo = TipoItem.get(2)
+        def rubros = Item.findAllByTipoItem(tipo)
+        def ares = ArchivoEspecificacion.findAllByItemInList(rubros).sort{it.item.id}
+        def pdfs = []
+        def words = []
+        def imagenes = []
+        def noImagenes = []
+
+        rubros.each {
+            def path = "/var/janus/rubros/" + it?.foto
+            println "path "+path
+            def file = new File(path)
+            if(file.exists()){
+                imagenes.add(it)
+            }else{
+                noImagenes.add(it)
+            }
+        }
+
+//        println("si imagenes" + imagenes)
+//        println("no imagenes" + noImagenes)
+
+
+
+        return [especificaciones: ares, imagenes: imagenes, noImagenes: noImagenes]
+    }
+
 } //fin controller
