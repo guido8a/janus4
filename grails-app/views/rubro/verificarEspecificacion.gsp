@@ -144,7 +144,7 @@
         </div>
 
         <div class="row">
-            <div class="col-md-12" style="margin-top: 10px">
+            <div class="col-md-12 titulo" style="margin-top: 10px">
                 <div class="col-md-8 alert alert-danger">
                     Pdfs sueltos que no tienen registro asociado
                 </div>
@@ -303,7 +303,7 @@
         </div>
 
         <div class="row">
-            <div class="col-md-12" style="margin-top: 10px">
+            <div class="col-md-12 titulo" style="margin-top: 10px">
                 <div class="col-md-8 alert alert-danger">
                     Words sueltos que no tienen registro asociado
                 </div>
@@ -459,7 +459,7 @@
         </div>
 
         <div class="row">
-            <div class="col-md-12" style="margin-top: 10px">
+            <div class="col-md-12 titulo" style="margin-top: 10px">
                 <div class="col-md-8 alert alert-danger">
                     Imágenes sueltas que no tienen registro asociado
                 </div>
