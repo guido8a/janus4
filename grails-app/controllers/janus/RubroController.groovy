@@ -1578,7 +1578,7 @@ class RubroController {
 
         dir.eachFileRecurse (FileType.FILES) { file ->
             def nombre = file.toString()
-            if(nombre.contains('.png') || nombre.contains('.jpg') || nombre.contains('.jpeg')) {
+            if(nombre.contains('.png') || nombre.contains('.jpg') || nombre.contains('.jpeg') || nombre.contains('.gif')) {
                 nombre = nombre.replaceAll('/var/janus/rubros/', '')
                 todasImagenes.add(nombre)
             }

@@ -14,6 +14,12 @@
         text-overflow: ellipsis;
         word-wrap: break-word;
     }
+
+    .titulo{
+        font-weight: bold;
+        font-size: 16px;
+    }
+
     </style>
 
 </head>
@@ -30,8 +36,15 @@
 
     <div class="tab-pane active" id="pdfs">
         <div class="row">
-            <div class="alert alert-success">
-                Tienen pdfs en carpeta
+            <div class="col-md-12 titulo" style="margin-top: 10px">
+                <div class="col-md-10 alert alert-success">
+                    Registros con pdfs en carpeta
+                </div>
+                <g:if test="${pdfs}">
+                    <div class="col-md-2" style="text-align: center">
+                        Registros:  ${pdfs.size()}
+                    </div>
+                </g:if>
             </div>
 
             <div role="main" style="margin-top: 5px;">
@@ -77,8 +90,15 @@
         </div>
 
         <div class="row">
-            <div class="alert alert-warning" style="margin-top: 10px">
-                NO tienen pdfs en carpeta
+            <div class="col-md-12 titulo" style="margin-top: 10px">
+                <div class="col-md-10 alert alert-warning">
+                    Registros SIN pdfs en carpeta
+                </div>
+                <g:if test="${noPdfs}">
+                    <div class="col-md-2 ">
+                        Registros:  ${noPdfs.size()}
+                    </div>
+                </g:if>
             </div>
 
             <div role="main" style="margin-top: 5px;">
@@ -125,7 +145,7 @@
 
         <div class="row">
             <div class="col-md-12" style="margin-top: 10px">
-                <div class="col-md-10 alert alert-danger">
+                <div class="col-md-8 alert alert-danger">
                     Pdfs sueltos que no tienen registro asociado
                 </div>
                 <g:if test="${borrarPdfs}">
@@ -133,6 +153,9 @@
                         <a href="#" class="btn btn-danger btnEliminarPdfs" data-tipo="word" title="Eliminar pdfs">
                             <i class="fas fa-trash"></i> Borrar pdfs
                         </a>
+                    </div>
+                    <div class="col-md-2" style="text-align: center">
+                        Registros: ${borrarPdfs.size()}
                     </div>
                 </g:if>
             </div>
@@ -172,8 +195,15 @@
 
     <div class="tab-pane " id="words">
         <div class="row">
-            <div class="alert alert-success">
-                Tienen words en carpeta
+            <div class="col-md-12 titulo" style="margin-top: 10px">
+                <div class="col-md-10 alert alert-success">
+                    Registros con words en carpeta
+                </div>
+                <g:if test="${words}">
+                    <div class="col-md-2" style="text-align: center">
+                        Registros:  ${words.size()}
+                    </div>
+                </g:if>
             </div>
 
             <div role="main" style="margin-top: 5px;">
@@ -219,8 +249,15 @@
         </div>
 
         <div class="row">
-            <div class="alert alert-warning" style="margin-top: 10px">
-                NO tienen words en carpeta
+            <div class="col-md-12 titulo" style="margin-top: 10px">
+                <div class="col-md-10 alert alert-warning">
+                    Registros SIN words en carpeta
+                </div>
+                <g:if test="${noWords}">
+                    <div class="col-md-2" style="text-align: center">
+                        Registros:  ${noWords.size()}
+                    </div>
+                </g:if>
             </div>
 
             <div role="main" style="margin-top: 5px;">
@@ -267,7 +304,7 @@
 
         <div class="row">
             <div class="col-md-12" style="margin-top: 10px">
-                <div class="col-md-10 alert alert-danger">
+                <div class="col-md-8 alert alert-danger">
                     Words sueltos que no tienen registro asociado
                 </div>
                 <g:if test="${borrarWords}">
@@ -275,6 +312,9 @@
                         <a href="#" class="btn btn-danger btnEliminarWords" data-tipo="word" title="Eliminar words">
                             <i class="fas fa-trash"></i> Borrar Words
                         </a>
+                    </div>
+                    <div class="col-md-2" style="text-align: center">
+                        Registros: ${borrarWords.size()}
                     </div>
                 </g:if>
             </div>
@@ -314,8 +354,15 @@
 
     <div class="tab-pane " id="imas">
         <div class="row">
-            <div class="alert alert-success">
-                Tienen Imágenes en carpeta
+            <div class="col-md-12 titulo" style="margin-top: 10px">
+                <div class="col-md-10 alert alert-success">
+                    Registros con imágenes en carpeta
+                </div>
+                <g:if test="${imagenes}">
+                    <div class="col-md-2" style="text-align: center">
+                        Registros:  ${imagenes.size()}
+                    </div>
+                </g:if>
             </div>
 
             <div role="main" style="margin-top: 5px;">
@@ -360,8 +407,15 @@
         </div>
 
         <div class="row">
-            <div class="alert alert-warning" style="margin-top: 10px">
-                NO tienen Imágenes en carpeta
+            <div class="col-md-12 titulo" style="margin-top: 10px">
+                <div class="col-md-10 alert alert-warning">
+                    Registros SIN imágenes en carpeta
+                </div>
+                <g:if test="${noImagenes}">
+                    <div class="col-md-2" style="text-align: center">
+                        Registros:  ${noImagenes.size()}
+                    </div>
+                </g:if>
             </div>
 
             <div role="main" style="margin-top: 5px;">
@@ -406,7 +460,7 @@
 
         <div class="row">
             <div class="col-md-12" style="margin-top: 10px">
-                <div class="col-md-10 alert alert-danger">
+                <div class="col-md-8 alert alert-danger">
                     Imágenes sueltas que no tienen registro asociado
                 </div>
                 <g:if test="${borrarImagenes}">
@@ -414,6 +468,9 @@
                         <a href="#" class="btn btn-danger btnEliminarImagenes" data-tipo="imas" title="Eliminar imágenes">
                             <i class="fas fa-trash"></i> Borrar Imágenes
                         </a>
+                    </div>
+                    <div class="col-md-2" style="text-align: center">
+                        Registros: ${borrarImagenes.size()}
                     </div>
                 </g:if>
             </div>
