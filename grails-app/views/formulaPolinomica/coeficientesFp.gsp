@@ -227,15 +227,16 @@
 <div class="col-md-12" role="main" style="margin-top: 3px;margin-left: 0;">
     <div class="area ui-corner-all" >
 
+        <div class="col-md-6">
+
+        </div>
+
         <div class="col-md-6" style="margin-top: -320px">
             <div class="col-md-12" id="divItemsNuevos">
 
             </div>
         </div>
 
-        <div class="col-md-6">
-
-        </div>
     </div>
 </div>
 
