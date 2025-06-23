@@ -467,7 +467,7 @@ class VolumenObraController {
         def maximo = (datos[0].max)
 
         println("maximo " + maximo)
-        println("maximo " + volumenObra)
+        println("volobra " + volumenObra)
 
         return [volumenObra: volumenObra, obra: obra, subpresupuesto: subpresupuesto, rubro: rubro, tipo: params.tipo, max: maximo]
     }
