@@ -196,12 +196,19 @@ th, td {
     $(".btnSeleccionar").click(function () {
         var rubro = $(this).data("id");
         var existe = verificarEstadoVO(rubro);
+        var subpresupuesto = $("#subpresupuestoBusqueda").val();
 
-        if(existe){
-            formVolObraExistente(rubro)
+        if(subpresupuesto){
+
+            if(existe){
+                formVolObraExistente(rubro)
+            }else{
+                editarFormVolObra(null, rubro);
+            }
         }else{
-            editarFormVolObra(null, rubro);
+            bootbox.alert('<i class="fa fa-exclamation-triangle text-info fa-3x"></i> ' + '<strong style="font-size: 14px">' + "Seleccione un subpresupuesto" +'</strong>');
         }
+
     });
 
 </script>
