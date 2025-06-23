@@ -20,8 +20,8 @@ th, td {
         <tr>
             <th style="width: 10%">Orden</th>
             <th style="width: 15%">Código</th>
-            <th style="width: 55%">Descripción</th>
-            <th style="width: 10%">Cant.</th>
+            <th style="width: 50%">Descripción</th>
+            <th style="width: 15%">Cant.</th>
             <th style="width: 9%"></th>
             <th style="width: 1%"></th>
         </tr>
@@ -37,8 +37,8 @@ th, td {
                 <tr>
                     <td style="width: 10%; font-size: 10px">${val.vlobordn}</td>
                     <td style="width: 15%; font-size: 10px">${val.rbrocdgo}</td>
-                    <td style="width: 55%; font-size: 12px">${val.rbronmbr}</td>
-                    <td style="width: 10%"><g:formatNumber number="${val.vlobcntd}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/></td>
+                    <td style="width: 50%; font-size: 12px">${val.rbronmbr}</td>
+                    <td style="width: 15%"><g:formatNumber number="${val.vlobcntd}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/></td>
                     <td style="width: 9%">
                         <g:if test="${obra.estado!='R' && duenoObra == 1}">
                             <a href="#" class="btn btn-danger btn-xs btnBorrarSeleccion" data-id="${val.vlob__id}" ><i class="fa fa-trash"></i></a>
