@@ -3,6 +3,8 @@
 <script type="text/javascript">
 
     $("#${focus}").focus();
+    var $tr =  $("#${focus}").parents("tr");
+    $tr.focus();
 
     $(".btnEditar").click(function () {
         var id = $(this).data("id");
@@ -45,6 +47,7 @@
 
     function submitFormValorIndices(indice) {
         var $form = $("#frmSave-ValorIndice");
+
         if ($form.valid()) {
             var data = $form.serialize();
             var dialog = cargarLoader("Guardando...");
@@ -87,7 +90,7 @@
                 var parts = msg.split("_");
                 if(parts[0] === 'ok'){
                     log(parts[1], "success");
-                    consultar();
+                    consultar(indice);
                 }else{
                     bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
                     return false;
