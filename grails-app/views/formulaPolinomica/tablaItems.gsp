@@ -1,5 +1,42 @@
-<div class="contenedorTabla" style="width: 650px">
-    <table class="table table-condensed table-bordered table-striped table-hover" id="tblDisponibles">
+%{--<div class="contenedorTabla" style="width: 650px">--}%
+%{--    <table class="table table-condensed table-bordered table-striped table-hover" id="tblDisponibles">--}%
+%{--        <thead>--}%
+%{--        <tr>--}%
+%{--            <th>Item</th>--}%
+%{--            <th>Descripción</th>--}%
+%{--            <g:if test="${tipo == 'c'}">--}%
+%{--                <th>Precio unitario</th>--}%
+%{--            </g:if>--}%
+%{--            <th>Aporte</th>--}%
+%{--        </tr>--}%
+%{--        </thead>--}%
+%{--        <tbody>--}%
+%{--        <g:each in="${rows}" var="r">--}%
+%{--            <tr data-item="${r.iid}" data-codigo="${r.codigo}" data-nombre="${r.item}" data-valor="${r.aporte ?: 0}" data-precio="${r.precio ?: 0}" data-grupo="${r.grupo}">--}%
+%{--                <td>--}%
+%{--                    ${r.codigo}--}%
+%{--                </td>--}%
+%{--                <td>--}%
+%{--                    ${r.item}--}%
+%{--                </td>--}%
+%{--                <g:if test="${tipo == 'c'}">--}%
+%{--                    <td class="numero">--}%
+%{--                        <g:formatNumber number="${r.precio ?: 0}" maxFractionDigits="5" minFractionDigits="5" locale='ec'/>--}%
+%{--                    </td>--}%
+%{--                </g:if>--}%
+%{--                <td class="numero">--}%
+%{--                    <g:formatNumber number="${r.aporte ?: 0}" maxFractionDigits="5" minFractionDigits="5" locale='ec'/>--}%
+%{--                </td>--}%
+%{--            </tr>--}%
+%{--        </g:each>--}%
+%{--        </tbody>--}%
+%{--    </table>--}%
+%{--</div>--}%
+
+
+
+<div class="contenedorTabla">
+    <table class="table table-condensed table-bordered table-striped table-hover" >
         <thead>
         <tr>
             <th>Item</th>
@@ -10,6 +47,11 @@
             <th>Aporte</th>
         </tr>
         </thead>
+     </table>
+</div>
+
+<div class="" style="width: 99.7%;height: 400px; overflow-y: auto; margin-top: -20px">
+    <table class="table-bordered table-striped table-condensed table-hover" id="tblDisponibles" style="width: 100%;">
         <tbody>
         <g:each in="${rows}" var="r">
             <tr data-item="${r.iid}" data-codigo="${r.codigo}" data-nombre="${r.item}" data-valor="${r.aporte ?: 0}" data-precio="${r.precio ?: 0}" data-grupo="${r.grupo}">
@@ -32,6 +74,7 @@
         </tbody>
     </table>
 </div>
+
 
 <script type="text/javascript">
 

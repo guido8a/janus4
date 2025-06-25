@@ -29,27 +29,27 @@
         border     : none;
     }
 
-    .area {
-        height : 750px;
-    }
+    /*.area {*/
+    /*    height : 500px;*/
+    /*}*/
 
-    .left, .right {
-        height     : 750px;
-        float      : left;
-        overflow-x : hidden;
-        overflow-y : auto;
-        border     : 1px solid #E2CBA1;
-        background : #E5DED3;
-    }
+    /*.left, .right {*/
+    /*    height     : 750px;*/
+    /*    float      : left;*/
+    /*    overflow-x : hidden;*/
+    /*    overflow-y : auto;*/
+    /*    border     : 1px solid #E2CBA1;*/
+    /*    background : #E5DED3;*/
+    /*}*/
 
-    .left {
-        width : 465px;
-    }
+    /*.left {*/
+    /*    width : 465px;*/
+    /*}*/
 
-    .right {
-        width       : 685px;
-        margin-left : 15px;
-    }
+    /*.right {*/
+    /*    width       : 685px;*/
+    /*    margin-left : 15px;*/
+    /*}*/
 
     .jstree-grid-cell {
         cursor : pointer;
@@ -105,10 +105,10 @@
         border-radius : 0 !important;
     }
 
-    .contenedorTabla {
-        max-height : 500px;
-        overflow   : auto;
-    }
+    /*.contenedorTabla {*/
+    /*    max-height : 500px;*/
+    /*    overflow   : auto;*/
+    /*}*/
     </style>
 
 </head>
@@ -224,7 +224,7 @@
     </div>
 </div>
 
-<div class="col-md-12" role="main" style="margin-top: 3px;margin-left: 0;">
+<div class="col-md-12" role="main" style="margin-top: 330px;margin-left: 0;">
     <div class="area ui-corner-all" >
 
         <div class="col-md-6">
