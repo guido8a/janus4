@@ -2328,5 +2328,22 @@ class RubroOfController {
         return [obra: obra, materiales: materiales, mano: mano, equipos: equipos]
     }
 
+    def guardarCostoIndirecto_ajax(){
+        def obra = Obra.get(params.obra)
+
+        if(params.costo){
+            obra.totales = params.costo.toDouble()
+
+            if(!obra.save(flush:true)){
+                println("error al guardar el costo indirecto " + obra.errors)
+                render"no_Error al guardar el costo indirecto"
+            }else{
+                render "ok_Guardado correctamente"
+            }
+        }else{
+            render "err_Ingrese un costo indirecto"
+        }
+
+    }
 
 } //fin controller

@@ -138,6 +138,14 @@ border-bottom: 1px solid black;height: 30px; width: 97%">
             <div class="col-md-1">
                 <g:textField name="unidad.id" id="costo_indi" class="form-control"  value="${obra ? obra.totales : '22.5'}" />
             </div>
+
+            <div class="col-md-1">
+                <a href="#" class="btn btn-success" id="btnGuardarCostosIndirectos" title="Guardar costos indirectos">
+                    <i class="fa fa-save"></i>
+                    Guardar costos
+                </a>
+            </div>
+
             <div class="col-md-2" style="float: right">
                 <a class="btn btn-xs btn-warning " href="#" rel="tooltip" title="Copiar " id="btn_copiarComp" ${rubro ? '' : 'disabled'}>
                     <i class="fa fa-copy"></i> Copiar composición
@@ -611,8 +619,61 @@ border-bottom: 1px solid black;height: 30px; width: 97%">
 
 <script type="text/javascript">
 
+    function validarNum(ev) {
+        /*
+         48-57      -> numeros
+         96-105     -> teclado numerico
+         188        -> , (coma)
+         190        -> . (punto) teclado
+         110        -> . (punto) teclado numerico
+         8          -> backspace
+         46         -> delete
+         9          -> tab
+         37         -> flecha izq
+         39         -> flecha der
+         */
+        return ((ev.keyCode >= 48 && ev.keyCode <= 57) ||
+            (ev.keyCode >= 96 && ev.keyCode <= 105) ||
+            ev.keyCode === 190 || ev.keyCode === 110 ||
+            ev.keyCode === 8 || ev.keyCode === 46 || ev.keyCode === 9 ||
+            ev.keyCode === 37 || ev.keyCode === 39);
+    }
+
+    $("#costo_indi").keydown(function (ev) {
+        return validarNum(ev);
+    });
+    
+    $("#btnGuardarCostosIndirectos").click(function () {
+        var obra = '${obra?.id}';
+        var costo = $("#costo_indi").val();
+        $.ajax({
+            type: "POST",
+            url: "${createLink(controller: 'rubroOf', action:'guardarCostoIndirecto_ajax')}",
+            data: {
+                obra:  obra,
+                costo: costo
+            },
+            success: function (msg) {
+                var parts = msg.split("_");
+                if(parts[0] === 'ok'){
+                    log(parts[1], "success");
+                    setTimeout(function () {
+                        location.reload();
+                    }, 800);
+                }else{
+                    if(parts[0] === 'err'){
+                        bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
+                        return false;
+                    }else{
+                        log(parts[1], "error")
+                    }
+                }
+            }
+        });
+
+    });
+
     $("#btnEmparejar").click(function () {
-        // var obra = $("#obra option:selected").val();
         location.href = "${createLink(controller: 'rubroOf', action: 'emparejarRubros')}"
     });
 
