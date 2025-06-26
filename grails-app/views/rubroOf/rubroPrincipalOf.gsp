@@ -700,27 +700,32 @@ border-bottom: 1px solid black;height: 30px; width: 97%">
             vae = 0;
 
         if ($("#item_id").val() * 1 > 0) {
-            if (cant > 0 && precio>0) {
-                var g = cargarLoader("Guardando...");
-                var data = "rubro=${rubro?.id}&item=" + $("#item_id").val() + "&cantidad=" + cant + "&rendimiento=" +
-                    rend+"&precio="+precio+"&vae="+vae + "&obra=" + obra;
-                $.ajax({
-                    type : "POST",
-                    url : "${g.createLink(controller: 'rubroOf', action:'addItem')}",
-                    data     : data,
-                    success  : function (msg) {
-                        g.modal("hide");
-                        $("#item_desc").val("");
-                        $("#item_id").val("");
-                        $("#item_cantidad").val("1");
-                        $("#cdgo_buscar").val("");
-                        $("#item_unidad").val("");
-                        $("#item_precio").val("1");
-                        $("#item_vae").val("100");
-                        $("#cdgo_buscar").focus();
-                        location.reload();
-                    }
-                });
+            if (cant > 0 ) {
+                if(precio>0){
+                    var g = cargarLoader("Guardando...");
+                    var data = "rubro=${rubro?.id}&item=" + $("#item_id").val() + "&cantidad=" + cant + "&rendimiento=" +
+                        rend+"&precio="+precio+"&vae="+vae + "&obra=" + obra;
+                    $.ajax({
+                        type : "POST",
+                        url : "${g.createLink(controller: 'rubroOf', action:'addItem')}",
+                        data     : data,
+                        success  : function (msg) {
+                            g.modal("hide");
+                            $("#item_desc").val("");
+                            $("#item_id").val("");
+                            $("#item_cantidad").val("1");
+                            $("#cdgo_buscar").val("");
+                            $("#item_unidad").val("");
+                            $("#item_precio").val("1");
+                            $("#item_vae").val("100");
+                            $("#cdgo_buscar").focus();
+                            location.reload();
+                        }
+                    });
+                }else{
+                    var msgp = "El precio debe ser un número positivo.";
+                    bootbox.alert("<i class='fa fa-exclamation-triangle fa-3x text-warning'></i>" + "<strong style='font-size: 14px'>" +  msgp +  "</strong>");
+                }
             } else {
                 var msg = "La cantidad debe ser un número positivo.";
                 if(rndm < 0){
@@ -1259,6 +1264,7 @@ border-bottom: 1px solid black;height: 30px; width: 97%">
                 data     : datos,
                 success  : function (msg) {
                     var precios = msg.split("&");
+                    console.log("precios " + precios)
                     for(i=0;i<precios.length;i++){
                         var parts = precios[i].split(";");
                         var celda =$("#i_"+parts[0]);

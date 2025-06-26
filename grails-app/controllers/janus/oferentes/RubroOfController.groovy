@@ -126,9 +126,15 @@ class RubroOfController {
         def item = Item.get(params.item)
         def oferente = seguridad.Persona.get(session.usuario.id)
         def detalle
-        detalle = RubroOferente.findByItemAndRubroAndObra(item, rubro, obra)
-        if (!detalle)
+        def existe
+        existe = RubroOferente.findByItemAndRubroAndObra(item, rubro, obra)
+        if (!existe){
             detalle = new RubroOferente()
+        }else{
+            detalle = existe
+        }
+
+        detalle.obra = obra
         detalle.oferente = oferente
         detalle.rubro = rubro
         detalle.item = item
@@ -151,23 +157,33 @@ class RubroOfController {
             detalle.rendimiento = 1
 
         println "antes de grabar: ${detalle.cantidad}"
+
         if (!detalle.save(flush: true)) {
             println "detalle " + detalle.errors
         } else {
+
             rubro.fechaModificacion = new Date()
-            rubro.save(flush: true)
-            def precio = Precio.findByItemAndOferente(item, session.usuario)
-            if (!precio) {
-                precio = new Precio()
-                precio.item = item
-                precio.oferente = oferente
-                precio.fecha = new Date()
+
+            if(rubro.save(flush: true)){
+                def precio = Precio.findByItemAndOferenteAndObra(item, session.usuario, obra)
+                if (!precio) {
+                    precio = new Precio()
+                    precio.item = item
+                    precio.oferente = oferente
+                    precio.fecha = new Date()
+                    precio.obra = obra
+                }
+                precio.precio = params.precio.toDouble()
+                precio.vae = params.vae.toDouble()
+                if (precio.save(flush: true)){
+                    render "" + item.departamento.subgrupo.grupo.id + ";" + detalle.id + ";" + detalle.item.id + ";" +
+                            detalle.cantidad + ";" + detalle.rendimiento + ";" + ((item.tipoLista) ? item.tipoLista?.id : "0")
+                }else{
+                    println("error al gudardar el precio " + precio.errors)
+                }
+            }else{
+                println("error al gudardar el rubro " + rubro.errors)
             }
-            precio.precio = params.precio.toDouble()
-            precio.vae = params.vae.toDouble()
-            if (precio.save(flush: true))
-                render "" + item.departamento.subgrupo.grupo.id + ";" + detalle.id + ";" + detalle.item.id + ";" +
-                        detalle.cantidad + ";" + detalle.rendimiento + ";" + ((item.tipoLista) ? item.tipoLista?.id : "0")
         }
     }
 
@@ -443,6 +459,7 @@ class RubroOfController {
             if (it.size() > 0) {
                 def item = RubroOferente.get(it).item
                 def precio = Precio.findByItemAndOferenteAndObra(item, session.usuario, obra)
+                println("precio " + precio)
                 if (!precio) {
                     res += item.id + ";0&"
                 } else {
