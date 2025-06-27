@@ -2,7 +2,7 @@
     <table class="table table-bordered table-striped table-condensed">
         <thead>
         <tr style="width: 100%">
-            <th style="width: 35%">Última fecha de la obra</th>
+            <th style="width: 35%">Fecha anterior a la suspensión</th>
             <th style="width: 35%">Período de suspensión</th>
             <th style="width: 30%">Fecha de reinicio de obra</th>
         </tr>

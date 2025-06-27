@@ -20,7 +20,7 @@
                 <input aria-label="" name="ini" id='ini' type='text' class="form-control required dateEC" />
                 <p class="help-block ui-helper-hidden"></p>
             </span>
-            <span class="col-md-6">
+            <span class="col-md-6 text-success" style="font-size: 14px; font-weight: bold;">
                 Día en el que se inicia la suspensión
             </span>
         </span>
@@ -35,8 +35,8 @@
                 <input aria-label="" name="fin" id='fin' type='text' class="form-control fecha" />
                 <p class="help-block ui-helper-hidden"></p>
             </span>
-            <span class="col-md-6, text-info" style="font-size: 14px; font-weight: bold;">
-                Fecha en el que se reinicia la obra
+            <span class="col-md-6 text-info" style="font-size: 14px; font-weight: bold;">
+                Día en el que se reinicia la obra
             </span>
         </span>
     </div>
@@ -54,8 +54,8 @@
             <label class="col-md-3 control-label text-info">
                 Días de suspensión
             </label>
-            <span class="col-md-2" id="diasSuspension">
-
+            <span class="col-md-3" id="diasSuspension">
+                <g:textField name="dp" value="" class="form-control" readonly="" style="font-weight: bold"/>
             </span>
         </span>
     </div>
@@ -233,7 +233,8 @@
                 fin: fin
             },
             success: function (msg){
-                $("#diasSuspension").text(msg + " día" + (msg === 1 ? "" : "s"));
+                // $("#diasSuspension").text(msg + " día" + (msg === 1 ? "" : "s"));
+                $("#dp").val(msg + " día" + (msg === 1 ? "" : "s"));
             }
         });
     }
