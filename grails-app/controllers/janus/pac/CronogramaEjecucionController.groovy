@@ -3775,7 +3775,31 @@ class CronogramaEjecucionController {
         }
 
         return [totales: totales, suma: suma, ttpc: total_pc, ttpa: total_pa, total_ac: total_ac]
+    }
 
+    def tablaSuspension_ajax(){
+
+        def fechaInicio
+        def fechaFin
+        def fechaAnterior
+        def fechaReinicio
+
+        if(params.inicio){
+            fechaInicio = new Date().parse("dd-MM-yyyy", params.inicio)
+            fechaAnterior = fechaInicio - 1
+            fechaAnterior = fechaAnterior.format("dd-MM-yyyy")
+            fechaInicio = fechaInicio.format("dd-MM-yyyy")
+        }
+
+        if(params.fin){
+            fechaFin= new Date().parse("dd-MM-yyyy", params.fin)
+            fechaReinicio = fechaFin.format("dd-MM-yyy")
+            fechaFin = fechaFin - 1
+            fechaFin = fechaFin.format("dd-MM-yyy")
+        }
+
+
+        return [fechaInicio: fechaInicio, fechaFin: fechaFin, fechaAnterior: fechaAnterior, fechaReinicio: fechaReinicio]
     }
 
 } //fin controller

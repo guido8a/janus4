@@ -7,8 +7,8 @@
 </style>
 
 <g:form class="form-horizontal" name="frmSave-suspension" action="ampliacion">
-    <div class="col-md-12 alert alert-danger" style="display: inline-block">
-        <i class="fa fa-exclamation-triangle text-danger fa-3x"></i> <h4 style="float: right">Atención: Una vez hecha la suspensión no se puede deshacer.</h4>
+    <div class="col-md-12 alert alert-danger">
+        <i class="fa fa-exclamation-triangle text-danger fa-3x"></i> <strong style="font-size: 16px">Atención: Una vez hecha la suspensión no se puede deshacer.</strong>
     </div>
 
     <div class="form-group">
@@ -37,6 +37,14 @@
             </span>
             <span class="col-md-6, text-info" style="font-size: 14px; font-weight: bold;">
                 Fecha en el que se reinicia la obra
+            </span>
+        </span>
+    </div>
+
+    <div class="form-group" style="margin-top: 10px">
+        <span class="grupo">
+            <span class="col-md-12" id="divTablaSuspension">
+
             </span>
         </span>
     </div>
@@ -170,6 +178,25 @@
 
 <script type="text/javascript">
 
+    cargarTablaSuspension();
+
+    function cargarTablaSuspension() {
+        var inicio = $("#ini").val();
+        var fin = $("#fin").val();
+
+        $.ajax({
+            type: 'POST',
+            url: '${createLink(controller: 'cronogramaEjecucion', action: 'tablaSuspension_ajax')}',
+            data:{
+                inicio: inicio,
+                fin: fin
+            },
+            success: function (msg){
+                $("#divTablaSuspension").html(msg)
+            }
+        });
+    }
+
     $('#ini').datetimepicker({
         locale: 'es',
         format: 'DD-MM-YYYY',
@@ -180,6 +207,7 @@
         }
     }).on('dp.change', function(e){
         updateDias();
+        cargarTablaSuspension();
     });
 
     $('#fin').datetimepicker({
@@ -190,6 +218,7 @@
         }
     }).on('dp.change', function(e){
         updateDias();
+        cargarTablaSuspension();
     });
 
     function updateDias() {
@@ -207,9 +236,7 @@
                 $("#diasSuspension").text(msg + " día" + (msg === 1 ? "" : "s"));
             }
         });
-
     }
-
 
     $("#frmSave-suspension").validate({
         errorClass     : "help-block",
@@ -225,12 +252,5 @@
             label.parents(".grupo").removeClass('has-error');
         }
     });
-
-
-    // $("#frmSave-suspension").validate();
-    //
-    // $(".datepicker").keydown(function () {
-    //     return false;
-    // });
 
 </script>

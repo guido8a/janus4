@@ -478,7 +478,7 @@
                     cntr: "${contrato.id}"
                 },
                 success: function (msg) {
-                    location.reload(true);
+                    location.reload();
                 }
             });
             return false;
