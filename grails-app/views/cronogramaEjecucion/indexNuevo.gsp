@@ -91,6 +91,11 @@
                 </g:if>
             </div>
             <div class="btn-group">
+                <a href="#" id="btnVerificarCronograma" class="btn btn-success" title="Verificar cronograma">
+                    <i class="fa fa-check"></i> Verificar cronograma
+                </a>
+            </div>
+            <div class="btn-group">
                 <a href="#" id="btnReporte" class="btn btn-success" title="Imprimir">
                     <i class="fa fa-print"></i> Imprimir
                 </a>
@@ -184,6 +189,26 @@
 
 
 <script type="text/javascript">
+
+    $("#btnVerificarCronograma").click(function () {
+        var g = cargarLoader("Cargando...");
+        $.ajax({
+            type: "POST",
+            url: "${createLink(controller: 'cronogramaEjecucion', action: 'verificarCronograma_ajax')}",
+            data: {
+                id: ${contrato.id}
+            },
+            success: function (msg) {
+                g.modal("hide");
+                if(msg === 'ok'){
+                    log("Cronograma verificado correctamente ", "success");
+                    setTimeout(function () {
+                        location.reload()
+                    }, 800)
+                }
+            }
+        });
+    });
 
     $(".btnPg").click(function () {
         var pag = $(this).data("valor");
@@ -300,11 +325,6 @@
     %{--});--}%
     %{--});--}%
 
-
-
-    function log(msg) {
-    }
-
     $(function () {
         updateTabla();
     });
@@ -338,7 +358,6 @@
                         $("#modal-forms").modal("show");
                     }
                 });
-
             }
             return false;
         });
@@ -450,7 +469,6 @@
                     url: "${createLink(action:'terminaSuspensionNuevo')}",
                     data    : data,
                     success : function (msg) {
-                        console.log("msg " + msg)
                         dialog.modal('hide');
                         var parts = msg.split("_");
                         if(parts[0] === 'okOK'){
@@ -468,7 +486,6 @@
                 return false;
             }
         }
-
 
         $("#actualizaPrej").click(function () {
             $.ajax({

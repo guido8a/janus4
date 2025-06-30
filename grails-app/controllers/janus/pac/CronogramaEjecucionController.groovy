@@ -3798,8 +3798,16 @@ class CronogramaEjecucionController {
             fechaFin = fechaFin.format("dd-MM-yyy")
         }
 
-
         return [fechaInicio: fechaInicio, fechaFin: fechaFin, fechaAnterior: fechaAnterior, fechaReinicio: fechaReinicio]
+    }
+
+    def verificarCronograma_ajax(){
+        def cn = dbConnectionService.getConnection()
+        def sql = "update creo set creoprco = 0 where creo__id in (select creo__id from creo where prej__id in (select prej__id from prej where cntr__id = ${params.id}) and nullif (creoprco, 'NaN') is null);"
+        println("sql " + sql)
+        cn.execute(sql.toString())
+
+        render "ok"
     }
 
 } //fin controller
