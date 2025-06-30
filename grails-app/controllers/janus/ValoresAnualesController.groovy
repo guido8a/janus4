@@ -34,6 +34,38 @@ class ValoresAnualesController {
         params.anio = anioNuevo.anio
         def valoresAnualesInstance
 
+        if(params.costoDiesel){
+            params.costoDiesel = params.costoDiesel.toDouble()
+        }
+
+        if(params.costoGrasa){
+            params.costoGrasa = params.costoGrasa.toDouble()
+        }
+
+        if(params.costoLubricante){
+            params.costoLubricante = params.costoLubricante.toDouble()
+        }
+
+        if(params.factorCostoRepuestosReparaciones){
+            params.factorCostoRepuestosReparaciones = params.factorCostoRepuestosReparaciones.toDouble()
+        }
+
+        if(params.sueldoBasicoUnificado){
+            params.sueldoBasicoUnificado = params.sueldoBasicoUnificado.toDouble()
+        }
+
+        if(params.tasaInteresAnual){
+            params.tasaInteresAnual = params.tasaInteresAnual.toDouble()
+        }
+
+        if(params.seguro){
+            params.seguro = params.seguro.toDouble()
+        }
+
+        if(params.inflacion){
+            params.inflacion = params.inflacion.toDouble()
+        }
+
         if (params.id) {
             valoresAnualesInstance = ValoresAnuales.get(params.id)
             if (!valoresAnualesInstance) {
