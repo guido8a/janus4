@@ -200,6 +200,14 @@
 %{--                                </g:if>--}%
                             </g:if>
                         </g:if>
+                        <g:if test="${planillaInstance.tipoPlanilla.codigo == 'C'}">
+                            <g:if test="${contrato?.fiscalizador?.id == session.usuario.id}">
+                                <g:link action="detalleCosto" id="${planillaInstance.id}" params="[contrato: contrato.id]"
+                                        rel="tooltip" title="Detalles" class="btn btn-xs btn-primary">
+                                    <i class="fa fa-list-ul"></i>
+                                </g:link>
+                            </g:if>
+                        </g:if>
                     </td>
                     <td style="width: 8%; text-align: center">
                         <g:if test="${planillaInstance.tipoPlanilla.codigo in ['P', 'Q', 'O', 'L', 'R']}">
@@ -231,14 +239,7 @@
 
                             </g:if>
                         </g:if>
-                        <g:if test="${planillaInstance.tipoPlanilla.codigo == 'C'}">
-                            <g:if test="${contrato?.fiscalizador?.id == session.usuario.id}">
-                                <g:link action="detalleCosto" id="${planillaInstance.id}" params="[contrato: contrato.id]"
-                                        rel="tooltip" title="Detalles" class="btn btn-xs btn-primary">
-                                    <i class="fa fa-list-ul"></i>
-                                </g:link>
-                            </g:if>
-                        </g:if>
+
                         <g:if test="${planillaInstance.tipoPlanilla.codigo != 'C' && janus.ejecucion.ReajustePlanilla.countByPlanilla(planillaInstance) > 0}">
                             <g:link controller="reportePlanillas4" action="reportePlanillaNuevo1f" id="${planillaInstance.id}"
                                     class="btn btn-info btnPrint btn-xs btn-ajax" rel="tooltip" title="Imprimir planilla">
