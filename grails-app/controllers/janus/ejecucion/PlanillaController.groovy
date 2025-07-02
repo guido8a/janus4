@@ -5796,7 +5796,23 @@ class PlanillaController {
         }else{
             render "ok_Guardado correctamente"
         }
+    }
 
+    def limpiarReajuste_ajax(){
+        def cn = dbConnectionService.getConnection()
+        def cn2 = dbConnectionService.getConnection()
+        def sql = "delete from dtrj where rjpl__id in (select rjpl__id from rjpl where plnl__id = ${params.id})"
+        def sql2 = "delete from rjpl where plnl__id = ${params.id}"
+
+        try{
+            cn.execute(sql.toString())
+            cn2.execute(sql2.toString())
+
+            render "ok_Borrado correctamente"
+        }catch(e){
+            println("Error al borrar el reajuste")
+            render "no_Error al borrar"
+        }
     }
 
 }

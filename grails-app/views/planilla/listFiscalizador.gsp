@@ -114,8 +114,8 @@
             <th style="width: 7%">Fecha Fin</th>
             <th style="width: 19%">Descripción</th>
             <th style="width: 7%">Valor</th>
-            <th style="width: 8%"></th>
-            <th style="width: 8%"></th>
+            <th style="width: 8%">Planillas</th>
+            <th style="width: 8%">Acciones</th>
             <th style="width: 8%">Pagos</th>
         </tr>
         </thead>
@@ -153,7 +153,7 @@
                         <g:formatNumber number="${planillaInstance.valor}" maxFractionDigits="2" minFractionDigits="2" format="##,##0" locale="ec"/>
                     </td>
 
-                    <td style="width: 8%; text-align: center">
+                    <td style="width: 8%; text-align: left">
                         <g:if test="${eliminable && planillaInstance.tipoPlanilla.codigo in ['A', 'B']}">
                             <g:link action="form" class="btn btn-xs btn-success" rel="tooltip" title="Editar"
                                     params="[contrato: contrato.id]" id="${planillaInstance.id}">
@@ -209,7 +209,7 @@
                             </g:if>
                         </g:if>
                     </td>
-                    <td style="width: 8%; text-align: center">
+                    <td style="width: 8%; text-align: left">
                         <g:if test="${planillaInstance.tipoPlanilla.codigo in ['P', 'Q', 'O', 'L', 'R']}">
                             <g:if test="${(contrato?.fiscalizador?.id == session.usuario.id)}">
                                 <g:if test="${!planillaInstance.fechaMemoSalidaPlanilla}">
@@ -217,10 +217,12 @@
                                          class="btn btn-xs btn-success btnProcesaQ">
                                         <i class="fa fa-cog"></i>
                                     </div>
-                                    <div data-id="${planillaInstance.id}" rel="tooltip" title="Limpiar"
-                                         class="btn btn-xs btn-info btnLimpiar">
-                                        <i class="fa fa-paint-brush"></i>
-                                    </div>
+                                    <g:if test="${planillaInstance.id && janus.ejecucion.ReajustePlanilla.countByPlanilla(planillaInstance) > 0}">
+                                        <div data-id="${planillaInstance.id}" rel="tooltip" title="Limpiar reajuste"
+                                             class="btn btn-xs btn-info btnLimpiarReajuste">
+                                            <i class="fa fa-paint-brush"></i>
+                                        </div>
+                                    </g:if>
                                 </g:if>
                             </g:if>
                         </g:if>
@@ -389,6 +391,47 @@
 
 <script type="text/javascript">
 
+    $(".btnLimpiarReajuste").click(function () {
+        var id = $(this).data("id") ;
+        bootbox.dialog({
+            title   : "Alerta",
+            message : "<i class='fa fa-exclamation-triangle fa-2x pull-left text-warning text-shadow'></i><p style='font-weight: bold; font-size: 14px'>" + "Está seguro de eliminar el reajuste existente y volver a calcular el reajuste de la planilla ?" + "</p>",
+            buttons : {
+                cancelar : {
+                    label     : "Cancelar",
+                    className : "btn-primary",
+                    callback  : function () {
+                    }
+                },
+                cambiar : {
+                    label     : "<i class='fa fa-trash'></i> Aceptar",
+                    className : "btn-success",
+                    callback  : function () {
+                        var v = cargarLoader("Eliminando...");
+                        $.ajax({
+                            type    : "POST",
+                            url     : '${createLink(controller: 'planilla', action:'limpiarReajuste_ajax')}',
+                            data    : {
+                                id : id
+                            },
+                            success : function (msg) {
+                                v.modal("hide");
+                                var parts = msg.split("_");
+                                if(parts[0] === 'ok'){
+                                    log(parts[1],"success");
+                                    setTimeout(function () {
+                                        location.reload()
+                                    }, 800);
+                                }else{
+                                    log(parts[1],"error")
+                                }
+                            }
+                        });
+                    }
+                }
+            }
+        });
+    });
 
     $(".btnCambiarTipo").click(function () {
         var tipo = $(this).data("tipo");
