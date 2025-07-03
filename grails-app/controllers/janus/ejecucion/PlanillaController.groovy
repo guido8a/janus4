@@ -5816,4 +5816,16 @@ class PlanillaController {
         }
     }
 
+    def verificarPeriodo_ajax(){
+        println("params  " + params)
+        def cn = dbConnectionService.getConnection()
+        def planilla = Planilla.get(params.planilla)
+        def sql = "select * from verifica_indices_v2(${planilla?.id},${planilla?.periodoIndices?.id});"
+        def res = cn.rows(sql.toString())
+
+        println("planilla " + planilla.periodoIndices.id)
+
+        return [datos: res]
+    }
+
 }

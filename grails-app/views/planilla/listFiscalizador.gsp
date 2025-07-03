@@ -112,9 +112,9 @@
             <th style="width: 8%">Fecha Presentación</th>
             <th style="width: 7%">Fecha Inicio</th>
             <th style="width: 7%">Fecha Fin</th>
-            <th style="width: 19%">Descripción</th>
+            <th style="width: 16%">Descripción</th>
             <th style="width: 7%">Valor</th>
-            <th style="width: 8%">Planillas</th>
+            <th style="width: 11%">Planillas</th>
             <th style="width: 8%">Acciones</th>
             <th style="width: 8%">Pagos</th>
         </tr>
@@ -148,12 +148,12 @@
                     <td style="width: 7%">
                         <g:formatDate date="${planillaInstance.fechaFin}" format="dd-MM-yyyy"/>
                     </td>
-                    <td style="width: 19%">${planillaInstance?.id} ${fieldValue(bean: planillaInstance, field: "descripcion")}</td>
+                    <td style="width: 16%">${planillaInstance?.id} ${fieldValue(bean: planillaInstance, field: "descripcion")}</td>
                     <td class="numero" style="width: 7%; text-align: right; font-weight: bold">
                         <g:formatNumber number="${planillaInstance.valor}" maxFractionDigits="2" minFractionDigits="2" format="##,##0" locale="ec"/>
                     </td>
 
-                    <td style="width: 8%; text-align: left">
+                    <td style="width: 11%; text-align: left">
                         <g:if test="${eliminable && planillaInstance.tipoPlanilla.codigo in ['A', 'B']}">
                             <g:link action="form" class="btn btn-xs btn-success" rel="tooltip" title="Editar"
                                     params="[contrato: contrato.id]" id="${planillaInstance.id}">
@@ -207,6 +207,12 @@
                                     <i class="fa fa-list-ul"></i>
                                 </g:link>
                             </g:if>
+                        </g:if>
+                        <g:if test="${planillaInstance?.id}">
+                            <div data-id="${planillaInstance.id}" rel="tooltip" title="Verificar período"
+                                 class="btn btn-xs btn-info btnVerificarPeriodo">
+                                <i class="fa fa-thumbs-up"></i>
+                            </div>
                         </g:if>
                     </td>
                     <td style="width: 8%; text-align: left">
@@ -385,11 +391,38 @@
     <div class="modal-footer" id="modal_footer_var">
 
     </div>
-
 </div>
 
-
 <script type="text/javascript">
+
+    $(".btnVerificarPeriodo").click(function () {
+        var d = cargarLoader("Cargando...");
+        var id = $(this).data("id") ;
+        $.ajax({
+            type    : "POST",
+            url     : "${createLink(controller: 'planilla', action:'verificarPeriodo_ajax')}",
+            data    : {
+                contrato : '${contrato?.id}',
+                planilla: id
+            },
+            success : function (msg) {
+                d.modal("hide");
+                var b = bootbox.dialog({
+                    id      : "dlgShowVerificarPeriodo",
+                    title   : "Verifica Período",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Aceptar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        }
+                    } //buttons
+                }); //dialog
+            }
+        });
+    });
 
     $(".btnLimpiarReajuste").click(function () {
         var id = $(this).data("id") ;
