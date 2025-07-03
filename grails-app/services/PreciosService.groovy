@@ -608,6 +608,7 @@ class PreciosService {
         if(periodo) {
             def sql = "select * from verifica_indices_v2("+ plnl + ","+ periodo.id +") "
             def result = []
+            println "sql: $sql"
             cn.eachRow(sql.toString()) { r ->
 //            println ">>>res "+r
                 result.add(r.toRowResult())

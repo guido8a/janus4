@@ -4114,11 +4114,12 @@ class PlanillaController {
                 def max = 10
                 def fecha = fcha
                 while (!existe) {
-//                    println "periodo actual...: $prin, fcha: ${fcha}, fecha: ${fecha}"
+                    println "periodo actual...: $prin, fcha: ${fcha}, fecha: ${fecha}"
                     fecha = preciosService.primerDiaDelMes(fecha) - 15
                     prin = PeriodosInec.findByFechaInicioLessThanAndFechaFinGreaterThan(fecha, fecha)
 //                    existe = preciosService.verificaIndicesPeriodo(plnl.contrato, prin).size() == 0
                     existe = preciosService.verificaIndicesPeriodo(plnl.id, prin).size() == 0
+                    println "verifica indices para ${prin.descripcion} --> ${existe}"
                     if (!max--) {
                         return null
                     }
@@ -4341,7 +4342,7 @@ class PlanillaController {
                 vlpr = Math.round(inpr * fp.valor * 1000) / 1000
                 valorBoOf += vlof
                 valorBoPr += vlpr
-//                println "${fp} coef: ${fp.valor} oferta: $vlof, actual: $vlpr, factor: $valor"
+                println "${fp} coef: ${fp.valor} oferta: $vlof, actual: $vlpr, factor: $valor"
 
                 /* valore a almacenar */
                 prmt = [:]
@@ -4438,7 +4439,7 @@ class PlanillaController {
 
     /** halla el valor del índice en PRIN de la oferta**/
     def valorIndice(indc, prin) {
-        println "valor Indice de: $indc : ${indc?.id} periodo: $prin --> ${prin?.id}"
+//        println "valor Indice de: $indc : ${indc?.id} periodo: $prin --> ${prin?.id}"
         ValorIndice.findByIndiceAndPeriodo(indc, prin).valor
     }
 
@@ -5123,7 +5124,7 @@ class PlanillaController {
 
                             /**para recalcular el prin se requiere la fecha a la que corresponde el reajuste po.fechaInicio, po.fechaFin ok **/
                             prdoInec = indicesDisponibles(po.planillaReajustada, po.planillaReajustada.fechaPago, 'R') /* para recalcular reajuste */
-//                            println "********** para plnl: ${po.id} con pr: ${po.periodoInec} se retorna de indicesDisponibles: $prdoInec, fcha: $po.fechaInicio "
+                            println "********** para plnl: ${po.id} con pr: ${po.periodoInec} se retorna de indicesDisponibles: $prdoInec, fcha: $po.fechaInicio "
                             prmt.periodoInec = prdoInec ?: indicesDisponibles(po.planillaReajustada, po.fechaInicio, '')
 
 //                            println "  inserta avance RR... si hay indices actuales $prmt"
