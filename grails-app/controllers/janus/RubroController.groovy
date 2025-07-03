@@ -113,8 +113,7 @@ class RubroController {
 
         if (params.id) {
             rubro = Item.get(params.id)
-
-            contieneH = rubro.codigo?.contains("H")
+            contieneH = rubro.codigo[0]?.contains("H")
 
             def items = Rubro.findAllByRubro(rubro)
             items.sort { it.item.codigo }
