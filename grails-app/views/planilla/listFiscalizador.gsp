@@ -209,8 +209,8 @@
                             </g:if>
                         </g:if>
                         <g:if test="${planillaInstance?.id}">
-                            <div data-id="${planillaInstance.id}" rel="tooltip" title="Verificar período"
-                                 class="btn btn-xs btn-info btnVerificarPeriodo">
+                            <div data-id="${planillaInstance.id}" rel="tooltip" title="Verificar Índices"
+                                 class="btn btn-xs btn-info btnVerificarIndices">
                                 <i class="fa fa-thumbs-up"></i>
                             </div>
                         </g:if>
@@ -395,7 +395,7 @@
 
 <script type="text/javascript">
 
-    $(".btnVerificarPeriodo").click(function () {
+    $(".btnVerificarIndices").click(function () {
         var d = cargarLoader("Cargando...");
         var id = $(this).data("id") ;
         $.ajax({
@@ -409,7 +409,7 @@
                 d.modal("hide");
                 var b = bootbox.dialog({
                     id      : "dlgShowVerificarPeriodo",
-                    title   : "Verifica Período",
+                    title   : "Verificar Índices",
                     message : msg,
                     buttons : {
                         cancelar : {

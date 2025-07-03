@@ -1,5 +1,10 @@
 <div class="row">
     <div class="col-md-12">
+
+        <div class="breadcrumb" style="text-align: center">
+            <i class="fa fa-exclamation-triangle fa-2x text-warning"></i> <strong style="font-size: 14px;"> No existen valores para los siguientes índices </strong>
+        </div>
+
         <table class="table table-bordered table-striped table-condensed table-hover">
             <thead>
             <tr style="width: 100%">
