@@ -45,17 +45,21 @@
 <body>
 
 <div class="btn-toolbar" style="margin-top: 5px; margin-bottom: 10px;">
-    <div class="btn-group">
-        <a href="${g.createLink(controller: 'mantenimientoItems', action: 'precios')}" class="btn btn-info" title="Regresar">
-            <i class="fa fa-arrow-left"></i>
-            Regresar
-        </a>
-    </div>
+
 </div>
 
 <div class="row" style="overflow-y: auto;">
     <fieldset class="col-md-12">
         <div class="col-md-12" style="margin-top: 20px; margin-bottom: 10px">
+
+            <div class="btn-group col-md-1">
+                <a href="${g.createLink(controller: 'mantenimientoItems', action: 'precios')}" class="btn btn-info" title="Regresar">
+                    <i class="fa fa-arrow-left"></i>
+                    Regresar
+                </a>
+            </div>
+
+
             <div class="col-md-1"><label>Lista de Precios</label></div>
             <div class="col-md-4">
                 <g:select class="form-control listPrecio span2" name="listaPrecio"
