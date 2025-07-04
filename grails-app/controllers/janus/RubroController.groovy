@@ -735,8 +735,16 @@ class RubroController {
         def idRubro = params.id
         def fecha = new Date().parse("dd-MM-yyyy", params.fecha)
         def listas = params.listas
-        def parametros = "" + idRubro + ",'" + fecha.format("yyyy-MM-dd") + "'," + listas + "," + params.dsp0 + "," + params.dsp1 + "," + params.dsv0 + "," + params.dsv1 + "," + params.dsv2 + "," + params.chof + "," + params.volq
+        def parametros
+
+        if(params.id){
+            parametros = "" + idRubro + ",'" + fecha.format("yyyy-MM-dd") + "'," + listas + "," + params.dsp0 + "," + params.dsp1 + "," + params.dsv0 + "," + params.dsv1 + "," + params.dsv2 + "," + params.chof + "," + params.volq
+        }else{
+            parametros = "" + null + ",'" + fecha.format("yyyy-MM-dd") + "'," + listas + "," + params.dsp0 + "," + params.dsp1 + "," + params.dsv0 + "," + params.dsv1 + "," + params.dsv2 + "," + params.chof + "," + params.volq
+        }
+
 //        println "paramtros " +parametros
+
         def res = preciosService.rb_precios(parametros, "")
 
         def tabla = '<table class="table table-bordered table-striped table-condensed table-hover"> '

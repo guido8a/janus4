@@ -286,9 +286,7 @@ class PreciosService {
         def rdps = (ftrd * vlcd * cpvl * ftvl * dsps * ftps) / (vlcd + (rdtp * dsps))
         rdps = (pcunchfr + pcunvlqt) / rdps
         return ["rdvl": rdvl, "rdps": rdps]
-
     }
-
 
     def rb_precios(parametros, condicion) {
         def cn = dbConnectionService.getConnection()
