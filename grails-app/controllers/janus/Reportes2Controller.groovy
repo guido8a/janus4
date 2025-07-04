@@ -255,13 +255,16 @@ class Reportes2Controller {
                     extIlustracion = extIlustracion[extIlustracion.size() - 1]
                     pathIlustracion = "/var/janus/" + "rubros" + File.separatorChar + rubro?.foto
 
-                    if (extIlustracion.toLowerCase() in ["pdf"]) {
-                        readerIlustracion = new PdfReader(new FileInputStream(pathIlustracion));
-                        pagesIlustracion = readerIlustracion.getNumberOfPages()
+                    def archivoPDF = new File(pathIlustracion)
+                    if(archivoPDF.exists()){
+                        if (extIlustracion.toLowerCase() in ["pdf"]) {
+                            readerIlustracion = new PdfReader(new FileInputStream(pathIlustracion));
+                            pagesIlustracion = readerIlustracion.getNumberOfPages()
+                        }
+                    }else{
+                        println("no existe archivo pdf" )
                     }
                 }
-
-
 
                 def ares = ArchivoEspecificacion.findByCodigo(rubro?.codigoEspecificacion)
                 if (ares && tipo.contains("e")) {
@@ -326,9 +329,16 @@ class Reportes2Controller {
                 if (extIlustracion && extIlustracion != "") {
                     addCellTabla(tablaRubro, new Paragraph("Ilustración", fontTh), prmsTh)
                     if (extIlustracion.toLowerCase() != "pdf") { //es una imgaen png, jpg...
-                        def img = Image.getInstance(pathIlustracion);
-                        img.scaleToFit(maxImageSize, maxImageSize);
-                        addCellTabla(tablaRubro, img, prmsEs)
+
+                        def archivoImagen = new File(pathIlustracion)
+                        if(archivoImagen.exists()){
+                            def img = Image.getInstance(pathIlustracion);
+                            img.scaleToFit(maxImageSize, maxImageSize);
+                            addCellTabla(tablaRubro, img, prmsEs)
+                        }else{
+                            println("no existe archivo de imagen" )
+                        }
+
                     } else {
                         def str = "- PDF de ${pagesIlustracion} página${pagesIlustracion == 1 ? '' : 's'} adjunto "
                         def adj = "a partir de la siguiente página -"
@@ -383,11 +393,14 @@ class Reportes2Controller {
             if(falta.size() > 0) {
                 falta = falta.unique()
                 println "faltan archivos: $falta"
-                def tx = "Archivos que faltan: <br>"
+//                def tx = "Archivos que faltan: <br>"
+                def tx = "<br>"
                 falta.each { f ->
                     tx += f + '<br>'
                 }
-                render "${tx}"
+//                render "${tx}"
+
+                redirect(action: "archivosFaltantes",params: [archivos: tx, obra: obra?.id])
                 return
             }
 
@@ -719,7 +732,7 @@ class Reportes2Controller {
             */
         }
 
-            println "....fin"
+        println "....fin"
         render "SI*"
     }
 
@@ -3443,6 +3456,12 @@ class Reportes2Controller {
         response.setContentLength(b.length)
         response.getOutputStream().write(b)
 
+    }
+
+    def archivosFaltantes(){
+        def archivos = params.archivos
+        def obra = Obra.get(params.obra)
+        return [archivos: archivos, obra: obra]
     }
 
 }
