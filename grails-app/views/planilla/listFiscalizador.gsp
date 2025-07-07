@@ -57,7 +57,7 @@
                     <g:if test="${contrato.cambioFecha == 0}">
                         <a href="#" class="btn btn-success" id="btnReiniciarCronograma" data-id="${contrato?.id}">
                             <i class="fa fa-check"></i>
-                            Reiniciar cronograma
+                            Habilitar modificación cronograma
                         </a>
                     </g:if>
                     <g:else>

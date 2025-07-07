@@ -5837,12 +5837,15 @@ class PlanillaController {
 
         def contrato = Contrato.get(params.id)
         def tipoAvance = TipoPlanilla.findByCodigo("A")
-        def planillas = Planilla.findAllByContratoAndTipoPlanillaNotEqual(contrato, tipoAvance)
 
         def fecha
 
         if(params.fecha){
             fecha = new Date().parse("dd-MM-yyyy", params.fecha)
+
+            def planillas = Planilla.findAllByContratoAndTipoPlanillaNotEqualAndFechaFinGreaterThanEquals(contrato, tipoAvance, fecha)
+
+            println("plaillas " + planillas)
 
             if(planillas.size() > 0){
                 planillas.each {
