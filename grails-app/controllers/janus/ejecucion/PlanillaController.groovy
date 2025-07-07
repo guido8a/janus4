@@ -5828,4 +5828,67 @@ class PlanillaController {
         return [datos: res]
     }
 
+    def fechaFinCronograma_ajax(){
+
+    }
+
+    def guardarFechaPlanilla_ajax(){
+//        println("params " + params)
+
+        def contrato = Contrato.get(params.id)
+        def tipoAvance = TipoPlanilla.findByCodigo("A")
+        def planillas = Planilla.findAllByContratoAndTipoPlanillaNotEqual(contrato, tipoAvance)
+
+        def fecha
+
+        if(params.fecha){
+            fecha = new Date().parse("dd-MM-yyyy", params.fecha)
+
+            if(planillas.size() > 0){
+                planillas.each {
+                    it.fechaAnterior = it.fechaFin
+                    it.fechaFin = fecha
+                    it.save(flush:true)
+                }
+
+                contrato.cambioFecha = 1
+                contrato.save(flush:true)
+
+                render "ok_Fecha cambiada correctamente"
+
+            }else{
+                render "err_No existen planillas para cambiar la fecha"
+            }
+        }else{
+            render "err_Ingrese una fecha"
+        }
+    }
+
+    def restaurarFechaPlanilla_ajax(){
+//        println("params " + params)
+
+        def contrato = Contrato.get(params.id)
+        def tipoAvance = TipoPlanilla.findByCodigo("A")
+        def planillas = Planilla.findAllByContratoAndTipoPlanillaNotEqual(contrato, tipoAvance)
+
+//        println("planillas " + planillas)
+
+        if(planillas.size() > 0){
+
+            planillas.each {
+                it.fechaFin = it.fechaAnterior
+                it.save(flush:true)
+            }
+
+            contrato.cambioFecha = 0
+            contrato.save(flush:true)
+
+            render "ok_Fecha cambiada correctamente"
+
+        }else{
+            render "err_No existen planillas para restaurar la fecha"
+        }
+
+    }
+
 }

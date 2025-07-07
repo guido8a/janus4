@@ -62,8 +62,7 @@ class Contrato implements Auditable {
     String adicionales
     int aplicaReajuste = 1
     int saldoMulta = 0
-
-
+    int cambioFecha = 0
 
     static auditable = true
     static mapping = {
@@ -126,6 +125,7 @@ class Contrato implements Auditable {
             adicionales column: 'cntradcn'
             aplicaReajuste column: 'cntraprj'
             saldoMulta column: 'cntrsldo'
+            cambioFecha column: 'cntrcmfc'
         }
     }
 
@@ -171,6 +171,7 @@ class Contrato implements Auditable {
         obraContratada(blank: true, nullable: true)
         contratista(blank: true, nullable: true)
         adicionales(maxSize: 20, blank: true, nullable: true)
+        cambioFecha(blank: true, nullable: true)
 
     }
 

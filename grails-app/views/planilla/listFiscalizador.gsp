@@ -54,6 +54,18 @@
                         <i class="fa fa-folder"></i>
                         Doc. respaldo Costo + %
                     </g:link>
+                    <g:if test="${contrato.cambioFecha == 0}">
+                        <a href="#" class="btn btn-success" id="btnReiniciarCronograma" data-id="${contrato?.id}">
+                            <i class="fa fa-check"></i>
+                            Reiniciar cronograma
+                        </a>
+                    </g:if>
+                    <g:else>
+                        <a href="#" class="btn btn-warning" id="btnRestaurarFechasCronograma" data-id="${contrato?.id}">
+                            <i class="fa fa-retweet"></i>
+                            Restaurar fechas
+                        </a>
+                    </g:else>
                 </g:if>
             </g:if>
 
@@ -394,6 +406,114 @@
 </div>
 
 <script type="text/javascript">
+
+    $("#btnRestaurarFechasCronograma").click(function () {
+        var id = $(this).data("id") ;
+        bootbox.dialog({
+            title   : "Alerta",
+            message : "<i class='fa fa-exclamation-triangle fa-2x pull-left text-warning text-shadow'></i><p style='font-weight: bold; font-size: 14px'>" + "Está seguro de querer restaurar las fecha final anterior de las planillas ?" + "</p>",
+            buttons : {
+                cancelar : {
+                    label     : "Cancelar",
+                    className : "btn-primary",
+                    callback  : function () {
+                    }
+                },
+                cambiar : {
+                    label     : "<i class='fa fa-trash'></i> Aceptar",
+                    className : "btn-success",
+                    callback  : function () {
+                        return restaurarFechaFinPlanilla(id)
+                    }
+                }
+            }
+        });
+    });
+
+    $("#btnReiniciarCronograma").click(function () {
+        var d = cargarLoader("Cargando...");
+        var id = $(this).data("id") ;
+        $.ajax({
+            type    : "POST",
+            url     : "${createLink(controller: 'planilla', action:'fechaFinCronograma_ajax')}",
+            data    : {
+                contrato : id
+            },
+            success : function (msg) {
+                d.modal("hide");
+                var b = bootbox.dialog({
+                    id      : "dlgFechaFinCronograma",
+                    title   : "Fecha Fin",
+                    class : 'modal-sm',
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Aceptar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        },
+                        aceptar : {
+                            label     : "Guardar",
+                            className : "btn-success",
+                            callback  : function () {
+                                return guardarFechaFinPlanilla(id)
+                            }
+                        }
+                    } //buttons
+                }); //dialog
+            }
+        });
+    });
+
+    function guardarFechaFinPlanilla(id){
+        var v = cargarLoader("Guardando...");
+        $.ajax({
+            type    : "POST",
+            url     : '${createLink(controller: 'planilla', action:'guardarFechaPlanilla_ajax')}',
+            data    : {
+                id : id,
+                fecha: $("#fechaFinPlanillas").val()
+            },
+            success : function (msg) {
+                v.modal("hide");
+                var parts = msg.split("_");
+                if(parts[0] === 'ok'){
+                    log(parts[1],"success");
+                    setTimeout(function () {
+                        location.reload()
+                    }, 800);
+                }else{
+                    bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
+                    return false;
+                }
+            }
+        });
+    }
+
+    function restaurarFechaFinPlanilla(id){
+        var v = cargarLoader("Guardando...");
+        $.ajax({
+            type    : "POST",
+            url     : '${createLink(controller: 'planilla', action:'restaurarFechaPlanilla_ajax')}',
+            data    : {
+                id : id
+            },
+            success : function (msg) {
+                v.modal("hide");
+                var parts = msg.split("_");
+                if(parts[0] === 'ok'){
+                    log(parts[1],"success");
+                    setTimeout(function () {
+                        location.reload()
+                    }, 800);
+                }else{
+                    bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
+                    return false;
+                }
+            }
+        });
+    }
 
     $(".btnVerificarIndices").click(function () {
         var d = cargarLoader("Cargando...");

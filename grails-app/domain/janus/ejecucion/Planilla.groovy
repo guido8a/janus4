@@ -95,6 +95,8 @@ class Planilla {
 
     String coordenadasVia
 
+    Date fechaAnterior
+
     static mapping = {
         table 'plnl'
         cache usage: 'read-write', include: 'non-lazy'
@@ -194,7 +196,7 @@ class Planilla {
 
             coordenadasVia column: 'plnlcrvi'
 
-
+            fechaAnterior column: 'plnlfcan'
         }
     }
 
@@ -271,7 +273,7 @@ class Planilla {
         garantiaTrabajo(blank: true, nullable: true)
         fechaSuscripcionTrabajo(blank: true, nullable: true)
         coordenadasVia(blank: true, nullable: true)
-
+        fechaAnterior(blank: true, nullable: true)
     }
 
     String toString() {
