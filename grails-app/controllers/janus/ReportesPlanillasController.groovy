@@ -932,7 +932,7 @@ class ReportesPlanillasController {
         addCellTabla(tablaEvaluacion, new Paragraph(numero(prctAnticipo, 2) + '%', fontTd), [border: Color.BLACK, bcl: Color.WHITE, bwl: 0.1, bcr: Color.WHITE, bwr: 0.1, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE])
 
         addCellTabla(tablaEvaluacion, new Paragraph("AVANCE FÍSICO", fontTh), [pl: 20, border: Color.BLACK, bcl: Color.WHITE, bwl: 0.1, bcr: Color.WHITE, bwr: 0.1, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE])
-        addCellTabla(tablaEvaluacion, new Paragraph(numero(planillasAvance.last().avanceFisico, 2), fontTd), [border: Color.BLACK, bcl: Color.WHITE, bwl: 0.1, bcr: Color.WHITE, bwr: 0.1, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE])
+        addCellTabla(tablaEvaluacion, new Paragraph(numero(planillasAvance.last().avanceFisico, 2)  + '%', fontTd), [border: Color.BLACK, bcl: Color.WHITE, bwl: 0.1, bcr: Color.WHITE, bwr: 0.1, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE])
         addCellTabla(tablaEvaluacion, new Paragraph(' ', fontTd), [border: Color.BLACK, bcl: Color.WHITE, bwl: 0.1, bcr: Color.WHITE, bwr: 0.1, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE])
 
 //        addCellTabla(tablaEvaluacion, new Paragraph("PROGRAMADO ACUMULADO", fontTh), [pl: 20, border: Color.BLACK, bcl: Color.WHITE, bwl: 0.1, bcr: Color.WHITE, bwr: 0.1, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE])
