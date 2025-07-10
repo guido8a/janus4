@@ -4861,7 +4861,9 @@ class PlanillaController {
             def sql = "select sum((prejfcfn - prejfcin) + 1) dias from prej where cntr__id = ${plnl.contrato.id} and prejtipo in ('P', 'C')"
             println "sql: $sql"
             dias = (int) cn.rows(sql.toString())[0].dias
-            sql = "select sum(mdcedias) dias from mdce where cntr__id = ${plnl.contrato.id} and mdcetipo = 'A'"
+            println "dias: $dias"
+            sql = "select coalesce(sum(mdcedias),0) dias from mdce where cntr__id = ${plnl.contrato.id} and mdcetipo = 'A'"
+            println "sql... $sql"
             def ampliacion = (int) cn.rows(sql.toString())[0].dias ?: 0
 
             println "...dias: $dias, ampliacion: $ampliacion, plazo: ${plnl.contrato.plazo}"
