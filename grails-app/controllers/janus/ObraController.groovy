@@ -544,6 +544,7 @@ class ObraController {
             }
 
             def sqlMatriz = "select count(*) cuantos from mfcl where obra__id = ${params.obra}"
+            println "matriz: $sqlMatriz"
             def matriz = cn.rows(sqlMatriz.toString())[0].cuantos
             if (matriz > 0) {
                 matrizOk = true

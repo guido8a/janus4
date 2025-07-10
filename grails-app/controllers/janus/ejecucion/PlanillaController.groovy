@@ -4119,7 +4119,7 @@ class PlanillaController {
                     prin = PeriodosInec.findByFechaInicioLessThanAndFechaFinGreaterThan(fecha, fecha)
 //                    existe = preciosService.verificaIndicesPeriodo(plnl.contrato, prin).size() == 0
                     existe = preciosService.verificaIndicesPeriodo(plnl.id, prin).size() == 0
-                    println "verifica indices para ${prin.descripcion} --> ${existe}"
+                    println "verifica indices para ${prin?.descripcion} --> ${existe}"
                     if (!max--) {
                         return null
                     }
@@ -4342,7 +4342,7 @@ class PlanillaController {
                 vlpr = Math.round(inpr * fp.valor * 1000) / 1000
                 valorBoOf += vlof
                 valorBoPr += vlpr
-                println "${fp} coef: ${fp.valor} oferta: $vlof, actual: $vlpr, factor: $valor"
+//                println "${fp} coef: ${fp.valor} oferta: $vlof, actual: $vlpr, factor: $valor"
 
                 /* valore a almacenar */
                 prmt = [:]
