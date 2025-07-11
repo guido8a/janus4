@@ -824,7 +824,7 @@ class ReportesPlanillasController {
         /* **************************************************************** DETALLE PLAZOS ******************************************************************************/
         PdfPTable tablaDetalle = new PdfPTable(4);
         tablaDetalle.setWidthPercentage(100);
-        tablaDetalle.setWidths(arregloEnteros([35, 25, 15, 25]))
+        tablaDetalle.setWidths(arregloEnteros([35, 12, 12, 46]))
         tablaDetalle.setSpacingBefore(5f);
 
         addCellTabla(tablaDetalle, new Paragraph("2.- DETALLE DE PLAZOS", fontTitle), [padding: 3, pb: 5, border: Color.WHITE, bg: Color.LIGHT_GRAY, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE, colspan: 4])
