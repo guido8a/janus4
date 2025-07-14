@@ -224,11 +224,13 @@
                             <g:if test="${(planillaInstance?.tipoPlanilla?.codigo == 'B' || planillaInstance?.tipoPlanilla?.codigo == 'Q' ) && planillaInstance.tipoContrato == 'C'}">
 %{--                                ${planillaInstance?.fechaPresentacion}--}%
 %{--                                ${planillaInstanceList?.last()?.fechaFin}--}%
-                                <g:if test="${planillaInstance?.fechaPresentacion < planillaInstanceList?.last()?.fechaFin }">
-                                    <div data-id="${planillaInstance.id}" rel="tooltip" title="Verificar Índices"
-                                         class="btn btn-xs btn-info btnVerificarIndices">
-                                        <i class="fa fa-thumbs-up"></i>
-                                    </div>
+                                <g:if test="${planillaInstanceList?.last()?.fechaFin}">
+                                    <g:if test="${planillaInstance?.fechaPresentacion < planillaInstanceList?.last()?.fechaFin }">
+                                        <div data-id="${planillaInstance.id}" rel="tooltip" title="Verificar Índices"
+                                             class="btn btn-xs btn-info btnVerificarIndices">
+                                            <i class="fa fa-thumbs-up"></i>
+                                        </div>
+                                    </g:if>
                                 </g:if>
                             </g:if>
                             <g:else>
