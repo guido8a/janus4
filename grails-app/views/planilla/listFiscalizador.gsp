@@ -140,7 +140,7 @@
                 <g:set var="eliminable" value="${planillaInstance.fechaMemoSalidaPlanilla == null}"/>
 
                 <tr style="font-size: 10px" class="${planillaInstance.tipoContrato == 'C' ? 'cmplcss' : ''}
-                  ${((planillaInstance?.tipoPlanilla?.codigo == 'Q') && noCuardra )? 'no-cuadra' : ''}">
+                ${((planillaInstance?.tipoPlanilla?.codigo == 'Q') && noCuardra )? 'no-cuadra' : ''}">
                     <td style="width: 15%">${fieldValue(bean: planillaInstance, field: "numero")}</td>
                     <td style="width: 13%">
                         ${planillaInstance.tipoPlanilla.nombre}
@@ -204,12 +204,12 @@
                                         <i class="fa fa-list-ul"></i>
                                     </g:link>
                                 </g:if>
-%{--                                <g:if test="${!planillaInstance.fechaMemoSalidaPlanilla}">--}%
-%{--                                    <div data-id="${planillaInstance.id}" rel="tooltip" title="Procesar"--}%
-%{--                                         class="btn btn-xs btn-success btnProcesaQ">--}%
-%{--                                        <i class="fa fa-cog"></i>--}%
-%{--                                    </div>--}%
-%{--                                </g:if>--}%
+                            %{--                                <g:if test="${!planillaInstance.fechaMemoSalidaPlanilla}">--}%
+                            %{--                                    <div data-id="${planillaInstance.id}" rel="tooltip" title="Procesar"--}%
+                            %{--                                         class="btn btn-xs btn-success btnProcesaQ">--}%
+                            %{--                                        <i class="fa fa-cog"></i>--}%
+                            %{--                                    </div>--}%
+                            %{--                                </g:if>--}%
                             </g:if>
                         </g:if>
                         <g:if test="${planillaInstance.tipoPlanilla.codigo == 'C'}">
@@ -221,10 +221,22 @@
                             </g:if>
                         </g:if>
                         <g:if test="${planillaInstance?.id}">
-                            <div data-id="${planillaInstance.id}" rel="tooltip" title="Verificar Índices"
-                                 class="btn btn-xs btn-info btnVerificarIndices">
-                                <i class="fa fa-thumbs-up"></i>
-                            </div>
+                            <g:if test="${(planillaInstance?.tipoPlanilla?.codigo == 'B' || planillaInstance?.tipoPlanilla?.codigo == 'Q' ) && planillaInstance.tipoContrato == 'C'}">
+%{--                                ${planillaInstance?.fechaPresentacion}--}%
+%{--                                ${planillaInstanceList?.last()?.fechaFin}--}%
+                                <g:if test="${planillaInstance?.fechaPresentacion < planillaInstanceList?.last()?.fechaFin }">
+                                    <div data-id="${planillaInstance.id}" rel="tooltip" title="Verificar Índices"
+                                         class="btn btn-xs btn-info btnVerificarIndices">
+                                        <i class="fa fa-thumbs-up"></i>
+                                    </div>
+                                </g:if>
+                            </g:if>
+                            <g:else>
+                                <div data-id="${planillaInstance.id}" rel="tooltip" title="Verificar Índices"
+                                     class="btn btn-xs btn-info btnVerificarIndices">
+                                    <i class="fa fa-thumbs-up"></i>
+                                </div>
+                            </g:else>
                         </g:if>
                     </td>
                     <td style="width: 8%; text-align: left">
