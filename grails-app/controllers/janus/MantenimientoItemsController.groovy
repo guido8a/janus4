@@ -2507,6 +2507,7 @@ itemId: item.id
         println "tablaSubgrupos_ajax $params"
         def grupo = Grupo.get(params.buscarPor)
         def grupos = SubgrupoItems.findAllByGrupo(grupo, [sort: 'codigo'])
+        def grupoBuscar = null
 
         def campo, busca
         params.criterio = params.criterio?.toString()?.trim()
@@ -2533,6 +2534,17 @@ itemId: item.id
                     "from dprt, sbgr where grpo__id = ${params.buscarPor} and " +
                     "dprt.sbgr__id = sbgr.sbgr__id and sbgr.sbgr__id = ${params.id} and " +
                     "${campo} ilike '%${params.criterio}%' order by sbgrcdgo"
+
+            grupoBuscar = SubgrupoItems.get(params.id)
+        }else{
+
+            if(params.criterio){
+                grupoBuscar = DepartamentoItem.findByDescripcionAndSubgrupoInList(params.criterio, grupos).subgrupo
+
+                println("-- " + grupoBuscar)
+
+            }
+
         }
 //        if(params.id){
 //            def grupoBuscar = SubgrupoItems.get(params.id)
@@ -2550,7 +2562,9 @@ itemId: item.id
 
         cn.close()
 
-        return [subgrupos: subgrupos, grupo: grupo, id_grupo: subgrupos.sbgr__id ]
+        println("gb " + grupoBuscar)
+
+        return [subgrupos: subgrupos, grupo: grupo, id_grupo: subgrupos.sbgr__id, grupoBuscar: grupoBuscar ]
     }
 
     def tablaMateriales_ajax(){
@@ -2583,6 +2597,7 @@ itemId: item.id
                     "from dprt, sbgr, item where grpo__id = ${params.buscarPor} and " +
                     "dprt.sbgr__id = sbgr.sbgr__id and dprt.dprt__id = ${params.id} and item.dprt__id = dprt.dprt__id and " +
                     "${campo} ilike '%${params.criterio}%' order by  ${params.ordenar == '1' ? 'itemcdgo' : 'itemnmbr'} "
+            subgrupoBuscar = DepartamentoItem.get(params.id)
         }
 
         println "sql:, $sql"
@@ -2972,14 +2987,14 @@ itemId: item.id
 //                    "group by item.item__id, itemcdgo, itemnmbr, p.rbpcfcha, rbpcpcun " +
 //                    "order by item.itemcdgo limit 100;"
 //        }else{
-            sql = "select item.item__id, itemcdgo, itemnmbr, p.rbpcfcha, rbpcpcun from item, dprt, sbgr, grpo, rbpc p " +
-                    "where p.item__id = item.item__id and p.rbpcfcha = " +
-                    "(select max(rbpcfcha) from rbpc r where r.item__id = p.item__id) and " +
-                    "item.dprt__id = dprt.dprt__id and dprt.sbgr__id = sbgr.sbgr__id and " +
-                    "sbgr.grpo__id = grpo.grpo__id and grpo.grpo__id = ${grupo?.id} and " +
-                    "item.itemnmbr ilike '%${params.criterio}%' " +
-                    "group by item.item__id, itemcdgo, itemnmbr, p.rbpcfcha, rbpcpcun " +
-                    "order by item.itemcdgo limit 100;"
+        sql = "select item.item__id, itemcdgo, itemnmbr, p.rbpcfcha, rbpcpcun from item, dprt, sbgr, grpo, rbpc p " +
+                "where p.item__id = item.item__id and p.rbpcfcha = " +
+                "(select max(rbpcfcha) from rbpc r where r.item__id = p.item__id) and " +
+                "item.dprt__id = dprt.dprt__id and dprt.sbgr__id = sbgr.sbgr__id and " +
+                "sbgr.grpo__id = grpo.grpo__id and grpo.grpo__id = ${grupo?.id} and " +
+                "item.itemnmbr ilike '%${params.criterio}%' " +
+                "group by item.item__id, itemcdgo, itemnmbr, p.rbpcfcha, rbpcpcun " +
+                "order by item.itemcdgo limit 100;"
 //        }
 
 
@@ -3128,7 +3143,7 @@ itemId: item.id
         def sql = "select item.item__id, itemcdgo, itemnmbr, p.rbpcfcha, rbpcpcun,  rbpc__id, lgardscr, unddcdgo " +
                 "from item, rbpc p, lgar, undd where p.item__id = item.item__id and p.rbpcfcha = '${fecha}' and " +
                 "lgar.tpls__id = ${params.lugar} and undd.undd__id = item.undd__id "
-                "order by lgardscr"
+        "order by lgardscr"
         def data = cn.rows(sql.toString())
         cn.close()
 
@@ -3158,7 +3173,7 @@ itemId: item.id
         }
         println "fechas: $fechas"
         cn.close()
-       return [fechas: fechas, anio: anio]
+        return [fechas: fechas, anio: anio]
     }
 
 }
