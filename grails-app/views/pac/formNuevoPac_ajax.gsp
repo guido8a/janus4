@@ -104,7 +104,7 @@
                 Memo
             </label>
             <span class="col-md-4">
-                <g:textField name="memo" class="form-control required" required="" value="${pac?.memo}" />
+                <g:textField name="memo" maxlength="40" class="form-control required allCaps"  required="" value="${pac?.memo}" />
             </span>
         </span>
     </div>

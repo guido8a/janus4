@@ -62,7 +62,7 @@ class Pac {
         c2(blank:true,nullable: true,size: 1..1)
         c3(blank:true,nullable: true,size: 1..1)
         estado(blank:true,nullable: true,size: 1..1)
-        memo(blank:true,nullable: true,size: 1..32)
+        memo(blank:true,nullable: true,size: 1..40)
         requiriente(blank: true,nullable: true,size: 1..100)
     }
 }

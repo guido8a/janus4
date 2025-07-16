@@ -582,6 +582,7 @@ class PacController {
             pac= new Pac()
         }
 
+        params.memo = params.memo?.toUpperCase()
         params.cantidad = params.cantidad.toDouble()
         params.costo = params.costo.toDouble()
 
