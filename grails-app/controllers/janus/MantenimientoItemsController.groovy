@@ -2542,7 +2542,6 @@ itemId: item.id
                 grupoBuscar = DepartamentoItem.findByDescripcionAndSubgrupoInList(params.criterio, grupos).subgrupo
 
                 println("-- " + grupoBuscar)
-
             }
 
         }
