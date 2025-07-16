@@ -73,14 +73,14 @@
                                 Memo certificación fondos
                             </label>
                             <span class="col-md-2">
-                                <g:textField name="memoCertificacionFondos" minlength="1" maxlength="40" class="form-control" value="${concurso?.memoCertificacionFondos}" />
+                                <g:textField name="memoCertificacionFondos" minlength="1" maxlength="40" class="form-control allCaps" value="${concurso?.memoCertificacionFondos}" />
                                 <p class="help-block ui-helper-hidden"></p>
                             </span>
                             <label for="objeto" class="col-md-1 control-label text-info">
                                 Memo SIF
                             </label>
                             <span class="col-md-2">
-                                <g:textField name="memoSif" maxlength="120" class="form-control" value="${concurso?.memoSif}" />
+                                <g:textField name="memoSif" maxlength="120" class="form-control allCaps" value="${concurso?.memoSif}" />
                                 <p class="help-block ui-helper-hidden"></p>
                             </span>
                         </span>
@@ -92,14 +92,14 @@
                                 Código
                             </label>
                             <span class="col-md-2">
-                                <g:textField name="codigo" maxlength="40" class="form-control required" value="${concurso?.codigo}" />
+                                <g:textField name="codigo" maxlength="40" class="form-control allCaps required" value="${concurso?.codigo}" />
                                 <p class="help-block ui-helper-hidden"></p>
                             </span>
                             <label for="objeto" class="col-md-2 control-label text-info">
                                 Memo de requerimiento
                             </label>
                             <span class="col-md-2">
-                                <g:textField name="memoRequerimiento" maxlength="40" class="form-control" value="${concurso?.memoRequerimiento}" />
+                                <g:textField name="memoRequerimiento" maxlength="40" class="form-control allCaps" value="${concurso?.memoRequerimiento}" />
                                 <p class="help-block ui-helper-hidden"></p>
                             </span>
                             <label for="objeto" class="col-md-1 control-label text-info">
