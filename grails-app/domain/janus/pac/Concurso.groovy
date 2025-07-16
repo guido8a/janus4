@@ -115,7 +115,7 @@ class Concurso {
         obra(blank: true, nullable: true)
         administracion(blank: true, nullable: true)
         pac(blank: true, nullable: true)
-        codigo(blank: true, nullable: true, maxSize: 20)
+        codigo(blank: true, nullable: true, maxSize: 40)
         objeto(blank: true, nullable: true, maxSize: 255)
         costoBases(blank: true, nullable: true)
         porMilBases(blank: true, nullable: true)
@@ -134,7 +134,7 @@ class Concurso {
         observaciones(blank: true, nullable: true, maxSize: 127)
 
         fechaAceptacionProveedor(blank: true, nullable: true)
-        memoRequerimiento(blank: true, nullable: true)
+        memoRequerimiento(blank: true, nullable: true , maxSize: 40)
 
         fechaAperturaOfertas(blank: true, nullable: true)
         fechaInicioEvaluacionOferta(blank: true, nullable: true)
@@ -153,6 +153,6 @@ class Concurso {
 
         fechaNotificacionAdjudicacion(blank: true, nullable: true)
         memoSif(nullable: true,blank:true,size: 1..120)
-        memoCertificacionFondos(nullable: true, blank: true, size: 1..20)
+        memoCertificacionFondos(nullable: true, blank: true, maxSize: 40)
     }
 }

@@ -875,6 +875,11 @@ class ConcursoController {
         if (params.fechaNotificacionAdjudicacion) {
             params.fechaNotificacionAdjudicacion = new Date().parse("dd-MM-yyyy HH:mm", params.fechaNotificacionAdjudicacion)
         }
+
+        if (params.memoCertificacionFondos) {
+            params.memoCertificacionFondos = params.memoCertificacionFondos.toString().toUpperCase()
+        }
+
         if (params.memoRequerimiento) {
             params.memoRequerimiento = params.memoRequerimiento.toString().toUpperCase()
         }
