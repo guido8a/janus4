@@ -239,6 +239,7 @@
     $(".btnRegresarSubgrupo").click(function () {
         $("#buscarPor").val(${grupo?.id});
         $("#tipo").val(1);
+
         if('${grupoBuscar}'){
             $("#criterio").val('${grupoBuscar?.descripcion}');
         }else{

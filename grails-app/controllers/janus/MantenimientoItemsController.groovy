@@ -2538,11 +2538,11 @@ itemId: item.id
             grupoBuscar = SubgrupoItems.get(params.id)
         }else{
 
-            if(params.criterio){
-                grupoBuscar = DepartamentoItem.findByDescripcionAndSubgrupoInList(params.criterio, grupos).subgrupo
-
-                println("-- " + grupoBuscar)
-            }
+//            if(params.criterio){
+//                grupoBuscar = DepartamentoItem.findByDescripcionAndSubgrupoInList(params.criterio, grupos).subgrupo
+//
+//                println("-- " + grupoBuscar)
+//            }
 
         }
 //        if(params.id){

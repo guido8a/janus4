@@ -87,10 +87,17 @@
 
     cargarTablaItems();
 
-    function cargarTablaItems(id) {
+    function cargarTablaItems(id, tipoSeleccionado) {
         var d = cargarLoader("Cargando...");
         var buscarPor = $("#buscarPor option:selected").val();
-        var tipo = $("#tipo option:selected").val();
+        var tipo;
+
+        if(tipoSeleccionado){
+            tipo = tipoSeleccionado
+        }else{
+            tipo = $("#tipo option:selected").val();
+        }
+
         var criterio = $("#criterio").val();
         var ordenar = $("#ordenar option:selected").val();
         var url = '';
