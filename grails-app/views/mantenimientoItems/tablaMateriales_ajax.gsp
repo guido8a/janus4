@@ -24,10 +24,10 @@
             <th style="width: 7%">Código Subgrupo</th>
             <th style="width: 12%">Subgrupo</th>
             <th style="width: 8%">Código</th>
-            <th style="width: 28%">Descripción</th>
+            <th style="width: 25%">Descripción</th>
             <th style="width: 5%">Unidad</th>
             <th style="width: 5%">PDF</th>
-            <th style="width: 14%">Acciones</th>
+            <th style="width: 16%">Acciones</th>
         </tr>
         </thead>
     </table>
@@ -44,7 +44,7 @@
                     <td style="width: 7%">${m.dprtcdgo}</td>
                     <td style="width: 12%">${m.dprtdscr}</td>
                     <td style="width: 8%">${m.itemcdgo}</td>
-                    <td style="width: 28%">${m.itemnmbr}</td>
+                    <td style="width: 25%">${m.itemnmbr}</td>
                     <td style="width: 5%">${Item.get(m.item__id)?.unidad?.codigo}</td>
                     <td style="width: 5%; text-align: center">
                         <g:if test="${janus.apus.ArchivoEspecificacion.findByItem(janus.Item.get(m.item__id))?.ruta}">
@@ -54,7 +54,10 @@
                             <i class="fa fa-times text-danger"></i>
                         </g:else>
                     </td>
-                    <td style="width: 14%; text-align: center">
+                    <td style="width: 16%; text-align: center">
+                        <a href="#" class="btn btn-xs btn-info btnRegresarItem" data-id="${janus.Item.get(m.item__id)?.departamento?.subgrupo?.id}" title="Regresar a subgrupo">
+                            <i class="fas fa-arrow-left"></i>
+                        </a>
                         <a href="#" class="btn btn-xs btn-info btnVerMaterial" data-id="${m.item__id}" title="Datos del material">
                             <i class="fas fa-search"></i>
                         </a>
@@ -309,5 +312,14 @@
     function cerrarEspecificaciones(){
         es.modal("hide");
     }
+
+    $(".btnRegresarItem").click(function () {
+        $("#buscarPor").val(${grupo?.id});
+        $("#tipo").val(2);
+        $("#criterio").val('');
+        var id = $(this).data("id");
+
+        cargarTablaItems(id);
+    })
 
 </script>
