@@ -2482,8 +2482,7 @@ itemId: item.id
         def cn = dbConnectionService.getConnection()
         println "tablaGrupos_ajax $params"
         def grupo = Grupo.get(params.buscarPor)
-//        def grupos = SubgrupoItems.findAllByGrupoAndDescripcionIlike(grupo, '%' + params.criterio + '%', [sort: 'codigo',
-//                     order: 'asc']).take(50)
+        def sql = ''
         def campo, busca
         params.criterio = params.criterio?.toString()?.trim()
         try {
@@ -2493,9 +2492,15 @@ itemId: item.id
             campo = 'sbgrdscr'
         }
 
-        def sql = "select * from sbgr where grpo__id = ${grupo?.id} and " +
-//                "sbgrdscr ilike '%${params.criterio}%' order by sbgrcdgo"
-                "${campo} ilike '%${params.criterio}%' order by sbgrcdgo"
+
+        if(params.id){
+            sql = "select * from sbgr where grpo__id = ${grupo?.id} and sbgr__id = ${params.id} and " +
+                    "${campo} ilike '%${params.criterio}%' order by sbgrcdgo"
+        }else{
+            sql = "select * from sbgr where grpo__id = ${grupo?.id} and " +
+                    "${campo} ilike '%${params.criterio}%' order by sbgrcdgo"
+        }
+
         println "sql: $sql"
         def grupos = cn.rows(sql.toString());
         cn.close()

@@ -3,9 +3,9 @@
     <div class="col-md-4"></div>
 
     <div class="col-md-3" style="float: right">
-        <a href="#" class="btn btn-sm btn-success btnRegresarMaterial" title="Regresar">
-            <i class="fas fa-arrow-left"></i>
-        </a>
+%{--        <a href="#" class="btn btn-sm btn-success btnRegresarMaterial" title="Regresar">--}%
+%{--            <i class="fas fa-arrow-left"></i>--}%
+%{--        </a>--}%
         <a href="#" class="btn btn-sm btn-success btnNuevoMaterial" title="Crear nuevo material">
             <i class="fas fa-file"></i> Nuevo Item
         </a>

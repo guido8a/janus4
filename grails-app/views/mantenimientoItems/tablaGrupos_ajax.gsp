@@ -69,6 +69,7 @@
     $(".btnEstructuraGrupo").click(function () {
         var id = $(this).data("id");
         $("#tipo").val(2);
+        $("#criterio").val('');
         cargarTablaItems(id);
     });
 

@@ -12,9 +12,9 @@
     %{--        </ol>--}%
     %{--    </div>--}%
     <div class="col-md-2" style="float: right">
-        <a href="#" class="btn btn-sm btn-success btnRegresarSubgrupo" title="Regresar">
-            <i class="fas fa-arrow-left"></i>
-        </a>
+%{--        <a href="#" class="btn btn-sm btn-success btnRegresarSubgrupo" title="Regresar">--}%
+%{--            <i class="fas fa-arrow-left"></i>--}%
+%{--        </a>--}%
         <a href="#" class="btn btn-sm btn-success btnNuevoSubgrupo" title="Crear nuevo subgrupo">
             <i class="fas fa-file"></i> Nuevo Subgrupo
         </a>
@@ -49,6 +49,9 @@
                     <td style="width: 10%; text-align: center">
                         <a href="#" class="btn btn-xs btn-success btnEditarSubgrupo" data-id="${sbgr?.dprt__id}" title="Editar">
                             <i class="fas fa-edit"></i>
+                        </a>
+                        <a href="#" class="btn btn-xs btn-info btnRegresarSubgrupo" data-id="${ janus.DepartamentoItem.get(sbgr?.dprt__id)?.subgrupo?.id}" title="Regresar a grupo">
+                            <i class="fas fa-arrow-left"></i>
                         </a>
                         <a href="#" class="btn btn-xs btn-warning btnEstructuraSubgrupo" data-id="${sbgr?.dprt__id}" title="Materiales">
                             <i class="fas fa-list"></i>
@@ -86,6 +89,7 @@
     $(".btnEstructuraSubgrupo").click(function () {
         var id = $(this).data("id");
         $("#tipo").val(3);
+        $("#criterio").val('');
         cargarTablaItems(id);
     });
 
@@ -239,14 +243,10 @@
     $(".btnRegresarSubgrupo").click(function () {
         $("#buscarPor").val(${grupo?.id});
         $("#tipo").val(1);
+        $("#criterio").val('');
+        var id = $(this).data("id");
 
-        if('${grupoBuscar}'){
-            $("#criterio").val('${grupoBuscar?.descripcion}');
-        }else{
-            $("#criterio").val('');
-        }
-
-        cargarTablaItems();
+        cargarTablaItems(id);
     });
 
 

@@ -87,16 +87,11 @@
 
     cargarTablaItems();
 
-    function cargarTablaItems(id, tipoSeleccionado) {
+    function cargarTablaItems(id) {
+
         var d = cargarLoader("Cargando...");
         var buscarPor = $("#buscarPor option:selected").val();
-        var tipo;
-
-        if(tipoSeleccionado){
-            tipo = tipoSeleccionado
-        }else{
-            tipo = $("#tipo option:selected").val();
-        }
+        var tipo = $("#tipo option:selected").val();
 
         var criterio = $("#criterio").val();
         var ordenar = $("#ordenar option:selected").val();
@@ -130,7 +125,6 @@
             success: function (msg){
                 d.modal("hide");
                 $("#divTablaItems").html(msg);
-                // console.log('tpo:', tipo);
                 switch (tipo) {
                     case "1":
                         $('#bc_grpo').html('Grupo');
@@ -142,11 +136,9 @@
                         var li = $('#li_sbgr');
                         var elemento = document.createElement('a');
                         elemento.id = 'bc_sbgr';
-                    %{--elemento.href = url + '?id=' + "${id_grupo}";--}%
                         elemento.href = url;
                         elemento.id_grpo = '#';
                         li.append(elemento);
-                        // console.log('li', elemento, id);
                         $('#bc_sbgr').show();
                         $('#bc_sbgr').html('Subgrupo');
                         $('#bc_item').hide();
