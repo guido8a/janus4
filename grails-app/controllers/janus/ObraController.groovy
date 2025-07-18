@@ -258,8 +258,8 @@ class ObraController {
 
 
     def regitrarObra() {
+        def cn = dbConnectionService.getConnection()
         def obra = Obra.get(params.id)
-//        def obrafp = new ObraFPController()
 
         def msg = ""
         def vols = VolumenesObra.findAllByObra(obra)
@@ -371,7 +371,16 @@ class ObraController {
         obraService.registrarObra(obra)
         obra.estado = "R"
         obra.desgloseTransporte = null  //obliga a genrar matriz con valores históricos almacenados por grst_obra
+
         if (obra.save(flush: true)) {
+
+            def sql1 = "delete from mfcl where obra__id = ${obra?.id}"
+            def sql2 = "delete from mfvl where obra__id = ${obra?.id}"
+            def sql3 = "delete from mfrb where obra__id = ${obra?.id}"
+            cn.execute(sql1)
+            cn.execute(sql2)
+            cn.execute(sql3)
+
             render "ok"
             return
         }
