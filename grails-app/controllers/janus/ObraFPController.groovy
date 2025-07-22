@@ -76,7 +76,7 @@ class ObraFPController {
         def sbpr = params.sub.toInteger()
         def res
 
-//        println params
+        println "Inicia cálculo de la MF"
         if (params.borraFP == "true") obraService.borrarFP(params.obra)
 
         res = pone_ids()
@@ -89,22 +89,28 @@ class ObraFPController {
             return
         }
 
+        println "actualiza herramienta menor"
+
         res = ejecutaSQL("select * from ac_rbro_hr_v2(${obra__id})")
         if (!res) {
             render "Error: no se pudo ejecutar ac_rbro_hr_v2"
             return
         }
-        res = ejecutaSQL("select * from sp_obra_v2(${obra__id}, ${sbpr})")
+
+        println "ejecuta sp_obra_v2"
+        res = ejecutaSQL("select * from sp_obra_v2(${obra__id}, ${sbpr})")   /** optimizar **/
         if (!res) {
             render "Error: no se pudo ejecutar sp_obra_v2"
             return
         }
 
+        println "inicia verifica Matriz"
         res = verificaMatriz(obra__id)
         if (res != "") {
             render res
             return
         }
+        println "inicia verifica precios obra"
         res = verifica_precios(obra__id)
         if (res.size() > 0) {
             def msg = "<span style='color:red'>Errores detectados</span><br> <span class='label-azul'>No se encontraron precios para los siguientes items:</span><br>"
@@ -113,6 +119,7 @@ class ObraFPController {
             return
         }
 
+        println "calcula Matriz"
         redirect(action: "matrizFP", params: ["obra": params.obra, "sub": params.sub, "trans": params.trans])
         return
     }

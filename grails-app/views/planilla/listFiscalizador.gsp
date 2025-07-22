@@ -274,13 +274,13 @@
                             </g:if>
                         </g:if>
 
-                        <g:if test="${(contrato?.fiscalizador?.id == session.usuario.id)}">
-                            <g:if test="${planillaInstance.tipoPlanilla.codigo == 'P' || planillaInstance.tipoPlanilla.codigo == 'Q'}">
-                                <a href="#" class="btn btn-xs btn-warning btnAnularMultas" title="Anular Multas"
-                                   data-id="${planillaInstance.id}"> <i class="fa fa-times"></i>
-                                </a>
-                            </g:if>
-                        </g:if>
+                        %{--<g:if test="${(contrato?.fiscalizador?.id == session.usuario.id)}">--}%
+                            %{--<g:if test="${planillaInstance.tipoPlanilla.codigo == 'P' || planillaInstance.tipoPlanilla.codigo == 'Q'}">--}%
+                                %{--<a href="#" class="btn btn-xs btn-warning btnAnularMultas" title="Recalcular Multas"--}%
+                                   %{--data-id="${planillaInstance.id}"> <i class="fa fa-times"></i>--}%
+                                %{--</a>--}%
+                            %{--</g:if>--}%
+                        %{--</g:if>--}%
 
                         <g:if test="${planillaInstance.tipoPlanilla.codigo != 'C' && janus.ejecucion.ReajustePlanilla.countByPlanilla(planillaInstance) > 0}">
                             <g:link controller="reportePlanillas4" action="reportePlanillaNuevo1f" id="${planillaInstance.id}"
@@ -432,8 +432,11 @@
     $(".btnAnularMultas").click(function () {
         var id = $(this).data("id") ;
         bootbox.dialog({
-            title   : "Anular Multas",
-            message : "<i class='fa fa-exclamation-triangle fa-2x pull-left text-warning text-shadow'></i><p style='font-weight: bold; font-size: 14px'>" + "Está seguro de querer anular las multas de la planilla ?" + "</p>",
+            title   : "Recalcular las multas",
+            message : "<i class='fa fa-exclamation-triangle fa-2x pull-left text-warning text-shadow'></i> " +
+            "<p style='font-weight: bold; font-size: 14px'> Está seguro de querer eliminar las multas actuales de " +
+            "la planilla? <br><trong>Debe volver a procesar la plailla</strong> para recalcular las Multas</p>",
+
             buttons : {
                 cancelar : {
                     label     : "Cancelar",
@@ -442,7 +445,7 @@
                     }
                 },
                 aceptar : {
-                    label     : "<i class='fa fa-trash'></i> Anular",
+                    label     : "<i class='fa fa-trash'></i> Encerar Multas",
                     className : "btn-success",
                     callback  : function () {
                         return anularMultas(id)

@@ -31,9 +31,11 @@ class ObraService {
 
     }
 
+
+    /* todo: optimizar tiempo usando SQL */
     def borrarFP(obra) {
 
-        println("obra " + obra)
+        println("borrar FP de la obra " + obra)
 
         def ob = Obra.get(obra)
         def fp = FormulaPolinomica.findAllByObra(ob, [sort: "numero"])    // incluir subpresupuesto

@@ -787,12 +787,12 @@ class PlanillaController {
 
         def liquidacion = Planilla.findByContratoAndTipoPlanilla(contrato, TipoPlanilla.findByCodigo('Q'))?.id > 0
 
-        println "---> ..1"
+//        println "---> ..1"
         def listaAdicionales = []
 
-        println "---> ..2"
+//        println "---> ..2"
         def sql = "select plnl__id from plnl where tppl__id = 9 and cntr__id = ${contrato?.id}"
-        println "sql: $sql"
+//        println "sql: $sql"
         def plnlLq = cn.rows(sql.toString())[0]?.plnl__id
 
         if(plnlLq) {
