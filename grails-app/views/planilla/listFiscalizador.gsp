@@ -222,8 +222,8 @@
                         </g:if>
                         <g:if test="${planillaInstance?.id}">
                             <g:if test="${(planillaInstance?.tipoPlanilla?.codigo == 'B' || planillaInstance?.tipoPlanilla?.codigo == 'Q' ) && planillaInstance.tipoContrato == 'C'}">
-%{--                                ${planillaInstance?.fechaPresentacion}--}%
-%{--                                ${planillaInstanceList?.last()?.fechaFin}--}%
+                            %{--                                ${planillaInstance?.fechaPresentacion}--}%
+                            %{--                                ${planillaInstanceList?.last()?.fechaFin}--}%
                                 <g:if test="${planillaInstanceList?.last()?.fechaFin}">
                                     <g:if test="${planillaInstance?.fechaPresentacion < planillaInstanceList?.last()?.fechaFin }">
                                         <div data-id="${planillaInstance.id}" rel="tooltip" title="Verificar Índices"
@@ -271,6 +271,14 @@
                                     </div>
                                 </g:if>
 
+                            </g:if>
+                        </g:if>
+
+                        <g:if test="${(contrato?.fiscalizador?.id == session.usuario.id)}">
+                            <g:if test="${planillaInstance.tipoPlanilla.codigo == 'P' || planillaInstance.tipoPlanilla.codigo == 'Q'}">
+                                <a href="#" class="btn btn-xs btn-warning btnAnularMultas" title="Anular Multas"
+                                   data-id="${planillaInstance.id}"> <i class="fa fa-times"></i>
+                                </a>
                             </g:if>
                         </g:if>
 
@@ -420,6 +428,29 @@
 </div>
 
 <script type="text/javascript">
+
+    $(".btnAnularMultas").click(function () {
+        var id = $(this).data("id") ;
+        bootbox.dialog({
+            title   : "Anular Multas",
+            message : "<i class='fa fa-exclamation-triangle fa-2x pull-left text-warning text-shadow'></i><p style='font-weight: bold; font-size: 14px'>" + "Está seguro de querer anular las multas de la planilla ?" + "</p>",
+            buttons : {
+                cancelar : {
+                    label     : "Cancelar",
+                    className : "btn-primary",
+                    callback  : function () {
+                    }
+                },
+                aceptar : {
+                    label     : "<i class='fa fa-trash'></i> Anular",
+                    className : "btn-success",
+                    callback  : function () {
+                        return anularMultas(id)
+                    }
+                }
+            }
+        });
+    });
 
     $("#btnRestaurarFechasCronograma").click(function () {
         var id = $(this).data("id") ;
@@ -801,232 +832,253 @@
         return false;
     }
 
-    $(function () {
 
-        $(".btnPedidoPagoAnticipo").click(function () {
-            location.href = "${g.createLink(controller: 'reportesPlanillas',action: 'memoPedidoPagoAnticipo')}/" + $(this).data("id");
-            return false;
-        });
+    $(".btnPedidoPagoAnticipo").click(function () {
+        location.href = "${g.createLink(controller: 'reportesPlanillas',action: 'memoPedidoPagoAnticipo')}/" + $(this).data("id");
+        return false;
+    });
 
-        $(".btnPedidoPago").click(function () {
-            location.href = "${g.createLink(controller: 'reportesPlanillas', action: 'memoPedidoPago')}/" + $(this).data("id");
-            return false;
-        });
+    $(".btnPedidoPago").click(function () {
+        location.href = "${g.createLink(controller: 'reportesPlanillas', action: 'memoPedidoPago')}/" + $(this).data("id");
+        return false;
+    });
 
-        $(".btn-pagar").click(function () {
-            var $btn = $(this);
-            var tipo = $btn.data("tipo").toString();
-            $.ajax({
-                type    : "POST",
-                url     : "${createLink(action:'pago_ajax')}",
-                data    : {
-                    id   : $btn.data("id"),
-                    tipo : tipo
-                },
-                success : function (msg) {
+    $(".btn-pagar").click(function () {
+        var $btn = $(this);
+        var tipo = $btn.data("tipo").toString();
+        $.ajax({
+            type    : "POST",
+            url     : "${createLink(action:'pago_ajax')}",
+            data    : {
+                id   : $btn.data("id"),
+                tipo : tipo
+            },
+            success : function (msg) {
 
-                    if(msg === "NO"){
-                        bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' +
-                            '<strong style="font-size: 14px">' + "No se encontró un administrador activo para el contrato.<br/>Por favor asigne uno desde la página del contrato en la opción Administrador." + '</strong>');
-                    }else{
-                        var b = bootbox.dialog({
-                            id      : "dlgPagar",
-                            title   : "Pedir pago",
-                            message : msg,
-                            buttons : {
-                                cancelar : {
-                                    label     : "Cancelar",
-                                    className : "btn-primary",
-                                    callback  : function () {
-                                    }
-                                },
-                                guardar  : {
-                                    id        : "btnSave",
-                                    label     : "<i class='fa fa-save'></i> Guardar",
-                                    className : "btn-success",
-                                    callback  : function () {
-                                        return submitForm();
-                                    } //callback
-                                } //guardar
-                            } //buttons
-                        }); //dialog
-                    }
-                }
-            });
-            return false;
-        }); //click btn new
-
-        $(".btn-new").click(function () {
-            $.ajax({
-                type    : "POST",
-                url     : "${createLink(action:'form_ajax')}",
-                success : function (msg) {
-                    var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');
-                    var btnSave = $('<a href="#"  class="btn btn-success"><i class="icon-save"></i> Guardar</a>');
-
-                    btnSave.click(function () {
-                        submitForm(btnSave);
-                        return false;
-                    });
-
-                    $("#modalHeader").removeClass("btn-edit btn-show btn-delete");
-                    $("#modalTitle").html("Crear Planilla");
-                    $("#modalBody").html(msg);
-                    $("#modalFooter").html("").append(btnOk).append(btnSave);
-                    $("#modal-Planilla").modal("show");
-                }
-            });
-            return false;
-        }); //click btn new
-
-        $(".btn-edit").click(function () {
-            var id = $(this).data("id");
-            $.ajax({
-                type    : "POST",
-                url     : "${createLink(action:'form_ajax')}",
-                data    : {
-                    id : id
-                },
-                success : function (msg) {
-                    var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');
-                    var btnSave = $('<a href="#"  class="btn btn-success"><i class="icon-save"></i> Guardar</a>');
-
-                    btnSave.click(function () {
-                        submitForm(btnSave);
-                        return false;
-                    });
-
-                    $("#modalHeader").removeClass("btn-edit btn-show btn-delete").addClass("btn-edit");
-                    $("#modalTitle").html("Editar Planilla");
-                    $("#modalBody").html(msg);
-                    $("#modalFooter").html("").append(btnOk).append(btnSave);
-                    $("#modal-Planilla").modal("show");
-                }
-            });
-            return false;
-        }); //click btn edit
-
-        $(".btn-show").click(function () {
-            var id = $(this).data("id");
-            $.ajax({
-                type    : "POST",
-                url     : "${createLink(action:'show_ajax')}",
-                data    : {
-                    id : id
-                },
-                success : function (msg) {
-                    var btnOk = $('<a href="#" data-dismiss="modal" class="btn btn-primary">Aceptar</a>');
-                    $("#modalHeader").removeClass("btn-edit btn-show btn-delete").addClass("btn-show");
-                    $("#modalTitle").html("Ver Planilla");
-                    $("#modalBody").html(msg);
-                    $("#modalFooter").html("").append(btnOk);
-                    $("#modal-Planilla").modal("show");
-                }
-            });
-            return false;
-        }); //click btn show
-
-        $(".btnProcesa").click(function () {
-            var id = $(this).data("id");
-            var g = cargarLoader("Procesando...");
-            $.ajax({
-                type    : "POST",
-                url     : "${createLink(action:'procesarLq')}",
-                data    : {
-                    id : id
-                },
-                success : function (msg) {
-                    location.reload();
-                    g.modal("hide");
-                }
-            });
-            return false;
-        }); //click btn show
-
-        $(".btnProcesaQ").click(function () {
-            var id = $(this).data("id");
-            var g = cargarLoader("Procesando...");
-            $.ajax({
-                type    : "POST",
-                url     : "${createLink(action:'procesarLq')}",
-                data    : {
-                    id : id
-                },
-                success : function (msg) {
-                    g.modal("hide");
-                    if (msg === 'fechas') {
-                        location.href = "${g.createLink(controller: 'contrato', action: 'fechasPedidoRecepcion' )}?id=" + ${contrato?.id};
-                    } else {
-                        location.reload();
-                    }
-                }
-            });
-            return false;
-        }); //click btn show
-
-        $(".btnProcesaE").click(function () {
-            var id = $(this).data("id");
-            var g = cargarLoader("Procesando...");
-            $.ajax({
-                type    : "POST",
-                url     : "${createLink(action:'procEntrega')}",
-                data    : {
-                    id : id
-                },
-                success : function (msg) {
-                    g.modal("hide");
-                    if (msg === 'fechas') {
-                        location.href = "${g.createLink(controller: 'contrato', action: 'fechasPedidoRecepcion' )}?id=" + ${contrato?.id};
-                    } else {
-                        location.reload();
-                    }
-                }
-            });
-            return false;
-        }); //click btn show
-
-        $(".btn-delete").click(function () {
-            var id = $(this).data("id");
-            $("#id").val(id);
-            var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');
-            var btnDelete = $('<a href="#" class="btn btn-danger"><i class="icon-trash"></i> Eliminar</a>');
-
-            btnDelete.click(function () {
-                btnDelete.replaceWith(spinner);
-                $("#frmDelete-Planilla").submit();
-                return false;
-            });
-
-            $("#modalHeader").removeClass("btn-edit btn-show btn-delete").addClass("btn-delete");
-            $("#modalTitle").html("Eliminar Planilla");
-            $("#modalBody").html("<p>¿Está seguro de querer eliminar esta Planilla?</p>");
-            $("#modalFooter").html("").append(btnOk).append(btnDelete);
-            $("#modal-Planilla").modal("show");
-            return false;
-        });
-
-        $("#imprimir").click(function () {
-            location.href = "${g.createLink(controller: 'reportesPlanillas', action: 'reporteContrato', id: obra?.id)}?oficio=" +
-                $("#oficio").val() + "&firma=" + $("#firma").val();
-        });
-
-        $("#errorImpresion").dialog({
-            autoOpen  : false,
-            resizable : false,
-            modal     : true,
-            draggable : false,
-            width     : 320,
-            height    : 200,
-            position  : 'center',
-            title     : 'Error',
-            buttons   : {
-                "Aceptar" : function () {
-                    $("#errorImpresion").dialog("close")
+                if(msg === "NO"){
+                    bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' +
+                        '<strong style="font-size: 14px">' + "No se encontró un administrador activo para el contrato.<br/>Por favor asigne uno desde la página del contrato en la opción Administrador." + '</strong>');
+                }else{
+                    var b = bootbox.dialog({
+                        id      : "dlgPagar",
+                        title   : "Pedir pago",
+                        message : msg,
+                        buttons : {
+                            cancelar : {
+                                label     : "Cancelar",
+                                className : "btn-primary",
+                                callback  : function () {
+                                }
+                            },
+                            guardar  : {
+                                id        : "btnSave",
+                                label     : "<i class='fa fa-save'></i> Guardar",
+                                className : "btn-success",
+                                callback  : function () {
+                                    return submitForm();
+                                } //callback
+                            } //guardar
+                        } //buttons
+                    }); //dialog
                 }
             }
         });
+        return false;
+    }); //click btn new
 
+    $(".btn-new").click(function () {
+        $.ajax({
+            type    : "POST",
+            url     : "${createLink(action:'form_ajax')}",
+            success : function (msg) {
+                var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');
+                var btnSave = $('<a href="#"  class="btn btn-success"><i class="icon-save"></i> Guardar</a>');
+
+                btnSave.click(function () {
+                    submitForm(btnSave);
+                    return false;
+                });
+
+                $("#modalHeader").removeClass("btn-edit btn-show btn-delete");
+                $("#modalTitle").html("Crear Planilla");
+                $("#modalBody").html(msg);
+                $("#modalFooter").html("").append(btnOk).append(btnSave);
+                $("#modal-Planilla").modal("show");
+            }
+        });
+        return false;
+    }); //click btn new
+
+    $(".btn-edit").click(function () {
+        var id = $(this).data("id");
+        $.ajax({
+            type    : "POST",
+            url     : "${createLink(action:'form_ajax')}",
+            data    : {
+                id : id
+            },
+            success : function (msg) {
+                var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');
+                var btnSave = $('<a href="#"  class="btn btn-success"><i class="icon-save"></i> Guardar</a>');
+
+                btnSave.click(function () {
+                    submitForm(btnSave);
+                    return false;
+                });
+
+                $("#modalHeader").removeClass("btn-edit btn-show btn-delete").addClass("btn-edit");
+                $("#modalTitle").html("Editar Planilla");
+                $("#modalBody").html(msg);
+                $("#modalFooter").html("").append(btnOk).append(btnSave);
+                $("#modal-Planilla").modal("show");
+            }
+        });
+        return false;
+    }); //click btn edit
+
+    $(".btn-show").click(function () {
+        var id = $(this).data("id");
+        $.ajax({
+            type    : "POST",
+            url     : "${createLink(action:'show_ajax')}",
+            data    : {
+                id : id
+            },
+            success : function (msg) {
+                var btnOk = $('<a href="#" data-dismiss="modal" class="btn btn-primary">Aceptar</a>');
+                $("#modalHeader").removeClass("btn-edit btn-show btn-delete").addClass("btn-show");
+                $("#modalTitle").html("Ver Planilla");
+                $("#modalBody").html(msg);
+                $("#modalFooter").html("").append(btnOk);
+                $("#modal-Planilla").modal("show");
+            }
+        });
+        return false;
+    }); //click btn show
+
+    $(".btnProcesa").click(function () {
+        var id = $(this).data("id");
+        var g = cargarLoader("Procesando...");
+        $.ajax({
+            type    : "POST",
+            url     : "${createLink(action:'procesarLq')}",
+            data    : {
+                id : id
+            },
+            success : function (msg) {
+                location.reload();
+                g.modal("hide");
+            }
+        });
+        return false;
+    }); //click btn show
+
+    $(".btnProcesaQ").click(function () {
+        var id = $(this).data("id");
+        var g = cargarLoader("Procesando...");
+        $.ajax({
+            type    : "POST",
+            url     : "${createLink(action:'procesarLq')}",
+            data    : {
+                id : id
+            },
+            success : function (msg) {
+                g.modal("hide");
+                if (msg === 'fechas') {
+                    location.href = "${g.createLink(controller: 'contrato', action: 'fechasPedidoRecepcion' )}?id=" + ${contrato?.id};
+                } else {
+                    location.reload();
+                }
+            }
+        });
+        return false;
+    }); //click btn show
+
+    $(".btnProcesaE").click(function () {
+        var id = $(this).data("id");
+        var g = cargarLoader("Procesando...");
+        $.ajax({
+            type    : "POST",
+            url     : "${createLink(action:'procEntrega')}",
+            data    : {
+                id : id
+            },
+            success : function (msg) {
+                g.modal("hide");
+                if (msg === 'fechas') {
+                    location.href = "${g.createLink(controller: 'contrato', action: 'fechasPedidoRecepcion' )}?id=" + ${contrato?.id};
+                } else {
+                    location.reload();
+                }
+            }
+        });
+        return false;
+    }); //click btn show
+
+    $(".btn-delete").click(function () {
+        var id = $(this).data("id");
+        $("#id").val(id);
+        var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');
+        var btnDelete = $('<a href="#" class="btn btn-danger"><i class="icon-trash"></i> Eliminar</a>');
+
+        btnDelete.click(function () {
+            btnDelete.replaceWith(spinner);
+            $("#frmDelete-Planilla").submit();
+            return false;
+        });
+
+        $("#modalHeader").removeClass("btn-edit btn-show btn-delete").addClass("btn-delete");
+        $("#modalTitle").html("Eliminar Planilla");
+        $("#modalBody").html("<p>¿Está seguro de querer eliminar esta Planilla?</p>");
+        $("#modalFooter").html("").append(btnOk).append(btnDelete);
+        $("#modal-Planilla").modal("show");
+        return false;
     });
+
+    $("#imprimir").click(function () {
+        location.href = "${g.createLink(controller: 'reportesPlanillas', action: 'reporteContrato', id: obra?.id)}?oficio=" +
+            $("#oficio").val() + "&firma=" + $("#firma").val();
+    });
+
+    $("#errorImpresion").dialog({
+        autoOpen  : false,
+        resizable : false,
+        modal     : true,
+        draggable : false,
+        width     : 320,
+        height    : 200,
+        position  : 'center',
+        title     : 'Error',
+        buttons   : {
+            "Aceptar" : function () {
+                $("#errorImpresion").dialog("close")
+            }
+        }
+    });
+
+    function anularMultas(id){
+        var g = cargarLoader("Procesando...");
+        $.ajax({
+            type    : "POST",
+            url     : "${createLink(controller: 'planilla', action:'anularMultas_ajax')}",
+            data    : {
+                id : id
+            },
+            success : function (msg) {
+                g.modal("hide");
+                var parts = msg.split("_");
+                if(parts[0] === 'ok'){
+                    log(parts[1], "success")
+                }else{
+                    log(parts[1], "error");
+                    setTimeout(function(){
+                        location.reload();
+                    }, 800)
+                }
+            }
+        });
+    }
+
 
 </script>
 

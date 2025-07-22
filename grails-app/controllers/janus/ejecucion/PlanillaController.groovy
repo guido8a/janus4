@@ -5893,6 +5893,20 @@ class PlanillaController {
         }else{
             render "err_No existen planillas para restaurar la fecha"
         }
+    }
+
+    def anularMultas_ajax(){
+        def cn = dbConnectionService.getConnection()
+        def planilla = Planilla.get(params.id)
+        def sql = "delete from mlpl where mlpl__id = ${planilla?.id}"
+
+        try{
+            cn.execute(sql.toString())
+            render "ok_Anulado correctamente"
+        }catch(e){
+            println("Error al anular las multas " + e)
+            render "no_Error al anular las multas"
+        }
 
     }
 
