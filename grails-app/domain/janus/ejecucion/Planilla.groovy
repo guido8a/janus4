@@ -205,7 +205,7 @@ class Planilla {
         tipoPlanilla(blank: true, nullable: true)
         periodoIndices(blank: true, nullable: true)
 
-        numero(blank: true, nullable: true, maxSize: 30)
+        numero(blank: true, nullable: true, maxSize: 31)
         fechaPresentacion(blank: true, nullable: true)
         fechaIngreso(blank: true, nullable: true)
         fechaPago(blank: true, nullable: true)

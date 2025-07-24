@@ -147,7 +147,7 @@
                                     Número planilla
                                 </label>
                                 <span class="col-md-3">
-                                    <g:textField name="numero" maxlength="30" class="form-control required allCaps"
+                                    <g:textField name="numero" maxlength="31" class="form-control required allCaps"
                                                  value="${fieldValue(bean: planillaInstance, field: 'numero')}"/>
                                 </span>
                             </span>
