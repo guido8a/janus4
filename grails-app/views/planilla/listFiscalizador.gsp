@@ -166,11 +166,6 @@
                     </td>
 
                     <td style="width: 11%; text-align: left">
-                        %{--borrar--}%
-                        <g:link controller="reportePlanillas4" action="reportePlanillaNuevo1f" id="${planillaInstance.id}"
-                                class="btn btn-info btnPrint btn-xs btn-ajax" rel="tooltip" title="Imprimir planilla">
-                            <i class="fa fa-print"></i>
-                        </g:link>
 
                         <g:if test="${eliminable && planillaInstance.tipoPlanilla.codigo in ['A', 'B']}">
                             <g:link action="form" class="btn btn-xs btn-success" rel="tooltip" title="Editar"
@@ -232,18 +227,22 @@
                             %{--                                ${planillaInstanceList?.last()?.fechaFin}--}%
                                 <g:if test="${planillaInstanceList?.last()?.fechaFin}">
                                     <g:if test="${planillaInstance?.fechaPresentacion < planillaInstanceList?.last()?.fechaFin }">
-                                        <div data-id="${planillaInstance.id}" rel="tooltip" title="Verificar Índices"
-                                             class="btn btn-xs btn-info btnVerificarIndices">
-                                            <i class="fa fa-thumbs-up"></i>
-                                        </div>
+                                        <g:if test="${!janus.ejecucion.ReajustePlanilla.findByPlanilla(planillaInstance)}">
+                                            <div data-id="${planillaInstance.id}" rel="tooltip" title="Verificar Índices"
+                                                 class="btn btn-xs btn-info btnVerificarIndices">
+                                                <i class="fa fa-thumbs-up"></i>
+                                            </div>
+                                        </g:if>
                                     </g:if>
                                 </g:if>
                             </g:if>
                             <g:else>
-                                <div data-id="${planillaInstance.id}" rel="tooltip" title="Verificar Índices"
-                                     class="btn btn-xs btn-info btnVerificarIndices">
-                                    <i class="fa fa-thumbs-up"></i>
-                                </div>
+                                <g:if test="${!janus.ejecucion.ReajustePlanilla.findByPlanilla(planillaInstance)}">
+                                    <div data-id="${planillaInstance.id}" rel="tooltip" title="Verificar Índices"
+                                         class="btn btn-xs btn-info btnVerificarIndices">
+                                        <i class="fa fa-thumbs-up"></i>
+                                    </div>
+                                </g:if>
                             </g:else>
                         </g:if>
                     </td>
@@ -280,13 +279,13 @@
                             </g:if>
                         </g:if>
 
-                        %{--<g:if test="${(contrato?.fiscalizador?.id == session.usuario.id)}">--}%
-                            %{--<g:if test="${planillaInstance.tipoPlanilla.codigo == 'P' || planillaInstance.tipoPlanilla.codigo == 'Q'}">--}%
-                                %{--<a href="#" class="btn btn-xs btn-warning btnAnularMultas" title="Recalcular Multas"--}%
-                                   %{--data-id="${planillaInstance.id}"> <i class="fa fa-times"></i>--}%
-                                %{--</a>--}%
-                            %{--</g:if>--}%
-                        %{--</g:if>--}%
+                    %{--<g:if test="${(contrato?.fiscalizador?.id == session.usuario.id)}">--}%
+                    %{--<g:if test="${planillaInstance.tipoPlanilla.codigo == 'P' || planillaInstance.tipoPlanilla.codigo == 'Q'}">--}%
+                    %{--<a href="#" class="btn btn-xs btn-warning btnAnularMultas" title="Recalcular Multas"--}%
+                    %{--data-id="${planillaInstance.id}"> <i class="fa fa-times"></i>--}%
+                    %{--</a>--}%
+                    %{--</g:if>--}%
+                    %{--</g:if>--}%
 
                         <g:if test="${planillaInstance.tipoPlanilla.codigo != 'C' && janus.ejecucion.ReajustePlanilla.countByPlanilla(planillaInstance) > 0}">
                             <g:link controller="reportePlanillas4" action="reportePlanillaNuevo1f" id="${planillaInstance.id}"
@@ -440,8 +439,8 @@
         bootbox.dialog({
             title   : "Recalcular las multas",
             message : "<i class='fa fa-exclamation-triangle fa-2x pull-left text-warning text-shadow'></i> " +
-            "<p style='font-weight: bold; font-size: 14px'> Está seguro de querer eliminar las multas actuales de " +
-            "la planilla? <br><trong>Debe volver a procesar la plailla</strong> para recalcular las Multas</p>",
+                "<p style='font-weight: bold; font-size: 14px'> Está seguro de querer eliminar las multas actuales de " +
+                "la planilla? <br><trong>Debe volver a procesar la plailla</strong> para recalcular las Multas</p>",
 
             buttons : {
                 cancelar : {
