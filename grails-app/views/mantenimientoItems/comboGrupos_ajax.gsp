@@ -1,5 +1,5 @@
 <label>Grupos</label>
-<g:select name="grupo_${tipo}" from="${grupos}" class="form-control" optionKey="${{it.sbgr__id}}" optionValue="${{it.sbgrcdgo + " " + it.sbgrdscr}}" />
+<g:select name="grupo_${tipo}" from="${grupos}" class="form-control" optionKey="${{it.sbgr__id}}" optionValue="${{it.sbgrcdgo + " " + it.sbgrdscr}}" noSelection="[null: 'TODOS']" />
 
 <script type="text/javascript">
 

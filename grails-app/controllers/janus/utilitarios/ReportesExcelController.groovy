@@ -911,7 +911,7 @@ class ReportesExcelController {
             def totalRelativo = totalTRel + totalHerRel + totalMatRel + totalManRel
 //            def totalVae = totalTVae + totalHerVae + totalMatVae + totalManVae
             def totalVae = 0 + totalHerVae + totalMatVae + totalManVae
-                        
+
 
             def totalIndi = totalRubro * indi / 100
             Row rowF5 = sheet.createRow(fila)
@@ -2539,27 +2539,38 @@ class ReportesExcelController {
 //        println ("params gys " + params)
 
         def cn = dbConnectionService.getConnection()
-
-        def grupo = SubgrupoItems.get(params.grupo)
         def sql =""
 
-        if(params.subgrupo ==  'null'){
+
+        if(params.grupo == 'null'){
             sql = "select p.lgar__id, lgardscr, tplsdscr, item.item__id, itemcdgo, itemnmbr, p.rbpcfcha, rbpcpcun, rbpc__id " +
                     "from item, rbpc p, lgar, tpls, dprt, sbgr where p.item__id = item.item__id and p.rbpcfcha = (select max(rbpcfcha) from rbpc r where r.item__id = p.item__id and " +
-                    "r.lgar__id = p.lgar__id) and lgar.lgar__id = p.lgar__id and lgar.tpls__id = 1 and p.lgar__id = 2 and sbgr.sbgr__id = ${grupo?.id} and dprt.sbgr__id = sbgr.sbgr__id and dprt.dprt__id = item.dprt__id and " +
+                    "r.lgar__id = p.lgar__id) and lgar.lgar__id = p.lgar__id and lgar.tpls__id = 1 and p.lgar__id = 2 and dprt.sbgr__id = sbgr.sbgr__id and dprt.dprt__id = item.dprt__id and " +
                     "tpls.tpls__id = lgar.tpls__id and itemetdo = 'A' order by lgardscr, tplsdscr, item.itemcdgo;"
         }else{
 
-            def subgrupo = DepartamentoItem.get(params.subgrupo)
+            def grupo = SubgrupoItems.get(params.grupo)
 
-            sql = "select p.lgar__id, lgardscr, tplsdscr, item.item__id, itemcdgo, itemnmbr, p.rbpcfcha, rbpcpcun, rbpc__id " +
-                    "from item, rbpc p, lgar, tpls, dprt, sbgr " +
-                    "where p.item__id = item.item__id and p.rbpcfcha = (select max(rbpcfcha) from rbpc r where r.item__id = p.item__id and " +
-                    "r.lgar__id = p.lgar__id) and lgar.lgar__id = p.lgar__id and lgar.tpls__id = 1 and " +
-                    "p.lgar__id = 2 and dprt.dprt__id = ${subgrupo?.id} and dprt.sbgr__id = sbgr.sbgr__id and " +
-                    "dprt.dprt__id = item.dprt__id and tpls.tpls__id = lgar.tpls__id and itemetdo = 'A' " +
-                    "order by lgardscr, tplsdscr, item.itemcdgo;"
+            if(params.subgrupo ==  'null'){
+                sql = "select p.lgar__id, lgardscr, tplsdscr, item.item__id, itemcdgo, itemnmbr, p.rbpcfcha, rbpcpcun, rbpc__id " +
+                        "from item, rbpc p, lgar, tpls, dprt, sbgr where p.item__id = item.item__id and p.rbpcfcha = (select max(rbpcfcha) from rbpc r where r.item__id = p.item__id and " +
+                        "r.lgar__id = p.lgar__id) and lgar.lgar__id = p.lgar__id and lgar.tpls__id = 1 and p.lgar__id = 2 and sbgr.sbgr__id = ${grupo?.id} and dprt.sbgr__id = sbgr.sbgr__id and dprt.dprt__id = item.dprt__id and " +
+                        "tpls.tpls__id = lgar.tpls__id and itemetdo = 'A' order by lgardscr, tplsdscr, item.itemcdgo;"
+            }else{
+
+                def subgrupo = DepartamentoItem.get(params.subgrupo)
+
+                sql = "select p.lgar__id, lgardscr, tplsdscr, item.item__id, itemcdgo, itemnmbr, p.rbpcfcha, rbpcpcun, rbpc__id " +
+                        "from item, rbpc p, lgar, tpls, dprt, sbgr " +
+                        "where p.item__id = item.item__id and p.rbpcfcha = (select max(rbpcfcha) from rbpc r where r.item__id = p.item__id and " +
+                        "r.lgar__id = p.lgar__id) and lgar.lgar__id = p.lgar__id and lgar.tpls__id = 1 and " +
+                        "p.lgar__id = 2 and dprt.dprt__id = ${subgrupo?.id} and dprt.sbgr__id = sbgr.sbgr__id and " +
+                        "dprt.dprt__id = item.dprt__id and tpls.tpls__id = lgar.tpls__id and itemetdo = 'A' " +
+                        "order by lgardscr, tplsdscr, item.itemcdgo;"
+
+            }
         }
+
 
 //        println("sql " + sql)
 
