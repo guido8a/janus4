@@ -4209,6 +4209,7 @@ class PlanillaController {
         def valorBoOf = 0.0
         def valorBoPr = 0.0
         def valorFr = 0.0
+        def reajuste = plnl.contrato.aplicaReajuste
 
         def rjpl = ReajustePlanilla.findAllByPlanilla(plnl, [sort: 'planillaReajustada'])
 
@@ -4284,8 +4285,9 @@ class PlanillaController {
 //            println "valores BoOf: $valorBoOf, periodo: $valorBoPr, Fr: $valorFr"
             /** calcular valores de reajuste y actualizar rjpl **/
 //            rj.valor  = PlanillaPo.findByPlanillaAndPeriodo()
-            rj.factor = valorFr
-            rj.valorReajustado = Math.round((valorFr * rj.valorPo - rj.valorPo) * 100) / 100
+//            rj.factor = valorFr
+            rj.factor = reajuste ? valorFr : 1
+            rj.valorReajustado = Math.round((valorFr * rj.valorPo - rj.valorPo) * 100) / 100 * reajuste
             rj.fechaReajuste = new Date()
             rj.save(flush: true)
         }
@@ -4314,6 +4316,7 @@ class PlanillaController {
         def valorBoOf = 0.0
         def valorBoPr = 0.0
         def valorFr = 0.0
+        def reajuste = plnl.contrato.aplicaReajuste
 
         def rjpl = ReajustePlanilla.findAllByPlanilla(plnl, [sort: 'planillaReajustada'])
         println "rjpl para plnl__id = ${plnl.id}: $rjpl"
@@ -4395,8 +4398,10 @@ class PlanillaController {
 //            println "valores BoOf: $valorBoOf, periodo: $valorBoPr, Fr: $valorFr"
             /** calcular valores de reajuste y actualizar rjpl **/
 //            rj.valor  = PlanillaPo.findByPlanillaAndPeriodo()
-            rj.factor = valorFr
-            rj.valorReajustado = Math.round((valorFr * rj.valorPo - rj.valorPo) * 100) / 100
+//            rj.factor = valorFr
+            rj.factor = reajuste ? valorFr : 1
+//            rj.valorReajustado = Math.round((valorFr * rj.valorPo - rj.valorPo) * 100) / 100
+            rj.valorReajustado = Math.round((valorFr * rj.valorPo - rj.valorPo) * 100) / 100 * reajuste
             rj.fechaReajuste = new Date()
             rj.save(flush: true)
         }
@@ -4994,8 +4999,10 @@ class PlanillaController {
         def ttDescontar = 0.0
         def hayAnteriores = false
         def fcha
+        def reajuste = cntr.aplicaReajuste
 
-//        println "procesa Reajuste: planilla ${plnl.id}, tipo: ${plnl.tipoPlanilla}"
+        println "procesa Reajuste: planilla ${plnl.id}, tipo: ${plnl.tipoPlanilla}"
+
         if (plnl.tipoPlanilla.codigo == 'A') {
             /** no hay planillas a recalcular reajuste **/
             prmt = [:]

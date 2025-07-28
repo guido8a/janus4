@@ -1209,7 +1209,7 @@ class ReportePlanillas4Controller {
                 def reajustesPlanilla = ReajustePlanilla.findAllByPlanillaAndValorPoNotEqual(planilla, 0, [sort: "periodo", order: "asc"])
 
                 if(mt.tipoMulta.id == 2){   // incumplimiento del cronograma
-                    def acPlanilla = reajustesPlanilla.last().acumuladoPlanillas
+                    def acPlanilla = reajustesPlanilla?.last()?.acumuladoPlanillas
                     if(tipo == 'T') {
                         acPlanilla += planilla.planillaCmpl.valor
                     }
