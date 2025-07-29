@@ -230,7 +230,7 @@
                                         <g:if test="${!janus.ejecucion.ReajustePlanilla.findByPlanilla(planillaInstance)}">
                                             <div data-id="${planillaInstance.id}" rel="tooltip" title="Verificar Índices"
                                                  class="btn btn-xs btn-info btnVerificarIndices">
-                                                <i class="fa fa-thumbs-up"></i>
+                                                <i class="fa fa-thumbs-up"></i>k
                                             </div>
                                         </g:if>
                                     </g:if>
