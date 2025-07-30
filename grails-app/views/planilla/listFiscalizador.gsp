@@ -227,22 +227,22 @@
                             %{--                                ${planillaInstanceList?.last()?.fechaFin}--}%
                                 <g:if test="${planillaInstanceList?.last()?.fechaFin}">
                                     <g:if test="${planillaInstance?.fechaPresentacion < planillaInstanceList?.last()?.fechaFin }">
-                                        <g:if test="${!janus.ejecucion.ReajustePlanilla.findByPlanilla(planillaInstance)}">
+%{--                                        <g:if test="${!janus.ejecucion.ReajustePlanilla.findByPlanilla(planillaInstance)}">--}%
                                             <div data-id="${planillaInstance.id}" rel="tooltip" title="Verificar Índices"
                                                  class="btn btn-xs btn-info btnVerificarIndices">
                                                 <i class="fa fa-thumbs-up"></i>k
                                             </div>
-                                        </g:if>
+%{--                                        </g:if>--}%
                                     </g:if>
                                 </g:if>
                             </g:if>
                             <g:else>
-                                <g:if test="${!janus.ejecucion.ReajustePlanilla.findByPlanilla(planillaInstance)}">
+%{--                                <g:if test="${!janus.ejecucion.ReajustePlanilla.findByPlanilla(planillaInstance)}">--}%
                                     <div data-id="${planillaInstance.id}" rel="tooltip" title="Verificar Índices"
                                          class="btn btn-xs btn-info btnVerificarIndices">
                                         <i class="fa fa-thumbs-up"></i>
                                     </div>
-                                </g:if>
+%{--                                </g:if>--}%
                             </g:else>
                         </g:if>
                     </td>
