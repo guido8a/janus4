@@ -207,7 +207,7 @@ class MatrizController {
 
 
     def pantallaMatriz() {
-        println "....." + params
+//        println "....." + params
         def inicio = new Date()
         def obra = params.id
         def cn = dbConnectionService.getConnection()
@@ -223,12 +223,10 @@ class MatrizController {
             def col = ""
             if (r[2] != "R") {
                 def parts = r[1].split("_")
-                //println "parts "+parts
                 try {
                     nombre = Item.get(parts[0].toLong()).nombre
                     col = nombre.size() > 60 ? nombre[0..60] + "..." : nombre
                 } catch (e) {
-                    //println "matriz controller l 37: "+"error: " + e
                     col = parts[0]
                 }
 
@@ -241,8 +239,8 @@ class MatrizController {
                 if (col =~ "TOTAL") {
                     indices["total"].add(cont)
                 }
-                //println "col "+col
-                col += " " + parts[1]?.replaceAll("T", "<br/>Total")?.replaceAll("U",  "<br/>Unitario")
+//                col += " " + parts[1]?.replaceAll("T", "<br/>Total")?.replaceAll("U",  "<br/>Unitario")
+                col += " " + parts[1]?.replaceAll("T",   'TOTAL' )?.replaceAll("U",   "UNITARIO")
             }
             columnas.add([r[0], col, r[2]])
             cont++
