@@ -5893,7 +5893,7 @@ class PlanillaController {
 
         def contrato = Contrato.get(params.id)
         def tipoAvance = TipoPlanilla.findByCodigo("A")
-        def planillas = Planilla.findAllByContratoAndTipoPlanillaNotEqual(contrato, tipoAvance)
+        def planillas = Planilla.findAllByContratoAndTipoPlanillaNotEqualAndFechaAnteriorIsNotNull(contrato, tipoAvance)
 
 //        println("planillas " + planillas)
 
@@ -5901,6 +5901,7 @@ class PlanillaController {
 
             planillas.each {
                 it.fechaFin = it.fechaAnterior
+                it.fechaAnterior = null
                 it.save(flush:true)
             }
 
