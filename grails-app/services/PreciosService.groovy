@@ -762,6 +762,7 @@ class PreciosService {
         def sql = "select prej.* from prej, plnl where prej.cntr__id = plnl.cntr__id and plnl__id = ${plnl} and " +
                 "prej.prejfcin >= plnl.plnlfcin and prejfcin <= plnlfcfn and prejtipo in ('P', 'A', 'C')"
         def dias = 0
+//        println "diasPlanillados sql: $sql"
         cn.eachRow(sql.toString()){ d ->
             dias += (d.prejfcfn - d.prejfcin) + 1
 //            println ".... dias: $dias procesa: ${d.prejfcfn} a ${d.prejfcin}"

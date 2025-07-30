@@ -4173,6 +4173,8 @@ class PlanillaController {
 
 //            println "inserta valores de: $prmt"
         }
+
+        println "inserta valores de: ${rjpl.planilla.id} ${rjpl.planillaReajustada.id} --> ${rjpl.valorPo}"
         if (rjpl.save([flush: true])) {
             flash.clase = "alert-success"
             flash.message = "Reajuste guardado exitosamente."
@@ -5089,7 +5091,7 @@ class PlanillaController {
             listPl = ['P', 'Q']
             pl = Planilla.findAllByContratoAndTipoPlanillaInListAndFechaPresentacionLessThanAndTipoContrato(plnl.contrato,
                     TipoPlanilla.findAllByCodigoInList(listPl), plnl.fechaPresentacion, plnl.tipoContrato, [sort: 'fechaPresentacion'])
-//            println "planillas P por procesar: ${pl.size()}: ${pl.id}"
+            println "planillas P por procesar: ${pl.size()}: ${pl.id}"
             pl.each { p ->   /** las planillas anteriores de avance P o Q **/
                 if ((p == pl.last())) {  // reajusta sólo planillas de avance
                     /** pone Po en base a lo recalculado de la planilla anterior **/
@@ -5133,7 +5135,7 @@ class PlanillaController {
 
                             /**para recalcular el prin se requiere la fecha a la que corresponde el reajuste po.fechaInicio, po.fechaFin ok **/
                             prdoInec = indicesDisponibles(po.planillaReajustada, po.planillaReajustada.fechaPago, 'R') /* para recalcular reajuste */
-                            println "********** para plnl: ${po.id} con pr: ${po.periodoInec} se retorna de indicesDisponibles: $prdoInec, fcha: $po.fechaInicio "
+//                            println "********** para plnl: ${po.id} con pr: ${po.periodoInec} se retorna de indicesDisponibles: $prdoInec, fcha: $po.fechaInicio "
                             prmt.periodoInec = prdoInec ?: indicesDisponibles(po.planillaReajustada, po.fechaInicio, '')
 
 //                            println "  inserta avance RR... si hay indices actuales $prmt"
@@ -5189,6 +5191,8 @@ class PlanillaController {
                             fchaFinPlanillado, fcfm, ['P', 'A', 'C'])
                     parcial = 0.0
                     totalCmpl = 0.0
+
+                    println "!!periodo ejecutado: $pems"
                     pems.each { ms ->
                         if (plnl.tipoContrato == 'P') {
                             parcial += ms.parcialContrato
@@ -5198,12 +5202,14 @@ class PlanillaController {
                             total += ms.parcialCmpl
                         }
                     }
-//                    println "**-- fin Planillado: $fchaFinPlanillado, esteMes: $esteMes, plAcumulado: $plAcumulado, cr: $parcial -- $total"
+                    println "**-- fin Planillado: $fchaFinPlanillado, esteMes: $esteMes, plAcumulado: $plAcumulado, cr: $parcial -- $total"
                     /** manejo especial de la planilla 217 no reajusto en todos los periodos borrar y dejar solo el ELSE **/
                     if (plnl.id == 217) {
                         registraRjpl(prdo, esteMes, plAcumulado, plnl.contrato, plnl, fchaFinPlanillado, fcfm, parcial, total, true)
                         fchaFinPlanillado = plnl.fechaFin
                     } else {
+                        println "registraRJPL: $prdo, $esteMes, $plAcumulado, ${plnl.id}, $fchaFinPlanillado, $fcfm, $parcial, $total"
+
                         registraRjpl(prdo, esteMes, plAcumulado, plnl.contrato, plnl, fchaFinPlanillado, fcfm, parcial, total, false)
                         fchaFinPlanillado = preciosService.sumaUnDia(fcfm)
                     }
@@ -5217,6 +5223,7 @@ class PlanillaController {
                         pems = PeriodoEjecucion.findAllByContratoAndFechaInicioGreaterThanEqualsAndTipoInList(plnl.contrato, plnl.fechaInicio, ['P', 'A', 'C'])
                         println "------ pems: ${pems}"
                     } else if (plnl.tipoPlanilla.codigo == 'P') {
+//                    } else if (plnl.tipoPlanilla.codigo in ['P', 'L']) {
                         println "ejecuta con: ${plnl.contrato.id}, $fchaFinPlanillado, ${plnl.fechaFin}"
                         pems = PeriodoEjecucion.findAllByContratoAndFechaInicioGreaterThanEqualsAndFechaFinLessThanEqualsAndTipoInList(plnl.contrato,
                                 fchaFinPlanillado, plnl.fechaFin, ['P', 'A', 'C'])
@@ -5226,7 +5233,7 @@ class PlanillaController {
 
 //                    total = totalCr /* revisar TODO */
 //                    if((totalCmpl > 0) && pems[0].fechaFin < fchaFinPlanillado) total += totalCmpl
-//                    println "---- pems: ${pems.parcialContrato}"
+                    println "---- pems: ${pems.parcialContrato}"
                     pems.each { ms ->
 //                        println "ms.parcialCronograma ${ms.parcialCmpl}, ${ms.fechaFin} >= ${fchaFinPlanillado}"
                         if (ms.fechaFin >= fchaFinPlanillado) {
@@ -5249,6 +5256,7 @@ class PlanillaController {
             }
         }
 
+        println "+++++ tppl: ${plnl.tipoPlanilla.toString()}  ${plnl.tipoPlanilla.toString() in ['L']}"
         if (plnl.tipoPlanilla.toString() in ['L']) { /** planillas de liquidacion del reajuste **/
             println "----+porcesa planillas anteriores----------..."
 //            def pl = Planilla.findAllByContratoAndTipoPlanillaInListAndFechaPresentacionLessThan(plnl.contrato,
@@ -5694,7 +5702,11 @@ class PlanillaController {
         prmt.valorPo = dsct1
         println "inserta segunda parte Po: $dsct1"
 
-        if (Math.abs(dsct1) > 0.001 && planilla.valor > 0) {
+        /** procesa planillas con valor negativo **/
+//        insertaRjpl(prmt)
+
+//        if (Math.abs(dsct1) > 0.001 && planilla.valor > 0) {
+        if (Math.abs(dsct1) > 0.001) {
             insertaRjpl(prmt)
         } else if (planilla.valor == 0) {
             prmt.valorPo = 0
