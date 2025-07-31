@@ -795,12 +795,13 @@ class PlanillaController {
 //        println "sql: $sql"
         def plnlLq = cn.rows(sql.toString())[0]?.plnl__id
 
+        /*  aparece en rojo el texto de la planilla de liquidación si no cuadran valores de Po */
         if(plnlLq) {
             sql = "select sum(rjplvlpo) suma from  rjpl where plnl__id = ${plnlLq}"
             def sumaPo = cn.rows(sql.toString())[0]?.suma
-            sql = "select rjplplac from rjpl where plnl__id = ${plnlLq} and plnlrjst = ${plnlLq}"
+            sql = "select rjplplac from rjpl where plnl__id = ${plnlLq} and plnlrjst = ${plnlLq} order by rjplprdo desc limit 1"
             def sumaRj = cn.rows(sql.toString())[0]?.rjplplac
-            noCuadra = sumaPo == sumaRj
+            noCuadra = (sumaPo != sumaRj)
             println "sumaPo: $sumaPo != $sumaRj"
         }
 
@@ -5204,15 +5205,15 @@ class PlanillaController {
                     }
                     println "**-- fin Planillado: $fchaFinPlanillado, esteMes: $esteMes, plAcumulado: $plAcumulado, cr: $parcial -- $total"
                     /** manejo especial de la planilla 217 no reajusto en todos los periodos borrar y dejar solo el ELSE **/
-                    if (plnl.id == 217) {
-                        registraRjpl(prdo, esteMes, plAcumulado, plnl.contrato, plnl, fchaFinPlanillado, fcfm, parcial, total, true)
-                        fchaFinPlanillado = plnl.fechaFin
-                    } else {
-                        println "registraRJPL: $prdo, $esteMes, $plAcumulado, ${plnl.id}, $fchaFinPlanillado, $fcfm, $parcial, $total"
+//                    if (plnl.id == 217) {
+//                        registraRjpl(prdo, esteMes, plAcumulado, plnl.contrato, plnl, fchaFinPlanillado, fcfm, parcial, total, true)
+//                        fchaFinPlanillado = plnl.fechaFin
+//                    } else {
+                        println "registraRjpl: $prdo, $esteMes, $plAcumulado, ${plnl.id}, $fchaFinPlanillado, $fcfm, $parcial, $total"
 
                         registraRjpl(prdo, esteMes, plAcumulado, plnl.contrato, plnl, fchaFinPlanillado, fcfm, parcial, total, false)
                         fchaFinPlanillado = preciosService.sumaUnDia(fcfm)
-                    }
+//                    }
                 } else {  // se crea el último periodo en rjpl
                     println "------------ fechaFin: ${plnl.fechaFin} > finMes: ${fcfm}, fchaFinPlanillado $fchaFinPlanillado"
                     diasEsteMes = preciosService.diasEsteMes(plnl.contrato.id, fchaFinPlanillado.format('yyyy-MM-dd'), plnl.fechaFin.format('yyyy-MM-dd'))
@@ -5404,17 +5405,17 @@ class PlanillaController {
         }
 
 //        println "------------resto: $resto, monto: ${plnl.contrato.monto} - totPo: $totPo - totPoAc: $totPoAc"
-        if (resto < 0) resto = 0  // ya nop se aplica deducción de anticipo
+//        if (resto < 0) resto = 0  // ya nop se aplica deducción de anticipo
 
+        vlor = Math.round(vlor*100)/100  //redondea a 2 decimales
 
-        println "totalPo --> totPlnl: $totPlnl, vlor: $vlor, anterior: ${totPo}, actual: ${totPoAc}, resto: $resto, estePo: $estePo"
+        println "totalPo --> totPlnl: $totPlnl, plVlor: ${plnl.valor}, vlor: $vlor, anterior: ${totPo}, actual: ${totPoAc}, resto: $resto, estePo: $estePo"
 
         if ((estePo > resto) && (plnl.tipoPlanilla.codigo != 'Q')) {
             valorPo = resto   //nunca existe
         } else if ((plnl.tipoPlanilla.codigo == 'Q') && (plFinal || (plnl.valor == vlor))) {
             if (plnl.tipoContrato == 'P') {
-                println "---------+++++++++++--------- $totPlnl, ${cntr.anticipo}, $totPo, $totPoAc"
-                valorPo = totPlnl - cntr.anticipo - totPo - totPoAc
+                valorPo = totPlnl - cntr.anticipo - totPo - totPoAc  + (vlor < 0 ? vlor : 0 )
 //                valorPo = estePo
             } else {
                 valorPo = totPlnl - cmpl.anticipo - totPo - totPoAc
@@ -5708,10 +5709,11 @@ class PlanillaController {
 //        if (Math.abs(dsct1) > 0.001 && planilla.valor > 0) {
         if (Math.abs(dsct1) > 0.001) {
             insertaRjpl(prmt)
-        } else if (planilla.valor == 0) {
-            prmt.valorPo = 0
-            insertaRjpl(prmt)
         }
+//        else if (planilla.valor == 0) {
+//            prmt.valorPo = 0
+//            insertaRjpl(prmt)
+//        }
     }
 
     def anticipo_ajax() {

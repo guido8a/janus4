@@ -133,7 +133,7 @@ class CronogramaEjecucionController {
                     params.cntr = cntr.id
                     params.suspension = modificacion.id
                     params.fcfn = fin.format("dd-MM-yyyy")
-                    println "registra suspesión e invoca a terminaSuspensionTemp con $params.fcfn"
+//                    println "registra suspesión e invoca a terminaSuspensionTemp con $params.fcfn"
                     if(terminaSuspensionNuevo()) {
                         render "OK"
                     } else {

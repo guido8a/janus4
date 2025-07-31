@@ -338,7 +338,7 @@ class ReportePlanillas4Controller {
                 contador++
             }
             if(planilla.tipoPlanilla.codigo in ['A', 'B']) {
-                println "invoca a resumen... planilla"
+//                println "invoca a resumen... planilla"
                 pl = resumenAnticipo(planilla)
                 pdfs.add(pl.toByteArray())
                 contador++
@@ -347,14 +347,14 @@ class ReportePlanillas4Controller {
             pl =  resumenAnticipo(planilla)  //no hay reajuste
         }
         if(planilla.tipoPlanilla.codigo in ['P', 'Q', 'R', 'L']) {
-            println "invoca multas"
+//            println "invoca multas"
             pl = multas(planilla, "")
             if(pl) {
                 pdfs.add(pl.toByteArray())
                 contador++
             }
 
-            println "invoca detalle"
+//            println "invoca detalle"
             pl = detalleTodo1f(planilla, planilla.tipoContrato)  //una firma
 
             pdfs.add(pl.toByteArray())
@@ -672,7 +672,7 @@ class ReportePlanillas4Controller {
         def planillas = (tbBo[0].size() - 5)/2
         println "<<< ${tbBo[0].size()} planillas: $planillas"
         tbBo.each { d ->
-            println "Bo --> ${d}"
+//            println "Bo --> ${d}"
             addCellTabla(tablaB0, new Paragraph(d.descripcion + "(" + d.numero + ")", fontTd), bordeTdRecuadro)
             addCellTabla(tablaB0, new Paragraph(numero(d.coeficiente,3), fontTd), bordeTdRecuadroDer)
             addCellTabla(tablaB0, new Paragraph(numero(d.indice,2), fontTd), bordeTdRecuadroDer)
@@ -682,7 +682,7 @@ class ReportePlanillas4Controller {
                 if(!totalAvance[i-1]) totalAvance[i-1] = 0
                 addCellTabla(tablaB0, new Paragraph(numero(d["indc$i"], 2), fontTd), bordeTdRecuadroDer)
                 addCellTabla(tablaB0, new Paragraph(numero(d["vlor$i"], 3), fontTd), bordeTdRecuadroDer)
-                println "----- d[vlor $i ]: ${d["vlor$i"]}"
+//                println "----- d[vlor $i ]: ${d["vlor$i"]}"
                 totalAvance[i-1] += d["vlor$i"]
 //                totalAvance[i-1] += d["vlor$i"]?:0
             }
@@ -1738,7 +1738,7 @@ class ReportePlanillas4Controller {
         mltaAntr += cn.rows(sql.toString())[0].suma?:0
 
         sql = "select sum(mlplmnto) suma from mlpl where plnl__id = ${planilla.id}"
-        println "sql...multa..: $sql"
+//        println "sql...multa..: $sql"
         def mltaActl = cn.rows(sql.toString())[0].suma?:0
 
         sql = "select sum(plnlmles) suma from plnl where plnl__id = ${planilla.id}"
@@ -1797,7 +1797,7 @@ class ReportePlanillas4Controller {
 
     /** una sola firma **/
     def detalleTodo1f(planilla, tipoRprt) {
-        println "detalle de la planilla ${planilla.id}, tipo: $tipoRprt"
+//        println "detalle de la planilla ${planilla.id}, tipo: $tipoRprt"
         def obra = planilla.contrato.obra
         def cntr = planilla.contrato
         def cn = dbConnectionService.getConnection()
@@ -1948,14 +1948,14 @@ class ReportePlanillas4Controller {
         def sql = "select count(distinct(sbpr__id)) cnta from detalle(${cntr.id}, ${obra.id}, ${planilla.id}, " +
                 "'${tipoRprt}')"
 
-        println "+++sql: $sql"
+//        println "+++sql: $sql"
 
         def sps = cn.rows(sql.toString())[0].cnta
         sql = "select * from detalle(${cntr.id}, ${obra.id}, ${planilla.id}, '${tipoRprt}')"
 
         def vocr = cn.rows(sql.toString())
 
-        println "registros: ${vocr.size()}, ln: ${vocr.vocrlnea.sum()} sps: $sps, extra: $extraRows --> num: ${(vocr.vocrlnea.sum() + sps )} / $maxRows + 0.3 "
+//        println "registros: ${vocr.size()}, ln: ${vocr.vocrlnea.sum()} sps: $sps, extra: $extraRows --> num: ${(vocr.vocrlnea.sum() + sps )} / $maxRows + 0.3 "
 //        def totalPags = Math.ceil((vocr.size() + sps + extraRows) / maxRows).toInteger()
         def totalPags = Math.ceil((vocr.vocrlnea.sum() + sps + extraRows) / maxRows).toInteger()
         println "número de páginas: $totalPags, ${(vocr.vocrlnea.sum() + sps) / maxRows + 0.3}"
@@ -3629,21 +3629,21 @@ class ReportePlanillas4Controller {
                 contador++
             }
             if(planilla.tipoPlanilla.codigo in ['A', 'B']) {
-                println "invoca a resumen... planilla"
+//                println "invoca a resumen... planilla"
                 pl = resumenAnticipo(planilla)
                 pdfs.add(pl.toByteArray())
                 contador++
             }
         }
         if(planilla.tipoPlanilla.codigo in ['P', 'Q', 'R', 'L']) {
-            println "invoca multas"
+//            println "invoca multas"
             pl = multas(planilla, "")
             if(pl) {
                 pdfs.add(pl.toByteArray())
                 contador++
             }
 
-            println "invoca detalle"
+//            println "invoca detalle"
             pl = detalleNuevoPlanillas(planilla, planilla.tipoContrato)  //una firma
 
             pdfs.add(pl.toByteArray())

@@ -9,7 +9,7 @@ class PlanillasService {
     def dbConnectionService
 
     def calculaValores(PeriodoPlanilla periodo, cs, ps, pcs, obra, anticipo) {
-        println "calculando indices de " + periodo.planilla.id + "  " + periodo.fechaIncio.format("dd-MM-yyyyy") + "  " + periodo.fechaFin.format("dd-MM-yyyyy")
+//        println "calculando indices de " + periodo.planilla.id + "  " + periodo.fechaIncio.format("dd-MM-yyyyy") + "  " + periodo.fechaFin.format("dd-MM-yyyyy")
         def totalB0 = 0
         periodo.frReajuste = 0
         periodo.b0Reajuste = 0
@@ -40,7 +40,7 @@ class PlanillasService {
         def periodos2 = []
         periodos2.add(periodo)
 
-        println("ps " + ps)
+//        println("ps " + ps)
 
         ps.eachWithIndex { p, i ->
             def vlinOferta = null
@@ -119,8 +119,8 @@ class PlanillasService {
             }
         }
 
-        println "total b0 " + totalB0
-        println "total fr " + periodo.frReajuste
+//        println "total b0 " + totalB0
+//        println "total fr " + periodo.frReajuste
     }
 
     /* arma la tabla Bo para la planilla reajustada plnl con FP=fprj
@@ -270,7 +270,7 @@ class PlanillasService {
     }
 
     def reajusteAnterior(plnl) {
-        println "arma reajsute anterior de plnl: ${plnl.id}"
+//        println "arma reajsute anterior de plnl: ${plnl.id}"
         def cn = dbConnectionService.getConnection()
         def sql = "select sum(rjplvlor) suma from rjpl where plnl__id = (select rjpl.plnlrjst from rjpl, plnl " +
                 "where rjpl.plnl__id = ${plnl.id} and rjpl.plnlrjst < rjpl.plnl__id and " +
