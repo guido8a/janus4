@@ -3,7 +3,7 @@ import seguridad.Prms
 class MenuTagLib {
     static namespace = "mn"
 
-    static yaexiste = false
+    static yaexiste = 0
     static menuActual
 
     def menu_old = { attrs ->
@@ -108,7 +108,7 @@ class MenuTagLib {
 
     def menu = { attrs ->
 
-        if (!yaexiste) {
+        if (yaexiste < 2) {
         println "Genera menu"
         def txt = ""
         def inicio = "${createLink(controller:'login', action: 'login')}"
@@ -217,7 +217,7 @@ class MenuTagLib {
 //        println "---> $txt"
 
         menuActual = html
-        yaexiste = true
+        yaexiste++
         }
 
 //        out << html
