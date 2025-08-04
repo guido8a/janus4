@@ -3,6 +3,9 @@ import seguridad.Prms
 class MenuTagLib {
     static namespace = "mn"
 
+    static yaexiste = false
+    static menuActual
+
     def menu_old = { attrs ->
         def items = [:]
         def usuario = session.usuario
@@ -104,6 +107,9 @@ class MenuTagLib {
     } //menu
 
     def menu = { attrs ->
+
+        if (!yaexiste) {
+        println "Genera menu"
         def txt = ""
         def inicio = "${createLink(controller:'login', action: 'login')}"
         def items = [:]
@@ -210,7 +216,12 @@ class MenuTagLib {
 
 //        println "---> $txt"
 
-        out << html
+        menuActual = html
+        yaexiste = true
+        }
+
+//        out << html
+        out << menuActual
     }
 
 }
