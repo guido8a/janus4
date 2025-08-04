@@ -1077,6 +1077,39 @@ class FormulaPolinomicaController {
         }
     }
 
+    def borrarItemsYNodo_ajax(){
+
+        def formula = FormulaPolinomica.get(params.id)
+        def items = ItemsFormulaPolinomica.findAllByFormulaPolinomica(formula)
+
+        def errores = ''
+
+        items.each {
+
+            try{
+                it.delete(flush:true)
+            }catch(e){
+                println("error al borrar el item fp " + formula.errors)
+                errores += formula.errors
+            }
+        }
+
+        if(errores == ''){
+
+            try{
+                formula.delete(flush:true)
+                render "ok"
+            }catch(e){
+                println("error al borrar el nodo fp " + formula.errors)
+                render "no"
+            }
+
+        }else{
+            render "no_Error al borrar el nodo"
+        }
+
+    }
+
     def aprenderFP() {
         def cn = dbConnectionService.getConnection()
         def sql = "delete from itin"
