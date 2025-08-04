@@ -77,9 +77,20 @@
 <body style="background-color: #d8d8df">
 
 
+<div id="divMenuPrincipal"></div>
+
+%{--<g:cookie name="user"/>--}%
+
+
+%{--<g:if test="${cookie(name:'user')}">--}%
+<mn:menu title="${g.layoutTitle(default: 'FIDA')}" cookie="${cookie(name:'user')}"/>
+%{--</g:if>--}%
+
+
+
 %{--<div id="modalTableGray"></div>--}%
 
-<mn:menu title="${g.layoutTitle(default: 'FIDA')}"/>
+%{--<mn:menu title="${g.layoutTitle(default: 'FIDA')}"/>--}%
 
 <div class="container" style="min-width: 1300px !important; margin-top: 0px; overflow-y: hidden;">
     <g:layoutBody/>
@@ -89,6 +100,20 @@
 
 <script type="text/javascript">
 
+    var galleta = document.cookie = "user=" + '${session.usuario.id}';
+
+    console.log("c " + galleta)
+
+    %{--if(galleta){--}%
+    %{--    cargarMenu()--}%
+    %{--}--}%
+
+    %{--function cargarMenu(){--}%
+    %{--    console.log("entro")--}%
+    %{--   return $("#divMenuPrincipal").html('<mn:menu title="${g.layoutTitle(default: 'FIDA')}" id="${session.usuario.id}"/>');--}%
+    %{--}--}%
+
+
 </script>
 
 <style>
@@ -97,6 +122,7 @@
     background-color: #e8e8e8;
 }
 </style>
+
 
 </body>
 </html>

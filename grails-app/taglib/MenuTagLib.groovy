@@ -108,7 +108,8 @@ class MenuTagLib {
 
     def menu = { attrs ->
 
-        if (yaexiste < 2) {
+//        if (yaexiste < 2) {
+        if (!attrs.cookie) {
         println "Genera menu"
         def txt = ""
         def inicio = "${createLink(controller:'login', action: 'login')}"
