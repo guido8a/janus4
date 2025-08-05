@@ -100,9 +100,10 @@
 
 <script type="text/javascript">
 
-    var galleta = document.cookie = "user=" + '${session.usuario.id}';
+    %{--var galleta = document.cookie = "user=" + '${session.usuario?.id + "_" + session.perfil?.id}';--}%
 
-    console.log("c " + galleta)
+    // console.log("c " + galleta)
+    console.log("c " + '${cookie(name: 'user')}' );
 
     %{--if(galleta){--}%
     %{--    cargarMenu()--}%

@@ -2,6 +2,9 @@ package seguridad
 
 import groovy.json.JsonSlurper
 import janus.Parametros
+import org.apache.tomcat.util.http.parser.Cookie
+import org.springframework.boot.autoconfigure.web.ServerProperties
+
 import java.security.MessageDigest
 
 class LoginController {
@@ -431,12 +434,22 @@ class LoginController {
 //                count = Alerta.countByPersonaAndFechaRecibidoIsNull(session.usuario)
 //            }
 
+
+
+//            def newCookie = new javax.servlet.http.Cookie( "user", (session.usuario.id + "_" + session.perfil.id))
+//            response.addCookie newCookie
+
             def count = borrarAlertas()
             if (count > 0) {
                 println("entro 1")
                 redirect(controller: 'alertas', action: 'list')
             } else {
                 println("entro 2")
+
+//                 javax.servlet.http.Cookie cookie = new javax.servlet.http.Cookie("user", "aaaa")
+
+
+
 //                if (session.usuario.getPuedeDirector() || session.usuario.getPuedeJefe()) {
 //
 //                    redirect(controller: "retrasadosWeb", action: "reporteRetrasadosConsolidadoDir", params: [dpto: Persona.get(session.usuario.id).departamento.id, inicio: "1", dir: "1"])

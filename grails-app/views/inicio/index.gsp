@@ -213,6 +213,10 @@
             d.width(d.width() - 10)
             d.height(d.height() - 10)
         })
+
+        var galleta = document.cookie = "user=" + '${session.usuario?.id + "_" + session.perfil?.id}';
+
+
     </script>
 </body>
 </html>
