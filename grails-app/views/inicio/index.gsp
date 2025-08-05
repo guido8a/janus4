@@ -84,6 +84,7 @@
 </head>
 
 <body>
+
 <div class="dialog">
     <div style="text-align: center;"><h1 class="titl" style="font-size: 26px;"><elm:poneHtml textoHtml="${empr.nombre}"/></h1></div>
 
