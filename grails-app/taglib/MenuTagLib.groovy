@@ -110,28 +110,6 @@ class MenuTagLib {
 
         println("attrs " + attrs)
 
-        def galleta
-
-
-//        def home = request.cookies.find{ 'user' == it.name }?.value
-//        request.cookies.each { println "list: cookie ${it.properties}>" }
-
-        def existe = request.cookies.find{ 'user' == it.name }?.value == session.usuario?.id + "_" + session.perfil?.id
-
-        println("existe " + existe)
-
-        println("nombre " + request.cookies.each {})
-
-       def cookies = request.getCookies();
-        def nombres = []
-
-        for (int i = 0; i < cookies.length; i++) {
-            nombres += cookies[i].getName();
-            String value = cookies[i].getValue();
-        }
-
-        println("cccc" + nombres)
-
         def txt = ""
         def inicio = "${createLink(controller:'login', action: 'login')}"
         def items = [:]
@@ -141,8 +119,6 @@ class MenuTagLib {
             perfil = session.perfil
             dpto = session.departamento
         }
-
-        if(!existe){
 
         println "Genera menu"
 
@@ -245,7 +221,7 @@ class MenuTagLib {
 
         menuActual = html
         yaexiste++
-        }
+
 
 //        out << html
         out << menuActual

@@ -435,7 +435,6 @@ class LoginController {
 //            }
 
 
-
 //            def newCookie = new javax.servlet.http.Cookie( "user", (session.usuario.id + "_" + session.perfil.id))
 //            response.addCookie newCookie
 
