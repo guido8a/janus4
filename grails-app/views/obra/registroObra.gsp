@@ -369,7 +369,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
             <div class="col-md-7">
                 <g:textField name="nombre" class="nombre required"
                              style="margin-left: -30px; width: 750px" value="${obra?.nombre}"
-                             maxlength="127" title="Nombre de la Obra"/></div>
+                             maxlength="255" title="Nombre de la Obra"/></div>
         </div>
 
         <div class="row-fluid col-md-12" style="margin-top: 10px">

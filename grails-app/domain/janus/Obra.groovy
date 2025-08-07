@@ -273,7 +273,7 @@ class Obra implements Auditable {
     static constraints = {
 
         codigo(size: 1..25, blank: false, attributes: [title: 'numero'])
-        nombre(size: 1..127, blank: true, nullable: true, attributes: [title: 'nombre'])
+        nombre(size: 1..255, blank: true, nullable: true, attributes: [title: 'nombre'])
         responsableObra(blank: true, nullable: true, attributes: [title: 'responsableObra'])
         revisor(blank: true, nullable: true, attributes: [title: 'revisor'])
         lugar(blank: true, nullable: true, attributes: [title: 'lugar'])
