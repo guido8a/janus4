@@ -23,7 +23,7 @@
                     ${lblMemo}
                 </label>
                 <span class="col-md-5">
-                    <g:textField name="memo" class="form-control required allCaps" maxlength="20" />
+                    <g:textField name="memo" class="form-control required allCaps" maxlength="40" />
                     <p class="help-block ui-helper-hidden"></p>
                 </span>
             </span>
