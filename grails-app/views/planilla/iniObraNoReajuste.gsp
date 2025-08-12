@@ -23,7 +23,7 @@
             </div>
 
             <div class="col-md-4">
-                <g:textField name="memo" class="span3 form-control required allCaps" maxlength="20"/>
+                <g:textField name="memo" class="span3 form-control required allCaps" maxlength="40"/>
                 <p class="help-block ui-helper-hidden"></p>
             </div>
         </div>
