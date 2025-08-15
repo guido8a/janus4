@@ -498,20 +498,18 @@ class LoginController {
     }
 
     def cargarPermisos() {
-        def permisos = Prms.findAllByPerfil(session.perfil)
-//        println "CARGAR PERMISOS  perfil: " + session.perfil + "  " + session.perfil.id
-//        println "Permisos:    " + permisos
-        def hp = [:]
-        permisos.each {
-//                println(it.accion.accnNombre+ " " + it.accion.control.ctrlNombre)
-            if (hp[it.accion.control.ctrlNombre.toLowerCase()]) {
-                hp[it.accion.control.ctrlNombre.toLowerCase()].add(it.accion.accnNombre.toLowerCase())
-            } else {
-                hp.put(it.accion.control.ctrlNombre.toLowerCase(), [it.accion.accnNombre.toLowerCase()])
-            }
+//        def permisos = Prms.findAllByPerfil(session.perfil)
+//        def hp = [:]
+//        permisos.each {
+//            if (hp[it.accion.control.ctrlNombre.toLowerCase()]) {
+//                hp[it.accion.control.ctrlNombre.toLowerCase()].add(it.accion.accnNombre.toLowerCase())
+//            } else {
+//                hp.put(it.accion.control.ctrlNombre.toLowerCase(), [it.accion.accnNombre.toLowerCase()])
+//            }
+//
+//        }
+//        session.permisos = hp
 
-        }
-        session.permisos = hp
 //        println "permisos menu " + session.permisos
     }
 

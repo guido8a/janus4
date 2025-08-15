@@ -1,6 +1,7 @@
 package seguridad
 
 class WardInterceptor {
+    def dbConnectionService
 
     WardInterceptor () {
 //        matchAll().excludes(controller: 'login')
@@ -10,6 +11,7 @@ class WardInterceptor {
                 .excludes(controller:'documento')  /** documentos **/
                 .excludes(controller:'descargas')  /** documentos **/
                 .excludes(controller:'prfl')
+                .excludes(controller:'images')
     }
 
     boolean before() {
@@ -28,8 +30,8 @@ class WardInterceptor {
 //            println("entro")
             return true
         } else {
-            if (!session?.usuario && !session?.perfil) {
-//                println "...sin sesión"
+            if (!session?.usuario || !session?.perfil) {
+                println "...sin sesión"
                 if(controllerName != "inicio" && actionName != "index") {
 //                    flash.message = "Usted ha superado el tiempo de inactividad máximo de la sesión"
                 }
@@ -61,28 +63,38 @@ class WardInterceptor {
 
 
     boolean isAllowed() {
-//        println "**--> ${session.permisos[controllerName.toLowerCase()]} --> ${actionName}"
-//        println "**--> ${session.permisos}"
+        println "**--> ${controllerName.toLowerCase()} --> ${actionName}"
 
         try {
             if((request.method == "POST") || (actionName.toLowerCase() =~ 'ajax')) {
-//                println "es post no audit"
                 return true
             }
-//            println "is allowed Accion: ${actionName.toLowerCase()} ---  Controlador: ${controllerName.toLowerCase()} " +
-//                    "--- Permisos de ese controlador: "+session.permisos[controllerName.toLowerCase()]
-            def puede = session.permisos[controllerName.toLowerCase()]  != null
-//            println "puede ${puede}"
-//            if (!( session.permisos[controllerName.toLowerCase()]) ) {
-            if (!puede) {
-                return false
-            } else {
-                if (session.permisos[controllerName.toLowerCase()].contains(actionName.toLowerCase())) {
-                    return true
-                } else {
-                    return false
-                }
+
+//            Con SQL
+            def cn = dbConnectionService.getConnection()
+            def sql = ""
+            def puede = false
+            if(session?.perfil) {
+                sql = "select count(*) cnta from prms, ctrl, accn " +
+                        "where prfl__id = ${session?.perfil?.id} and accn.accn__id = prms.accn__id and " +
+                        "ctrl.ctrl__id = accn.ctrl__id and accnnmbr not ilike '%ajax%' and " +
+                        "ctrlnmbr ilike '${controllerName.toLowerCase()}' and " +
+                        "accnnmbr ilike '${actionName.toLowerCase()}'"
+                puede = cn.rows(sql.toString())[0].cnta > 0
+                println "sql--: $sql --> puede: $puede"
             }
+            return puede
+
+//            def puede = session.permisos[controllerName.toLowerCase()]  != null
+//            if (!puede) {
+//                return false
+//            } else {
+//                if (session.permisos[controllerName.toLowerCase()].contains(actionName.toLowerCase())) {
+//                    return true
+//                } else {
+//                    return false
+//                }
+//            }
 
         } catch (e) {
             println "Shield execption e: " + e

@@ -129,7 +129,7 @@ class MenuTagLib {
         }
 //        attrs.title = attrs.title.toUpperCase()
 
-        if (usuario) {
+        if (usuario && perfil) {
             sql = "select accn.accn__id, tpac__id, accnnmbr, accndscr, ctrlnmbr, mdlonmbr " +
                     "from prms, accn, ctrl, mdlo " +
                     "where prfl__id = ${perfil.id} and accn.accn__id = prms.accn__id and " +
