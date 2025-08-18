@@ -832,7 +832,7 @@
 
                     if (nodeText !== '') {
                         menuItems.borrarTodo = {
-                            label: "<i class='fa fa-trash text-danger'></i> Eliminar índice e items",
+                            label: "<i class='fa fa-trash text-danger'></i> Eliminar índice y sus items",
                             separator_before: false,
                             separator_after: false,
                             action: function (obj) {
