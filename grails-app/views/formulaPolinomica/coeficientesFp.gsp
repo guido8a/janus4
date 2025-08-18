@@ -832,14 +832,14 @@
 
                     if (nodeText !== '') {
                         menuItems.borrarTodo = {
-                            label: "<i class='fa fa-trash text-danger'></i> Eliminar items y nodo",
+                            label: "<i class='fa fa-trash text-danger'></i> Eliminar índice e items",
                             separator_before: false,
                             separator_after: false,
                             action: function (obj) {
                                 <g:if test="${obra?.liquidacion==1 || obra?.estado!='R' || obra?.codigo[-1..-2] != 'OF'}">
                                 bootbox.confirm({
                                     title: "Alerta",
-                                    message: "<i class='fa fa-trash text-danger fa-2x'></i>" + "<strong style='font-size: 14px'>" + "Está seguro de eliminar todos los items y el nodo?" + "</strong>",
+                                    message: "<i class='fa fa-trash text-danger fa-2x'></i>" + "<strong style='font-size: 14px'>" + "Está seguro de eliminar este índice y todos sus items?" + "</strong>",
                                     buttons: {
                                         cancel: {
                                             label: '<i class="fa fa-times"></i> Cancelar',
