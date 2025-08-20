@@ -50,6 +50,12 @@
         </a>
     </div>
 
+    %{--<div class="btn-group">--}%
+        %{--<a href="#" id="btnVerificarCronograma" class="btn btn-success" title="Verificar cronograma">--}%
+            %{--<i class="fa fa-check"></i> Verificar cronograma--}%
+        %{--</a>--}%
+    %{--</div>--}%
+
     <g:if test="${meses > 0}">
         <g:if test="${contrato.fiscalizador?.id == session.usuario.id}">
             <div class="btn-group">
@@ -89,11 +95,6 @@
                         Crea periodos Complementario
                     </a>
                 </g:if>
-            </div>
-            <div class="btn-group">
-                <a href="#" id="btnVerificarCronograma" class="btn btn-success" title="Verificar cronograma">
-                    <i class="fa fa-check"></i> Verificar cronograma
-                </a>
             </div>
             <div class="btn-group">
                 <a href="#" id="btnReporte" class="btn btn-success" title="Imprimir">

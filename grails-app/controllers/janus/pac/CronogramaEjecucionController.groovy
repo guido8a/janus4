@@ -1984,7 +1984,8 @@ class CronogramaEjecucionController {
 
 //        println "finalizado creaCrngEjec"
 
-        redirect(action: "indexNuevo", params: [obra: obra, id: contrato.id, ini: fcin])
+//        redirect(action: "indexNuevo", params: [obra: obra, id: contrato.id, ini: fcin])
+        redirect(action: "indexNuevo", params: [id: contrato.id])
 //        redirect(action: "index_jx", params: [obra: obra, id: contrato.id, ini: fcin])
     }
 
@@ -3356,10 +3357,23 @@ class CronogramaEjecucionController {
 
             val.add("\$<br>%<br>F")
 
+            /** verifica si hay valores nulos en el cronograma **/
+            sql = "select count(*) cnta from creo where prej__id in (select prej__id from prej " +
+                    "where cntr__id = ${params.id}) and nullif (creoprco, 'NaN') is null"
+            def hayNulos = cn.rows(sql.toString())[0].cnta
+            if(hayNulos > 0) {
+                sql = "update creo set creoprco = 0 where creo__id in (select creo__id from creo " +
+                        "where prej__id in (select prej__id from prej where cntr__id = ${params.id}) and " +
+                        "nullif (creoprco, 'NaN') is null)"
+                cn.execute(sql.toString())
+                println "cronograma con valores nulos"
+            }
+
             sqlp = "select prej__id from prej where cntr__id = ${params.id} order by prejfcin"
 //            println "sql: $sqlp"
             sumaprco = 0; sumaprct = 0; sumacntd = 0
             cnp.eachRow(sqlp.toString()) { pr ->
+//                sql1 = "select coalesce(creoprco,0) creoprco, creoprct, creocntd, prej__id from creo where vocr__id = ${d.vocr__id} and prej__id = ${pr.prej__id}"
                 sql1 = "select creoprco, creoprct, creocntd, prej__id from creo where vocr__id = ${d.vocr__id} and prej__id = ${pr.prej__id}"
                 sqle = "select count(*) cuenta from creo where vocr__id = ${d.vocr__id} and prej__id = ${pr.prej__id}"
                 cont = cne.rows(sqle.toString())[0].cuenta
@@ -3803,7 +3817,8 @@ class CronogramaEjecucionController {
 
     def verificarCronograma_ajax(){
         def cn = dbConnectionService.getConnection()
-        def sql = "update creo set creoprco = 0 where creo__id in (select creo__id from creo where prej__id in (select prej__id from prej where cntr__id = ${params.id}) and nullif (creoprco, 'NaN') is null);"
+        def sql = "update creo set creoprco = 0 where creo__id in (select creo__id from creo where prej__id in " +
+                "(select prej__id from prej where cntr__id = ${params.id}) and nullif (creoprco, 'NaN') is null);"
         println("sql " + sql)
         cn.execute(sql.toString())
 
