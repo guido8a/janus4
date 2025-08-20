@@ -5001,7 +5001,7 @@ class ReportePlanillas3Controller {
 //        preface2.setAlignment(Element.ALIGN_RIGHT)
 //        preface2.add(new Paragraph("Generado por: " + session.usuario + "   el: " + new Date().format("dd/MM/yyyy hh:mm"), info))
 //        println "fcha: $fcha"
-        preface2.add(new Paragraph("Generado por: " + session.usuario + "   el: " + fcha.format("dd/MM/yyyy hh:mm"), info))
+        preface2.add(new Paragraph("Generado por: " + session.usuario + "   el: " + fcha.format("dd/MM/yyyy"), info))
         preface2.setSpacingAfter(5);
 //        addEmptyLine(preface2, 1);
 

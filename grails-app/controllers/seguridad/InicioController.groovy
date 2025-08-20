@@ -13,7 +13,7 @@ class InicioController {
         def acciones = "'3. Rubros', 'Registro de Obras', '3. Concursos', 'Contratos', 'Reportes'"
         def tx = "select accndscr from prms, accn where prfl__id = " + Prfl.findByNombre(session.perfil.toString()).id +
                 " and accn.accn__id = prms.accn__id and accndscr in (${acciones})"
-        println "sql: $tx"
+//        println "sql: $tx"
         cn.eachRow(tx) { d ->
             prms << d.accndscr
         }
@@ -24,7 +24,7 @@ class InicioController {
         //oferentesService.copiaFormula(1457,1485)
         // println " crono "
         //oferentesService.copiaCrono(1457,1485)
-        println "--> $prms"
+//        println "--> $prms"
         return [prms: prms, empr: empr]
     }
 
