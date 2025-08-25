@@ -63,7 +63,7 @@ class WardInterceptor {
 
 
     boolean isAllowed() {
-        println "**--> ${controllerName.toLowerCase()} --> ${actionName}"
+        println "**--> ${controllerName?.toLowerCase()} --> ${actionName}"
 
         try {
             if((request.method == "POST") || (actionName.toLowerCase() =~ 'ajax')) {
