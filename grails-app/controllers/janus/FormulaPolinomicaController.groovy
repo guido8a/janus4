@@ -1096,16 +1096,27 @@ class FormulaPolinomicaController {
 
         if(errores == ''){
 
-            try{
-                formula.delete(flush:true)
-                render "ok"
-            }catch(e){
-                println("error al borrar el nodo fp " + formula.errors)
-                render "no"
+            formula.indice = Indice.get(684);
+            formula.valor = 0;
+
+            if(!formula.save(flush:true)){
+                println("error al borrar el nodo " + formula.errors)
+                render "no_Error al borrar"
+            }else{
+                render "ok_Borrado correctamente"
             }
 
+//            try{
+//                formula.delete(flush:true)
+//                render "ok"
+//            }catch(e){
+//                println("error al borrar el nodo fp " + formula.errors)
+//                render "no"
+//            }
+
         }else{
-            render "no_Error al borrar el nodo"
+//            render "no_Error al borrar el nodo"
+            render "no_Error al borrar"
         }
 
     }
