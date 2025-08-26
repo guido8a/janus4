@@ -1593,7 +1593,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
             modal: true,
             draggable: false,
             width: 460,
-            height: 240,
+            height: 260,
             position: 'center',
             title: 'Matriz'
         });

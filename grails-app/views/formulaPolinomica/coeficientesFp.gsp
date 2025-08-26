@@ -115,44 +115,46 @@
         </g:link>
     </div>
 
-    <div class="btn-group"  style="margin-top: 10px">
-        <g:if test="${(obra?.responsableObra?.departamento?.direccion?.id == persona?.departamento?.direccion?.id && duenoObra == 1)}">
-            <a href="#" class="btn " title="Reiniciar la Fórmula Polinómica"
-               style="margin-top: -10px;" id="btnReiniciarFP">
-                <i class="fa fa-eraser"></i>
-                Reiniciar la Fórmula Polinomica
-            </a>
-        </g:if>
-        <g:link controller="reportes5" action="imprimirCoeficientes" id="${obra?.id}" class="btn btnImprimir"
-                title="Imprimir la Fórmula Polinómica" style="margin-top: -10px;">
-            <i class="fa fa-print"></i>
-            Imprimir coeficientes
-        </g:link>
+    <g:if test="${obra?.estado != 'R'}">
+        <div class="btn-group"  style="margin-top: 10px">
+            <g:if test="${(obra?.responsableObra?.departamento?.direccion?.id == persona?.departamento?.direccion?.id && duenoObra == 1)}">
+                <a href="#" class="btn " title="Reiniciar la Fórmula Polinómica"
+                   style="margin-top: -10px;" id="btnReiniciarFP">
+                    <i class="fa fa-eraser"></i>
+                    Reiniciar la Fórmula Polinomica
+                </a>
+            </g:if>
+            <g:link controller="reportes5" action="imprimirCoeficientes" id="${obra?.id}" class="btn btnImprimir"
+                    title="Imprimir la Fórmula Polinómica" style="margin-top: -10px;">
+                <i class="fa fa-print"></i>
+                Imprimir coeficientes
+            </g:link>
 
-        <g:if test="${(obra?.responsableObra?.departamento?.direccion?.id == persona?.departamento?.direccion?.id && duenoObra == 1)}">
-            <a href="#" class="btn" title="Borrar la Fórmula Polinómica"
-               style="margin-top: -10px;" id="btnEliminarFP">
-                <i class="fa fa-trash"></i>
-                Eliminar Fórmula
+            <g:if test="${(obra?.responsableObra?.departamento?.direccion?.id == persona?.departamento?.direccion?.id && duenoObra == 1)}">
+                <a href="#" class="btn" title="Borrar la Fórmula Polinómica"
+                   style="margin-top: -10px;" id="btnEliminarFP">
+                    <i class="fa fa-trash"></i>
+                    Eliminar Fórmula
+                </a>
+            </g:if>
+        </div>
+        <div class="btn-group"  style="margin-top: 10px">
+            <g:if test="${session?.perfil?.nombre == 'CRFC'}">
+                <a href="#" class="btn text-success" title="Borrar la Fórmula Polinómica"
+                   style="margin-top: -10px;" id="btnAprender">
+                    <i class="fa fa-user"></i>
+                    Aprender Fórmulas
+                </a>
+            </g:if>
+        </div>
+        <div class="btn-group"  style="margin-top: 10px">
+            <a href="#" class="btn btn-info" style="margin-top: -10px;" id="btnOrdenarIndices">
+                <i class="fa fa-retweet"></i>
+                Ordenar coeficientes
             </a>
-        </g:if>
-    </div>
-    <div class="btn-group"  style="margin-top: 10px">
-        <g:if test="${session?.perfil?.nombre == 'CRFC'}">
-            <a href="#" class="btn text-success" title="Borrar la Fórmula Polinómica"
-               style="margin-top: -10px;" id="btnAprender">
-                <i class="fa fa-user"></i>
-                Aprender Fórmulas
-            </a>
-        </g:if>
-    </div>
-    <div class="btn-group"  style="margin-top: 10px">
-        <a href="#" class="btn btn-info" style="margin-top: -10px;" id="btnOrdenarIndices">
-            <i class="fa fa-retweet"></i>
-            Ordenar coeficientes
-        </a>
-    </div>
-</div>
+        </div>
+    </g:if>
+ </div>
 
 <div class="col-md-1"></div>
 <div class="col-md-3 ${total < 1 ? 'alert-danger' : 'alert-success'} " style="margin-left: 0">
