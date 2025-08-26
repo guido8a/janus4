@@ -533,6 +533,7 @@ class ObraController {
         if (params.obra) {
             obra = Obra.get(params.obra)
             cn.eachRow("select distinct sbpr__id from mfrb where obra__id = ${obra.id} order by sbpr__id".toString()) { d ->
+
                 if(d.sbpr__id == 0)
                     sbprMF << ["0" : 'Todos los subpresupuestos']
                 else

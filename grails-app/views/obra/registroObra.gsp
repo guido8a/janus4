@@ -897,17 +897,72 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
     <div id="modal-formula">
         <div class="modal-body" id="modal_body_formula">
             <div id="msg_formula">
-                <g:if test="${!matrizOk}">
-                    <p style="font-size: 14px; text-align: center;">No existe una matriz de la fórmula polinómica</p>
+
+
+%{--                    <g:if test="${!matrizOk}">--}%
+%{--                        <p style="font-size: 14px; text-align: center;">No existe una matriz de la fórmula polinómica</p>--}%
+%{--                    </g:if>--}%
+%{--                    <g:else>--}%
+%{--                        <span style="margin-left: 100px;">Subpresupuesto:</span>--}%
+%{--                        <g:select class="col-md-12" name="matriz_genFP" from="${sbprMF}" optionKey="key" optionValue="value"--}%
+%{--                                  style="margin-right: 20px;"/>--}%
+%{--                        <div class="col-md-12" style="margin-top: 30px">--}%
+%{--                            <a href="#" class="btn btn-azul" id="irFP">Ir a la Fórmula Polinómica</a>--}%
+%{--                            <a href="#" class="btn btn" id="cancelaFP" style="margin-left: 60px;"> <i class="fa fa-times"></i> Cancelar</a>--}%
+%{--                        </div>--}%
+%{--                    </g:else>--}%
+
+
+
+                <g:if test="${obra?.estado == null}">
+                    <g:if test="${FormulaPolinomica.findByObra(obra)}">
+                        <span style="margin-left: 100px;">Subpresupuesto:</span>
+                        <g:select class="col-md-12" name="matriz_genFP" from="${sbprMF}" optionKey="key" optionValue="value"
+                                  style="margin-right: 20px;"/>
+                        <div class="col-md-12" style="margin-top: 30px">
+                            <a href="#" class="btn btn-azul irFP">Ir a la Fórmula Polinómica</a>
+                            <a href="#" class="btn btn" id="cancelaFP" style="margin-left: 60px;"> <i class="fa fa-times"></i> Cancelar</a>
+                        </div>
+                    </g:if>
+                    <g:else>
+                        <g:if test="${!matrizOk}">
+                            <p style="font-size: 14px; text-align: center;">No existe una matriz de la fórmula polinómica</p>
+                        </g:if>
+                        <g:else>
+                            <span style="margin-left: 100px;">Subpresupuesto:</span>
+                            <g:select class="col-md-12" name="matriz_genFP" from="${sbprMF}" optionKey="key" optionValue="value"
+                                      style="margin-right: 20px;"/>
+                            <div class="col-md-12" style="margin-top: 30px">
+                                <a href="#" class="btn btn-azul irFP" >Ir a la Fórmula Polinómica</a>
+                                <a href="#" class="btn btn" id="cancelaFP" style="margin-left: 60px;"> <i class="fa fa-times"></i> Cancelar</a>
+                            </div>
+                        </g:else>
+                    </g:else>
                 </g:if>
                 <g:else>
-                    <span style="margin-left: 100px;">Subpresupuesto:</span>
-                    <g:select class="col-md-12" name="matriz_genFP" from="${sbprMF}" optionKey="key" optionValue="value"
-                              style="margin-right: 20px;"/>
-                    <div class="col-md-12" style="margin-top: 30px">
-                        <a href="#" class="btn btn-azul" id="irFP">Ir a la Fórmula Polinómica</a>
-                        <a href="#" class="btn btn" id="cancelaFP" style="margin-left: 60px;"> <i class="fa fa-times"></i> Cancelar</a>
-                    </div>
+                    <g:if test="${FormulaPolinomica.findByObra(obra)}">
+                        <span style="margin-left: 100px;">Subpresupuesto:</span>
+                        <g:select class="col-md-12" name="matriz_genFP" from="${sbprMF}" optionKey="key" optionValue="value"
+                                  style="margin-right: 20px;"/>
+                        <div class="col-md-12" style="margin-top: 30px">
+                            <a href="#" class="btn btn-azul irFP" >Ir a la Fórmula Polinómica</a>
+                            <a href="#" class="btn btn" id="cancelaFP" style="margin-left: 60px;"> <i class="fa fa-times"></i> Cancelar</a>
+                        </div>
+                    </g:if>
+                    <g:else>
+                        <g:if test="${!matrizOk}">
+                            <p style="font-size: 14px; text-align: center;">No existe una matriz de la fórmula polinómica</p>
+                        </g:if>
+                        <g:else>
+                            <span style="margin-left: 100px;">Subpresupuesto:</span>
+                            <g:select class="col-md-12" name="matriz_genFP" from="${sbprMF}" optionKey="key" optionValue="value"
+                                      style="margin-right: 20px;"/>
+                            <div class="col-md-12" style="margin-top: 30px">
+                                <a href="#" class="btn btn-azul irFP">Ir a la Fórmula Polinómica</a>
+                                <a href="#" class="btn btn" id="cancelaFP" style="margin-left: 60px;"> <i class="fa fa-times"></i> Cancelar</a>
+                            </div>
+                        </g:else>
+                    </g:else>
                 </g:else>
             </div>
         </div>
@@ -2293,11 +2348,11 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
             $(".ui-dialog-titlebar-close").html("x")
         });
 
-        $("#irFP").click(function () {
-            var sb = $("#matriz_genFP").val();
-            %{--location.href = "${g.createLink(controller: 'formulaPolinomica',action: 'coeficientes',id: obra?.id)}?sbpr=" + sb--}%
+        $(".irFP").click(function () {
+            var sb = $("#matriz_genFP").val() != null ? $("#matriz_genFP").val() : 0;
             location.href = "${g.createLink(controller: 'formulaPolinomica',action: 'coeficientesFp',id: obra?.id)}?sbpr=" + sb
         });
+
         $("#cancelaFP").click(function () {
             $("#modal-formula").dialog("close")
         });

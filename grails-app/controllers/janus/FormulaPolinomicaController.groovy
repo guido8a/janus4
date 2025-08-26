@@ -813,6 +813,8 @@ class FormulaPolinomicaController {
     }
 
     def tablaItemsNuevos_ajax(){
+        println("------ -- - - " + params)
+
         def formula = FormulaPolinomica.get(params.formula)
         def cn = dbConnectionService.getConnection()
         def obra = Obra.get(params.obra)
@@ -878,9 +880,176 @@ class FormulaPolinomicaController {
         return [asignados: asignados, formula: formula]
     }
 
+//    def coeficientesFp() {
+//
+//        println "coef " + params
+//
+//        def obra = Obra.get(params.id)
+//
+//        if (!params.tipo) {
+//            params.tipo = 'p'
+//        }
+//
+//        if (params.tipo == 'p') {
+//            params.filtro = "1"
+//        } else if (params.tipo == 'c') {
+//            params.filtro = '2'
+//        }
+//
+//        def cn = dbConnectionService.getConnection()
+//        def persona = Persona.get(session.usuario.id)
+//        def sqlFP = "update fpob set fpobvlor = 0 where fpobvlor is null"
+//        cn.execute(sqlFP.toString())
+//        println "arregla valores FP: $sqlFP"
+//
+//        def sqlMatriz = "select count(*) cuantos from mfcl where obra__id=${params.id}"
+//        def matriz = cn.rows(sqlMatriz.toString())[0].cuantos
+//        def formula = FormulaPolinomica.findByObra(obra)
+//
+//        if (matriz == 0) {
+//            flash.message = "Tiene que crear la matriz antes de ver los coeficientes"
+//            redirect(controller: "obra", action: "registroObra", params: ["obra": params.id])
+//            return
+//        } else {
+////            println "VERIFICA"
+//            def sqlValidacion = "select count(*) cuantos from vlobitem where obra__id = ${params.id} and voitcoef is not null"
+////            println sqlValidacion
+//            def validacion = cn.rows(sqlValidacion.toString())[0].cuantos
+////            println "validacion: " + validacion
+//            if (validacion == 0) {
+//                def sqlSubPresupuestos = "select distinct(sbpr__id) id from vlob where obra__id = ${params.id}"
+////                println sqlSubPresupuestos
+//                cn.eachRow(sqlSubPresupuestos.toString()) { row ->
+////                    println ">>" + row
+//                    def cn2 = dbConnectionService.getConnection()
+//                    def idSp = row.id
+////                    def sqlLlenaDatos = "select * from sp_fpoli(${params.id}, ${idSp})"
+////                    println "sqlLlenaDatos: $sqlLlenaDatos"
+////                    cn2.execute(sqlLlenaDatos.toString())
+////                            { row2 ->
+////                    cn2.eachRow(sqlLlenaDatos.toString()) { row2 ->
+////                        println "++" + row2
+////                    }
+//                }
+//            }
+//
+//            def data = []
+//
+//
+//            def sbpr = SubPresupuesto.get(params.sbpr)
+//
+//            println("obra " + obra?.id)
+//            println("sub " + sbpr?.id)
+//
+//            def fp = FormulaPolinomica.findAllByObraAndSubPresupuesto(obra, sbpr, [sort: "numero"])
+//            println("wwww " + fp)
+//            def total = 0
+//            def cof = []
+//
+//            fp.each { f ->
+//                if (f.numero =~ params.tipo) {
+//                    cof += f
+//                    def children = ItemsFormulaPolinomica.findAllByFormulaPolinomica(f)
+//                    def mapFormula = [
+//                            data: f.numero,
+//                            attr: [
+//                                    id: "fp_" + f.id,
+//                                    numero: f.numero,
+//                                    sgrc: (f.valor > 0 || children.size() > 0),
+//                                    nombre: (f.valor > 0 || children.size() > 0 || f.numero == "p01") ? f.indice?.descripcion : "",
+//                                    valor: g.formatNumber(number: f?.valor, maxFractionDigits: 3, minFractionDigits: 3),
+//                                    rel: "fp",
+//                                    icon: 'fa fa-user'
+//                            ]
+//                    ]
+//                    total += f.valor
+//                    if (children.size() > 0) {
+//                        mapFormula.children = []
+//                        children.each { ch ->
+//                            def sqlPrecio = "SELECT DISTINCT v.voitpcun precio, v.voitgrpo grupo " +
+//                                    "FROM vlobitem v\n" +
+//                                    "WHERE item__id = ${ch.itemId} AND v.obra__id = ${obra.id};"
+//
+//                            def precio = 0, grupo = 0
+//                            cn.eachRow(sqlPrecio.toString()) { row ->
+//                                precio = row.precio
+//                                grupo = row.grupo
+//                            }
+//
+//                            def mapItem = [
+//                                    data: " ",
+//                                    attr: [
+//                                            id: "it_" + ch.id,
+//                                            numero: ch.item.codigo,
+//                                            nombre: ch.item.nombre,
+//                                            item: ch.itemId,
+//                                            precio: precio,
+//                                            grupo: grupo,
+//                                            valor: g.formatNumber(number: ch.valor, maxFractionDigits: 5, minFractionDigits: 5),
+////                                            valor: ch.valor,
+//                                            rel: "it",
+//                                            icon: 'fa fa-user'
+//                                    ]
+//                            ]
+//                            mapFormula.children.add(mapItem)
+//                        }
+//                    }
+//
+//                    data.add(mapFormula)
+//                }
+//            }
+//
+//            def json = new JsonBuilder(data)
+//
+//            def sql = ""
+//            if (params.tipo == 'p') {
+//                sql = "SELECT item.item__id iid, itemcdgo codigo, item.itemnmbr item, grpo__id grupo, valor aporte, 0 precio " +
+//                        "from item, dprt, sbgr, mfcl, mfvl " +
+//                        "where mfcl.obra__id = ${params.id} and mfcl.sbpr__id = ${sbpr.id} and " +
+//                        "mfcl.clmndscr = item.item__id || '_T' and " +
+//                        "dprt.dprt__id = item.dprt__id and sbgr.sbgr__id = dprt.sbgr__id and " +
+//                        "grpo__id <> 2 and " +
+//                        "mfvl.obra__id = mfcl.obra__id and mfvl.sbpr__id = mfcl.sbpr__id and " +
+//                        "mfvl.clmncdgo = mfcl.clmncdgo and " +
+//                        "mfvl.codigo = 'sS3' and item.item__id not in (select item__id from itfp, fpob " +
+//                        "where itfp.fpob__id = fpob.fpob__id and obra__id = ${params.id} and sbpr__id = ${sbpr.id}) " +
+//                        "order by valor desc"
+//            } else {
+//                sql = "SELECT item.item__id iid, itemcdgo codigo, item.itemnmbr item, grpo__id grupo, valor aporte, 0 precio " +
+//                        "from item, dprt, sbgr, mfcl, mfvl " +
+//                        "where mfcl.obra__id = ${params.id} and mfcl.sbpr__id = ${sbpr.id} and " +
+//                        "mfcl.clmndscr = item.item__id || '_T' and " +
+//                        "dprt.dprt__id = item.dprt__id and sbgr.sbgr__id = dprt.sbgr__id and " +
+//                        "grpo__id = 2 and " +
+//                        "mfvl.obra__id = mfcl.obra__id and mfvl.sbpr__id = mfcl.sbpr__id and " +
+//                        "mfvl.clmncdgo = mfcl.clmncdgo and " +
+//                        "mfvl.codigo = 'sS5' and item.item__id not in (select item__id from itfp, fpob " +
+//                        "where itfp.fpob__id = fpob.fpob__id and obra__id = ${params.id} and sbpr__id = ${sbpr.id}) " +
+//                        "order by valor desc"
+//            }
+//
+//            println "sql FP: $sql"
+//
+//            def rows = cn.rows(sql.toString())
+//
+//            def duenoObra = esDuenoObra(obra) ? 1 : 0
+//
+//            [obra: obra, json: json, tipo: params.tipo, rows: rows, total: total, subpre: sbpr.id, cof: cof?.numero,
+//             duenoObra: duenoObra, persona: persona]
+//        }
+//    }
+
+
+
     def coeficientesFp() {
 
         println "coef " + params
+        def cn4 = dbConnectionService.getConnection()
+        def obra = Obra.get(params.id)
+//        def sbpr = params.sbpr != 'null' ? SubPresupuesto.get(params.sbpr) : SubPresupuesto.get(0)
+        def sbpr = SubPresupuesto.get(params.sbpr)
+
+        println("sbor " + sbpr)
 
         if (!params.tipo) {
             params.tipo = 'p'
@@ -892,51 +1061,34 @@ class FormulaPolinomicaController {
             params.filtro = '2'
         }
 
-        def cn = dbConnectionService.getConnection()
-        def persona = Persona.get(session.usuario.id)
-        def sqlFP = "update fpob set fpobvlor = 0 where fpobvlor is null"
-        cn.execute(sqlFP.toString())
-        println "arregla valores FP: $sqlFP"
-
         def sqlMatriz = "select count(*) cuantos from mfcl where obra__id=${params.id}"
-        def matriz = cn.rows(sqlMatriz.toString())[0].cuantos
-        if (matriz == 0) {
-            flash.message = "Tiene que crear la matriz antes de ver los coeficientes"
-            redirect(controller: "obra", action: "registroObra", params: ["obra": params.id])
-            return
-        } else {
-//            println "VERIFICA"
-            def sqlValidacion = "select count(*) cuantos from vlobitem where obra__id = ${params.id} and voitcoef is not null"
-//            println sqlValidacion
+        def matriz = cn4.rows(sqlMatriz.toString())[0].cuantos
+
+        if(FormulaPolinomica.findByObra(obra)){
+//            return generarCoeficientes(obra, sbpr, params.tipo)
+
+            def cn = dbConnectionService.getConnection()
+            def persona = Persona.get(session.usuario.id)
+            def sqlFP = "update fpob set fpobvlor = 0 where fpobvlor is null"
+            cn.execute(sqlFP.toString())
+            println "arregla valores FP: $sqlFP"
+
+            def sqlValidacion = "select count(*) cuantos from vlobitem where obra__id = ${obra?.id} and voitcoef is not null"
             def validacion = cn.rows(sqlValidacion.toString())[0].cuantos
-//            println "validacion: " + validacion
             if (validacion == 0) {
-                def sqlSubPresupuestos = "select distinct(sbpr__id) id from vlob where obra__id = ${params.id}"
-//                println sqlSubPresupuestos
+                def sqlSubPresupuestos = "select distinct(sbpr__id) id from vlob where obra__id = ${obra?.id}"
                 cn.eachRow(sqlSubPresupuestos.toString()) { row ->
-//                    println ">>" + row
                     def cn2 = dbConnectionService.getConnection()
                     def idSp = row.id
-//                    def sqlLlenaDatos = "select * from sp_fpoli(${params.id}, ${idSp})"
-//                    println "sqlLlenaDatos: $sqlLlenaDatos"
-//                    cn2.execute(sqlLlenaDatos.toString())
-//                            { row2 ->
-//                    cn2.eachRow(sqlLlenaDatos.toString()) { row2 ->
-//                        println "++" + row2
-//                    }
                 }
             }
 
             def data = []
 
-            def obra = Obra.get(params.id)
-            def sbpr = SubPresupuesto.get(params.sbpr)
-
             println("obra " + obra?.id)
             println("sub " + sbpr?.id)
-
             def fp = FormulaPolinomica.findAllByObraAndSubPresupuesto(obra, sbpr, [sort: "numero"])
-            println("wwww " + fp)
+
             def total = 0
             def cof = []
 
@@ -980,7 +1132,6 @@ class FormulaPolinomicaController {
                                             precio: precio,
                                             grupo: grupo,
                                             valor: g.formatNumber(number: ch.valor, maxFractionDigits: 5, minFractionDigits: 5),
-//                                            valor: ch.valor,
                                             rel: "it",
                                             icon: 'fa fa-user'
                                     ]
@@ -997,41 +1148,287 @@ class FormulaPolinomicaController {
 
             def sql = ""
             if (params.tipo == 'p') {
+
                 sql = "SELECT item.item__id iid, itemcdgo codigo, item.itemnmbr item, grpo__id grupo, valor aporte, 0 precio " +
                         "from item, dprt, sbgr, mfcl, mfvl " +
-                        "where mfcl.obra__id = ${params.id} and mfcl.sbpr__id = ${sbpr.id} and " +
+                        "where mfcl.obra__id = ${obra?.id} and mfcl.sbpr__id = ${sbpr.id} and " +
                         "mfcl.clmndscr = item.item__id || '_T' and " +
                         "dprt.dprt__id = item.dprt__id and sbgr.sbgr__id = dprt.sbgr__id and " +
                         "grpo__id <> 2 and " +
                         "mfvl.obra__id = mfcl.obra__id and mfvl.sbpr__id = mfcl.sbpr__id and " +
                         "mfvl.clmncdgo = mfcl.clmncdgo and " +
                         "mfvl.codigo = 'sS3' and item.item__id not in (select item__id from itfp, fpob " +
-                        "where itfp.fpob__id = fpob.fpob__id and obra__id = ${params.id} and sbpr__id = ${sbpr.id}) " +
+                        "where itfp.fpob__id = fpob.fpob__id and obra__id = ${obra?.id} and sbpr__id = ${sbpr.id}) " +
                         "order by valor desc"
             } else {
                 sql = "SELECT item.item__id iid, itemcdgo codigo, item.itemnmbr item, grpo__id grupo, valor aporte, 0 precio " +
                         "from item, dprt, sbgr, mfcl, mfvl " +
-                        "where mfcl.obra__id = ${params.id} and mfcl.sbpr__id = ${sbpr.id} and " +
+                        "where mfcl.obra__id = ${obra?.id} and mfcl.sbpr__id = ${sbpr.id} and " +
                         "mfcl.clmndscr = item.item__id || '_T' and " +
                         "dprt.dprt__id = item.dprt__id and sbgr.sbgr__id = dprt.sbgr__id and " +
                         "grpo__id = 2 and " +
                         "mfvl.obra__id = mfcl.obra__id and mfvl.sbpr__id = mfcl.sbpr__id and " +
                         "mfvl.clmncdgo = mfcl.clmncdgo and " +
                         "mfvl.codigo = 'sS5' and item.item__id not in (select item__id from itfp, fpob " +
-                        "where itfp.fpob__id = fpob.fpob__id and obra__id = ${params.id} and sbpr__id = ${sbpr.id}) " +
+                        "where itfp.fpob__id = fpob.fpob__id and obra__id = ${obra?.id} and sbpr__id = ${sbpr.id}) " +
                         "order by valor desc"
             }
 
             println "sql FP: $sql"
 
             def rows = cn.rows(sql.toString())
-
             def duenoObra = esDuenoObra(obra) ? 1 : 0
 
-            [obra: obra, json: json, tipo: params.tipo, rows: rows, total: total, subpre: sbpr.id, cof: cof?.numero,
-             duenoObra: duenoObra, persona: persona]
+            return [obra: obra, json: json, tipo: params.tipo, rows: rows, total: total, subpre: sbpr?.id, cof: cof?.numero,duenoObra: duenoObra, persona: persona]
+
+        }else{
+
+            if(matriz == 0){
+                flash.message = "Tiene que crear la matriz antes de ver los coeficientes"
+                redirect(controller: "obra", action: "registroObra", params: ["obra": obra?.id])
+            }else{
+//              return  generarCoeficientes(obra, sbpr, params.tipo)
+
+
+                def cn = dbConnectionService.getConnection()
+                def persona = Persona.get(session.usuario.id)
+                def sqlFP = "update fpob set fpobvlor = 0 where fpobvlor is null"
+                cn.execute(sqlFP.toString())
+                println "arregla valores FP: $sqlFP"
+
+
+                def sqlValidacion = "select count(*) cuantos from vlobitem where obra__id = ${obra?.id} and voitcoef is not null"
+                def validacion = cn.rows(sqlValidacion.toString())[0].cuantos
+                if (validacion == 0) {
+                    def sqlSubPresupuestos = "select distinct(sbpr__id) id from vlob where obra__id = ${obra?.id}"
+                    cn.eachRow(sqlSubPresupuestos.toString()) { row ->
+                        def cn2 = dbConnectionService.getConnection()
+                        def idSp = row.id
+                    }
+                }
+
+                def data = []
+
+                println("obra " + obra?.id)
+                println("sub " + sbpr?.id)
+                def fp = FormulaPolinomica.findAllByObraAndSubPresupuesto(obra, sbpr, [sort: "numero"])
+
+                def total = 0
+                def cof = []
+
+                fp.each { f ->
+                    if (f.numero =~ params.tipo) {
+                        cof += f
+                        def children = ItemsFormulaPolinomica.findAllByFormulaPolinomica(f)
+                        def mapFormula = [
+                                data: f.numero,
+                                attr: [
+                                        id: "fp_" + f.id,
+                                        numero: f.numero,
+                                        sgrc: (f.valor > 0 || children.size() > 0),
+                                        nombre: (f.valor > 0 || children.size() > 0 || f.numero == "p01") ? f.indice?.descripcion : "",
+                                        valor: g.formatNumber(number: f?.valor, maxFractionDigits: 3, minFractionDigits: 3),
+                                        rel: "fp",
+                                        icon: 'fa fa-user'
+                                ]
+                        ]
+                        total += f.valor
+                        if (children.size() > 0) {
+                            mapFormula.children = []
+                            children.each { ch ->
+                                def sqlPrecio = "SELECT DISTINCT v.voitpcun precio, v.voitgrpo grupo " +
+                                        "FROM vlobitem v\n" +
+                                        "WHERE item__id = ${ch.itemId} AND v.obra__id = ${obra.id};"
+
+                                def precio = 0, grupo = 0
+                                cn.eachRow(sqlPrecio.toString()) { row ->
+                                    precio = row.precio
+                                    grupo = row.grupo
+                                }
+
+                                def mapItem = [
+                                        data: " ",
+                                        attr: [
+                                                id: "it_" + ch.id,
+                                                numero: ch.item.codigo,
+                                                nombre: ch.item.nombre,
+                                                item: ch.itemId,
+                                                precio: precio,
+                                                grupo: grupo,
+                                                valor: g.formatNumber(number: ch.valor, maxFractionDigits: 5, minFractionDigits: 5),
+                                                rel: "it",
+                                                icon: 'fa fa-user'
+                                        ]
+                                ]
+                                mapFormula.children.add(mapItem)
+                            }
+                        }
+
+                        data.add(mapFormula)
+                    }
+                }
+
+                def json = new JsonBuilder(data)
+
+                def sql = ""
+                if (params.tipo == 'p') {
+
+                    sql = "SELECT item.item__id iid, itemcdgo codigo, item.itemnmbr item, grpo__id grupo, valor aporte, 0 precio " +
+                            "from item, dprt, sbgr, mfcl, mfvl " +
+                            "where mfcl.obra__id = ${obra?.id} and mfcl.sbpr__id = ${sbpr.id} and " +
+                            "mfcl.clmndscr = item.item__id || '_T' and " +
+                            "dprt.dprt__id = item.dprt__id and sbgr.sbgr__id = dprt.sbgr__id and " +
+                            "grpo__id <> 2 and " +
+                            "mfvl.obra__id = mfcl.obra__id and mfvl.sbpr__id = mfcl.sbpr__id and " +
+                            "mfvl.clmncdgo = mfcl.clmncdgo and " +
+                            "mfvl.codigo = 'sS3' and item.item__id not in (select item__id from itfp, fpob " +
+                            "where itfp.fpob__id = fpob.fpob__id and obra__id = ${obra?.id} and sbpr__id = ${sbpr.id}) " +
+                            "order by valor desc"
+                } else {
+                    sql = "SELECT item.item__id iid, itemcdgo codigo, item.itemnmbr item, grpo__id grupo, valor aporte, 0 precio " +
+                            "from item, dprt, sbgr, mfcl, mfvl " +
+                            "where mfcl.obra__id = ${obra?.id} and mfcl.sbpr__id = ${sbpr.id} and " +
+                            "mfcl.clmndscr = item.item__id || '_T' and " +
+                            "dprt.dprt__id = item.dprt__id and sbgr.sbgr__id = dprt.sbgr__id and " +
+                            "grpo__id = 2 and " +
+                            "mfvl.obra__id = mfcl.obra__id and mfvl.sbpr__id = mfcl.sbpr__id and " +
+                            "mfvl.clmncdgo = mfcl.clmncdgo and " +
+                            "mfvl.codigo = 'sS5' and item.item__id not in (select item__id from itfp, fpob " +
+                            "where itfp.fpob__id = fpob.fpob__id and obra__id = ${obra?.id} and sbpr__id = ${sbpr.id}) " +
+                            "order by valor desc"
+                }
+
+                println "sql FP: $sql"
+
+                def rows = cn.rows(sql.toString())
+                def duenoObra = esDuenoObra(obra) ? 1 : 0
+
+                return [obra: obra, json: json, tipo: params.tipo, rows: rows, total: total, subpre: sbpr?.id , cof: cof?.numero,duenoObra: duenoObra, persona: persona]
+
+            }
         }
     }
+
+
+    def generarCoeficientes(obra, sbpr, tipo){
+
+        def cn = dbConnectionService.getConnection()
+        def persona = Persona.get(session.usuario.id)
+        def sqlFP = "update fpob set fpobvlor = 0 where fpobvlor is null"
+        cn.execute(sqlFP.toString())
+        println "arregla valores FP: $sqlFP"
+
+
+        def sqlValidacion = "select count(*) cuantos from vlobitem where obra__id = ${obra?.id} and voitcoef is not null"
+        def validacion = cn.rows(sqlValidacion.toString())[0].cuantos
+        if (validacion == 0) {
+            def sqlSubPresupuestos = "select distinct(sbpr__id) id from vlob where obra__id = ${obra?.id}"
+            cn.eachRow(sqlSubPresupuestos.toString()) { row ->
+                def cn2 = dbConnectionService.getConnection()
+                def idSp = row.id
+            }
+        }
+
+        def data = []
+
+        println("obra " + obra?.id)
+        println("sub " + sbpr?.id)
+        def fp = FormulaPolinomica.findAllByObraAndSubPresupuesto(obra, sbpr, [sort: "numero"])
+
+        def total = 0
+        def cof = []
+
+        fp.each { f ->
+            if (f.numero =~ tipo) {
+                cof += f
+                def children = ItemsFormulaPolinomica.findAllByFormulaPolinomica(f)
+                def mapFormula = [
+                        data: f.numero,
+                        attr: [
+                                id: "fp_" + f.id,
+                                numero: f.numero,
+                                sgrc: (f.valor > 0 || children.size() > 0),
+                                nombre: (f.valor > 0 || children.size() > 0 || f.numero == "p01") ? f.indice?.descripcion : "",
+                                valor: g.formatNumber(number: f?.valor, maxFractionDigits: 3, minFractionDigits: 3),
+                                rel: "fp",
+                                icon: 'fa fa-user'
+                        ]
+                ]
+                total += f.valor
+                if (children.size() > 0) {
+                    mapFormula.children = []
+                    children.each { ch ->
+                        def sqlPrecio = "SELECT DISTINCT v.voitpcun precio, v.voitgrpo grupo " +
+                                "FROM vlobitem v\n" +
+                                "WHERE item__id = ${ch.itemId} AND v.obra__id = ${obra.id};"
+
+                        def precio = 0, grupo = 0
+                        cn.eachRow(sqlPrecio.toString()) { row ->
+                            precio = row.precio
+                            grupo = row.grupo
+                        }
+
+                        def mapItem = [
+                                data: " ",
+                                attr: [
+                                        id: "it_" + ch.id,
+                                        numero: ch.item.codigo,
+                                        nombre: ch.item.nombre,
+                                        item: ch.itemId,
+                                        precio: precio,
+                                        grupo: grupo,
+                                        valor: g.formatNumber(number: ch.valor, maxFractionDigits: 5, minFractionDigits: 5),
+                                        rel: "it",
+                                        icon: 'fa fa-user'
+                                ]
+                        ]
+                        mapFormula.children.add(mapItem)
+                    }
+                }
+
+                data.add(mapFormula)
+            }
+        }
+
+        def json = new JsonBuilder(data)
+
+        def sql = ""
+        if (tipo == 'p') {
+
+            sql = "SELECT item.item__id iid, itemcdgo codigo, item.itemnmbr item, grpo__id grupo, valor aporte, 0 precio " +
+                    "from item, dprt, sbgr, mfcl, mfvl " +
+                    "where mfcl.obra__id = ${obra?.id} and mfcl.sbpr__id = ${sbpr.id} and " +
+                    "mfcl.clmndscr = item.item__id || '_T' and " +
+                    "dprt.dprt__id = item.dprt__id and sbgr.sbgr__id = dprt.sbgr__id and " +
+                    "grpo__id <> 2 and " +
+                    "mfvl.obra__id = mfcl.obra__id and mfvl.sbpr__id = mfcl.sbpr__id and " +
+                    "mfvl.clmncdgo = mfcl.clmncdgo and " +
+                    "mfvl.codigo = 'sS3' and item.item__id not in (select item__id from itfp, fpob " +
+                    "where itfp.fpob__id = fpob.fpob__id and obra__id = ${obra?.id} and sbpr__id = ${sbpr.id}) " +
+                    "order by valor desc"
+        } else {
+            sql = "SELECT item.item__id iid, itemcdgo codigo, item.itemnmbr item, grpo__id grupo, valor aporte, 0 precio " +
+                    "from item, dprt, sbgr, mfcl, mfvl " +
+                    "where mfcl.obra__id = ${obra?.id} and mfcl.sbpr__id = ${sbpr.id} and " +
+                    "mfcl.clmndscr = item.item__id || '_T' and " +
+                    "dprt.dprt__id = item.dprt__id and sbgr.sbgr__id = dprt.sbgr__id and " +
+                    "grpo__id = 2 and " +
+                    "mfvl.obra__id = mfcl.obra__id and mfvl.sbpr__id = mfcl.sbpr__id and " +
+                    "mfvl.clmncdgo = mfcl.clmncdgo and " +
+                    "mfvl.codigo = 'sS5' and item.item__id not in (select item__id from itfp, fpob " +
+                    "where itfp.fpob__id = fpob.fpob__id and obra__id = ${obra?.id} and sbpr__id = ${sbpr.id}) " +
+                    "order by valor desc"
+        }
+
+        println "sql FP: $sql"
+
+        def rows = cn.rows(sql.toString())
+        def duenoObra = esDuenoObra(obra) ? 1 : 0
+
+       return [obra: obra, json: json, tipo: tipo, rows: rows, total: total, subpre: sbpr?.id ?: 0, cof: cof?.numero,duenoObra: duenoObra, persona: persona]
+//        }
+    }
+
 
     def borrarAsignado_ajax(){
 
