@@ -846,9 +846,8 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
 </div>
 
 <g:if test="${obra}">
-    <div id="modal-matriz" style=";overflow: hidden;">
-
-        <div class="modal-body" id="modal_body_matriz">
+    <div id="modal-matriz" style=";overflow: hidden;" class="container">
+        <div class="" id="modal_body_matriz">
             <div id="msg_matriz">
                 <g:if test="${obra.desgloseTransporte == 'S'}">
                     <p style="font-size: 14px; text-align: center;">Ya existe una matriz generada <b>con</b> desglose transporte
@@ -861,67 +860,110 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                     </g:if>
                 </g:else>
 
-                <span style="margin-left: 100px;">Generada para:</span>
-                <g:select name="matriz_gen" from="${sbprMF}" optionKey="key" optionValue="value"
-                          style="margin-right: 20px; width: 400px" />
+                <div class="col-md-12" style="text-align: center">
+                    <div>Generada para:</div>
+                    <g:select name="matriz_gen" from="${sbprMF}" optionKey="key" optionValue="value"
+                              style="margin-right: 20px; width: 400px" />
 
-                <p style="margin-top: 20px">Desea volver a generar la matriz? o generar otra matriz</p>
-                <div class="btn-group col-md-12">
-                    <a href="#" class="btn" id="no">No -> Ver la Matriz existente</a>
-                %{--*****"${obra?.departamento?.direccion?.id} == ${persona?.departamento?.direccion?.id} && ${duenoObra}"--}%
-                %{--<g:if test="${(obra?.responsableObra?.departamento?.direccion?.id == persona?.departamento?.direccion?.id && duenoObra == 1)}">--}%
-                    <g:if test="${(obra?.departamento?.direccion?.id == persona?.departamento?.direccion?.id)}">
-                        <a href="#" class="btn btn-azul" id="si">Si -> Generar Matriz</a>
-                    </g:if>
-                    <a href="#" class="btn" id="cancela" style="margin-left: 5px;"><i class="fa fa-times"></i> Cancelar</a>
+                    <div style="margin-top: 20px; margin-bottom: 20px; text-align: center; font-size: 14px; font-weight: bold"><i class="fa fa-info-circle"></i> Desea volver a generar la matriz? o generar otra matriz?</div>
+                </div>
 
+                <div class="col-md-12" style="text-align: center">
+                    <div class="btn-group">
+                        <a href="#" class="btn" id="no"><i class="fa fa-search"></i> No -> Ver la Matriz existente</a>
+                        <g:if test="${(obra?.departamento?.direccion?.id == persona?.departamento?.direccion?.id)}">
+                            <a href="#" class="btn btn-azul" id="si"><i class="fa fa-list"></i> Si -> Generar Matriz</a>
+                        </g:if>
+                    </div>
+                </div>
+
+                <div class="col-md-12" style="text-align: center; margin-top: 10px">
+                    <div class="btn-group">
+                        <a href="#" class="btn" id="cancela"><i class="fa fa-times"></i> Cancelar</a>
+                    </div>
                 </div>
             </div>
         </div>
 
         <div id="datos_matriz" style="text-align: center">
             <span>Seleccione el subpresupuesto:</span>
-            <g:select name="matriz_sub" from="${subs}" noSelection="['0': 'Todos los subpresupuestos']"
-                      optionKey="id" optionValue="descripcion" style="margin-right: 20px; margin-bottom: 10px" />
-        <p>Generar con desglose de Transporte <input type="checkbox" id="si_trans" style="margin-top: -3px"  checked="true">
-            <g:if test="${FormulaPolinomica.countByObra(janus.Obra.get(obra?.id)) > 0}">
-                <p>Borrar la Fórmula Polinómica<input type="checkbox" id="borra_fp" style="margin-top: -3px" checked="true">
-            </g:if>
-        </p>
-            <a href="#" class="btn btn-azul" id="ok_matiz">Generar</a>
+            <g:select name="matriz_sub" from="${subs}" noSelection="['0': 'Todos los subpresupuestos']" optionKey="id" optionValue="descripcion" style="margin-right: 20px; margin-bottom: 10px" />
+            <br/>
+            <p style="font-size: 16px; border: 3px solid; border-color: #72af97">Generar con desglose de Transporte <input type="checkbox" id="si_trans" style="margin-top: -3px" checked="true"></p>
+%{--            <g:if test="${FormulaPolinomica.countByObra(janus.Obra.get(obra?.id)) > 0}">--}%
+            <p style="font-size: 16px; border: 3px solid; border-color: #b01c07">Borrar la Fórmula Polinómica <input type="checkbox" id="borra_fp" style="margin-top: -3px"  ${janus.FormulaPolinomica.findByObra(obra) ? "" : "checked"} ></p>
+%{--            </g:if>--}%
+%{--            <br/>--}%
+            <br/>
+            <br/>
+            <a href="#" class="btn btn-azul" id="ok_matiz"><i class="fa fa-check"></i> Generar</a>
         </div>
     </div>
 
     </div>
 
     <div id="modal-formula">
-        <div class="modal-body" id="modal_body_formula">
+        <div id="modal_body_formula">
             <div id="msg_formula">
 
 
-%{--                    <g:if test="${!matrizOk}">--}%
-%{--                        <p style="font-size: 14px; text-align: center;">No existe una matriz de la fórmula polinómica</p>--}%
-%{--                    </g:if>--}%
-%{--                    <g:else>--}%
-%{--                        <span style="margin-left: 100px;">Subpresupuesto:</span>--}%
-%{--                        <g:select class="col-md-12" name="matriz_genFP" from="${sbprMF}" optionKey="key" optionValue="value"--}%
-%{--                                  style="margin-right: 20px;"/>--}%
-%{--                        <div class="col-md-12" style="margin-top: 30px">--}%
-%{--                            <a href="#" class="btn btn-azul" id="irFP">Ir a la Fórmula Polinómica</a>--}%
-%{--                            <a href="#" class="btn btn" id="cancelaFP" style="margin-left: 60px;"> <i class="fa fa-times"></i> Cancelar</a>--}%
-%{--                        </div>--}%
-%{--                    </g:else>--}%
+            %{--                    <g:if test="${!matrizOk}">--}%
+            %{--                        <p style="font-size: 14px; text-align: center;">No existe una matriz de la fórmula polinómica</p>--}%
+            %{--                    </g:if>--}%
+            %{--                    <g:else>--}%
+            %{--                        <span style="margin-left: 100px;">Subpresupuesto:</span>--}%
+            %{--                        <g:select class="col-md-12" name="matriz_genFP" from="${sbprMF}" optionKey="key" optionValue="value"--}%
+            %{--                                  style="margin-right: 20px;"/>--}%
+            %{--                        <div class="col-md-12" style="margin-top: 30px">--}%
+            %{--                            <a href="#" class="btn btn-azul" id="irFP">Ir a la Fórmula Polinómica</a>--}%
+            %{--                            <a href="#" class="btn btn" id="cancelaFP" style="margin-left: 60px;"> <i class="fa fa-times"></i> Cancelar</a>--}%
+            %{--                        </div>--}%
+            %{--                    </g:else>--}%
 
 
 
-                <g:if test="${obra?.estado == null}">
-                    <g:if test="${FormulaPolinomica.findByObra(obra)}">
-                        <span style="margin-left: 100px;">Subpresupuesto:</span>
-                        <g:select class="col-md-12" name="matriz_genFP" from="${sbprMF}" optionKey="key" optionValue="value"
-                                  style="margin-right: 20px;"/>
-                        <div class="col-md-12" style="margin-top: 30px">
-                            <a href="#" class="btn btn-azul irFP">Ir a la Fórmula Polinómica</a>
-                            <a href="#" class="btn btn" id="cancelaFP" style="margin-left: 60px;"> <i class="fa fa-times"></i> Cancelar</a>
+            %{--                <g:if test="${obra?.estado == ''}">--}%
+            %{--                    <g:if test="${FormulaPolinomica.findByObra(obra)}">--}%
+            %{--                        <span style="margin-left: 100px;">Subpresupuesto:</span>--}%
+            %{--                        <g:select class="col-md-12" name="matriz_genFP" from="${sbprMF}" optionKey="key" optionValue="value"--}%
+            %{--                                  style="margin-right: 20px;"/>--}%
+            %{--                        <div class="col-md-12" style="margin-top: 30px">--}%
+            %{--                            <a href="#" class="btn btn-azul irFP">Ir a la Fórmula Polinómica</a>--}%
+            %{--                            <a href="#" class="btn btn" id="cancelaFP" style="margin-left: 60px;"> <i class="fa fa-times"></i> Cancelar</a>--}%
+            %{--                        </div>--}%
+            %{--                    </g:if>--}%
+            %{--                    <g:else>--}%
+            %{--                        <g:if test="${!matrizOk}">--}%
+            %{--                            <p style="font-size: 14px; text-align: center;">No existe una matriz de la fórmula polinómica</p>--}%
+            %{--                        </g:if>--}%
+            %{--                        <g:else>--}%
+            %{--                            <span style="margin-left: 100px;">Subpresupuesto:</span>--}%
+            %{--                            <g:select class="col-md-12" name="matriz_genFP" from="${sbprMF}" optionKey="key" optionValue="value"--}%
+            %{--                                      style="margin-right: 20px;"/>--}%
+            %{--                            <div class="col-md-12" style="margin-top: 30px">--}%
+            %{--                                <a href="#" class="btn btn-azul irFP" >Ir a la Fórmula Polinómica</a>--}%
+            %{--                                <a href="#" class="btn btn" id="cancelaFP" style="margin-left: 60px;"> <i class="fa fa-times"></i> Cancelar</a>--}%
+            %{--                            </div>--}%
+            %{--                        </g:else>--}%
+            %{--                    </g:else>--}%
+            %{--                </g:if>--}%
+            %{--                <g:else>--}%
+                <g:if test="${FormulaPolinomica.findByObra(obra)}">
+                    <g:if test="${obra?.estado == 'R'}">
+                        <div class="col-md-12" style="text-align: center">
+                            <div>Subpresupuesto:</div>
+                            <g:select class="col-md-12" name="matriz_genFP" from="${sbprMF}" optionKey="key" optionValue="value" />
+                        </div>
+
+                        <div class="col-md-12" style="margin-top: 20px; text-align: center">
+                            <div class="btn-group">
+                                <a href="#" class="btn btn-azul irFP"><i class="fa fa-arrow-right"></i> Ir a la Fórmula Polinómica</a>
+                            </div>
+                        </div>
+                        <div class="col-md-12" style="margin-top: 10px; text-align: center">
+                            <div class="btn-group">
+                                <a href="#" class="btn btn cancelaFP"> <i class="fa fa-times"></i> Cancelar</a>
+                            </div>
                         </div>
                     </g:if>
                     <g:else>
@@ -929,41 +971,45 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                             <p style="font-size: 14px; text-align: center;">No existe una matriz de la fórmula polinómica</p>
                         </g:if>
                         <g:else>
-                            <span style="margin-left: 100px;">Subpresupuesto:</span>
-                            <g:select class="col-md-12" name="matriz_genFP" from="${sbprMF}" optionKey="key" optionValue="value"
-                                      style="margin-right: 20px;"/>
-                            <div class="col-md-12" style="margin-top: 30px">
-                                <a href="#" class="btn btn-azul irFP" >Ir a la Fórmula Polinómica</a>
-                                <a href="#" class="btn btn" id="cancelaFP" style="margin-left: 60px;"> <i class="fa fa-times"></i> Cancelar</a>
+                            <div class="col-md-12" style="text-align: center">
+                                <div>Subpresupuesto:</div>
+                                <g:select class="col-md-12" name="matriz_genFP" from="${sbprMF}" optionKey="key" optionValue="value" />
+                            </div>
+                            <div class="col-md-12" style="margin-top: 20px; text-align: center">
+                                <div class="btn-group">
+                                    <a href="#" class="btn btn-azul irFP"><i class="fa fa-arrow-right"></i> Ir a la Fórmula Polinómica</a>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top: 10px; text-align: center">
+                                <div class="btn-group">
+                                    <a href="#" class="btn btn cancelaFP"> <i class="fa fa-times"></i> Cancelar</a>
+                                </div>
                             </div>
                         </g:else>
                     </g:else>
                 </g:if>
                 <g:else>
-                    <g:if test="${FormulaPolinomica.findByObra(obra)}">
-                        <span style="margin-left: 100px;">Subpresupuesto:</span>
-                        <g:select class="col-md-12" name="matriz_genFP" from="${sbprMF}" optionKey="key" optionValue="value"
-                                  style="margin-right: 20px;"/>
-                        <div class="col-md-12" style="margin-top: 30px">
-                            <a href="#" class="btn btn-azul irFP" >Ir a la Fórmula Polinómica</a>
-                            <a href="#" class="btn btn" id="cancelaFP" style="margin-left: 60px;"> <i class="fa fa-times"></i> Cancelar</a>
-                        </div>
+                    <g:if test="${!matrizOk}">
+                        <p style="font-size: 14px; text-align: center;">No existe una matriz de la fórmula polinómica</p>
                     </g:if>
                     <g:else>
-                        <g:if test="${!matrizOk}">
-                            <p style="font-size: 14px; text-align: center;">No existe una matriz de la fórmula polinómica</p>
-                        </g:if>
-                        <g:else>
-                            <span style="margin-left: 100px;">Subpresupuesto:</span>
-                            <g:select class="col-md-12" name="matriz_genFP" from="${sbprMF}" optionKey="key" optionValue="value"
-                                      style="margin-right: 20px;"/>
-                            <div class="col-md-12" style="margin-top: 30px">
-                                <a href="#" class="btn btn-azul irFP">Ir a la Fórmula Polinómica</a>
-                                <a href="#" class="btn btn" id="cancelaFP" style="margin-left: 60px;"> <i class="fa fa-times"></i> Cancelar</a>
+                        <div class="col-md-12" style="text-align: center">
+                            <div>Subpresupuesto:</div>
+                            <g:select class="col-md-12" name="matriz_genFP" from="${sbprMF}" optionKey="key" optionValue="value" />
+                        </div>
+                        <div class="col-md-12" style="margin-top: 20px; text-align: center">
+                            <div class="btn-group">
+                                <a href="#" class="btn btn-azul irFP"><i class="fa fa-arrow-right"></i> Ir a la Fórmula Polinómica</a>
                             </div>
-                        </g:else>
+                        </div>
+                        <div class="col-md-12" style="margin-top: 10px; text-align: center">
+                            <div class="btn-group">
+                                <a href="#" class="btn btn cancelaFP"> <i class="fa fa-times"></i> Cancelar</a>
+                            </div>
+                        </div>
                     </g:else>
                 </g:else>
+            %{--                </g:else>--}%
             </div>
         </div>
     </div>
@@ -1633,61 +1679,135 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
             $("#dlgLoad").dialog("open");
             $(".ui-dialog-titlebar-close").html("x");
 
-            var lo = cargarLoader("Cargando...");
-
-            $.ajax({
-                type: "POST",
-                url: "${createLink(action: 'validaciones', controller: 'obraFP')}",
-                data: "obra=${obra.id}&sub=" + sp + "&trans=" + tr + "&borraFP=" + borrar,
-                success: function (msg) {
-                    lo.modal("hide");
-                    $("#dlgLoad").dialog("close");
-                    $("#modal-matriz").modal("hide");
-                    var arr = msg.split("_");
-                    var ok_msg = arr[0];
-                    var sbpr = arr[1];
-                    if (ok_msg !== "ok") {
+            if($("#borra_fp").is(':checked')){
+                bootbox.confirm({
+                    title: "<i class='fa fa-exclamation-triangle text-warning fa-2x'></i> Generar la Matriz de la Fórmula Polinómica",
+                    message: "<strong style='font-size: 14px'> Está por generar la Matriz borrando cualquier Fórmula Polinómica ya existente." + "<br/>" + "Está seguro de realizar esta acción? . </strong> ",
+                    buttons: {
+                        cancel: {
+                            label: '<i class="fa fa-times"></i> Cancelar',
+                            className: 'btn-primary'
+                        },
+                        confirm: {
+                            label: '<i class="fa fa-check"></i> Aceptar',
+                            className: 'btn-success'
+                        }
+                    },
+                    callback: function (result) {
+                        if(result){
+                            var lo = cargarLoader("Cargando...");
+                            $.ajax({
+                                type: "POST",
+                                url: "${createLink(action: 'validaciones', controller: 'obraFP')}",
+                                data: "obra=${obra.id}&sub=" + sp + "&trans=" + tr + "&borraFP=" + borrar,
+                                success: function (msg) {
+                                    lo.modal("hide");
+                                    $("#dlgLoad").dialog("close");
+                                    $("#modal-matriz").modal("hide");
+                                    var arr = msg.split("_");
+                                    var ok_msg = arr[0];
+                                    var sbpr = arr[1];
+                                    if (ok_msg !== "ok") {
+                                        $.box({
+                                            imageClass: "box_info",
+                                            text: msg,
+                                            title: "Errores",
+                                            iconClose: false,
+                                            dialog: {
+                                                resizable: false,
+                                                draggable: false,
+                                                width: 900,
+                                                buttons: {
+                                                    "Aceptar": function () {
+                                                    }
+                                                }
+                                            }
+                                        });
+                                    } else {
+                                        var lo1 = cargarLoader("Cargando Matriz...");
+                                        location.href = "${g.createLink(controller: 'matriz',action: 'pantallaMatriz', params:[id:obra.id,inicio:0,limit:40])}&sbpr=" + sbpr
+                                    }
+                                },
+                                error: function () {
+                                    $("#dlgLoad").dialog("close");
+                                    $("#modal-matriz").modal("hide");
+                                    $.box({
+                                        imageClass: "box_info",
+                                        text: "Ha ocurrido un error interno, comuniquese con el administrador del sistema.",
+                                        title: "Errores",
+                                        iconClose: false,
+                                        dialog: {
+                                            resizable: false,
+                                            draggable: false,
+                                            width: 700,
+                                            buttons: {
+                                                "Aceptar": function () {
+                                                }
+                                            }
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    }
+                });
+            }else{
+                var lo = cargarLoader("Cargando...");
+                $.ajax({
+                    type: "POST",
+                    url: "${createLink(action: 'validaciones', controller: 'obraFP')}",
+                    data: "obra=${obra.id}&sub=" + sp + "&trans=" + tr + "&borraFP=" + borrar,
+                    success: function (msg) {
+                        lo.modal("hide");
+                        $("#dlgLoad").dialog("close");
+                        $("#modal-matriz").modal("hide");
+                        var arr = msg.split("_");
+                        var ok_msg = arr[0];
+                        var sbpr = arr[1];
+                        if (ok_msg !== "ok") {
+                            $.box({
+                                imageClass: "box_info",
+                                text: msg,
+                                title: "Errores",
+                                iconClose: false,
+                                dialog: {
+                                    resizable: false,
+                                    draggable: false,
+                                    width: 900,
+                                    buttons: {
+                                        "Aceptar": function () {
+                                        }
+                                    }
+                                }
+                            });
+                        } else {
+                            var lo1 = cargarLoader("Cargando Matriz...");
+                            location.href = "${g.createLink(controller: 'matriz',action: 'pantallaMatriz', params:[id:obra.id,inicio:0,limit:40])}&sbpr=" + sbpr
+                        }
+                    },
+                    error: function () {
+                        $("#dlgLoad").dialog("close");
+                        $("#modal-matriz").modal("hide");
                         $.box({
                             imageClass: "box_info",
-                            text: msg,
+                            text: "Ha ocurrido un error interno, comuniquese con el administrador del sistema.",
                             title: "Errores",
                             iconClose: false,
                             dialog: {
                                 resizable: false,
                                 draggable: false,
-                                width: 900,
+                                width: 700,
                                 buttons: {
                                     "Aceptar": function () {
                                     }
                                 }
                             }
                         });
-                    } else {
-                        var lo1 = cargarLoader("Cargando Matriz...");
-                        location.href = "${g.createLink(controller: 'matriz',action: 'pantallaMatriz',
-                        params:[id:obra.id,inicio:0,limit:40])}&sbpr=" + sbpr
                     }
-                },
-                error: function () {
-                    $("#dlgLoad").dialog("close");
-                    $("#modal-matriz").modal("hide");
-                    $.box({
-                        imageClass: "box_info",
-                        text: "Ha ocurrido un error interno, comuniquese con el administrador del sistema.",
-                        title: "Errores",
-                        iconClose: false,
-                        dialog: {
-                            resizable: false,
-                            draggable: false,
-                            width: 700,
-                            buttons: {
-                                "Aceptar": function () {
-                                }
-                            }
-                        }
-                    });
-                }
-            });
+                });
+            }
+
+
         });
         </g:if>
         $("#lista").click(function () {
@@ -2336,7 +2456,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
             modal: true,
             draggable: false,
             width: 400,
-            height: 180,
+            height: 200,
             position: 'center',
             title: 'Fórmula Polinómica'
         });
@@ -2353,7 +2473,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
             location.href = "${g.createLink(controller: 'formulaPolinomica',action: 'coeficientesFp',id: obra?.id)}?sbpr=" + sb
         });
 
-        $("#cancelaFP").click(function () {
+        $(".cancelaFP").click(function () {
             $("#modal-formula").dialog("close")
         });
 

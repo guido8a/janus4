@@ -29,28 +29,6 @@
         border     : none;
     }
 
-    /*.area {*/
-    /*    height : 500px;*/
-    /*}*/
-
-    /*.left, .right {*/
-    /*    height     : 750px;*/
-    /*    float      : left;*/
-    /*    overflow-x : hidden;*/
-    /*    overflow-y : auto;*/
-    /*    border     : 1px solid #E2CBA1;*/
-    /*    background : #E5DED3;*/
-    /*}*/
-
-    /*.left {*/
-    /*    width : 465px;*/
-    /*}*/
-
-    /*.right {*/
-    /*    width       : 685px;*/
-    /*    margin-left : 15px;*/
-    /*}*/
-
     .jstree-grid-cell {
         cursor : pointer;
     }
@@ -70,7 +48,6 @@
     }
 
     .hovered {
-
     <g:if test="${janus.Parametros.findByEmpresaLike(message(code: 'ambiente2'))}">
         background : #42a151;
     </g:if>
@@ -105,12 +82,7 @@
         border-radius : 0 !important;
     }
 
-    /*.contenedorTabla {*/
-    /*    max-height : 500px;*/
-    /*    overflow   : auto;*/
-    /*}*/
     </style>
-
 </head>
 
 <body>
@@ -315,7 +287,6 @@
         });
     });
 
-
     $("#btnMarcarTodos").click(function () {
         clicTodos();
     });
@@ -418,7 +389,6 @@
                 $seleccionados.removeClass("selected editable");
                 $parent.children("a, .jstree-grid-cell").addClass("selected editable parent");
                 updateCoef($item.parents("li"));
-
 
                 cargarItemsNuevos(parts[1]);
 
@@ -939,7 +909,6 @@
                                                 var tdPrec = $("<td class='numero'>").append(number_format(nodePrecio, 5, '.', ''));
 
                                                 tr.append(tdItem).append(tdDesc);
-//                                                            if (nodeGrupo.toString() == "2") {
                                                 if ("${params.tipo}" === "c") {
                                                     tr.append(tdPrec);
                                                 }
@@ -1054,7 +1023,11 @@
                 };
                 break;
         }
+
+        <g:if test="${obra?.estado != 'R'}">
         return menuItems;
+        </g:if>
+
     }
 
     $("#btnMoverAceptar").click(function () {

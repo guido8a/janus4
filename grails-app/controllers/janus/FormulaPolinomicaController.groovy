@@ -1303,7 +1303,7 @@ class FormulaPolinomicaController {
                 def rows = cn.rows(sql.toString())
                 def duenoObra = esDuenoObra(obra) ? 1 : 0
 
-                return [obra: obra, json: json, tipo: params.tipo, rows: rows, total: total, subpre: sbpr?.id , cof: cof?.numero,duenoObra: duenoObra, persona: persona]
+                return [obra: obra, json: json, tipo: params.tipo, rows: rows, total: total, subpre: sbpr?.id , cof: cof?.numero,duenoObra: duenoObra, persona: persona, matriz: matriz]
 
             }
         }
