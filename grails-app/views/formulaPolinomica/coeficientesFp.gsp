@@ -115,7 +115,7 @@
         </g:link>
     </div>
 
-    <g:if test="${obra?.estado != 'R'}">
+    <g:if test="${obra?.estado != 'R' || obra?.codigo.toString().contains('-OF') }">
         <div class="btn-group"  style="margin-top: 10px">
             <g:if test="${(obra?.responsableObra?.departamento?.direccion?.id == persona?.departamento?.direccion?.id && duenoObra == 1)}">
                 <a href="#" class="btn " title="Reiniciar la Fórmula Polinómica"
@@ -1026,7 +1026,7 @@
                 break;
         }
 
-        <g:if test="${obra?.estado != 'R'}">
+        <g:if test="${obra?.estado != 'R' || obra?.codigo.toString().contains('-OF')}">
         return menuItems;
         </g:if>
 
