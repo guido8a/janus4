@@ -5939,13 +5939,16 @@ class PlanillaController {
         def planilla = Planilla.get(params.planilla)
         def planillas = Planilla.findAllByContrato(contrato)
         def tipoAnticipo = TipoPlanilla.get(1)
+        def planillaAnticipo = Planilla.findAllByContratoAndTipoPlanilla(contrato, tipoAnticipo)
+
         def fecha;
 
         if(params.tipo){
             if(params.tipo == '3' || params.tipo == '9'){
                 if(planillas.size() >0){
                     if(planillas.size() == 1){
-                        if(planillas.contains(Planilla.findByTipoPlanilla(tipoAnticipo))){
+//                        if(planillas.contains(Planilla.findByTipoPlanilla(tipoAnticipo))){
+                        if(planillaAnticipo){
 //                            planillas.each {
 //                                fecha = it.fechaIngreso?.format("yyyy") + "-" + it.fechaIngreso?.format("MM") + "-" + (it.fechaIngreso?.format("dd")?.toInteger() + 1)
 //                            }
@@ -5979,7 +5982,8 @@ class PlanillaController {
             if(planilla.tipoPlanilla?.id == 3 || planilla.tipoPlanilla?.id == 9){
                 if(planillas.size() >0){
                     if(planillas.size() == 1){
-                        if(planillas.contains(Planilla.findByTipoPlanilla(tipoAnticipo))){
+//                        if(planillas.contains(Planilla.findByTipoPlanilla(tipoAnticipo))){
+                        if(planillaAnticipo){
 //                            planillas.each {
 //                                fecha = it.fechaIngreso?.format("yyyy") + "-" + it.fechaIngreso?.format("MM") + "-" + (it.fechaIngreso?.format("dd")?.toInteger())
 //                            }
