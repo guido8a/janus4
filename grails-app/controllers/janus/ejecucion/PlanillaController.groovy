@@ -5209,10 +5209,10 @@ class PlanillaController {
 //                        registraRjpl(prdo, esteMes, plAcumulado, plnl.contrato, plnl, fchaFinPlanillado, fcfm, parcial, total, true)
 //                        fchaFinPlanillado = plnl.fechaFin
 //                    } else {
-                        println "registraRjpl: $prdo, $esteMes, $plAcumulado, ${plnl.id}, $fchaFinPlanillado, $fcfm, $parcial, $total"
+                    println "registraRjpl: $prdo, $esteMes, $plAcumulado, ${plnl.id}, $fchaFinPlanillado, $fcfm, $parcial, $total"
 
-                        registraRjpl(prdo, esteMes, plAcumulado, plnl.contrato, plnl, fchaFinPlanillado, fcfm, parcial, total, false)
-                        fchaFinPlanillado = preciosService.sumaUnDia(fcfm)
+                    registraRjpl(prdo, esteMes, plAcumulado, plnl.contrato, plnl, fchaFinPlanillado, fcfm, parcial, total, false)
+                    fchaFinPlanillado = preciosService.sumaUnDia(fcfm)
 //                    }
                 } else {  // se crea el último periodo en rjpl
                     println "------------ fechaFin: ${plnl.fechaFin} > finMes: ${fcfm}, fchaFinPlanillado $fchaFinPlanillado"
@@ -5941,37 +5941,74 @@ class PlanillaController {
         def tipoAnticipo = TipoPlanilla.get(1)
         def fecha;
 
-        if(params.tipo == '3' || params.tipo == '9'){
-            if(planillas.size() >0){
-                if(planillas.size() == 1){
-                    if(planillas.contains(Planilla.findByTipoPlanilla(tipoAnticipo))){
+        if(params.tipo){
+            if(params.tipo == '3' || params.tipo == '9'){
+                if(planillas.size() >0){
+                    if(planillas.size() == 1){
+                        if(planillas.contains(Planilla.findByTipoPlanilla(tipoAnticipo))){
+//                            planillas.each {
+//                                fecha = it.fechaIngreso?.format("yyyy") + "-" + it.fechaIngreso?.format("MM") + "-" + (it.fechaIngreso?.format("dd")?.toInteger() + 1)
+//                            }
+
+                            fecha = contrato?.obraContratada?.fechaInicio?.format("yyyy") + "-" +  contrato?.obraContratada?.fechaInicio?.format("MM")  + "-" + (contrato?.obraContratada?.fechaInicio?.format("dd")?.toInteger() + 1)
+
+                            println("fecha " + fecha)
+
+                            return [fecha: fecha, planilla: planilla, contrato: contrato, fechaMax: fechaMax]
+                        }else{
+                            return [planilla: planilla, contrato: contrato, fechaMax: fechaMax]
+                        }
+                    }else{
                         planillas.each {
-                            fecha = it.fechaIngreso?.format("yyyy") + "-" + it.fechaIngreso?.format("MM") + "-" + (it.fechaIngreso?.format("dd")?.toInteger() + 1)
+                            if(it.tipoPlanilla?.id == 3){
+                                fecha = it.fechaIngreso?.format("yyyy") + "-" + it.fechaIngreso?.format("MM") + "-" + (it.fechaIngreso?.format("dd")?.toInteger() + 1)
+                            }
                         }
 
                         println("fecha " + fecha)
 
                         return [fecha: fecha, planilla: planilla, contrato: contrato, fechaMax: fechaMax]
-                    }else{
-                        return [planilla: planilla, contrato: contrato, fechaMax: fechaMax]
                     }
                 }else{
-                    planillas.each {
-                        if(it.tipoPlanilla?.id == 3){
-                            fecha = it.fechaIngreso?.format("yyyy") + "-" + it.fechaIngreso?.format("MM") + "-" + (it.fechaIngreso?.format("dd")?.toInteger() + 1)
-                        }
-                    }
-
-                    println("fecha " + fecha)
-
-                    return [fecha: fecha, planilla: planilla, contrato: contrato, fechaMax: fechaMax]
+                    return [planilla: planilla, contrato: contrato, fechaMax: fechaMax]
                 }
             }else{
                 return [planilla: planilla, contrato: contrato, fechaMax: fechaMax]
             }
         }else{
-            return [planilla: planilla, contrato: contrato, fechaMax: fechaMax]
+            if(planilla.tipoPlanilla?.id == 3 || planilla.tipoPlanilla?.id == 9){
+                if(planillas.size() >0){
+                    if(planillas.size() == 1){
+                        if(planillas.contains(Planilla.findByTipoPlanilla(tipoAnticipo))){
+//                            planillas.each {
+//                                fecha = it.fechaIngreso?.format("yyyy") + "-" + it.fechaIngreso?.format("MM") + "-" + (it.fechaIngreso?.format("dd")?.toInteger())
+//                            }
+
+                            fecha = contrato?.obraContratada?.fechaInicio?.format("yyyy") + "-" +  contrato?.obraContratada?.fechaInicio?.format("MM")  + "-" + (contrato?.obraContratada?.fechaInicio?.format("dd")?.toInteger() + 1)
+
+                            println("fecha " + fecha)
+
+                            return [fecha: fecha, planilla: planilla, contrato: contrato, fechaMax: fechaMax]
+                        }else{
+                            return [planilla: planilla, contrato: contrato, fechaMax: fechaMax]
+                        }
+                    }else{
+                        planillas.each {
+                            if(it.tipoPlanilla?.id == 3){
+                                fecha = it.fechaIngreso?.format("yyyy") + "-" + it.fechaIngreso?.format("MM") + "-" + (it.fechaIngreso?.format("dd")?.toInteger())
+                            }
+                        }
+
+                        println("fecha " + fecha)
+
+                        return [fecha: fecha, planilla: planilla, contrato: contrato, fechaMax: fechaMax]
+                    }
+                }else{
+                    return [planilla: planilla, contrato: contrato, fechaMax: fechaMax]
+                }
+            }else{
+                return [planilla: planilla, contrato: contrato, fechaMax: fechaMax]
+            }
         }
     }
-
 }
