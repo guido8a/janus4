@@ -5950,7 +5950,7 @@ class PlanillaController {
 //                                fecha = it.fechaIngreso?.format("yyyy") + "-" + it.fechaIngreso?.format("MM") + "-" + (it.fechaIngreso?.format("dd")?.toInteger() + 1)
 //                            }
 
-                            fecha = contrato?.obraContratada?.fechaInicio?.format("yyyy") + "-" +  contrato?.obraContratada?.fechaInicio?.format("MM")  + "-" + (contrato?.obraContratada?.fechaInicio?.format("dd")?.toInteger() + 1)
+                            fecha = contrato?.obra?.fechaInicio?.format("yyyy") + "-" +  contrato?.obra?.fechaInicio?.format("MM")  + "-" + (contrato?.obra?.fechaInicio?.format("dd")?.toInteger() + 1)
 
                             println("fecha " + fecha)
 
@@ -5984,7 +5984,7 @@ class PlanillaController {
 //                                fecha = it.fechaIngreso?.format("yyyy") + "-" + it.fechaIngreso?.format("MM") + "-" + (it.fechaIngreso?.format("dd")?.toInteger())
 //                            }
 
-                            fecha = contrato?.obraContratada?.fechaInicio?.format("yyyy") + "-" +  contrato?.obraContratada?.fechaInicio?.format("MM")  + "-" + (contrato?.obraContratada?.fechaInicio?.format("dd")?.toInteger() + 1)
+                            fecha = contrato?.obra?.fechaInicio?.format("yyyy") + "-" +  contrato?.obra?.fechaInicio?.format("MM")  + "-" + (contrato?.obra?.fechaInicio?.format("dd")?.toInteger() + 1)
 
                             println("fecha " + fecha)
 
