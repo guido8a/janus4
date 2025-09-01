@@ -5932,8 +5932,6 @@ class PlanillaController {
     }
 
     def verificarFecha_ajax(){
-        println("params vf " + params)
-
         def fechaMax = new Date().parse("yyyy-MM-dd", params.fechaMax)
         def contrato = Contrato.get(params.id)
         def planilla = Planilla.get(params.planilla)
@@ -5967,9 +5965,6 @@ class PlanillaController {
                                 fecha = it.fechaIngreso?.format("yyyy") + "-" + it.fechaIngreso?.format("MM") + "-" + (it.fechaIngreso?.format("dd")?.toInteger() + 1)
                             }
                         }
-
-                        println("fecha " + fecha)
-
                         return [fecha: fecha, planilla: planilla, contrato: contrato, fechaMax: fechaMax]
                     }
                 }else{
@@ -6002,9 +5997,6 @@ class PlanillaController {
                                 fecha = it.fechaIngreso?.format("yyyy") + "-" + it.fechaIngreso?.format("MM") + "-" + (it.fechaIngreso?.format("dd")?.toInteger())
                             }
                         }
-
-                        println("fecha " + fecha)
-
                         return [fecha: fecha, planilla: planilla, contrato: contrato, fechaMax: fechaMax]
                     }
                 }else{
