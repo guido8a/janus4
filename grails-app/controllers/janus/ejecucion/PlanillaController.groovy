@@ -5929,7 +5929,49 @@ class PlanillaController {
             println("Error al anular las multas " + e)
             render "no_Error al anular las multas"
         }
+    }
 
+    def verificarFecha_ajax(){
+        println("params vf " + params)
+
+        def fechaMax = new Date().parse("yyyy-MM-dd", params.fechaMax)
+        def contrato = Contrato.get(params.id)
+        def planilla = Planilla.get(params.planilla)
+        def planillas = Planilla.findAllByContrato(contrato)
+        def tipoAnticipo = TipoPlanilla.get(1)
+        def fecha;
+
+        if(params.tipo == '3' || params.tipo == '9'){
+            if(planillas.size() >0){
+                if(planillas.size() == 1){
+                    if(planillas.contains(Planilla.findByTipoPlanilla(tipoAnticipo))){
+                        planillas.each {
+                            fecha = it.fechaIngreso?.format("yyyy") + "-" + it.fechaIngreso?.format("MM") + "-" + (it.fechaIngreso?.format("dd")?.toInteger() + 1)
+                        }
+
+                        println("fecha " + fecha)
+
+                        return [fecha: fecha, planilla: planilla, contrato: contrato, fechaMax: fechaMax]
+                    }else{
+                        return [planilla: planilla, contrato: contrato, fechaMax: fechaMax]
+                    }
+                }else{
+                    planillas.each {
+                        if(it.tipoPlanilla?.id == 3){
+                            fecha = it.fechaIngreso?.format("yyyy") + "-" + it.fechaIngreso?.format("MM") + "-" + (it.fechaIngreso?.format("dd")?.toInteger() + 1)
+                        }
+                    }
+
+                    println("fecha " + fecha)
+
+                    return [fecha: fecha, planilla: planilla, contrato: contrato, fechaMax: fechaMax]
+                }
+            }else{
+                return [planilla: planilla, contrato: contrato, fechaMax: fechaMax]
+            }
+        }else{
+            return [planilla: planilla, contrato: contrato, fechaMax: fechaMax]
+        }
     }
 
 }

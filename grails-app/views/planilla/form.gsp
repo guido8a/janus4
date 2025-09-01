@@ -196,13 +196,13 @@
                         </div>
 
                         <div class="form-group col-md-12">
-                            <span class="grupo">
-                                <label class="col-md-2 control-label text-info formato">
-                                    Fecha de Aprobación
-                                </label>
-                                <span class="col-md-3">
-                                    <input aria-label="" name="fechaIngreso" id='fechaIngreso' type='text' class="form-control required" value="${planillaInstance?.fechaIngreso?.format("dd-MM-yyyy")}" />
-                                </span>
+                            <span class="grupo" id="divFechaIinicio">
+                                %{--                                <label class="col-md-2 control-label text-info formato">--}%
+                                %{--                                    Fecha de Aprobación--}%
+                                %{--                                </label>--}%
+                                %{--                                <span class="col-md-3">--}%
+                                %{--                                    <input aria-label="" name="fechaIngreso" id='fechaIngreso' type='text' class="form-control required" value="${planillaInstance?.fechaIngreso?.format("dd-MM-yyyy")}" />--}%
+                                %{--                                </span>--}%
                             </span>
                             <span class="grupo">
                                 <div class="col-md-1"></div>
@@ -241,7 +241,7 @@
                             </span>
                         </div>
 
-                        %{--<g:if test="${!(esAnticipo || planillaInstance?.tipoPlanilla?.codigo == 'A')}">   --}%%{-- no es anticipo--}%
+                    %{--<g:if test="${!(esAnticipo || planillaInstance?.tipoPlanilla?.codigo == 'A')}">   --}%%{-- no es anticipo--}%
                         <g:if test="${!(esAnticipo)}">   %{-- no es anticipo--}%
                             <div class="form-group col-md-12">
                                 <span class="grupo">
@@ -275,8 +275,8 @@
                                         Avance físico
                                     </label>
                                     <span class="col-md-2">
-%{--                                        <g:field type="number" name="avanceFisico" class="form-control required number"--}%
-%{--                                                 value="${planillaInstance.avanceFisico}" max="100"/>--}%
+                                        %{--                                        <g:field type="number" name="avanceFisico" class="form-control required number"--}%
+                                        %{--                                                 value="${planillaInstance.avanceFisico}" max="100"/>--}%
                                         <g:textField type="text" name="avanceFisico" class="form-control required"
                                                      value="${planillaInstance?.avanceFisico}" style="width: 100%" />
                                     </span>
@@ -434,6 +434,7 @@
 
 <script type="text/javascript">
 
+
     $('#fechaPresentacion,#fechaOficioEntradaPlanilla').datetimepicker({
         locale: 'es',
         format: 'DD-MM-YYYY',
@@ -444,18 +445,18 @@
         }
     });
 
-    $('#fechaIngreso').datetimepicker({
-        locale: 'es',
-        format: 'DD-MM-YYYY',
-        minDate: new Date(${contrato.fechaSubscripcion.format('yyyy')},${contrato.fechaSubscripcion.format('MM').toInteger() - 1},${contrato.fechaSubscripcion.format('dd')},0,0,0,0),
-        maxDate: new Date(${fechaMax.format('yyyy')},${fechaMax.format('MM').toInteger() - 1},${fechaMax.format('dd')},0,0,0,0),
-        sideBySide: true,
-        icons: {
-        }
-    }).on('dp.change', function(e){
-        var minDate = new Date(e.date);
-            $('#fechaPresentacion').data("DateTimePicker").date(moment(minDate).format('DD/MM/YYYY'));
-    });
+    %{--$('#fechaIngreso').datetimepicker({--}%
+    %{--    locale: 'es',--}%
+    %{--    format: 'DD-MM-YYYY',--}%
+    %{--    minDate: new Date(${contrato.fechaSubscripcion.format('yyyy')},${contrato.fechaSubscripcion.format('MM').toInteger() - 1},${contrato.fechaSubscripcion.format('dd')},0,0,0,0),--}%
+    %{--    maxDate: new Date(${fechaMax.format('yyyy')},${fechaMax.format('MM').toInteger() - 1},${fechaMax.format('dd')},0,0,0,0),--}%
+    %{--    sideBySide: true,--}%
+    %{--    icons: {--}%
+    %{--    }--}%
+    %{--}).on('dp.change', function(e){--}%
+    %{--    var minDate = new Date(e.date);--}%
+    %{--        $('#fechaPresentacion').data("DateTimePicker").date(moment(minDate).format('DD/MM/YYYY'));--}%
+    %{--});--}%
 
     function validarNum(ev) {
         /*
@@ -546,63 +547,82 @@
         }
     }
 
-    $(function () {
-        checkPeriodo();
-        cargarAsociada();
+    checkPeriodo();
+    cargarAsociada();
 
-        $("#frmSave-Planilla").validate({
-            errorClass     : "help-block",
-            errorPlacement : function (error, element) {
-                if (element.parent().hasClass("input-group")) {
-                    error.insertAfter(element.parent());
-                } else {
-                    error.insertAfter(element);
-                }
-                element.parents(".grupo").addClass('has-error');
-            },
-            success        : function (label) {
-                label.parents(".grupo").removeClass('has-error');
+    $("#frmSave-Planilla").validate({
+        errorClass     : "help-block",
+        errorPlacement : function (error, element) {
+            if (element.parent().hasClass("input-group")) {
+                error.insertAfter(element.parent());
+            } else {
+                error.insertAfter(element);
             }
-        });
-
-        $("#btnSave").click(function () {
-            var d = cargarLoader("Cargando...");
-            if ($("#frmSave-Planilla").valid()) {
-                $("#frmSave-Planilla").submit();
-            }else{
-                d.modal("hide")
-            }
-        });
-
-        $("#tipoPlanilla").change(function () {
-            var tp = $(this).val();
-            checkPeriodo();
-            cargarAsociada();
-            cargarAnticipo(tp)
-        });
-
-        function cargarAnticipo (tipo) {
-            $.ajax({
-                type:'POST',
-                url:'${createLink(controller: 'planilla', action: 'anticipo_ajax')}',
-                data:{
-                    contrato: '${contrato?.id}',
-                    tipo: tipo
-                },
-                success: function (msg){
-                    $("#divAnticipo").html(msg)
-                }
-            });
-        }
-
-        if('${contrato?.id}'){
-            var tppl = $("#tipoPlanilla").val();
-            if(!tppl) {
-                tppl = "${planillaInstance?.tipoPlanilla?.id}"
-            }
-            cargarAnticipo(tppl);
+            element.parents(".grupo").addClass('has-error');
+        },
+        success        : function (label) {
+            label.parents(".grupo").removeClass('has-error');
         }
     });
+
+    $("#btnSave").click(function () {
+        var d = cargarLoader("Cargando...");
+        if ($("#frmSave-Planilla").valid()) {
+            $("#frmSave-Planilla").submit();
+        }else{
+            d.modal("hide")
+        }
+    });
+
+
+
+    function cargarAnticipo (tipo) {
+        $.ajax({
+            type:'POST',
+            url:'${createLink(controller: 'planilla', action: 'anticipo_ajax')}',
+            data:{
+                contrato: '${contrato?.id}',
+                tipo: tipo
+            },
+            success: function (msg){
+                $("#divAnticipo").html(msg)
+            }
+        });
+    }
+
+    if('${contrato?.id}'){
+        var tppl = $("#tipoPlanilla").val();
+        if(!tppl) {
+            tppl = "${planillaInstance?.tipoPlanilla?.id}"
+        }
+        cargarAnticipo(tppl);
+    }
+
+    $("#tipoPlanilla").change(function () {
+        var tp = $(this).val();
+        checkPeriodo();
+        cargarAsociada();
+        cargarAnticipo(tp);
+        verificarFecha(tp);
+    });
+
+    verificarFecha($("#tipoPlanilla option:selected").val());
+
+    function verificarFecha(tipo) {
+        $.ajax({
+            type:'POST',
+            url:'${createLink(controller: 'planilla', action: 'verificarFecha_ajax')}',
+            data:{
+                id: '${contrato?.id}',
+                tipo: tipo,
+                planilla: '${planillaInstance?.id}',
+                fechaMax: '${fechaMax}'
+            },
+            success: function (msg){
+                $("#divFechaIinicio").html(msg);
+            }
+        });
+    }
 
 </script>
 

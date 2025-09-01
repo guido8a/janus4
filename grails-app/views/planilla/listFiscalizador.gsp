@@ -712,15 +712,15 @@
 
     $("#btnNuevaPlanilla").click(function () {
         <g:if test="${Planilla.findByContratoAndTipoPlanilla(janus.Contrato.get(contrato?.id), TipoPlanilla.findByCodigo('A'))}">
-        <g:if test="${contrato?.obra?.fechaInicio}">
-        location.href = "${g.createLink(controller: 'planilla', action: 'form')}?contrato=" + ${contrato?.id};
+             <g:if test="${contrato?.obra?.fechaInicio}">
+                 location.href = "${g.createLink(controller: 'planilla', action: 'form')}?contrato=" + ${contrato?.id};
+             </g:if>
+             <g:else>
+                 bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + "Sin Inicio de Obra </br> La obra perteneciente a este contrato no ha sido iniciada, no se puede crear planillas" + '</strong>');
+             </g:else>
         </g:if>
         <g:else>
-        bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + "Sin Inicio de Obra </br> La obra perteneciente a este contrato no ha sido iniciada, no se puede crear planillas" + '</strong>');
-        </g:else>
-        </g:if>
-        <g:else>
-        location.href = "${g.createLink(controller: 'planilla',action: 'form')}?contrato=" + ${contrato?.id};
+               location.href = "${g.createLink(controller: 'planilla',action: 'form')}?contrato=" + ${contrato?.id};
         </g:else>
     });
 
