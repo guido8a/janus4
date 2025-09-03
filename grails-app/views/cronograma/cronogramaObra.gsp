@@ -36,7 +36,7 @@
             <i class="fa fa-arrow-left"></i>
             Regresar
         </a>
-        <g:if test="${meses > 0 && plazoOk && matrizOk && (obra.estado != 'R' || obra.codigo.contains('OF'))}">
+%{--        <g:if test="${meses > 0 && plazoOk && matrizOk && (obra.estado != 'R' || obra.codigo.contains('OF'))}">--}%
             <g:if test="${(obra?.responsableObra?.departamento?.direccion?.id == persona?.departamento?.direccion?.id && duenoObra == 1) || obra?.id == null }">
                 <a href="#" class="btn disabled" id="btnDeleteRubro">
                     <i class="fa fa-minus"></i>
@@ -48,7 +48,7 @@
                 </a>
 
             </g:if>
-        </g:if>
+%{--        </g:if>--}%
     </div>
 
     <g:if test="${meses > 0 && plazoOk && matrizOk}">
@@ -74,13 +74,13 @@
                                       style="width: 400px;font-size: 10px" id="subpres" value="${subpre}"
                                       noSelection="['-1': 'TODOS']"/>
             <a href="#" class="btn" style="margin-top: -10px;" id="btnSubpre">Cambiar</a>
-            <g:if test="${obra.estado != 'R' || obra.codigo.contains('OF')}">
+%{--            <g:if test="${obra.estado != 'R' || obra.codigo.contains('OF')}">--}%
                 <a href="#" class="btn" style="margin-top: -10px;" id="btnDesmarcar">Desmarcar todo</a>
                 <a href="#" class="btn" style="margin-top: -10px;" id="btnRutaOn"><i class="fa fa-check"></i> Marcar ruta crítica
                 </a>
                 <a href="#" class="btn" style="margin-top: -10px;" id="btnRutaOff"><i class="fa fa-check"></i> Desmarcar ruta crítica
                 </a>
-            </g:if>
+%{--            </g:if>--}%
         </div>
         "${(obra?.responsableObra?.departamento?.direccion?.id == persona?.departamento?.direccion?.id) || obra?.id != null }"
 
@@ -672,7 +672,7 @@
             location.href = "${createLink(action: 'cronogramaObra')}/${obra.id}?subpre=" + $("#subpres").val();
         });
 
-        <g:if test="${obra.estado!='R' || obra.codigo.contains('OF')}">
+%{--        <g:if test="${obra.estado!='R' || obra.codigo.contains('OF')}">--}%
         $("#tabla_material").children("tr").click(function () {
 
             if ($(this).hasClass("rowSelected")) {
@@ -705,7 +705,7 @@
                 $("#btnLimpiarRubro, #btnDeleteRubro").removeClass("disabled");
             }
         });
-        </g:if>
+%{--        </g:if>--}%
 
         $(".spinner").spinner({
             min : 1,
@@ -1043,7 +1043,7 @@
             });
         }
 
-        <g:if test="${obra.estado!='R' || obra.codigo.contains('OF')}">
+%{--        <g:if test="${obra.estado!='R' || obra.codigo.contains('OF')}">--}%
         $("#btnRutaOn").click(function () {
             modificarRuta("S");
             return false;
@@ -1266,7 +1266,7 @@
                 }
             });
         });
-        </g:if>
+%{--        </g:if>--}%
         $("#btnReporte").click(function () {
             location.href = "${createLink(controller: 'reportes2', action:'reporteCronogramaPdf', id:obra.id, params:[tipo:'obra'])}";
             return false;
