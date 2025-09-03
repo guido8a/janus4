@@ -268,20 +268,33 @@ class Reportes2Controller {
 
                 def ares = ArchivoEspecificacion.findByCodigo(rubro?.codigoEspecificacion)
                 if (ares && tipo.contains("e")) {
-                    extEspecificacion = ares.ruta.split("\\.")
-                    extEspecificacion = extEspecificacion[extEspecificacion.size() - 1]
-                    pathEspecificacion = "/var/janus/" + "rubros" + File.separatorChar + ares?.ruta
-                    println "ruta: --> ${ares?.ruta} path: ${pathEspecificacion.toLowerCase()}"
-                    if (pathEspecificacion.toLowerCase().contains("pdf")) {
-                        try {
-                            readerEspecificacion = new PdfReader(new FileInputStream(pathEspecificacion));
-                            println "pags: ${readerEspecificacion.getNumberOfPages()}"
-                            pagesEspecificacion = readerEspecificacion.getNumberOfPages()
-                        } catch (e) {
-                            falta.add("item: " + rubro.codigo + " archivo: " + ares.ruta)
-                            cnta++
+                    println "---> rbro: ${rubro.codigo} ruta: ${ares?.ruta}"
+
+                    if(!ares?.ruta) {
+                        falta.add("item: " + rubro.codigo + " archivo: " + ares.ruta)
+                        cnta++
+                    } else {
+                        extEspecificacion = ares.ruta.split("\\.")
+                        extEspecificacion = extEspecificacion[extEspecificacion.size() - 1]
+                        pathEspecificacion = "/var/janus/" + "rubros" + File.separatorChar + ares?.ruta
+                        println "ruta: --> ${ares?.ruta} path: ${pathEspecificacion.toLowerCase()}"
+                        if (pathEspecificacion.toLowerCase().contains("pdf")) {
+                            try {
+                                extEspecificacion = ares.ruta.split("\\.")
+                                extEspecificacion = extEspecificacion[extEspecificacion.size() - 1]
+                                pathEspecificacion = "/var/janus/" + "rubros" + File.separatorChar + ares?.ruta
+                                println "ruta: --> ${ares?.ruta} path: ${pathEspecificacion.toLowerCase()}"
+
+                                readerEspecificacion = new PdfReader(new FileInputStream(pathEspecificacion));
+                                println "pags: ${readerEspecificacion.getNumberOfPages()}"
+                                pagesEspecificacion = readerEspecificacion.getNumberOfPages()
+                            } catch (e) {
+                                falta.add("item: " + rubro.codigo + " archivo: " + ares.ruta)
+                                cnta++
+                            }
+                        }else{
+
                         }
-                    }else{
 
                     }
                 }
