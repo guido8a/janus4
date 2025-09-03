@@ -2791,6 +2791,10 @@ class ReportesExcelController {
 
         def fila = 9
         def columna = 7
+        def columnaTP = 7
+        def columnaTA = 7
+        def columnaPP = 7
+        def columnaPA = 7
         def totalMes = []
         def sum = 0.0
         def acu = 0
@@ -2806,7 +2810,9 @@ class ReportesExcelController {
         rowC1.createCell(6).setCellValue("T.")
 
         prej.eachWithIndex { pr, i ->
-            rowC1.createCell(7+i).setCellValue("${pr.fechaInicio.format("dd-MM-yy")} a ${pr.fechaFin.format("dd-MM-yy")}")
+            rowC1.createCell(columna).setCellValue("PREJ")
+            columna ++
+            rowC1.createCell(columna).setCellValue("${pr.fechaInicio.format("dd-MM-yy")} a ${pr.fechaFin.format("dd-MM-yy")}")
             columna ++
         }
 
@@ -2824,10 +2830,8 @@ class ReportesExcelController {
             sum += (rb?.volumenSubtotal ?: 0) //total por rubro
             sum += 0
 
-            def sqlCreo = "select creo__id, prej__id from creo where vocr__id = ${rb?.id}"
-            def res = cn.rows(sqlCreo)
-
-            println("res " + res)
+//            def sqlCreo = "select creo__id, prej__id from creo where vocr__id = ${rb?.id}"
+//            def res = cn.rows(sqlCreo)
 
             Row rowF1 = sheet.createRow(fila)
             rowF1.createCell(0).setCellValue(rb.item.codigo.toString() ?: '')
@@ -2848,7 +2852,9 @@ class ReportesExcelController {
                     totalMes[i] = 0
                 }
                 totalMes[i++] += crej?.precio?:0
-                rowF1.createCell(7+j).setCellValue(crej?.precio?.toDouble()?.round(2) ?:0)
+                rowF1.createCell(columnaInterna).setCellValue(pr?.id)
+                columnaInterna++
+                rowF1.createCell(columnaInterna).setCellValue(crej?.precio?.toDouble()?.round(2) ?:0)
                 columnaInterna++
             }
 
@@ -2862,7 +2868,9 @@ class ReportesExcelController {
             prej.eachWithIndex { pr,j ->
                 crej = CrngEjecucionObra.findByVolumenObraAndPeriodo(VolumenContrato.get(rb.id), pr)
                 totalPrcRow += crej?.porcentaje?:0
-                rowF2.createCell(7+j).setCellValue(crej?.porcentaje?.toDouble()?.round(2) ?:0)
+                rowF2.createCell(columnaInterna2).setCellValue("")
+                columnaInterna2++
+                rowF2.createCell(columnaInterna2).setCellValue(crej?.porcentaje?.toDouble()?.round(2) ?:0)
                 columnaInterna2++
             }
 
@@ -2876,7 +2884,9 @@ class ReportesExcelController {
             prej.eachWithIndex { pr,j ->
                 crej = CrngEjecucionObra.findByVolumenObraAndPeriodo(VolumenContrato.get(rb.id), pr)
                 totalCanRow += crej?.cantidad?:0
-                rowF3.createCell(7+j).setCellValue(crej?.cantidad?.toDouble()?.round(2) ?: 0)
+                rowF3.createCell(columnaInterna3).setCellValue("")
+                columnaInterna3++
+                rowF3.createCell(columnaInterna3).setCellValue(crej?.cantidad?.toDouble()?.round(2) ?: 0)
                 columnaInterna3++
             }
 
@@ -2890,7 +2900,10 @@ class ReportesExcelController {
         rowTotales.createCell(5).setCellValue(sum?.toDouble()?.round(2))
         rowTotales.createCell(6).setCellValue('T')
         prej.size().times { i ->
-            rowTotales.createCell(7+i).setCellValue(totalMes[i]?.toDouble()?.round(2))
+            rowTotales.createCell(columnaTP).setCellValue("")
+            columnaTP++
+            rowTotales.createCell(columnaTP).setCellValue(totalMes[i]?.toDouble()?.round(2))
+            columnaTP++
         }
 
         fila++
@@ -2900,7 +2913,10 @@ class ReportesExcelController {
         rowTotalesAcumulado.createCell(6).setCellValue('T')
         prej.size().times { i ->
             acu += totalMes[i]
-            rowTotalesAcumulado.createCell(7+i).setCellValue(acu?.toDouble()?.round(2))
+            rowTotalesAcumulado.createCell(columnaTA).setCellValue("")
+            columnaTA++
+            rowTotalesAcumulado.createCell(columnaTA).setCellValue(acu?.toDouble()?.round(2))
+            columnaTA++
         }
 
         fila++
@@ -2910,7 +2926,10 @@ class ReportesExcelController {
         porcentajeParcial.createCell(6).setCellValue('T')
         prej.size().times { i ->
             def prc = 100 * totalMes[i] / sum
-            porcentajeParcial.createCell(7+i).setCellValue(prc?.toDouble()?.round(2))
+            porcentajeParcial.createCell(columnaPP).setCellValue("")
+            columnaPP++
+            porcentajeParcial.createCell(columnaPP).setCellValue(prc?.toDouble()?.round(2))
+            columnaPP++
         }
 
         fila++
@@ -2922,7 +2941,10 @@ class ReportesExcelController {
         prej.size().times { i ->
             def prc = 100 * totalMes[i]/ sum
             acu += prc
-            porcentajeAcumulado.createCell(7+i).setCellValue(acu?.toDouble()?.round(2))
+            porcentajeAcumulado.createCell(columnaPA).setCellValue("")
+            columnaPA++
+            porcentajeAcumulado.createCell(columnaPA).setCellValue(acu?.toDouble()?.round(2))
+            columnaPA++
         }
 
         def output = response.getOutputStream()
