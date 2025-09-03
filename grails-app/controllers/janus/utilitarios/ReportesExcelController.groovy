@@ -2821,7 +2821,7 @@ class ReportesExcelController {
             def columnaInterna2 = 7
             def columnaInterna3 = 7
 
-            sum += rb.volumenSubtotal //total por rubro
+            sum += (rb?.volumenSubtotal ?: 0) //total por rubro
             sum += 0
 
             def sqlCreo = "select creo__id, prej__id from creo where vocr__id = ${rb?.id}"
