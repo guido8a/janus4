@@ -65,7 +65,7 @@
     </g:if>
 </div>
 
-<g:if test="${matrizOk}">
+%{--<g:if test="${matrizOk}">--}%
 
     <g:if test="${meses > 0 && plazoOk}">
 
@@ -301,16 +301,16 @@
             </div>
         </g:elseif>
     </g:else>
-</g:if>
-<g:else>
-    <div class="alert alert-error" style="font-size: 14px">
-        <i class="icon-warning-sign icon-2x pull-left"></i>
-        <p>No se ha generado la matriz de la fórmula polinómica.</p>
-        <i class="icon-warning-sign icon-2x pull-left"></i>
-        <p>Si la obra se encuentra <strong>registrada</strong>, Por favor vuelva a generar la matriz de la FP para visualizar el cronograma
-        </p>
-    </div>
-</g:else>
+%{--</g:if>--}%
+%{--<g:else>--}%
+%{--    <div class="alert alert-error" style="font-size: 14px">--}%
+%{--        <i class="icon-warning-sign icon-2x pull-left"></i>--}%
+%{--        <p>No se ha generado la matriz de la fórmula polinómica.</p>--}%
+%{--        <i class="icon-warning-sign icon-2x pull-left"></i>--}%
+%{--        <p>Si la obra se encuentra <strong>registrada</strong>, Por favor vuelva a generar la matriz de la FP para visualizar el cronograma--}%
+%{--        </p>--}%
+%{--    </div>--}%
+%{--</g:else>--}%
 
 <div id="modal-cronograma">
 
