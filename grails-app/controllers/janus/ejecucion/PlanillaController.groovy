@@ -5945,16 +5945,8 @@ class PlanillaController {
             if(params.tipo == '3' || params.tipo == '9'){
                 if(planillas.size() >0){
                     if(planillas.size() == 1){
-//                        if(planillas.contains(Planilla.findByTipoPlanilla(tipoAnticipo))){
                         if(planillaAnticipo){
-//                            planillas.each {
-//                                fecha = it.fechaIngreso?.format("yyyy") + "-" + it.fechaIngreso?.format("MM") + "-" + (it.fechaIngreso?.format("dd")?.toInteger() + 1)
-//                            }
-
                             fecha = contrato?.obra?.fechaInicio?.format("yyyy") + "-" +  contrato?.obra?.fechaInicio?.format("MM")  + "-" + (contrato?.obra?.fechaInicio?.format("dd")?.toInteger() + 1)
-
-                            println("fecha " + fecha)
-
                             return [fecha: fecha, planilla: planilla, contrato: contrato, fechaMax: fechaMax]
                         }else{
                             return [planilla: planilla, contrato: contrato, fechaMax: fechaMax]
@@ -5977,16 +5969,8 @@ class PlanillaController {
             if(planilla.tipoPlanilla?.id == 3 || planilla.tipoPlanilla?.id == 9){
                 if(planillas.size() >0){
                     if(planillas.size() == 1){
-//                        if(planillas.contains(Planilla.findByTipoPlanilla(tipoAnticipo))){
                         if(planillaAnticipo){
-//                            planillas.each {
-//                                fecha = it.fechaIngreso?.format("yyyy") + "-" + it.fechaIngreso?.format("MM") + "-" + (it.fechaIngreso?.format("dd")?.toInteger())
-//                            }
-
                             fecha = contrato?.obra?.fechaInicio?.format("yyyy") + "-" +  contrato?.obra?.fechaInicio?.format("MM")  + "-" + (contrato?.obra?.fechaInicio?.format("dd")?.toInteger() + 1)
-
-                            println("fecha " + fecha)
-
                             return [fecha: fecha, planilla: planilla, contrato: contrato, fechaMax: fechaMax]
                         }else{
                             return [planilla: planilla, contrato: contrato, fechaMax: fechaMax]

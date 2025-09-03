@@ -2,7 +2,6 @@
 <html>
 <head>
     <meta name="layout" content="mainMatriz">
-    %{--<meta name="layout" content="mainCrono">--}%
     <title>Cronograma ejecución</title>
 
     <style type="text/css">
@@ -97,8 +96,11 @@
                 </g:if>
             </div>
             <div class="btn-group">
-                <a href="#" id="btnReporte" class="btn btn-success" title="Imprimir">
-                    <i class="fa fa-print"></i> Imprimir
+                <a href="#" id="btnReporte" class="btn btn-info" title="Imprimir">
+                    <i class="fa fa-print"></i> PDF
+                </a>
+                <a href="#" id="btnReporteExcel" class="btn btn-success" title="Imprimir en formato excel">
+                    <i class="fa fa-file-excel"></i> Excel
                 </a>
             </div>
         </g:if>
@@ -264,8 +266,8 @@
         return ((ev.keyCode >= 48 && ev.keyCode <= 57) ||
             (ev.keyCode >= 96 && ev.keyCode <= 105) ||
             //                        ev.keyCode == 190 || ev.keyCode == 110 ||
-            ev.keyCode == 8 || ev.keyCode == 46 || ev.keyCode == 9 ||
-            ev.keyCode == 37 || ev.keyCode == 39);
+            ev.keyCode === 8 || ev.keyCode === 46 || ev.keyCode === 9 ||
+            ev.keyCode === 37 || ev.keyCode === 39);
     }
 
     %{--function updateTabla() {--}%
@@ -549,15 +551,12 @@
                     success : function (msg) {
                         dialog.modal('hide');
                         var parts = msg.split("_");
-                        console.log("---> " + parts[0])
                         if(parts[0] === 'OK'){
-
                             log("Suspensión guardada correctamente", "success");
                             setTimeout(function () {
                                 location.reload();
                             }, 800);
                         }else{
-                            // bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + "Error al guardar la suspensión" + '</strong>');
                             bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' +
                                 '<strong style="font-size: 14px">' + "Error al guardar la suspensión: " + parts[1] +
                                 '</strong>');
@@ -569,8 +568,6 @@
                 return false;
             }
         }
-
-
 
         $("#btnModif").click(function () {
             var vol = $(".rowSelected").first().data("vol");
@@ -660,8 +657,6 @@
                 }
             });
 
-
-
             %{--$.box({--}%
             %{--    imageClass: "box_info",--}%
             %{--    title: "Integrar Cronograma del Complementario",--}%
@@ -735,8 +730,8 @@
         });
 
         $("#btnRango").click(function () {
-            var dsde = $("#desde").val()
-            var hsta = $("#hasta").val()
+            var dsde = $("#desde").val();
+            var hsta = $("#hasta").val();
             location.href = "${createLink(action:'indexNuevo', id:contrato.id)}" + "?desde=" + dsde + "&hasta=" + hsta;
             return false;
         });
@@ -744,6 +739,10 @@
         $("#btnTodos").click(function () {
             location.href = "${createLink(action:'indexNuevo', id:contrato.id)}" + "?desde=1&hasta=1000";
             return false;
+        });
+
+        $("#btnReporteExcel").click(function () {
+            location.href = "${createLink(controller:'reportesExcel', action:'reporteExcelCronogramaEjecucion')}?contrato=${contrato?.id}";
         });
 
     });
