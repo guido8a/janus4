@@ -2866,33 +2866,33 @@ class ReportesExcelController {
             rowF1.createCell(columnaInterna+1).setCellValue(rb?.id?.toInteger())
             fila++
 
-            Row rowF2 = sheet.createRow(fila)
-            rowF2.createCell(6).setCellValue('%')
+//            Row rowF2 = sheet.createRow(fila)
+//            rowF2.createCell(6).setCellValue('%')
+//
+//            prej.eachWithIndex { pr,j ->
+//                crej = CrngEjecucionObra.findByVolumenObraAndPeriodo(VolumenContrato.get(rb.id), pr)
+//                totalPrcRow += crej?.porcentaje?:0
+//                rowF2.createCell(columnaInterna2).setCellValue(crej?.porcentaje?.toDouble()?.round(2) ?:0)
+//                columnaInterna2++
+//            }
+//
+//            rowF2.createCell(columnaInterna2).setCellValue(totalPrcRow?.toDouble()?.round(2) + ' %')
+//
+//            fila++
 
-            prej.eachWithIndex { pr,j ->
-                crej = CrngEjecucionObra.findByVolumenObraAndPeriodo(VolumenContrato.get(rb.id), pr)
-                totalPrcRow += crej?.porcentaje?:0
-                rowF2.createCell(columnaInterna2).setCellValue(crej?.porcentaje?.toDouble()?.round(2) ?:0)
-                columnaInterna2++
-            }
-
-            rowF2.createCell(columnaInterna2).setCellValue(totalPrcRow?.toDouble()?.round(2) + ' %')
-
-            fila++
-
-            Row rowF3 = sheet.createRow(fila)
-            rowF3.createCell(6).setCellValue('F')
-
-            prej.eachWithIndex { pr,j ->
-                crej = CrngEjecucionObra.findByVolumenObraAndPeriodo(VolumenContrato.get(rb.id), pr)
-                totalCanRow += crej?.cantidad?:0
-                rowF3.createCell(columnaInterna3).setCellValue(crej?.cantidad?.toDouble()?.round(2) ?: 0)
-                columnaInterna3++
-            }
-
-            rowF3.createCell(columnaInterna3).setCellValue(totalCanRow?.toDouble()?.round(2) + ' F')
-
-            fila++
+//            Row rowF3 = sheet.createRow(fila)
+//            rowF3.createCell(6).setCellValue('F')
+//
+//            prej.eachWithIndex { pr,j ->
+//                crej = CrngEjecucionObra.findByVolumenObraAndPeriodo(VolumenContrato.get(rb.id), pr)
+//                totalCanRow += crej?.cantidad?:0
+//                rowF3.createCell(columnaInterna3).setCellValue(crej?.cantidad?.toDouble()?.round(2) ?: 0)
+//                columnaInterna3++
+//            }
+//
+//            rowF3.createCell(columnaInterna3).setCellValue(totalCanRow?.toDouble()?.round(2) + ' F')
+//
+//            fila++
         }
 
         Row rowTotales = sheet.createRow(fila)
