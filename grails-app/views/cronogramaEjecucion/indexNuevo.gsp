@@ -198,6 +198,37 @@
 
 <script type="text/javascript">
 
+    var cec;
+
+    $("#btnCargarExcelCronogramaEje").click(function(){
+        $.ajax({
+            type: "POST",
+            url: "${createLink(controller: "cronogramaEjecucion", action:'subirExcelCronograma_ajax')}",
+            data:{
+                id: '${contrato?.id}'
+            },
+            success: function (msg) {
+                cec = bootbox.dialog({
+                    id      : "dlgSubirExcel",
+                    title   : "Cargar excel de cronograma de ejecución",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        }
+                    } //buttons
+                }); //dialog
+            }
+        });
+    });
+
+    function cerrarCargarExcelCronograma(){
+        cec.modal("hide");
+    }
+
     $("#btnVerificarCronograma").click(function () {
         var g = cargarLoader("Cargando...");
         $.ajax({
@@ -371,7 +402,6 @@
         });
 
         $("#btnAmpl").click(function () {
-
             $.ajax({
                 type: "POST",
                 url: "${createLink(action:'ampliacion_ajax')}",
