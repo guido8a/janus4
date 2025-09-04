@@ -3858,21 +3858,11 @@ class CronogramaEjecucionController {
             if (ext == "xlsx") {
 
                 fileName = "cronogramaEjecucion_" +  contrato?.id
-
                 def fn = fileName
                 fileName = fileName + "." + ext
-
                 def pathFile = path + fileName
-                def src = new File(pathFile)
-
-                def i = 1
-                while (src.exists()) {
-                    pathFile = path + fn + "_" + i + "." + ext
-                    src = new File(pathFile)
-                    i++
-                }
-
                 f.transferTo(new File(pathFile)) // guarda el archivo subido al nuevo path
+
 
                 //procesar excel
 //                def htmlInfo = "", errores = "", doneHtml = "", done = 0
