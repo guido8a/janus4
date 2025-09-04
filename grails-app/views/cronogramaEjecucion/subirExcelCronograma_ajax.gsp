@@ -1,5 +1,5 @@
 <div class="row">
-    <div class="" style="width: 99.7%;height: 180px; overflow-y: auto;float: right; margin-top: -20px">
+    <div class="col-md-12" style="width: 99.7%;height: 400px; overflow-y: auto;float: right; margin-top: -20px">
 
         <g:if test="${flash.message}">
             <div class="row">
@@ -14,6 +14,15 @@
 
         <div class="breadcrumb col-md-12" style="font-weight: bold; font-size: 14px; text-align: center">
             Obra: ${contrato?.obra?.nombre}<br/>
+        </div>
+
+        <div class="alert alert-warning col-md-12" style="font-weight: bold; font-size: 14px; text-align: left">
+            1.- Descargue el archivo excel de esta página <br/>
+            2.- Modifique los valores necesarios <br/>
+            3.- Guarde los cambios. <br/>
+            4.- Suba el excel modificado AQUÍ <br/>
+
+          <i class="fa fa-exclamation-triangle text-danger fa-2x"></i>  Cualquier otro archivo excel con formato diferente no podrá ser procesado
         </div>
 
         <div class="col-md-12" style="margin-bottom: 10px">
