@@ -2756,10 +2756,9 @@ class ReportesExcelController {
         sheet.setColumnWidth(3, 15 * 256)
         sheet.setColumnWidth(4, 15 * 256)
         sheet.setColumnWidth(5, 15 * 256)
-        sheet.setColumnWidth(6, 10 * 256)
 
         prej.eachWithIndex { pr, i ->
-            sheet.setColumnWidth(7+i, 20 * 256)
+            sheet.setColumnWidth(6+i, 20 * 256)
         }
 
         Row row = sheet.createRow(0)
@@ -2790,12 +2789,12 @@ class ReportesExcelController {
         row7.setRowStyle(styleNoBold)
 
         def fila = 9
-        def columna = 7
-        def columnaPrej = 7
-        def columnaTP = 7
-        def columnaTA = 7
-        def columnaPP = 7
-        def columnaPA = 7
+        def columna = 6
+        def columnaPrej = 6
+        def columnaTP = 6
+        def columnaTA = 6
+        def columnaPP = 6
+        def columnaPA = 6
         def totalMes = []
         def sum = 0.0
         def acu = 0
@@ -2816,7 +2815,7 @@ class ReportesExcelController {
         rowC1.createCell(3).setCellValue("Cantidad")
         rowC1.createCell(4).setCellValue("P. Unitario")
         rowC1.createCell(5).setCellValue("C. Total")
-        rowC1.createCell(6).setCellValue("T.")
+//        rowC1.createCell(6).setCellValue("T.")
         prej.eachWithIndex { pr, i ->
             rowC1.createCell(columna).setCellValue("${pr.fechaInicio.format("dd-MM-yy")} a ${pr.fechaFin.format("dd-MM-yy")}")
             columna ++
@@ -2829,9 +2828,9 @@ class ReportesExcelController {
 
         vocr.each { rb ->
             def totalDolRow = 0, totalPrcRow = 0, totalCanRow = 0
-            def columnaInterna = 7
-            def columnaInterna2 = 7
-            def columnaInterna3 = 7
+            def columnaInterna = 6
+            def columnaInterna2 = 6
+            def columnaInterna3 = 6
 
             sum += (rb?.volumenSubtotal ?: 0) //total por rubro
             sum += 0
@@ -2846,7 +2845,7 @@ class ReportesExcelController {
             rowF1.createCell(3).setCellValue(rb.volumenCantidad?.toDouble()?.round(2) ?: 0)
             rowF1.createCell(4).setCellValue(rb.volumenPrecio?.toDouble()?.round(2) ?: 0)
             rowF1.createCell(5).setCellValue(rb.volumenSubtotal?.toDouble()?.round(2) ?: 0)
-            rowF1.createCell(6).setCellValue('$')
+//            rowF1.createCell(6).setCellValue('$')
 
             def i = 0
             def crej
@@ -2898,7 +2897,7 @@ class ReportesExcelController {
         Row rowTotales = sheet.createRow(fila)
         rowTotales.createCell(4).setCellValue("TOTAL PARCIAL")
         rowTotales.createCell(5).setCellValue(sum?.toDouble()?.round(2))
-        rowTotales.createCell(6).setCellValue('T')
+//        rowTotales.createCell(6).setCellValue('T')
         prej.size().times { i ->
             rowTotales.createCell(columnaTP).setCellValue(totalMes[i]?.toDouble()?.round(2))
             columnaTP++
@@ -2908,7 +2907,7 @@ class ReportesExcelController {
 
         Row rowTotalesAcumulado = sheet.createRow(fila)
         rowTotalesAcumulado.createCell(4).setCellValue("TOTAL ACUMULADO")
-        rowTotalesAcumulado.createCell(6).setCellValue('T')
+//        rowTotalesAcumulado.createCell(6).setCellValue('T')
         prej.size().times { i ->
             acu += totalMes[i]
             rowTotalesAcumulado.createCell(columnaTA).setCellValue(acu?.toDouble()?.round(2))
@@ -2919,7 +2918,7 @@ class ReportesExcelController {
 
         Row porcentajeParcial = sheet.createRow(fila)
         porcentajeParcial.createCell(4).setCellValue("% PARCIAL")
-        porcentajeParcial.createCell(6).setCellValue('T')
+//        porcentajeParcial.createCell(6).setCellValue('T')
         prej.size().times { i ->
             def prc = 100 * totalMes[i] / sum
             porcentajeParcial.createCell(columnaPP).setCellValue(prc?.toDouble()?.round(2))
@@ -2930,7 +2929,7 @@ class ReportesExcelController {
 
         Row porcentajeAcumulado = sheet.createRow(fila)
         porcentajeAcumulado.createCell(4).setCellValue("% ACUMULADO")
-        porcentajeAcumulado.createCell(6).setCellValue('T')
+//        porcentajeAcumulado.createCell(6).setCellValue('T')
         acu = 0
         prej.size().times { i ->
             def prc = 100 * totalMes[i]/ sum
