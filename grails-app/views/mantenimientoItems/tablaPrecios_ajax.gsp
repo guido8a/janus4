@@ -28,8 +28,8 @@
                     <td style="width: 8%">${item.rbpcpcun ?: ''}</td>
                     <td style="width: 8%; text-align: center">
                         <g:if test="${session.perfil.codigo == 'CSTO'}">
-                            <a href="#" class="btn btn-xs btn-warning btnVerPrecios" data-id="${item?.item__id}" title="Ver">
-                                <i class="fas fa-search"></i>
+                            <a href="#" class="btn btn-xs btn-success btnVerPrecios" data-id="${item?.item__id}" title="Editar precios">
+                                <i class="fas fa-edit"></i>
                             </a>
                         </g:if>
                     %{--<a href="#" class="btn btn-xs btn-warning btnHistorico" data-item="${item?.item__id}"--}%

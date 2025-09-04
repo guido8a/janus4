@@ -32,9 +32,9 @@
                             <i class="fas fa-search"></i>
                         </a>
                         <g:if test="${session.perfil.codigo == 'CSTO'}">
-                            <a href="#" class="btn btn-xs btn-success btnHistorico" data-item="${item?.item__id}" data-lugar="${item?.lgar__id}" title="Histórico de Precios">
-                                <i class="fas fa-edit"></i>
-                            </a>
+%{--                            <a href="#" class="btn btn-xs btn-success btnHistorico" data-item="${item?.item__id}" data-lugar="${item?.lgar__id}" title="Histórico de Precios">--}%
+%{--                                <i class="fas fa-edit"></i>--}%
+%{--                            </a>--}%
                             <g:if test="${perfil}">
                                 <a href="#" class="btn btn-xs btn-warning btnEspecificacionesMaterial" data-id="${item?.item__id}" title="Especificaciones e Ilustración" ${janus.Item.get(item?.item__id)?.codigoEspecificacion ?: 'disabled'}>
                                     <i class="fas fa-book"></i>

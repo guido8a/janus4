@@ -103,6 +103,11 @@
                     <i class="fa fa-file-excel"></i> Excel
                 </a>
             </div>
+            <div class="btn-group">
+                <a href="#" id="btnCargarExcelCronogramaEje" class="btn btn-warning" title="Cargar excel con el cronograma de ejecución">
+                    <i class="fa fa-upload"></i> Subir excel
+                </a>
+            </div>
         </g:if>
 
     %{--<div class="btn-group" style="margin-left: 35px">--}%
@@ -742,7 +747,7 @@
         });
 
         $("#btnReporteExcel").click(function () {
-            location.href = "${createLink(controller:'reportesExcel', action:'reporteExcelCronogramaEjecucion')}?contrato=${contrato?.id}";
+          location.href = "${createLink(controller:'reportesExcel', action:'reporteExcelCronogramaEjecucion')}?contrato=${contrato?.id}";
         });
 
     });
