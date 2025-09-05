@@ -108,6 +108,14 @@
                     <i class="fa fa-upload"></i> Subir excel
                 </a>
             </div>
+            <div class="btn-group">
+                <a href="#" id="btnCrearHistorico" class="btn btn-success" title="Crear historico del cronograma">
+                    <i class="fa fa-copy"></i> Crear histórico
+                </a>
+                <a href="#" id="btnVerHistoricos" class="btn btn-info" title="Ver históricos del cronograma">
+                    <i class="fa fa-search"></i> Ver históricos
+                </a>
+            </div>
         </g:if>
 
     %{--<div class="btn-group" style="margin-left: 35px">--}%
@@ -199,6 +207,68 @@
 <script type="text/javascript">
 
     var cec;
+
+    $("#btnVerHistoricos").click(function () {
+        location.href="${createLink(controller: 'cronogramaEjecucion', action: 'listaHistorico')}?id=" + '${contrato?.id}'
+    });
+
+    $("#btnCrearHistorico").click(function () {
+        $.ajax({
+            type: "POST",
+            url: "${createLink(controller: "cronogramaEjecucion", action:'crearHistorico_ajax')}",
+            success: function (msg) {
+                var dhc = bootbox.dialog({
+                    id      : "dlgCrearHistorico",
+                    title   : "Crear histórico del cronograma de ejecución",
+                    message : msg,
+                    data:{
+                    },
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        },
+                        aceptar : {
+                            label     : "Aceptar",
+                            className : "btn-success",
+                            callback  : function () {
+                                return submitCrearHistorico();
+                            }
+                        }
+                    } //buttons
+                }); //dialog
+            }
+        });
+    });
+
+    function submitCrearHistorico() {
+        var $form = $("#frmCrearhistorico");
+        if ($form.valid()) {
+            var dialog = cargarLoader("Guardando...");
+            $.ajax({
+                type    : "POST",
+                url: "${createLink(controller: 'cronogramaEjecucion', action:'guardarDescripcion_ajax')}",
+                data    : {
+                    id: '${contrato?.id}',
+                    descripcion: $("#descripcion").val()
+                },
+                success : function (msg) {
+                    dialog.modal('hide');
+                    var parts = msg.split("_");
+                    if(parts[0] === 'ok'){
+                        log(parts[1], "success");
+                    }else{
+                        bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
+                        return false;
+                    }
+                }
+            });
+        } else {
+            return false;
+        }
+    }
 
     $("#btnCargarExcelCronogramaEje").click(function(){
         $.ajax({
