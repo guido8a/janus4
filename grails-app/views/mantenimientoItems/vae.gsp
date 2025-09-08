@@ -238,14 +238,9 @@
         var nodeddd = instance.get_node(node);
         var childrenIds = nodeddd.children;
 
-        // console.log("ccc " + childrenIds)
-
         childrenIds.forEach(function(childId) {
             var childNode = instance.get_node(childId);
-            // console.log(childNode.text);
             $("#tree").jstree("open_node", childNode.id);
-
-            // console.log(childNode.id);
         });
 
         if(nodeNivel !== 'root'){
@@ -259,6 +254,17 @@
         var nodeId = node.toString().split("_")[1];
         var nodeNivel = node.toString().split("_")[0];
 
+        $("#tree2").jstree("open_node", node);
+
+        var instance = $('#tree2').jstree(true);
+        var nodeddd = instance.get_node(node);
+        var childrenIds = nodeddd.children;
+
+        childrenIds.forEach(function(childId) {
+            var childNode = instance.get_node(childId);
+            $("#tree2").jstree("open_node", childNode.id);
+        });
+
         if(nodeNivel !== 'root'){
             cargarInfo(nodeNivel, nodeId);
         }
@@ -269,6 +275,17 @@
 
         var nodeId = node.toString().split("_")[1];
         var nodeNivel = node.toString().split("_")[0];
+
+        $("#tree3").jstree("open_node", node);
+
+        var instance = $('#tree3').jstree(true);
+        var nodeddd = instance.get_node(node);
+        var childrenIds = nodeddd.children;
+
+        childrenIds.forEach(function(childId) {
+            var childNode = instance.get_node(childId);
+            $("#tree3").jstree("open_node", childNode.id);
+        });
 
         if(nodeNivel !== 'root'){
             cargarInfo(nodeNivel, nodeId);
