@@ -15,7 +15,8 @@
     }
     .suspension {
         background-color: #ffffff !important;
-        color: #444 !important;
+        /*color: #444 !important;*/
+        color: #ffcc3b !important;
         font-weight: normal !important;
     }
     .numero {
@@ -41,20 +42,20 @@
 
 <table class="table table-bordered table-condensed table-hover table-striped" width="1360px">
     <thead>
-    <tr style="width: 100%">
-        <th rowspan="2" style="width:70px;">Código</th>
-        <th rowspan="2" style="width:150px;">Rubro</th>
-        <th rowspan="2" style="width:26px;">*</th>
-        <th rowspan="2" style="width:60px;">Cantidad Unitario Total</th>
-        <th rowspan="2" style="width:12px;">T.</th>
+    <tr style="width: 100%;">
+        <th rowspan="2" style="width:70px; background-color: #856c4d !important;">Código</th>
+        <th rowspan="2" style="width:150px; background-color: #856c4d !important;">Rubro</th>
+        <th rowspan="2" style="width:26px; background-color: #856c4d !important;">*</th>
+        <th rowspan="2" style="width:60px; background-color: #856c4d !important;">Cantidad Unitario Total</th>
+        <th rowspan="2" style="width:12px; background-color: #856c4d !important;">T.</th>
         <g:each in="${titulo1}" var="t">
-            <th class="${t[1] == 'S' ? 'suspension' : 'numero'}">${t[0]}</th>
+            <th style="background-color: #856c4d !important;" class="${t[1] == 'S' ? 'suspension' : 'numero'}">${t[0]}</th>
         </g:each>
-        <th rowspan="2">Total rubro</th>
+        <th style="background-color: #856c4d !important;" rowspan="2">Total rubro</th>
     </tr>
     <tr>
         <g:each in="${titulo2}" var="t">
-            <th class="${t[1] == 'S' ? 'suspension' : 'numero'}">${raw(t[0])}</th>
+            <th  style="background-color: #856c4d !important;" class="${t[1] == 'S' ? 'suspension' : 'numero'}">${raw(t[0])}</th>
         </g:each>
     </tr>
     </thead>

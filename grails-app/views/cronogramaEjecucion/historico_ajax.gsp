@@ -1,48 +1,8 @@
-%{--<%@ page contentType="text/html;charset=UTF-8" %>--}%
-%{--<html>--}%
-%{--<head>--}%
-%{--    <meta name="layout" content="mainMatriz">--}%
-%{--    <title>Histórico de cronograma de ejecución</title>--}%
-
-%{--    <style type="text/css">--}%
-%{--    .cmplcss {--}%
-%{--        color: #0c4c85;--}%
-%{--    }--}%
-
-%{--    .center {--}%
-%{--        text-align: center;--}%
-%{--    }--}%
-
-%{--    .pagination {--}%
-%{--        display: inline-block;--}%
-%{--    }--}%
-
-%{--    .pagination a {--}%
-%{--        color: white;--}%
-%{--        float: left;--}%
-%{--        padding: 5px 8px;--}%
-%{--        text-decoration: none;--}%
-%{--        transition: background-color .3s;--}%
-%{--        border: 1px solid #ddd;--}%
-%{--        margin: 0 4px;--}%
-%{--    }--}%
-
-%{--    .pagination a.active {--}%
-%{--        background-color: #72af97;--}%
-%{--        color: black;--}%
-%{--        border: 1px solid #72af97;--}%
-%{--    }--}%
-%{--    .pagination a:hover:not(.active) {background-color: #ddd;}--}%
-
-%{--    </style>--}%
-%{--</head>--}%
-
-%{--<body>--}%
 
 <div class="row" style="margin-top: -20px">
     <div class="col-md-12 pagination">
         <g:each in="${paginas}" var="pg">
-            <a href="#" class="btn btn-info btnPg" id="btn_${pg}" data-valor="${pg}">
+            <a href="#" class="btn btn-warning btnPg" id="btn_${pg}" data-valor="${pg}">
                 <i class="fa fa-file"></i> ${pg}
             </a>
         </g:each>
@@ -91,5 +51,3 @@
     }
 
 </script>
-%{--</body>--}%
-%{--</html>--}%

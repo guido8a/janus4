@@ -36,19 +36,23 @@
         </div><!-- /input-group -->
     </div>
 
-    <div class="col-md-1" style="margin-right: 20px">
+    <div class="col-md-2" style="margin-right: 20px">
         <div class="btn-group">
             <a href="#" class="btn btn-success" id="btnCollapseAll" title="Cerrar todos los nodos">
-                <i class="fa fa-minus-square"></i> Cerrar todo&nbsp;
+                <i class="fa fa-minus-square"></i>
+            </a>
+            <a href="#" class="btn btn-info" id="btnAbrirTodo" title="Abrir todos los nodos">
+                <i class="fa fa-plus-square"></i>
             </a>
         </div>
     </div>
-    <span class="col-md-1">
-        Fecha por
-        defecto:
-    </span>
+%{--    <span class="col-md-1">--}%
+%{--      --}%
+%{--    </span>--}%
 
     <span class="col-md-2">
+        Fecha por
+        defecto:
         <input aria-label="" name="fechaPorDefecto" id='datetimepicker2' type='text' class="form-control" value="${ new Date().format("dd-MM-yyyy")}"/>
     </span>
 
@@ -100,6 +104,10 @@
     var $treeContainer = $("#tree");
     var $treeContainer2 = $("#tree2");
     var $treeContainer3 = $("#tree3");
+
+    $("#btnAbrirTodo").click(function () {
+        $treeContainer.jstree("open_all");
+    });
 
     $('#datetimepicker1, #datetimepicker2').datetimepicker({
         locale: 'es',

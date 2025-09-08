@@ -4148,10 +4148,9 @@ class CronogramaEjecucionController {
         def desde = params.desde ?: 1
         def hasta = params.hasta?.toInteger() ?: 10
 
-//        def sqlP = "select ceil(count(*)/10::float) cnta from vocr where cntr__id = ${params.id}"
         def sqlP = "select ceil(count(*)/10::float) cnta from vocr where vocr__id in (select vocr__id from crbk where mdcr__id = ${modificacion?.id})"
 
-        println("sql " + sqlP)
+//        println("sql " + sqlP)
 
         def pagn = []
         cn.rows(sqlP.toString())[0].cnta.times {
@@ -4179,32 +4178,49 @@ class CronogramaEjecucionController {
         if(params.pag) {
             salta = "offset ${(params.pag.toInteger() - 1) * registros}"
         }
+//        def sql = "select prej__id, prejfcin, prejfcfn, prejtipo, case when prejtipo = 'P' then 'Periodo' " +
+//                "when prejtipo = 'S' then 'Suspensión' when prejtipo = 'A' then 'Ampliación' " +
+//                "when prejtipo = 'C' then 'Complement.' end tipo, prejnmro, '<br>('||prejfcfn-prejfcin+1||' días)' dias " +
+//                "from prej where cntr__id = ${params.id} order by prejfcin"
+
+//        def sql = "select prej__id, prejfcin, prejfcfn, prejtipo, case when prejtipo = 'P' then 'Periodo' " +
+//                "when prejtipo = 'S' then 'Suspensión' when prejtipo = 'A' then 'Ampliación' " +
+//                "when prejtipo = 'C' then 'Complement.' end tipo, prejnmro, '<br>('||prejfcfn-prejfcin+1||' días)' dias " +
+//                "from prej where prej__id in (select prej__id from crbk where mdcr__id = ${modificacion?.id}) order by prejfcin"
+
         def sql = "select prej__id, prejfcin, prejfcfn, prejtipo, case when prejtipo = 'P' then 'Periodo' " +
                 "when prejtipo = 'S' then 'Suspensión' when prejtipo = 'A' then 'Ampliación' " +
                 "when prejtipo = 'C' then 'Complement.' end tipo, prejnmro, '<br>('||prejfcfn-prejfcin+1||' días)' dias " +
-                "from prej where cntr__id = ${params.id} order by prejfcin"
-        println "sql: $sql"
+                "from prej where cntr__id in (select cntr__id from mdcr where mdcr__id = ${modificacion?.id}) order by prejfcin"
+
+//        println "sql: $sql"
 
         cn.eachRow(sql.toString()) { d ->
             titulo1.add(["${d.prejfcin.format('dd-MM-yyyy')} a ${d.prejfcfn.format('dd-MM-yyyy')}", d.prejtipo])
             titulo2.add(["${d.tipo} ${d.prejtipo == 'P' ? d.prejnmro + ' ' + d.dias : d.dias} ", d.prejtipo])
-
         }
 
-        sql = "select count(*) cuenta from prej where cntr__id = ${params.id}"
+//        sql = "select count(*) cuenta from prej where cntr__id = ${params.id}"
+//        sql = "select count(*) cuenta from prej where prej__id in (select prej__id from crbk where mdcr__id = ${modificacion?.id})"
+        sql = "select count(*) cuenta from prej where cntr__id in (select cntr__id from mdcr where mdcr__id = ${modificacion?.id})"
 //        println "sql: $sql"
+
         def nmro = cn.rows(sql.toString())[0].cuenta.toInteger()
-//        println "cuenta: $nmro"
 
         def rubros = []
         def val = []
         def totales = [], total_ac = [], total_pc = [], total_pa = []
         def cont = 0, suma = 0, sumaprco = 0, sumaprct = 0, sumacntd = 0, contrato = 0
 
+//        sql = "select itemcdgo, itemnmbr, unddcdgo, vocr__id, vocrsbtt, vocrpcun, vocrcntd, vocr__id " +
+//                "from item, undd, vocr where item.item__id = vocr.item__id and " +
+//                "undd.undd__id = item.undd__id and cntr__id = ${params.id} order by vocrordn limit ${registros} ${salta} "
+
+
         sql = "select itemcdgo, itemnmbr, unddcdgo, vocr__id, vocrsbtt, vocrpcun, vocrcntd, vocr__id " +
-                "from item, undd, vocr " +
-                "where item.item__id = vocr.item__id and " +
-                "undd.undd__id = item.undd__id and cntr__id = ${params.id} order by vocrordn limit ${registros} ${salta} "
+                "from item, undd, vocr where item.item__id = vocr.item__id and " +
+                "undd.undd__id = item.undd__id and cntr__id in (select cntr__id from mdcr where mdcr__id = ${modificacion?.id}) order by vocrordn limit ${registros} ${salta} "
+
 //        println "sql: $sql"
 
         cn.eachRow(sql.toString()) { d ->
@@ -4218,30 +4234,46 @@ class CronogramaEjecucionController {
             val.add("\$<br>%<br>F")
 
             /** verifica si hay valores nulos en el cronograma **/
-            sql = "select count(*) cnta from creo where prej__id in (select prej__id from prej " +
-                    "where cntr__id = ${params.id}) and nullif (creoprco, 'NaN') is null"
+//            sql = "select count(*) cnta from creo where prej__id in (select prej__id from prej " +
+//                    "where cntr__id = ${params.id}) and nullif (creoprco, 'NaN') is null"
+
+//            sql = "select count(*) cnta from crbk where prej__id in (select prej__id from crbk where mdcr__id = ${modificacion?.id}) and nullif (crbkprco, 'NaN') is null"
+            sql = "select count(*) cnta from creo where prej__id in (select prej__id from prej where cntr__id in (select cntr__id from mdcr where mdcr__id = ${modificacion?.id})) and nullif (creoprco, 'NaN') is null"
+
             def hayNulos = cn.rows(sql.toString())[0].cnta
             if(hayNulos > 0) {
-                sql = "update creo set creoprco = 0 where creo__id in (select creo__id from creo " +
-                        "where prej__id in (select prej__id from prej where cntr__id = ${params.id}) and " +
-                        "nullif (creoprco, 'NaN') is null)"
+//                sql = "update creo set creoprco = 0 where creo__id in (select creo__id from creo " +
+//                        "where prej__id in (select prej__id from prej where cntr__id = ${params.id}) and " +
+//                        "nullif (creoprco, 'NaN') is null)"
+
+                sql = "update crbk set crbkprco = 0 where crbk__id in (select crbk__id from crbk " +
+                        "where prej__id in (select prej__id from crbk where mdcr__id = ${modificacion?.id}) and " +
+                        "nullif (crbkprco, 'NaN') is null)"
+
                 cn.execute(sql.toString())
                 println "cronograma con valores nulos"
             }
 
-            sqlp = "select prej__id from prej where cntr__id = ${params.id} order by prejfcin"
+//            sqlp = "select prej__id from prej where cntr__id = ${params.id} order by prejfcin"
+            sqlp = "select prej__id from prej where cntr__id in (select cntr__id from mdcr where mdcr__id = ${modificacion?.id}) order by prejfcin"
 //            println "sql: $sqlp"
             sumaprco = 0; sumaprct = 0; sumacntd = 0
             cnp.eachRow(sqlp.toString()) { pr ->
 //                sql1 = "select coalesce(creoprco,0) creoprco, creoprct, creocntd, prej__id from creo where vocr__id = ${d.vocr__id} and prej__id = ${pr.prej__id}"
-                sql1 = "select creoprco, creoprct, creocntd, prej__id from creo where vocr__id = ${d.vocr__id} and prej__id = ${pr.prej__id}"
-                sqle = "select count(*) cuenta from creo where vocr__id = ${d.vocr__id} and prej__id = ${pr.prej__id}"
+
+//                sql1 = "select creoprco, creoprct, creocntd, prej__id from creo where vocr__id = ${d.vocr__id} and prej__id = ${pr.prej__id}"
+                sql1 = "select crbkprco, crbkprct, crbkcntd, prej__id from crbk where vocr__id = ${d.vocr__id} and prej__id = ${pr.prej__id}"
+
+
+//                sqle = "select count(*) cuenta from creo where vocr__id = ${d.vocr__id} and prej__id = ${pr.prej__id}"
+                sqle = "select count(*) cuenta from crbk where vocr__id = ${d.vocr__id} and prej__id = ${pr.prej__id}"
+
                 cont = cne.rows(sqle.toString())[0].cuenta
 //                println "sql1: $sql1"
                 if(cont > 0) {
                     cnp.eachRow(sql1.toString()) { p ->
-                        val.add("${p.creoprco}<br>${p.creoprct}<br>${p.creocntd}")
-                        sumaprco += p.creoprco; sumaprct += p.creoprct; sumacntd += p.creocntd
+                        val.add("${p.crbkprco}<br>${p.crbkprct}<br>${p.crbkcntd}")
+                        sumaprco += p.crbkprco; sumaprct += p.crbkprct; sumacntd += p.crbkcntd
                     }
                 } else {
                     val.add("")
@@ -4249,12 +4281,18 @@ class CronogramaEjecucionController {
             }
             suma += d.vocrsbtt
             val.add("<strong>${sumaprco}<br>${sumaprct}<br>${sumacntd}</strong>")
-//            println "val: $val"
             rubros.add(val)
         }
 
-        sqlp = "select prej__id, prejcrpa from prej where cntr__id = ${params.id} order by prejfcin"
-        sql = "select sum(vocrsbtt) suma from vocr where cntr__id = ${params.id}"
+//        sqlp = "select prej__id, prejcrpa from prej where cntr__id = ${params.id} order by prejfcin"
+//        sqlp = "select prej__id, prejcrpa from prej where prej__id in (select prej__id from crbk where mdcr__id = ${modificacion?.id}) order by prejfcin"
+        sqlp = "select prej__id, prejcrpa from prej where cntr__id in (select cntr__id from mdcr where mdcr__id = ${modificacion?.id}) order by prejfcin"
+
+
+//        sql = "select sum(vocrsbtt) suma from vocr where cntr__id = ${params.id}"
+//        sql = "select sum(vocrsbtt) suma from vocr where vocr__id in (select vocr__id from crbk where mdcr__id = ${modificacion?.id})"
+        sql = "select sum(vocrsbtt) suma from vocr where cntr__id in (select cntr__id from mdcr where mdcr__id = ${modificacion?.id})"
+
         contrato = cne.rows(sql.toString())[0].suma
         def i = 0, anterior = 0
         cnp.eachRow(sqlp.toString()) { pr ->
@@ -4266,24 +4304,20 @@ class CronogramaEjecucionController {
             i++
         }
 
-//        println "--> $rubros"
-//        println "--> $totales"
-//        println "--> $total_ac"
-        sql = "select ceil(count(*)/10::float) cnta from vocr where cntr__id = ${params.id}"
+//        sql = "select ceil(count(*)/10::float) cnta from vocr where cntr__id = ${params.id}"
+//        sql = "select ceil(count(*)/10::float) cnta from vocr where vocr__id in (select vocr__id from crbk where mdcr__id = ${modificacion?.id})"
+        sql = "select ceil(count(*)/10::float) cnta from vocr where cntr__id in (select cntr__id from mdcr where mdcr__id = ${modificacion?.id})"
+
         def pagn = []
         cn.rows(sql.toString())[0].cnta.times {
             pagn.add(it+1)
         }
-        println pagn
-
 
         cn.close()
         cn1.close()
         cnp.close()
         cne.close()
-        [titulo1: titulo1, titulo2: titulo2, rubros: rubros, totales: totales, suma: suma, total_ac: total_ac,
-         ttpc: total_pc, ttpa: total_pa, contrato: params.id, pagina: params.pag, paginas: pagn ]
-
+        [titulo1: titulo1, titulo2: titulo2, rubros: rubros, totales: totales, suma: suma, total_ac: total_ac,ttpc: total_pc, ttpa: total_pa, contrato: params.id, pagina: params.pag, paginas: pagn]
     }
 
 } //fin controller

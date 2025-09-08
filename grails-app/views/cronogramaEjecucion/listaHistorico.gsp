@@ -7,7 +7,8 @@
 
     <style type="text/css">
     .cmplcss {
-        color: #0c4c85;
+        /*color: #0c4c85;*/
+        color: #856c4d;
     }
 
     .center {
@@ -29,6 +30,7 @@
     }
 
     .pagination a.active {
+        /*background-color: #72af97;*/
         background-color: #72af97;
         color: black;
         border: 1px solid #72af97;
@@ -52,19 +54,19 @@
     </div>
 </div>
 
-<div class="alert alert-info" style="margin-top: 10px; font-size: 14px; font-weight: bold">
+<div class="alert alert-warning" style="margin-top: 10px; font-size: 14px; font-weight: bold">
   Históricos del cronograma de ejecución de la obra: ${contrato?.obra?.nombre} (${meses} mes${meses == 1 ? "" : "es"})
 </div>
 
 <div class="col-md-12">
     <div class="col-md-2">
-        <label>
+        <label style="font-size: 18px">
             Cronograma:
         </label>
     </div>
     <div class="col-md-8">
         <g:select name="modificacionSeleccion" from="${janus.pac.ModificacionCronograma.findAllByContrato(contrato).sort{it.fecha}}"  optionKey="id"
-                  optionValue="${{it?.fecha?.format("dd-MM-yyyy HH:mm") + " - " + it.descripcion}}" class="form-control"/>
+                  optionValue="${{it?.fecha?.format("dd-MM-yyyy HH:mm") + " - " + it.descripcion}}" class="form-control btn-warning"/>
     </div>
 </div>
 
