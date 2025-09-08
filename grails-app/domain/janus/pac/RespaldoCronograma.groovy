@@ -5,7 +5,6 @@ import janus.VolumenContrato
 class RespaldoCronograma {
 
     ModificacionCronograma modificacionCronograma
-    CrngEjecucionObra cronograma
     VolumenContrato volumenObra
     PeriodoEjecucion periodo
     Double precio
@@ -22,7 +21,6 @@ class RespaldoCronograma {
         columns {
             id column: 'crbk__id'
             modificacionCronograma column: 'mdcr__id'
-            cronograma column: 'creo__id'
             volumenObra column: 'vocr__id'
             periodo column: 'prej__id'
             precio column: 'crbkprco'
@@ -32,7 +30,6 @@ class RespaldoCronograma {
     }
     static constraints = {
         modificacionCronograma(blank: false, nullable: false)
-        cronograma(blank: false, nullable: false)
         volumenObra(blank: false, nullable: false)
         periodo(blank: false, nullable: false, attributes: [title: 'periodo'])
         precio(blank: false, nullable: false, attributes: [title: 'precio'])
