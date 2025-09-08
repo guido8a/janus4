@@ -41,9 +41,9 @@
             <a href="#" class="btn btn-success" id="btnCollapseAll" title="Cerrar todos los nodos">
                 <i class="fa fa-minus-square"></i>
             </a>
-            <a href="#" class="btn btn-info" id="btnAbrirTodo" title="Abrir todos los nodos">
-                <i class="fa fa-plus-square"></i>
-            </a>
+%{--            <a href="#" class="btn btn-info" id="btnAbrirTodo" title="Abrir todos los nodos">--}%
+%{--                <i class="fa fa-plus-square"></i>--}%
+%{--            </a>--}%
         </div>
     </div>
 %{--    <span class="col-md-1">--}%
@@ -105,9 +105,9 @@
     var $treeContainer2 = $("#tree2");
     var $treeContainer3 = $("#tree3");
 
-    $("#btnAbrirTodo").click(function () {
-        $treeContainer.jstree("open_all");
-    });
+    // $("#btnAbrirTodo").click(function () {
+    //     $treeContainer.jstree("open_all");
+    // });
 
     $('#datetimepicker1, #datetimepicker2').datetimepicker({
         locale: 'es',
@@ -231,6 +231,22 @@
 
         var nodeId = node.toString().split("_")[1];
         var nodeNivel = node.toString().split("_")[0];
+
+        $("#tree").jstree("open_node", node);
+
+        var instance = $('#tree').jstree(true);
+        var nodeddd = instance.get_node(node);
+        var childrenIds = nodeddd.children;
+
+        // console.log("ccc " + childrenIds)
+
+        childrenIds.forEach(function(childId) {
+            var childNode = instance.get_node(childId);
+            // console.log(childNode.text);
+            $("#tree").jstree("open_node", childNode.id);
+
+            // console.log(childNode.id);
+        });
 
         if(nodeNivel !== 'root'){
             cargarInfo(nodeNivel, nodeId);
