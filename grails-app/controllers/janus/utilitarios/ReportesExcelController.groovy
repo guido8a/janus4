@@ -2801,6 +2801,7 @@ class ReportesExcelController {
         def totalNuevo = 0
 
         Row rowAnterior = sheet.createRow(fila)
+        rowAnterior.createCell(0).setCellValue("Periodos Núm.")
         prej.eachWithIndex { pr, i ->
             rowAnterior.createCell(columnaPrej).setCellValue(pr?.id)
             columnaPrej ++
