@@ -55,27 +55,40 @@
 </div>
 
 <div class="alert alert-warning" style="margin-top: 10px; font-size: 14px; font-weight: bold">
-  Históricos del cronograma de ejecución de la obra: ${contrato?.obra?.nombre} (${meses} mes${meses == 1 ? "" : "es"})
+    Históricos del cronograma de ejecución de la obra: ${contrato?.obra?.nombre} (${meses} mes${meses == 1 ? "" : "es"})
 </div>
 
-<div class="col-md-12">
-    <div class="col-md-2">
-        <label style="font-size: 18px">
-            Cronograma:
-        </label>
+<g:if test="${historicos.size() > 0}">
+    <div class="col-md-12">
+        <div class="col-md-2">
+            <label style="font-size: 18px">
+                Cronograma:
+            </label>
+        </div>
+        <div class="col-md-8">
+            <g:select name="modificacionSeleccion" from="${janus.pac.ModificacionCronograma.findAllByContrato(contrato).sort{it.fecha}}"  optionKey="id"
+                      optionValue="${{it?.fecha?.format("dd-MM-yyyy HH:mm") + " - " + it.descripcion}}" class="form-control btn-warning"/>
+        </div>
     </div>
-    <div class="col-md-8">
-        <g:select name="modificacionSeleccion" from="${janus.pac.ModificacionCronograma.findAllByContrato(contrato).sort{it.fecha}}"  optionKey="id"
-                  optionValue="${{it?.fecha?.format("dd-MM-yyyy HH:mm") + " - " + it.descripcion}}" class="form-control btn-warning"/>
+
+    <div class="col-md-12" id="divHistorico" style="margin-top: 20px">
+
     </div>
-</div>
+</g:if>
+<g:else>
+    <div class="col-md-12" style="text-align: center">
+        <div class="col-md-2"></div>
+        <div class="col-md-8 alert alert-warning" style="font-size: 16px; font-weight: bold">
+            <i class="fa fa-exclamation-triangle fa-2x text-info"></i> No existe ningún histórico del cronograma
+        </div>
+    </div>
+</g:else>
 
-<div class="col-md-12" id="divHistorico" style="margin-top: 20px">
 
-</div>
 
 <script type="text/javascript">
 
+    <g:if test="${historicos.size() > 0}">
     $("#modificacionSeleccion").change(function () {
         cargarHistorico();
     });
@@ -98,12 +111,8 @@
             }
         });
     }
-
+    </g:if>
 
 </script>
-
-
 </body>
-
 </html>
-

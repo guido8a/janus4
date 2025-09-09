@@ -249,7 +249,7 @@
             var dialog = cargarLoader("Guardando...");
             $.ajax({
                 type    : "POST",
-                url: "${createLink(controller: 'cronogramaEjecucion', action:'guardarDescripcion_ajax')}",
+                url: "${createLink(controller: 'cronogramaEjecucion', action:'guardarDescripcionHistorico_ajax')}",
                 data    : {
                     id: '${contrato?.id}',
                     descripcion: $("#descripcion").val()
