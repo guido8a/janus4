@@ -4363,4 +4363,7 @@ class CronogramaEjecucionController {
         [titulo1: titulo1, titulo2: titulo2, rubros: rubros, totales: totales, suma: suma, total_ac: total_ac,ttpc: total_pc, ttpa: total_pa, contrato: params.id, pagina: params.pag, paginas: pagn]
     }
 
+
+
+
 } //fin controller
