@@ -7,7 +7,6 @@
 
     <style type="text/css">
     .cmplcss {
-        /*color: #0c4c85;*/
         color: #856c4d;
     }
 
@@ -30,7 +29,6 @@
     }
 
     .pagination a.active {
-        /*background-color: #72af97;*/
         background-color: #72af97;
         color: black;
         border: 1px solid #72af97;
@@ -44,19 +42,19 @@
 
 <g:set var="meses" value="${contrato?.obra?.plazoEjecucionMeses + (contrato?.obra?.plazoEjecucionDias > 0 ? 1 : 0)}"/>
 
-<div class="btn-toolbar" id="toolbar">
-    <div class="btn-group">
+<div class="btn-toolbar col-md-12" id="toolbar">
+    <div class="btn-group col-md-1">
         <a href="${g.createLink(controller: 'cronogramaEjecucion', action: 'indexNuevo', params: [id: contrato?.id])}"
            class="btn btn-primary btn-new" id="atras" rel="tooltip" title="Regresar al contrato">
             <i class="fa fa-arrow-left"></i>
             Regresar
         </a>
     </div>
+    <div class="col-md-10 alert alert-warning" style="font-size: 14px; font-weight: bold">
+        Históricos del cronograma de ejecución de la obra: ${contrato?.obra?.nombre} (${meses} mes${meses == 1 ? "" : "es"})
+    </div>
 </div>
 
-<div class="alert alert-warning" style="margin-top: 10px; font-size: 14px; font-weight: bold">
-    Históricos del cronograma de ejecución de la obra: ${contrato?.obra?.nombre} (${meses} mes${meses == 1 ? "" : "es"})
-</div>
 
 <g:if test="${historicos.size() > 0}">
     <div class="col-md-12">
@@ -71,7 +69,7 @@
         </div>
     </div>
 
-    <div class="col-md-12" id="divHistorico" style="margin-top: 20px">
+    <div class="col-md-12" id="divHistorico" style="margin-top: 1px">
 
     </div>
 </g:if>
@@ -83,8 +81,6 @@
         </div>
     </div>
 </g:else>
-
-
 
 <script type="text/javascript">
 

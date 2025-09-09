@@ -1,12 +1,15 @@
 
-<div class="row" style="margin-top: -20px">
+<div class="row">
     <div class="col-md-12 pagination">
-        <g:each in="${paginas}" var="pg">
-            <a href="#" class="btn btn-warning btnPg" id="btn_${pg}" data-valor="${pg}">
-                <i class="fa fa-file"></i> ${pg}
-            </a>
-        </g:each>
-        <div class="btn" style="position: absolute; top: -115px; right: 2%">Páginas de 10 rubros: Página actual: <strong id="divActual"></strong> </div>
+        <div class="col-md-10">
+            <g:each in="${paginas}" var="pg">
+                <a href="#" class="btn btn-warning btnPg" id="btn_${pg}" data-valor="${pg}">
+                    <i class="fa fa-file"></i> ${pg}
+                </a>
+            </g:each>
+        </div>
+
+        <div class="btn col-md-2" style="">Páginas de 10 rubros: Página actual: <strong id="divActual"></strong> </div>
     </div>
 </div>
 
