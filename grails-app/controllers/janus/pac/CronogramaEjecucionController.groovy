@@ -4107,6 +4107,7 @@ class CronogramaEjecucionController {
         def cn = dbConnectionService.getConnection()
         def contrato = Contrato.get(id)
         def modificacion = ModificacionCronograma.get(modificacionID)
+        def modificacion2 = ModificacionCronograma.get(modificacionID)
         def erroresPeriodo= ''
         def errores= ''
 
