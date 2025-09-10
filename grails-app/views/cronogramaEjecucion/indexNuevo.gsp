@@ -103,19 +103,19 @@
                     <i class="fa fa-file-excel"></i> Excel
                 </a>
             </div>
-            <div class="btn-group">
-                <a href="#" id="btnCargarExcelCronogramaEje" class="btn btn-warning" title="Cargar excel con el cronograma de ejecución">
-                    <i class="fa fa-upload"></i> Subir excel
-                </a>
-            </div>
-            <div class="btn-group">
-                <a href="#" id="btnCrearHistorico" class="btn btn-success" title="Crear historico del cronograma">
-                    <i class="fa fa-copy"></i> Crear histórico
-                </a>
-                <a href="#" id="btnVerHistoricos" class="btn btn-info" title="Ver históricos del cronograma">
-                    <i class="fa fa-search"></i> Ver históricos
-                </a>
-            </div>
+            %{--<div class="btn-group">--}%
+                %{--<a href="#" id="btnCargarExcelCronogramaEje" class="btn btn-warning" title="Cargar excel con el cronograma de ejecución">--}%
+                    %{--<i class="fa fa-upload"></i> Subir excel--}%
+                %{--</a>--}%
+            %{--</div>--}%
+            %{--<div class="btn-group">--}%
+                %{--<a href="#" id="btnCrearHistorico" class="btn btn-success" title="Crear historico del cronograma">--}%
+                    %{--<i class="fa fa-copy"></i> Crear histórico--}%
+                %{--</a>--}%
+                %{--<a href="#" id="btnVerHistoricos" class="btn btn-info" title="Ver históricos del cronograma">--}%
+                    %{--<i class="fa fa-search"></i> Ver históricos--}%
+                %{--</a>--}%
+            %{--</div>--}%
         </g:if>
 
     %{--<div class="btn-group" style="margin-left: 35px">--}%
