@@ -1653,19 +1653,19 @@ class ReportesRubros2Controller {
                     reportesPdfService.addCellTb(tablaTransporte, new Paragraph(numero(r["tarifa"], 4)?.toString(), times8normal), prmsFila)
                     reportesPdfService.addCellTb(tablaTransporte, new Paragraph(numero(r["parcial_t"], 4)?.toString(), times8normal), prmsFilaDerecha)
                     reportesPdfService.addCellTb(tablaTransporte, new Paragraph(numero(r["relativo_t"], 4)?.toString(), times8normal), prmsFilaDerecha)
-//                    reportesPdfService.addCellTb(tablaTransporte, new Paragraph((r["itemcpac"] ?: '')?.toString(), times8normal), prmsFila)
+                    reportesPdfService.addCellTb(tablaTransporte, new Paragraph((r["itemcpac"] ?: '')?.toString(), times8normal), prmsFila)
 //                    reportesPdfService.addCellTb(tablaTransporte, new Paragraph(("641000022" ?: '')?.toString(), times8normal), prmsFila)
-                    reportesPdfService.addCellTb(tablaTransporte, new Paragraph(( cpc_trnsp?.codigoComprasPublicasTransporte?.numero ?: '')?.toString(), times8normal), prmsFila)
+//                    reportesPdfService.addCellTb(tablaTransporte, new Paragraph(( cpc_trnsp?.codigoComprasPublicasTransporte?.numero ?: '')?.toString(), times8normal), prmsFila)
                     reportesPdfService.addCellTb(tablaTransporte, new Paragraph(tpbn, times8normal), prmsFila)
-//                    reportesPdfService.addCellTb(tablaTransporte, new Paragraph(numero(r["vae_t"], 2)?.toString(), times8normal), prmsFila)
-                    reportesPdfService.addCellTb(tablaTransporte, new Paragraph(numero(cpc_trnsp?.transporteValor, 4)?.toString(), times8normal), prmsFila)
+                    reportesPdfService.addCellTb(tablaTransporte, new Paragraph(numero(r["vae_t"], 2)?.toString(), times8normal), prmsFila)
+//                    reportesPdfService.addCellTb(tablaTransporte, new Paragraph(numero(cpc_trnsp?.transporteValor, 4)?.toString(), times8normal), prmsFila)
 //                    reportesPdfService.addCellTb(tablaTransporte, new Paragraph(numero(0, 2)?.toString(), times8normal), prmsFila)
-//                    reportesPdfService.addCellTb(tablaTransporte, new Paragraph(numero(r["vae_vlor_t"], 2)?.toString(), times8normal), prmsFila)
-                    reportesPdfService.addCellTb(tablaTransporte, new Paragraph(numero(cpc_trnsp?.transporteValor * r["relativo_t"], 4)?.toString(), times8normal), prmsFila)
+                    reportesPdfService.addCellTb(tablaTransporte, new Paragraph(numero(r["vae_vlor_t"], 2)?.toString(), times8normal), prmsFila)
+//                    reportesPdfService.addCellTb(tablaTransporte, new Paragraph(numero(cpc_trnsp?.transporteValor * r["relativo_t"], 4)?.toString(), times8normal), prmsFila)
                     total += r["parcial_t"]
                     totalTRel += r["relativo_t"]
-//                    totalTVae += r["vae_vlor_t"]
-                    totalTVae += Item.findByCodigo(r["itemcdgo"])?.transporteValor * r["relativo_t"]
+                    totalTVae += r["vae_vlor_t"]
+//                    totalTVae += Item.findByCodigo(r["itemcdgo"])?.transporteValor * r["relativo_t"]
 
                 }
             }
@@ -1682,8 +1682,8 @@ class ReportesRubros2Controller {
             //COSTOS INDIRECTOS
             def totalRubro = total + totalHer + totalMan + totalMat
             def totalRelativo = totalTRel + totalHerRel + totalMatRel + totalManRel
-//            def totalVae = totalTVae + totalHerVae + totalMatVae + totalManVae
-            def totalVae = 0 + totalHerVae + totalMatVae + totalManVae
+            def totalVae = totalTVae + totalHerVae + totalMatVae + totalManVae
+//            def totalVae = 0 + totalHerVae + totalMatVae + totalManVae
             def totalIndi = totalRubro?.toDouble() * indi / 100
 
             PdfPTable tablaIndirectos = new PdfPTable(3);

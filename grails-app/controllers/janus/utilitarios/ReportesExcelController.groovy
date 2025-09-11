@@ -775,7 +775,8 @@ class ReportesExcelController {
 //                    rowF4.createCell(11).setCellValue(Item.findByCodigo(rt["itemcdgo"])?.transporteValor?.toDouble())
                     rowF4.createCell(12).setCellValue(rt["vae_vlor_t"]?.toDouble())
 //                    rowF4.createCell(12).setCellValue((Item.findByCodigo(rt["itemcdgo"])?.transporteValor * rt["relativo_t"]).toDouble())
-                    totalVaeT += (Item.findByCodigo(rt["itemcdgo"])?.transporteValor * rt["relativo_t"])
+//                    totalVaeT += (Item.findByCodigo(rt["itemcdgo"])?.transporteValor * rt["relativo_t"])
+                    totalVaeT += rt["vae_vlor_t"]?.toDouble()
                     fila++
                 }
                 Row rowP4 = sheet.createRow(fila)
@@ -802,8 +803,8 @@ class ReportesExcelController {
             fila++
             def totalRubro = total + totalHer + totalMan + totalMat
             def totalRelativo = totalTRel + totalHerRel + totalMatRel + totalManRel
-//            def totalVae = totalTVae + totalHerVae + totalMatVae + totalManVae
-            def totalVae = 0 + totalHerVae + totalMatVae + totalManVae
+            def totalVae = totalTVae + totalHerVae + totalMatVae + totalManVae
+//            def totalVae = 0 + totalHerVae + totalMatVae + totalManVae
 
 
             def totalIndi = totalRubro * indi / 100
