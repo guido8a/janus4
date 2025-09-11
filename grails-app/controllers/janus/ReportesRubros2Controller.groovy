@@ -1653,7 +1653,7 @@ class ReportesRubros2Controller {
                     reportesPdfService.addCellTb(tablaTransporte, new Paragraph(numero(r["tarifa"], 4)?.toString(), times8normal), prmsFila)
                     reportesPdfService.addCellTb(tablaTransporte, new Paragraph(numero(r["parcial_t"], 4)?.toString(), times8normal), prmsFilaDerecha)
                     reportesPdfService.addCellTb(tablaTransporte, new Paragraph(numero(r["relativo_t"], 4)?.toString(), times8normal), prmsFilaDerecha)
-                    reportesPdfService.addCellTb(tablaTransporte, new Paragraph((r["itemcpac"] ?: '')?.toString(), times8normal), prmsFila)
+                    reportesPdfService.addCellTb(tablaTransporte, new Paragraph((r["cpactran"] ?: '')?.toString(), times8normal), prmsFila)
 //                    reportesPdfService.addCellTb(tablaTransporte, new Paragraph(("641000022" ?: '')?.toString(), times8normal), prmsFila)
 //                    reportesPdfService.addCellTb(tablaTransporte, new Paragraph(( cpc_trnsp?.codigoComprasPublicasTransporte?.numero ?: '')?.toString(), times8normal), prmsFila)
                     reportesPdfService.addCellTb(tablaTransporte, new Paragraph(tpbn, times8normal), prmsFila)
