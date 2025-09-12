@@ -1,3 +1,9 @@
+
+<a href="#" class="btn btn-primary btnNuevoPrimerPrecio" >
+    <i class="fa fa-file"></i>
+    Nuevo Precio
+</a>
+
 <div role="main" style="margin-top: 5px;">
     <table class="table table-bordered table-striped table-condensed table-hover">
         <thead>
@@ -44,6 +50,9 @@
 
 <script type="text/javascript">
 
+    $(".btnNuevoPrimerPrecio").click(function () {
+        createEditPrecioConLugares2()
+    });
 
     $(".btnVerMaterialPcun").click(function () {
         var id = $(this).data("id");
@@ -51,10 +60,73 @@
     });
 
     $(".btnHistoricoPcun").click(function () {
-
         var item = $(this).data("item");
         var lugar = $(this).data("lugar");
         cargarTablaHistoricoPrecios(item, lugar, 2)
     });
+
+    function createEditPrecioConLugares2() {
+        $.ajax({
+            type    : "POST",
+            url     : "${createLink( action:'formPreciosLugares2_ajax')}",
+            data    : {
+                item        : "${itemInstance.id}"
+            },
+            success : function (msg) {
+                var b = bootbox.dialog({
+                    id    : "dlgCreateEditP",
+                    title : "Nuevo precio",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        },
+                        guardar  : {
+                            id        : "btnSave",
+                            label     : "<i class='fa fa-save'></i> Guardar",
+                            className : "btn-success",
+                            callback  : function () {
+                                return submitFormPrecio2();
+                            } //callback
+                        } //guardar
+                    } //buttons
+                }); //dialog
+                setTimeout(function () {
+                    b.find(".form-control").first().focus()
+                }, 500);
+            } //success
+        }); //ajax
+    } //createEdit
+
+    function submitFormPrecio2() {
+        var item = '${itemInstance?.id}';
+        var $form = $("#frmSave");
+        if ($form.valid()) {
+            var data = $form.serialize();
+            var dialog = cargarLoader("Guardando...");
+            $.ajax({
+                type    : "POST",
+                url     : $form.attr("action"),
+                data    : data,
+                success : function (msg) {
+                    dialog.modal('hide');
+                    var parts = msg.split("_");
+                    if(parts[0] === 'OK'){
+                        log(parts[1], "success");
+                        cerrarPreciosDesdeItems();
+                        verPrecios('${itemInstance?.id}');
+                    }else{
+                        bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
+                        return false;
+                    }
+                }
+            });
+        } else {
+            return false;
+        }
+    }
 
 </script>

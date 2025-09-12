@@ -1342,7 +1342,7 @@ class MantenimientoItemsController {
         def items = cn.rows(sql.toString());
         cn.close()
 
-        return [data: items]
+        return [data: items, itemInstance: itemInstance]
     }
 
 //    def formIt_ajax() {
@@ -1700,6 +1700,30 @@ class MantenimientoItemsController {
         }
 
         return [precioRubrosItemsInstance: precioRubrosItemsInstance, lugar: lugar, fecha: params.fecha, params: params, fd: fd, all: params.all, lugares: lugares]
+    }
+
+    def formPreciosLugares2_ajax() {
+        println("form precios " + params)
+        def item = Item.get(params.item)
+        def fd = new Date()
+        def lugares = Lugar.findAllByTipoLista(item.tipoLista, [sort: 'codigo'])
+
+        def precioRubrosItemsInstance
+        def lugar
+
+//        if(params.id){
+//            precioRubrosItemsInstance = PrecioRubrosItems.get(params.id)
+//            lugar = precioRubrosItemsInstance?.lugar
+//        }else{
+//            precioRubrosItemsInstance = new PrecioRubrosItems()
+//
+//            lugar = Lugar.get(params.lugar)
+//            precioRubrosItemsInstance.item = item
+//            precioRubrosItemsInstance.lugar = lugar
+//        }
+
+//        return [precioRubrosItemsInstance: precioRubrosItemsInstance, lugar: lugar, fecha: params.fecha, params: params, fd: fd, all: params.all, lugares: lugares]
+        return [fd: fd, all: params.all, lugares: lugares, item: item]
     }
 
     def checkFcPr_ajax() {
