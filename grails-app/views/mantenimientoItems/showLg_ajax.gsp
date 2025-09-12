@@ -318,6 +318,7 @@
                         log(parts[1], "success");
                         cargarTablaItemsPrecios();
                         cerrarTablaHistoricos();
+                        cerrarPreciosDesdeItems();
                         if(tipo !== 1){
                             cargarTablaHistoricoPrecios(item, lugar)
                         }else{

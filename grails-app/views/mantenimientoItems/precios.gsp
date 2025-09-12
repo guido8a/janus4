@@ -66,7 +66,7 @@
                 <span class="col-md-2">
                     <label class="control-label text-info">Tipo</label>
                     <g:select name="tipo" class="tipo col-md-12 form-control btn-info"
-                              from="${[1: 'Grupo', 2: 'Subgrupo', 3: 'Items', '4': 'Precios']}" optionKey="key"
+                              from="${[1: 'Grupo', 2: 'Subgrupo', 3: 'Items-Precios']}" optionKey="key"
                               optionValue="value"/>
                 </span>
                 <span class="col-md-3">
