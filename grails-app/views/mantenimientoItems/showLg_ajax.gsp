@@ -28,25 +28,25 @@
 <div style="height: 35px; width: 100%;">
     <g:if test="${session.perfil.codigo in ['CSTO', 'RBRO']}">
         <div class="btn-group pull-left">
-            <g:if test="${tipo != '1'}">
+%{--            <g:if test="${tipo != '1'}">--}%
                 <a href="#" class="btn btn-primary btnNew" >
                     <i class="fa fa-file"></i>
                     Nuevo Precio
                 </a>
-            </g:if>
-            <g:else>
-                <a href="#" class="btn btn-primary btnNuevoConLugares" >
-                    <i class="fa fa-file"></i>
-                    Nuevo Precio
-                </a>
-            </g:else>
+%{--            </g:if>--}%
+%{--            <g:else>--}%
+%{--                <a href="#" class="btn btn-primary btnNuevoConLugares" >--}%
+%{--                    <i class="fa fa-file"></i>--}%
+%{--                    Nuevo Precio--}%
+%{--                </a>--}%
+%{--            </g:else>--}%
         </div>
-        <div class="btn-group" style="margin-left: 5px">
-            <a href="#" class="btn btn-warning btnNewTodos">
-                <i class="fa fa-file"></i>
-                Nuevo Precio todos los lugares
-            </a>
-        </div>
+%{--        <div class="btn-group" style="margin-left: 5px">--}%
+%{--            <a href="#" class="btn btn-warning btnNewTodos">--}%
+%{--                <i class="fa fa-file"></i>--}%
+%{--                Nuevo Precio todos los lugares--}%
+%{--            </a>--}%
+%{--        </div>--}%
     </g:if>
     <div class="btn-group pull-left">
         <g:if test="${session.perfil.codigo in ['CSTO', 'RBRO']}">

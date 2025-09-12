@@ -3,7 +3,7 @@
 <g:form class="form-horizontal" name="frmSave" action="savePrecio_ajax">
 %{--    <g:hiddenField name="id" value="${precioRubrosItemsInstance?.id}"/>--}%
     <g:hiddenField id="item" name="item.id" value="${item?.id}"/>
-%{--    <g:hiddenField name="all" value="${params.all}"/>--}%
+    <g:hiddenField name="all" value="${all}"/>
 %{--    <g:hiddenField name="ignore" value="${params.ignore}"/>--}%
 
     <div class="col-md-12 breadcrumb" style="margin-top: -10px; font-size: 14px">
@@ -23,7 +23,12 @@
             </label>
         </div>
         <div class="col-md-8">
-            <g:select name="lugar.id" from="${lugares}" optionKey="id" optionValue="descripcion" class="form-control" />
+            <g:if test="${all}">
+                ${all ? 'Todos los lugares' : ''}
+            </g:if>
+            <g:else>
+                <g:select name="lugar.id" from="${lugares}" optionKey="id" optionValue="descripcion" class="form-control" />
+            </g:else>
         </div>
     </div>
 

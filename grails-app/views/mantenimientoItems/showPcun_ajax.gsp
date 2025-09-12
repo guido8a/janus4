@@ -4,6 +4,11 @@
     Nuevo Precio
 </a>
 
+<a href="#" class="btn btn-warning btnNuevoPrecioTodos">
+    <i class="fa fa-globe"></i>
+    Nuevo Precio todos los lugares
+</a>
+
 <div role="main" style="margin-top: 5px;">
     <table class="table table-bordered table-striped table-condensed table-hover">
         <thead>
@@ -50,8 +55,12 @@
 
 <script type="text/javascript">
 
+    $(".btnNuevoPrecioTodos").click(function () {
+        createEditPrecioConLugares2('all')
+    });
+
     $(".btnNuevoPrimerPrecio").click(function () {
-        createEditPrecioConLugares2()
+        createEditPrecioConLugares2(null)
     });
 
     $(".btnVerMaterialPcun").click(function () {
@@ -65,12 +74,13 @@
         cargarTablaHistoricoPrecios(item, lugar, 2)
     });
 
-    function createEditPrecioConLugares2() {
+    function createEditPrecioConLugares2(todos) {
         $.ajax({
             type    : "POST",
             url     : "${createLink( action:'formPreciosLugares2_ajax')}",
             data    : {
-                item        : "${itemInstance.id}"
+                item        : "${itemInstance.id}",
+                all: todos
             },
             success : function (msg) {
                 var b = bootbox.dialog({

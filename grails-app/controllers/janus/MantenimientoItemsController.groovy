@@ -1763,6 +1763,7 @@ class MantenimientoItemsController {
             }
         }else{
             if(params.all){
+                def precioRubrosItemsInstance
                 def error = 0
                 Lugar.findAllByTipoLista(item.tipoLista).each { lugar ->
 //                    def precios = PrecioRubrosItems.withCriteria {
@@ -1777,21 +1778,25 @@ class MantenimientoItemsController {
                     def existe = PrecioRubrosItems.findByItemAndFechaAndLugar(item, params.fecha, lugar)
 
                     if(existe){
-                        error ++
+//                        error ++
+                        precioRubrosItemsInstance = PrecioRubrosItems.get(existe?.id)
+                        precioRubrosItemsInstance.precioUnitario = params.precioUnitario.toDouble()
                     }else{
-                        def precioRubrosItemsInstance = new PrecioRubrosItems()
+                        precioRubrosItemsInstance = new PrecioRubrosItems()
                         precioRubrosItemsInstance.precioUnitario = params.precioUnitario.toDouble()
                         precioRubrosItemsInstance.lugar = lugar
                         precioRubrosItemsInstance.item = Item.get(params.item.id)
                         precioRubrosItemsInstance.fecha = params.fecha
+                     }
 
-                        if (!precioRubrosItemsInstance.save(flush: true)) {
-                            println "mantenimiento items controller l 873: " + precioRubrosItemsInstance.errors
-                            error++
-                        } else {
 
-                        }
+                    if (!precioRubrosItemsInstance.save(flush: true)) {
+                        println "mantenimiento items controller l 873: " + precioRubrosItemsInstance.errors
+                        error++
+                    } else {
+
                     }
+
                 }
 
                 if (error == 0) {
