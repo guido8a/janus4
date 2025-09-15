@@ -9,7 +9,7 @@
 <html>
 <head>
     <meta name="layout" content="main">
-    <title>Cronograma cargado</title>
+    <title>Archivo cargado</title>
 </head>
 
 <body>

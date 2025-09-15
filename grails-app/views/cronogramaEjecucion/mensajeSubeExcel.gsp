@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta name="layout" content="main">
-    <title>Archivo cargado</title>
+    <title>Cronograma cargado</title>
 </head>
 
 <body>
