@@ -104,7 +104,7 @@
                 </a>
             </div>
 
-            /* hasta que se pueda migrar datos del cronograma comentar: Subir excel hasta Ver históricos **/
+            %{--/* hasta que se pueda migrar datos del cronograma comentar: Subir excel hasta Ver históricos **/--}%
             %{--<div class="btn-group">--}%
                 %{--<a href="#" id="btnCargarExcelCronogramaEje" class="btn btn-warning" title="Cargar excel con el cronograma de ejecución">--}%
                     %{--<i class="fa fa-upload"></i> Subir excel--}%
@@ -118,7 +118,7 @@
                     %{--<i class="fa fa-search"></i> Ver históricos--}%
                 %{--</a>--}%
             %{--</div>--}%
-            /*** comentar hasta aquí **/
+            %{--/*** comentar hasta aquí **/--}%
         </g:if>
 
     %{--<div class="btn-group" style="margin-left: 35px">--}%
