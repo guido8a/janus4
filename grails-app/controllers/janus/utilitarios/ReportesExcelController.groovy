@@ -2898,6 +2898,7 @@ class ReportesExcelController {
         }
 
         Row rowTotales = sheet.createRow(fila)
+        rowTotales.createCell(0).setCellValue("TOTALES")
         rowTotales.createCell(4).setCellValue("TOTAL PARCIAL")
         rowTotales.createCell(5).setCellValue(sum?.toDouble()?.round(2))
 //        rowTotales.createCell(6).setCellValue('T')

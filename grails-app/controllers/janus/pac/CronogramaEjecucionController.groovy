@@ -3885,8 +3885,9 @@ class CronogramaEjecucionController {
 
                 Iterator rows = sheet1.rowIterator();
 
-                def sccnPrej = false, sccnTitl = false, sccnData = false, prejOk = false, cntd = 0, vlor = 0, vocr = 0
-                def i = 6, pr = 0, cnta = 0
+                def sccnPrej = false, sccnTitl = false, sccnData = false, prejOk = false, iniciaCarga = false
+                def cntd = 0.0, prct = 0.0, prco = 0.0, cnta = 0, vocr = 0
+                def i = 6, pr = 0, reg_id = 0
                 def prej = []
 
                 while (rows.hasNext()) {
@@ -3925,6 +3926,12 @@ class CronogramaEjecucionController {
                     }
                     println "prej: $prej"
 
+                    if (rgst[0] == "TOTALES") { //fin de data
+                        println "final de datos.. "
+                        sccnPrej = true
+                        sccnData = false
+                    }
+
                     if (rgst[0] == "Código" && sccnPrej) {
                         sccnTitl = true;
                         println "Activa título..."
@@ -3944,15 +3951,21 @@ class CronogramaEjecucionController {
 
                     /** comprueba que coincidan los prej:
                      * coincide cantidad y valores de todos los prej__id en la tabla PREJ **/
-                    if (sccnData && (cntd > 0)) {
-                        sql = "select count(*) cnta from prej where cntr__id = 304"
-                        println("sql " + sql)
-                        cnta = cn.rows(sql.toString())[0].cnta
-                        if (cnta == prej.size()) {
-                            prejOk = true
-                            println "Ok prej comprobados: ($cnta == $prej.size())"
-                        } else {
-                            println "No coinden los períodos de ejecución ($cnta == $prej.size())"
+
+                    if(!iniciaCarga ){
+                        if (sccnData && (cntd > 0)) {
+                            def periodos = prej.join(',')
+                            sql = "select count(*) cnta from prej where cntr__id = ${params.contrato} and prej__id in (${periodos})"
+                            println("sqlc " + sql)
+                            println "IN --> ${prej.join(',')}"
+                            cnta = cn.rows(sql.toString())[0].cnta
+                            if (cnta == prej.size()) {
+                                prejOk = true
+                                iniciaCarga = true
+                                println "Ok prej comprobados: ($cnta == $prej.size())"
+                            } else {
+                                println "No coinden los períodos de ejecución ($cnta == $prej.size())"
+                            }
                         }
                     }
 
@@ -3963,21 +3976,52 @@ class CronogramaEjecucionController {
                             vocr = 0
                         }
                         println "Vocr -> $vocr"
-                        i = 6; pr = 0; cnta = 0
+                        i = 6; pr = 0; reg_id = 0
+                        cntd = 0.0; prct = 0.0; prco = 0.0;
                         while (i < (rgst.size() - 2)) {
+                            prco = rgst[i]
                             if (rgst[i] > 0) {
                                 pr = prej[i - 6]
                                 cnta = 0
-                                println "procesa vocr: $vocr con prej: ${pr} valor: ${rgst[i]}"
+                                println "procesa vocr: $vocr con prej: ${pr} valor: ${prco}"
                                 /** Si existe el valor en creo se actualiza, si no, se inserta **/
                                 sql = "select count(*) cnta from creo where vocr__id = ${vocr} and prej__id = ${pr}"
                                 println("sql " + sql)
                                 cnta = cn.rows(sql.toString())[0].cnta
-                                if (cnta > 0) {
+                                def data
+                                if(cnta > 0) {
+                                    sql = "select creo__id, ${prco}/vocrsbtt*100 pcnt, ${prco}/vocrpcun cntd " +
+                                            "from creo, vocr where vocr.vocr__id = ${vocr} and " +
+                                            "creo.vocr__id = vocr.vocr__id and prej__id = ${pr}"
+                                    println("sql " + sql)
+                                    data = cn.rows(sql.toString())[0]
+                                    reg_id = data.creo__id
+                                    cntd = data.cntd
+                                    prct = data.pcnt
+                                } else {
+                                    sql = "select ${prco}/vocrsbtt*100 pcnt, ${prco}/vocrpcun cntd " +
+                                            "from vocr where vocr__id = ${vocr}"
+                                    println("sql " + sql)
+                                    data = cn.rows(sql.toString())[0]
+                                    cntd = data.cntd
+                                    prct = data.pcnt
+                                }
+                                //calcula valores:
+                                try {
+                                    vocr = rgst.last().toInteger()
+                                } catch (e) {
+                                    vocr = 0
+                                }
+                                if (reg_id > 0) {
                                     println "actualiza registro ($vocr, $pr)"
+                                    sql = "update creo set creoprco = $prco, creocntd = $cntd, creoprct = $prct where creo__id = $reg_id"
                                 } else {
                                     println "Inserta valor para ($vocr, $pr)"
+                                    sql = "insert into creo(prej__id, vocr__id, creocntd, creoprct, creoprco) values(" +
+                                        "$pr, $vocr, $cntd, $prct, $prco)"
                                 }
+                                println "**---> $sql"
+                                cn.execute(sql.toString())
                             }
                             i++
                         }
@@ -4010,7 +4054,7 @@ class CronogramaEjecucionController {
                 flash.message = str
 
                 println "DONE!!"
-                redirect(action: "mensajeUploadContrato", id: params.id)
+                redirect(action: "mensajeSubeExcel", id: params.id)
             } else {
                 flash.message = "Seleccione un archivo Excel xlsx para procesar (archivos xls deben ser convertidos a xlsx primero)"
                 redirect(action: 'formArchivo', params: params)
@@ -4018,6 +4062,10 @@ class CronogramaEjecucionController {
         }
     }
 
+
+    def mensajeSubeExcel() {
+
+    }
 
     def crearHistorico_ajax(){
 
