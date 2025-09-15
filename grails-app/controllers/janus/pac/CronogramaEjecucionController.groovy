@@ -3839,8 +3839,10 @@ class CronogramaEjecucionController {
 
     /** Carga el cronopgrama desde exccel */
     def uploadFileExcel() {
-
+        println "*** $params"
         def contrato = Contrato.get(params.contrato)
+        def cn = dbConnectionService.getConnection()
+        def sql = ""
 
         def path = "/var/janus/" + "cronogramaEjecucion/"   //web-app/archivos
         new File(path).mkdirs()
@@ -3883,82 +3885,121 @@ class CronogramaEjecucionController {
 
                 Iterator rows = sheet1.rowIterator();
 
-                def sccnPrej = false, sccnData = false, cntd = 0, vlor = 0, vocr = 0
+                def sccnPrej = false, sccnTitl = false, sccnData = false, prejOk = false, cntd = 0, vlor = 0, vocr = 0
+                def i = 6, pr = 0, cnta = 0
                 def prej = []
 
                 while (rows.hasNext()) {
                     row = (XSSFRow) rows.next()
 //                        if (!(row.rowNum in filasNO)) {
-                    if (true) {
-                        def ok = true
-                        Iterator cells = row.cellIterator()
-                        def rgst = []
-                        def meses = []
+                    def ok = true
+                    Iterator cells = row.cellIterator()
+                    def rgst = []
+                    def meses = []
 
-                        println "fila: ${row.rowNum}"
+                    println "fila: ${row.rowNum}"
 
-                        while (cells.hasNext()) {
-                            cell = (XSSFCell) cells.next()
-                            if (cell.getCellType() == XSSFCell.CELL_TYPE_NUMERIC) {
-                                rgst.add(cell.getNumericCellValue())
-                            } else if (cell.getCellType() == XSSFCell.CELL_TYPE_STRING) {
-                                rgst.add(cell.getStringCellValue())
-                            } else if (cell.getCellType() == XSSFCell.CELL_TYPE_FORMULA) {
+                    while (cells.hasNext()) {
+                        cell = (XSSFCell) cells.next()
+                        if (cell.getCellType() == XSSFCell.CELL_TYPE_NUMERIC) {
+                            rgst.add(cell.getNumericCellValue())
+                        } else if (cell.getCellType() == XSSFCell.CELL_TYPE_STRING) {
+                            rgst.add(cell.getStringCellValue())
+                        } else if (cell.getCellType() == XSSFCell.CELL_TYPE_FORMULA) {
 //                                    rgst.add(cell.getNumericCellValue())
-                                rgst.add(cell.getRawValue())
-                            } else {
-                                rgst.add('')
-                            }
+                            rgst.add(cell.getRawValue())
+                        } else {
+                            rgst.add('')
                         }
-
-
-                        println "reg: $rgst"
-
-                        if (rgst[0] == "Periodos Núm.") { //prej__ids
-                            println "leyendo prej.. "
-                            sccnPrej = true
-                            sccnData = false
-                            prej = rgst[1..rgst.size()-1]
-                        }
-                        println "prej: $prej"
-
-                        if (rgst[0] == "Código" && sccnPrej) {
-                            sccnData = true;
-                            println "Activa data...."
-                        }
-
-                        cntd = rgst[3]
-                        try {
-                            cntd = cntd.toDouble()
-                        } catch (e) {
-                            cntd = 0
-                        }
-                        if (sccnData && cntd > 0 ) {
-                            sccnData = true;
-                            println "Activa data...."
-                        }
-
-                        if (sccnData && cntd > 0) {
-                            try {
-                                vocr = rgst.last()
-                            } catch (e) {
-                                vocr = 0
-                            }
-                            println "Vocr -> $vocr"
-                            if (vocr) {
-                                println "inserta valores para cada prej"
-//                                        insertaEq(ofrb_id, cdgo, nmbr, undd, cntd, trfa, pcun, rndm, csto, tipo)
-//                                errores += insertaEq(ofrb_id, cdgo, nmbr, undd, cntd, trfa, pcun, rndm, csto, "EQ")
-                            }
-                        }
-
                     }
+
+
+                    println "reg: $rgst"
+
+                    if (rgst[0] == "Periodos Núm.") { //prej__ids
+                        println "leyendo prej.. "
+                        sccnPrej = true
+                        sccnData = false
+                        prej = rgst[1..rgst.size() - 1]
+                        prej = prej.collect { it as Integer }
+                    }
+                    println "prej: $prej"
+
+                    if (rgst[0] == "Código" && sccnPrej) {
+                        sccnTitl = true;
+                        println "Activa título..."
+                    }
+
+                    cntd = rgst[3]
+                    try {
+                        cntd = cntd.toDouble()
+                    } catch (e) {
+                        cntd = 0
+                    }
+                    if (sccnTitl && cntd > 0) {
+                        sccnData = true;
+                        sccnTitl = false
+                        println "Activa data...."
+                    }
+
+                    /** comprueba que coincidan los prej:
+                     * coincide cantidad y valores de todos los prej__id en la tabla PREJ **/
+                    if (sccnData && (cntd > 0)) {
+                        sql = "select count(*) cnta from prej where cntr__id = 304"
+                        println("sql " + sql)
+                        cnta = cn.rows(sql.toString())[0].cnta
+                        if (cnta == prej.size()) {
+                            prejOk = true
+                            println "Ok prej comprobados: ($cnta == $prej.size())"
+                        } else {
+                            println "No coinden los períodos de ejecución ($cnta == $prej.size())"
+                        }
+                    }
+
+                    if (sccnData && (cntd > 0) && prejOk) {
+                        try {
+                            vocr = rgst.last().toInteger()
+                        } catch (e) {
+                            vocr = 0
+                        }
+                        println "Vocr -> $vocr"
+                        i = 6; pr = 0; cnta = 0
+                        while (i < (rgst.size() - 2)) {
+                            if (rgst[i] > 0) {
+                                pr = prej[i - 6]
+                                cnta = 0
+                                println "procesa vocr: $vocr con prej: ${pr} valor: ${rgst[i]}"
+                                /** Si existe el valor en creo se actualiza, si no, se inserta **/
+                                sql = "select count(*) cnta from creo where vocr__id = ${vocr} and prej__id = ${pr}"
+                                println("sql " + sql)
+                                cnta = cn.rows(sql.toString())[0].cnta
+                                if (cnta > 0) {
+                                    println "actualiza registro ($vocr, $pr)"
+                                } else {
+                                    println "Inserta valor para ($vocr, $pr)"
+                                }
+                            }
+                            i++
+                        }
+                    } else {
+                        if (sccnData && (cntd > 0) && !prejOk) {
+                            break
+                        }
+                    }
+
 //                    }
                 } //sheets.each
 
                 if (done > 0) {
                     doneHtml = "<div class='alert alert-success'>Se han ingresado correctamente " + done + " registros</div>"
                 }
+
+                if (!prejOk) {
+                    doneHtml = "<div class='alert alert-error'>No coinciden los períodos de ejecución del contrato<br> " +
+                            "vuelva a genrar el archivo de excel para poder actualizar el cronograma</div>"
+                }
+
+                println "termina el proceso con prejOk: $prejOk --> $doneHtml"
 
                 def str = doneHtml
                 str += htmlInfo
