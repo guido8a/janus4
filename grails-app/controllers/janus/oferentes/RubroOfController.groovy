@@ -64,6 +64,7 @@ class RubroOfController {
     def rubroPrincipalOf() {
         println("params  " + params)
         def oferente = session.usuario
+        def obraSeleccionada = params.obra
         def cn = dbConnectionService.getConnection()
         def obras = [:]
         def sql = "select distinct obra.obra__id id, obracdgo||' - '||obranmbr nombre " +

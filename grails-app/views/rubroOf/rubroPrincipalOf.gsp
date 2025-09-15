@@ -81,7 +81,7 @@ border-bottom: 1px solid black;height: 30px; width: 97%">
         <div class="col-md-10">
             <g:select name="obra"
                       from="${obras}" optionKey="key" optionValue="value"
-                      style="width: 100%; margin-left: -80px; background-color: #ddeddd"/>
+                      style="width: 100%; margin-left: -80px; background-color: #ddeddd" value="${obra?.id}"/>
         </div>
     </div>
 </div>
