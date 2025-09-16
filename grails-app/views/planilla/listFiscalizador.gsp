@@ -196,6 +196,11 @@
                                     rel="tooltip" title="Editar" class="btn btn-xs btn-success">
                                 <i class="fa fa-edit"></i>
                             </g:link>
+
+                            <a href="#" class="btn btn-xs btn-danger btnBorrarPlanilla" data-id="${planillaInstance.id}">
+                                <i class="fa fa-trash"></i>
+                            </a>
+
                         </g:if>
                         <g:if test="${planillaInstance.tipoPlanilla.codigo in ['P', 'Q'] && !planillaInstance.fechaMemoSalidaPlanilla && contrato?.fiscalizador?.id == session.usuario.id}">
                             <a href="#" class="btn btn-xs btn-success btnCambiarTipo" title="Cambiar el tipo" data-id="${planillaInstance.id}" data-tipo="${planillaInstance?.tipoPlanilla?.nombre}">
