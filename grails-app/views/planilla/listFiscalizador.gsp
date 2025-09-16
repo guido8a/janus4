@@ -173,7 +173,7 @@
                                 <i class="fa fa-edit"></i>
                             </g:link>
 
-                            <a href="#" class="btn btn-xs btn-danger btn-delete2" data-id="${planillaInstance.id}" data-tipo="${planillaInstance?.tipoPlanilla?.nombre}">
+                            <a href="#" class="btn btn-xs btn-danger btnBorrarPlanilla" data-id="${planillaInstance.id}">
                                 <i class="fa fa-trash"></i>
                             </a>
 
@@ -1028,8 +1028,7 @@
         return false;
     }); //click btn show
 
-    // $(".btn-delete").click(function () {
-    $(".btn-delete2").click(function () {
+    $(".btn-delete").click(function () {
         var id = $(this).data("id");
         $("#id").val(id);
         var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');
@@ -1047,6 +1046,48 @@
         $("#modalFooter").html("").append(btnOk).append(btnDelete);
         $("#modal-Planilla").modal("show");
         return false;
+    });
+
+    $(".btnBorrarPlanilla").click(function () {
+        var id = $(this).data("id");
+        bootbox.confirm({
+            title: "<i class='fa fa-trash text-danger fa-2x'></i> Borrar planilla",
+            message: " Está seguro de querer borrar la planilla?.Esta acción no se puede deshacer.",
+            buttons: {
+                cancel: {
+                    label: '<i class="fa fa-times"></i> Cancelar',
+                    className: 'btn-primary'
+                },
+                confirm: {
+                    label: '<i class="fa fa-check"></i> Aceptar',
+                    className: 'btn-success'
+                }
+            },
+            callback: function (result) {
+                if(result){
+                    var g = cargarLoader("Borrando...");
+                    $.ajax({
+                        type: "POST",
+                        url: "${createLink(controller: 'planilla', action: 'borrarPlanilla_ajax')}",
+                        data: {
+                            id: id
+                        },
+                        success: function (msg) {
+                            g.modal("hide")
+                            var parts = msg.split("_");
+                            if(parts[0] === 'ok'){
+                                log(parts[1], "success");
+                                setTimeout(function () {
+                                    location.reload();
+                                }, 800)
+                            }else{
+                                log(parts[1], "error")
+                            }
+                        }
+                    })
+                }
+            }
+        });
     });
 
     $("#imprimir").click(function () {

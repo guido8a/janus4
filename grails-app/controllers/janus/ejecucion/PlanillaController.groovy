@@ -5991,4 +5991,100 @@ class PlanillaController {
             }
         }
     }
+
+    def borrarPlanilla_ajax(){
+        def planilla = Planilla.get(params.id)
+        def cn = dbConnectionService.getConnection()
+        def errores = ''
+
+        def sql1 = "delete from avfr where avnc__id in (select avnc__id from avnc where plnl__id = ${planilla?.id})"
+        try{
+            cn.execute(sql1.toString())
+        }catch(e){
+            println("Error al ejecutar query1 " + e)
+            errores += e
+        }
+
+        def sql2 = "delete from avnc where plnl__id = ${planilla?.id}"
+        try{
+            cn.execute(sql2.toString())
+        }catch(e){
+            println("Error al ejecutar query2 " + e)
+            errores += e
+        }
+
+        def sql3 = "delete from prtr where trmt__id in (select trmt__id from trmt where plnl__id = ${planilla?.id})"
+        try{
+            cn.execute(sql3.toString())
+        }catch(e){
+            println("Error al ejecutar query3 " + e)
+            errores += e
+        }
+
+        def sql4 = "delete from trmt where plnl__id = ${planilla?.id}"
+        try{
+            cn.execute(sql4.toString())
+        }catch(e){
+            println("Error al ejecutar query4 " + e)
+            errores += e
+        }
+
+        def sql5 = "delete from mlpl where plnl__id = ${planilla?.id}"
+        try{
+            cn.execute(sql5.toString())
+        }catch(e){
+            println("Error al ejecutar query5 " + e)
+            errores += e
+        }
+
+        def sql6 = "delete from dtrj where rjpl__id in (select rjpl__id from rjpl where plnl__id in (${planilla?.id}))"
+        try{
+            cn.execute(sql6.toString())
+        }catch(e){
+            println("Error al ejecutar query6 " + e)
+            errores += e
+        }
+
+        def sql7 = "delete from dtrj where rjpl__id in (select rjpl__id from rjpl where plnlrjst in (${planilla?.id}))"
+        try{
+            cn.execute(sql7.toString())
+        }catch(e){
+            println("Error al ejecutar query7 " + e)
+            errores += e
+        }
+
+        def sql8 = "delete from rjpl where plnl__id = ${planilla?.id}"
+        try{
+            cn.execute(sql8.toString())
+        }catch(e){
+            println("Error al ejecutar query8 " + e)
+            errores += e
+        }
+        def sql9 = "delete from dtpe where plnl__id = ${planilla?.id}"
+        try{
+            cn.execute(sql9.toString())
+        }catch(e){
+            println("Error al ejecutar query9 " + e)
+            errores += e
+        }
+
+        def sql10 = "delete from plnl where plnl__id = ${planilla?.id}"
+        try{
+            cn.execute(sql10.toString())
+        }catch(e){
+            println("Error al ejecutar query10 " + e)
+            errores += e
+        }
+
+        println("errores " + errores)
+
+        if(errores == ''){
+            render"ok_Planilla borrada correctamente"
+        }else{
+            render "no_Error al borrar la planilla"
+        }
+
+
+    }
+
 }
