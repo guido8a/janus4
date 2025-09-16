@@ -6001,7 +6001,7 @@ class PlanillaController {
         try{
             cn.execute(sql1.toString())
         }catch(e){
-            println("Error al ejecutar avfr " + e)
+            println("Error al borrar avance avfr " + e)
             errores += e
         }
 
@@ -6009,7 +6009,7 @@ class PlanillaController {
         try{
             cn.execute(sql2.toString())
         }catch(e){
-            println("Error al ejecutar avnc " + e)
+            println("Error al borrar avance avnc " + e)
             errores += e
         }
 
@@ -6017,7 +6017,7 @@ class PlanillaController {
         try{
             cn.execute(sql3.toString())
         }catch(e){
-            println("Error al ejecutar prtr " + e)
+            println("Error al borrar persona trámite prtr " + e)
             errores += e
         }
 
@@ -6025,7 +6025,7 @@ class PlanillaController {
         try{
             cn.execute(sql4.toString())
         }catch(e){
-            println("Error al ejecutar trmt " + e)
+            println("Error al borrar trámite trmt " + e)
             errores += e
         }
 
@@ -6033,38 +6033,31 @@ class PlanillaController {
         try{
             cn.execute(sql5.toString())
         }catch(e){
-            println("Error al ejecutar mlpl " + e)
+            println("Error al borrar multas mlpl " + e)
             errores += e
         }
 
-        def sql6 = "delete from dtrj where rjpl__id in (select rjpl__id from rjpl where plnl__id in (${planilla?.id}))"
+        def sql6 = "delete from dtrj where rjpl__id in (select rjpl__id from rjpl where plnl__id = ${planilla?.id})"
         try{
             cn.execute(sql6.toString())
         }catch(e){
-            println("Error al ejecutar dtrj " + e)
+            println("Error al borrar detalle de reajuste dtrj " + e)
             errores += e
         }
 
-        def sql7 = "delete from rjpl where rjpl__id in (select rjpl__id from rjpl where plnlrjst in (${planilla?.id}))"
+        def sql7 = "delete from rjpl where plnl__id = (${planilla?.id})"
         try{
             cn.execute(sql7.toString())
         }catch(e){
-            println("Error al ejecutar rjpl " + e)
+            println("Error al borrar reajuste rjpl " + e)
             errores += e
         }
 
-//        def sql8 = "delete from rjpl where plnl__id = ${planilla?.id}"
-//        try{
-//            cn.execute(sql8.toString())
-//        }catch(e){
-//            println("Error al ejecutar query8 " + e)
-//            errores += e
-//        }
         def sql9 = "delete from dtpe where plnl__id = ${planilla?.id}"
         try{
             cn.execute(sql9.toString())
         }catch(e){
-            println("Error al ejecutar dtpe " + e)
+            println("Error al borrar detalle de palnilla dtpe " + e)
             errores += e
         }
 
@@ -6072,7 +6065,7 @@ class PlanillaController {
         try{
             cn.execute(sql10.toString())
         }catch(e){
-            println("Error al ejecutar plnl " + e)
+            println("Error al borrar la planilla plnl " + e)
             errores += e
         }
 
