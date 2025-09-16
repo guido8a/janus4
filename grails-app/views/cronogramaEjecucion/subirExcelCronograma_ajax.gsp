@@ -1,16 +1,16 @@
 <div class="row">
     <div class="col-md-12" style="width: 99.7%;height: 400px; overflow-y: auto;float: right; margin-top: -20px">
 
-        <g:if test="${flash.message}">
-            <div class="row">
-                <div class="span12">
-                    <div class="alert ${flash.clase ?: 'alert-info'}" role="status">
-                        <a class="close" data-dismiss="alert" href="#">×</a>
-                        ${flash.message}
-                    </div>
-                </div>
-            </div>
-        </g:if>
+%{--        <g:if test="${flash.message}">--}%
+%{--            <div class="row">--}%
+%{--                <div class="span12">--}%
+%{--                    <div class="alert ${flash.clase ?: 'alert-info'}" role="status">--}%
+%{--                        <a class="close" data-dismiss="alert" href="#">×</a>--}%
+%{--                        ${flash.message}--}%
+%{--                    </div>--}%
+%{--                </div>--}%
+%{--            </div>--}%
+%{--        </g:if>--}%
 
         <div class="breadcrumb col-md-12" style="font-weight: bold; font-size: 14px; text-align: center">
             Obra: ${contrato?.obra?.nombre}<br/>
@@ -52,6 +52,7 @@
     function submitExcel(id) {
         var $form = $("#frmUploadExcel");
         if ($("#frmUploadExcel").valid()) {
+           var g = cargarLoader("Procesando...");
             var formData = new FormData($form[0]);
             $.ajax({
                 type    : "POST",
@@ -60,10 +61,27 @@
                 contentType: false,
                 processData: false,
                 success : function (msg) {
+                    g.modal("hide");
                     var parts = msg.split("_");
                     if(parts[0] === 'ok'){
                         log(parts[1], "success");
                         cerrarCargarExcelCronograma();
+                        var b = bootbox.dialog({
+                            id      : "dlgCreateEditModif",
+                            title   : "Subido correctamente",
+                            message : parts[1],
+                            // class: 'modal-lg',
+                            buttons : {
+                                aceptar  : {
+                                    id        : "btnAceptar",
+                                    label     : "<i class='fa fa-check'></i> Aceptar",
+                                    className : "btn-success",
+                                    callback  : function () {
+                                        location.reload()
+                                    } //callback
+                                } //guardar
+                            } //buttons
+                        }); //dialog
                     }else{
                         bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
                         return false;

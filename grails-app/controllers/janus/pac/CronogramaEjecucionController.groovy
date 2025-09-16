@@ -4041,6 +4041,10 @@ class CronogramaEjecucionController {
                 if (!prejOk) {
                     doneHtml = "<div class='alert alert-error'>No coinciden los períodos de ejecución del contrato<br> " +
                             "vuelva a genrar el archivo de excel para poder actualizar el cronograma</div>"
+
+                    render "no_No coinciden los períodos de ejecución del contrato,vuelva a genrar el archivo de excel para poder actualizar el cronograma "
+                    return
+
                 }
 
                 println "termina el proceso con prejOk: $prejOk --> $doneHtml"
@@ -4053,11 +4057,17 @@ class CronogramaEjecucionController {
 
                 flash.message = str
 
-                println "DONE!!"
-                redirect(action: "mensajeSubeExcel", id: params.id)
+//                println "DONE!!"
+//                redirect(action: "mensajeSubeExcel", id: params.id)
+
+                render "ok_Excel subido correctamente"
+
             } else {
-                flash.message = "Seleccione un archivo Excel xlsx para procesar (archivos xls deben ser convertidos a xlsx primero)"
-                redirect(action: 'formArchivo', params: params)
+//                flash.message = "Seleccione un archivo Excel xlsx para procesar (archivos xls deben ser convertidos a xlsx primero)"
+//                redirect(action: 'formArchivo', params: params)
+
+                render "no_Seleccione un archivo Excel xlsx para procesar (archivos xls deben ser convertidos a xlsx primero)"
+
             }
         }
     }

@@ -172,6 +172,11 @@
                                     params="[contrato: contrato.id]" id="${planillaInstance.id}">
                                 <i class="fa fa-edit"></i>
                             </g:link>
+
+                            <a href="#" class="btn btn-xs btn-danger btn-delete2" data-id="${planillaInstance.id}" data-tipo="${planillaInstance?.tipoPlanilla?.nombre}">
+                                <i class="fa fa-trash"></i>
+                            </a>
+
                             <g:if test="${contrato?.fiscalizador?.id == session.usuario.id}">
                                 <div data-id="${planillaInstance.id}" rel="tooltip" title="Procesar" class="btn btn-xs btn-success btnProcesa">
                                     <i class="fa fa-cog"></i>
@@ -1023,7 +1028,8 @@
         return false;
     }); //click btn show
 
-    $(".btn-delete").click(function () {
+    // $(".btn-delete").click(function () {
+    $(".btn-delete2").click(function () {
         var id = $(this).data("id");
         $("#id").val(id);
         var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');
