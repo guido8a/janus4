@@ -173,9 +173,11 @@
                                 <i class="fa fa-edit"></i>
                             </g:link>
 
-                            <a href="#" class="btn btn-xs btn-danger btnBorrarPlanilla" data-id="${planillaInstance.id}">
-                                <i class="fa fa-trash"></i>
-                            </a>
+                            <g:if test="${planillaInstance.tipoContrato != 'C'}">
+                                <a href="#" class="btn btn-xs btn-danger btnBorrarPlanilla" data-id="${planillaInstance.id}">
+                                    <i class="fa fa-trash"></i>
+                                </a>
+                            </g:if>
 
                             <g:if test="${contrato?.fiscalizador?.id == session.usuario.id}">
                                 <div data-id="${planillaInstance.id}" rel="tooltip" title="Procesar" class="btn btn-xs btn-success btnProcesa">
@@ -197,9 +199,11 @@
                                 <i class="fa fa-edit"></i>
                             </g:link>
 
-                            <a href="#" class="btn btn-xs btn-danger btnBorrarPlanilla" data-id="${planillaInstance.id}">
-                                <i class="fa fa-trash"></i>
-                            </a>
+                            <g:if test="${planillaInstance.tipoContrato != 'C'}">
+                                <a href="#" class="btn btn-xs btn-danger btnBorrarPlanilla" data-id="${planillaInstance.id}">
+                                    <i class="fa fa-trash"></i>
+                                </a>
+                            </g:if>
 
                         </g:if>
                         <g:if test="${planillaInstance.tipoPlanilla.codigo in ['P', 'Q'] && !planillaInstance.fechaMemoSalidaPlanilla && contrato?.fiscalizador?.id == session.usuario.id}">
@@ -237,22 +241,22 @@
                             %{--                                ${planillaInstanceList?.last()?.fechaFin}--}%
                                 <g:if test="${planillaInstanceList?.last()?.fechaFin}">
                                     <g:if test="${planillaInstance?.fechaPresentacion <= planillaInstanceList?.last()?.fechaFin }">
-%{--                                        <g:if test="${!janus.ejecucion.ReajustePlanilla.findByPlanilla(planillaInstance)}">--}%
-                                            <div data-id="${planillaInstance.id}" rel="tooltip" title="Verificar Índices"
-                                                 class="btn btn-xs btn-info btnVerificarIndices">
-                                                <i class="fa fa-thumbs-up"></i>
-                                            </div>
-%{--                                        </g:if>--}%
+                                    %{--                                        <g:if test="${!janus.ejecucion.ReajustePlanilla.findByPlanilla(planillaInstance)}">--}%
+                                        <div data-id="${planillaInstance.id}" rel="tooltip" title="Verificar Índices"
+                                             class="btn btn-xs btn-info btnVerificarIndices">
+                                            <i class="fa fa-thumbs-up"></i>
+                                        </div>
+                                    %{--                                        </g:if>--}%
                                     </g:if>
                                 </g:if>
                             </g:if>
                             <g:else>
-%{--                                <g:if test="${!janus.ejecucion.ReajustePlanilla.findByPlanilla(planillaInstance)}">--}%
-                                    <div data-id="${planillaInstance.id}" rel="tooltip" title="Verificar Índices"
-                                         class="btn btn-xs btn-info btnVerificarIndices">
-                                        <i class="fa fa-thumbs-up"></i>
-                                    </div>
-%{--                                </g:if>--}%
+                            %{--                                <g:if test="${!janus.ejecucion.ReajustePlanilla.findByPlanilla(planillaInstance)}">--}%
+                                <div data-id="${planillaInstance.id}" rel="tooltip" title="Verificar Índices"
+                                     class="btn btn-xs btn-info btnVerificarIndices">
+                                    <i class="fa fa-thumbs-up"></i>
+                                </div>
+                            %{--                                </g:if>--}%
                             </g:else>
                         </g:if>
                     </td>
@@ -722,15 +726,15 @@
 
     $("#btnNuevaPlanilla").click(function () {
         <g:if test="${Planilla.findByContratoAndTipoPlanilla(janus.Contrato.get(contrato?.id), TipoPlanilla.findByCodigo('A'))}">
-             <g:if test="${contrato?.obra?.fechaInicio}">
-                 location.href = "${g.createLink(controller: 'planilla', action: 'form')}?contrato=" + ${contrato?.id};
-             </g:if>
-             <g:else>
-                 bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + "Sin Inicio de Obra </br> La obra perteneciente a este contrato no ha sido iniciada, no se puede crear planillas" + '</strong>');
-             </g:else>
+        <g:if test="${contrato?.obra?.fechaInicio}">
+        location.href = "${g.createLink(controller: 'planilla', action: 'form')}?contrato=" + ${contrato?.id};
         </g:if>
         <g:else>
-               location.href = "${g.createLink(controller: 'planilla',action: 'form')}?contrato=" + ${contrato?.id};
+        bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + "Sin Inicio de Obra </br> La obra perteneciente a este contrato no ha sido iniciada, no se puede crear planillas" + '</strong>');
+        </g:else>
+        </g:if>
+        <g:else>
+        location.href = "${g.createLink(controller: 'planilla',action: 'form')}?contrato=" + ${contrato?.id};
         </g:else>
     });
 
