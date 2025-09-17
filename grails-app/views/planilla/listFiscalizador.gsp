@@ -1080,7 +1080,7 @@
                         guardar  : {
                             id        : "btnSave",
                             label     : "<i class='fa fa-trash'></i> Borrar",
-                            className : "btn-success",
+                            className : "btn-danger",
                             callback  : function () {
                                 var g = cargarLoader("Borrando...");
                                 $.ajax({
