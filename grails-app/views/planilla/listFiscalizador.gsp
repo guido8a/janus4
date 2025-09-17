@@ -1059,44 +1059,55 @@
 
     $(".btnBorrarPlanilla").click(function () {
         var id = $(this).data("id");
-        bootbox.confirm({
-            title: "<i class='fa fa-trash text-danger fa-2x'></i> Borrar planilla",
-            message: " Está seguro de querer borrar la planilla?.Esta acción no se puede deshacer.",
-            buttons: {
-                cancel: {
-                    label: '<i class="fa fa-times"></i> Cancelar',
-                    className: 'btn-primary'
-                },
-                confirm: {
-                    label: '<i class="fa fa-check"></i> Aceptar',
-                    className: 'btn-success'
-                }
+        $.ajax({
+            type    : "POST",
+            url     : "${createLink(controller: 'planilla', action:'dialogoBorrarPlanilla_ajax')}",
+            data    : {
+                id: id
             },
-            callback: function (result) {
-                if(result){
-                    var g = cargarLoader("Borrando...");
-                    $.ajax({
-                        type: "POST",
-                        url: "${createLink(controller: 'planilla', action: 'borrarPlanilla_ajax')}",
-                        data: {
-                            id: id
-                        },
-                        success: function (msg) {
-                            g.modal("hide")
-                            var parts = msg.split("_");
-                            if(parts[0] === 'ok'){
-                                log(parts[1], "success");
-                                setTimeout(function () {
-                                    location.reload();
-                                }, 800)
-                            }else{
-                                log(parts[1], "error")
+            success : function (msg) {
+                var bp = bootbox.dialog({
+                    id    : "dlgBorrarPlanilla",
+                    title : "<i class='fa fa-trash fa-2x text-danger'></i> Borrar planilla",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
                             }
-                        }
-                    })
-                }
-            }
-        });
+                        },
+                        guardar  : {
+                            id        : "btnSave",
+                            label     : "<i class='fa fa-trash'></i> Borrar",
+                            className : "btn-success",
+                            callback  : function () {
+                                var g = cargarLoader("Borrando...");
+                                $.ajax({
+                                    type: "POST",
+                                    url: "${createLink(controller: 'planilla', action: 'borrarPlanilla_ajax')}",
+                                    data: {
+                                        id: id
+                                    },
+                                    success: function (msg) {
+                                        g.modal("hide");
+                                        var parts = msg.split("_");
+                                        if(parts[0] === 'ok'){
+                                            log(parts[1], "success");
+                                            setTimeout(function () {
+                                                location.reload();
+                                            }, 800)
+                                        }else{
+                                            log(parts[1], "error")
+                                        }
+                                    }
+                                })
+                            } //callback
+                        } //guardar
+                    } //buttons
+                }); //dialog
+            } //success
+        }); //ajax
     });
 
     $("#imprimir").click(function () {

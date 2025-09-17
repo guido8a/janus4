@@ -6078,7 +6078,9 @@ class PlanillaController {
         }else{
             render "no_Error al borrar la planilla"
         }
+    }
 
+    def dialogoBorrarPlanilla_ajax(){
 
     }
 
