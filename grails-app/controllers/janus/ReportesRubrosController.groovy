@@ -1023,7 +1023,7 @@ class reportesRubrosController {
 
             def nombre = rubro?.nombre
 
-            preciosService.ac_rbroObra(obra.id)
+//            preciosService.ac_rbroObra(obra.id)
             def res = preciosService.precioUnitarioVolumenObraAsc("*", obra.id, rubro.id)
 
             def total = 0, totalHer = 0, totalMan = 0, totalMat = 0
