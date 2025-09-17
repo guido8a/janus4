@@ -6069,6 +6069,8 @@ class PlanillaController {
             errores += e
         }
 
+        /** si es complementario se desliga la planilla complementaria y se borra: no se implementa **/
+
         println("errores " + errores)
 
         if(errores == ''){
