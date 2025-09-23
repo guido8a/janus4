@@ -758,9 +758,9 @@ class ReportesPlanillasController {
         addEmptyLine(preface, 1);
         preface.setAlignment(Element.ALIGN_CENTER);
         preface.add(new Paragraph("SEP - G.A.D. PROVINCIA DE PICHINCHA", fontTituloGad));
-        preface.add(new Paragraph("AVANCE DE LA OBRA " + obra.nombre + " AL " + fechaConFormato(plnl.fechaFin, "dd MMMM yyyy").toUpperCase(), fontTituloGad));
-//        preface.add(new Paragraph("AVANCE DE LA OBRA " + obra.nombre, fontTituloGad));
-//                " AL " + fechaConFormato(contrato?.fechaPedidoRecepcionFiscalizador, "dd MMMM yyyy").toUpperCase(), fontTituloGad));
+//        preface.add(new Paragraph("AVANCE DE LA OBRA " + obra.nombre + " AL " + fechaConFormato(plnl.fechaFin, "dd MMMM yyyy").toUpperCase(), fontTituloGad));
+        preface.add(new Paragraph("AVANCE DE LA OBRA " + obra.nombre + ", DEL " + fechaConFormato(plnl.fechaInicio, "dd MMMM yyyy").toUpperCase() +
+                " AL " + fechaConFormato(plnl.fechaFin, "dd MMMM yyyy").toUpperCase(), fontTituloGad));
         addEmptyLine(preface, 1);
         Paragraph preface2 = new Paragraph();
         Paragraph titulo = new Paragraph("INFORME DE FISCALIZACIÓN N°: " + plnl.numero, fontTituloGad);
@@ -1200,7 +1200,9 @@ class ReportesPlanillasController {
         preface.setAlignment(Element.ALIGN_CENTER);
         preface.add(new Paragraph("SEP - G.A.D. PROVINCIA DE PICHINCHA", fontTituloGad));
 //        preface.add(new Paragraph("AVANCE DE LA OBRA " + obra.nombre + " AL " + fechaConFormato(contrato?.fechaPedidoRecepcionFiscalizador, "dd MMMM yyyy").toUpperCase(), fontTituloGad));
-        preface.add(new Paragraph("AVANCE DE LA OBRA " + obra.nombre + " AL " + fechaConFormato(plnl.fechaFin, "dd MMMM yyyy").toUpperCase(), fontTituloGad));
+//        preface.add(new Paragraph("AVANCE DE LA OBRA " + obra.nombre + " AL " + fechaConFormato(plnl.fechaFin, "dd MMMM yyyy").toUpperCase(), fontTituloGad));
+        preface.add(new Paragraph("AVANCE DE LA OBRA " + obra.nombre + ", DEL " + fechaConFormato(plnl.fechaInicio, "dd MMMM yyyy").toUpperCase() +
+                " AL " + fechaConFormato(plnl.fechaFin, "dd MMMM yyyy").toUpperCase(), fontTituloGad));
 
         addEmptyLine(preface, 1);
         Paragraph preface2 = new Paragraph();
@@ -1596,7 +1598,9 @@ class ReportesPlanillasController {
         preface.add(new Paragraph("SEP - G.A.D. PROVINCIA DE PICHINCHA", fontTituloGad));
 //        preface.add(new Paragraph("AVANCE DE LA OBRA " + obra.nombre + " AL " + fechaConFormato(plnl.fechaFin, "dd MMMM yyyy").toUpperCase(), fontTituloGad));
 //        preface.add(new Paragraph("AVANCE DE LA OBRA " + obra.nombre + " AL " + fechaConFormato(contrato.fechaPedidoRecepcionFiscalizador, "dd MMMM yyyy").toUpperCase(), fontTituloGad));
-        preface.add(new Paragraph("AVANCE DE LA OBRA " + obra.nombre + " AL " + fechaConFormato(plnl.fechaFin, "dd MMMM yyyy").toUpperCase(), fontTituloGad));
+//        preface.add(new Paragraph("AVANCE DE LA OBRA " + obra.nombre + " AL " + fechaConFormato(plnl.fechaFin, "dd MMMM yyyy").toUpperCase(), fontTituloGad));
+        preface.add(new Paragraph("AVANCE DE LA OBRA " + obra.nombre + ", DEL " + fechaConFormato(plnl.fechaInicio, "dd MMMM yyyy").toUpperCase() +
+                " AL " + fechaConFormato(plnl.fechaFin, "dd MMMM yyyy").toUpperCase(), fontTituloGad));
         addEmptyLine(preface, 1);
         Paragraph preface2 = new Paragraph();
         preface2.add(new Paragraph("Generado por el usuario: " + session.usuario + "   el: " + new Date().format("dd/MM/yyyy hh:mm"), info))
