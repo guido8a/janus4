@@ -322,7 +322,7 @@ class Obra implements Auditable {
         factorVolumen(blank: true, nullable: true, attributes: [title: 'factorVolumen'])
         factorPeso(blank: true, nullable: true, attributes: [title: 'factorPeso'])
         factorReduccionTiempo(blank: true, nullable: true, attributes: [title: 'factorReduccionTiempo'])
-        sitio(size: 1..63, blank: true, nullable: true, attributes: [title: 'sitio'])
+        sitio(size: 1..127, blank: true, nullable: true, attributes: [title: 'sitio'])
         plazoEjecucionAnios(blank: true, nullable: true, attributes: [title: 'plazoEjecucionAnios'])
         plazoEjecucionMeses(blank: true, nullable: true, attributes: [title: 'plazoEjecucionMeses'])
         plazoEjecucionDias(blank: true, nullable: true, attributes: [title: 'plazoEjecucionDias'])

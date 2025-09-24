@@ -504,7 +504,8 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
             </div>
 
             <div class="col-md-2" style="width: 355px; margin-left: 10px;">Sitio
-            <g:textField style="width: 355px;margin-left:0px;" name="sitio" class="sitio" value="${obra?.sitio}" maxlength="63" title="Sitio urbano o rural"/>
+            <g:textField style="width: 355px;margin-left:0px;" name="sitio" class="sitio" value="${obra?.sitio}"
+                         maxlength="127" title="Sitio urbano o rural"/>
             </div>
         </div>
 
