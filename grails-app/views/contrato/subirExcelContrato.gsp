@@ -32,9 +32,11 @@
 </g:if>
 
 %{--<div class="alert alert-warning">--}%
-    <div class="alert alert-warning"><i class="fa fa-exclamation-triangle fa-2x text-info"></i> <strong style="font-size: 16px">
+    <div class="alert alert-info"><div style="text-align: center"><i class="fa fa-exclamation-triangle fa-3x text-info"></i>
+        <p style="font-size: 20px">Importante</p></div>
+        <span style="font-size: 18px">
         1. Ingrese a CRONOGRAMA TOTAL antes de subir cualquier archivo excel<br>
-        2. El archiovo excel no debe contener fórmulas, de ser así use pegado especial en otro archivo excel para eliminarlas.<br>
+        2. El archiovo excel <strong> no debe contener fórmulas</strong>, de ser así use pegado especial en otro archivo excel para eliminarlas.<br>
         3. La numeración de los rubros debe coincidir con el orden del presupuesto, solo se numeran los rubros (columna A)<br>
         4. El archivo debe ser XLSX</div>
 %{--</div>--}%
