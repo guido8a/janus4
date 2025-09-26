@@ -44,8 +44,12 @@ class DocumentoObraController {
         def obra = Obra.get(params.id)
         def documentos = DocumentoObra.findAllByObra(obra)
 
-        def plano = documentos.findAll { it.nombre.toLowerCase().contains("plano") }
-        def justificativo = documentos.findAll { it.nombre.toLowerCase().contains("justificativo") }
+        def plano
+        def justificativo
+        if(documentos.size() > 0){
+            plano = documentos.findAll { it?.nombre?.toLowerCase()?.contains("plano") }
+            justificativo = documentos.findAll { it?.nombre?.toLowerCase()?.contains("justificativo") }
+        }
         def error = ""
         if (plano.size() == 0)
             error = "<li>" + "No se ha registrado el documento 'Plano' en la biblioteca de la obra." + "</li>"
