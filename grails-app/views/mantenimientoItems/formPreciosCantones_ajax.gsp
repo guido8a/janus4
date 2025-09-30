@@ -17,52 +17,57 @@
             ${precioRubrosItemsInstance.item.nombre}
         </div>
     </div>
-    <div class="col-md-12 breadcrumb" style="margin-top: -10px; font-size: 14px">
-        <div class="col-md-2">
-            <label>
-                Lista:
-            </label>
-        </div>
-        <div class="col-md-8">
-            ${lugarNombre}
-        </div>
-    </div>
-
+%{--    <div class="col-md-12 breadcrumb" style="margin-top: -10px; font-size: 14px">--}%
+%{--        <div class="col-md-2">--}%
+%{--            <label>--}%
+%{--                Lista:--}%
+%{--            </label>--}%
+%{--        </div>--}%
+%{--        <div class="col-md-8">--}%
+%{--            ${lugarNombre}--}%
+%{--        </div>--}%
+%{--    </div>--}%
 
     <div class="form-group ${hasErrors(bean: precioRubrosItemsInstance, field: 'precioUnitario', 'error')} ">
         <span class="grupo col-md-12">
-
-            <span class="col-md-6">
-                <span class="col-md-6">
-                    <label for="precioUnitario" class="control-label text-info">
-                        Precio Unitario
-                    </label>
-                </span>
-                <span class="col-md-5">
-                    <g:textField name="precioUnitario" class="form-control number required " value="${precioRubrosItemsInstance?.precioUnitario}"/>
-                    <p class="help-block ui-helper-hidden"></p>
-                </span>
+            <span class="col-md-4">
+                %{--                <span class="col-md-6">--}%
+                %{--                    <label for="precioUnitario" class="control-label text-info">--}%
+                %{--                        Precio Unitario--}%
+                %{--                    </label>--}%
+                %{--                </span>--}%
+                %{--                <span class="col-md-5">--}%
+                <label for="precioUnitario" class="control-label text-info">
+                    Precio Unitario
+                </label>
+                <g:textField name="precioUnitario" class="form-control number required " value="${precioRubrosItemsInstance?.precioUnitario}"/>
+                <p class="help-block ui-helper-hidden"></p>
+                %{--                </span>--}%
             </span>
             <span class="col-md-2">
-                <label class="control-label text-info">Unidad:</label> <span style="font-weight: bold; font-size: 14px"> ${precioRubrosItemsInstance.item.unidad.codigo} </span>
+                <label class="control-label text-info">Unidad:</label>
+                <span style="font-weight: bold; font-size: 14px"> ${precioRubrosItemsInstance.item.unidad.codigo} </span>
             </span>
             <span class="col-md-4">
                 <label class="control-label text-info"> Fecha </label>
-                <strong style="font-size: 14px;"> ${precioRubrosItemsInstance?.fecha?.format("dd-MM-yyyy")}</strong>
-                <g:hiddenField name="fecha" value="${precioRubrosItemsInstance?.fecha}"/>
+                %{--                <strong style="font-size: 14px;"> ${precioRubrosItemsInstance?.fecha?.format("dd-MM-yyyy")}</strong>--}%
+                %{--                <g:hiddenField name="fecha" value="${precioRubrosItemsInstance?.fecha}"/>--}%
+
+                <input aria-label="" name="fecha" id='datetimepicker3' type='text' class="form-control required" value="${new Date().format("dd-MM-yyyy")}"/>
             </span>
         </span>
     </div>
 </g:form>
 
-<ul class="list-group">
-    <li class="list-group-item">
-        <input class="form-check-input me-1 " type="checkbox" value="" id="chckTodos" data-id="${cantones?.id}">
-        <label class="form-check-label" > TODOS </label>
-    </li>
-</ul>
+<div class="" style="width: 99.7%;height: 500px; overflow-y: auto;float: right; margin-top: 20px">
 
-<div>
+    <ul class="list-group">
+        <li class="list-group-item">
+            <input class="form-check-input me-1 " type="checkbox" value="" id="chckTodos" data-id="${cantones?.id}">
+            <label class="form-check-label" > TODOS </label>
+        </li>
+    </ul>
+
     <ul class="list-group">
         <g:each in="${cantones}" var="canton">
             <li class="list-group-item">
@@ -71,9 +76,7 @@
             </li>
         </g:each>
     </ul>
-
 </div>
-
 
 <script type="text/javascript">
 

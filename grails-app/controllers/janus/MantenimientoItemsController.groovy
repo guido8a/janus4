@@ -2450,14 +2450,12 @@ itemId: item.id
         println "formPrecio_ajax" + params
         def item = Item.get(params.item)
         def lugar = null
-
-        if (params.lugar != "all") {
-            lugar = Lugar.get(params.lugar)
-        }
+        def precioRubrosItemsInstance
+//        if (params.lugar != "all") {
+//            lugar = Lugar.get(params.lugar)
+//        }
 
         def cantones = Lugar.findAllByTipoLista(item.tipoLista, [sort: 'codigo'])
-
-        def precioRubrosItemsInstance
 
         if(params.id){
             precioRubrosItemsInstance = PrecioRubrosItems.get(params.id)
@@ -2473,22 +2471,29 @@ itemId: item.id
     }
 
     def savePrecioCantones_ajax(){
-        println("sv " + params)
+//        println("sv " + params)
         def cn = dbConnectionService.getConnection()
         def fcha = params.fecha[0..9]
         def mnsj = ""
-        def sql="update rbpc set rbpcpcun = ${params.precioUnitario} " +
-                "where rbpcfcha = '${fcha}' and lgar__id in (${params.lugares}) and " +
-                "item__id = ${params.item.id} "
-        println "sql: $sql"
-        try {
-            cn.execute(sql.toString())
-            mnsj = "ok_Precios actualizados correctamente"
+
+        if(params.lugares){
+                def sql="update rbpc set rbpcpcun = ${params.precioUnitario} " +
+                        "where rbpcfcha = '${fcha}' and lgar__id in (${params.lugares}) and " +
+                        "item__id = ${params.item.id} "
+                println "sql: $sql"
+                try {
+                    cn.execute(sql.toString())
+                    mnsj = "ok_Precios actualizados correctamente"
+                }
+                catch (e) {
+                    mnsj = "no_Error al actualizar los precios"
+                }
+                cn.close()
+
+        }else{
+            mnsj = "no_Seleccione al menos una lista"
         }
-        catch (e) {
-            mnsj = "no_Error al actualizar los precios"
-        }
-        cn.close()
+
         render mnsj
     }
 

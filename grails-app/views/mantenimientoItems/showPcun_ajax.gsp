@@ -1,3 +1,15 @@
+<style type="text/css">
+table {
+    table-layout: fixed;
+    overflow-x: scroll;
+}
+th, td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+}
+</style>
+
 <div class="row">
     <div class="col-md-12">
         <a href="#" class="btn btn-primary btnNuevoPrimerPrecio" >
@@ -8,6 +20,11 @@
         <a href="#" class="btn btn-warning btnNuevoPrecioTodos">
             <i class="fa fa-globe"></i>
             Nuevo Precio todos los lugares
+        </a>
+
+        <a href="#" class="btn btn-info btnEditarPrecioTodos" data-item="${itemInstance?.id}">
+            <i class="fa fa-copy"></i>
+            Editar Precio todos los lugares
         </a>
 
         <div role="main" style="margin-top: 5px;">
@@ -58,6 +75,12 @@
 
 <script type="text/javascript">
 
+    var cepc;
+
+    $(".btnEditarPrecioTodos").click(function () {
+        createEditPrecioCantones();
+    });
+
     $(".btnNuevoPrecioTodos").click(function () {
         createEditPrecioConLugares2('all')
     });
@@ -107,9 +130,6 @@
                         } //guardar
                     } //buttons
                 }); //dialog
-                setTimeout(function () {
-                    b.find(".form-control").first().focus()
-                }, 500);
             } //success
         }); //ajax
     } //createEdit
@@ -140,6 +160,74 @@
         } else {
             return false;
         }
+    }
+
+    function createEditPrecioCantones() {
+        $.ajax({
+            type    : "POST",
+            url     : "${createLink(action:'formPreciosCantones_ajax')}",
+            data    : {
+                item        : "${itemInstance.id}"
+            },
+            success : function (msg) {
+                cepc = bootbox.dialog({
+                    id    : "dlgCreateEditP",
+                    title : "Editar precio para todos los lugares",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        },
+                        guardar  : {
+                            id        : "btnSave",
+                            label     : "<i class='fa fa-save'></i> Guardar",
+                            className : "btn-success",
+                            callback  : function () {
+                                return submitFormPrecioC();
+                            } //callback
+                        } //guardar
+                    } //buttons
+                }); //dialog
+            } //success
+        }); //ajax
+    } //createEdit
+
+    function submitFormPrecioC() {
+        var $form = $("#frmSaveCantones");
+        if ($form.valid()) {
+            var data = $form.serialize();
+            var lugares = chequeados();
+                var dialog = cargarLoader("Guardando...");
+                $.ajax({
+                    type    : "POST",
+                    url     : $form.attr("action"),
+                    data    : data + "&lugares=" + lugares,
+                    success : function (msg) {
+                        dialog.modal('hide');
+                        var parts = msg.split("_");
+                        if(parts[0] === 'ok'){
+                            log(parts[1], "success");
+                            cerrarEditarPreciosTodos();
+                            setTimeout(function () {
+                                cerrarPreciosDesdeItems();
+                                verPrecios('${itemInstance?.id}');
+                            },500)
+                        }else{
+                            bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
+                        }
+                    }
+                });
+                return false
+        } else {
+            return false;
+        }
+    }
+
+    function cerrarEditarPreciosTodos() {
+        cepc.modal("hide");
     }
 
 </script>
