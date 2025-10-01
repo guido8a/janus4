@@ -51,9 +51,9 @@ class DocumentoObraController {
             justificativo = documentos.findAll { it?.nombre?.toLowerCase()?.contains("justificativo") }
         }
         def error = ""
-        if (plano.size() == 0)
+        if (plano?.size() == 0)
             error = "<li>" + "No se ha registrado el documento 'Plano' en la biblioteca de la obra." + "</li>"
-        if (justificativo.size() == 0)
+        if (justificativo?.size() == 0)
             error += "<li>No se ha registrado el documento 'Justificativo de cantidad de obra' en la biblioteca de la obra.</li>"
 
         if (error != "") {
