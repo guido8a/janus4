@@ -3273,6 +3273,8 @@ class Reportes2Controller {
         codigoObra.add(new Paragraph("Código de la Obra: ${obra?.codigo}", info))
         document.add(codigoObra);
 
+        //cambios fiscalizacion 10-2025
+
 //        Paragraph docReferencia = new Paragraph();
 //        docReferencia.add(new Paragraph("Doc. Referencia: ${obra?.oficioIngreso}", info))
 //        document.add(docReferencia);

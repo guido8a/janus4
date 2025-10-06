@@ -3008,6 +3008,7 @@ class ReportePlanillas4Controller {
     def titlSbtt(fcha) {
         Font info = new Font(Font.TIMES_ROMAN, 9, Font.NORMAL)
         Paragraph preface2 = new Paragraph()
+        //cambios fiscalizacion 10-2025
 //        preface2.add(new Paragraph("Generado por: " + session.usuario + "   el: " + fcha.format("dd/MM/yyyy"), info))
         preface2.add(new Paragraph("Generado por: " + session.usuario, info))
         preface2.setSpacingAfter(5);
@@ -3026,6 +3027,7 @@ class ReportePlanillas4Controller {
         tablaHeaderPlanilla.setWidths(arregloEnteros([14, 55, 5, 13, 13]))
 
         addCellTabla(tablaHeaderPlanilla, new Paragraph("Generado por", fontThUsar), bordeTdSinBorde)
+        //cambios fiscalizacion 10-2025
 //        addCellTabla(tablaHeaderPlanilla, new Paragraph((session.usuario?.toString() + "   el: " + fcha.format("dd/MM/yyyy hh:mm")?.toString()), fontTdUsar), bordeTdSinBorde)
         addCellTabla(tablaHeaderPlanilla, new Paragraph((session.usuario?.toString()), fontTdUsar), bordeTdSinBorde)
         addCellTabla(tablaHeaderPlanilla, new Paragraph("", fontThUsar), bordeTdSinBorde)
