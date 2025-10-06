@@ -3273,13 +3273,13 @@ class Reportes2Controller {
         codigoObra.add(new Paragraph("Código de la Obra: ${obra?.codigo}", info))
         document.add(codigoObra);
 
-        Paragraph docReferencia = new Paragraph();
-        docReferencia.add(new Paragraph("Doc. Referencia: ${obra?.oficioIngreso}", info))
-        document.add(docReferencia);
+//        Paragraph docReferencia = new Paragraph();
+//        docReferencia.add(new Paragraph("Doc. Referencia: ${obra?.oficioIngreso}", info))
+//        document.add(docReferencia);
 
-        Paragraph fecha = new Paragraph();
-        fecha.add(new Paragraph("Fecha: ${printFecha(obra?.fechaInicio - 1)}", info))
-        document.add(fecha);
+//        Paragraph fecha = new Paragraph();
+//        fecha.add(new Paragraph("Fecha: ${printFecha(obra?.fechaInicio - 1)}", info))
+//        document.add(fecha);
 
         def cmpl = Contrato.findByPadre(contrato)
         def txto = " "
@@ -3287,7 +3287,6 @@ class Reportes2Controller {
             txto = " Incluye plazo del contrato complementario: ${cmpl.codigo}"
         }
         Paragraph plazo = new Paragraph();
-//        plazo.add(new Paragraph("Plazo: ${obra?.plazoEjecucionMeses} Meses" + " ${obra?.plazoEjecucionDias} Días", info))
         plazo.add(new Paragraph("Plazo: ${contrato?.plazo} Días ${txto}", info))
 
         document.add(plazo);

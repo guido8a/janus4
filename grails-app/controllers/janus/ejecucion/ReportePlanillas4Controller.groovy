@@ -3008,12 +3008,9 @@ class ReportePlanillas4Controller {
     def titlSbtt(fcha) {
         Font info = new Font(Font.TIMES_ROMAN, 9, Font.NORMAL)
         Paragraph preface2 = new Paragraph()
-//        preface2.setAlignment(Element.ALIGN_RIGHT)
-//        preface2.add(new Paragraph("Generado por: " + session.usuario + "   el: " + new Date().format("dd/MM/yyyy hh:mm"), info))
-//        println "fcha: $fcha"
-        preface2.add(new Paragraph("Generado por: " + session.usuario + "   el: " + fcha.format("dd/MM/yyyy"), info))
+//        preface2.add(new Paragraph("Generado por: " + session.usuario + "   el: " + fcha.format("dd/MM/yyyy"), info))
+        preface2.add(new Paragraph("Generado por: " + session.usuario, info))
         preface2.setSpacingAfter(5);
-//        addEmptyLine(preface2, 1);
 
         return preface2
     }
@@ -3029,7 +3026,8 @@ class ReportePlanillas4Controller {
         tablaHeaderPlanilla.setWidths(arregloEnteros([14, 55, 5, 13, 13]))
 
         addCellTabla(tablaHeaderPlanilla, new Paragraph("Generado por", fontThUsar), bordeTdSinBorde)
-        addCellTabla(tablaHeaderPlanilla, new Paragraph((session.usuario?.toString() + "   el: " + fcha.format("dd/MM/yyyy hh:mm")?.toString()), fontTdUsar), bordeTdSinBorde)
+//        addCellTabla(tablaHeaderPlanilla, new Paragraph((session.usuario?.toString() + "   el: " + fcha.format("dd/MM/yyyy hh:mm")?.toString()), fontTdUsar), bordeTdSinBorde)
+        addCellTabla(tablaHeaderPlanilla, new Paragraph((session.usuario?.toString()), fontTdUsar), bordeTdSinBorde)
         addCellTabla(tablaHeaderPlanilla, new Paragraph("", fontThUsar), bordeTdSinBorde)
         addCellTabla(tablaHeaderPlanilla, new Paragraph("Contrato", fontThUsar), bordeTdSinBorde)
         addCellTabla(tablaHeaderPlanilla, new Paragraph(contrato?.codigo, fontTdUsar), bordeTdSinBorde)
