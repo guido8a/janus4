@@ -1985,6 +1985,7 @@ class ReportePlanillas4Controller {
             addCellTabla(tablaDetalles, new Paragraph(numero(params.acu, 2), fontThFooter), frmtSuma)
         }
 
+
         sp = 0
         println("---- " + vocr.size())
         vocr.each {vo ->
@@ -2001,7 +2002,7 @@ class ReportePlanillas4Controller {
 
             addCellTabla(tablaDetalles, new Paragraph(vo.unddcdgo, fontTdTiny), frmtDtDr2)
             addCellTabla(tablaDetalles, new Paragraph(numero(vo.vocrpcun, 5, "hide"), fontTdTiny), frmtDtDr2) //3 decimales
-            addCellTabla(tablaDetalles, new Paragraph(numero(vo.vocrcntd, 4, "hide"), fontTdTiny), frmtDtDr2)
+            addCellTabla(tablaDetalles, new Paragraph(numero(vo.vocrcntd, 2, "hide"), fontTdTiny), frmtDtDr2)
 
             addCellTabla(tablaDetalles, new Paragraph(numero(vo.cntdantr, 2, "hide"), fontTdTiny), frmtDtDrBorde2)
             addCellTabla(tablaDetalles, new Paragraph(numero(vo.cntdactl, 2, "hide"), fontTdTiny), frmtDtDrBorde2)
@@ -2081,7 +2082,7 @@ class ReportePlanillas4Controller {
 
         addCellTabla(tablaDetalles, new Paragraph("SUBTOTAL", fontThFooter), frmtCol8)
         addCellTabla(tablaDetalles, new Paragraph(numero(sumaTotlAntr + rjplAntr, 2), fontThFooter), frmtSuma)
-        addCellTabla(tablaDetalles, new Paragraph(numero(sumaTotlActl + rjplActl, 4), fontThFooter), frmtSuma)
+        addCellTabla(tablaDetalles, new Paragraph(numero(sumaTotlActl + rjplActl, 2), fontThFooter), frmtSuma)
         addCellTabla(tablaDetalles, new Paragraph(numero(sumaTotlAcml + rjplAcml, 2), fontThFooter), frmtSuma)
 
         sql = "select sum(plnlmnto) suma from plnl where cntr__id = ${planilla.contrato.id} and " +
