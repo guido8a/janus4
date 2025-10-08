@@ -79,8 +79,14 @@ class ReportePlanillas4Controller {
             def format
             if (decimales == 2) {
                 format = "##,##0"
-            } else if (decimales == 3) {
-                format = "##,###0"
+            } else {
+                if (decimales == 3){
+                    format = "##,###0"
+                }else{
+                    if (decimales == 4) {
+                        format = "##,##0.0000"
+                    }
+                }
             }
             return formatNumber(number: num, minFractionDigits: decimales, maxFractionDigits: decimales, locale: "ec", format: format)
         }
@@ -1919,7 +1925,7 @@ class ReportePlanillas4Controller {
         document.newPage()
         tablaDetalles = new PdfPTable(11);
         tablaDetalles.setWidthPercentage(100);
-        tablaDetalles.setWidths(arregloEnteros([12, 35, 5, 11, 11, 11, 11, 11, 11, 11, 11]))
+        tablaDetalles.setWidths(arregloEnteros([12, 35, 5, 11, 11, 10, 10, 11, 11, 13, 11]))
         tablaDetalles.setSpacingAfter(1f);
         tablaDetalles.setSplitLate(false);
         def currentPag = 1
@@ -1979,7 +1985,6 @@ class ReportePlanillas4Controller {
             addCellTabla(tablaDetalles, new Paragraph(numero(params.acu, 2), fontThFooter), frmtSuma)
         }
 
-
         sp = 0
         println("---- " + vocr.size())
         vocr.each {vo ->
@@ -1987,7 +1992,6 @@ class ReportePlanillas4Controller {
                 addCellTabla(tablaDetalles, new Paragraph('Subpresupuesto: ' + vo.sbprdscr, fontThTiny), frmtSbpr)
 
                 sp = vo.sbpr__id
-//                currentRows++
                 currentRows += vo.vocrlnea
                 rowsCurPag++
             }
@@ -1996,15 +2000,15 @@ class ReportePlanillas4Controller {
             addCellTablaWrap(tablaDetalles, new Paragraph(vo.rbronmbr, fontTdTiny), frmtDtIz2)
 
             addCellTabla(tablaDetalles, new Paragraph(vo.unddcdgo, fontTdTiny), frmtDtDr2)
-            addCellTabla(tablaDetalles, new Paragraph(numero(vo.vocrpcun, 3, "hide"), fontTdTiny), frmtDtDr2) //3 decimales
-            addCellTabla(tablaDetalles, new Paragraph(numero(vo.vocrcntd, 2, "hide"), fontTdTiny), frmtDtDr2)
+            addCellTabla(tablaDetalles, new Paragraph(numero(vo.vocrpcun, 5, "hide"), fontTdTiny), frmtDtDr2) //3 decimales
+            addCellTabla(tablaDetalles, new Paragraph(numero(vo.vocrcntd, 4, "hide"), fontTdTiny), frmtDtDr2)
 
             addCellTabla(tablaDetalles, new Paragraph(numero(vo.cntdantr, 2, "hide"), fontTdTiny), frmtDtDrBorde2)
             addCellTabla(tablaDetalles, new Paragraph(numero(vo.cntdactl, 2, "hide"), fontTdTiny), frmtDtDrBorde2)
             addCellTabla(tablaDetalles, new Paragraph(numero(vo.cntdacml, 2, "hide"), fontTdTiny), frmtDtDrBorde2)
 
             addCellTabla(tablaDetalles, new Paragraph(numero(vo.vlorantr, 2, "hide"), fontTdTiny), [bwt: 0.1, bct: Color.BLACK, bwb: 0.1, bcb: Color.WHITE, height: height, border: Color.BLACK, align: Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE])
-            addCellTabla(tablaDetalles, new Paragraph(numero(vo.vloractl, 2, "hide"), fontTdTiny), [bwt: 0.1, bct: Color.BLACK, bwb: 0.1, bcb: Color.WHITE, height: height, border: Color.BLACK, align: Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE])
+            addCellTabla(tablaDetalles, new Paragraph(numero(vo.vloractl, 4, "hide"), fontTdTiny), [bwt: 0.1, bct: Color.BLACK, bwb: 0.1, bcb: Color.WHITE, height: height, border: Color.BLACK, align: Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE])
             addCellTabla(tablaDetalles, new Paragraph(numero(vo.vloracml, 2, "hide"), fontTdTiny), [bwt: 0.1, bct: Color.BLACK, bwb: 0.1, bcb: Color.WHITE, height: height, border: Color.BLACK, align: Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE])
 
 //            currentRows++
@@ -2039,7 +2043,7 @@ class ReportePlanillas4Controller {
                 document.newPage()
                 tablaDetalles = new PdfPTable(11);
                 tablaDetalles.setWidthPercentage(100);
-                tablaDetalles.setWidths(arregloEnteros([12, 35, 5, 11, 11, 11, 11, 11, 11, 11, 11]))
+                tablaDetalles.setWidths(arregloEnteros([12, 35, 5, 11, 11, 10, 10, 11, 11, 13, 11]))
                 tablaDetalles.setSpacingAfter(1f);
                 printHeaderDetalle([pag: currentPag, total: totalPags])
                 rowsCurPag = 1
@@ -2077,7 +2081,7 @@ class ReportePlanillas4Controller {
 
         addCellTabla(tablaDetalles, new Paragraph("SUBTOTAL", fontThFooter), frmtCol8)
         addCellTabla(tablaDetalles, new Paragraph(numero(sumaTotlAntr + rjplAntr, 2), fontThFooter), frmtSuma)
-        addCellTabla(tablaDetalles, new Paragraph(numero(sumaTotlActl + rjplActl, 2), fontThFooter), frmtSuma)
+        addCellTabla(tablaDetalles, new Paragraph(numero(sumaTotlActl + rjplActl, 4), fontThFooter), frmtSuma)
         addCellTabla(tablaDetalles, new Paragraph(numero(sumaTotlAcml + rjplAcml, 2), fontThFooter), frmtSuma)
 
         sql = "select sum(plnlmnto) suma from plnl where cntr__id = ${planilla.contrato.id} and " +
