@@ -1863,7 +1863,8 @@ class ReportePlanillas4Controller {
         def printHeaderDetalle = { params ->
             def tablaHeaderDetalles = new PdfPTable(11);
             tablaHeaderDetalles.setWidthPercentage(100);
-            tablaHeaderDetalles.setWidths(arregloEnteros([13, 35, 5, 10, 11, 10, 10, 10, 13, 13, 14]))
+//            tablaHeaderDetalles.setWidths(arregloEnteros([13, 35, 5, 10, 11, 10, 10, 10, 13, 13, 14]))
+            tablaHeaderDetalles.setWidths(arregloEnteros([9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9]))
 
             addCellTabla(tablaHeaderDetalles, new Paragraph("Obra", fontThTiny), prmsTdNoBorder)
             addCellTabla(tablaHeaderDetalles, new Paragraph(obra.nombre, fontTdTiny), [border: Color.WHITE, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE, colspan: 10])
@@ -1925,7 +1926,8 @@ class ReportePlanillas4Controller {
         document.newPage()
         tablaDetalles = new PdfPTable(11);
         tablaDetalles.setWidthPercentage(100);
-        tablaDetalles.setWidths(arregloEnteros([12, 35, 5, 11, 11, 10, 10, 11, 11, 13, 11]))
+//        tablaDetalles.setWidths(arregloEnteros([12, 35, 5, 11, 11, 10, 10, 11, 11, 13, 11]))
+        tablaDetalles.setWidths(arregloEnteros([7, 24, 4, 8, 8, 8, 8, 8, 8, 8, 8]))
         tablaDetalles.setSpacingAfter(1f);
         tablaDetalles.setSplitLate(false);
         def currentPag = 1
@@ -1933,14 +1935,12 @@ class ReportePlanillas4Controller {
         def sumaPrclActl = 0, sumaTotlActl = 0
         def sumaPrclAcml = 0, sumaTotlAcml = 0
 
-
-
         def frmtSbpr = [height: height, bwr: borderWidth, bwt: 0.1, bct: Color.LIGHT_GRAY, bwb: 0.1, bcb: Color.LIGHT_GRAY,
                         border: Color.BLACK, bg: Color.LIGHT_GRAY, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE, colspan: 11]
         def frmtDtIz = [bwt  : 0.1, bct: Color.WHITE, bwb: 0.1, bcb: Color.WHITE, height: height, border: Color.BLACK,
                         align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE]
         def frmtDtIz2 = [bwt  : 0.1, bct: Color.BLACK, bwb: 0.1, bcb: Color.WHITE, height: height, border: Color.BLACK,
-                         align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE]
+                         align: Element.ALIGN_LEFT, valign: Element.ALIGN_LEFT]
         def frmtDtDr = [bwt  : 0.1, bct: Color.WHITE, bwb: 0.1, bcb: Color.WHITE, height: height, border: Color.BLACK,
                         align: Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE]
         def frmtDtDr2 = [bwt  : 0.1, bct: Color.BLACK, bwb: 0.1, bcb: Color.WHITE, height: height, border: Color.BLACK,
@@ -1949,7 +1949,6 @@ class ReportePlanillas4Controller {
                              border: Color.BLACK, align: Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE]
         def frmtDtDrBorde2 = [bwt   : 0.1, bct: Color.BLACK, bwb: 0.1, bcb: Color.WHITE, height: height, bwr: borderWidth,
                               border: Color.BLACK, align: Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE]
-
 
         def sql = "select count(distinct(sbpr__id)) cnta from detalle(${cntr.id}, ${obra.id}, ${planilla.id}, " +
                 "'${tipoRprt}')"
@@ -2044,7 +2043,8 @@ class ReportePlanillas4Controller {
                 document.newPage()
                 tablaDetalles = new PdfPTable(11);
                 tablaDetalles.setWidthPercentage(100);
-                tablaDetalles.setWidths(arregloEnteros([12, 35, 5, 11, 11, 10, 10, 11, 11, 13, 11]))
+//                tablaDetalles.setWidths(arregloEnteros([12, 35, 5, 11, 11, 10, 10, 11, 11, 13, 11]))
+                tablaDetalles.setWidths(arregloEnteros([7, 24, 4, 8, 8, 8, 8, 8, 8, 8, 8]))
                 tablaDetalles.setSpacingAfter(1f);
                 printHeaderDetalle([pag: currentPag, total: totalPags])
                 rowsCurPag = 1
