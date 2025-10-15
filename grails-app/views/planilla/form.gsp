@@ -27,7 +27,8 @@
 
 <body>
 
-<g:if test="${suspensiones.size() != 0}">
+%{--<g:if test="${suspensiones.size() != 0}">--}%
+<g:if test="${suspensiones.size() > 1}">
     <div class="btn-toolbar" style="margin-bottom: 20px;">
         <div class="btn-group">
             <g:link action="list" id="${contrato.id}" class="btn btn-primary">

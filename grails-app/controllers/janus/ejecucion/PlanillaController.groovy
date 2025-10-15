@@ -1939,7 +1939,14 @@ class PlanillaController {
         def anticipoN
 
 
-        println "esAnticipo: $esAnticipo, tipos: $tiposPlanilla, periodos: $periodos"
+        println "esAnticipo: $esAnticipo, tipos: $tiposPlanilla, periodos: ${periodos.class}, suspensiones: ${suspensiones}"
+        if(suspensiones) {
+            def inicia = periodos.keySet()[0]
+            println "inicia: $inicia"
+            def fchaFin = new Date().parse("dd-MM-yyyy", inicia.split("_")[0])
+            println "--> $fchaFin"
+            if(fchaFin > suspensiones.first().fechaInicio) periodos = []
+        }
 
         return [planillaInstance: planillaInstance, contrato: contrato, tipos: tiposPlanilla, obra: contrato.oferta.concurso.obra,
                 periodos        : periodos, esAnticipo: esAnticipo, anticipoPagado: anticipoPagado, maxDatePres: maxDatePres,
@@ -5717,15 +5724,28 @@ class PlanillaController {
     }
 
     def anticipo_ajax() {
+        println "anticipo_ajax: $params"
         def contrato = Contrato.get(params.contrato)
         def tipoPlanilla = TipoPlanilla.get(params.tipo)
         def com
-        if (tipoPlanilla.codigo == 'B') {
-            com = Contrato.findByPadre(contrato)
-            return [monto: com.monto, contrato: com]
+        if(params.tipo) {
+            tipoPlanilla = TipoPlanilla.get(params.tipo)
+            if (tipoPlanilla.codigo == 'B') {
+                com = Contrato.findByPadre(contrato)
+                return [monto: com.monto, contrato: com]
+            } else {
+                return [monto: contrato.monto, contrato: contrato]
+            }
+
         } else {
             return [monto: contrato.monto, contrato: contrato]
         }
+//        if (tipoPlanilla.codigo == 'B') {
+//            com = Contrato.findByPadre(contrato)
+//            return [monto: com.monto, contrato: com]
+//        } else {
+//            return [monto: contrato.monto, contrato: contrato]
+//        }
 
     }
 
@@ -5932,6 +5952,7 @@ class PlanillaController {
     }
 
     def verificarFecha_ajax(){
+        println "verificarFecha_ajax: $params"
         def fechaMax = new Date().parse("yyyy-MM-dd", params.fechaMax)
         def contrato = Contrato.get(params.id)
         def planilla = Planilla.get(params.planilla)
@@ -5940,6 +5961,8 @@ class PlanillaController {
         def planillaAnticipo = Planilla.findAllByContratoAndTipoPlanilla(contrato, tipoAnticipo)
 
         def fecha;
+
+        println "contrato: ${contrato} anticipo: ${contrato?.anticipo}"
 
         if(params.tipo){
             if(params.tipo == '3' || params.tipo == '9'){
@@ -5966,29 +5989,29 @@ class PlanillaController {
                 return [planilla: planilla, contrato: contrato, fechaMax: fechaMax]
             }
         }else{
-            if(planilla.tipoPlanilla?.id == 3 || planilla.tipoPlanilla?.id == 9){
-                if(planillas.size() >0){
-                    if(planillas.size() == 1){
-                        if(planillaAnticipo){
-                            fecha = contrato?.obra?.fechaInicio?.format("yyyy") + "-" +  contrato?.obra?.fechaInicio?.format("MM")  + "-" + (contrato?.obra?.fechaInicio?.format("dd")?.toInteger() + 1)
-                            return [fecha: fecha, planilla: planilla, contrato: contrato, fechaMax: fechaMax]
-                        }else{
-                            return [planilla: planilla, contrato: contrato, fechaMax: fechaMax]
-                        }
-                    }else{
-                        planillas.each {
-                            if(it.tipoPlanilla?.id == 3){
-                                fecha = it.fechaIngreso?.format("yyyy") + "-" + it.fechaIngreso?.format("MM") + "-" + (it.fechaIngreso?.format("dd")?.toInteger())
-                            }
-                        }
-                        return [fecha: fecha, planilla: planilla, contrato: contrato, fechaMax: fechaMax]
-                    }
-                }else{
-                    return [planilla: planilla, contrato: contrato, fechaMax: fechaMax]
-                }
-            }else{
+//            if(planilla.tipoPlanilla?.id == 3 || planilla.tipoPlanilla?.id == 9){
+//                if(planillas.size() >0){
+//                    if(planillas.size() == 1){
+//                        if(planillaAnticipo){
+//                            fecha = contrato?.obra?.fechaInicio?.format("yyyy") + "-" +  contrato?.obra?.fechaInicio?.format("MM")  + "-" + (contrato?.obra?.fechaInicio?.format("dd")?.toInteger() + 1)
+//                            return [fecha: fecha, planilla: planilla, contrato: contrato, fechaMax: fechaMax]
+//                        }else{
+//                            return [planilla: planilla, contrato: contrato, fechaMax: fechaMax]
+//                        }
+//                    }else{
+//                        planillas.each {
+//                            if(it.tipoPlanilla?.id == 3){
+//                                fecha = it.fechaIngreso?.format("yyyy") + "-" + it.fechaIngreso?.format("MM") + "-" + (it.fechaIngreso?.format("dd")?.toInteger())
+//                            }
+//                        }
+//                        return [fecha: fecha, planilla: planilla, contrato: contrato, fechaMax: fechaMax]
+//                    }
+//                }else{
+//                    return [planilla: planilla, contrato: contrato, fechaMax: fechaMax]
+//                }
+//            }else{
                 return [planilla: planilla, contrato: contrato, fechaMax: fechaMax]
-            }
+//            }
         }
     }
 
