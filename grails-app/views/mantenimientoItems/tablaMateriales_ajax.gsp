@@ -284,6 +284,7 @@
     } //createEdit
 
     function verInfoItem(id) {
+        var cii = cargarLoader("Cargando...");
         $.ajax({
             type    : "POST",
             url     : "${createLink(controller: 'mantenimientoItems', action:'infoItems')}",
@@ -291,6 +292,7 @@
                 id: id
             },
             success : function (msg) {
+                cii.modal("hide");
                 var e = bootbox.dialog({
                     id    : "dlgInfoMaterial",
                     title : "Información del item",

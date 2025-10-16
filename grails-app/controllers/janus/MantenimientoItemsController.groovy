@@ -1528,13 +1528,13 @@ class MantenimientoItemsController {
         def item = Item.get(params.id)
         def precios = PrecioRubrosItems.findAllByItem(item)
         def fpItems = ItemsFormulaPolinomica.findAllByItem(item)
-        def sql = "select r.itemcdgo, r.itemnmbr from item r, rbro " +
+        def sql = "select r.itemcdgo, r.itemnmbr, r.item__id from item r, rbro " +
                 "where rbro.item__id = ${params.id} and r.item__id = rbro.rbrocdgo and " +
                 "r.itemcdgo like 'H%' order by r.itemcdgo"
 //        println "sql: $sql"
         def rubro_hist = cn.rows(sql.toString())
 
-        sql = "select r.itemcdgo, r.itemnmbr from item r, rbro " +
+        sql = "select r.itemcdgo, r.itemnmbr, r.item__id from item r, rbro " +
                 "where rbro.item__id = ${params.id} and r.item__id = rbro.rbrocdgo and " +
                 "r.itemcdgo not like 'H%' order by r.itemcdgo"
         def rubro = cn.rows(sql.toString())

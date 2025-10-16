@@ -49,16 +49,19 @@
                         <tr>
                             <th style="width: 100px">Código</th>
                             <th style="width: 300px">Nombre</th>
+                            <th style="width: 80px">Acciones</th>
                         </tr>
-
                         </thead>
-
                         <tbody id="bodyRubros">
-
                         <g:each in="${rubro}" var="r">
                             <tr>
                                 <td style="width: 100px">${r?.itemcdgo}</td>
                                 <td style="width: 300px">${r?.itemnmbr}</td>
+                                <td style="width: 80px; text-align: center">
+                                    <a href="#" class="btn btn-xs btn-success btnIrARubro" data-id="${r?.item__id}" title="Ir al rubro" style="color: white">
+                                        <i class="fas fa-arrow-right"></i>
+                                    </a>
+                                </td>
                             </tr>
                         </g:each>
                         </tbody>
@@ -164,6 +167,13 @@
 
     $("#tabs").tabs({
     });
+
+
+    $(".btnIrARubro").click(function () {
+        var id = $(this).data("id");
+        location.href="${createLink(controller: 'rubro', action: 'rubroPrincipal')}/" + id
+    });
+
     $("#btnEliminar").click(function () {
         var idItem = ("it_") + ${item?.id};
         $.ajax({
