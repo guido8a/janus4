@@ -876,9 +876,9 @@ class ReportesPlanillasController {
 
         //cambio fiscalizador 10-2025
         //cambio 20-10-2025
-        if(plnl.tipoPlanilla.codigo == 'Q') {
-        addCellTabla(tablaDetalle, new Paragraph("FECHA DE TERMINACIÓN", fontTh), [pl: 20, border: Color.BLACK, bcl: Color.WHITE, bwl: 0.1, bcr: Color.WHITE, bwr: 0.1, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE])
-        addCellTabla(tablaDetalle, new Paragraph(fechaConFormato(plnl.fechaFin, formatoFechasTabla), fontTd), [border: Color.BLACK, bcl: Color.WHITE, bwl: 0.1, bcr: Color.WHITE, bwr: 0.1, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE, colspan: 3])
+        if (plnl.tipoPlanilla.codigo == 'Q') {
+            addCellTabla(tablaDetalle, new Paragraph("FECHA DE TERMINACIÓN", fontTh), [pl: 20, border: Color.BLACK, bcl: Color.WHITE, bwl: 0.1, bcr: Color.WHITE, bwr: 0.1, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE])
+            addCellTabla(tablaDetalle, new Paragraph(fechaConFormato(plnl.fechaFin, formatoFechasTabla), fontTd), [border: Color.BLACK, bcl: Color.WHITE, bwl: 0.1, bcr: Color.WHITE, bwr: 0.1, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE, colspan: 3])
         }
 
         def totalDias = 0
