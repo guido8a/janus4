@@ -4454,13 +4454,14 @@ class PlanillaController {
 
     /** halla el valor del índice en PRIN de la oferta**/
     def valorIndice(indc, prin) {
-        println "valor Indice de: $indc : ${indc?.id} periodo: $prin --> ${prin?.id}"
+//        println "valor Indice de: $indc : ${indc?.id} periodo: $prin --> ${prin?.id}"
         ValorIndice.findByIndiceAndPeriodo(indc, prin).valor
     }
 
     /** calcula multas se aplica sólo a planillas de avance **/
     def procesaMultas(id) {
         println "procesaMultas"
+        def cn = dbConnectionService.getConnection()
         def plnl = Planilla.get(id)
         def cmpl = Contrato.findByPadre(plnl.contrato)
         def diasMax = 5
@@ -4555,16 +4556,28 @@ class PlanillaController {
         if (plnl.tipoPlanilla.codigo == 'P') {
 //            multaPlanilla = Math.round(((rjpl.last().acumuladoPlanillas / rjpl.last().acumuladoCronograma < 0.80) ? plnl.contrato.monto / 1000 : 0) * 100) / 100
             dias = 0
-            println "dias_eje: ${plnl.fechaFin} - ${plnl.contrato.obra.fechaInicio}"
+            println "dias_eje: ${plnl.fechaFin} - ${plnl.contrato.obra.fechaInicio} cronograma: ${rjpl.last().acumuladoCronograma}"
 //            def dias_eje = plnl.fechaFin - plnl.contrato.obra.fechaInicio + 1
             def dias_eje = dias_obra(plnl)
 //            dias = (rjpl.last().acumuladoCronograma - rjpl.last().acumuladoPlanillas) / ( (rjpl.last().acumuladoCronograma)/dias_eje )
-            def valor_dia = valor_dia_perio(plnl.id)
-            dias = (rjpl.last().acumuladoCronograma - rjpl.last().acumuladoPlanillas) / valor_dia
+//            def valor_dia = valor_dia_perio(plnl.id)
+
+            def valores = planillasService.plnl_suspension(plnl)
+            def valor_dia = valores.valor
+            def enSuspension = valores.suspension
+
+            def cronograma = rjpl.last().acumuladoCronograma
+
+//            dias = (rjpl.last().acumuladoCronograma - rjpl.last().acumuladoPlanillas) / valor_dia
+            dias = (cronograma - rjpl.last().acumuladoPlanillas) / valor_dia
+
+            println "dias en multas: $dias"
+
             dias = Math.round(dias)
             dias = (dias > 0) ? dias : 0
             println "dias_eje: $dias_eje dias: $dias"
-            multaPlanilla = Math.round(((rjpl.last().acumuladoPlanillas < rjpl.last().acumuladoCronograma) ?
+//            multaPlanilla = Math.round(((rjpl.last().acumuladoPlanillas < rjpl.last().acumuladoCronograma) ?
+            multaPlanilla = Math.round(((rjpl.last().acumuladoPlanillas < cronograma) ?
                     (plnl.contrato.monto - rjpl.last().acumuladoPlanillas) / 1000 * dias : 0) * 100) / 100
             prmt = [:]
             prmt.planilla = plnl
@@ -4576,10 +4589,12 @@ class PlanillaController {
             } else {
                 prmt.descripcion = "${cmpl.multaIncumplimiento} x 1000 de ${formatoNum.format(cmpl.monto)}"
             }
-            prmt.valorCronograma = rjpl.last().parcialCronograma
+//            prmt.valorCronograma = rjpl.last().parcialCronograma
+            prmt.valorCronograma = cronograma
             prmt.monto = multaPlanilla
             prmt.periodo = "${rjpl.last().mes}"
             prmt.dias = dias
+            println "a insertar: ${prmt}"
             insertaMulta(prmt)
         }
 
@@ -4714,6 +4729,16 @@ class PlanillaController {
                 "prejtipo in ('P', 'C') and plnl.cntr__id = prej.cntr__id and plnl__id = ${plnl.id} and prejfcfn <= plnlfcfn"
         println "dias_obra sql: $sql"
         def dias = (int) cn.rows(sql.toString())[0].dias
+
+        def valores = planillasService.plnl_suspension(plnl)
+        def valor_dia = valores.valor
+        def enSuspension = valores.suspension
+
+        if(enSuspension) {
+            dias += plnl.fechaFin - plnl.fechaInicio + 1
+            println "dias_obra corregido:  $dias"
+        }
+
         return dias
     }
 
@@ -4728,18 +4753,43 @@ class PlanillaController {
     }
 
     def valor_dia_perio(plnl_id) {
-        def cn = dbConnectionService.getConnection()
-        def sql1 = "select sum(prejcrpa) suma from prej, plnl where prejfcin >= plnlfcin and prejfcfn <= plnlfcfn and " +
-                "plnl__id = ${plnl_id} and prej.cntr__id = plnl.cntr__id"
-        def acumulado = (int) cn.rows(sql1.toString())[0].suma
-        sql1 = "select ((plnlfcfn - plnlfcin + 1) ) suma from plnl where plnl__id = ${plnl_id}"
-        def dias_planilla = cn.rows(sql1.toString())[0].suma
+        def plnl = Planilla.get(plnl_id)
+        def valor = planillasService.plnl_suspension(plnl).valor
 
-//        def sql = "select ( prejcrpa/(prejfcfn - prejfcin + 1) )::numeric(8,2) dia from prej, plnl where prejfcin <= plnlfcfn and " +
-//                "prejfcfn >= plnlfcfn and plnl__id = ${plnl_id} and prej.cntr__id = plnl.cntr__id"
-//        def valor = (int) cn.rows(sql.toString())[0].dia
-        def valor = (int) acumulado / dias_planilla
-        println "valor por día: $valor"
+/*
+        def cn = dbConnectionService.getConnection()
+        // ver si el periodo planillado contiene una suspensión inconclusa
+        def sql = "select count(*) nada from mdce, plnl where plnl.cntr__id = mdce.cntr__id and plnl__id = ${plnl_id} and " +
+                "mdcefcin = plnlfcfn + 1 "
+        def enSuspension = cn.rows(sql.toString())[0].nada
+        def plnl = Planilla.get(plnl_id)
+        def plnldias = plnl.fechaFin - plnl.fechaInicio + 1
+        def sql1 = ""
+        def valor = 0.0
+        if(enSuspension) {
+            println "-- $enSuspension contrato suspendido"
+            // halla el prej relativo a la planilla
+            sql = "select min(prejnmro) nmro from prej where cntr__id = ${plnl.contrato.id} and " +
+                    "prejfcin >= '${plnl.fechaInicio.format('yyyy-MM-dd')}'"
+            def nmro = cn.rows(sql.toString())[0].nmro
+            println "periodo prej planillado:  $nmro"
+
+            // halla el valor crpa correspondiente a planillar
+            sql = "select prejcrpa / (prejfcfn - prejfcin + 1) * ($plnldias + 1) dias from prej " +
+                    "where cntr__id = ${plnl.contrato.id} and prejnmro = ${nmro}"
+            valor = cn.rows(sql.toString())[0].dias / (plnldias + 1)
+            println "valor cronograma:  $valor"
+        } else {
+            println "-- $enSuspension no suspendido"
+            sql1 = "select sum(prejcrpa) suma from prej, plnl where prejfcin >= plnlfcin and prejfcfn <= plnlfcfn and " +
+                    "plnl__id = ${plnl_id} and prej.cntr__id = plnl.cntr__id"
+            println "sql1: $sql1"
+            def acumulado = (int) cn.rows(sql1.toString())[0].suma
+            sql1 = "select ((plnlfcfn - plnlfcin + 1) ) suma from plnl where plnl__id = ${plnl_id}"
+            def dias_planilla = cn.rows(sql1.toString())[0].suma
+            valor = (int) acumulado / dias_planilla
+        }
+        println "valor por día: $valor"*/
         return valor
     }
 
@@ -5255,6 +5305,15 @@ class PlanillaController {
                         } //else parcial = 0
 //                        println ".....total: $total"
                     }
+
+                    def valores = planillasService.plnl_suspension(plnl)
+                    def valor_dia = valores.valor
+                    def enSuspension = valores.suspension
+                    if(enSuspension) {
+                        total += valor_dia * valores.dias
+                        println "acumulado cronograma corregido: $total"
+                    }
+
 
                     println "**fecha fin Planillado: $fchaFinPlanillado, esteMes: $esteMes, plAcumulado: $plAcumulado, cr: $parcial -- $total, prdo: $prdo"
                     registraRjpl(prdo, esteMes, plAcumulado, plnl.contrato, plnl, fchaFinPlanillado, plnl.fechaFin, parcial, total, true)

@@ -345,6 +345,48 @@ class PlanillasService {
     }
 
 
+    def plnl_suspension(plnl){
+        def cn = dbConnectionService.getConnection()
+        /** ver si el periodo planillado contiene una suspensión inconclusa */
+        def sql = "select count(*) nada from mdce, plnl where plnl.cntr__id = mdce.cntr__id and plnl__id = ${plnl.id} and " +
+                "mdcefcin = plnlfcfn + 1 "
+        def enSuspension = cn.rows(sql.toString())[0].nada
+        def plnldias = plnl.fechaFin - plnl.fechaInicio + 1
+        def sql1 = ""
+        def valor = 0.0
+        def dias = plnldias
+        if(enSuspension) {
+            println "-- $enSuspension contrato suspendido"
+            /* halla el prej relativo a la planilla */
+            sql = "select min(prejnmro) nmro from prej where cntr__id = ${plnl.contrato.id} and " +
+                    "prejfcin >= '${plnl.fechaInicio.format('yyyy-MM-dd')}'"
+            def nmro = cn.rows(sql.toString())[0].nmro
+            println "periodo prej planillado:  $nmro"
+
+            /* halla el valor crpa correspondiente a planillar */
+            sql = "select prejcrpa / (prejfcfn - prejfcin + 1) * ($plnldias + 1) dias from prej " +
+                    "where cntr__id = ${plnl.contrato.id} and prejnmro = ${nmro}"
+            valor = cn.rows(sql.toString())[0].dias / (plnldias + 1)
+            println "valor cronograma:  $valor"
+        } else {
+            println "-- $enSuspension no suspendido"
+            sql1 = "select sum(prejcrpa) suma from prej, plnl where prejfcin >= plnlfcin and prejfcfn <= plnlfcfn and " +
+                    "plnl__id = ${plnl.id} and prej.cntr__id = plnl.cntr__id"
+            println "sql1: $sql1"
+            def acumulado = (int) cn.rows(sql1.toString())[0].suma
+            sql1 = "select ((plnlfcfn - plnlfcin + 1) ) suma from plnl where plnl__id = ${plnl.id}"
+            def dias_planilla = cn.rows(sql1.toString())[0].suma
+            dias = dias_planilla
+//        def sql = "select ( prejcrpa/(prejfcfn - prejfcin + 1) )::numeric(8,2) dia from prej, plnl where prejfcin <= plnlfcfn and " +
+//                "prejfcfn >= plnlfcfn and plnl__id = ${plnl_id} and prej.cntr__id = plnl.cntr__id"
+//        def valor = (int) cn.rows(sql.toString())[0].dia
+            valor = (int) acumulado / dias_planilla
+        }
+        println "valor por día: $valor, dias: $dias"
+
+        return [dias: dias, valor: valor, suspension: enSuspension]
+
+    }
 
 
 }
