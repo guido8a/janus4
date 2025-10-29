@@ -348,14 +348,17 @@ class PlanillasService {
     def plnl_suspension(plnl){
         def cn = dbConnectionService.getConnection()
         /** ver si el periodo planillado contiene una suspensión inconclusa */
-        def sql = "select count(*) nada from mdce, plnl where plnl.cntr__id = mdce.cntr__id and plnl__id = ${plnl.id} and " +
+        def sql = "select count(*) nada from prej, plnl where plnl.cntr__id = prej.cntr__id and plnl__id = ${plnl.id} and " +
+                "prejfcfn = plnlfcfn "
+        def finaliza = cn.rows(sql.toString())[0].nada
+        sql = "select count(*) nada from mdce, plnl where plnl.cntr__id = mdce.cntr__id and plnl__id = ${plnl.id} and " +
                 "mdcefcin = plnlfcfn + 1 "
         def enSuspension = cn.rows(sql.toString())[0].nada
         def plnldias = plnl.fechaFin - plnl.fechaInicio + 1
         def sql1 = ""
         def valor = 0.0
         def dias = plnldias
-        if(enSuspension) {
+        if(enSuspension && !finaliza) {
             println "-- $enSuspension contrato suspendido"
             /* halla el prej relativo a la planilla */
             sql = "select min(prejnmro) nmro from prej where cntr__id = ${plnl.contrato.id} and " +
@@ -384,7 +387,7 @@ class PlanillasService {
         }
         println "valor por día: $valor, dias: $dias"
 
-        return [dias: dias, valor: valor, suspension: enSuspension]
+        return [dias: dias, valor: valor, suspension: (enSuspension && !finaliza)]
 
     }
 
