@@ -2646,5 +2646,89 @@ class ReportesExcel2Controller {
         wb.write(output)
     }
 
+    def reporteExcelContratosDatosGenerales (){
+
+        def fechaDesde = new Date().parse("dd-MM-yyyy", params.desde)
+        def fechaHasta = new Date().parse("dd-MM-yyyy", params.hasta)
+        def contratos = Contrato.findAllByFechaSubscripcionBetween(fechaDesde, fechaHasta)
+
+        XSSFWorkbook wb = new XSSFWorkbook()
+        XSSFCellStyle style = wb.createCellStyle();
+        XSSFFont font = wb.createFont();
+        font.setBold(true);
+        style.setFont(font);
+
+        Sheet sheet = wb.createSheet("DATOS GENERALES")
+        sheet.setColumnWidth(0, 20 * 256);
+        sheet.setColumnWidth(1, 100 * 256);
+        sheet.setColumnWidth(2, 15 * 256);
+        sheet.setColumnWidth(3, 30 * 256);
+        sheet.setColumnWidth(4, 50 * 256);
+        sheet.setColumnWidth(5, 40 * 256);
+        sheet.setColumnWidth(6, 40 * 256);
+        sheet.setColumnWidth(7, 15 * 256);
+        sheet.setColumnWidth(8, 15 * 256);
+        sheet.setColumnWidth(9, 15 * 256);
+        sheet.setColumnWidth(10, 15 * 256);
+        sheet.setColumnWidth(11, 15 * 256);
+        sheet.setColumnWidth(12, 15 * 256);
+        sheet.setColumnWidth(13, 15 * 256);
+
+        Row row = sheet.createRow(0)
+        row.createCell(0).setCellValue("")
+        Row row0 = sheet.createRow(1)
+        row0.createCell(0).setCellValue(Auxiliar.get(1)?.titulo ?: '')
+        row0.setRowStyle(style)
+        Row row1 = sheet.createRow(2)
+        row1.createCell(0).setCellValue("REPORTE EXCEL DE DATOS GENERALES DE CONTRATOS")
+        row1.setRowStyle(style)
+        Row row3 = sheet.createRow(4)
+        row3.createCell(0).setCellValue("CONSULTA A LA FECHA: " +  fechaDesde?.format("dd-MM-yyyy") + " - " +  fechaHasta?.format("dd-MM-yyyy"))
+        row3.setRowStyle(style)
+
+        def fila = 6
+
+        Row rowC1 = sheet.createRow(fila)
+        rowC1.createCell(0).setCellValue("CÓDIGO CONTRATO PRINCIPAL")
+        rowC1.createCell(1).setCellValue("OBJETO DEL CONTRATO")
+        rowC1.createCell(2).setCellValue("CÓDIGO CONTRATO COMPLEMENTARIO")
+        rowC1.createCell(3).setCellValue("TIPO DE OBRA")
+        rowC1.createCell(4).setCellValue("DIRECCIÓN EJECUTORIA")
+        rowC1.createCell(5).setCellValue("NOMBRE DEL FISCALIZADOR")
+        rowC1.createCell(6).setCellValue("ADMINISTRADOR")
+        rowC1.createCell(7).setCellValue("MONTO")
+        rowC1.createCell(8).setCellValue("ANTICIPO")
+        rowC1.createCell(9).setCellValue("CANTÓN")
+        rowC1.createCell(10).setCellValue("PARROQUIA/RECINTO")
+        rowC1.createCell(11).setCellValue("% AVANCE")
+        rowC1.createCell(12).setCellValue("ESTADO")
+        rowC1.setRowStyle(style)
+        fila++
+
+        contratos.each{ contrato->
+            Row rowF1 = sheet.createRow(fila)
+            rowF1.createCell(0).setCellValue(contrato?.codigo ?: '')
+            rowF1.createCell(1).setCellValue(contrato?.objeto ?: '')
+            rowF1.createCell(2).setCellValue('')
+            rowF1.createCell(3).setCellValue(contrato?.obraContratada?.tipoObjetivo?.descripcion ?: '')
+            rowF1.createCell(4).setCellValue(contrato?.obraContratada?.departamento?.descripcion ?: '')
+            rowF1.createCell(5).setCellValue((contrato?.fiscalizador?.apellido ?: '') + " " + (contrato?.fiscalizador?.nombre ?: ''))
+            rowF1.createCell(6).setCellValue((contrato?.administrador?.apellido ?: '') + " " + (contrato?.administrador?.nombre ?: ''))
+            rowF1.createCell(7).setCellValue(contrato?.monto ?: 0)
+            rowF1.createCell(8).setCellValue(contrato?.anticipo ?: 0)
+            rowF1.createCell(9).setCellValue(contrato?.obraContratada?.parroquia?.canton?.nombre ?: '')
+            rowF1.createCell(10).setCellValue(contrato?.obraContratada?.parroquia?.nombre  ?: '')
+            rowF1.createCell(11).setCellValue(0)
+            rowF1.createCell(12).setCellValue(contrato?.estado ?: '')
+            fila++
+        }
+
+        def output = response.getOutputStream()
+        def header = "attachment; filename=" + "contratosDatosGenerales_${new Date().format("dd-MM-yyyy")}.xlsx";
+        response.setContentType("application/octet-stream")
+        response.setHeader("Content-Disposition", header);
+        wb.write(output)
+    }
+
 
 }

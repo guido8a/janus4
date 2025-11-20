@@ -168,6 +168,12 @@
                 </g:link>
                 <p class="col-md-8"> Genera el reporte PDF de items no usados </p>
             </li>
+            <li texto="cdg" class="item col-md-12">
+                <a href="#" id="btnReporteExcelCDG" style="color: #FFFDF4" class="btn btn-success btn-xs col-md-4">
+                    <i class="fa fa-file-excel"></i> Contratos datos generales
+                </a>
+                <p class="col-md-8"> Datos generales de los contratos </p>
+            </li>
         </ul>
     </div>
 
@@ -282,6 +288,11 @@
         <h3>Reporte de items no usados</h3><br>
         <p>Items no usados</p>
     </div>
+
+    <div id="cdg" style="display: none">
+        <h3>Reporte excel de contratos</h3><br>
+        <p>Datos generales</p>
+    </div>
 </div>
 
 <div id="dlgContabilidad" class="ui-helper-hidden">
@@ -318,6 +329,37 @@
 
 <script type="text/javascript">
 
+    $("#btnReporteExcelCDG").click(function () {
+        $.ajax({
+            type    : "POST",
+            url: "${createLink(controller: 'reportes5', action:'reporteExcelCDG_ajax')}",
+            data    : {},
+            success : function (msg) {
+                var b = bootbox.dialog({
+                    id      : "dlgImprimirExcelCDG",
+                    title   : "Contratos Datos Generales (Excel)",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        },
+                        guardar  : {
+                            id        : "btnSave",
+                            label     : "<i class='fa fa-file-excel'></i> Excel",
+                            className : "btn-success",
+                            callback  : function () {
+                                location.href="${createLink(controller: 'reportesExcel2', action: 'reporteExcelContratosDatosGenerales')}?desde=" + $("#fechaDesdeCDG").val() + "&hasta=" + $("#fechaHastaCDG").val();
+                            } //callback
+                        } //guardar
+                    } //buttons
+                }); //dialog
+            } //success
+        }); //ajax
+    });
+
     $(document).ready(function () {
         $('.item').hover(function () {
             //$('.item').click(function(){
@@ -345,7 +387,6 @@
 
     function updatePeriodo() {
         var cont = $("#contP").val();
-
         $.ajax({
             type: "POST",
             url: "${createLink(action:'updatePeriodo')}",
@@ -356,48 +397,16 @@
                 $("#divPeriodo").html(msg);
             }
         });
-
-//                console.log(cont);
     }
 
     $(function () {
 
         $(".link").hover(
             function () {
-                /*
-                                    $(this).addClass("linkHover");
-                                    $(".notice").hide();
-                                    var id = $(this).parent().attr("text");
-                                    $("#" + id).show();
-                */
             },
             function () {
-                /*
-                                    $(this).removeClass("linkHover");
-                                    $(".notice").hide();
-                */
+
             }).click(function () {
-            %{--var url = $(this).attr("href");--}%
-            %{--var file = $(this).attr("file");--}%
-
-            %{--var dialog = trim($(this).attr("dialog"));--}%
-            %{--var cont = trim($(this).text());--}%
-
-
-            %{--$("#" + dialog).dialog("option", "title", cont);--}%
-            %{--$("#" + dialog).dialog("open");--}%
-
-            %{--actionUrl = "${createLink(controller:'pdf',action:'pdfLink')}?filename=" + file + "&url=" + url;--}%
-
-            %{--//                            console.log(actionUrl);--}%
-
-            %{--<g:link action="pdfLink" controller="pdf" params="[url: g.createLink(controller: 'reportes', action: 'planDeCuentas'), filename: 'Plan_de_Cuentas.pdf']">--}%
-            %{--plan de cuentas--}%
-            %{--</g:link>--}%
-
-            %{--//                            console.log(url, file);--}%
-
-            %{--return false;--}%
         });
 
         $("#contP").change(function () {
@@ -412,11 +421,6 @@
                 "Aceptar": function () {
                     var cont = $("#cont").val();
                     var url = actionUrl + "?cont=" + cont + "Wemp=${session.empresa?.id}";
-//                            console.group("URL");
-//                            console.log(actionUrl);
-//                            console.log(url);
-//                            console.groupEnd();
-
                     location.href = url;
                 },
                 "Cancelar": function () {
@@ -452,10 +456,6 @@
                     var cont = $("#contP").val();
                     var per = $("#periodo").val();
                     var url = actionUrl + "?cont=" + cont + "Wper=" + per + "Wemp=${session.empresa?.id}";
-//                            console.group("URL");
-//                            console.log(actionUrl);
-//                            console.log(url);
-//                            console.groupEnd();
                     location.href = url;
                 },
                 "Cancelar": function () {
@@ -463,7 +463,6 @@
                 }
             }
         });
-
 
         $("#btnComprobantes").button({
             icons: {
@@ -481,10 +480,6 @@
                     var cont = $("#cont").val();
                     var per = $("#periodo").val();
                     var url = actionUrl + "?cont=" + cont + "Wper=" + per + "Wemp=${session.empresa?.id}";
-//                            console.group("URL");
-//                            console.log(actionUrl);
-//                            console.log(url);
-//                            console.groupEnd();
                     location.href = url;
                 },
                 "Cancelar": function () {
