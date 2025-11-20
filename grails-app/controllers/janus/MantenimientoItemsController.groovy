@@ -1342,7 +1342,7 @@ class MantenimientoItemsController {
         def items = cn.rows(sql.toString());
         cn.close()
 
-        return [data: items, itemInstance: itemInstance]
+        return [data: items, itemInstance: itemInstance, fechaDefecto: params.fechaDefecto]
     }
 
 //    def formIt_ajax() {
@@ -1705,7 +1705,14 @@ class MantenimientoItemsController {
     def formPreciosLugares2_ajax() {
         println("form precios " + params)
         def item = Item.get(params.item)
-        def fd = new Date()
+        def fd
+
+        if(params.fechaDefecto){
+            fd = new Date().parse("dd-MM-yyyy", params.fechaDefecto)
+        }else{
+            fd = new Date()
+        }
+
         def lugares = Lugar.findAllByTipoLista(item.tipoLista, [sort: 'codigo'])
 
         def precioRubrosItemsInstance
@@ -2999,7 +3006,7 @@ itemId: item.id
         def items = cn.rows(sql.toString());
         cn.close()
 
-        return [materiales: materiales, grupo: grupo, id: params.id, departamento: subgrupoBuscar, perfil: perfil, items: items, persona: persona]
+        return [materiales: materiales, grupo: grupo, id: params.id, departamento: subgrupoBuscar, perfil: perfil, items: items, persona: persona, fechaDefecto: params.fechaDefecto]
     }
 
     def tablaPrecios_ajax(){

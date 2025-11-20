@@ -105,8 +105,9 @@ th, td {
             type    : "POST",
             url     : "${createLink( action:'formPreciosLugares2_ajax')}",
             data    : {
-                item        : "${itemInstance.id}",
-                all: todos
+                item : "${itemInstance.id}",
+                all: todos,
+                fechaDefecto: '${fechaDefecto}'
             },
             success : function (msg) {
                 var b = bootbox.dialog({
@@ -200,27 +201,27 @@ th, td {
         if ($form.valid()) {
             var data = $form.serialize();
             var lugares = chequeados();
-                var dialog = cargarLoader("Guardando...");
-                $.ajax({
-                    type    : "POST",
-                    url     : $form.attr("action"),
-                    data    : data + "&lugares=" + lugares,
-                    success : function (msg) {
-                        dialog.modal('hide');
-                        var parts = msg.split("_");
-                        if(parts[0] === 'ok'){
-                            log(parts[1], "success");
-                            cerrarEditarPreciosTodos();
-                            setTimeout(function () {
-                                cerrarPreciosDesdeItems();
-                                verPrecios('${itemInstance?.id}');
-                            },500)
-                        }else{
-                            bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
-                        }
+            var dialog = cargarLoader("Guardando...");
+            $.ajax({
+                type    : "POST",
+                url     : $form.attr("action"),
+                data    : data + "&lugares=" + lugares,
+                success : function (msg) {
+                    dialog.modal('hide');
+                    var parts = msg.split("_");
+                    if(parts[0] === 'ok'){
+                        log(parts[1], "success");
+                        cerrarEditarPreciosTodos();
+                        setTimeout(function () {
+                            cerrarPreciosDesdeItems();
+                            verPrecios('${itemInstance?.id}');
+                        },500)
+                    }else{
+                        bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
                     }
-                });
-                return false
+                }
+            });
+            return false
         } else {
             return false;
         }

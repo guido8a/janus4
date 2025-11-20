@@ -238,7 +238,8 @@
             type    : "POST",
             url     : "${createLink(controller: 'mantenimientoItems', action:'showPcun_ajax')}",
             data    : {
-                id: id
+                id: id,
+                fechaDefecto:'${fechaDefecto}'
             },
             success : function (msg) {
                 dpre = bootbox.dialog({

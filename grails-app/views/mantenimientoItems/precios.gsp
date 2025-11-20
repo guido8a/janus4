@@ -120,6 +120,7 @@
         var buscarPor = $("#buscarPor option:selected").val();
         var tipo = $("#tipo option:selected").val();
         var criterio = $("#criterio").val();
+        var fechaDefecto = $("#datetimepicker2").val();
         var url = '';
 
         switch (tipo) {
@@ -144,7 +145,8 @@
                 buscarPor: buscarPor,
                 tipo: tipo,
                 criterio: criterio,
-                id: id
+                id: id,
+                fechaDefecto: fechaDefecto
             },
             success: function (msg){
                 d.modal("hide");
@@ -192,6 +194,8 @@
         sideBySide: true,
         icons: {
         }
+    }).on('dp.change', function(e){
+        cargarTablaItemsPrecios();
     });
 
     $("#btnItems").click(function () {
