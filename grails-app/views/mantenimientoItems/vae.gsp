@@ -671,7 +671,8 @@
                     type    : "POST",
                     url: "${createLink(action:'formVa_ajax')}",
                     data    : {
-                        item: nodeId
+                        item: nodeId,
+                        fechaDefecto: $("#datetimepicker2").val()
                     },
                     success : function (msg) {
                         var b = bootbox.dialog({
@@ -700,7 +701,6 @@
                 }); //ajax
             }
         };
-
 
         if (esItem) {
             if(!nodeHasChildren){

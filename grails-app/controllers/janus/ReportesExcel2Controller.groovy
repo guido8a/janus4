@@ -2709,7 +2709,7 @@ class ReportesExcel2Controller {
             Row rowF1 = sheet.createRow(fila)
             rowF1.createCell(0).setCellValue(contrato?.codigo ?: '')
             rowF1.createCell(1).setCellValue(contrato?.objeto ?: '')
-            rowF1.createCell(2).setCellValue('')
+            rowF1.createCell(2).setCellValue(Contrato.findByPadre(contrato)?.codigo ?: '')
             rowF1.createCell(3).setCellValue(contrato?.obraContratada?.tipoObjetivo?.descripcion ?: '')
             rowF1.createCell(4).setCellValue(contrato?.obraContratada?.departamento?.descripcion ?: '')
             rowF1.createCell(5).setCellValue((contrato?.fiscalizador?.apellido ?: '') + " " + (contrato?.fiscalizador?.nombre ?: ''))
@@ -2719,7 +2719,7 @@ class ReportesExcel2Controller {
             rowF1.createCell(9).setCellValue(contrato?.obraContratada?.parroquia?.canton?.nombre ?: '')
             rowF1.createCell(10).setCellValue(contrato?.obraContratada?.parroquia?.nombre  ?: '')
             rowF1.createCell(11).setCellValue(0)
-            rowF1.createCell(12).setCellValue(contrato?.estado ?: '')
+            rowF1.createCell(12).setCellValue((contrato?.estado == 'R' ? 'Registrado' : 'No Registrado') ?: '')
             fila++
         }
 
