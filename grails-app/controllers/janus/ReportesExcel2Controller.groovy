@@ -2647,11 +2647,11 @@ class ReportesExcel2Controller {
     }
 
     def reporteExcelContratosDatosGenerales (){
-
+        def cn = dbConnectionService.getConnection()
         def fechaDesde = new Date().parse("dd-MM-yyyy", params.desde)
         def fechaHasta = new Date().parse("dd-MM-yyyy", params.hasta)
         def contratos = Contrato.findAllByFechaSubscripcionBetween(fechaDesde, fechaHasta)
-
+        def sql = ""
         XSSFWorkbook wb = new XSSFWorkbook()
         XSSFCellStyle style = wb.createCellStyle();
         XSSFFont font = wb.createFont();
@@ -2705,7 +2705,23 @@ class ReportesExcel2Controller {
         rowC1.setRowStyle(style)
         fila++
 
+        //para cada contrato
         contratos.each{ contrato->
+            sql = "select coalesce(max(plnlavfs),0) avnc from plnl where cntr__id = ${contrato.id}"
+            def avfs = cn.rows(sql.toString())[0].avnc
+            sql = "select count(*) cnta from plnl where plnl.cntr__id = ${contrato.id} and " +
+                    "tppl__id not in (1,10)"
+            def cnta = cn.rows(sql.toString())[0].cnta  //incluir en excel
+            def avec = 0
+            println "planillas: $cnta"
+            if(cnta > 0) {
+                sql = "select sum(plnlmnto) avec from plnl " +
+                        "where plnl.cntr__id = ${contrato.id} and tppl__id not in (1,10)"
+                println "sql: $sql"
+                avec = cn.rows(sql.toString())[0].avec  //incluir en excel
+            }
+            println "avance económico contrato id: ${contrato.id}: es:  ${avec/contrato.monto*100}"
+
             Row rowF1 = sheet.createRow(fila)
             rowF1.createCell(0).setCellValue(contrato?.codigo ?: '')
             rowF1.createCell(1).setCellValue(contrato?.objeto ?: '')
@@ -2718,7 +2734,7 @@ class ReportesExcel2Controller {
             rowF1.createCell(8).setCellValue(contrato?.anticipo ?: 0)
             rowF1.createCell(9).setCellValue(contrato?.obraContratada?.parroquia?.canton?.nombre ?: '')
             rowF1.createCell(10).setCellValue(contrato?.obraContratada?.parroquia?.nombre  ?: '')
-            rowF1.createCell(11).setCellValue(0)
+            rowF1.createCell(11).setCellValue(avfs)
             rowF1.createCell(12).setCellValue((contrato?.estado == 'R' ? 'Registrado' : 'No Registrado') ?: '')
             fila++
         }
