@@ -51,7 +51,7 @@
 %{--        </g:if>--}%
     </div>
 
-    <g:if test="${meses > 0 && plazoOk && matrizOk}">
+%{--    <g:if test="${meses > 0 && plazoOk && matrizOk}">--}%
         <div class="btn-group">
             <a href="#" class="btn" id="btnGrafico">
                 <i class="fas fa-chart-line"></i>
@@ -62,7 +62,7 @@
                 <i class="fa fa-table"></i> Excel
             </a>
         </div>
-    </g:if>
+%{--    </g:if>--}%
 </div>
 
 %{--<g:if test="${matrizOk}">--}%
