@@ -838,8 +838,7 @@ class Reportes6Controller {
 
     def reporteExcelCronograma() {
 
-        println("!!!" + params)
-
+        println("params excel cronograma " + params)
 
         def tipo = params.tipo
         def obra = null, contrato = null, lbl = ""
@@ -856,9 +855,7 @@ class Reportes6Controller {
         }
 
         def meses = obra.plazoEjecucionMeses + (obra.plazoEjecucionDias > 0 ? 1 : 0)
-
         def detalle = VolumenesObra.findAllByObra(obra, [sort: "orden"])
-
         def precios = [:]
         def indirecto = obra.totales / 100
 
@@ -910,6 +907,7 @@ class Reportes6Controller {
         def label
         def number
         def fila = 21;
+        def nuevaColumna = 0
 
         label = new jxl.write.Label(1, 4, (Auxiliar.get(1)?.titulo ?: ''), times16format); sheet.addCell(label);
         label = new jxl.write.Label(1, 6, "CRONOGRAMA"); sheet.addCell(label);
@@ -943,9 +941,10 @@ class Reportes6Controller {
         label = new jxl.write.Label(6, 20, "C.TOTAL", times16format); sheet.addCell(label);
         label = new jxl.write.Label(7, 20, "T.", times16format); sheet.addCell(label);
         meses.times { i ->
-            label = new jxl.write.Label(8, 20, "MES " + (i + 1), times16format); sheet.addCell(label);
+            label = new jxl.write.Label((8+i), 20, "MES " + (i + 1), times16format); sheet.addCell(label);
+            nuevaColumna = 8+i
         }
-        label = new jxl.write.Label(9, 20, "TOTAL RUBRO", times16format); sheet.addCell(label);
+        label = new jxl.write.Label(nuevaColumna + 1, 20, "TOTAL RUBRO", times16format); sheet.addCell(label);
 
         def totalMes = []
         def sum = 0
@@ -969,7 +968,7 @@ class Reportes6Controller {
             label = new jxl.write.Label(2, fila, vol.item.nombre); sheet.addCell(label);
             label = new jxl.write.Label(3, fila, vol.item.unidad.codigo); sheet.addCell(label);
             number = new jxl.write.Number(4, fila, vol.cantidad?.toDouble() ?: 0); sheet.addCell(number);
-            number = new jxl.write.Number(5, fila, precios[vol.id.toString()] ?: 0); sheet.addCell(number);
+            number = new jxl.write.Number(5, fila, precios[vol.id.toString()]?.toDouble() ?: 0); sheet.addCell(number);
             number = new jxl.write.Number(6, fila, parcial); sheet.addCell(number);
             label = new jxl.write.Label(7, fila, '$'); sheet.addCell(label);
             meses.times { i ->
@@ -979,9 +978,9 @@ class Reportes6Controller {
                     totalMes[i] = 0
                 }
                 totalMes[i] += (prec ? prec.precio : 0)
-                number = new jxl.write.Number(8, fila, prec?.precio ?: 0); sheet.addCell(number);
+                number = new jxl.write.Number(8+i, fila, prec?.precio ?: 0); sheet.addCell(number);
             }
-            number = new jxl.write.Number(9, fila, totalDolRow ?: 0); sheet.addCell(number);
+            number = new jxl.write.Number(nuevaColumna+1, fila, totalDolRow ?: 0); sheet.addCell(number);
 
             fila++
         }
@@ -995,9 +994,9 @@ class Reportes6Controller {
         number = new jxl.write.Number(6, fila, sum ?: 0, times16format); sheet.addCell(number);
         label = new jxl.write.Label(7, fila, 'T', times16format); sheet.addCell(label);
         meses.times { i ->
-            number = new jxl.write.Number(8, fila, totalMes[i] ?: 0, times16format); sheet.addCell(number);
+            number = new jxl.write.Number(8+i, fila, totalMes[i]?.toDouble() ?: 0, times16format); sheet.addCell(number);
         }
-        label = new jxl.write.Label(9, fila, ''); sheet.addCell(label);
+        label = new jxl.write.Label(nuevaColumna+1, fila, ''); sheet.addCell(label);
         fila++
 
         //total acumulado
@@ -1011,9 +1010,9 @@ class Reportes6Controller {
         def acu = 0
         meses.times { i ->
             acu += totalMes[i]
-            number = new jxl.write.Number(8, fila, acu ?: 0, times16format); sheet.addCell(number);
+            number = new jxl.write.Number(8+i, fila, acu?.toDouble() ?: 0, times16format); sheet.addCell(number);
         }
-        label = new jxl.write.Label(9, fila, ''); sheet.addCell(label);
+        label = new jxl.write.Label(nuevaColumna+1, fila, ''); sheet.addCell(label);
         fila++
 
         //total % parcial
@@ -1025,10 +1024,10 @@ class Reportes6Controller {
         label = new jxl.write.Label(6, fila, ''); sheet.addCell(label);
         label = new jxl.write.Label(7, fila, 'T', times16format); sheet.addCell(label);
         meses.times { i ->
-            def prc = 100 * totalMes[i] / sum
-            number = new jxl.write.Number(8, fila, prc ?: 0, times16format); sheet.addCell(number);
+            def prc =  100 * totalMes[i] / sum
+            number = new jxl.write.Number(8+i, fila, numero(prc, 2)?.toDouble() ?: 0, times16format); sheet.addCell(number);
         }
-        label = new jxl.write.Label(9, fila, ''); sheet.addCell(label);
+        label = new jxl.write.Label(nuevaColumna+1, fila, ''); sheet.addCell(label);
         fila++
 
         //total %acumulado
@@ -1043,12 +1042,10 @@ class Reportes6Controller {
         meses.times { i ->
             def prc = 100 * totalMes[i] / sum
             acu += prc
-            number = new jxl.write.Number(8, fila, acu ?: 0, times16format); sheet.addCell(number);
+            number = new jxl.write.Number(8+i, fila, numero(acu, 2)?.toDouble() ?: 0, times16format); sheet.addCell(number);
         }
-        label = new jxl.write.Label(9, fila, ''); sheet.addCell(label);
+        label = new jxl.write.Label(nuevaColumna+1, fila, ''); sheet.addCell(label);
         fila++
-
-
 
         workbook.write();
         workbook.close();
