@@ -174,6 +174,12 @@
                 </a>
                 <p class="col-md-8"> Datos generales de los contratos </p>
             </li>
+            <li texto="cdp" class="item col-md-12">
+                <a href="#" id="btnReporteExcelCDP" style="color: #FFFDF4" class="btn btn-success btn-xs col-md-4">
+                    <i class="fa fa-file-excel"></i> Contratos detalle proyectos
+                </a>
+                <p class="col-md-8"> Datos generales de los contratos </p>
+            </li>
         </ul>
     </div>
 
@@ -328,6 +334,37 @@
 </div>
 
 <script type="text/javascript">
+
+    $("#btnReporteExcelCDP").click(function () {
+        $.ajax({
+            type    : "POST",
+            url: "${createLink(controller: 'reportes5', action:'reporteExcelCDG_ajax')}",
+            data    : {},
+            success : function (msg) {
+                var b = bootbox.dialog({
+                    id      : "dlgImprimirExcelCDG",
+                    title   : "Contratos Datos Generales (Excel)",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        },
+                        guardar  : {
+                            id        : "btnSave",
+                            label     : "<i class='fa fa-file-excel'></i> Excel",
+                            className : "btn-success",
+                            callback  : function () {
+                                location.href="${createLink(controller: 'reportesExcel2', action: 'reporteExcelContratosDetallesProyectos')}?desde=" + $("#fechaDesdeCDG").val() + "&hasta=" + $("#fechaHastaCDG").val();
+                            } //callback
+                        } //guardar
+                    } //buttons
+                }); //dialog
+            } //success
+        }); //ajax
+    });
 
     $("#btnReporteExcelCDG").click(function () {
         $.ajax({
