@@ -168,6 +168,12 @@
                 </g:link>
                 <p class="col-md-8"> Genera el reporte PDF de items no usados </p>
             </li>
+            <li texto="crs" class="item col-md-12">
+                <a href="#" id="btnReporteExcelCRS" style="color: #FFFDF4" class="btn btn-success btn-xs col-md-4">
+                    <i class="fa fa-file-excel"></i> Contratos resumen
+                </a>
+                <p class="col-md-8"> Resumen de contratos </p>
+            </li>
             <li texto="cdg" class="item col-md-12">
                 <a href="#" id="btnReporteExcelCDG" style="color: #FFFDF4" class="btn btn-success btn-xs col-md-4">
                     <i class="fa fa-file-excel"></i> Contratos datos generales
@@ -335,6 +341,37 @@
 
 <script type="text/javascript">
 
+    $("#btnReporteExcelCRS").click(function () {
+        $.ajax({
+            type    : "POST",
+            url: "${createLink(controller: 'reportes5', action:'reporteExcelCDG_ajax')}",
+            data    : {},
+            success : function (msg) {
+                var b = bootbox.dialog({
+                    id      : "dlgImprimirExcelCRS",
+                    title   : "Contratos Resumen (Excel)",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        },
+                        guardar  : {
+                            id        : "btnSave",
+                            label     : "<i class='fa fa-file-excel'></i> Excel",
+                            className : "btn-success",
+                            callback  : function () {
+                                location.href="${createLink(controller: 'reportesExcel2', action: 'reporteExcelContratosResumen')}?desde=" + $("#fechaDesdeCDG").val() + "&hasta=" + $("#fechaHastaCDG").val();
+                            } //callback
+                        } //guardar
+                    } //buttons
+                }); //dialog
+            } //success
+        }); //ajax
+    });
+
     $("#btnReporteExcelCDP").click(function () {
         $.ajax({
             type    : "POST",
@@ -343,7 +380,7 @@
             success : function (msg) {
                 var b = bootbox.dialog({
                     id      : "dlgImprimirExcelCDG",
-                    title   : "Contratos Datos Generales (Excel)",
+                    title   : "Contratos Datos Proyectos (Excel)",
                     message : msg,
                     buttons : {
                         cancelar : {

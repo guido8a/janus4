@@ -3,15 +3,18 @@ package janus
 import janus.cnsl.Costo
 import janus.cnsl.DetalleConsultoria
 import janus.pac.PeriodoEjecucion
+import org.apache.poi.ss.usermodel.FillPatternType
 import org.apache.poi.ss.usermodel.HorizontalAlignment
 import org.apache.poi.ss.usermodel.Row
 import org.apache.poi.ss.usermodel.Sheet
 import org.apache.poi.ss.util.CellRangeAddress
 import org.apache.poi.xssf.usermodel.XSSFCellStyle
+import org.apache.poi.xssf.usermodel.XSSFColor
 import org.apache.poi.xssf.usermodel.XSSFFont
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import seguridad.Persona
 
+import java.awt.Color
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 
@@ -2747,7 +2750,6 @@ class ReportesExcel2Controller {
         wb.write(output)
     }
 
-
     def reporteExcelContratosDetallesProyectos(){
         def cn = dbConnectionService.getConnection()
         def fechaDesde = new Date().parse("dd-MM-yyyy", params.desde)
@@ -2761,7 +2763,16 @@ class ReportesExcel2Controller {
         font.setBold(true);
         style.setFont(font);
 
-        Sheet sheet = wb.createSheet("DATOS GENERALES")
+        XSSFCellStyle style2 = wb.createCellStyle();
+        XSSFFont font2 = wb.createFont();
+        XSSFColor customColor = new XSSFColor(Color.decode("#F7CAC9"));
+        font2.setBold(true);
+//        font2.setColor(customColor)
+        style2.setFont(font2);
+        style2.setFillForegroundColor(customColor);
+        style2.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+
+        Sheet sheet = wb.createSheet("DETALLES PROYECTOS")
         sheet.setColumnWidth(0, 20 * 256);
         sheet.setColumnWidth(1, 100 * 256);
         sheet.setColumnWidth(2, 15 * 256);
@@ -2787,13 +2798,23 @@ class ReportesExcel2Controller {
         row0.createCell(0).setCellValue(Auxiliar.get(1)?.titulo ?: '')
         row0.setRowStyle(style)
         Row row1 = sheet.createRow(2)
-        row1.createCell(0).setCellValue("REPORTE EXCEL DE DATOS GENERALES DE CONTRATOS")
+        row1.createCell(0).setCellValue("REPORTE EXCEL DE DETALLES DE PROYECTOS")
         row1.setRowStyle(style)
         Row row3 = sheet.createRow(4)
         row3.createCell(0).setCellValue("CONSULTA A LA FECHA: " +  fechaDesde?.format("dd-MM-yyyy") + " - " +  fechaHasta?.format("dd-MM-yyyy"))
         row3.setRowStyle(style)
 
         def fila = 6
+
+        Row rowC0 = sheet.createRow(fila)
+        def celda =  rowC0.createCell(0)
+        celda.setCellStyle(style2);
+        celda.setCellValue("ESTADO OBRAS")
+//        rowC0.createCell(0).setCellStyle(style2);
+//        rowC0.createCell(0).setCellValue("ESTADO OBRAS")
+        rowC0.sheet.addMergedRegion(new CellRangeAddress(fila, fila, 0, 5))
+        rowC0.setRowStyle(style2)
+        fila++
 
         Row rowC1 = sheet.createRow(fila)
         rowC1.createCell(0).setCellValue("CÓDIGO CONTRATO PRINCIPAL")
@@ -2899,7 +2920,7 @@ class ReportesExcel2Controller {
                 }
             }
 
-            rowF1.createCell(22).setCellValue('')
+            rowF1.createCell(22).setCellValue(contrato?.fechaPedidoRecepcionFiscalizador?.format("dd-MM-yyyy") ?: '')
 
             rowF1.createCell(23).setCellValue(Contrato.findByPadre(contrato)?.codigo ?: '')
             rowF1.createCell(24).setCellValue(Contrato.findByPadre(contrato)?.monto?.toString() ?: '')
@@ -2908,11 +2929,11 @@ class ReportesExcel2Controller {
             rowF1.createCell(30).setCellValue((contrato?.estado == 'R' ? 'Registrado' : 'No Registrado') ?: '')
             rowF1.createCell(31).setCellValue(contrato?.observaciones ?: '')
 
-            rowF1.createCell(32).setCellValue('')
-            rowF1.createCell(33).setCellValue('')
+            rowF1.createCell(32).setCellValue(contrato?.fechaPedidoRecepcionFiscalizador?.format("dd-MM-yyyy") ?: '')
+            rowF1.createCell(33).setCellValue(contrato?.fechaPedidoRecepcionFiscalizador ? (contrato?.fechaPedidoRecepcionFiscalizador + 180)?.format("dd-MM-yyyy") : '')
 
             rowF1.createCell(34).setCellValue(contrato?.oferta?.proveedor?.nombre ?: '')
-            rowF1.createCell(35).setCellValue((contrato?.oferta?.proveedor?.apellidoContacto + " " + contrato?.oferta?.proveedor?.nombreContacto) ?: '')
+            rowF1.createCell(35).setCellValue(((contrato?.oferta?.proveedor?.apellidoContacto ?: '') + " " + (contrato?.oferta?.proveedor?.nombreContacto ?: '')) ?: '')
             rowF1.createCell(36).setCellValue(contrato?.oferta?.proveedor?.telefonos ?: '')
             rowF1.createCell(37).setCellValue(contrato?.oferta?.proveedor?.direccion ?: '')
             rowF1.createCell(38).setCellValue('')
@@ -2926,5 +2947,158 @@ class ReportesExcel2Controller {
         response.setHeader("Content-Disposition", header);
         wb.write(output)
     }
+
+    def reporteExcelContratosResumen(){
+        def cn = dbConnectionService.getConnection()
+        def fechaDesde = new Date().parse("dd-MM-yyyy", params.desde)
+        def fechaHasta = new Date().parse("dd-MM-yyyy", params.hasta)
+        def contratos = Contrato.findAllByFechaSubscripcionBetween(fechaDesde, fechaHasta)
+
+        def sql = ""
+        XSSFWorkbook wb = new XSSFWorkbook()
+        XSSFCellStyle style = wb.createCellStyle();
+        XSSFFont font = wb.createFont();
+        font.setBold(true);
+        style.setFont(font);
+
+        Sheet sheet = wb.createSheet("RESUMEN")
+//        sheet.setColumnWidth(0, 20 * 256);
+//        sheet.setColumnWidth(1, 100 * 256);
+//        sheet.setColumnWidth(2, 15 * 256);
+//        sheet.setColumnWidth(3, 30 * 256);
+//        sheet.setColumnWidth(4, 50 * 256);
+//        sheet.setColumnWidth(5, 40 * 256);
+//        sheet.setColumnWidth(6, 40 * 256);
+//        sheet.setColumnWidth(7, 15 * 256);
+//        sheet.setColumnWidth(8, 15 * 256);
+//        sheet.setColumnWidth(9, 15 * 256);
+//        sheet.setColumnWidth(10, 15 * 256);
+//        sheet.setColumnWidth(11, 15 * 256);
+//        sheet.setColumnWidth(12, 15 * 256);
+//        sheet.setColumnWidth(13, 15 * 256);
+
+        for (int i=0; i< 16; i++){
+            sheet.setColumnWidth(i, 25 * 256);
+        }
+
+        Row row = sheet.createRow(0)
+        row.createCell(0).setCellValue("")
+        Row row0 = sheet.createRow(1)
+        row0.createCell(0).setCellValue(Auxiliar.get(1)?.titulo ?: '')
+        row0.setRowStyle(style)
+        Row row1 = sheet.createRow(2)
+        row1.createCell(0).setCellValue("REPORTE EXCEL DE RESUMEN DE CONTRATOS")
+        row1.setRowStyle(style)
+        Row row3 = sheet.createRow(4)
+        row3.createCell(0).setCellValue("CONSULTA A LA FECHA: " +  fechaDesde?.format("dd-MM-yyyy") + " - " +  fechaHasta?.format("dd-MM-yyyy"))
+        row3.setRowStyle(style)
+
+        def fila = 6
+
+        Row rowC1 = sheet.createRow(fila)
+        rowC1.createCell(0).setCellValue("ESTADO")
+        rowC1.createCell(1).setCellValue("VIALIDAD")
+        rowC1.createCell(2).setCellValue("RIEGO Y DRENAJE")
+        rowC1.createCell(3).setCellValue("CANAL DE RIEGO")
+        rowC1.createCell(4).setCellValue("INFRAESTRUCTURA")
+        rowC1.createCell(5).setCellValue("HIDROEQUINOCCIO")
+
+        rowC1.createCell(6).setCellValue("PARTICIPACIÓN CIUDADANA")
+        rowC1.createCell(7).setCellValue("VIALIDAD")
+        rowC1.createCell(8).setCellValue("HIDROEQUINOCCIO")
+        rowC1.createCell(9).setCellValue("RIEGO Y DRENAJE")
+        rowC1.createCell(10).setCellValue("CANAL DE RIEGO")
+        rowC1.createCell(11).setCellValue("TURISMO")
+
+        rowC1.createCell(12).setCellValue("VIALIDAD")
+        rowC1.createCell(13).setCellValue("RIEGO Y DRENAJE")
+        rowC1.createCell(14).setCellValue("CANAL DE RIEGO")
+        rowC1.createCell(15).setCellValue("INFRAESTRUCTURA")
+
+        rowC1.setRowStyle(style)
+        fila++
+
+        //para cada contrato
+//        contratos.each{ contrato->
+//
+//            def prej = PeriodoEjecucion.findAllByObra(contrato.obraContratada, [sort: 'fechaInicio', order: "asc"])
+//            def modificaciones = Modificaciones.findAllByContrato(contrato)
+//
+//            sql = "select coalesce(max(plnlavfs),0) avnc from plnl where cntr__id = ${contrato.id}"
+//            def avfs = cn.rows(sql.toString())[0].avnc
+//            sql = "select count(*) cnta from plnl where plnl.cntr__id = ${contrato.id} and " +
+//                    "tppl__id not in (1,10)"
+//            def cnta = cn.rows(sql.toString())[0].cnta  //incluir en excel
+//            def avec = 0
+//            println "planillas: $cnta"
+//            if(cnta > 0) {
+//                sql = "select sum(plnlmnto) avec from plnl " +
+//                        "where plnl.cntr__id = ${contrato.id} and tppl__id not in (1,10)"
+//                println "sql: $sql"
+//                avec = cn.rows(sql.toString())[0].avec  //incluir en excel
+//            }
+//
+//            Row rowF1 = sheet.createRow(fila)
+//            rowF1.createCell(0).setCellValue(contrato?.codigo ?: '')
+//            rowF1.createCell(1).setCellValue(contrato?.objeto ?: '')
+//            rowF1.createCell(2).setCellValue(contrato?.obraContratada?.tipoObjetivo?.descripcion ?: '')
+//            rowF1.createCell(3).setCellValue(contrato?.obraContratada?.departamento?.descripcion ?: '')
+//            rowF1.createCell(4).setCellValue((contrato?.fiscalizador?.apellido ?: '') + " " + (contrato?.fiscalizador?.nombre ?: ''))
+//            rowF1.createCell(5).setCellValue((contrato?.administrador?.apellido ?: '') + " " + (contrato?.administrador?.nombre ?: ''))
+//            rowF1.createCell(6).setCellValue(contrato?.monto ?: 0)
+//            rowF1.createCell(7).setCellValue(contrato?.anticipo ?: 0)
+//            rowF1.createCell(8).setCellValue(contrato?.obraContratada?.parroquia?.canton?.nombre ?: '')
+//            rowF1.createCell(9).setCellValue(contrato?.obraContratada?.parroquia?.nombre  ?: '')
+//
+//            rowF1.createCell(10).setCellValue(contrato?.fechaSubscripcion?.format("dd-MM-yyyy")  ?: '')
+//            rowF1.createCell(11).setCellValue(contrato?.plazo?.toString()  ?: '')
+//            rowF1.createCell(12).setCellValue(contrato?.obraContratada?.memoInicioObra ?: '')
+//            rowF1.createCell(13).setCellValue(prej.size() > 0  ? prej?.first()?.fechaInicio?.format("dd-MM-yyyy") : '')
+//            rowF1.createCell(14).setCellValue(prej.size() > 0   ? (prej?.first()?.fechaInicio + contrato?.plazo?.toInteger() -1)?.format("dd-MM-yyyy")?.toString()  : '')
+//
+//            if(modificaciones.size() > 0) {
+//                modificaciones.each { mod ->
+//                    if (mod.tipo == 'A') {
+//                        rowF1.createCell(15).setCellValue(mod?.memo ?: '')
+//                        rowF1.createCell(16).setCellValue(mod?.fechaInicio?.format("dd-MM-yyyy") ?: '')
+//                    }
+//                    if (mod.tipo == 'S') {
+//                        rowF1.createCell(17).setCellValue(mod?.memo ?: '')
+//                        rowF1.createCell(18).setCellValue(mod?.fechaInicio?.format("dd-MM-yyyy") ?: '')
+//                        rowF1.createCell(19).setCellValue('')
+//                        rowF1.createCell(20).setCellValue(mod?.fechaFin?.format("dd-MM-yyyy") ?: '')
+//                        rowF1.createCell(21).setCellValue(prej.size() > 0 ? prej.last().fechaFin?.format("dd-MM-yyyy") : '')
+//                    }
+//                }
+//            }
+//
+//            rowF1.createCell(22).setCellValue('')
+//
+//            rowF1.createCell(23).setCellValue(Contrato.findByPadre(contrato)?.codigo ?: '')
+//            rowF1.createCell(24).setCellValue(Contrato.findByPadre(contrato)?.monto?.toString() ?: '')
+//
+//            rowF1.createCell(29).setCellValue(avfs)
+//            rowF1.createCell(30).setCellValue((contrato?.estado == 'R' ? 'Registrado' : 'No Registrado') ?: '')
+//            rowF1.createCell(31).setCellValue(contrato?.observaciones ?: '')
+//
+//            rowF1.createCell(32).setCellValue('')
+//            rowF1.createCell(33).setCellValue('')
+//
+//            rowF1.createCell(34).setCellValue(contrato?.oferta?.proveedor?.nombre ?: '')
+//            rowF1.createCell(35).setCellValue((contrato?.oferta?.proveedor?.apellidoContacto + " " + contrato?.oferta?.proveedor?.nombreContacto) ?: '')
+//            rowF1.createCell(36).setCellValue(contrato?.oferta?.proveedor?.telefonos ?: '')
+//            rowF1.createCell(37).setCellValue(contrato?.oferta?.proveedor?.direccion ?: '')
+//            rowF1.createCell(38).setCellValue('')
+//
+//            fila++
+//        }
+
+        def output = response.getOutputStream()
+        def header = "attachment; filename=" + "contratosResumen_${new Date().format("dd-MM-yyyy")}.xlsx";
+        response.setContentType("application/octet-stream")
+        response.setHeader("Content-Disposition", header);
+        wb.write(output)
+    }
+
 
 }
