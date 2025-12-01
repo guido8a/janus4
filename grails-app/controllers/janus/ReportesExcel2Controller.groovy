@@ -2754,7 +2754,7 @@ class ReportesExcel2Controller {
         def cn = dbConnectionService.getConnection()
         def fechaDesde = new Date().parse("dd-MM-yyyy", params.desde)
         def fechaHasta = new Date().parse("dd-MM-yyyy", params.hasta)
-        def contratos = Contrato.findAllByFechaSubscripcionBetween(fechaDesde, fechaHasta)
+        def contratos = Contrato.findAllByFechaSubscripcionBetweenAndEstado(fechaDesde, fechaHasta, 'R')
 
         def sql = ""
         XSSFWorkbook wb = new XSSFWorkbook()
