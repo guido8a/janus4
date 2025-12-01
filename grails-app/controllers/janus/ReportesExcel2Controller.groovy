@@ -2844,23 +2844,23 @@ class ReportesExcel2Controller {
 
         rowC1.createCell(23).setCellValue("CÓDIGO CONTRATO COMPLEMENTARIO")
         rowC1.createCell(24).setCellValue("MONTO CONTRATO COMPLEMENTARIO")
-        rowC1.createCell(25).setCellValue("MONTO ORDEN DE CAMBIO")
-        rowC1.createCell(26).setCellValue("MONTO ORDEN DE TRABAJO")
-        rowC1.createCell(27).setCellValue("MONTO TOTAL")
-        rowC1.createCell(28).setCellValue("TOTAL EJECUTADO")
+//        rowC1.createCell(25).setCellValue("MONTO ORDEN DE CAMBIO")
+//        rowC1.createCell(26).setCellValue("MONTO ORDEN DE TRABAJO")
+//        rowC1.createCell(27).setCellValue("MONTO TOTAL")
+        rowC1.createCell(25).setCellValue("TOTAL EJECUTADO")
 
-        rowC1.createCell(29).setCellValue("% AV")
-        rowC1.createCell(30).setCellValue("ESTADO")
-        rowC1.createCell(31).setCellValue("OBSERVACIONES (PROBLEMAS)")
+        rowC1.createCell(26).setCellValue("% AV")
+        rowC1.createCell(27).setCellValue("ESTADO")
+        rowC1.createCell(28).setCellValue("OBSERVACIONES (PROBLEMAS)")
 
-        rowC1.createCell(32).setCellValue("FECHA DE RECEPCIÓN PROVISIONAL")
-        rowC1.createCell(33).setCellValue("FECHA PREVISTA PARA RECEPCIÓN DEFINITIVA")
+        rowC1.createCell(29).setCellValue("FECHA DE RECEPCIÓN PROVISIONAL")
+        rowC1.createCell(30).setCellValue("FECHA PREVISTA PARA RECEPCIÓN DEFINITIVA")
 
-        rowC1.createCell(34).setCellValue("CONSORCIO")
-        rowC1.createCell(35).setCellValue("NOMBRE DEL PROCURADOR COMÚN O PERSONA NATURAL")
-        rowC1.createCell(36).setCellValue("TELÉFONO")
-        rowC1.createCell(37).setCellValue("DIRECCIÓN")
-        rowC1.createCell(38).setCellValue("MAPS")
+        rowC1.createCell(31).setCellValue("CONSORCIO")
+        rowC1.createCell(32).setCellValue("NOMBRE DEL PROCURADOR COMÚN O PERSONA NATURAL")
+        rowC1.createCell(33).setCellValue("TELÉFONO")
+        rowC1.createCell(34).setCellValue("DIRECCIÓN")
+//        rowC1.createCell(38).setCellValue("MAPS")
 
         rowC1.setRowStyle(style)
         fila++
@@ -2925,18 +2925,19 @@ class ReportesExcel2Controller {
             rowF1.createCell(23).setCellValue(Contrato.findByPadre(contrato)?.codigo ?: '')
             rowF1.createCell(24).setCellValue(Contrato.findByPadre(contrato)?.monto?.toString() ?: '')
 
-            rowF1.createCell(29).setCellValue(avfs)
-            rowF1.createCell(30).setCellValue((contrato?.estado == 'R' ? 'Registrado' : 'No Registrado') ?: '')
-            rowF1.createCell(31).setCellValue(contrato?.observaciones ?: '')
+            rowF1.createCell(25).setCellValue(avec)
+            rowF1.createCell(26).setCellValue(avfs)
+            rowF1.createCell(27).setCellValue((contrato?.estado == 'R' ? 'Registrado' : 'No Registrado') ?: '')
+            rowF1.createCell(28).setCellValue(contrato?.observaciones ?: '')
 
-            rowF1.createCell(32).setCellValue(contrato?.fechaPedidoRecepcionFiscalizador?.format("dd-MM-yyyy") ?: '')
-            rowF1.createCell(33).setCellValue(contrato?.fechaPedidoRecepcionFiscalizador ? (contrato?.fechaPedidoRecepcionFiscalizador + 180)?.format("dd-MM-yyyy") : '')
+            rowF1.createCell(29).setCellValue(contrato?.fechaPedidoRecepcionFiscalizador?.format("dd-MM-yyyy") ?: '')
+            rowF1.createCell(30).setCellValue(contrato?.fechaPedidoRecepcionFiscalizador ? (contrato?.fechaPedidoRecepcionFiscalizador + 180)?.format("dd-MM-yyyy") : '')
 
-            rowF1.createCell(34).setCellValue(contrato?.oferta?.proveedor?.nombre ?: '')
-            rowF1.createCell(35).setCellValue(((contrato?.oferta?.proveedor?.apellidoContacto ?: '') + " " + (contrato?.oferta?.proveedor?.nombreContacto ?: '')) ?: '')
-            rowF1.createCell(36).setCellValue(contrato?.oferta?.proveedor?.telefonos ?: '')
-            rowF1.createCell(37).setCellValue(contrato?.oferta?.proveedor?.direccion ?: '')
-            rowF1.createCell(38).setCellValue('')
+            rowF1.createCell(31).setCellValue(contrato?.oferta?.proveedor?.nombre ?: '')
+            rowF1.createCell(32).setCellValue(((contrato?.oferta?.proveedor?.apellidoContacto ?: '') + " " + (contrato?.oferta?.proveedor?.nombreContacto ?: '')) ?: '')
+            rowF1.createCell(33).setCellValue(contrato?.oferta?.proveedor?.telefonos ?: '')
+            rowF1.createCell(34).setCellValue(contrato?.oferta?.proveedor?.direccion ?: '')
+//            rowF1.createCell(38).setCellValue('')
 
             fila++
         }
