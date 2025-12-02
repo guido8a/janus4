@@ -3,11 +3,13 @@ package janus
 import janus.cnsl.Costo
 import janus.cnsl.DetalleConsultoria
 import janus.pac.PeriodoEjecucion
+import org.apache.poi.hssf.usermodel.HSSFCellStyle
 import org.apache.poi.ss.usermodel.FillPatternType
 import org.apache.poi.ss.usermodel.HorizontalAlignment
 import org.apache.poi.ss.usermodel.Row
 import org.apache.poi.ss.usermodel.Sheet
 import org.apache.poi.ss.util.CellRangeAddress
+import org.apache.poi.xssf.usermodel.XSSFCell
 import org.apache.poi.xssf.usermodel.XSSFCellStyle
 import org.apache.poi.xssf.usermodel.XSSFColor
 import org.apache.poi.xssf.usermodel.XSSFFont
@@ -2764,13 +2766,31 @@ class ReportesExcel2Controller {
         style.setFont(font);
 
         XSSFCellStyle style2 = wb.createCellStyle();
+        style2.setAlignment(HSSFCellStyle.ALIGN_CENTER)
         XSSFFont font2 = wb.createFont();
         XSSFColor customColor = new XSSFColor(Color.decode("#F7CAC9"));
         font2.setBold(true);
-//        font2.setColor(customColor)
         style2.setFont(font2);
         style2.setFillForegroundColor(customColor);
         style2.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+
+        XSSFCellStyle style3 = wb.createCellStyle();
+        style3.setAlignment(HSSFCellStyle.ALIGN_CENTER)
+        XSSFFont font3 = wb.createFont();
+        XSSFColor customColor3 = new XSSFColor(Color.decode("#d9ead3"));
+        font3.setBold(true);
+        style3.setFont(font3);
+        style3.setFillForegroundColor(customColor3);
+        style3.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+
+        XSSFCellStyle style4 = wb.createCellStyle();
+        style4.setAlignment(HSSFCellStyle.ALIGN_CENTER)
+        XSSFFont font4 = wb.createFont();
+        XSSFColor customColor4 = new XSSFColor(Color.decode("#d9d2e9"));
+        font4.setBold(true);
+        style4.setFont(font4);
+        style4.setFillForegroundColor(customColor4);
+        style4.setFillPattern(FillPatternType.SOLID_FOREGROUND);
 
         Sheet sheet = wb.createSheet("DETALLES PROYECTOS")
         sheet.setColumnWidth(0, 20 * 256);
@@ -2779,7 +2799,7 @@ class ReportesExcel2Controller {
         sheet.setColumnWidth(3, 30 * 256);
         sheet.setColumnWidth(4, 50 * 256);
         sheet.setColumnWidth(5, 40 * 256);
-        sheet.setColumnWidth(6, 40 * 256);
+        sheet.setColumnWidth(6, 15 * 256);
         sheet.setColumnWidth(7, 15 * 256);
         sheet.setColumnWidth(8, 15 * 256);
         sheet.setColumnWidth(9, 15 * 256);
@@ -2788,7 +2808,7 @@ class ReportesExcel2Controller {
         sheet.setColumnWidth(12, 15 * 256);
         sheet.setColumnWidth(13, 15 * 256);
 
-        for (int i=14; i< 39; i++){
+        for (int i=14; i< 34; i++){
             sheet.setColumnWidth(i, 20 * 256);
         }
 
@@ -2812,8 +2832,41 @@ class ReportesExcel2Controller {
         celda.setCellValue("ESTADO OBRAS")
 //        rowC0.createCell(0).setCellStyle(style2);
 //        rowC0.createCell(0).setCellValue("ESTADO OBRAS")
-        rowC0.sheet.addMergedRegion(new CellRangeAddress(fila, fila, 0, 5))
-        rowC0.setRowStyle(style2)
+        rowC0.sheet.addMergedRegion(new CellRangeAddress(fila, fila, 0, 34))
+//        rowC0.setRowStyle(style2)
+        fila++
+
+        Row rowC4 = sheet.createRow(fila)
+        def celda4 =  rowC4.createCell(0)
+        celda4.setCellStyle(style3);
+        celda4.setCellValue("DATOS DEL PROYECTO")
+        rowC4.sheet.addMergedRegion(new CellRangeAddress(fila, fila, 0, 9))
+
+        def celda5 =  rowC4.createCell(10)
+        celda5.setCellStyle(style4);
+        celda5.setCellValue("ANÁLISIS DE PLAZOS")
+        rowC4.sheet.addMergedRegion(new CellRangeAddress(fila, fila, 10, 22))
+
+        def celda6 =  rowC4.createCell(23)
+        celda6.setCellStyle(style3);
+        celda6.setCellValue("ANÁLISIS ECONÓMICO")
+        rowC4.sheet.addMergedRegion(new CellRangeAddress(fila, fila, 23, 25))
+
+        def celda7 =  rowC4.createCell(26)
+        celda7.setCellStyle(style4);
+        celda7.setCellValue("ANÁLISIS FÍSICO")
+        rowC4.sheet.addMergedRegion(new CellRangeAddress(fila, fila, 26, 28))
+
+        def celda8 =  rowC4.createCell(29)
+        celda8.setCellStyle(style3);
+        celda8.setCellValue("RECEPCIONES")
+        rowC4.sheet.addMergedRegion(new CellRangeAddress(fila, fila, 29, 30))
+
+        def celda9 =  rowC4.createCell(31)
+        celda9.setCellStyle(style4);
+        celda9.setCellValue("DATOS DEL CONTRATISTA")
+        rowC4.sheet.addMergedRegion(new CellRangeAddress(fila, fila, 31, 34))
+
         fila++
 
         Row rowC1 = sheet.createRow(fila)
@@ -2953,7 +3006,7 @@ class ReportesExcel2Controller {
         def cn = dbConnectionService.getConnection()
         def fechaDesde = new Date().parse("dd-MM-yyyy", params.desde)
         def fechaHasta = new Date().parse("dd-MM-yyyy", params.hasta)
-        def contratos = Contrato.findAllByFechaSubscripcionBetween(fechaDesde, fechaHasta)
+//        def contratos = Contrato.findAllByFechaSubscripcionBetween(fechaDesde, fechaHasta)
 
         def sql = ""
         XSSFWorkbook wb = new XSSFWorkbook()
@@ -2962,23 +3015,13 @@ class ReportesExcel2Controller {
         font.setBold(true);
         style.setFont(font);
 
-        Sheet sheet = wb.createSheet("RESUMEN")
-//        sheet.setColumnWidth(0, 20 * 256);
-//        sheet.setColumnWidth(1, 100 * 256);
-//        sheet.setColumnWidth(2, 15 * 256);
-//        sheet.setColumnWidth(3, 30 * 256);
-//        sheet.setColumnWidth(4, 50 * 256);
-//        sheet.setColumnWidth(5, 40 * 256);
-//        sheet.setColumnWidth(6, 40 * 256);
-//        sheet.setColumnWidth(7, 15 * 256);
-//        sheet.setColumnWidth(8, 15 * 256);
-//        sheet.setColumnWidth(9, 15 * 256);
-//        sheet.setColumnWidth(10, 15 * 256);
-//        sheet.setColumnWidth(11, 15 * 256);
-//        sheet.setColumnWidth(12, 15 * 256);
-//        sheet.setColumnWidth(13, 15 * 256);
+        XSSFCellStyle styleVertical = wb.createCellStyle();
+        styleVertical.setRotation((short) 90);
 
-        for (int i=0; i< 16; i++){
+        Sheet sheet = wb.createSheet("RESUMEN")
+        sheet.setColumnWidth(0, 30 * 256);
+
+        for (int i=1; i< 16; i++){
             sheet.setColumnWidth(i, 25 * 256);
         }
 
@@ -2997,102 +3040,84 @@ class ReportesExcel2Controller {
         def fila = 6
 
         Row rowC1 = sheet.createRow(fila)
+
+//        XSSFCell cell = rowC1.createCell(0);
+//        cell.setCellValue("Vertical Text");
+//        cell.setCellStyle(styleVertical);
+
         rowC1.createCell(0).setCellValue("ESTADO")
-        rowC1.createCell(1).setCellValue("VIALIDAD")
-        rowC1.createCell(2).setCellValue("RIEGO Y DRENAJE")
-        rowC1.createCell(3).setCellValue("CANAL DE RIEGO")
-        rowC1.createCell(4).setCellValue("INFRAESTRUCTURA")
-        rowC1.createCell(5).setCellValue("HIDROEQUINOCCIO")
-
-        rowC1.createCell(6).setCellValue("PARTICIPACIÓN CIUDADANA")
-        rowC1.createCell(7).setCellValue("VIALIDAD")
-        rowC1.createCell(8).setCellValue("HIDROEQUINOCCIO")
-        rowC1.createCell(9).setCellValue("RIEGO Y DRENAJE")
-        rowC1.createCell(10).setCellValue("CANAL DE RIEGO")
-        rowC1.createCell(11).setCellValue("TURISMO")
-
-        rowC1.createCell(12).setCellValue("VIALIDAD")
-        rowC1.createCell(13).setCellValue("RIEGO Y DRENAJE")
-        rowC1.createCell(14).setCellValue("CANAL DE RIEGO")
-        rowC1.createCell(15).setCellValue("INFRAESTRUCTURA")
+        rowC1.createCell(1).setCellValue("RIEGO Y DRENAJE")
+        rowC1.createCell(2).setCellValue("INFRAESTRUCTURA")
+        rowC1.createCell(3).setCellValue("VIALIDAD")
+        rowC1.createCell(4).setCellValue("CANAL DE RIEGO")
 
         rowC1.setRowStyle(style)
         fila++
 
-        //para cada contrato
-//        contratos.each{ contrato->
-//
-//            def prej = PeriodoEjecucion.findAllByObra(contrato.obraContratada, [sort: 'fechaInicio', order: "asc"])
-//            def modificaciones = Modificaciones.findAllByContrato(contrato)
-//
-//            sql = "select coalesce(max(plnlavfs),0) avnc from plnl where cntr__id = ${contrato.id}"
-//            def avfs = cn.rows(sql.toString())[0].avnc
-//            sql = "select count(*) cnta from plnl where plnl.cntr__id = ${contrato.id} and " +
-//                    "tppl__id not in (1,10)"
-//            def cnta = cn.rows(sql.toString())[0].cnta  //incluir en excel
-//            def avec = 0
-//            println "planillas: $cnta"
-//            if(cnta > 0) {
-//                sql = "select sum(plnlmnto) avec from plnl " +
-//                        "where plnl.cntr__id = ${contrato.id} and tppl__id not in (1,10)"
-//                println "sql: $sql"
-//                avec = cn.rows(sql.toString())[0].avec  //incluir en excel
-//            }
-//
-//            Row rowF1 = sheet.createRow(fila)
-//            rowF1.createCell(0).setCellValue(contrato?.codigo ?: '')
-//            rowF1.createCell(1).setCellValue(contrato?.objeto ?: '')
-//            rowF1.createCell(2).setCellValue(contrato?.obraContratada?.tipoObjetivo?.descripcion ?: '')
-//            rowF1.createCell(3).setCellValue(contrato?.obraContratada?.departamento?.descripcion ?: '')
-//            rowF1.createCell(4).setCellValue((contrato?.fiscalizador?.apellido ?: '') + " " + (contrato?.fiscalizador?.nombre ?: ''))
-//            rowF1.createCell(5).setCellValue((contrato?.administrador?.apellido ?: '') + " " + (contrato?.administrador?.nombre ?: ''))
-//            rowF1.createCell(6).setCellValue(contrato?.monto ?: 0)
-//            rowF1.createCell(7).setCellValue(contrato?.anticipo ?: 0)
-//            rowF1.createCell(8).setCellValue(contrato?.obraContratada?.parroquia?.canton?.nombre ?: '')
-//            rowF1.createCell(9).setCellValue(contrato?.obraContratada?.parroquia?.nombre  ?: '')
-//
-//            rowF1.createCell(10).setCellValue(contrato?.fechaSubscripcion?.format("dd-MM-yyyy")  ?: '')
-//            rowF1.createCell(11).setCellValue(contrato?.plazo?.toString()  ?: '')
-//            rowF1.createCell(12).setCellValue(contrato?.obraContratada?.memoInicioObra ?: '')
-//            rowF1.createCell(13).setCellValue(prej.size() > 0  ? prej?.first()?.fechaInicio?.format("dd-MM-yyyy") : '')
-//            rowF1.createCell(14).setCellValue(prej.size() > 0   ? (prej?.first()?.fechaInicio + contrato?.plazo?.toInteger() -1)?.format("dd-MM-yyyy")?.toString()  : '')
-//
-//            if(modificaciones.size() > 0) {
-//                modificaciones.each { mod ->
-//                    if (mod.tipo == 'A') {
-//                        rowF1.createCell(15).setCellValue(mod?.memo ?: '')
-//                        rowF1.createCell(16).setCellValue(mod?.fechaInicio?.format("dd-MM-yyyy") ?: '')
-//                    }
-//                    if (mod.tipo == 'S') {
-//                        rowF1.createCell(17).setCellValue(mod?.memo ?: '')
-//                        rowF1.createCell(18).setCellValue(mod?.fechaInicio?.format("dd-MM-yyyy") ?: '')
-//                        rowF1.createCell(19).setCellValue('')
-//                        rowF1.createCell(20).setCellValue(mod?.fechaFin?.format("dd-MM-yyyy") ?: '')
-//                        rowF1.createCell(21).setCellValue(prej.size() > 0 ? prej.last().fechaFin?.format("dd-MM-yyyy") : '')
-//                    }
-//                }
-//            }
-//
-//            rowF1.createCell(22).setCellValue('')
-//
-//            rowF1.createCell(23).setCellValue(Contrato.findByPadre(contrato)?.codigo ?: '')
-//            rowF1.createCell(24).setCellValue(Contrato.findByPadre(contrato)?.monto?.toString() ?: '')
-//
-//            rowF1.createCell(29).setCellValue(avfs)
-//            rowF1.createCell(30).setCellValue((contrato?.estado == 'R' ? 'Registrado' : 'No Registrado') ?: '')
-//            rowF1.createCell(31).setCellValue(contrato?.observaciones ?: '')
-//
-//            rowF1.createCell(32).setCellValue('')
-//            rowF1.createCell(33).setCellValue('')
-//
-//            rowF1.createCell(34).setCellValue(contrato?.oferta?.proveedor?.nombre ?: '')
-//            rowF1.createCell(35).setCellValue((contrato?.oferta?.proveedor?.apellidoContacto + " " + contrato?.oferta?.proveedor?.nombreContacto) ?: '')
-//            rowF1.createCell(36).setCellValue(contrato?.oferta?.proveedor?.telefonos ?: '')
-//            rowF1.createCell(37).setCellValue(contrato?.oferta?.proveedor?.direccion ?: '')
-//            rowF1.createCell(38).setCellValue('')
-//
-//            fila++
-//        }
+        sql ="select * from rp_contrato_dp('${params.desde}','${params.hasta}')"
+        def res = cn.rows(sql.toString())
+
+        Row rowF1 = sheet.createRow(fila)
+        rowF1.createCell(0).setCellValue("OBRAS CONTRATADAS")
+        fila++
+        Row rowF2 = sheet.createRow(fila)
+        rowF2.createCell(0).setCellValue("MONTO CONTRATADO")
+        fila++
+        Row rowF3 = sheet.createRow(fila)
+        rowF3.createCell(0).setCellValue("EJECUCIÓN")
+        fila++
+        Row rowF4 = sheet.createRow(fila)
+        rowF4.createCell(0).setCellValue("MONTO EN EJECUCIÓN")
+        fila++
+        Row rowF5 = sheet.createRow(fila)
+        rowF5.createCell(0).setCellValue("CONCLUIDAS")
+        fila++
+        Row rowF6 = sheet.createRow(fila)
+        rowF6.createCell(0).setCellValue("MONTO CONCLUIDAS")
+        fila++
+        Row rowF7 = sheet.createRow(fila)
+        rowF7.createCell(0).setCellValue("ACTA RECEPCIÓN PROVISIONAL")
+        fila++
+        Row rowF8 = sheet.createRow(fila)
+        rowF8.createCell(0).setCellValue("MONTO ACTA RECEPCIÓN PROVISIONAL")
+        fila++
+        Row rowF9 = sheet.createRow(fila)
+        rowF9.createCell(0).setCellValue("ACTA RECEPCIÓN DEFINITIVA")
+        fila++
+        Row rowF10 = sheet.createRow(fila)
+        rowF10.createCell(0).setCellValue("MONTO ACTA RECEPCIÓN DEFINITIVA")
+        fila++
+        Row rowF11 = sheet.createRow(fila)
+        rowF11.createCell(0).setCellValue("SUSPENDIDAS")
+        fila++
+        Row rowF12 = sheet.createRow(fila)
+        rowF12.createCell(0).setCellValue("MONTO SUSPENDIDAS")
+        fila++
+        Row rowF13 = sheet.createRow(fila)
+        rowF13.createCell(0).setCellValue("SIN INICIO")
+        fila++
+        Row rowF14 = sheet.createRow(fila)
+        rowF14.createCell(0).setCellValue("MONTO SIN INICIO")
+        fila++
+
+        res.eachWithIndex{ contrato, i ->
+
+            rowF1.createCell(1+i).setCellValue(contrato?.cntrnmro ?: '')
+            rowF2.createCell(1+i).setCellValue(contrato?.cntrtotl ?: '')
+            rowF3.createCell(1+i).setCellValue(contrato?.cntrejnm ?: '')
+            rowF4.createCell(1+i).setCellValue(contrato?.cntrejec ?: '')
+            rowF5.createCell(1+i).setCellValue(contrato?.cntrcnnm ?: '')
+            rowF6.createCell(1+i).setCellValue(contrato?.cntrcncl ?: '')
+            rowF7.createCell(1+i).setCellValue(contrato?.cntracnm ?: '')
+            rowF8.createCell(1+i).setCellValue(contrato?.cntracpr ?: '')
+            rowF9.createCell(1+i).setCellValue(contrato?.cntradnm ?: '')
+            rowF10.createCell(1+i).setCellValue(contrato?.cntracdf ?: '')
+            rowF11.createCell(1+i).setCellValue(contrato?.cntrspnm ?: '')
+            rowF12.createCell(1+i).setCellValue(contrato?.cntrsusp ?: '')
+            rowF13.createCell(1+i).setCellValue(contrato?.cntrsinm ?: '')
+            rowF14.createCell(1+i).setCellValue(contrato?.cntrsnin ?: '')
+
+        }
 
         def output = response.getOutputStream()
         def header = "attachment; filename=" + "contratosResumen_${new Date().format("dd-MM-yyyy")}.xlsx";
