@@ -365,6 +365,14 @@
                             callback  : function () {
                                 location.href="${createLink(controller: 'reportesExcel2', action: 'reporteExcelContratosResumen')}?desde=" + $("#fechaDesdeCDG").val() + "&hasta=" + $("#fechaHastaCDG").val();
                             } //callback
+                        }, //guardar
+                        grafico  : {
+                            id        : "btnGrafico",
+                            label     : "<i class='fa fa-file-image'></i> Gráfico",
+                            className : "btn-info",
+                            callback  : function () {
+                                location.href="${createLink(controller: 'reportes6', action: 'graficoContratosResumen')}?desde=" + $("#fechaDesdeCDG").val() + "&hasta=" + $("#fechaHastaCDG").val();
+                            } //callback
                         } //guardar
                     } //buttons
                 }); //dialog

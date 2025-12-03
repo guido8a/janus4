@@ -3006,9 +3006,10 @@ class ReportesExcel2Controller {
         def cn = dbConnectionService.getConnection()
         def fechaDesde = new Date().parse("dd-MM-yyyy", params.desde)
         def fechaHasta = new Date().parse("dd-MM-yyyy", params.hasta)
-//        def contratos = Contrato.findAllByFechaSubscripcionBetween(fechaDesde, fechaHasta)
+        def sql ="select * from rp_contrato_dp('${params.desde}','${params.hasta}')"
+        def res = cn.rows(sql.toString())
+//        println("sql " + sql)
 
-        def sql = ""
         XSSFWorkbook wb = new XSSFWorkbook()
         XSSFCellStyle style = wb.createCellStyle();
         XSSFFont font = wb.createFont();
@@ -3040,22 +3041,14 @@ class ReportesExcel2Controller {
         def fila = 6
 
         Row rowC1 = sheet.createRow(fila)
-
-//        XSSFCell cell = rowC1.createCell(0);
-//        cell.setCellValue("Vertical Text");
-//        cell.setCellStyle(styleVertical);
-
         rowC1.createCell(0).setCellValue("ESTADO")
-        rowC1.createCell(1).setCellValue("RIEGO Y DRENAJE")
-        rowC1.createCell(2).setCellValue("INFRAESTRUCTURA")
-        rowC1.createCell(3).setCellValue("VIALIDAD")
-        rowC1.createCell(4).setCellValue("CANAL DE RIEGO")
+
+        res.eachWithIndex{ r,j ->
+            rowC1.createCell(1+j).setCellValue(r?.diredscr ?: '')
+        }
 
         rowC1.setRowStyle(style)
         fila++
-
-        sql ="select * from rp_contrato_dp('${params.desde}','${params.hasta}')"
-        def res = cn.rows(sql.toString())
 
         Row rowF1 = sheet.createRow(fila)
         rowF1.createCell(0).setCellValue("OBRAS CONTRATADAS")
@@ -3101,7 +3094,6 @@ class ReportesExcel2Controller {
         fila++
 
         res.eachWithIndex{ contrato, i ->
-
             rowF1.createCell(1+i).setCellValue(contrato?.cntrnmro ?: '')
             rowF2.createCell(1+i).setCellValue(contrato?.cntrtotl ?: '')
             rowF3.createCell(1+i).setCellValue(contrato?.cntrejnm ?: '')
@@ -3116,7 +3108,6 @@ class ReportesExcel2Controller {
             rowF12.createCell(1+i).setCellValue(contrato?.cntrsusp ?: '')
             rowF13.createCell(1+i).setCellValue(contrato?.cntrsinm ?: '')
             rowF14.createCell(1+i).setCellValue(contrato?.cntrsnin ?: '')
-
         }
 
         def output = response.getOutputStream()
@@ -3125,6 +3116,5 @@ class ReportesExcel2Controller {
         response.setHeader("Content-Disposition", header);
         wb.write(output)
     }
-
 
 }
