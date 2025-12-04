@@ -9,6 +9,7 @@ import com.lowagie.text.Document
 import com.lowagie.text.Element
 import com.lowagie.text.PageSize
 import com.lowagie.text.Paragraph
+import com.lowagie.text.pdf.PdfCell
 import com.lowagie.text.pdf.PdfPCell
 import com.lowagie.text.pdf.PdfPTable
 import com.lowagie.text.pdf.PdfWriter
@@ -3499,9 +3500,9 @@ class Reportes6Controller {
         def prmsCellHead2 = [border: Color.WHITE,
                              align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE, bordeTop: "1", bordeBot: "1"]
         def prmsCellHeadArriba = [border: Color.WHITE,
-                             align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE, bordeTop: "1"]
+                                  align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE, bordeTop: "1"]
         def prmsCellHeadAbajo = [border: Color.WHITE,
-                                  align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE, bordeBot: "1"]
+                                 align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE, bordeBot: "1"]
         def prmsCellIzquierda = [border: Color.WHITE,
                                  align: Element.ALIGN_LEFT, valign: Element.ALIGN_LEFT]
         def prmsCellDerecha = [border: Color.WHITE,
@@ -3683,6 +3684,7 @@ class Reportes6Controller {
         def cn = dbConnectionService.getConnection()
         def data = []
         def cont = 0
+        def valores = [:]
         def fechaDesde = new Date().parse("dd-MM-yyyy", params.desde)
         def fechaHasta = new Date().parse("dd-MM-yyyy", params.hasta)
         def sql ="select * from rp_contrato_dp('${params.desde}','${params.hasta}')"
@@ -3704,6 +3706,8 @@ class Reportes6Controller {
             data.add([nmro: cont, nmbr: d.diredscr, vlor: d.cntrnmro, econ: d.cntrtotl, fsco: d.cntrejnm])
             cont++
         }
+
+        cn.close()
 //        println "data: $data"
 
         def baos = new ByteArrayOutputStream()
@@ -3774,52 +3778,121 @@ class Reportes6Controller {
             e.printStackTrace();
         }
 
-        float[] columnas = [18,75,30,20,20]
+        float[] columnas = [0,0,0,0,0]
 
-        com.itextpdf.text.pdf.PdfPTable table = new com.itextpdf.text.pdf.PdfPTable(columnas); // 3 columns.
+        if(datos.size() == 3){
+            columnas = [25,25,25,25]
+        }else{
+            if(datos.size() == 4){
+                columnas = [20,20,20,20,20]
+            }else{
+                columnas = [15,15,15,15,15,15]
+            }
+        }
+
+        com.itextpdf.text.pdf.PdfPTable tableIdentificador = new com.itextpdf.text.pdf.PdfPTable(columnas);
+        tableIdentificador.setWidthPercentage(100);
+        com.itextpdf.text.pdf.PdfPTable table = new com.itextpdf.text.pdf.PdfPTable(columnas);
         table.setWidthPercentage(100);
-        com.itextpdf.text.pdf.PdfPTable table2 = new com.itextpdf.text.pdf.PdfPTable(columnas); // 3 columns.
-        table2.setWidthPercentage(100);
+        com.itextpdf.text.pdf.PdfPTable tableDatos = new com.itextpdf.text.pdf.PdfPTable(columnas);
+        tableDatos.setWidthPercentage(100);
 
-        com.itextpdf.text.pdf.PdfPCell cell1 = new com.itextpdf.text.pdf.PdfPCell(new com.itextpdf.text.Paragraph("DIRECCIÓN"))
-        com.itextpdf.text.pdf.PdfPCell cell2 = new com.itextpdf.text.pdf.PdfPCell(new com.itextpdf.text.Paragraph("OBRAS CONTRATADAS"));
-        com.itextpdf.text.pdf.PdfPCell cell3 = new com.itextpdf.text.pdf.PdfPCell(new com.itextpdf.text.Paragraph("MONTO CONTRATADO"));
-        com.itextpdf.text.pdf.PdfPCell cell4 = new com.itextpdf.text.pdf.PdfPCell(new com.itextpdf.text.Paragraph("EJECUCIÓN"));
-        com.itextpdf.text.pdf.PdfPCell cell5 = new com.itextpdf.text.pdf.PdfPCell(new com.itextpdf.text.Paragraph("MONTO EN EJECUCIÓN"));
+        com.itextpdf.text.pdf.PdfPCell cabecera1 = new com.itextpdf.text.pdf.PdfPCell(new com.itextpdf.text.Paragraph(""))
+        com.itextpdf.text.pdf.PdfPCell cabecera2 = new com.itextpdf.text.pdf.PdfPCell()
+        com.itextpdf.text.pdf.PdfPCell cabecera3 = new com.itextpdf.text.pdf.PdfPCell()
+        com.itextpdf.text.pdf.PdfPCell cabecera4 = new com.itextpdf.text.pdf.PdfPCell()
+        com.itextpdf.text.pdf.PdfPCell cabecera5 = new com.itextpdf.text.pdf.PdfPCell()
+        com.itextpdf.text.pdf.PdfPCell cabecera6 = new com.itextpdf.text.pdf.PdfPCell()
 
-        cell1.setHorizontalAlignment(com.itextpdf.text.Element.ALIGN_CENTER)
-        cell2.setHorizontalAlignment(com.itextpdf.text.Element.ALIGN_CENTER)
-        cell1.setVerticalAlignment(com.itextpdf.text.Element.ALIGN_CENTER)
-        cell2.setVerticalAlignment(com.itextpdf.text.Element.ALIGN_CENTER)
-        cell3.setVerticalAlignment(com.itextpdf.text.Element.ALIGN_CENTER)
-        cell4.setVerticalAlignment(com.itextpdf.text.Element.ALIGN_CENTER)
-        cell5.setVerticalAlignment(com.itextpdf.text.Element.ALIGN_CENTER)
-        cell3.setHorizontalAlignment(com.itextpdf.text.Element.ALIGN_CENTER)
-        cell4.setHorizontalAlignment(com.itextpdf.text.Element.ALIGN_CENTER)
-        cell5.setHorizontalAlignment(com.itextpdf.text.Element.ALIGN_CENTER)
+        com.itextpdf.text.pdf.PdfPCell cabeceraI1 = new com.itextpdf.text.pdf.PdfPCell(new com.itextpdf.text.Paragraph(""))
+        com.itextpdf.text.pdf.PdfPCell cabeceraI2 = new com.itextpdf.text.pdf.PdfPCell()
+        com.itextpdf.text.pdf.PdfPCell cabeceraI3 = new com.itextpdf.text.pdf.PdfPCell()
+        com.itextpdf.text.pdf.PdfPCell cabeceraI4 = new com.itextpdf.text.pdf.PdfPCell()
+        com.itextpdf.text.pdf.PdfPCell cabeceraI5 = new com.itextpdf.text.pdf.PdfPCell()
+        com.itextpdf.text.pdf.PdfPCell cabeceraI6 = new com.itextpdf.text.pdf.PdfPCell()
 
-        cell1.setBackgroundColor(BaseColor.LIGHT_GRAY)
-        cell2.setBackgroundColor(BaseColor.LIGHT_GRAY)
-        cell3.setBackgroundColor(BaseColor.LIGHT_GRAY)
-        cell4.setBackgroundColor(BaseColor.LIGHT_GRAY)
-        cell5.setBackgroundColor(BaseColor.LIGHT_GRAY)
+        def cabecera = [cabecera1,cabecera2,cabecera3,cabecera4,cabecera5,cabecera6]
+        def cabeceraIdentificador = [cabeceraI1,cabeceraI2,cabeceraI3,cabeceraI4,cabeceraI5,cabeceraI6]
 
-        table.addCell(cell1);
-        table.addCell(cell2);
-        table.addCell(cell3);
-        table.addCell(cell4);
-        table.addCell(cell5);
+        if(datos.size() > 0){
 
-//        data.each { d ->
-//            table2.addCell(crearCelda(tipo, 'G' + (d.nmro), 'C' + (d.nmro + 1)))
-//            table2.addCell(crearCeldaTexto(d.nmbr))
-//            table2.addCell(crearCeldaNumero(numero(d.vlor, 2)))
-//            table2.addCell(crearCeldaNumero(numero(d.econ, 2) + '%'))
-//            table2.addCell(crearCeldaNumero(numero(d.fsco, 2) + '%'))
-//        }
+            datos.eachWithIndex{ cntr ,c ->
+                com.itextpdf.text.Paragraph p = new com.itextpdf.text.Paragraph(cntr?.diredscr ? (cntr?.diredscr + "(" + "D" + c+1  + ")") : '')
+                com.itextpdf.text.Paragraph p1 = new com.itextpdf.text.Paragraph(cntr?.diredscr ? ("(" + "D" + c+1  + ")") : '')
+                cabecera[c+1].addElement(p)
+                cabeceraIdentificador[c+1].addElement(p1)
+            }
 
+            for (int i = 0; i < 6; i++){
+                cabeceraIdentificador[i].setHorizontalAlignment(com.itextpdf.text.Element.ALIGN_CENTER)
+                cabeceraIdentificador[i].setBackgroundColor(BaseColor.LIGHT_GRAY)
+                tableIdentificador.addCell(cabeceraIdentificador[i]);
+                cabecera[i].setHorizontalAlignment(com.itextpdf.text.Element.ALIGN_CENTER)
+                cabecera[i].setBackgroundColor(BaseColor.LIGHT_GRAY)
+                table.addCell(cabecera[i]);
+            }
+
+            tableDatos.addCell(crearCeldaTexto("OBRAS CONTRATADAS"))
+            datos.each { d ->
+                tableDatos.addCell(crearCeldaNumero(numero(d?.cntrnmro ? d?.cntrnmro : 0,  0)))
+            }
+            tableDatos.addCell(crearCeldaTexto("MONTO CONTRATADO"))
+            datos.each { d ->
+                tableDatos.addCell(crearCeldaNumero(numero(d?.cntrtotl ? d?.cntrtotl : 0,  2)))
+            }
+            tableDatos.addCell(crearCeldaTexto("EJECUCIÓN"))
+            datos.each { d ->
+                tableDatos.addCell(crearCeldaNumero(numero(d?.cntrejnm ? d?.cntrejnm : 0,  0)))
+            }
+            tableDatos.addCell(crearCeldaTexto("MONTO EN EJECUCIÓN"))
+            datos.each { d ->
+                tableDatos.addCell(crearCeldaNumero(numero(d?.cntrejec ? d?.cntrejec : 0,  2)))
+            }
+            tableDatos.addCell(crearCeldaTexto("CONCLUIDAS"))
+            datos.each { d ->
+                tableDatos.addCell(crearCeldaNumero(numero(d?.cntrcnnm ? d?.cntrcnnm : 0,  0)))
+            }
+            tableDatos.addCell(crearCeldaTexto("MONTO CONCLUIDAS"))
+            datos.each { d ->
+                tableDatos.addCell(crearCeldaNumero(numero(d?.cntrcncl ? d?.cntrcncl : 0,  2)))
+            }
+            tableDatos.addCell(crearCeldaTexto("ACTA RECEPCIÓN PROVISIONAL"))
+            datos.each { d ->
+                tableDatos.addCell(crearCeldaNumero(numero(d?.cntracnm ? d?.cntracnm : 0,  0)))
+            }
+            tableDatos.addCell(crearCeldaTexto("MONTO ACTA RECEPCIÓN PROVISIONAL"))
+            datos.each { d ->
+                tableDatos.addCell(crearCeldaNumero(numero(d?.cntracpr ? d?.cntracpr : 0,  2)))
+            }
+            tableDatos.addCell(crearCeldaTexto("ACTA RECEPCIÓN DEFINITIVA"))
+            datos.each { d ->
+                tableDatos.addCell(crearCeldaNumero(numero(d?.cntradnm ? d?.cntradnm : 0,  0)))
+            }
+            tableDatos.addCell(crearCeldaTexto("MONTO ACTA RECEPCIÓN DEFINITIVA"))
+            datos.each { d ->
+                tableDatos.addCell(crearCeldaNumero(numero(d?.cntracdf ? d?.cntracdf : 0,  2)))
+            }
+            tableDatos.addCell(crearCeldaTexto("SUSPENDIDAS"))
+            datos.each { d ->
+                tableDatos.addCell(crearCeldaNumero(numero(d?.cntrspnm ? d?.cntrspnm : 0,  0)))
+            }
+            tableDatos.addCell(crearCeldaTexto("MONTO SUSPENDIDAS"))
+            datos.each { d ->
+                tableDatos.addCell(crearCeldaNumero(numero(d?.cntrsusp ? d?.cntrsusp : 0,  2)))
+            }
+            tableDatos.addCell(crearCeldaTexto("SIN INICIO"))
+            datos.each { d ->
+                tableDatos.addCell(crearCeldaNumero(numero(d?.cntrsinm ? d?.cntrsinm : 0,  0)))
+            }
+            tableDatos.addCell(crearCeldaTexto("MONTO SIN INICIO"))
+            datos.each { d ->
+                tableDatos.addCell(crearCeldaNumero(numero(d?.cntrsnin ? d?.cntrsnin : 0,  2)))
+            }
+        }
+
+        document.add(tableIdentificador);
         document.add(table);
-        document.add(table2);
+        document.add(tableDatos);
 
         document.close();
         pdfw.close()
@@ -3843,26 +3916,28 @@ class Reportes6Controller {
         data = [:]
 
         cn.eachRow(sql.toString()) { d ->
-//            data.put((d.diredscr), d.cntrnmro + "_" + d.cntrtotl + "_" + d.cntrejnm )
-            data.put((d.diredscr), d.cntrtotl + "_" )
+            data.put((d.diredscr), (d.cntrtotl ?: 0) + "_"  + (d.cntrejec ?: 0) + "_" + (d.cntrcncl ?: 0) + "_" + (d.cntracpr ?: 0) + "_" + (d.cntracdf ?: 0) + "_" + (d.cntrsusp ?: 0) + "_" + (d.cntrsnin ?: 0))
         }
 
         def tam = data.size()
         def ges = []
         def ees = []
 
-//        tam.times{
-////            ees.add('C' + (it + 1))
-//        }
-
-        cn.eachRow(sql.toString()) { d ->
-            ees.add(d.diredscr)
+        tam.times{
+            ees.add('D' + (it + 1))
         }
 
+//        cn.eachRow(sql.toString()) { d ->
+//            ees.add(d.diredscr)
+//        }
 
         final String series1 = "Contratado";
-        final String series2 = "Avance Económico";
-        final String series3 = "Avance Físico";
+        final String series2 = "Ejecutadas";
+        final String series3 = "Concluidas";
+        final String series4 = "A. R. provisional";
+        final String series5 = "A. R. definitiva";
+        final String series6 = "Suspendidas";
+        final String series7 = "Sin inicio";
 
         final String category1 = "Category 1";
         final String category2 = "Category 2";
@@ -3875,17 +3950,19 @@ class Reportes6Controller {
 
         data.eachWithIndex { q, k ->
 
-            println("q " + q + " k " + k)
+//            println("q " + q + " k " + k)
 
             parts1[k] = q.value.split("_")
             parts2[k] = q.key
 
-            //1
-            dataset.addValue( parts1[k][0].toDouble() , series1 ,  ees[k]);
-            //2
-//            dataset.addValue( (parts1[k][1].toDouble() * parts1[k][0].toDouble() / 100)  , series2 ,  ees[k]);
-            //3
-//            dataset.addValue( (parts1[k][2].toDouble() * parts1[k][0].toDouble() / 100) , series3 ,  ees[k]);
+            dataset.addValue( parts1[k][0]?.toDouble() ?: 0, series1 ,  ees[k]);
+            dataset.addValue( parts1[k][1]?.toDouble() , series2 ,  ees[k]);
+            dataset.addValue( parts1[k][2]?.toDouble() , series3 ,  ees[k]);
+            dataset.addValue( parts1[k][3]?.toDouble() , series4 ,  ees[k]);
+            dataset.addValue( parts1[k][4]?.toDouble() , series5 ,  ees[k]);
+            dataset.addValue( parts1[k][5]?.toDouble() , series6 ,  ees[k]);
+            dataset.addValue( parts1[k][6]?.toDouble() , series7 ,  ees[k]);
+
         }
 
         return dataset;
@@ -3896,7 +3973,7 @@ class Reportes6Controller {
         final JFreeChart chart = ChartFactory.createBarChart("TOTAL OBRAS POR ÁREA REQUIRENTE", // chart
                 // title
                 "DIRECCIÓN", // domain axis label
-                "CONTRATADO", // range axis label
+                "MONTO", // range axis label
                 dataset, // data
                 PlotOrientation.VERTICAL, // orientation
                 true, // include legend
