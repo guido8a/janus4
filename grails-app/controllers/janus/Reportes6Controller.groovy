@@ -3837,59 +3837,59 @@ class Reportes6Controller {
                 table.addCell(cabecera[i]);
             }
 
-            tableDatos.addCell(crearCeldaTextoConEstilo("OBRAS CONTRATADAS"))
+            tableDatos.addCell(crearCeldaTextoConEstilo("OBRAS CONTRATADAS", fontTextoColumnaSin))
             datos.each { d ->
                 tableDatos.addCell(crearCeldaNumero(numero(d?.cntrnmro ? d?.cntrnmro : 0,  0)))
             }
-            tableDatos.addCell(crearCeldaTextoConEstilo("MONTO CONTRATADO"))
+            tableDatos.addCell(crearCeldaTextoConEstilo("MONTO CONTRATADO", fontTextoColumnaSin))
             datos.each { d ->
                 tableDatos.addCell(crearCeldaNumero(numero(d?.cntrtotl ? d?.cntrtotl : 0,  2)))
             }
-            tableDatos.addCell(crearCeldaTextoConEstilo("EJECUCIÓN"))
+            tableDatos.addCell(crearCeldaTextoConEstilo("EJECUCIÓN", fontTextoColumnaSin))
             datos.each { d ->
                 tableDatos.addCell(crearCeldaNumero(numero(d?.cntrejnm ? d?.cntrejnm : 0,  0)))
             }
-            tableDatos.addCell(crearCeldaTextoConEstilo("MONTO EN EJECUCIÓN"))
+            tableDatos.addCell(crearCeldaTextoConEstilo("MONTO EN EJECUCIÓN" , fontTextoColumnaSin))
             datos.each { d ->
                 tableDatos.addCell(crearCeldaNumero(numero(d?.cntrejec ? d?.cntrejec : 0,  2)))
             }
-            tableDatos.addCell(crearCeldaTextoConEstilo("CONCLUIDAS"))
+            tableDatos.addCell(crearCeldaTextoConEstilo("CONCLUIDAS", fontTextoColumnaSin))
             datos.each { d ->
                 tableDatos.addCell(crearCeldaNumero(numero(d?.cntrcnnm ? d?.cntrcnnm : 0,  0)))
             }
-            tableDatos.addCell(crearCeldaTextoConEstilo("MONTO CONCLUIDAS"))
+            tableDatos.addCell(crearCeldaTextoConEstilo("MONTO CONCLUIDAS", fontTextoColumnaSin))
             datos.each { d ->
                 tableDatos.addCell(crearCeldaNumero(numero(d?.cntrcncl ? d?.cntrcncl : 0,  2)))
             }
-            tableDatos.addCell(crearCeldaTextoConEstilo("ACTA RECEPCIÓN PROVISIONAL"))
+            tableDatos.addCell(crearCeldaTextoConEstilo("ACTA RECEPCIÓN PROVISIONAL", fontTextoColumnaSin))
             datos.each { d ->
                 tableDatos.addCell(crearCeldaNumero(numero(d?.cntracnm ? d?.cntracnm : 0,  0)))
             }
-            tableDatos.addCell(crearCeldaTextoConEstilo("MONTO ACTA RECEPCIÓN PROVISIONAL"))
+            tableDatos.addCell(crearCeldaTextoConEstilo("MONTO ACTA RECEPCIÓN PROVISIONAL", fontTextoColumnaSin))
             datos.each { d ->
                 tableDatos.addCell(crearCeldaNumero(numero(d?.cntracpr ? d?.cntracpr : 0,  2)))
             }
-            tableDatos.addCell(crearCeldaTextoConEstilo("ACTA RECEPCIÓN DEFINITIVA"))
+            tableDatos.addCell(crearCeldaTextoConEstilo("ACTA RECEPCIÓN DEFINITIVA", fontTextoColumnaSin))
             datos.each { d ->
                 tableDatos.addCell(crearCeldaNumero(numero(d?.cntradnm ? d?.cntradnm : 0,  0)))
             }
-            tableDatos.addCell(crearCeldaTextoConEstilo("MONTO ACTA RECEPCIÓN DEFINITIVA"))
+            tableDatos.addCell(crearCeldaTextoConEstilo("MONTO ACTA RECEPCIÓN DEFINITIVA", fontTextoColumnaSin))
             datos.each { d ->
                 tableDatos.addCell(crearCeldaNumero(numero(d?.cntracdf ? d?.cntracdf : 0,  2)))
             }
-            tableDatos.addCell(crearCeldaTextoConEstilo("SUSPENDIDAS"))
+            tableDatos.addCell(crearCeldaTextoConEstilo("SUSPENDIDAS", fontTextoColumnaSin))
             datos.each { d ->
                 tableDatos.addCell(crearCeldaNumero(numero(d?.cntrspnm ? d?.cntrspnm : 0,  0)))
             }
-            tableDatos.addCell(crearCeldaTextoConEstilo("MONTO SUSPENDIDAS"))
+            tableDatos.addCell(crearCeldaTextoConEstilo("MONTO SUSPENDIDAS", fontTextoColumnaSin))
             datos.each { d ->
                 tableDatos.addCell(crearCeldaNumero(numero(d?.cntrsusp ? d?.cntrsusp : 0,  2)))
             }
-            tableDatos.addCell(crearCeldaTextoConEstilo("SIN INICIO"))
+            tableDatos.addCell(crearCeldaTextoConEstilo("SIN INICIO", fontTextoColumnaSin))
             datos.each { d ->
                 tableDatos.addCell(crearCeldaNumero(numero(d?.cntrsinm ? d?.cntrsinm : 0,  0)))
             }
-            tableDatos.addCell(crearCeldaTextoConEstilo("MONTO SIN INICIO"))
+            tableDatos.addCell(crearCeldaTextoConEstilo("MONTO SIN INICIO", fontTextoColumnaSin))
             datos.each { d ->
                 tableDatos.addCell(crearCeldaNumero(numero(d?.cntrsnin ? d?.cntrsnin : 0,  2)))
             }
