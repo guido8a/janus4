@@ -741,6 +741,10 @@ class Reportes6Controller {
         return cell
     }
 
+    def crearCeldaTextoConEstilo (txt, estilo) {
+        com.itextpdf.text.pdf.PdfPCell cell = new com.itextpdf.text.pdf.PdfPCell(new com.itextpdf.text.Paragraph(txt, estilo));
+        return cell
+    }
 
     private JFreeChart createChart(final CategoryDataset dataset) {
 
@@ -3689,12 +3693,12 @@ class Reportes6Controller {
         def fechaHasta = new Date().parse("dd-MM-yyyy", params.hasta)
         def sql ="select * from rp_contrato_dp('${params.desde}','${params.hasta}')"
 
-        println("sql " + sql)
-
         def datos = cn.rows(sql.toString())
 
         com.itextpdf.text.Font fontTitulo = new com.itextpdf.text.Font(com.itextpdf.text.Font.FontFamily.TIMES_ROMAN, 14, com.itextpdf.text.Font.BOLD);
-        com.itextpdf.text.Font fontTtlo = new com.itextpdf.text.Font(com.itextpdf.text.Font.FontFamily.TIMES_ROMAN, 18, com.itextpdf.text.Font.BOLD);
+        com.itextpdf.text.Font fontTtlo = new com.itextpdf.text.Font(com.itextpdf.text.Font.FontFamily.TIMES_ROMAN, 16, com.itextpdf.text.Font.BOLD);
+        com.itextpdf.text.Font fontTextoColumna = new com.itextpdf.text.Font(com.itextpdf.text.Font.FontFamily.TIMES_ROMAN, 10, com.itextpdf.text.Font.BOLD);
+        com.itextpdf.text.Font fontTextoColumnaSin = new com.itextpdf.text.Font(com.itextpdf.text.Font.FontFamily.TIMES_ROMAN, 10, com.itextpdf.text.Font.NORMAL);
 
         def tipo = params.tipo
         def subtitulo = 'CONTRATOS RESUMEN'
@@ -3817,11 +3821,12 @@ class Reportes6Controller {
         if(datos.size() > 0){
 
             datos.eachWithIndex{ cntr ,c ->
-                com.itextpdf.text.Paragraph p = new com.itextpdf.text.Paragraph(cntr?.diredscr ? (cntr?.diredscr + "(" + "D" + c+1  + ")") : '')
-                com.itextpdf.text.Paragraph p1 = new com.itextpdf.text.Paragraph(cntr?.diredscr ? ("(" + "D" + c+1  + ")") : '')
+                com.itextpdf.text.Paragraph p = new com.itextpdf.text.Paragraph(cntr?.diredscr ?: '', fontTextoColumna)
+                com.itextpdf.text.Paragraph p1 = new com.itextpdf.text.Paragraph(cntr?.diredscr ? ("(" + "D" + c.toInteger() + 1  + ")") : '', fontTextoColumna)
                 cabecera[c+1].addElement(p)
                 cabeceraIdentificador[c+1].addElement(p1)
             }
+
 
             for (int i = 0; i < 6; i++){
                 cabeceraIdentificador[i].setHorizontalAlignment(com.itextpdf.text.Element.ALIGN_CENTER)
@@ -3832,59 +3837,59 @@ class Reportes6Controller {
                 table.addCell(cabecera[i]);
             }
 
-            tableDatos.addCell(crearCeldaTexto("OBRAS CONTRATADAS"))
+            tableDatos.addCell(crearCeldaTextoConEstilo("OBRAS CONTRATADAS"))
             datos.each { d ->
                 tableDatos.addCell(crearCeldaNumero(numero(d?.cntrnmro ? d?.cntrnmro : 0,  0)))
             }
-            tableDatos.addCell(crearCeldaTexto("MONTO CONTRATADO"))
+            tableDatos.addCell(crearCeldaTextoConEstilo("MONTO CONTRATADO"))
             datos.each { d ->
                 tableDatos.addCell(crearCeldaNumero(numero(d?.cntrtotl ? d?.cntrtotl : 0,  2)))
             }
-            tableDatos.addCell(crearCeldaTexto("EJECUCIÓN"))
+            tableDatos.addCell(crearCeldaTextoConEstilo("EJECUCIÓN"))
             datos.each { d ->
                 tableDatos.addCell(crearCeldaNumero(numero(d?.cntrejnm ? d?.cntrejnm : 0,  0)))
             }
-            tableDatos.addCell(crearCeldaTexto("MONTO EN EJECUCIÓN"))
+            tableDatos.addCell(crearCeldaTextoConEstilo("MONTO EN EJECUCIÓN"))
             datos.each { d ->
                 tableDatos.addCell(crearCeldaNumero(numero(d?.cntrejec ? d?.cntrejec : 0,  2)))
             }
-            tableDatos.addCell(crearCeldaTexto("CONCLUIDAS"))
+            tableDatos.addCell(crearCeldaTextoConEstilo("CONCLUIDAS"))
             datos.each { d ->
                 tableDatos.addCell(crearCeldaNumero(numero(d?.cntrcnnm ? d?.cntrcnnm : 0,  0)))
             }
-            tableDatos.addCell(crearCeldaTexto("MONTO CONCLUIDAS"))
+            tableDatos.addCell(crearCeldaTextoConEstilo("MONTO CONCLUIDAS"))
             datos.each { d ->
                 tableDatos.addCell(crearCeldaNumero(numero(d?.cntrcncl ? d?.cntrcncl : 0,  2)))
             }
-            tableDatos.addCell(crearCeldaTexto("ACTA RECEPCIÓN PROVISIONAL"))
+            tableDatos.addCell(crearCeldaTextoConEstilo("ACTA RECEPCIÓN PROVISIONAL"))
             datos.each { d ->
                 tableDatos.addCell(crearCeldaNumero(numero(d?.cntracnm ? d?.cntracnm : 0,  0)))
             }
-            tableDatos.addCell(crearCeldaTexto("MONTO ACTA RECEPCIÓN PROVISIONAL"))
+            tableDatos.addCell(crearCeldaTextoConEstilo("MONTO ACTA RECEPCIÓN PROVISIONAL"))
             datos.each { d ->
                 tableDatos.addCell(crearCeldaNumero(numero(d?.cntracpr ? d?.cntracpr : 0,  2)))
             }
-            tableDatos.addCell(crearCeldaTexto("ACTA RECEPCIÓN DEFINITIVA"))
+            tableDatos.addCell(crearCeldaTextoConEstilo("ACTA RECEPCIÓN DEFINITIVA"))
             datos.each { d ->
                 tableDatos.addCell(crearCeldaNumero(numero(d?.cntradnm ? d?.cntradnm : 0,  0)))
             }
-            tableDatos.addCell(crearCeldaTexto("MONTO ACTA RECEPCIÓN DEFINITIVA"))
+            tableDatos.addCell(crearCeldaTextoConEstilo("MONTO ACTA RECEPCIÓN DEFINITIVA"))
             datos.each { d ->
                 tableDatos.addCell(crearCeldaNumero(numero(d?.cntracdf ? d?.cntracdf : 0,  2)))
             }
-            tableDatos.addCell(crearCeldaTexto("SUSPENDIDAS"))
+            tableDatos.addCell(crearCeldaTextoConEstilo("SUSPENDIDAS"))
             datos.each { d ->
                 tableDatos.addCell(crearCeldaNumero(numero(d?.cntrspnm ? d?.cntrspnm : 0,  0)))
             }
-            tableDatos.addCell(crearCeldaTexto("MONTO SUSPENDIDAS"))
+            tableDatos.addCell(crearCeldaTextoConEstilo("MONTO SUSPENDIDAS"))
             datos.each { d ->
                 tableDatos.addCell(crearCeldaNumero(numero(d?.cntrsusp ? d?.cntrsusp : 0,  2)))
             }
-            tableDatos.addCell(crearCeldaTexto("SIN INICIO"))
+            tableDatos.addCell(crearCeldaTextoConEstilo("SIN INICIO"))
             datos.each { d ->
                 tableDatos.addCell(crearCeldaNumero(numero(d?.cntrsinm ? d?.cntrsinm : 0,  0)))
             }
-            tableDatos.addCell(crearCeldaTexto("MONTO SIN INICIO"))
+            tableDatos.addCell(crearCeldaTextoConEstilo("MONTO SIN INICIO"))
             datos.each { d ->
                 tableDatos.addCell(crearCeldaNumero(numero(d?.cntrsnin ? d?.cntrsnin : 0,  2)))
             }
