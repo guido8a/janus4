@@ -149,25 +149,25 @@
                 <p class="col-md-8">Rubros contratados comparados con los rubros presupuestados para verificación
                 de precios y rendimientos. </p>
             </li>
-            <li text="comp" class="item col-md-12" texto="comp">
-                <g:link controller="reportesExcel" style="color: #FFFDF4" action="contratoFechas" file=""
-                        class="btn btn-warning btn-xs col-md-4">
-                    <i class="fa fa-print"></i> Detalle de Contratos <br> y Obras contratadas
-                </g:link>
-                <p class="col-md-8">Reporte en Excel de los contratos y obras contratadas inluyendo valores planillados y fechas de las actas</p>
-            </li>
-            <li text="cob" class="item col-md-12" texto="cob">
-                <g:link controller="reportes5" style="color: #FFFDF4" action="componentesObraPdf" file=""  class="btn btn-warning btn-xs col-md-4">
-                    <i class="fa fa-print"></i> Componentes de obra
-                </g:link>
-                <p class="col-md-8">Genera el reporte PDF de componentes de obra</p>
-            </li>
-            <li text="inu" class="item col-md-12" texto="inu">
-                <g:link controller="reportes5" style="color: #FFFDF4" action="itemsNoUsadosPdf" file="" class="btn btn-warning btn-xs col-md-4">
-                    <i class="fa fa-print"></i> Items no usados
-                </g:link>
-                <p class="col-md-8"> Genera el reporte PDF de items no usados </p>
-            </li>
+%{--            <li text="comp" class="item col-md-12" texto="comp">--}%
+%{--                <g:link controller="reportesExcel" style="color: #FFFDF4" action="contratoFechas" file=""--}%
+%{--                        class="btn btn-warning btn-xs col-md-4">--}%
+%{--                    <i class="fa fa-print"></i> Detalle de Contratos <br> y Obras contratadas--}%
+%{--                </g:link>--}%
+%{--                <p class="col-md-8">Reporte en Excel de los contratos y obras contratadas inluyendo valores planillados y fechas de las actas</p>--}%
+%{--            </li>--}%
+%{--            <li text="cob" class="item col-md-12" texto="cob">--}%
+%{--                <g:link controller="reportes5" style="color: #FFFDF4" action="componentesObraPdf" file=""  class="btn btn-warning btn-xs col-md-4">--}%
+%{--                    <i class="fa fa-print"></i> Componentes de obra--}%
+%{--                </g:link>--}%
+%{--                <p class="col-md-8">Genera el reporte PDF de componentes de obra</p>--}%
+%{--            </li>--}%
+%{--            <li text="inu" class="item col-md-12" texto="inu">--}%
+%{--                <g:link controller="reportes5" style="color: #FFFDF4" action="itemsNoUsadosPdf" file="" class="btn btn-warning btn-xs col-md-4">--}%
+%{--                    <i class="fa fa-print"></i> Items no usados--}%
+%{--                </g:link>--}%
+%{--                <p class="col-md-8"> Genera el reporte PDF de items no usados </p>--}%
+%{--            </li>--}%
 %{--            <li texto="crs" class="item col-md-12">--}%
 %{--                <a href="#" id="btnReporteExcelCRS" style="color: #FFFDF4" class="btn btn-success btn-xs col-md-4">--}%
 %{--                    <i class="fa fa-file-excel"></i> Contratos resumen--}%
