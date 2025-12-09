@@ -21,6 +21,10 @@ class ReportesController {
 
     }
 
+    def index2(){
+
+    }
+
     def buscadorService
     def preciosService
     def dbConnectionService
