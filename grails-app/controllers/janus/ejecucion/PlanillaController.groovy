@@ -1764,6 +1764,7 @@ class PlanillaController {
 
         /*** si no hay planilla de este contrato se presenta solo TPPL: Anticipo **/
         def tiposPlanilla = []
+//        tiposPlanilla = TipoPlanilla.findAllByCodigoInList(["B", "P", "C", "Q", "L", "R"], [sort: 'codigo', order: "asc"])
         tiposPlanilla = TipoPlanilla.findAllByCodigoInList(["A", "P", "C", "Q", "L", "R"], [sort: 'codigo', order: "asc"])
 
         /** */

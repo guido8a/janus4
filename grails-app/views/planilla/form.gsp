@@ -113,18 +113,23 @@
                                 </span>
                             </span>
 
-                            <g:if test="${!planillaInstance?.id && !(tipos.find { it.codigo == 'A' })}">
-                                <span class="grupo">
-                                    <div class="col-md-1"></div>
-                                    <label class="col-md-2 control-label text-info formato periodo">
-                                        Período
-                                    </label>
-                                    <span class="col-md-4 periodo">
-                                        <g:select id="periodoPlanilla" name="periodoPlanilla" from="${periodos}"
-                                                  optionKey="key" class="many-to-one form-control"
-                                                  optionValue="value"/>
-                                    </span>
-                                </span>
+                        %{--                                                    <g:if test="${!planillaInstance?.id && !(tipos.find { it.codigo == 'A' })}">--}%
+                            <g:if test="${!planillaInstance?.id}">
+%{--                                <g:if test="${!(tipos.contains(TipoPlanilla.findByCodigo('A')))}">--}%
+%{--                                    <g:if test="${!(tipos.contains(TipoPlanilla.findByCodigo('B')))}">--}%
+                                        <span class="grupo">
+                                            <div class="col-md-1"></div>
+                                            <label class="col-md-2 control-label text-info formato periodo">
+                                                Período
+                                            </label>
+                                            <span class="col-md-4 periodo">
+                                                <g:select id="periodoPlanilla" name="periodoPlanilla" from="${periodos}"
+                                                          optionKey="key" class="many-to-one form-control"
+                                                          optionValue="value"/>
+                                            </span>
+                                        </span>
+%{--                                    </g:if>--}%
+%{--                                </g:if>--}%
                             </g:if>
                         </div>
 
@@ -229,7 +234,6 @@
                             </span>
                             <span class="grupo">
                                 <g:if test="${!(esAnticipo) && planillaInstance?.tipoContrato != 'C' && hayCmpl}">
-
                                     <label class="col-md-2 control-label text-info formato">
                                         Generar planilla para el Complementario
                                     </label>
@@ -435,6 +439,33 @@
 
 <script type="text/javascript">
 
+    colocarComplementario();
+    colocarPeriodo();
+
+    $("#tipoPlanilla").change(function () {
+        colocarComplementario();
+        colocarPeriodo();
+    });
+
+    function colocarPeriodo() {
+        var tipo = $("#tipoPlanilla option:selected").val();
+        if(tipo === '10'  || tipo === '1'){
+            $("#periodoPlanilla").addClass("hide")
+        }else{
+            $("#periodoPlanilla").removeClass("hide")
+        }
+    }
+
+    function colocarComplementario(){
+        var tipo = $("#tipoPlanilla option:selected").val();
+        if(tipo === '10'){
+            $("#complementario").val("E");
+            $("#complementario").attr("disabled", true);
+        }else{
+            $("#complementario").val("S");
+            $("#complementario").attr("disabled", false);
+        }
+    }
 
     $('#fechaPresentacion,#fechaOficioEntradaPlanilla').datetimepicker({
         locale: 'es',
@@ -520,15 +551,16 @@
         }
 
         if (tppl === "3" || tppl === "9" || (tp === "3" || tp === "9")) { //avance
-            $(".periodo,.presentacion,#divMultaDisp, #divMulta").show();
+            // $(".periodo,.presentacion,#divMultaDisp, #divMulta").show();
+            $(".presentacion,#divMultaDisp, #divMulta").show();
         } else {
             $("#divMultaDisp").addClass('hide');
             $("#divMulta").addClass('hide');
             if (tppl === "1" || tppl === "2") {
-                $(".periodo").addClass('hide');
+                // $(".periodo").addClass('hide');
                 $(".presentacion").addClass('hide');
             } else if (tppl === "5" || tppl === "6") {
-                $(".periodo").addClass('hide');
+                // $(".periodo").addClass('hide');
                 $(".presentacion").removeClass('hide');
             }
         }
