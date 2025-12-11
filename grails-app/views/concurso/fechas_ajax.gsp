@@ -68,7 +68,7 @@
                      </span>
                      <span class="grupo">
                          <label for="fecha2" class="col-md-2 control-label text-info">
-                             Límite Preguntas
+                             Límite Preguntas1
                          </label>
                          <span class="col-md-2">
                              <input aria-label="" name="fechaLimitePreguntas" id='fecha5' type='text' class="input-small" value="${concurso?.fechaLimitePreguntas?.format("dd-MM-yyyy HH:mm")}" />
@@ -168,7 +168,7 @@
                                  Límite Entrega Ofertas
                              </label>
                              <span class="col-md-2">
-                                 <input aria-label="" name="fechaLimiteEntregaOfertas" id='fecha9' type='text' class="input-small" value="${concurso?.fechaLimiteEntregaOfertas?.format("dd-MM-yyyy HH:mm")}" />
+                                 <input aria-label="" name="fechaLimiteEntregaOfertas" id='fecha9' type='text' class="input-small required" required="" value="${concurso?.fechaLimiteEntregaOfertas?.format("dd-MM-yyyy HH:mm")}" />
                                  <p class="help-block ui-helper-hidden"></p>
                              </span>
                              <span class="col-md-4" style="margin-left: -40px">
