@@ -1307,7 +1307,7 @@ class RubroOfController {
                                 /** --------------- Equipos del rbro ordn ---------------**/
                                 if (rgst[cols[params.cldaEq]] == params.titlEq) {
                                     sccnEq = true; sccnMo = false; sccnMt = false; sccnTr = false; sccnRubro = false
-//                                println "Equipos..... $sccnEq --> rbro: $ordn $rbronmbr"
+                                    println "Equipos..... $sccnEq --> rbro: $ordn $rbronmbr"
                                 }
                                 if (sccnEq && ofrb_id) {
                                     rgst.each { r ->
@@ -1316,15 +1316,24 @@ class RubroOfController {
                                     if(ordn == 1) println "...1 id: $ofrb_id"
                                     try {
                                         cdgo = params.cdgoEq ? rgst[cols[params.cdgoEq]] : ''
+                                        println "---> $rgst"
                                         if(ordn == 1) println "..2"
+                                        println "..2"
                                         nmbr = rgst[cols[params.nmbrEq]]
                                         if(ordn == 1) println "..3"
+                                        println "..3"
                                         cntd = rgst[cols[params.cntdEq]].toDouble() //cantidad
+                                        println "..4"
                                         trfa = rgst[cols[params.trfaEq]] == '' ? 0 : rgst[cols[params.trfaEq]].toDouble()
                                         pcun = rgst[cols[params.pcunEq]] ? rgst[cols[params.pcunEq]].toDouble() : trfa //costo
+                                        println "..5"
+
                                         rndm = rgst[cols[params.rndmEq]] ? rgst[cols[params.rndmEq]].toDouble() : 1
+                                        println "..6"
                                         csto = rgst[cols[params.cstoEq]].toDouble()
-                                        if(ordn == 1) println "..8 -- rndm: ${rgst[cols[params.rndmEq]]}"
+                                        println "..7"
+                                        if(ordn == 'C-001-016') println "..8 -- rndm: ${rgst[cols[params.rndmEq]]}"
+                                        println "..8 -- rndm: ${rgst[cols[params.rndmEq]]}"
                                     } catch (e) {
                                         cntd = 0
                                         trfa = 0
