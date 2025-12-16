@@ -1,5 +1,5 @@
 
-<%@ page import="janus.TipoCuenta" %>
+<%@ page import="janus.TipoConcurso" %>
 
 <div id="create-tipoCuentaInstance" class="span" role="main">
     <g:form class="form-horizontal" name="frmSave-tipoCuentaInstance" action="save">

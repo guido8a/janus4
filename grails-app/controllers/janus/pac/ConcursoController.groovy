@@ -4,7 +4,7 @@ import janus.Administracion
 import janus.Comunidad
 import janus.Obra
 import janus.Parroquia
-
+import janus.TipoConcurso
 import org.springframework.dao.DataIntegrityViolationException
 
 class ConcursoController {
@@ -53,7 +53,7 @@ class ConcursoController {
     def concursos() {
         def campos = ["codigo": ["Contrato No.", "string"], "objeto": ["Objeto", "string"],
                       "fechaInicio": ["Fecha inicio", "string"], "presupuestoReferencial": ["Presupuesto",
-                      "string"], "obra": ["Obra", "string"]]
+                                                                                            "string"], "obra": ["Obra", "string"]]
         [campos: campos]
     }
 
@@ -142,7 +142,7 @@ class ConcursoController {
             }
 
         } else {
-           // println "entro reporte"
+            // println "entro reporte"
             /*De esto solo cambiar el dominio, el parametro tabla, el paramtero titulo y el tamaño de las columnas (anchos)*/
             session.dominio = Concurso
             session.funciones = funciones
@@ -315,7 +315,7 @@ class ConcursoController {
 
 //                redirect(controller: "reportes", action: "reporteBuscadorExcel", params: [listaCampos: listaCampos, listaTitulos: listaTitulos, tabla: "Concurso", orden: params.orden, ordenado: params.ordenado, criterios: params.criterios, operadores: params.operadores, campos: params.campos, titulo: "REPORTE PAC, anchos: anchos, extras: extras, landscape: true])
 
-                  redirect(controller: "reportes", action: "reporteBuscadorExcel", params: [listaCampos: listaCampos, listaTitulos: listaTitulos, tabla: "Pac", orden: params.orden, ordenado: params.ordenado, criterios: params.criterios, operadores: params.operadores, campos: params.campos, titulo: "REPORTE DE PAC", anchos: anchos, extras: extras, landscape: true])
+                redirect(controller: "reportes", action: "reporteBuscadorExcel", params: [listaCampos: listaCampos, listaTitulos: listaTitulos, tabla: "Pac", orden: params.orden, ordenado: params.ordenado, criterios: params.criterios, operadores: params.operadores, campos: params.campos, titulo: "REPORTE DE PAC", anchos: anchos, extras: extras, landscape: true])
 
             } else {
                 def lista2 = buscadorService.buscar(Pac, "Pac", "excluyente", params, true, extras)
@@ -329,7 +329,7 @@ class ConcursoController {
                 }
                 render(view: '../tablaBuscadorColDer', model: [listaTitulos: listaTitulos, listaCampos: listaCampos, lista: lista, funciones: funciones, url: url, controller: "llamada", numRegistros: numRegistros, funcionJs: funcionJs])
             }
-          } else {
+        } else {
 //            println "entro reporte"
             /*De esto solo cambiar el dominio, el parametro tabla, el paramtero titulo y el tamaño de las columnas (anchos)*/
             session.dominio = Pac
@@ -777,14 +777,12 @@ class ConcursoController {
         datos = cn.rows(sqlTx)
 //        println "data: ${datos[0]}"
         [data: datos]
-
     }
-
 
     def concurso_ajax(){
 
         def pac = Pac.get(params.pac)
-        def concurso = Concurso.findByPac(pac)
+        def concurso = Concurso.findByPacAndTipoConcursoIsNull(pac)
 
         if(!concurso){
             concurso = new Concurso()
@@ -802,7 +800,7 @@ class ConcursoController {
 
     def saveConcurso_ajax() {
 
-//        println("parmas concurso " + params)
+        println("parmas concurso " + params)
 
         if (params.codigo) {
             params.codigo = params.codigo.toUpperCase()
@@ -891,6 +889,10 @@ class ConcursoController {
             params.presupuestoReferencial = params.presupuestoReferencial.toDouble()
         }
 
+        if(params.estadoC){
+            params.estado = params.estadoC
+        }
+
         println "params ${params.presupuestoReferencial}"
         def concursoInstance
         if (params.id) {
@@ -932,7 +934,8 @@ class ConcursoController {
     } //save
 
     def buscadorObras_ajax(){
-
+        def tipo = params.tipo
+        return [tipo: tipo]
     }
 
     def tablaBuscarObras_ajax(){
@@ -955,5 +958,26 @@ class ConcursoController {
         datos = cn.rows(sqlTx)
         [data: datos]
     }
+
+    def concursoComplementario_ajax(){
+
+        def pac = Pac.get(params.pac)
+        def tipoConcurso = TipoConcurso.findByCodigo("C")
+        def concurso = Concurso.findByPacAndTipoConcursoAndTipoConcursoIsNotNull(pac, tipoConcurso)
+
+        if(!concurso){
+            concurso = new Concurso()
+        }
+
+        def administracion = Administracion.list()?.last()
+
+        return [concurso: concurso, pac: pac, administracion: administracion]
+    }
+
+    def fechasComplementario_ajax(){
+        def concurso = Concurso.get(params.concurso)
+        return [concurso: concurso]
+    }
+
 
 } //fin controller

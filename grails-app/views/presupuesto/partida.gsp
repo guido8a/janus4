@@ -30,6 +30,18 @@
 
 </div>
 
+<div id="divConcursoComplementario">
+
+</div>
+
+<div id="divFechasComplementario">
+
+</div>
+
+<div id="divOfertaComplementario">
+
+</div>
+
 <script type="text/javascript">
 
     cargarPartida();
@@ -97,6 +109,32 @@
             },
             success: function (msg) {
                 $("#divOferta").html(msg);
+            }
+        });
+    }
+
+    function cargarConcursoComplentario(pac){
+        $.ajax({
+            type: "POST",
+            url: "${createLink(controller: 'concurso', action:'concursoComplementario_ajax')}",
+            data: {
+                pac: pac
+            },
+            success: function (msg) {
+                $("#divConcursoComplementario").html(msg).focus()
+            }
+        });
+    }
+
+    function cargarOfertaComplentario(concurso){
+        $.ajax({
+            type: "POST",
+            url: "${createLink(controller: 'oferta', action:'ofertaComplementario_ajax')}",
+            data: {
+                concurso: concurso
+            },
+            success: function (msg) {
+                $("#divOfertaComplementario").html(msg);
             }
         });
     }

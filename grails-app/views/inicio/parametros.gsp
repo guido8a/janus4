@@ -472,6 +472,19 @@
 
                                     <div class="col-md-12" style="margin-bottom: 10px">
                                         <div class="col-md-4">
+                                            <g:link class="link btn btn-warning btn-xs" controller="tipoConcurso" action="list">
+                                                <i class="fa fa-globe fa-2x"></i>
+                                                Tipo de Concurso
+                                            </g:link>
+                                        </div>
+
+                                        <div class="col-md-8">
+                                            <strong style="font-size: 14px"></strong>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12" style="margin-bottom: 10px">
+                                        <div class="col-md-4">
                                             <g:link class="link btn btn-warning btn-xs" controller="tipoDocumentoGarantia" action="list">
                                                 <i class="fa fa-globe fa-2x"></i>
                                                 Tipo de documento de garantía

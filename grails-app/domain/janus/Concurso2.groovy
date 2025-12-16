@@ -5,7 +5,7 @@ import audita.Auditable
 class Concurso2 implements Auditable {
 
     Obra obra
-    TipoCuenta tipoCuenta
+    TipoConcurso tipoCuenta
     Administracion administracion
     String codigo
     String objetivo

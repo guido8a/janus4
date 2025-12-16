@@ -1,5 +1,5 @@
 
-<%@ page import="janus.TipoCuenta" %>
+<%@ page import="janus.TipoConcurso" %>
 
 <div id="show-tipoCuenta" class="span5" role="main">
 

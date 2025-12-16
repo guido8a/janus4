@@ -2,6 +2,7 @@ package janus.pac
 
 import janus.Administracion
 import janus.Obra
+import janus.TipoConcurso
 
 class Concurso {
 
@@ -47,10 +48,11 @@ class Concurso {
     String numeroCertificacion
 
     Date fechaNotificacionAdjudicacion
-
     String memoSif
-
     String memoCertificacionFondos
+
+    TipoConcurso tipoConcurso
+
     static auditable=true
     static mapping = {
         table 'cncr'
@@ -64,6 +66,7 @@ class Concurso {
             obra column: 'obra__id'
             administracion column: 'admn__id'
             pac column: 'pacp__id'
+            tipoConcurso column: 'tpcn__id'
             codigo column: 'cncrcdgo'
             objeto column: 'cncrobjt'
             costoBases column: 'cncrbase'
@@ -106,15 +109,17 @@ class Concurso {
 
             fechaNotificacionAdjudicacion column: 'cncrfcna'
 
-
             memoSif column: 'cncrmmsf'
             memoCertificacionFondos column: 'cncrmmct'
+
+
         }
     }
     static constraints = {
         obra(blank: true, nullable: true)
         administracion(blank: true, nullable: true)
         pac(blank: true, nullable: true)
+        tipoConcurso(blank: true, nullable: true)
         codigo(blank: true, nullable: true, maxSize: 40)
         objeto(blank: true, nullable: true, maxSize: 255)
         costoBases(blank: true, nullable: true)
@@ -154,5 +159,6 @@ class Concurso {
         fechaNotificacionAdjudicacion(blank: true, nullable: true)
         memoSif(nullable: true,blank:true,size: 1..120)
         memoCertificacionFondos(nullable: true, blank: true, maxSize: 40)
+
     }
 }

@@ -170,5 +170,12 @@ class OfertaController {
         [datos: datos]
     }
 
+    def ofertaComplementario_ajax(){
+        println("params " + params)
+        def concurso = Concurso.get(params.concurso)
+        def oferta = Oferta.findByConcurso(concurso)
+
+        return [concurso: concurso, oferta: oferta]
+    }
 
 } //fin controller

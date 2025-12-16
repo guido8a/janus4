@@ -13,13 +13,13 @@ class TipoCuentaController {
 
     def list() {
         params.max = Math.min(params.max ? params.int('max') : 10, 100)
-        [tipoCuentaInstanceList: TipoCuenta.list(params), tipoCuentaInstanceTotal: TipoCuenta.count(), params: params]
+        [tipoCuentaInstanceList: TipoConcurso.list(params), tipoCuentaInstanceTotal: TipoConcurso.count(), params: params]
     } //list
 
     def form_ajax() {
-        def tipoCuentaInstance = new TipoCuenta(params)
+        def tipoCuentaInstance = new TipoConcurso(params)
         if (params.id) {
-            tipoCuentaInstance = TipoCuenta.get(params.id)
+            tipoCuentaInstance = TipoConcurso.get(params.id)
             if (!tipoCuentaInstance) {
                 flash.clase = "alert-error"
                 flash.message = "No se encontró TipoCuenta con id " + params.id
@@ -33,7 +33,7 @@ class TipoCuentaController {
     def save() {
         def tipoCuentaInstance
         if (params.id) {
-            tipoCuentaInstance = TipoCuenta.get(params.id)
+            tipoCuentaInstance = TipoConcurso.get(params.id)
             if (!tipoCuentaInstance) {
                 flash.clase = "alert-error"
                 flash.message = "No se encontró TipoCuenta con id " + params.id
@@ -43,7 +43,7 @@ class TipoCuentaController {
             tipoCuentaInstance.properties = params
         }//es edit
         else {
-            tipoCuentaInstance = new TipoCuenta(params)
+            tipoCuentaInstance = new TipoConcurso(params)
         } //es create
         if (!tipoCuentaInstance.save(flush: true)) {
             flash.clase = "alert-error"
@@ -75,7 +75,7 @@ class TipoCuentaController {
     } //save
 
     def show_ajax() {
-        def tipoCuentaInstance = TipoCuenta.get(params.id)
+        def tipoCuentaInstance = TipoConcurso.get(params.id)
         if (!tipoCuentaInstance) {
             flash.clase = "alert-error"
             flash.message = "No se encontró TipoCuenta con id " + params.id
@@ -86,7 +86,7 @@ class TipoCuentaController {
     } //show
 
     def delete() {
-        def tipoCuentaInstance = TipoCuenta.get(params.id)
+        def tipoCuentaInstance = TipoConcurso.get(params.id)
         if (!tipoCuentaInstance) {
             flash.clase = "alert-error"
             flash.message = "No se encontró TipoCuenta con id " + params.id

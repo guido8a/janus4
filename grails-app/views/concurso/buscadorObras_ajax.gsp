@@ -47,7 +47,12 @@
                 criterio: criterio
             },
             success: function (msg) {
+                <g:if test="${tipo == '1'}">
+                $("#obraNameC").focus();
+                </g:if>
+                <g:else>
                 $("#obraName").focus();
+                </g:else>
                 $("#divTablaObras").html(msg);
             }
         });

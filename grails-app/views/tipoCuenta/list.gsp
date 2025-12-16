@@ -1,5 +1,5 @@
 
-<%@ page import="janus.TipoCuenta" %>
+<%@ page import="janus.TipoConcurso" %>
 <!doctype html>
 <html>
     <head>

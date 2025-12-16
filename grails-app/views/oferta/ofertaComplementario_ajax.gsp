@@ -1,12 +1,12 @@
 <g:if test="${concurso}">
-    <div class="row alert alert-info">
+    <div class="row alert alert-success">
         <div class="col-md-12 breadcrumb" style="font-size: 18px; text-align: center; font-weight: bold">
-            Oferta
+            Oferta complementario
         </div>
         <div class="col-md-12" >
             <g:if test="${!oferta}">
                 <div class="col-md-2" style="margin-top: 2px; float: right">
-                    <a href="#" class="btn btn-success btnNuevaOferta"><i class="fa fa-file"></i> Nuevo Oferta</a>
+                    <a href="#" class="btn btn-success btnNuevaOfertaComplementario"><i class="fa fa-file"></i> Nuevo Oferta complementaria</a>
                 </div>
             </g:if>
 
@@ -35,8 +35,8 @@
                                 <td style="width: 10%; text-align: center"><g:formatDate date="${oferta.fechaEntrega}" format="dd-MM-yyyy"/></td>
                                 <td style="width: 10%; text-align: center">${oferta?.plazo}</td>
                                 <td style="width: 10%; text-align: center">
-                                    <a href="#" class="btn btn-success btn-xs btnEditarOferta" data-id="${oferta?.id}" ><i class="fa fa-edit"></i></a>
-                                    <a href="#" class="btn btn-danger btn-xs btnBorrarOferta" data-id="${oferta?.id}" ><i class="fa fa-trash"></i></a>
+                                    <a href="#" class="btn btn-success btn-xs btnEditarOfertaComplementario" data-id="${oferta?.id}" ><i class="fa fa-edit"></i></a>
+                                    <a href="#" class="btn btn-danger btn-xs btnBorrarOfertaComplementario" data-id="${oferta?.id}" ><i class="fa fa-trash"></i></a>
                                 </td>
                             </tr>
                         </g:if>
@@ -56,26 +56,23 @@
 <g:else>
 </g:else>
 
-<div class="row">
-    <div class="col-md-12" style="text-align: center">
-        <a href="#" class="btn btn-success btnCargarConcursoComplementario" data-id="${oferta?.concurso?.pac?.id}" ><i class="fa fa-file"></i> Cargar Concurso complementario</a>
-    </div>
-</div>
-
 <script type="text/javascript">
 
-    $(".btnCargarConcursoComplementario").click(function () {
-        var pac = $(this).data("id");
-        $("#divOferta").focus();
-        cargarConcursoComplentario(pac)
-    });
-
-    $(".btnEditarOferta").click(function () {
+    $(".btnEditarOfertaComplementario").click(function () {
         var id = $(this).data("id");
-        createEditOferta(id);
+        editarOfertaComplementario(id);
     });
 
-    function createEditOferta(id, concurso) {
+    $(".btnNuevaOfertaComplementario").click(function () {
+        editarOfertaComplementario(null, '${concurso?.id}');
+    });
+
+    $(".btnBorrarOfertaComplementario").click(function () {
+        var id = $(this).data("id");
+        deleteRowComplementario(id)
+    });
+
+    function editarOfertaComplementario(id, concurso) {
         var title = id ? "Editar " : "Crear ";
         var data = id ? {id : id} : {};
         data.concurso = concurso;
@@ -87,7 +84,7 @@
             success : function (msg) {
                 var b = bootbox.dialog({
                     id      : "dlgCreateEditOferta",
-                    title   : title + " Oferta.",
+                    title   : title + " Oferta",
                     class : "modal-lg",
                     message : msg,
                     buttons : {
@@ -102,7 +99,7 @@
                             label     : "<i class='fa fa-save'></i> Guardar",
                             className : "btn-success",
                             callback  : function () {
-                                return submitFormOferta();
+                                return submitFormOfertaComplementaria();
                             } //callback
                         } //guardar
                     } //buttons
@@ -111,7 +108,7 @@
         }); //ajax
     } //createEdit
 
-    function submitFormOferta() {
+    function submitFormOfertaComplementaria() {
         var concurso = '${concurso?.id}';
         var $form = $("#frmSave-Oferta");
         if ($form.valid()) {
@@ -126,8 +123,8 @@
                     var parts = msg.split("_");
                     if(parts[0] === 'ok'){
                         log(parts[1], "success");
-                        cargarOferta(concurso);
-                        $("#divTablaOferta").focus();
+                        cargarOfertaComplentario(concurso);
+                        $("#divOfertaComplementario").focus();
                     }else{
                         if(parts[0] === 'err'){
                             bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
@@ -143,16 +140,7 @@
         }
     }
 
-    $(".btnNuevaOferta").click(function () {
-        createEditOferta(null, '${concurso?.id}');
-    });
-
-    $(".btnBorrarOferta").click(function () {
-        var id = $(this).data("id");
-        deleteRow(id)
-    });
-
-    function deleteRow(itemId) {
+    function deleteRowComplementario(itemId) {
         var concurso = '${concurso?.id}';
         bootbox.dialog({
             title   : "Alerta",
@@ -180,8 +168,8 @@
                                 var parts = msg.split("_");
                                 if(parts[0] === 'ok'){
                                     log(parts[1],"success");
-                                    cargarOferta(concurso);
-                                    $("#divTablaOferta").focus();
+                                    cargarOfertaComplentario(concurso);
+                                    $("#divOfertaComplementario").focus();
                                 }else{
                                     log(parts[1],"error")
                                 }

@@ -68,7 +68,7 @@
                      </span>
                      <span class="grupo">
                          <label for="fecha2" class="col-md-2 control-label text-info">
-                             Límite Preguntas1
+                             Límite Preguntas
                          </label>
                          <span class="col-md-2">
                              <input aria-label="" name="fechaLimitePreguntas" id='fecha5' type='text' class="input-small" value="${concurso?.fechaLimitePreguntas?.format("dd-MM-yyyy HH:mm")}" />
@@ -174,15 +174,11 @@
                              <span class="col-md-4" style="margin-left: -40px">
                                  <label class="text-danger"> <i class="fa fa-arrow-circle-left fa-2x text-danger"></i> <strong style="font-size: 14px"> Necesario para migrar de obras a oferentes </strong></label>
                              </span>
-
                          </span>
                      </span>
                  </div>
-
             </g:form>
-
         </div>
-
     </div>
 </div>
 

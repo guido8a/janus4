@@ -2,7 +2,7 @@ package janus
 
 import audita.Auditable
 
-class TipoCuenta implements Auditable {
+class TipoConcurso implements Auditable {
     String codigo
     String descripcion
     static auditable = true
