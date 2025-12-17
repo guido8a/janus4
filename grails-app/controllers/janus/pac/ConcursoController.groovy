@@ -893,6 +893,10 @@ class ConcursoController {
             params.estado = params.estadoC
         }
 
+        if(params.obraC){
+            params.obra = params.obraC
+        }
+
         println "params ${params.presupuestoReferencial}"
         def concursoInstance
         if (params.id) {
@@ -940,26 +944,27 @@ class ConcursoController {
 
     def tablaBuscarObras_ajax(){
         def datos;
-        def listaObra = ['obracdgo', 'obranmbr', 'obrammig', 'obrammsl', 'obraetdo, obrafcha']
+//        def listaObra = ['obracdgo', 'obranmbr', 'obrammig', 'obrammsl', 'obraetdo, obrafcha']
+        def listaObra = ['obracdgo' ,'obranmbr']
 
         def select = "select obra__id, obracdgo, obranmbr, obravlor, obraetdo, dptodscr, obrafcha " +
                 "from obra, parr, dpto "
         def txwh = "where parr.parr__id = obra.parr__id and dpto.dpto__id = obra.dpto__id and obraetdo = 'R' "
         def sqlTx = ""
         def bsca = listaObra[params.buscarPor.toInteger()-1]
-//        def ordn = listaObra[params.ordenar.toInteger()-1]
 
         txwh += " and $bsca ilike '%${params.criterio}%'"
-//        sqlTx = "${select} ${txwh} order by obranmbr, ${ordn} limit 100 ".toString()
         sqlTx = "${select} ${txwh} order by obranmbr limit 100 ".toString()
 //        println "sql: $sqlTx"
 
         def cn = dbConnectionService.getConnection()
         datos = cn.rows(sqlTx)
-        [data: datos]
+        [data: datos, tipo: params.tipo]
     }
 
     def concursoComplementario_ajax(){
+
+        println("params " + params)
 
         def pac = Pac.get(params.pac)
         def tipoConcurso = TipoConcurso.findByCodigo("C")

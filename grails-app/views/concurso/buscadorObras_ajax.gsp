@@ -24,7 +24,7 @@
 
 <script type="text/javascript">
 
-    $("#btnLimpiarPartida").click(function () {
+    $("#btnLimpiarObra").click(function () {
         $("#buscarObraPor").val(2);
         $("#criterioObra").val('');
         cargarObras();
@@ -32,19 +32,20 @@
 
     cargarObras();
 
-    $("#btnBuscarPartida").click(function () {
+    $("#btnBuscadorObra").click(function () {
         cargarObras();
     });
 
     function cargarObras() {
         var buscarPor = $("#buscarObraPor option:selected").val();
-        var criterio = $("#criterioObra").val();
+        var criterio = $(".criterioObra").val();
         $.ajax({
             type: "POST",
             url: "${createLink(controller: 'concurso', action:'tablaBuscarObras_ajax')}",
             data: {
                 buscarPor: buscarPor,
-                criterio: criterio
+                criterio: criterio,
+                tipo: '${tipo}'
             },
             success: function (msg) {
                 <g:if test="${tipo == '1'}">

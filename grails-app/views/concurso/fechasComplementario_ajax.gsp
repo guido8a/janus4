@@ -211,6 +211,7 @@
                     var parts = msg.split("_");
                     if(parts[0] === 'ok'){
                         log(parts[1], "success");
+                        $("#obraNameC").focus();
                         cargarConcursoComplentario('${concurso?.pac?.id}');
                     }else{
                         if(parts[0] === 'err'){

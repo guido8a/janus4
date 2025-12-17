@@ -110,9 +110,11 @@
                                 <g:textField name="obraName" class="form-control" value="${concurso?.obra?.codigo}" title="${concurso?.obra?.descripcion}" readonly="" />
                                 <p class="help-block ui-helper-hidden"></p>
                             </span>
-                            <span class="col-md-1">
-                                <a href="#" class="btn btn-info" id="btnBuscarObra" title="Buscar Obra"><i class="fa fa-search"></i></a>
-                            </span>
+                            <g:if test="${concurso?.estado != 'R'}">
+                                <span class="col-md-1">
+                                    <a href="#" class="btn btn-info" id="btnBuscarObra" title="Buscar Obra"><i class="fa fa-search"></i></a>
+                                </span>
+                            </g:if>
                         </span>
                     </div>
 
@@ -213,13 +215,13 @@
                 concurso: concurso
             },
             success: function (msg) {
-                    $("#divFechas").html(msg);
+                $("#divFechas").html(msg);
             }
         });
     }
 
     $("#btnSaveConcurso").click(function () {
-       return submitFormConcurso();
+        return submitFormConcurso();
     });
 
     function submitFormConcurso() {
@@ -236,6 +238,7 @@
                     var parts = msg.split("_");
                     if(parts[0] === 'ok'){
                         log(parts[1], "success");
+                        $("#obraName").focus();
                         cargarConcurso('${pac?.id}');
                     }else{
                         if(parts[0] === 'err'){

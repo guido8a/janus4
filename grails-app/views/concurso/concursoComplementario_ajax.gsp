@@ -1,5 +1,12 @@
+
+<g:if test="${!concurso?.id}">
+    <div class="col-md-12" style="text-align: center; margin-bottom: 20px">
+        <a href="#" class="btn btn-success" id="btnMostarConcursoComplementario"><i class="fa fa-file"></i> Nuevo Concurso complementario</a>
+    </div>
+</g:if>
+
 <g:if test="${pac}">
-    <div class="row alert alert-success">
+    <div id="divContenedorConcursoComplementario" class="row alert alert-success ${concurso?.id ? '' : 'hidden'}" style="margin-top: 20px">
         <div class="col-md-12 breadcrumb" style="font-size: 18px; text-align: center; font-weight: bold">
             Concurso Complementario
         </div>
@@ -51,6 +58,7 @@
                     </div>
 
                     <div class="form-group ${hasErrors(bean: concurso, field: 'objeto', 'error')} ">
+                        <span id="marcadorComplementario"></span>
                         <span class="grupo">
                             <label class="col-md-1 control-label text-info">
                                 Objeto
@@ -108,13 +116,15 @@
                                 Obra requerida
                             </label>
                             <span class="col-md-2">
-                                <g:hiddenField name="obra" value="${concurso?.obra?.id}" />
+                                <g:hiddenField name="obraC" value="${concurso?.obra?.id}" />
                                 <g:textField name="obraNameC" class="form-control" value="${concurso?.obra?.codigo}" title="${concurso?.obra?.descripcion}" readonly="" />
                                 <p class="help-block ui-helper-hidden"></p>
                             </span>
-                            <span class="col-md-1">
-                                <a href="#" class="btn btn-info" id="btnBuscarObraComplementario" title="Buscar Obra"><i class="fa fa-search"></i></a>
-                            </span>
+                            <g:if test="${concurso?.estado != 'R'}">
+                                <span class="col-md-1">
+                                    <a href="#" class="btn btn-info" id="btnBuscarObraComplementario" title="Buscar Obra"><i class="fa fa-search"></i></a>
+                                </span>
+                            </g:if>
                         </span>
                     </div>
 
@@ -164,6 +174,13 @@
 <script type="text/javascript">
 
     var bcob;
+
+    $("#btnMostarConcursoComplementario").click(function () {
+        $("#divContenedorConcursoComplementario").removeClass("hidden");
+        setTimeout(function () {
+            $("#obraNameC").focus();
+        }, 100)
+    });
 
     $("#btnBuscarObraComplementario").click(function () {
         $.ajax({
@@ -238,8 +255,8 @@
                     var parts = msg.split("_");
                     if(parts[0] === 'ok'){
                         log(parts[1], "success");
-                        %{--cargarConcursoComplementario2('${pac?.id}');--}%
-                        cargarConcursoComplentario('${pac?.id}')
+                        $("#obraNameC").focus();
+                        cargarConcursoComplentario('${pac?.id}');
                     }else{
                         if(parts[0] === 'err'){
                             bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
@@ -271,26 +288,12 @@
             },
             callback: function (result) {
                 if(result){
+                    $("#obraNameC").focus();
                     $("#estadoC").val() === 'R' ? $("#estadoC").val('N') : $("#estadoC").val('R');
-                    console.log("estado " + $("#estado").val())
                     return submitFormConcursoComplementario();
                 }
             }
         });
     });
-
-
-    %{--function cargarConcursoComplentario2(pac){--}%
-    %{--    $.ajax({--}%
-    %{--        type: "POST",--}%
-    %{--        url: "${createLink(controller: 'concurso', action:'concursoComplementario_ajax')}",--}%
-    %{--        data: {--}%
-    %{--            pac: pac--}%
-    %{--        },--}%
-    %{--        success: function (msg) {--}%
-    %{--            $("#divConcursoComplementario").html(msg)--}%
-    %{--        }--}%
-    %{--    });--}%
-    %{--}--}%
 
 </script>

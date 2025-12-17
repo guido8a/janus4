@@ -56,19 +56,28 @@
 <g:else>
 </g:else>
 
-<div class="row">
-    <div class="col-md-12" style="text-align: center">
-        <a href="#" class="btn btn-success btnCargarConcursoComplementario" data-id="${oferta?.concurso?.pac?.id}" ><i class="fa fa-file"></i> Cargar Concurso complementario</a>
-    </div>
-</div>
+%{--<g:if test="${!concursoComplementario}">--}%
+%{--    <div class="row">--}%
+%{--        <div class="col-md-12" style="text-align: center">--}%
+%{--            <a href="#" class="btn btn-success btnCargarConcursoComplementario" data-id="${oferta?.concurso?.pac?.id}" ><i class="fa fa-file"></i> Cargar Concurso complementario</a>--}%
+%{--        </div>--}%
+%{--    </div>--}%
+%{--</g:if>--}%
 
 <script type="text/javascript">
 
-    $(".btnCargarConcursoComplementario").click(function () {
-        var pac = $(this).data("id");
-        $("#divOferta").focus();
-        cargarConcursoComplentario(pac)
-    });
+%{--    <g:if test="${concursoComplementario}">--}%
+    cargarConcursoComplentario('${concurso.pac.id}');
+%{--    </g:if>--}%
+%{--    <g:else>--}%
+%{--    --}%
+%{--    </g:else>--}%
+
+    // $(".btnCargarConcursoComplementario").click(function () {
+    //     var pac = $(this).data("id");
+    //     $("#divOferta").focus();
+    //     cargarConcursoComplentario(pac)
+    // });
 
     $(".btnEditarOferta").click(function () {
         var id = $(this).data("id");

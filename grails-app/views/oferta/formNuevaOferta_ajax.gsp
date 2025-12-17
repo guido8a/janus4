@@ -223,7 +223,13 @@
         bcpr.modal("hide");
     }
 
+    <g:if test="${tipo == '1'}">
+    $("#divTablaOfertaComplementario").focus();
+    </g:if>
+    <g:else>
     $("#divTablaOferta").focus();
+    </g:else>
+
 
     $('#fechaEntrega').datetimepicker({
         locale: 'es',

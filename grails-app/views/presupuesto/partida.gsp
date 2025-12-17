@@ -121,7 +121,7 @@
                 pac: pac
             },
             success: function (msg) {
-                $("#divConcursoComplementario").html(msg).focus()
+                $("#divConcursoComplementario").html(msg)
             }
         });
     }

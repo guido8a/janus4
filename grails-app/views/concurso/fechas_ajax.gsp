@@ -211,6 +211,7 @@
                     var parts = msg.split("_");
                     if(parts[0] === 'ok'){
                         log(parts[1], "success");
+                        $("#fecha15").focus();
                         cargarConcurso('${concurso?.pac?.id}');
                     }else{
                         if(parts[0] === 'err'){

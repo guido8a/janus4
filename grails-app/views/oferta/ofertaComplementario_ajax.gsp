@@ -24,7 +24,7 @@
                     </thead>
                 </table>
 
-                <div class="" style="width: 100%;height: 70px; overflow-y: auto;float: right; margin-top: -20px; font-size: 14px" tabindex="-1" id="divTablaOferta">
+                <div class="" style="width: 100%;height: 70px; overflow-y: auto;float: right; margin-top: -20px; font-size: 14px" tabindex="-1" id="divTablaOfertaComplementario">
                     <table class="table-bordered table-condensed table-hover table-striped" style="width: 100%">
                         <tbody>
                         <g:if test="${oferta}">
@@ -76,6 +76,7 @@
         var title = id ? "Editar " : "Crear ";
         var data = id ? {id : id} : {};
         data.concurso = concurso;
+        data.tipo = 1;
 
         $.ajax({
             type    : "POST",
@@ -84,7 +85,7 @@
             success : function (msg) {
                 var b = bootbox.dialog({
                     id      : "dlgCreateEditOferta",
-                    title   : title + " Oferta",
+                    title   : title + " Oferta complementario",
                     class : "modal-lg",
                     message : msg,
                     buttons : {
@@ -123,8 +124,8 @@
                     var parts = msg.split("_");
                     if(parts[0] === 'ok'){
                         log(parts[1], "success");
+                        $("#divTablaOfertaComplementario").focus();
                         cargarOfertaComplentario(concurso);
-                        $("#divOfertaComplementario").focus();
                     }else{
                         if(parts[0] === 'err'){
                             bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
@@ -168,8 +169,8 @@
                                 var parts = msg.split("_");
                                 if(parts[0] === 'ok'){
                                     log(parts[1],"success");
+                                    $("#divTablaOfertaComplementario").focus();
                                     cargarOfertaComplentario(concurso);
-                                    $("#divOfertaComplementario").focus();
                                 }else{
                                     log(parts[1],"error")
                                 }

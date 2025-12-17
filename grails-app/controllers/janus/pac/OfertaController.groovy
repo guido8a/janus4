@@ -1,7 +1,7 @@
 package janus.pac
 
 import janus.PersonaRol
-
+import janus.TipoConcurso
 import org.springframework.dao.DataIntegrityViolationException
 
 class OfertaController {
@@ -110,8 +110,9 @@ class OfertaController {
     def oferta_ajax(){
         def concurso = Concurso.get(params.concurso)
         def oferta = Oferta.findByConcurso(concurso)
+        def concursoComplementario = Concurso.findByPacAndTipoConcursoAndTipoConcursoIsNotNull(concurso.pac, TipoConcurso.findByCodigo('C'))
 
-        return [concurso: concurso, oferta: oferta]
+        return [concurso: concurso, oferta: oferta, concursoComplementario: concursoComplementario]
     }
 
     def formNuevaOferta_ajax(){
@@ -141,7 +142,7 @@ class OfertaController {
             concurso = Concurso.get(params.concurso)
         }
 
-        return [ofertaInstance: oferta, responsablesProceso: responsablesProceso, concurso: concurso]
+        return [ofertaInstance: oferta, responsablesProceso: responsablesProceso, concurso: concurso, tipo: params.tipo]
     }
 
 

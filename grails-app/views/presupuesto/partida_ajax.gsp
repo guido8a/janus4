@@ -1,4 +1,5 @@
 <div class="row alert alert-info">
+
     <div class="col-md-12 breadcrumb" style="font-size: 18px; text-align: center; font-weight: bold">
         Partida
     </div>
