@@ -187,8 +187,8 @@
     $('#fecha1, #fecha2, #fecha3, #fecha4, #fecha5, #fecha6, #fecha7, #fecha8, #fecha9, #fecha10, #fecha11, #fecha12, #fecha13, #fecha14, #fecha15, #fecha16, #fecha17, #fecha18, #fecha19, #fecha20, #fecha21, #fecha22').datetimepicker({
         locale: 'es',
         format: 'DD-MM-YYYY HH:mm',
-        // minDate: moment({hour: 9, minute: 30}),
         sideBySide: true,
+        showClose: true,
         icons: {
         }
     });

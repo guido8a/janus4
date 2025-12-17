@@ -86,7 +86,7 @@
                         </span>
                     </div>
 
-                    <div class="form-group ${hasErrors(bean: concurso, field: 'numeroCertificacion', 'error')} ">
+                    <div class="form-group ${hasErrors(bean: concurso, field: 'codigo', 'error')} ">
                         <span class="grupo">
                             <label for="objeto" class="col-md-1 control-label text-info">
                                 Código
@@ -95,6 +95,8 @@
                                 <g:textField name="codigo" maxlength="40" class="form-control allCaps required" value="${concurso?.codigo}" />
                                 <p class="help-block ui-helper-hidden"></p>
                             </span>
+                        </span>
+                        <span class="grupo">
                             <label for="objeto" class="col-md-2 control-label text-info">
                                 Memo de requerimiento
                             </label>
@@ -102,12 +104,14 @@
                                 <g:textField name="memoRequerimiento" maxlength="40" class="form-control allCaps" value="${concurso?.memoRequerimiento}" />
                                 <p class="help-block ui-helper-hidden"></p>
                             </span>
+                        </span>
+                        <span class="grupo">
                             <label for="objeto" class="col-md-1 control-label text-info">
                                 Obra requerida
                             </label>
                             <span class="col-md-2">
                                 <g:hiddenField name="obra" value="${concurso?.obra?.id}" />
-                                <g:textField name="obraName" class="form-control" value="${concurso?.obra?.codigo}" title="${concurso?.obra?.descripcion}" readonly="" />
+                                <g:textField name="obraName" class="form-control required" value="${concurso?.obra?.codigo}" title="${concurso?.obra?.descripcion}" readonly="" />
                                 <p class="help-block ui-helper-hidden"></p>
                             </span>
                             <g:if test="${concurso?.estado != 'R'}">
@@ -118,7 +122,7 @@
                         </span>
                     </div>
 
-                    <div class="form-group ${hasErrors(bean: concurso, field: 'numeroCertificacion', 'error')} ">
+                    <div class="form-group ${hasErrors(bean: concurso, field: 'presupuestoReferencial', 'error')} ">
                         <span class="grupo">
                             <label for="presupuestoReferencial" class="col-md-1 control-label text-info">
                                 Presupuesto Referencial
@@ -276,6 +280,21 @@
                 }
             }
         });
+    });
+
+    $("#frmConcurso").validate({
+        errorClass     : "help-block",
+        errorPlacement : function (error, element) {
+            if (element.parent().hasClass("input-group")) {
+                error.insertAfter(element.parent());
+            } else {
+                error.insertAfter(element);
+            }
+            element.parents(".grupo").addClass('has-error');
+        },
+        success        : function (label) {
+            label.parents(".grupo").removeClass('has-error');
+        }
     });
 
 
