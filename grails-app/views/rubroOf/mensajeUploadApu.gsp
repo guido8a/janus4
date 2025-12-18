@@ -21,15 +21,17 @@
 
 <body>
 <div class="col-md-12">
-    <div class="col-md-2">
+    <div class="col-md-3">
         <g:link class="btn btn-primary" controller="cronogramaEjecucion" action="indexNuevo" id="${contrato?.id}">
             <i class="fa fa-arrow-left"></i> Regresar
         </g:link>
     </div>
-
+    <div class="col-md-6 breadcrumb" style="font-size: 16px; font-weight: bold; text-align: center">
+        Comprobación de archivo APU cargado en el sistema
+    </div>
 </div>
 
-<div class="well">
+<div class="well" style="margin-top: 50px">
     <elm:poneHtml textoHtml="${flash.message}"/>
 </div>
 

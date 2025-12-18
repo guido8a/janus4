@@ -1377,14 +1377,24 @@ class RubroOfController {
                                     /** si está habilitado comprobar, se debe visualizar los datos a insertar
                                      * manejar el return para visualizar **/
                                     if(params.revisar == '1' && sccnEq && rgst.size() > 2) {
-                                        rg_dataEq = [item: nmbr, cantidad: cntd, tarifa: trfa, rendimiento: rndm, p_unitario: pcun, total: csto]
-                                        tr_Eq += "<tr style='width: 100%'>  " +
-                                                "<td style='width: 30%'>${rgst}</td> " +
-                                                "</tr>" +
-                                                "<tr style='width: 100%'>  " +
-                                                "<td style='width: 30%'>${rg_dataEq}</td> " +
-                                                "</tr>"
+                                        if(nmbr != 'Descripción'){
+                                            rg_dataEq = [item: nmbr, cantidad: cntd, tarifa: trfa, rendimiento: rndm, p_unitario: pcun, total: csto]
+                                            tr_Eq += "<tr style='width: 100%'>  " +
+//                                                    "<td style='width: 30%'>${rgst}</td> " +
+                                                    "<td style='width: 30%'>${"Código: "}${rgst[0]}</td> " +
+                                                    "<td style='width: 30%'>${"Item: "}${rgst[1]}</td> " +
+                                                    "<td style='width: 30%'>${"Cantidad: "}${rgst[2]}</td> " +
+                                                    "<td style='width: 30%'>${"Tarifa: "}${rgst[3]}</td> " +
+                                                    "<td style='width: 30%'>${"P. Unitario: "}${rgst[4]}</td> " +
+                                                    "<td style='width: 30%'>${"Rendimiento: "}${rgst[5]}</td> " +
+                                                    "<td style='width: 30%'>${"Total: "}${rgst[6]}</td> " +
+                                                    "</tr>"
+//                                            +
+//                                                    "<tr style='width: 100%'>  " +
+//                                                    "<td style='width: 30%'>${rg_dataEq}</td> " +
+//                                                    "</tr>"
 //                                        println "---> $tr_Eq"
+                                        }
                                     }
 
                                     if (cntd && sccnEq) {
@@ -1420,13 +1430,23 @@ class RubroOfController {
                                     }
                                     println "MO -> rbro: $ofrb_id nombre: $nmbr cantidad: $cntd"
                                     if(params.revisar == '1' && sccnMo && rgst.size() > 2) {
-                                        rg_dataMo = [item: nmbr, cantidad: cntd, tarifa: trfa, rendimiento: rndm, p_unitario: csto]
-                                        tr_Mo += "<tr style='width: 100%'>  " +
-                                                "<td style='width: 30%'>${rgst}</td> " +
-                                                "</tr>" +
-                                                "<tr style='width: 100%'>  " +
-                                                "<td style='width: 30%'>${rg_dataMo}</td> " +
-                                                "</tr>"
+                                        if(nmbr != 'Descripción') {
+                                            rg_dataMo = [item: nmbr, cantidad: cntd, tarifa: trfa, rendimiento: rndm, p_unitario: csto]
+                                            tr_Mo += "<tr style='width: 100%'>  " +
+//                                                    "<td style='width: 30%'>${rgst}</td> " +
+                                                    "<td style='width: 30%'>${"Código: "}${rgst[0]}</td> " +
+                                                    "<td style='width: 30%'>${"Item: "}${rgst[1]}</td> " +
+                                                    "<td style='width: 30%'>${"Cantidad: "}${rgst[2]}</td> " +
+                                                    "<td style='width: 30%'>${"Tarifa: "}${rgst[3]}</td> " +
+                                                    "<td style='width: 30%'>${"P. Unitario: "}${rgst[4]}</td> " +
+                                                    "<td style='width: 30%'>${"Rendimiento: "}${rgst[5]}</td> " +
+                                                    "<td style='width: 30%'>${"Total: "}${rgst[6]}</td> " +
+                                                    "</tr>"
+//                                            +
+//                                                    "<tr style='width: 100%'>  " +
+//                                                    "<td style='width: 30%'>${rg_dataMo}</td> " +
+//                                                    "</tr>"
+                                        }
                                     }
 
                                     if (cntd && sccnMo) {
@@ -1460,13 +1480,23 @@ class RubroOfController {
                                     }
 
                                     if(params.revisar == '1' && sccnMt && rgst.size() > 2) {
-                                        rg_dataMt = [item: nmbr, cantidad: cntd, p_unitario: pcun, total: csto]
-                                        tr_Mt += "<tr style='width: 100%'>  " +
-                                                "<td style='width: 30%'>${rgst}</td> " +
-                                                "</tr>" +
-                                                "<tr style='width: 100%'>  " +
-                                                "<td style='width: 30%'>${rg_dataMt}</td> " +
-                                                "</tr>"
+                                        if(nmbr != 'Descripción') {
+                                            rg_dataMt = [item: nmbr, cantidad: cntd, p_unitario: pcun, total: csto]
+                                            tr_Mt += "<tr style='width: 100%'>  " +
+//                                                    "<td style='width: 30%'>${rgst}</td> " +
+                                                    "<td style='width: 30%'>${"Código: "}${rgst[0]}</td> " +
+                                                    "<td style='width: 30%'>${"Item: "}${rgst[1]}</td> " +
+                                                    "<td style='width: 30%'>${"Cantidad: "}${rgst[2]}</td> " +
+                                                    "<td style='width: 30%'>${"Tarifa: "}${rgst[3]}</td> " +
+                                                    "<td style='width: 30%'>${"P. Unitario: "}${rgst[4]}</td> " +
+                                                    "<td style='width: 30%'>${"Rendimiento: "}${rgst[5]}</td> " +
+                                                    "<td style='width: 30%'>${"Total: "}${rgst[6]}</td> " +
+                                                    "</tr>"
+//                                            +
+//                                                    "<tr style='width: 100%'>  " +
+//                                                    "<td style='width: 30%'>${rg_dataMt}</td> " +
+//                                                    "</tr>"
+                                        }
                                     }
 
 
@@ -1501,13 +1531,23 @@ class RubroOfController {
                                     }
 
                                     if(params.revisar == '1' && sccnTr && rgst.size() > 2) {
-                                        rg_dataTr = [item: nmbr, cantidad: cntd, tarifa: pcun, total: csto]
-                                        tr_Tr += "<tr style='width: 100%'>  " +
-                                                "<td style='width: 30%'>${rgst}</td> " +
-                                                "</tr>" +
-                                                "<tr style='width: 100%'>  " +
-                                                "<td style='width: 30%'>${rg_dataTr}</td> " +
-                                                "</tr>"
+                                        if(nmbr != 'Descripción') {
+                                            rg_dataTr = [item: nmbr, cantidad: cntd, tarifa: pcun, total: csto]
+                                            tr_Tr += "<tr style='width: 100%'>  " +
+//                                                    "<td style='width: 30%'>${rgst}</td> " +
+                                                    "<td style='width: 30%'>${"Código: "}${rgst[0]}</td> " +
+                                                    "<td style='width: 30%'>${"Item: "}${rgst[1]}</td> " +
+                                                    "<td style='width: 30%'>${"Cantidad: "}${rgst[2]}</td> " +
+                                                    "<td style='width: 30%'>${"Tarifa: "}${rgst[3]}</td> " +
+                                                    "<td style='width: 30%'>${"P. Unitario: "}${rgst[4]}</td> " +
+                                                    "<td style='width: 30%'>${"Rendimiento: "}${rgst[5]}</td> " +
+                                                    "<td style='width: 30%'>${"Total: "}${rgst[6]}</td> " +
+                                                    "</tr>"
+//                                            +
+//                                                    "<tr style='width: 100%'>  " +
+//                                                    "<td style='width: 30%'>${rg_dataTr}</td> " +
+//                                                    "</tr>"
+                                        }
                                     }
 
                                     if (csto && sccnTr) {
@@ -1534,8 +1574,8 @@ class RubroOfController {
 //                                "<p>$rg_lee</p> <p>$rg_data</p>"
 
 
-                        htmlInfo += "<p><strong>Hoja : " + sheet.getSheetName() + " Rubro: " + rbronmbr + "<strong></p>" +
-                                "<table class='table table-bordered table-striped table-condensed table-hover'>" +
+                        htmlInfo += "<div class='breadcrumb' style='font-size: 14px' ><strong>Hoja : " + sheet.getSheetName() + " Rubro: " + rbronmbr + "<strong></div>" +
+                                "<table class='table table-bordered table-condensed table-hover'>" +
                                 "<tbody> " +
                                 tr_Eq +
                                 tr_Mo +
