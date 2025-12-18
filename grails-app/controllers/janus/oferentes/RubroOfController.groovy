@@ -1199,33 +1199,33 @@ class RubroOfController {
                 def cdgo, nmbr, undd, peso, cntd, trfa, pcun, rndm, csto, dstn
                 def txRubro = "", tipo = ""
                 def ofrb_id = 0
-                def rg_lee, rg_data
+                def rg_leeEq, rg_dataEq, rg_leeMo, rg_dataMo, rg_leeMt, rg_dataMt, rg_leeTr, rg_dataTr
 
                 //for que recorre las hojas existentes
                 def hj = 0
 //                for (int hj = 1; hj < hojas; hj++) {
 
-                if(params.revisar == '1'){
-                    htmlInfo += "<table class='table table-bordered table-striped table-condensed table-hover'> " +
-                            "<thead> " +
-                            "<tr style='width: 100%'>  " +
-                            "<th style='width: 15%' >HOJA</th>  " +
-                            "<th style='width: 25%'>RUBRO</th>  " +
-                            "<th style='width: 30%'>LEE</th> " +
-                            "<th style='width: 30%'>DATA</th>  " +
-                            "</tr> " +
-                            "</thead> " +
-                            "</table>"
-                }else{
-                    htmlInfo += "<table class='table table-bordered table-striped table-condensed table-hover'> " +
-                            "<thead> " +
-                            "<tr> " +
-                            "<th>HOJA</th>  " +
-                            "<th>RUBRO</th>  " +
-                            "</tr> " +
-                            "</thead>  " +
-                            "</table>"
-                }
+//                if(params.revisar == '1'){
+//                    htmlInfo += "<table class='table table-bordered table-striped table-condensed table-hover'> " +
+//                            "<thead> " +
+//                            "<tr style='width: 100%'>  " +
+//                            "<th style='width: 15%' >HOJA</th>  " +
+//                            "<th style='width: 25%'>RUBRO</th>  " +
+//                            "<th style='width: 30%'>LEE</th> " +
+//                            "<th style='width: 30%'>DATA</th>  " +
+//                            "</tr> " +
+//                            "</thead> " +
+//                            "</table>"
+//                }else{
+//                    htmlInfo += "<table class='table table-bordered table-striped table-condensed table-hover'> " +
+//                            "<thead> " +
+//                            "<tr> " +
+//                            "<th>HOJA</th>  " +
+//                            "<th>RUBRO</th>  " +
+//                            "</tr> " +
+//                            "</thead>  " +
+//                            "</table>"
+//                }
 
                 while (hj < hojas) {
                     XSSFSheet sheet = workbook.getSheetAt(hj);
@@ -1375,9 +1375,8 @@ class RubroOfController {
                                     /** si está habilitado comprobar, se debe visualizar los datos a insertar
                                      * manejar el return para visualizar **/
                                     if(params.revisar == '1' && sccnEq && cntd) {
-                                        rg_lee = rgst
-                                        rg_data = [item: nmbr, cntd: cntd, trfa: trfa, pcun: pcun, rndm: rndm]
-//                                        println "Se lee  $rg_lee --> $rg_data"
+                                        rg_leeEq = rgst
+                                        rg_dataEq = [item: nmbr, cantidad: cntd, tarifa: trfa, rendimiento: rndm, p_unitario: pcun]
                                     }
 
                                     if (cntd && sccnEq) {
@@ -1412,6 +1411,12 @@ class RubroOfController {
                                         nmbr = ''
                                     }
                                     println "MO -> rbro: $ofrb_id nombre: $nmbr cantidad: $cntd"
+                                    if(params.revisar == '1' && sccnMo && cntd) {
+                                        rg_leeMo = rgst
+                                        rg_dataMo = [item: nmbr, cantidad: cntd, tarifa: trfa, rendimiento: rndm, p_unitario: csto]
+//                                        println "Se lee  $rg_lee --> $rg_data"
+                                    }
+
                                     if (cntd && sccnMo) {
 //                                        errores += insertaDtrb(oferente.id, obra, ordn, cdgo, nmbr, undd, cntd, trfa, pcun, rndm, csto, "MO")
                                         errores += insertaEq(ofrb_id, cdgo, nmbr, undd, cntd, trfa, pcun, rndm, csto, "MO")
@@ -1494,13 +1499,20 @@ class RubroOfController {
 //                                "<p>$rg_lee</p> <p>$rg_data</p>"
 
 
-                        htmlInfo += "<table class='table table-bordered table-striped table-condensed table-hover'>" +
+                        htmlInfo += "<p>Hoja : " + sheet.getSheetName() + " Rubro: " + rbronmbr + "</p>" +
+                                "<table class='table table-bordered table-striped table-condensed table-hover'>" +
                                 "<tbody> " +
                                 "<tr style='width: 100%'>  " +
-                                "<td style='width: 15%'> ${sheet.getSheetName()} </td>  " +
-                                "<td style='width: 25%'> ${rbronmbr} </td>  " +
-                                "<td style='width: 30%'>${rg_lee}</td> " +
-                                "<td style='width: 30%'>${rg_data}</td> " +
+                                "<td style='width: 30%'>${rg_leeEq}</td> " +
+                                "</tr>" +
+                                "<tr style='width: 100%'>  " +
+                                "<td style='width: 30%'>${rg_dataEq}</td> " +
+                                "</tr>" +
+                                "<tr style='width: 100%'>  " +
+                                "<td style='width: 30%'>${rg_leeMo}</td> " +
+                                "</tr>" +
+                                "<tr style='width: 100%'>  " +
+                                "<td style='width: 30%'>${rg_dataMo}</td> " +
                                 "</tr>" +
                                 "</tbody> " +
                                 "</table>"
