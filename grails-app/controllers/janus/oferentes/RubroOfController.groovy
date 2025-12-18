@@ -1199,7 +1199,8 @@ class RubroOfController {
                 def cdgo, nmbr, undd, peso, cntd, trfa, pcun, rndm, csto, dstn
                 def txRubro = "", tipo = ""
                 def ofrb_id = 0
-                def rg_leeEq, rg_dataEq, rg_leeMo, rg_dataMo, rg_leeMt, rg_dataMt, rg_leeTr, rg_dataTr
+                def tr_Eq, tr_Mo, tr_Mt, tr_Tr
+                def rg_dataEq, rg_dataMo, rg_dataMt, rg_dataTr
 
                 //for que recorre las hojas existentes
                 def hj = 0
@@ -1241,6 +1242,8 @@ class RubroOfController {
 
                     println "Porcesando hoja: $hj --> " + sheet.getSheetName()
 
+                    tr_Eq = ""; tr_Mo= ""; tr_Mt = ""; tr_Tr = ""
+
 //                    if(ordn > 0) {
                     def fila = 0
                     while (rows.hasNext() && (fila < 76)) {
@@ -1280,7 +1283,6 @@ class RubroOfController {
 
                             if (hojaRubro) { //ANÁLISIS DE PRECIOS UNITARIOS
                                 println "Procesa: " + sheet.getSheetName().toString()
-
                                 if(rgst[cols[params.cldarbro]]){
                                     println "${rgst[cols[params.cldarbro]]} == ${params.rbro} && txRubro: ${txRubro}"
 //                                    if (rgst[cols[params.cldarbro]]?.size() >= params.rbro.size()) {
@@ -1374,9 +1376,15 @@ class RubroOfController {
 
                                     /** si está habilitado comprobar, se debe visualizar los datos a insertar
                                      * manejar el return para visualizar **/
-                                    if(params.revisar == '1' && sccnEq && cntd) {
-                                        rg_leeEq = rgst
-                                        rg_dataEq = [item: nmbr, cantidad: cntd, tarifa: trfa, rendimiento: rndm, p_unitario: pcun]
+                                    if(params.revisar == '1' && sccnEq && rgst.size() > 2) {
+                                        rg_dataEq = [item: nmbr, cantidad: cntd, tarifa: trfa, rendimiento: rndm, p_unitario: pcun, total: csto]
+                                        tr_Eq += "<tr style='width: 100%'>  " +
+                                                "<td style='width: 30%'>${rgst}</td> " +
+                                                "</tr>" +
+                                                "<tr style='width: 100%'>  " +
+                                                "<td style='width: 30%'>${rg_dataEq}</td> " +
+                                                "</tr>"
+//                                        println "---> $tr_Eq"
                                     }
 
                                     if (cntd && sccnEq) {
@@ -1411,10 +1419,14 @@ class RubroOfController {
                                         nmbr = ''
                                     }
                                     println "MO -> rbro: $ofrb_id nombre: $nmbr cantidad: $cntd"
-                                    if(params.revisar == '1' && sccnMo && cntd) {
-                                        rg_leeMo = rgst
+                                    if(params.revisar == '1' && sccnMo && rgst.size() > 2) {
                                         rg_dataMo = [item: nmbr, cantidad: cntd, tarifa: trfa, rendimiento: rndm, p_unitario: csto]
-//                                        println "Se lee  $rg_lee --> $rg_data"
+                                        tr_Mo += "<tr style='width: 100%'>  " +
+                                                "<td style='width: 30%'>${rgst}</td> " +
+                                                "</tr>" +
+                                                "<tr style='width: 100%'>  " +
+                                                "<td style='width: 30%'>${rg_dataMo}</td> " +
+                                                "</tr>"
                                     }
 
                                     if (cntd && sccnMo) {
@@ -1446,6 +1458,18 @@ class RubroOfController {
                                     } catch (e) {
                                         nmbr = ''
                                     }
+
+                                    if(params.revisar == '1' && sccnMt && rgst.size() > 2) {
+                                        rg_dataMt = [item: nmbr, cantidad: cntd, p_unitario: pcun, total: csto]
+                                        tr_Mt += "<tr style='width: 100%'>  " +
+                                                "<td style='width: 30%'>${rgst}</td> " +
+                                                "</tr>" +
+                                                "<tr style='width: 100%'>  " +
+                                                "<td style='width: 30%'>${rg_dataMt}</td> " +
+                                                "</tr>"
+                                    }
+
+
                                     if (cntd && sccnMt) {
 //                                        errores += insertaDtrb(oferente.id, obra, ordn, cdgo, nmbr, undd, cntd, pcun, pcun, 0, csto, "MT")
                                         errores += insertaEq(ofrb_id, cdgo, nmbr, undd, cntd, pcun, pcun, rndm, csto, "MT")
@@ -1475,6 +1499,17 @@ class RubroOfController {
                                     } catch (e) {
                                         nmbr = ''
                                     }
+
+                                    if(params.revisar == '1' && sccnTr && rgst.size() > 2) {
+                                        rg_dataTr = [item: nmbr, cantidad: cntd, tarifa: pcun, total: csto]
+                                        tr_Tr += "<tr style='width: 100%'>  " +
+                                                "<td style='width: 30%'>${rgst}</td> " +
+                                                "</tr>" +
+                                                "<tr style='width: 100%'>  " +
+                                                "<td style='width: 30%'>${rg_dataTr}</td> " +
+                                                "</tr>"
+                                    }
+
                                     if (csto && sccnTr) {
 //                                    println "inserta transporte $ordn $nmbr $csto"
 //                                        def insertaTr(ofrb_id, cdgo, nmbr, undd, cntd, trfa, pcun, rndm, csto, peso, dstn)
@@ -1499,21 +1534,13 @@ class RubroOfController {
 //                                "<p>$rg_lee</p> <p>$rg_data</p>"
 
 
-                        htmlInfo += "<p>Hoja : " + sheet.getSheetName() + " Rubro: " + rbronmbr + "</p>" +
+                        htmlInfo += "<p><strong>Hoja : " + sheet.getSheetName() + " Rubro: " + rbronmbr + "<strong></p>" +
                                 "<table class='table table-bordered table-striped table-condensed table-hover'>" +
                                 "<tbody> " +
-                                "<tr style='width: 100%'>  " +
-                                "<td style='width: 30%'>${rg_leeEq}</td> " +
-                                "</tr>" +
-                                "<tr style='width: 100%'>  " +
-                                "<td style='width: 30%'>${rg_dataEq}</td> " +
-                                "</tr>" +
-                                "<tr style='width: 100%'>  " +
-                                "<td style='width: 30%'>${rg_leeMo}</td> " +
-                                "</tr>" +
-                                "<tr style='width: 100%'>  " +
-                                "<td style='width: 30%'>${rg_dataMo}</td> " +
-                                "</tr>" +
+                                tr_Eq +
+                                tr_Mo +
+                                tr_Mt +
+                                tr_Tr +
                                 "</tbody> " +
                                 "</table>"
 
