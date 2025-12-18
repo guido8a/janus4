@@ -32,8 +32,13 @@
                 <input type="file" class="required" name="file" multiple accept=".xlsx" style="width: 100%; font-size: 12pt" value="Arch"/>
             </div>
             <div class="col-md-2">
-                <a href="#" class="btn btn-success" id="btnSubmitCrono"><i class="fa fa-upload"></i>
+                <a href="#" class="btn btn-info" id="btnSubmitCrono"><i class="fa fa-upload"></i>
                     Procesar archivo APUs
+                </a>
+            </div>
+            <div class="col-md-2">
+                <a href="#" class="btn btn-success" id="btnRevisar"><i class="fa fa-check"></i>
+                    Comprobar archivo APUs
                 </a>
             </div>
         </div>
@@ -41,6 +46,7 @@
 
     <g:hiddenField name="persona" value="${oferente?.id}" />
     <g:hiddenField name="id" value="${registro?.id}" />
+    <g:hiddenField name="revisar" id='inputRevisar' value='0' />
 
 
     <div id="list-grupo" class="col-md-12" style="margin-left: 30px">
@@ -340,6 +346,18 @@
     }
 
     $("#btnSubmitCrono").click(function () {
+        $("#inputRevisar").val("0")
+        var rev = $("#inputRevisar").val()
+        console.log("rev:", rev)
+        if ($("#frmUpload").valid()) {
+            $("#frmUpload").submit();
+        }
+    });
+
+    $("#btnRevisar").click(function () {
+        $("#inputRevisar").val("1")
+        var rev = $("#inputRevisar").val()
+        console.log("rev:", rev)
         if ($("#frmUpload").valid()) {
             $("#frmUpload").submit();
         }

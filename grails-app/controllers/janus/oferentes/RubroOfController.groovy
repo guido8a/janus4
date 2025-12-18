@@ -1199,6 +1199,7 @@ class RubroOfController {
                 def cdgo, nmbr, undd, peso, cntd, trfa, pcun, rndm, csto, dstn
                 def txRubro = "", tipo = ""
                 def ofrb_id = 0
+                def rg_lee, rg_data
 
                 //for que recorre las hojas existentes
                 def hj = 0
@@ -1310,9 +1311,9 @@ class RubroOfController {
                                     println "Equipos..... $sccnEq --> rbro: $ordn $rbronmbr"
                                 }
                                 if (sccnEq && ofrb_id) {
-                                    rgst.each { r ->
-                                        rgst[]
-                                    }
+//                                    rgst.each { r ->
+//                                        rgst[]
+//                                    }
                                     if(ordn == 1) println "...1 id: $ofrb_id"
                                     try {
                                         cdgo = params.cdgoEq ? rgst[cols[params.cdgoEq]] : ''
@@ -1347,6 +1348,15 @@ class RubroOfController {
                                         nmbr = ''
                                     }
                                     println "Equipos -> rbro: $ofrb_id nombre: $nmbr cantidad: $cntd"
+
+                                    /** si está habilitado comprobar, se debe visualizar los datos a insertar
+                                     * manejar el return para visualizar **/
+                                    if(params.revisar == '1' && sccnEq && cntd) {
+                                        rg_lee = rgst
+                                        rg_data = [item: nmbr, cntd: cntd, trfa: trfa, pcun: pcun, rndm: rndm]
+//                                        println "Se lee  $rg_lee --> $rg_data"
+                                    }
+
                                     if (cntd && sccnEq) {
                                         println "inserta equipo: $nmbr, $cntd, $trfa, $rndm, $csto"
 //                                        insertaEq(ofrb_id, cdgo, nmbr, undd, cntd, trfa, pcun, rndm, csto, tipo)
@@ -1456,7 +1466,12 @@ class RubroOfController {
                         }
                         fila++
                     } //sheets.each
-                    htmlInfo += "<p>Hoja : " + sheet.getSheetName() + " Rubro: " + rbronmbr + "</p>"
+                    if(params.revisar == '1') {
+                        htmlInfo += "<p>Hoja : " + sheet.getSheetName() + " Rubro: " + rbronmbr + "</p>" +
+                                "<p>$rg_lee</p> <p>$rg_data</p>"
+                    } else {
+                        htmlInfo += "<p>Hoja : " + sheet.getSheetName() + " Rubro: " + rbronmbr + "</p>"
+                    }
                     hj++
                     hojaRubro = false
                     ofrb_id = 0
