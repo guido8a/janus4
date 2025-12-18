@@ -1388,11 +1388,10 @@ class RubroOfController {
                                                     "<td style='width: 30%'>${"P. Unitario: "}${rgst[4]}</td> " +
                                                     "<td style='width: 30%'>${"Rendimiento: "}${rgst[5]}</td> " +
                                                     "<td style='width: 30%'>${"Total: "}${rgst[6]}</td> " +
+                                                    "</tr>" +
+                                                    "<tr style='width: 100%'>  " +
+                                                    "<td style='width: 30%'>${rg_dataEq}</td> " +
                                                     "</tr>"
-//                                            +
-//                                                    "<tr style='width: 100%'>  " +
-//                                                    "<td style='width: 30%'>${rg_dataEq}</td> " +
-//                                                    "</tr>"
 //                                        println "---> $tr_Eq"
                                         }
                                     }
