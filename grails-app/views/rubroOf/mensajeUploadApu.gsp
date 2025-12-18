@@ -1,15 +1,22 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: fabricio
-  Date: 28/08/20
-  Time: 13:31
---%>
+
 
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
     <meta name="layout" content="main">
     <title>Archivo cargado</title>
+
+    <style type="text/css">
+    table {
+        table-layout: fixed;
+        overflow-x: scroll;
+    }
+    th, td {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        word-wrap: break-word;
+    }
+    </style>
 </head>
 
 <body>

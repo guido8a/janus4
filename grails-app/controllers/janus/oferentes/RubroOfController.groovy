@@ -1204,6 +1204,29 @@ class RubroOfController {
                 //for que recorre las hojas existentes
                 def hj = 0
 //                for (int hj = 1; hj < hojas; hj++) {
+
+                if(params.revisar == '1'){
+                    htmlInfo += "<table class='table table-bordered table-striped table-condensed table-hover'> " +
+                            "<thead> " +
+                            "<tr style='width: 100%'>  " +
+                            "<th style='width: 15%' >HOJA</th>  " +
+                            "<th style='width: 25%'>RUBRO</th>  " +
+                            "<th style='width: 30%'>LEE</th> " +
+                            "<th style='width: 30%'>DATA</th>  " +
+                            "</tr> " +
+                            "</thead> " +
+                            "</table>"
+                }else{
+                    htmlInfo += "<table class='table table-bordered table-striped table-condensed table-hover'> " +
+                            "<thead> " +
+                            "<tr> " +
+                            "<th>HOJA</th>  " +
+                            "<th>RUBRO</th>  " +
+                            "</tr> " +
+                            "</thead>  " +
+                            "</table>"
+                }
+
                 while (hj < hojas) {
                     XSSFSheet sheet = workbook.getSheetAt(hj);
                     sheet = workbook.getSheetAt(hj);
@@ -1467,8 +1490,21 @@ class RubroOfController {
                         fila++
                     } //sheets.each
                     if(params.revisar == '1') {
-                        htmlInfo += "<p>Hoja : " + sheet.getSheetName() + " Rubro: " + rbronmbr + "</p>" +
-                                "<p>$rg_lee</p> <p>$rg_data</p>"
+//                        htmlInfo += "<p>Hoja : " + sheet.getSheetName() + " Rubro: " + rbronmbr + "</p>" +
+//                                "<p>$rg_lee</p> <p>$rg_data</p>"
+
+
+                        htmlInfo += "<table class='table table-bordered table-striped table-condensed table-hover'>" +
+                                "<tbody> " +
+                                "<tr style='width: 100%'>  " +
+                                "<td style='width: 15%'> ${sheet.getSheetName()} </td>  " +
+                                "<td style='width: 25%'> ${rbronmbr} </td>  " +
+                                "<td style='width: 30%'>${rg_lee}</td> " +
+                                "<td style='width: 30%'>${rg_data}</td> " +
+                                "</tr>" +
+                                "</tbody> " +
+                                "</table>"
+
                     } else {
                         htmlInfo += "<p>Hoja : " + sheet.getSheetName() + " Rubro: " + rbronmbr + "</p>"
                     }
