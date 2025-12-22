@@ -1442,21 +1442,21 @@ class RubroOfController {
 //                                                    "<td style='width: 30%'>${rgst}</td> " +
                                                     "<td style='width: 30%'>${"Código: "}${rgst[0]}</td> " +
                                                     "<td style='width: 30%'>${"Item: "}${rgst[1]}</td> " +
-                                                    "<td style='width: 30%'>${"Cantidad: "}${rgst[3]}</td> " +
-                                                    "<td style='width: 30%'>${"Tarifa: "}${rgst[4]}</td> " +
-                                                    "<td style='width: 30%'>${"P. Unitario: "}${rgst[5]}</td> " +
-                                                    "<td style='width: 30%'>${"Rendimiento: "}${rgst[6]}</td> " +
-                                                    "<td style='width: 30%'>${"Total: "}${rgst[7]}</td> " +
+                                                    "<td style='width: 30%'>${"Cantidad: "}${rgst[2]}</td> " +
+                                                    "<td style='width: 30%'>${"Jornal: "}${rgst[3]}</td> " +
+                                                    "<td style='width: 30%'>${"P. Unitario: "}${rgst[4]}</td> " +
+                                                    "<td style='width: 30%'>${"Rendimiento: "}${rgst[5]}</td> " +
+                                                    "<td style='width: 30%'>${"Total: "}${rgst[6]}</td> " +
                                                     "</tr>" +
                                                     "<tr style='width: 100%'>  " +
 //                                                    "<td style='width: 30%'>${rg_dataMo}</td> " +
                                                     "<td style='width: 30%'>${""}</td> " +
                                                     "<td style='width: 30%'>${"Item: "}${rg_dataMo.item}</td> " +
                                                     "<td style='width: 30%'>${"Cantidad: "}${rg_dataMo.cantidad}</td> " +
-                                                    "<td style='width: 30%'>${"Tarifa: "}${rg_dataMo.tarifa}</td> " +
-                                                    "<td style='width: 30%'>${"P. Unitario: "}${rg_dataMo.p_unitario}</td> " +
+                                                    "<td style='width: 30%'>${"Jornal: "}${rg_dataMo.tarifa}</td> " +
+                                                    "<td style='width: 30%'>${"P. Unitario: "}${""}</td> " +
                                                     "<td style='width: 30%'>${"Rendimiento: "}${rg_dataMo.rendimiento}</td> " +
-                                                    "<td style='width: 30%'>${"Total:"}</td> " +
+                                                    "<td style='width: 30%'>${"Total: "}${rg_dataMo.p_unitario}</td> " +
                                                     "</tr>"
                                         }
                                     }
@@ -1498,11 +1498,11 @@ class RubroOfController {
 //                                                    "<td style='width: 30%'>${rgst}</td> " +
                                                     "<td style='width: 30%'>${"Código: "}${rgst[0]}</td> " +
                                                     "<td style='width: 30%'>${"Item: "}${rgst[1]}</td> " +
-                                                    "<td style='width: 30%'>${"Cantidad: "}${rgst[5]}</td> " +
+                                                    "<td style='width: 30%'>${"Cantidad: "}${rgst[3]}</td> " +
                                                     "<td style='width: 30%'>${"Tarifa: "}${""}</td> " +
-                                                    "<td style='width: 30%'>${"P. Unitario: "}${rgst[6]}</td> " +
+                                                    "<td style='width: 30%'>${"P. Unitario: "}${rgst[4]}</td> " +
                                                     "<td style='width: 30%'>${"Rendimiento: "}${""}</td> " +
-                                                    "<td style='width: 30%'>${"Total: "}${rgst[7]}</td> " +
+                                                    "<td style='width: 30%'>${"Total: "}${rgst[5]}</td> " +
                                                     "</tr>" +
                                                     "<tr style='width: 100%'>  " +
 //                                                    "<td style='width: 30%'>${rg_dataMt}</td> " +
@@ -1557,7 +1557,7 @@ class RubroOfController {
                                                     "<td style='width: 30%'>${"Item: "}${rgst[1]}</td> " +
                                                     "<td style='width: 30%'>${"Cantidad: "}${rgst[4]}</td> " +
                                                     "<td style='width: 30%'>${"Tarifa: "}${rgst[6]}</td> " +
-                                                    "<td style='width: 30%'>${"P. Unitario: "}${''}</td> " +
+                                                    "<td style='width: 30%'>${"Peso/vol: "}${rgst[3]}</td> " +
                                                     "<td style='width: 30%'>${"Distancia: "}${rgst[5]}</td> " +
                                                     "<td style='width: 30%'>${"Total: "}${rgst[7]}</td> " +
                                                     "</tr>" +
@@ -1567,7 +1567,7 @@ class RubroOfController {
                                                     "<td style='width: 30%'>${"Item: "}${rg_dataTr.item}</td> " +
                                                     "<td style='width: 30%'>${"Cantidad: "}${rg_dataTr.cantidad}</td> " +
                                                     "<td style='width: 30%'>${"Tarifa: "}${rg_dataTr.tarifa}</td> " +
-                                                    "<td style='width: 30%'>${"P. Unitario: "}${''}</td> " +
+                                                    "<td style='width: 30%'>${"Peso/vol: "}${''}</td> " +
                                                     "<td style='width: 30%'>${"Distancia: "}${''}</td> " +
                                                     "<td style='width: 30%'>${"Total: "}${rg_dataTr.total}</td> " +
                                                     "</tr>"
