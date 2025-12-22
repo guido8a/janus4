@@ -1390,7 +1390,14 @@ class RubroOfController {
                                                     "<td style='width: 30%'>${"Total: "}${rgst[6]}</td> " +
                                                     "</tr>" +
                                                     "<tr style='width: 100%'>  " +
-                                                    "<td style='width: 30%'>${rg_dataEq}</td> " +
+//                                                    "<td style='width: 30%'>${rg_dataEq}</td> " +
+                                                    "<td style='width: 30%'>${""}</td> " +
+                                                    "<td style='width: 30%'>${"Item: "}${rg_dataEq.item}</td> " +
+                                                    "<td style='width: 30%'>${"Cantidad: "}${rg_dataEq.cantidad}</td> " +
+                                                    "<td style='width: 30%'>${"Tarifa: "}${rg_dataEq.tarifa}</td> " +
+                                                    "<td style='width: 30%'>${"P. Unitario: "}${rg_dataEq.p_unitario}</td> " +
+                                                    "<td style='width: 30%'>${"Rendimiento: "}${rg_dataEq.rendimiento}</td> " +
+                                                    "<td style='width: 30%'>${"Total: "}${rg_dataEq.total}</td> " +
                                                     "</tr>"
 //                                        println "---> $tr_Eq"
                                         }
@@ -1435,16 +1442,22 @@ class RubroOfController {
 //                                                    "<td style='width: 30%'>${rgst}</td> " +
                                                     "<td style='width: 30%'>${"Código: "}${rgst[0]}</td> " +
                                                     "<td style='width: 30%'>${"Item: "}${rgst[1]}</td> " +
-                                                    "<td style='width: 30%'>${"Cantidad: "}${rgst[2]}</td> " +
-                                                    "<td style='width: 30%'>${"Tarifa: "}${rgst[3]}</td> " +
-                                                    "<td style='width: 30%'>${"P. Unitario: "}${rgst[4]}</td> " +
-                                                    "<td style='width: 30%'>${"Rendimiento: "}${rgst[5]}</td> " +
-                                                    "<td style='width: 30%'>${"Total: "}${rgst[6]}</td> " +
-                                                    "</tr>"
-//                                            +
-//                                                    "<tr style='width: 100%'>  " +
+                                                    "<td style='width: 30%'>${"Cantidad: "}${rgst[3]}</td> " +
+                                                    "<td style='width: 30%'>${"Tarifa: "}${rgst[4]}</td> " +
+                                                    "<td style='width: 30%'>${"P. Unitario: "}${rgst[5]}</td> " +
+                                                    "<td style='width: 30%'>${"Rendimiento: "}${rgst[6]}</td> " +
+                                                    "<td style='width: 30%'>${"Total: "}${rgst[7]}</td> " +
+                                                    "</tr>" +
+                                                    "<tr style='width: 100%'>  " +
 //                                                    "<td style='width: 30%'>${rg_dataMo}</td> " +
-//                                                    "</tr>"
+                                                    "<td style='width: 30%'>${""}</td> " +
+                                                    "<td style='width: 30%'>${"Item: "}${rg_dataMo.item}</td> " +
+                                                    "<td style='width: 30%'>${"Cantidad: "}${rg_dataMo.cantidad}</td> " +
+                                                    "<td style='width: 30%'>${"Tarifa: "}${rg_dataMo.tarifa}</td> " +
+                                                    "<td style='width: 30%'>${"P. Unitario: "}${rg_dataMo.p_unitario}</td> " +
+                                                    "<td style='width: 30%'>${"Rendimiento: "}${rg_dataMo.rendimiento}</td> " +
+                                                    "<td style='width: 30%'>${"Total:"}</td> " +
+                                                    "</tr>"
                                         }
                                     }
 
@@ -1485,16 +1498,22 @@ class RubroOfController {
 //                                                    "<td style='width: 30%'>${rgst}</td> " +
                                                     "<td style='width: 30%'>${"Código: "}${rgst[0]}</td> " +
                                                     "<td style='width: 30%'>${"Item: "}${rgst[1]}</td> " +
-                                                    "<td style='width: 30%'>${"Cantidad: "}${rgst[2]}</td> " +
-                                                    "<td style='width: 30%'>${"Tarifa: "}${rgst[3]}</td> " +
-                                                    "<td style='width: 30%'>${"P. Unitario: "}${rgst[4]}</td> " +
-                                                    "<td style='width: 30%'>${"Rendimiento: "}${rgst[5]}</td> " +
-                                                    "<td style='width: 30%'>${"Total: "}${rgst[6]}</td> " +
-                                                    "</tr>"
-//                                            +
-//                                                    "<tr style='width: 100%'>  " +
+                                                    "<td style='width: 30%'>${"Cantidad: "}${rgst[5]}</td> " +
+                                                    "<td style='width: 30%'>${"Tarifa: "}${""}</td> " +
+                                                    "<td style='width: 30%'>${"P. Unitario: "}${rgst[6]}</td> " +
+                                                    "<td style='width: 30%'>${"Rendimiento: "}${""}</td> " +
+                                                    "<td style='width: 30%'>${"Total: "}${rgst[7]}</td> " +
+                                                    "</tr>" +
+                                                    "<tr style='width: 100%'>  " +
 //                                                    "<td style='width: 30%'>${rg_dataMt}</td> " +
-//                                                    "</tr>"
+                                                    "<td style='width: 30%'>${""}</td> " +
+                                                    "<td style='width: 30%'>${"Item: "}${rg_dataMt.item}</td> " +
+                                                    "<td style='width: 30%'>${"Cantidad: "}${rg_dataMt.cantidad}</td> " +
+                                                    "<td style='width: 30%'>${"Tarifa: "}${''}</td> " +
+                                                    "<td style='width: 30%'>${"P. Unitario: "}${rg_dataMt.p_unitario}</td> " +
+                                                    "<td style='width: 30%'>${"Rendimiento: "}${''}</td> " +
+                                                    "<td style='width: 30%'>${"Total: "}${rg_dataMt.total}</td> " +
+                                                    "</tr>"
                                         }
                                     }
 
@@ -1536,16 +1555,22 @@ class RubroOfController {
 //                                                    "<td style='width: 30%'>${rgst}</td> " +
                                                     "<td style='width: 30%'>${"Código: "}${rgst[0]}</td> " +
                                                     "<td style='width: 30%'>${"Item: "}${rgst[1]}</td> " +
-                                                    "<td style='width: 30%'>${"Cantidad: "}${rgst[2]}</td> " +
-                                                    "<td style='width: 30%'>${"Tarifa: "}${rgst[3]}</td> " +
-                                                    "<td style='width: 30%'>${"P. Unitario: "}${rgst[4]}</td> " +
-                                                    "<td style='width: 30%'>${"Rendimiento: "}${rgst[5]}</td> " +
-                                                    "<td style='width: 30%'>${"Total: "}${rgst[6]}</td> " +
-                                                    "</tr>"
-//                                            +
-//                                                    "<tr style='width: 100%'>  " +
+                                                    "<td style='width: 30%'>${"Cantidad: "}${rgst[4]}</td> " +
+                                                    "<td style='width: 30%'>${"Tarifa: "}${rgst[6]}</td> " +
+                                                    "<td style='width: 30%'>${"P. Unitario: "}${''}</td> " +
+                                                    "<td style='width: 30%'>${"Distancia: "}${rgst[5]}</td> " +
+                                                    "<td style='width: 30%'>${"Total: "}${rgst[7]}</td> " +
+                                                    "</tr>" +
+                                                    "<tr style='width: 100%'>  " +
 //                                                    "<td style='width: 30%'>${rg_dataTr}</td> " +
-//                                                    "</tr>"
+                                                    "<td style='width: 30%'>${""}</td> " +
+                                                    "<td style='width: 30%'>${"Item: "}${rg_dataTr.item}</td> " +
+                                                    "<td style='width: 30%'>${"Cantidad: "}${rg_dataTr.cantidad}</td> " +
+                                                    "<td style='width: 30%'>${"Tarifa: "}${rg_dataTr.tarifa}</td> " +
+                                                    "<td style='width: 30%'>${"P. Unitario: "}${''}</td> " +
+                                                    "<td style='width: 30%'>${"Distancia: "}${''}</td> " +
+                                                    "<td style='width: 30%'>${"Total: "}${rg_dataTr.total}</td> " +
+                                                    "</tr>"
                                         }
                                     }
 
