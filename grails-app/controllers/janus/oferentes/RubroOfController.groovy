@@ -1599,7 +1599,7 @@ class RubroOfController {
 
 
                         htmlInfo += "<div class='breadcrumb' style='font-size: 14px' ><strong>Hoja : " + sheet.getSheetName() + " Rubro: " + rbronmbr + "<strong></div>" +
-                                "<table class='table table-bordered table-condensed table-hover'>" +
+                                "<table class='table table-bordered table-condensed table-hover table-striped'>" +
                                 "<tbody> " +
                                 tr_Eq +
                                 tr_Mo +
