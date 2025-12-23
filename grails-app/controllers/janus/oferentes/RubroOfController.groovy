@@ -1550,7 +1550,7 @@ class RubroOfController {
 
                                     if(params.revisar == '1' && sccnTr && rgst.size() > 2) {
                                         if(nmbr != 'Descripción') {
-                                            rg_dataTr = [item: nmbr, cantidad: cntd, tarifa: pcun, total: csto, peso: peso, distancia: dstn]
+                                            rg_dataTr = [item: nmbr, cantidad: cntd, tarifa: pcun, total: csto]
                                             tr_Tr += "<tr style='width: 100%'>  " +
 //                                                    "<td style='width: 30%'>${rgst}</td> " +
                                                     "<td style='width: 30%'>${"Código: "}${rgst[0]}</td> " +
@@ -1567,8 +1567,8 @@ class RubroOfController {
                                                     "<td style='width: 30%'>${"Item: "}${rg_dataTr.item}</td> " +
                                                     "<td style='width: 30%'>${"Cantidad: "}${rg_dataTr.cantidad}</td> " +
                                                     "<td style='width: 30%'>${"Tarifa: "}${rg_dataTr.tarifa}</td> " +
-                                                    "<td style='width: 30%'>${"Peso/vol: "}${rg_dataTr.peso}</td> " +
-                                                    "<td style='width: 30%'>${"Distancia: "}${rg_dataTr.distancia}</td> " +
+                                                    "<td style='width: 30%'>${""}</td> " +
+                                                    "<td style='width: 30%'>${""}</td> " +
                                                     "<td style='width: 30%'>${"Total: "}${rg_dataTr.total}</td> " +
                                                     "</tr>"
                                         }
