@@ -334,7 +334,8 @@
                             <div class="span1 numero lvl1 bold">${seccion.numero}.-</div>
 
                             <div class="span9 lblSeccion editable ui-corner-all">
-                                <acta:clean str="${seccion.titulo}"/>
+%{--                                <acta:clean str="${seccion.titulo}"/>--}%
+                                <util:clean str="${seccion.titulo}"/>
                             </div>
                         </div>
 
@@ -345,7 +346,8 @@
                                         <div class="span1 numero lvl2 bold">${seccion.numero}.${parrafo.numero}.-</div>
 
                                         <div class="span9 contParrafo editable ui-corner-all">
-                                            <acta:clean str="${parrafo.contenido}"/>
+%{--                                            <acta:clean str="${parrafo.contenido}"/>--}%
+                                            <util:clean str="${parrafo.contenido}"/>
                                         </div>
                                     </div>
 
