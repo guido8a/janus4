@@ -2665,16 +2665,24 @@ itemId: item.id
 
     def especificaciones_ajax(){
 
-        def item = Item.get(params.id)
-        def ares = ArchivoEspecificacion.findByItem(item)
+        def itemO = Item.get(params.id)
+        def ares = ArchivoEspecificacion.findByItem(itemO)
+
+        def nuevoAres = ArchivoEspecificacion.withCriteria {
+            item{
+                eq("codigoEspecificacion", itemO.codigoEspecificacion)
+            }
+        }
+
+//        println("nuevo ares " + nuevoAres)
+
         def usuario = Persona.get(session.usuario.id)
         def existeUtfpu = false
-//        if(usuario.departamento?.codigo == 'CRFC'){
+
         if(session.perfil.nombre == 'CRFC'){
             existeUtfpu = true
         }
-//        println "dpto: ${usuario.departamento?.codigo} --> $existeUtfpu, tipo: ${params.tipo}"
-        return [item: item, ares: ares, existe: existeUtfpu, tipo: params.tipo]
+        return [item: itemO, ares: nuevoAres?.size() > 0 ? nuevoAres[0] : null, existe: existeUtfpu, tipo: params.tipo]
     }
 
     def uploadFileIlustracion() {
@@ -2780,38 +2788,184 @@ itemId: item.id
 
     def downloadFile() {
 
-        def item = Item.get(params.id)
+        def itemO = Item.get(params.id)
         def tipo = params.tipo
         def filePath
+        def pathInicial
 
-        switch (tipo) {
-            case "il":
-                filePath = item?.foto
-                break;
-            case "pdf":
-                filePath = ArchivoEspecificacion.findByItem(item)?.ruta
-                break;
-            case "wd":
-                filePath = ArchivoEspecificacion.findByItem(item)?.especificacion
-                break;
+        def nuevoAres = ArchivoEspecificacion.withCriteria {
+            item{
+                eq("codigoEspecificacion", itemO.codigoEspecificacion)
+            }
         }
 
-        def ext = filePath.split("\\.")
-        ext = ext[ext.size() - 1]
-        def path = "/var/janus/" + "item/" + item.id + File.separatorChar + filePath
-//        println "path "+path
-        def file = new File(path)
-        if(file.exists()){
-            def b = file.getBytes()
-            response.setContentType(ext == 'pdf' ? "application/pdf" : "image/" + ext)
-            response.setHeader("Content-disposition", "attachment; filename=" + filePath)
-            response.setContentLength(b.length)
-            response.getOutputStream().write(b)
+        if(nuevoAres?.size > 0){
+
+            switch (tipo) {
+                case "il":
+                    pathInicial = "/var/janus/" + "item/" + itemO?.id
+                    filePath = itemO?.foto
+                    break;
+                case "pdf":
+                    pathInicial =  "/var/janus/" + "item/" +  nuevoAres[0]?.item?.id
+                    filePath = nuevoAres[0]?.ruta
+                    break;
+                case "wd":
+                    pathInicial =  "/var/janus/" + "item/" +  nuevoAres[0]?.item?.id
+                    filePath = nuevoAres[0]?.especificacion
+                    break;
+            }
+
+            def ext = filePath.split("\\.")
+            ext = ext[ext.size() - 1]
+            def path = pathInicial + File.separatorChar + filePath
+//            def path = "/var/janus/" + "item/" +  nuevoAres[0]?.item?.id + File.separatorChar + filePath
+//            println("path " + path)
+            def file = new File(path)
+            if(file.exists()){
+                def b = file.getBytes()
+                response.setContentType(ext == 'pdf' ? "application/pdf" : ( ext == 'docx' ?  "application/msword" : "image/") + ext)
+                response.setHeader("Content-disposition", "attachment; filename=" + filePath)
+                response.setContentLength(b.length)
+                response.getOutputStream().write(b)
+            }else{
+                flash.message="El archivo seleccionado no se encuentra en el servidor."
+                redirect(controller: 'mantenimientoItems',  action: "registro")
+            }
         }else{
             flash.message="El archivo seleccionado no se encuentra en el servidor."
-            redirect(action: "especificaciones_ajax",params: [id:item.id])
+            redirect(controller: 'mantenimientoItems',  action: "registro")
         }
     }
+
+
+//    def downloadFile_old() {
+//
+//        def item = Item.get(params.id)
+//        def tipo = params.tipo
+//        def filePath
+//
+//        switch (tipo) {
+//            case "il":
+//                filePath = item?.foto
+//                break;
+//            case "pdf":
+//                filePath = ArchivoEspecificacion.findByItem(item)?.ruta
+//                break;
+//            case "wd":
+//                filePath = ArchivoEspecificacion.findByItem(item)?.especificacion
+//                break;
+//        }
+//
+//        def ext = filePath.split("\\.")
+//        ext = ext[ext.size() - 1]
+//        def path = "/var/janus/" + "item/" + item.id + File.separatorChar + filePath
+//        def file = new File(path)
+//        if(file.exists()){
+//            def b = file.getBytes()
+//            response.setContentType(ext == 'pdf' ? "application/pdf" : "image/" + ext)
+//            response.setHeader("Content-disposition", "attachment; filename=" + filePath)
+//            response.setContentLength(b.length)
+//            response.getOutputStream().write(b)
+//        }else{
+//            flash.message="El archivo seleccionado no se encuentra en el servidor."
+//            redirect(action: "especificaciones_ajax",params: [id:item.id])
+//        }
+//    }
+
+//    def uploadFileEspecificacion_old() {
+//        println "upload "+params
+//
+//        def usuario = Persona.get(session.usuario.id)
+//        def rubro = Item.get(params.item)
+//        def acceptedWord = ['doc', 'docx']
+//        def acceptedPdf = ['pdf']
+//
+//        def path = "/var/janus/" + "item/" + rubro?.id + "/"   //web-app/rubros
+//        new File(path).mkdirs()
+//
+//        def archivEsp
+//        def tipo = params.tipo
+//
+//        def existe = ArchivoEspecificacion.findByCodigo(rubro.codigoEspecificacion)
+//
+//        if(existe) {
+//            archivEsp = existe
+//        } else {
+//            archivEsp = new ArchivoEspecificacion()
+//            archivEsp.item = rubro
+//            archivEsp.codigo = rubro.codigoEspecificacion
+//        }
+//
+//        archivEsp.persona = usuario
+//
+//        def f = request.getFile('file')  //archivo = name del input type file
+//        if (f && !f.empty) {
+//            def fileName = f.getOriginalFilename() //nombre original del archivo
+//            def ext
+//            def parts = fileName.split("\\.")
+//            fileName = ""
+//            parts.eachWithIndex { obj, i ->
+//                if (i < parts.size() - 1) {
+//                    fileName += obj
+//                } else {
+//                    ext = obj
+//                }
+//            }
+//
+//            println("ext " + ext)
+//
+//            if ( ext == 'pdf' ?  acceptedPdf.contains(ext?.toLowerCase()) : acceptedWord.contains(ext?.toLowerCase())) {
+//
+//                println("entro??")
+//
+//                def old
+//
+//                if(ext == 'pdf'){
+//                    old = archivEsp?.ruta
+//                }else{
+//                    old = archivEsp?.especificacion
+//                }
+//
+//                if (old) {
+//                    def oldPath =  "/var/janus/" + "item/" + rubro?.id + "/" + old
+//                    def oldFile = new File(oldPath)
+//                    if (oldFile.exists()) {
+//                        oldFile.delete()
+//                    }
+//                }
+//
+//                fileName = "r_" + "dt" + "_" + rubro.id
+//                fileName = fileName + "." + ext
+//                def pathFile = path + fileName
+//                def file = new File(pathFile)
+//                f.transferTo(file)
+//
+//                switch (tipo) {
+//                    case "pdf":
+//                        archivEsp?.ruta =  fileName
+//                        break;
+//                    case "word":
+//                        archivEsp?.especificacion =  fileName
+//                        break;
+//                }
+//
+//                if(archivEsp.save(flush: true)){
+//                    rubro.especificaciones = archivEsp?.ruta
+//                    rubro.save(flush: true)
+//                    render "ok_Guardado correctamente"
+//                } else {
+//                    println "${archivEsp.errors}"
+//                    render "no_Error al guardar"
+//                }
+//            } else {
+//                render "no_" + params.tipo == 'pdf' ? ("Error: Los formatos permitidos son: PDF") : ("Error: Los formatos permitidos son: DOC, DOCX")
+//            }
+//        } else {
+//            render "no_" + params.tipo == 'pdf' ? "Error: Seleccione un archivo PDF" : "Error: Seleccione un archivo DOC, DOCX"
+//        }
+//    }
+
 
     def uploadFileEspecificacion() {
         println "upload "+params
@@ -2821,22 +2975,26 @@ itemId: item.id
         def acceptedWord = ['doc', 'docx']
         def acceptedPdf = ['pdf']
 
-        def path = "/var/janus/" + "item/" + rubro?.id + "/"   //web-app/rubros
-        new File(path).mkdirs()
-
+        def existe = ArchivoEspecificacion.findByCodigo(rubro.codigoEspecificacion)
+        def path
         def archivEsp
         def tipo = params.tipo
-
-        def existe = ArchivoEspecificacion.findByCodigo(rubro.codigoEspecificacion)
+        def nombreArchivo
 
         if(existe) {
             archivEsp = existe
+            path = "/var/janus/" + "item/" + archivEsp?.item?.id + "/"
+            nombreArchivo = archivEsp?.item?.id
         } else {
             archivEsp = new ArchivoEspecificacion()
             archivEsp.item = rubro
             archivEsp.codigo = rubro.codigoEspecificacion
+            path = "/var/janus/" + "item/" + rubro?.id + "/"
+            nombreArchivo = rubro?.id
         }
 
+
+        new File(path).mkdirs()
         archivEsp.persona = usuario
 
         def f = request.getFile('file')  //archivo = name del input type file
@@ -2855,15 +3013,12 @@ itemId: item.id
 
             println("ext " + ext)
 
-
-//            if ( params.tipo == 'pdf' ?  acceptedPdf.contains(ext?.toLowerCase()) : acceptedWord.contains(ext?.toLowerCase())) {
             if ( ext == 'pdf' ?  acceptedPdf.contains(ext?.toLowerCase()) : acceptedWord.contains(ext?.toLowerCase())) {
 
                 println("entro??")
 
                 def old
 
-//                if(tipo == 'pdf'){
                 if(ext == 'pdf'){
                     old = archivEsp?.ruta
                 }else{
@@ -2871,14 +3026,16 @@ itemId: item.id
                 }
 
                 if (old) {
-                    def oldPath =  "/var/janus/" + "item/" + rubro?.id + "/" + old
+//                    def oldPath =  "/var/janus/" + "item/" + rubro?.id + "/" + old
+                    def oldPath =  path + old
                     def oldFile = new File(oldPath)
                     if (oldFile.exists()) {
                         oldFile.delete()
                     }
                 }
 
-                fileName = "r_" + "dt" + "_" + rubro.id
+//                fileName = "r_" + "dt" + "_" + rubro.id
+                fileName = "r_" + "dt" + "_" + nombreArchivo
                 fileName = fileName + "." + ext
                 def pathFile = path + fileName
                 def file = new File(pathFile)
@@ -2902,21 +3059,12 @@ itemId: item.id
                     render "no_Error al guardar"
                 }
             } else {
-//                flash.clase = "alert-error"
-//                flash.message = params.tipo == 'pdf' ? ("Error: Los formatos permitidos son: PDF") : ("Error: Los formatos permitidos son: DOC, DOCX")
                 render "no_" + params.tipo == 'pdf' ? ("Error: Los formatos permitidos son: PDF") : ("Error: Los formatos permitidos son: DOC, DOCX")
             }
         } else {
-//            flash.clase = "alert-error"
-//            flash.message =  params.tipo == 'pdf' ? "Error: Seleccione un archivo PDF" : "Error: Seleccione un archivo DOC, DOCX"
             render "no_" + params.tipo == 'pdf' ? "Error: Seleccione un archivo PDF" : "Error: Seleccione un archivo DOC, DOCX"
         }
-
-
-
-//        redirect(action: "especificaciones_ajax", id: rubro.id, params: [tipo: tipo])
     }
-
 
     def codigos_ajax () {
         def departamento = DepartamentoItem.get(params.id)
@@ -3059,34 +3207,84 @@ itemId: item.id
         return [listas: listas]
     }
 
+//    def borrarArchivo_ajax_old(){
+//        println("params " + params)
+//        def rubro = Item.get(params.id)
+//        def archivoEspe = ArchivoEspecificacion.findByCodigo(rubro.codigoEspecificacion)
+//
+//        def old = params.tipo == 'pdf' ?  archivoEspe?.ruta : ( params.tipo == 'word' ?  archivoEspe?.especificacion :rubro?.foto)
+//
+//        println("old " + old)
+//
+//        if (old) {
+//            def oldPath = "/var/janus/" + "item/" + rubro?.id + "/" + old
+//            def oldFile = new File(oldPath)
+//            if (oldFile.exists()) {
+//                oldFile.delete()
+//
+//                if(params.tipo == 'pdf'){
+//                    archivoEspe.ruta = null
+//                    archivoEspe.save(flush:true)
+//                }else{
+//                    if(params.tipo == 'word'){
+//                        archivoEspe.especificacion = null
+//                        archivoEspe.save(flush:true)
+//                    }else{
+//                        rubro.foto = null
+//                        rubro.save(flush:true)
+//                    }
+//                }
+//                render "ok_Borrada Correctamente"
+//            }else{
+//                render "no_Error al borrar"
+//            }
+//        }else{
+//            render "no_Error al borrar"
+//        }
+//    }
+
+
     def borrarArchivo_ajax(){
         println("params " + params)
         def rubro = Item.get(params.id)
-        def archivoEspe = ArchivoEspecificacion.findByCodigo(rubro.codigoEspecificacion)
+//        def archivoEspe = ArchivoEspecificacion.findByCodigo(rubro.codigoEspecificacion)
 
-        def old = params.tipo == 'pdf' ?  archivoEspe?.ruta : ( params.tipo == 'word' ?  archivoEspe?.especificacion :rubro?.foto)
+        def nuevoAres = ArchivoEspecificacion.withCriteria {
+            item{
+                eq("codigoEspecificacion", rubro.codigoEspecificacion)
+            }
+        }
 
-        println("old " + old)
+        if(nuevoAres?.size() > 0){
 
-        if (old) {
-            def oldPath = "/var/janus/" + "item/" + rubro?.id + "/" + old
-            def oldFile = new File(oldPath)
-            if (oldFile.exists()) {
-                oldFile.delete()
+            def old = params.tipo == 'pdf' ?  nuevoAres[0]?.ruta : ( params.tipo == 'word' ?  nuevoAres[0]?.especificacion :rubro?.foto)
+            def archivoEspe = ArchivoEspecificacion.get(nuevoAres[0]?.id)
 
-                if(params.tipo == 'pdf'){
-                    archivoEspe.ruta = null
-                    archivoEspe.save(flush:true)
-                }else{
-                    if(params.tipo == 'word'){
-                        archivoEspe.especificacion = null
+            println("old " + old)
+
+            if (old) {
+                def oldPath =   (params.tipo == 'pdf' ||   params.tipo == 'word') ?   "/var/janus/" + "item/" + nuevoAres[0]?.item?.id+ "/" + old : "/var/janus/" + "item/" + rubro?.id+ "/" + old
+
+                def oldFile = new File(oldPath)
+                if (oldFile.exists()) {
+                    oldFile.delete()
+
+                    if(params.tipo == 'pdf'){
+                        archivoEspe.ruta = null
                         archivoEspe.save(flush:true)
                     }else{
-                        rubro.foto = null
-                        rubro.save(flush:true)
+                        if(params.tipo == 'word'){
+                            archivoEspe.especificacion = null
+                            archivoEspe.save(flush:true)
+                        }else{
+                            rubro.foto = null
+                            rubro.save(flush:true)
+                        }
                     }
+                    render "ok_Borrada Correctamente"
+                }else{
+                    render "no_Error al borrar"
                 }
-                render "ok_Borrada Correctamente"
             }else{
                 render "no_Error al borrar"
             }

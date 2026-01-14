@@ -1,28 +1,18 @@
 <div class="row">
     <div class="" style="width: 99.7%;height: 650px; overflow-y: auto;float: right; margin-top: -20px">
-
-        <g:if test="${flash.message}">
-            <div class="row">
-                <div class="span12">
-                    <div class="alert ${flash.clase ?: 'alert-info'}" role="status">
-                        <a class="close" data-dismiss="alert" href="#">×</a>
-                        ${flash.message}
-                    </div>
-                </div>
-            </div>
-        </g:if>
-
         <div class="breadcrumb col-md-12" style="font-weight: bold; font-size: 14px; text-align: center">
             Nombre: ${item?.nombre}<br/>
             Código: ${item?.codigo} - Especificación: ${item?.codigoEspecificacion}
         </div>
 
         <div class="col-md-12" style="margin-bottom: 10px">
-            <div class="alert-warning col-md-12" style="font-size: 12px; font-weight: bold; padding: 5px">
+            <div class="alert-warning col-md-12" style="font-size: 14px; font-weight: bold; padding: 5px">
                 <div class="col-md-12">
                     <i class="fa fa-file-pdf fa-2x"></i>
+%{--                    Especificación PDF: ${!ares?.ruta ? 'No se ha cargado ninguna especificación PDF para este material'--}%
+%{--                            : ares?.ruta +  (ares?.persona  ? (' (' + ares?.persona?.nombre + ' ' + ares?.persona?.apellido + ')') : '')}--}%
                     Especificación PDF: ${!ares?.ruta ? 'No se ha cargado ninguna especificación PDF para este material'
-                            : ares?.ruta +  (ares?.persona  ? (' (' + ares?.persona?.nombre + ' ' + ares?.persona?.apellido + ')') : '')}
+                            : ares?.ruta}
                 </div>
             </div>
 
@@ -92,7 +82,6 @@
 
                                     <g:if test="${ares?.especificacion}">
                                         <div class="btn-group" style="margin-top: 20px;">
-
                                             <g:link action="downloadFile" id="${item.id}" params="[tipo: 'wd']" class="btn btn-info">
                                                 <i class="fa fa-download"></i> Descargar
                                             </g:link>
@@ -109,7 +98,6 @@
                         <g:else>
                             <g:if test="${ares?.especificacion}">
                                 <div class="btn-group" style="margin-top: 20px;">
-
                                     <g:link action="downloadFile" id="${item.id}" params="[tipo: 'wd']" class="btn btn-info">
                                         <i class="fa fa-download"></i> Descargar
                                     </g:link>

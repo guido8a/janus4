@@ -47,7 +47,7 @@
                     <td style="width: 25%">${m.itemnmbr}</td>
                     <td style="width: 5%">${Item.get(m.item__id)?.unidad?.codigo}</td>
                     <td style="width: 5%; text-align: center">
-                        <g:if test="${janus.apus.ArchivoEspecificacion.findByItem(janus.Item.get(m.item__id))?.ruta}">
+                        <g:if test="${janus.apus.ArchivoEspecificacion.findByCodigo(janus.Item.get(m.item__id)?.codigoEspecificacion)?.ruta}">
                             <i class="fa fa-check text-success"></i>
                         </g:if>
                         <g:else>

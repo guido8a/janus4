@@ -13,6 +13,17 @@
 
 <body>
 
+<g:if test="${flash.message}">
+    <div class="row">
+        <div class="span12">
+            <div class="alert ${flash.clase ?: 'alert-warning'}" role="status">
+                <a class="close" data-dismiss="alert" href="#">×</a>
+                ${flash.message}
+            </div>
+        </div>
+    </div>
+</g:if>
+
 <div>
     <fieldset class="borde" style="border-radius: 4px; margin-bottom: 10px">
         <div class="row-fluid" style="margin-left: 10px">

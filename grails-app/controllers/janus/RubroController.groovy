@@ -905,29 +905,118 @@ class RubroController {
         }
     }
 
+
+//    def uploadFile_old() {
+//        println "upload "+params
+//
+//        def acceptedExt = ["jpg", "png", "gif", "jpeg", "pdf", "doc", "docx"]
+//
+//        def tipo = params.tipo
+//
+//        def path = "/var/janus/" + "rubros/"
+//        new File(path).mkdirs()
+//        def rubro = Item.get(params.rubro)
+//        println("rrr " + rubro?.id)
+//        def usuario = Persona.get(session.usuario.id)
+//        def archivEsp
+//        if(ArchivoEspecificacion.findByCodigo(rubro.codigoEspecificacion)) {
+//            archivEsp = ArchivoEspecificacion.findByCodigo(rubro.codigoEspecificacion)
+//        } else {
+//            archivEsp = new ArchivoEspecificacion()
+//            archivEsp.item = rubro
+//            archivEsp.codigo = rubro.codigoEspecificacion
+//        }
+//
+//        println("arc " + archivEsp.id)
+//
+//        archivEsp.persona = usuario
+//
+//        def f = request.getFile('file')
+//        if (f && !f.empty) {
+//            def fileName = f.getOriginalFilename()
+//            def ext
+//            def parts = fileName.split("\\.")
+//            fileName = ""
+//            parts.eachWithIndex { obj, i ->
+//                if (i < parts.size() - 1) {
+//                    fileName += obj
+//                } else {
+//                    ext = obj
+//                }
+//            }
+//            if (acceptedExt.contains(ext.toLowerCase())) {
+//                def ahora = new Date()
+//                fileName = "r_" + tipo + "_" + rubro.id + "_" + ahora.format("dd_MM_yyyy_hh_mm_ss")
+//                fileName = fileName + "." + ext
+//                def pathFile = path + fileName
+//                def file = new File(pathFile)
+//                println "subiendo archivo: $fileName"
+//
+//                f.transferTo(file)
+//
+//                def old = tipo == "il" ? rubro.foto : (  tipo == 'dt' ? archivEsp?.ruta : archivEsp?.especificacion)
+//                if (old && old.trim() != "") {
+//                    def oldPath =  "/var/janus/" + "rubros/" + old
+//                    def oldFile = new File(oldPath)
+//                    if (oldFile.exists()) {
+//                        oldFile.delete()
+//                    }
+//                }
+//
+//                switch (tipo) {
+//                    case "il":
+//                        rubro.foto =  fileName
+//                        rubro.save(flush: true)
+//                        break;
+//                    case "dt":
+//                        archivEsp?.ruta =  fileName
+//                        archivEsp.save(flush:true)
+//                        break;
+//                    case "wd":
+//                        archivEsp?.especificacion = fileName
+//                        archivEsp.save(flush:true)
+//                        break;
+//                }
+//
+//                if(archivEsp.save(flush: true)){
+//                    rubro.especificaciones = archivEsp?.ruta
+//                    rubro.save(flush: true)
+//                    render "ok_Guardado correctamente"
+//                } else {
+//                    println "${archivEsp.errors}"
+//                    render "no_Error al guardar"
+//                }
+//            } else {
+//                render "no_" + params.tipo == 'il' ? ("Error: Los formatos permitidos son: JPG, JPEG, GIF, PNGF") : (params.tipo == 'dt' ? ("Error: Los formatos permitidos son: PDF") : ("Error: Los formatos permitidos son: DOC, DOCX"))
+//            }
+//        } else {
+//            render "no_" + params.tipo == 'il' ? ("Error: Los formatos permitidos son: JPG, JPEG, GIF, PNGF") : (params.tipo == 'dt' ? ("Error: Los formatos permitidos son: PDF") : ("Error: Los formatos permitidos son: DOC, DOCX"))
+//
+//        }
+//    }
+
+
     def uploadFile() {
         println "upload "+params
 
         def acceptedExt = ["jpg", "png", "gif", "jpeg", "pdf", "doc", "docx"]
 
         def tipo = params.tipo
-
         def path = "/var/janus/" + "rubros/"   //web-app/rubros
         new File(path).mkdirs()
         def rubro = Item.get(params.rubro)
-        println("rrr " + rubro?.id)
         def usuario = Persona.get(session.usuario.id)
         def archivEsp
-        if(ArchivoEspecificacion.findByCodigo(rubro.codigoEspecificacion)) {
-            archivEsp = ArchivoEspecificacion.findByCodigo(rubro.codigoEspecificacion)
+
+        def existe = ArchivoEspecificacion.findByCodigo(rubro.codigoEspecificacion)
+
+        if(existe) {
+            archivEsp = existe
         } else {
             archivEsp = new ArchivoEspecificacion()
             archivEsp.item = rubro
             archivEsp.codigo = rubro.codigoEspecificacion
         }
-
-
-        println("arc " + archivEsp.id)
 
         archivEsp.persona = usuario
 
@@ -1389,17 +1478,24 @@ class RubroController {
     def especificaciones_ajax(){
 
         println("params es"  + params)
-
-        def item = Item.get(params.id)
-        def ares = ArchivoEspecificacion.findByCodigo(item.codigoEspecificacion)
-        println("ares "  + ares?.id)
         def usuario = Persona.get(session.usuario.id)
+        def itemO = Item.get(params.id)
+//        def ares = ArchivoEspecificacion.findByCodigo(item.codigoEspecificacion)
+//        println("ares "  + ares?.id)
+
+        def nuevoAres = ArchivoEspecificacion.withCriteria {
+            item{
+                eq("codigoEspecificacion", itemO.codigoEspecificacion)
+            }
+        }
+
+
         def existeUtfpu = false
         if(usuario.departamento?.codigo == 'CRFC'){
             existeUtfpu = true
         }
 
-        return [item: item, ares: ares, existe: existeUtfpu, tipo: params.tipo]
+        return [item: itemO, ares: nuevoAres?.size() > 0 ? nuevoAres[0] : null, existe: existeUtfpu, tipo: params.tipo]
     }
 
 

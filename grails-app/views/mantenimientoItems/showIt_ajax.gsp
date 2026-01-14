@@ -44,6 +44,26 @@
                 </div>
             </div>
         </g:if>
+        <g:if test="${itemInstance?.fabricante}">
+            <div class="row">
+                <div class="col-md-3 text-info">
+                    Fabricante
+                </div>
+                <div class="col-md-6 negrita">
+                    ${itemInstance?.fabricante}
+                </div>
+            </div>
+        </g:if>
+        <g:if test="${itemInstance?.codigoComprasPublicas}">
+            <div class="row">
+                <div class="col-md-3 text-info">
+                    Código CPC
+                </div>
+                <div class="col-md-9 negrita">
+                    ${itemInstance?.codigoComprasPublicas?.numero + " - "  + itemInstance?.codigoComprasPublicas?.descripcion}
+                </div>
+            </div>
+        </g:if>
         <g:if test="${itemInstance.departamento.subgrupo.grupo.id.toString() == '1'}">
             <div class="row">
                 <div class="col-md-3 text-info">
@@ -95,13 +115,13 @@
                 </div>
             </div>
         </g:if>
-        <g:if test="${itemInstance?.codigoComprasPublicas}">
+        <g:if test="${itemInstance?.codigoComprasPublicasTransporte}">
             <div class="row">
                 <div class="col-md-3 text-info">
-                    Código CPC
+                    Código CPC Transporte
                 </div>
                 <div class="col-md-6 negrita">
-                    ${itemInstance?.codigoComprasPublicas?.numero}
+                    ${itemInstance?.codigoComprasPublicasTransporte?.numero}
                 </div>
             </div>
         </g:if>
@@ -217,6 +237,16 @@
                 </div>
                 <div class="col-md-8 negrita">
                     ${itemInstance.observaciones}
+                </div>
+            </div>
+        </g:if>
+        <g:if test="${itemInstance?.codigoEspecificacion}">
+            <div class="row">
+                <div class="col-md-3 text-info">
+                    Código Especificación
+                </div>
+                <div class="col-md-6 negrita">
+                    ${itemInstance?.codigoEspecificacion}
                 </div>
             </div>
         </g:if>
