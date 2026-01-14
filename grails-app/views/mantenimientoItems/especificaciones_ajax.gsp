@@ -267,8 +267,8 @@
 
     function deleteArchivo(id, tipo){
         bootbox.confirm({
-            title: "Eliminar archivo",
-            message: '<i class="fa fa-trash text-danger fa-3x"></i>' + '<strong style="font-size: 14px">' + "Está seguro de borrar este documento? Esta acción no puede deshacerse. " + '</strong>' ,
+            title: "<i class='fa fa-trash text-danger fa-3x'></i> Eliminar archivo",
+            message: '<strong style="font-size: 14px">' + "Está seguro de borrar este documento? Esta acción no puede deshacerse. " + '</strong>' ,
             buttons: {
                 cancel: {
                     label: '<i class="fa fa-times"></i> Cancelar',

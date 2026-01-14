@@ -875,8 +875,8 @@ class RubroController {
             response.setContentLength(b.length)
             response.getOutputStream().write(b)
         }else{
-//            flash.message="El archivo seleccionado no se encuentra en el servidor."
-//            redirect(action: "especificaciones_ajax",params: [id:rubro.id])
+            flash.message="El archivo seleccionado no se encuentra en el servidor."
+            redirect(controller: 'rubro',  action: "rubroPrincipal", id: rubro?.id)
         }
     }
 
@@ -1007,15 +1007,18 @@ class RubroController {
         def rubro = Item.get(params.rubro)
         def usuario = Persona.get(session.usuario.id)
         def archivEsp
+        def nombreArchivo
 
         def existe = ArchivoEspecificacion.findByCodigo(rubro.codigoEspecificacion)
 
         if(existe) {
             archivEsp = existe
+            nombreArchivo = archivEsp?.item?.id
         } else {
             archivEsp = new ArchivoEspecificacion()
             archivEsp.item = rubro
             archivEsp.codigo = rubro.codigoEspecificacion
+            nombreArchivo = rubro?.id
         }
 
         archivEsp.persona = usuario
@@ -1035,15 +1038,15 @@ class RubroController {
             }
             if (acceptedExt.contains(ext.toLowerCase())) {
                 def ahora = new Date()
-                fileName = "r_" + tipo + "_" + rubro.id + "_" + ahora.format("dd_MM_yyyy_hh_mm_ss")
+//                fileName = "r_" + tipo + "_" + rubro.id + "_" + ahora.format("dd_MM_yyyy_hh_mm_ss")
+                fileName = "r_" + tipo + "_" + nombreArchivo + "_" + ahora.format("dd_MM_yyyy_hh_mm_ss")
                 fileName = fileName + "." + ext
                 def pathFile = path + fileName
                 def file = new File(pathFile)
-                println "subiendo archivo: $fileName"
 
                 f.transferTo(file)
 
-                def old = tipo == "il" ? rubro.foto : (  tipo == 'dt' ? archivEsp?.ruta : archivEsp?.especificacion)
+                def old = tipo == "il" ? rubro?.foto : (  tipo == 'dt' ? archivEsp?.ruta : archivEsp?.especificacion)
                 if (old && old.trim() != "") {
 //                    def oldPath = servletContext.getRealPath("/") + "rubros/" + old
                     def oldPath =  "/var/janus/" + "rubros/" + old
@@ -1055,17 +1058,14 @@ class RubroController {
 
                 switch (tipo) {
                     case "il":
-                        rubro.foto = /*g.resource(dir: "rubros") + "/" + */ fileName
+                        rubro.foto = fileName
                         rubro.save(flush: true)
                         break;
                     case "dt":
-//                        rubro.especificaciones = /*g.resource(dir: "rubros") + "/" + */ fileName
-                        archivEsp?.ruta = /*g.resource(dir: "rubros") + "/" + */ fileName
-                        archivEsp.save(flush:true)
+                        archivEsp?.ruta = fileName
                         break;
                     case "wd":
                         archivEsp?.especificacion = fileName
-                        archivEsp.save(flush:true)
                         break;
                 }
 
@@ -1077,23 +1077,67 @@ class RubroController {
                     println "${archivEsp.errors}"
                     render "no_Error al guardar"
                 }
-
             } else {
-//                flash.clase = "alert-error"
-//                flash.message = "Error: Los formatos permitidos son: JPG, JPEG, GIF, PNG y PDF"
                 render "no_" + params.tipo == 'il' ? ("Error: Los formatos permitidos son: JPG, JPEG, GIF, PNGF") : (params.tipo == 'dt' ? ("Error: Los formatos permitidos son: PDF") : ("Error: Los formatos permitidos son: DOC, DOCX"))
             }
         } else {
-//            flash.clase = "alert-error"
-//            flash.message = "Error: Seleccione un archivo JPG, JPEG, GIF, PNG ó PDF"
-            render "no_" + params.tipo == 'il' ? ("Error: Los formatos permitidos son: JPG, JPEG, GIF, PNGF") : (params.tipo == 'dt' ? ("Error: Los formatos permitidos son: PDF") : ("Error: Los formatos permitidos son: DOC, DOCX"))
-
+            render "no_" + (params.tipo == 'dt' ? ("Seleccione un archivo PDF") : ("Seleccione un archivo DOC, DOCX"))
         }
-
-//        redirect(action: "showFoto", id: rubro.id, params: [tipo: tipo])
-//        return
     }
 
+    def uploadFileIlustracionRubro() {
+//        println ("subir iamgen " + params)
+
+        def rubro = Item.get(params.rubro)
+        def acceptedExt = ["jpg", "png", "gif", "jpeg"]
+
+        def path = "/var/janus/" + "rubros/"
+        new File(path).mkdirs()
+
+        def f = request.getFile('file')
+        if (f && !f.empty) {
+            def fileName = f.getOriginalFilename()
+            def ext
+            def parts = fileName.split("\\.")
+            fileName = ""
+            parts.eachWithIndex { obj, i ->
+                if (i < parts.size() - 1) {
+                    fileName += obj
+                } else {
+                    ext = obj
+                }
+            }
+            if (acceptedExt.contains(ext.toLowerCase())) {
+
+                def old = rubro?.foto
+                if (old) {
+                    def oldPath = "/var/janus/" + "rubros/" + old
+                    def oldFile = new File(oldPath)
+                    if (oldFile.exists()) {
+                        oldFile.delete()
+                    }
+                }
+
+                def ahora = new Date()
+                fileName = "r_" + "il" + "_" + rubro?.id + "_" + ahora.format("dd_MM_yyyy_hh_mm_ss")
+                fileName = fileName + "." + ext
+                def pathFile = path + fileName
+                def file = new File(pathFile)
+                f.transferTo(file)
+
+                rubro.foto = fileName
+                rubro.save(flush: true)
+
+            } else {
+                render "err_Los formatos permitidos son: JPG, JPEG, GIF, PNG"
+                return
+            }
+        } else {
+            render "err_Seleccione un archivo JPG, JPEG, GIF, PNG"
+            return
+        }
+        render "ok_Guardado correctamente"
+    }
 
     def verificaRubro(){
         def rubro = Item.get(params.id)
@@ -1491,7 +1535,7 @@ class RubroController {
 
 
         def existeUtfpu = false
-        if(usuario.departamento?.codigo == 'CRFC'){
+        if(session.perfil.nombre == 'CRFC'){
             existeUtfpu = true
         }
 
@@ -1527,14 +1571,12 @@ class RubroController {
                 }
                 render "ok_Borrada Correctamente"
             }else{
-
                 render "no_Error al borrar"
             }
         }else{
             render "no_Error al borrar"
         }
     }
-
 
     def faltan() {
         def ares = ArchivoEspecificacion.findAllByRutaIsNotNull()

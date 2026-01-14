@@ -1,29 +1,17 @@
 <div class="row">
     <div class="" style="width: 99.7%;height: 650px; overflow-y: auto;float: right; margin-top: -20px">
-
-%{--        <g:if test="${flash.message}">--}%
-%{--            <div class="row">--}%
-%{--                <div class="span12">--}%
-%{--                    <div class="alert ${flash.clase ?: 'alert-info'}" role="status">--}%
-%{--                        <a class="close" data-dismiss="alert" href="#">×</a>--}%
-%{--                        ${flash.message}--}%
-%{--                    </div>--}%
-%{--                </div>--}%
-%{--            </div>--}%
-%{--        </g:if>--}%
-
         <div class="breadcrumb col-md-12" style="font-weight: bold; font-size: 14px; text-align: center">
             Nombre: ${item?.nombre}<br/>
             Código: ${item?.codigo} - Especificación: ${item?.codigoEspecificacion}
         </div>
 
         <div class="col-md-12" style="margin-bottom: 10px">
-            <div class="alert-warning col-md-12" style="font-size: 12px; font-weight: bold; padding: 5px">
+            <div class="alert-warning col-md-12" style="font-size: 14px; font-weight: bold; padding: 5px">
                 <div class="col-md-12">
                     <i class="fa fa-file-pdf fa-2x"></i>
-%{--                    Especificación PDF: ${!ares?.ruta ? 'No se ha cargado ninguna especificación PDF para este material'--}%
-%{--                            : ares?.ruta +  (ares?.persona  ? (' (' + ares?.persona?.nombre + ' ' + ares?.persona?.apellido + ')') : '')}--}%
-                    Especificación PDF: ${!ares?.ruta ? 'No se ha cargado ninguna especificación PDF para este material' : ares?.ruta}
+                    %{--                    Especificación PDF: ${!ares?.ruta ? 'No se ha cargado ninguna especificación PDF para este material'--}%
+                    %{--                            : ares?.ruta +  (ares?.persona  ? (' (' + ares?.persona?.nombre + ' ' + ares?.persona?.apellido + ')') : '')}--}%
+                    Especificación PDF: ${!ares?.ruta ? 'No se ha cargado ninguna especificación PDF' : ares?.ruta}
                 </div>
             </div>
 
@@ -70,57 +58,54 @@
 
         <div class="col-md-12" style="margin-bottom: 10px">
             %{--<g:if test="${sessio?.perfil?.codigo == 'CRFC'}">--}%
-                <div class="alert-info col-md-12" style="font-size: 14px; font-weight: bold">
-                    <div class="col-md-12">
-                        <i class="fa fa-file-word fa-2x"></i> Especificación WORD: ${!ares?.especificacion ? 'No se ha cargado ninguna especificación WORD para este material' : ares?.especificacion}
-                    </div>
+            <div class="alert-info col-md-12" style="font-size: 14px; font-weight: bold">
+                <div class="col-md-12">
+                    <i class="fa fa-file-word fa-2x"></i> Especificación WORD: ${!ares?.especificacion ? 'No se ha cargado ninguna especificación WORD' : ares?.especificacion}
                 </div>
-                <g:if test="${existe}">
-                    <div class="col-md-12">
-                        <g:if test="${!tipo}">
-                            <g:uploadForm action="uploadFile" method="post" name="frmUploadWord" enctype="multipart/form-data">
-                                <g:hiddenField name="rubro" value="${item?.id}"/>
-                                <g:hiddenField name="tipo" value="wd"/>
-                                <div class="fieldcontain required">
-                                    <b>Cargar archivo WORD:</b>
-                                    <input type="file" id="fileEspe" name="file" class="required" required  multiple accept=".doc, .docx"/>
+            </div>
+            <g:if test="${existe}">
+                <div class="col-md-12">
+                    <g:if test="${!tipo}">
+                        <g:uploadForm action="uploadFile" method="post" name="frmUploadWord" enctype="multipart/form-data">
+                            <g:hiddenField name="rubro" value="${item?.id}"/>
+                            <g:hiddenField name="tipo" value="wd"/>
+                            <div class="fieldcontain required">
+                                <b>Cargar archivo WORD:</b>
+                                <input type="file" id="fileEspe" name="file" class="required" required  multiple accept=".doc, .docx"/>
 
+                                <div class="btn-group" style="margin-top: 20px;">
+                                    <a href="#" class="submitWord btn btn-success" data-id="${item?.id}">
+                                        <i class="fa fa-save"></i> Guardar
+                                    </a>
+                                </div>
+                                <g:if test="${ares?.especificacion}">
                                     <div class="btn-group" style="margin-top: 20px;">
-                                        <a href="#" class="submitWord btn btn-success" data-id="${item?.id}">
-                                            <i class="fa fa-save"></i> Guardar
+                                        <g:link action="downloadFile" id="${item.id}" params="[tipo: 'wd']" class="btn btn-info">
+                                            <i class="fa fa-download"></i> Descargar
+                                        </g:link>
+                                    </div>
+                                    <div class="btn-group" style="margin-top: 20px;">
+                                        <a href="#" class=" btnBorrarWord btn btn-danger" data-id="${item?.id}">
+                                            <i class="fa fa-trash"></i> Borrar
                                         </a>
                                     </div>
+                                </g:if>
+                            </div>
+                        </g:uploadForm>
+                    </g:if>
+                    <g:else>
+                        <g:if test="${ares?.especificacion}">
+                            <div class="btn-group" style="margin-top: 20px;">
 
-                                    <g:if test="${ares?.especificacion}">
-                                        <div class="btn-group" style="margin-top: 20px;">
-
-                                            <g:link action="downloadFile" id="${item.id}" params="[tipo: 'wd']" class="btn btn-info">
-                                                <i class="fa fa-download"></i> Descargar
-                                            </g:link>
-                                        </div>
-                                        <div class="btn-group" style="margin-top: 20px;">
-                                            <a href="#" class=" btnBorrarWord btn btn-danger" data-id="${item?.id}">
-                                                <i class="fa fa-trash"></i> Borrar
-                                            </a>
-                                        </div>
-                                    </g:if>
-                                </div>
-                            </g:uploadForm>
+                                <g:link action="downloadFile" id="${item.id}" params="[tipo: 'wd']" class="btn btn-info">
+                                    <i class="fa fa-download"></i> Descargar
+                                </g:link>
+                            </div>
                         </g:if>
-                        <g:else>
-                            <g:if test="${ares?.especificacion}">
-                                <div class="btn-group" style="margin-top: 20px;">
-
-                                    <g:link action="downloadFile" id="${item.id}" params="[tipo: 'wd']" class="btn btn-info">
-                                        <i class="fa fa-download"></i> Descargar
-                                    </g:link>
-                                </div>
-                            </g:if>
-                        </g:else>
-                    </div>
-                </g:if>
-            %{--</g:if>--}%
-
+                    </g:else>
+                </div>
+            </g:if>
+        %{--</g:if>--}%
         </div>
 
         <div class="col-md-12">
@@ -130,7 +115,7 @@
                 </div>
             </div>
             <g:if test="${!tipo}">
-                <g:uploadForm action="uploadFile" method="post" name="frmUploadImagen" enctype="multipart/form-data">
+                <g:uploadForm action="uploadFileIlustracionRubro" method="post" name="frmUploadImagen" enctype="multipart/form-data">
                     <g:hiddenField name="rubro" value="${item?.id}"/>
                     <g:hiddenField name="tipo" value="il"/>
                     <div class="fieldcontain required col-md-12">
@@ -141,7 +126,6 @@
                                 <i class="fa fa-save"></i> Guardar
                             </a>
                         </div>
-
                         <g:if test="${item?.foto}">
                             <div class="btn-group" style="margin-top: 20px;">
                                 <g:link action="downloadFile" id="${item.id}" params="[tipo: 'il']" class="btn btn-info">
@@ -166,13 +150,11 @@
                     </div>
                 </g:if>
             </g:else>
-
             <g:if test="${item?.foto}">
                 <div class="col-md-12" id="divImagenMateriales">
                     %{--                    <img src="${request.contextPath}/mantenimientoItems/getFoto?id=${item?.id}" style="width: 400px; height: 400px"/>--}%
                 </div>
             </g:if>
-
         </div>
     </div>
 </div>
@@ -281,8 +263,8 @@
 
     function deleteArchivo(id, tipo){
         bootbox.confirm({
-            title: "Eliminar archivo",
-            message: '<i class="fa fa-trash text-danger fa-3x"></i>' + '<strong style="font-size: 14px">' + "Está seguro de borrar este documento? Esta acción no puede deshacerse. " + '</strong>' ,
+            title: "<i class='fa fa-trash text-danger fa-2x'></i> Eliminar archivo",
+            message: '<strong style="font-size: 14px">' + "Está seguro de borrar este documento? Esta acción no puede deshacerse. " + '</strong>' ,
             buttons: {
                 cancel: {
                     label: '<i class="fa fa-times"></i> Cancelar',

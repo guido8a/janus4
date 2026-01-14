@@ -2728,25 +2728,15 @@ itemId: item.id
                 rubro.save(flush: true)
 
             } else {
-//                flash.clase = "alert-error"
-//                flash.message = "Error: Los formatos permitidos son: JPG, JPEG, GIF, PNG"
-//
                 render "err_Los formatos permitidos son: JPG, JPEG, GIF, PNG"
                 return
 
             }
         } else {
-//            flash.clase = "alert-error"
-//            flash.message = "Error: Seleccione un archivo JPG, JPEG, GIF, PNG"
-
             render "err_Seleccione un archivo JPG, JPEG, GIF, PNG"
             return
         }
-
         render "ok_Guardado correctamente"
-
-//        redirect(action: "especificaciones_ajax", id: rubro.id)
-//        return
     }
 
     def getFoto(){
@@ -2968,7 +2958,7 @@ itemId: item.id
 
 
     def uploadFileEspecificacion() {
-        println "upload "+params
+//        println "upload "+params
 
         def usuario = Persona.get(session.usuario.id)
         def rubro = Item.get(params.item)
@@ -2993,7 +2983,6 @@ itemId: item.id
             nombreArchivo = rubro?.id
         }
 
-
         new File(path).mkdirs()
         archivEsp.persona = usuario
 
@@ -3011,10 +3000,7 @@ itemId: item.id
                 }
             }
 
-            println("ext " + ext)
-
             if ( ext == 'pdf' ?  acceptedPdf.contains(ext?.toLowerCase()) : acceptedWord.contains(ext?.toLowerCase())) {
-
                 println("entro??")
 
                 def old
@@ -3062,7 +3048,7 @@ itemId: item.id
                 render "no_" + params.tipo == 'pdf' ? ("Error: Los formatos permitidos son: PDF") : ("Error: Los formatos permitidos son: DOC, DOCX")
             }
         } else {
-            render "no_" + params.tipo == 'pdf' ? "Error: Seleccione un archivo PDF" : "Error: Seleccione un archivo DOC, DOCX"
+            render "no_" + (params.tipo == 'pdf' ? ("Seleccione un archivo PDF") : ("Seleccione un archivo DOC, DOCX"))
         }
     }
 
