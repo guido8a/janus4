@@ -1197,7 +1197,7 @@ class RubroOfController {
 
                 def sccnEq = false, sccnMo = false, sccnMt = false, sccnTr = false, sccnRubro = false, hojaRubro = false
                 def cdgo, nmbr, undd, peso, cntd, trfa, pcun, rndm, csto, dstn
-                def txRubro = "", tipo = ""
+                def txRubro = "", tipo = "", txHoja = "", hjRubro = ""
                 def ofrb_id = 0
                 def tr_Eq, tr_Mo, tr_Mt, tr_Tr
                 def rg_dataEq, rg_dataMo, rg_dataMt, rg_dataTr
@@ -1240,6 +1240,8 @@ class RubroOfController {
                     Iterator rows = sheet.rowIterator();
                     hojaRubro = false
 
+                    txHoja = sheet.getSheetName()
+                    hjRubro = ""
                     println "Porcesando hoja: $hj --> " + sheet.getSheetName()
 
                     tr_Eq = ""; tr_Mo= ""; tr_Mt = ""; tr_Tr = ""
@@ -1274,7 +1276,8 @@ class RubroOfController {
                                 }
                             }
 
-                            println "reg: $rgst"
+                            println "reg1: $rgst"
+                            println "reg2--> ${rgst[cols[params.cldatitl]]}"
 
                             if (rgst[cols[params.cldatitl]] == params.rbrotitl) { //ANÁLISIS DE PRECIOS UNITARIOS
                                 println "hoja: " + sheet.getSheetName().toString() + " Ok"
@@ -1283,6 +1286,7 @@ class RubroOfController {
 
                             if (hojaRubro) { //ANÁLISIS DE PRECIOS UNITARIOS
                                 println "Procesa: " + sheet.getSheetName().toString()
+                                println "--> rgst[cols[params.cldarbro] --> ${rgst[cols[params.cldarbro]]}"
                                 if(rgst[cols[params.cldarbro]]){
                                     println "${rgst[cols[params.cldarbro]]} == ${params.rbro} && txRubro: ${txRubro}"
 //                                    if (rgst[cols[params.cldarbro]]?.size() >= params.rbro.size()) {
@@ -1292,6 +1296,7 @@ class RubroOfController {
                                         } else {
                                             txRubro = rgst[cols[params.rbronmbr]] ? rgst[cols[params.rbronmbr]] : ''
                                         }
+                                        hjRubro = txRubro
                                     } else {
                                         txRubro = ''
                                     }
@@ -1377,22 +1382,12 @@ class RubroOfController {
                                     /** si está habilitado comprobar, se debe visualizar los datos a insertar
                                      * manejar el return para visualizar **/
                                     if(params.revisar == '1' && sccnEq && rgst.size() > 2) {
-                                        if(nmbr != 'Descripción'){
+//                                        if(nmbr != 'Descripción'){
+                                        if( cntd && sccnEq ){
                                             rg_dataEq = [item: nmbr, cantidad: cntd, tarifa: trfa, rendimiento: rndm, p_unitario: pcun, total: csto]
                                             tr_Eq += "<tr style='width: 100%'>  " +
-//                                                    "<td style='width: 30%'>${rgst}</td> " +
-                                                    "<td style='width: 30%'>${"Código: "}${rgst[0]}</td> " +
-                                                    "<td style='width: 30%'>${"Item: "}${rgst[1]}</td> " +
-                                                    "<td style='width: 30%'>${"Cantidad: "}${rgst[2]}</td> " +
-                                                    "<td style='width: 30%'>${"Tarifa: "}${rgst[3]}</td> " +
-                                                    "<td style='width: 30%'>${"P. Unitario: "}${rgst[4]}</td> " +
-                                                    "<td style='width: 30%'>${"Rendimiento: "}${rgst[5]}</td> " +
-                                                    "<td style='width: 30%'>${"Total: "}${rgst[6]}</td> " +
-                                                    "</tr>" +
-                                                    "<tr style='width: 100%'>  " +
-//                                                    "<td style='width: 30%'>${rg_dataEq}</td> " +
-                                                    "<td style='width: 30%'>${""}</td> " +
-                                                    "<td style='width: 30%'>${"Item: "}${rg_dataEq.item}</td> " +
+                                                    "<td style='width: 20%'>${"EQUIPO"}</td> " +
+                                                    "<td style='width: 40%'>${"Item: "}${rg_dataEq.item}</td> " +
                                                     "<td style='width: 30%'>${"Cantidad: "}${rg_dataEq.cantidad}</td> " +
                                                     "<td style='width: 30%'>${"Tarifa: "}${rg_dataEq.tarifa}</td> " +
                                                     "<td style='width: 30%'>${"P. Unitario: "}${rg_dataEq.p_unitario}</td> " +
@@ -1436,21 +1431,12 @@ class RubroOfController {
                                     }
                                     println "MO -> rbro: $ofrb_id nombre: $nmbr cantidad: $cntd"
                                     if(params.revisar == '1' && sccnMo && rgst.size() > 2) {
-                                        if(nmbr != 'Descripción') {
+//                                        if(nmbr != 'Descripción') {
+                                        if( cntd && sccnMo ){
                                             rg_dataMo = [item: nmbr, cantidad: cntd, tarifa: trfa, rendimiento: rndm, p_unitario: csto]
                                             tr_Mo += "<tr style='width: 100%'>  " +
-//                                                    "<td style='width: 30%'>${rgst}</td> " +
-                                                    "<td style='width: 30%'>${"Código: "}${rgst[0]}</td> " +
-                                                    "<td style='width: 30%'>${"Item: "}${rgst[1]}</td> " +
-                                                    "<td style='width: 30%'>${"Cantidad: "}${rgst[2]}</td> " +
-                                                    "<td style='width: 30%'>${"Jornal: "}${rgst[3]}</td> " +
-                                                    "<td style='width: 30%'>${"P. Unitario: "}${rgst[4]}</td> " +
-                                                    "<td style='width: 30%'>${"Rendimiento: "}${rgst[5]}</td> " +
-                                                    "<td style='width: 30%'>${"Total: "}${rgst[6]}</td> " +
-                                                    "</tr>" +
                                                     "<tr style='width: 100%'>  " +
-//                                                    "<td style='width: 30%'>${rg_dataMo}</td> " +
-                                                    "<td style='width: 30%'>${""}</td> " +
+                                                    "<td style='width: 30%'>${"MANO DE OBRA"}</td> " +
                                                     "<td style='width: 30%'>${"Item: "}${rg_dataMo.item}</td> " +
                                                     "<td style='width: 30%'>${"Cantidad: "}${rg_dataMo.cantidad}</td> " +
                                                     "<td style='width: 30%'>${"Jornal: "}${rg_dataMo.tarifa}</td> " +
@@ -1492,21 +1478,11 @@ class RubroOfController {
                                     }
 
                                     if(params.revisar == '1' && sccnMt && rgst.size() > 2) {
-                                        if(nmbr != 'Descripción') {
+//                                        if(nmbr != 'Descripción') {
+                                        if(cntd && sccnMt){
                                             rg_dataMt = [item: nmbr, cantidad: cntd, p_unitario: pcun, total: csto]
                                             tr_Mt += "<tr style='width: 100%'>  " +
-//                                                    "<td style='width: 30%'>${rgst}</td> " +
-                                                    "<td style='width: 30%'>${"Código: "}${rgst[0]}</td> " +
-                                                    "<td style='width: 30%'>${"Item: "}${rgst[1]}</td> " +
-                                                    "<td style='width: 30%'>${"Cantidad: "}${rgst[3]}</td> " +
-                                                    "<td style='width: 30%'>${"Tarifa: "}${""}</td> " +
-                                                    "<td style='width: 30%'>${"P. Unitario: "}${rgst[4]}</td> " +
-                                                    "<td style='width: 30%'>${"Rendimiento: "}${""}</td> " +
-                                                    "<td style='width: 30%'>${"Total: "}${rgst[5]}</td> " +
-                                                    "</tr>" +
-                                                    "<tr style='width: 100%'>  " +
-//                                                    "<td style='width: 30%'>${rg_dataMt}</td> " +
-                                                    "<td style='width: 30%'>${""}</td> " +
+                                                    "<td style='width: 30%'>${"MATERIALES"}</td> " +
                                                     "<td style='width: 30%'>${"Item: "}${rg_dataMt.item}</td> " +
                                                     "<td style='width: 30%'>${"Cantidad: "}${rg_dataMt.cantidad}</td> " +
                                                     "<td style='width: 30%'>${"Tarifa: "}${''}</td> " +
@@ -1597,6 +1573,9 @@ class RubroOfController {
 //                        htmlInfo += "<p>Hoja : " + sheet.getSheetName() + " Rubro: " + rbronmbr + "</p>" +
 //                                "<p>$rg_lee</p> <p>$rg_data</p>"
 
+                        if(!hjRubro){
+                            htmlInfo += "La hoja $txHoja ($rbronmbr) no tiene un rubro válido"
+                        }
 
                         htmlInfo += "<div class='breadcrumb' style='font-size: 14px' ><strong>Hoja : " + sheet.getSheetName() + " Rubro: " + rbronmbr + "<strong></div>" +
                                 "<table class='table table-bordered table-condensed table-hover table-striped'>" +
