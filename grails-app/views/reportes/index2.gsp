@@ -65,38 +65,43 @@
                         class="btn btn-warning btn-xs col-md-4">
                     <i class="fa fa-print"></i> Detalle de Contratos <br> y Obras contratadas
                 </g:link>
-                <p class="col-md-8">Reporte en Excel de los contratos y obras contratadas inluyendo valores planillados y fechas de las actas</p>
+                <p class="col-md-8">Reporte en Excel de los contratos y obras contratadas incluyendo valores
+                planillados y fechas de las actas.</p>
             </li>
             <li text="cob" class="item col-md-12" texto="cob">
                 <g:link controller="reportes5" style="color: #FFFDF4" action="componentesObraPdf" file=""  class="btn btn-warning btn-xs col-md-4">
                     <i class="fa fa-print"></i> Componentes de obra
                 </g:link>
-                <p class="col-md-8">Genera el reporte PDF de componentes de obra</p>
+                <p class="col-md-8"> Genera el reporte PDF de componentes de obra detallando precio, cantidad y el
+                número de presupuestos en los cuales figura este ítem.</p>
             </li>
             <li text="inu" class="item col-md-12" texto="inu">
                 <g:link controller="reportes5" style="color: #FFFDF4" action="itemsNoUsadosPdf" file="" class="btn btn-warning btn-xs col-md-4">
                     <i class="fa fa-print"></i> Items no usados
                 </g:link>
-                <p class="col-md-8"> Genera el reporte PDF de items no usados </p>
+                <p class="col-md-8"> Genera el reporte PDF de ítems no usados en los presupuestos.</p>
             </li>
 
             <li texto="crs" class="item col-md-12">
                 <a href="#" id="btnReporteExcelCRS" style="color: #FFFDF4" class="btn btn-success btn-xs col-md-4">
                     <i class="fa fa-file-excel"></i> Contratos resumen
                 </a>
-                <p class="col-md-8"> Resumen de contratos </p>
+                <p class="col-md-8">Hoja de Cálculo y Gráfico del resumen de contratos en un periodo de fechas, este
+                reporte muestra una hoja de cálculo con el resumen de cantidad de obras, valores contratados, ..</p>
             </li>
             <li texto="cdg" class="item col-md-12">
                 <a href="#" id="btnReporteExcelCDG" style="color: #FFFDF4" class="btn btn-success btn-xs col-md-4">
                     <i class="fa fa-file-excel"></i> Contratos datos generales
                 </a>
-                <p class="col-md-8"> Datos generales de los contratos </p>
+                <p class="col-md-8">Hoja de cálculo con un reporte de resumen de los contratos con datos de: número de
+                contrato, objeto del contrato,	código contrato complementario, tipo de obra, dirección ejecutoria</p>
             </li>
             <li texto="cdp" class="item col-md-12">
                 <a href="#" id="btnReporteExcelCDP" style="color: #FFFDF4" class="btn btn-success btn-xs col-md-4">
                     <i class="fa fa-file-excel"></i> Contratos detalle proyectos
                 </a>
-                <p class="col-md-8"> Datos generales de los contratos </p>
+                <p class="col-md-8">Crea un resumen de contratos con: Datos del proyecto: Análisis económico: Análisis
+                físico, Recepciones y datos del Contratista:</p>
             </li>
         </ul>
     </div>
