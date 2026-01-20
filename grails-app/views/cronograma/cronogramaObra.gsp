@@ -411,8 +411,6 @@
                 </table>
             %{--</div>--}%
         </div>
-
-    botones-----
     <div class="modal-footer" id="modalFooter">
     </div>
 </div>

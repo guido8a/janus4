@@ -117,9 +117,9 @@
                 <i class="fa fa-retweet"></i>
                 Cambiar rubros
             </a>
-            <a href="#" class="btn btn-info btn-new" id="reporteGrupos" title="Reporte Grupos/Subgrupos" style="display: none">
+            <a href="#" class="btn btn-info btn-new" id="reporteGrupos" title="Reporte Grupos/Subgrupos">
                 <i class="fa fa-print"></i>
-                Rpt. Grupos/Subgrupos
+                Grupo/Subgrupo
             </a>
         </div>
     </div>
