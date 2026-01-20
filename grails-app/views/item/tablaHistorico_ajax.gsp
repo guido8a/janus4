@@ -41,19 +41,19 @@ th, td {
                     <td style="width: 10%">${rb?.aresespe}</td>
                     <td style="width: 10%; text-align: center">
                         <g:if test="${rb?.aresruta}">
-                            <g:link controller="rubro" action="downloadFile" id="${rb?.item__id}" params="[tipo: 'dt']" class="btn btn-info btn-xs" title="Descargar Especificación">
+                            <a class="btn btn-info btn-xs btnDescargarPdf" href="#" rel="tooltip" title="Descargar Especificación" data-id="${rb?.item__id}" data-tipo="${"dt"}">
                                 <i class="fa fa-download"></i>
-                            </g:link>
+                            </a>
                         </g:if>
-                        <g:if test="${rb?.aresruta}">
-                            <g:link controller="rubro" action="downloadFile" id="${rb?.item__id}" params="[tipo: 'il']" class="btn btn-success btn-xs" title="Descargar imagen">
+                        <g:if test="${rb?.itemfoto}">
+                            <a class="btn btn-success btn-xs btnDescargarPdf" href="#" rel="tooltip" title="Descargar imagen" data-id="${rb?.item__id}" data-tipo="${"il"}">
                                 <i class="fa fa-download"></i>
-                            </g:link>
+                            </a>
                         </g:if>
                         <g:if test="${rb?.aresespe}">
-                            <g:link controller="rubro" action="downloadFile" id="${rb?.item__id}" params="[tipo: 'wd']" class="btn btn-warning btn-xs" title="Descargar Word">
+                            <a class="btn btn-warning btn-xs btnDescargarPdf" href="#" rel="tooltip" title="Descargar Word" data-id="${rb?.item__id}" data-tipo="${"wd"}">
                                 <i class="fa fa-download"></i>
-                            </g:link>
+                            </a>
                         </g:if>
                         <a href="#" class="btn btn-xs btn-info btnVerArchivos" data-id="${rb?.item__id}" title="Ver archivos históricos">
                             <i class="fas fa-list"></i>
@@ -73,6 +73,28 @@ th, td {
 </div>
 
 <script type="text/javascript">
+
+    $(".btnDescargarPdf").click(function () {
+        var id = $(this).data("id");
+        var tipo = $(this).data("tipo");
+        $.ajax({
+            type    : "POST",
+            url     : "${createLink(controller: 'rubro', action:'downloadFileHistoricoEspecificaciones')}",
+            data    : {
+                id: id,
+                tipo: tipo
+            },
+            success : function (msg) {
+                var parts = msg.split("_");
+                if(parts[0] === 'no' ){
+                    bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
+                    return false;
+                }else{
+                    location.href="${createLink(controller: 'rubro', action: 'downloadFileHistoricoEspecificaciones')}?id=" + id + "&tipo=" + tipo
+                }
+            } //success
+        }); //ajax
+    });
 
     $(".btnVerArchivos").click(function () {
         var id = $(this).data("id");

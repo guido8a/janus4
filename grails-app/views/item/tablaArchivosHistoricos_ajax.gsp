@@ -14,7 +14,7 @@ th, td {
     <div class="col-md-12">
 
         <div class="col-md-12 alert alert-info">
-              Código de especificación: <strong>${cdes}</strong> Códigos de items: <strong>${codigos}</strong>
+            Código de especificación: <strong>${cdes}</strong> Códigos de items: <strong>${codigos}</strong>
         </div>
 
         <div role="main" style="margin-top: 5px;">
@@ -39,10 +39,9 @@ th, td {
                             <td style="width: 64%">${raw(nombres)}</td>
                             <td style="width: 27%">${dato}</td>
                             <td style="width: 8%; text-align: center">
-                                <g:link controller="item" action="downloadFile" id="${dato}" params="[tipo: 'dt']"
-                                        class="btn btn-info btn-xs" title="Descargar Especificación">
+                                <a class="btn btn-info btn-xs btnDescargarPdfHistorico" href="#" rel="tooltip" title="Descargar especificaciones" data-id="${item?.id}" data-tipo="${"dt"}">
                                     <i class="fa fa-download"></i>
-                                </g:link>
+                                </a>
                             </td>
                             <td style="width: 1%"></td>
                         </tr>
@@ -58,3 +57,29 @@ th, td {
         </div>
     </div>
 </div>
+
+<script>
+
+    $(".btnDescargarPdfHistorico").click(function () {
+        var id = $(this).data("id");
+        var tipo = $(this).data("tipo");
+        $.ajax({
+            type    : "POST",
+            url     : "${createLink(controller: 'rubro', action:'downloadFileHistoricoEspecificaciones')}",
+            data    : {
+                id: id,
+                tipo: tipo
+            },
+            success : function (msg) {
+                var parts = msg.split("_");
+                if(parts[0] === 'no' ){
+                    bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
+                    return false;
+                }else{
+                    location.href="${createLink(controller: 'rubro', action: 'downloadFileHistoricoEspecificaciones')}?id=" + id + "&tipo=" + tipo
+                }
+            } //success
+        }); //ajax
+    });
+
+</script>

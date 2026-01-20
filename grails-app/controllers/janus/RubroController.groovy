@@ -880,6 +880,46 @@ class RubroController {
         }
     }
 
+    def downloadFileHistoricoEspecificaciones() {
+        def rubro = Item.get(params.id)
+        def ares = ArchivoEspecificacion.findByCodigo(rubro?.codigoEspecificacion)
+
+        def tipo = params.tipo
+        def filePath
+
+        switch (tipo) {
+            case "il":
+                filePath = rubro?.foto
+                break;
+            case "dt":
+                filePath = ares?.ruta
+                break;
+            case "wd":
+                filePath = ares?.especificacion
+                break;
+        }
+
+        def ext = filePath ?  filePath.split("\\.") : null
+        if(ext){
+            ext = ext[ext.size() - 1]
+            def folder = "rubros"
+            def path = "/var/janus/" + folder + File.separatorChar + filePath
+            println "path "+path
+            def file = new File(path)
+            if(file.exists()){
+                def b = file.getBytes()
+                response.setContentType(ext == 'pdf' ? "application/pdf" : "image/" + ext)
+                response.setHeader("Content-disposition", "attachment; filename=" + filePath)
+                response.setContentLength(b.length)
+                response.getOutputStream().write(b)
+            }else{
+                render "no_No se encontró el archivo"
+            }
+        }else{
+            render "no_No se encontró el archivo"
+        }
+    }
+
     def downloadFileAres() {
 //        println "downloadFileAres: $params"
         def ares = ArchivoEspecificacion.get(params.id)

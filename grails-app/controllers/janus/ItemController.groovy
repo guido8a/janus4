@@ -1227,7 +1227,7 @@ class ItemController {
         def cn = dbConnectionService.getConnection()
         def sql = "select item.item__id, itemcdgo, itemnmbr, ares.itemcdes, aresruta, aresespe, itemfoto " +
                 "from item, ares where ares.itemcdes = item.itemcdes and tpit__id = 2 and " +
-                "itemnmbr ilike '%${params.criterio}%'"
+                "itemnmbr ilike '%${params.criterio}%' order by itemcdgo"
         println "sql: $sql"
         def data = cn.rows(sql.toString())
 
@@ -1275,7 +1275,7 @@ class ItemController {
         println "se han halla ${archivos.size()} archivos en la carpeta: $ruta"
         println(" > " + filtrados)
 
-        return [cdes: cdes, datos: filtrados, codigos: codigos, ids: ids, nombres: nombres]
+        return [cdes: cdes, datos: filtrados, codigos: codigos, ids: ids, nombres: nombres, item: item]
     }
 
     def downloadFile() {
