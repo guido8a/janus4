@@ -70,12 +70,12 @@
 
             </div>
 
-            <div class="col-md-2 btn-group" role="navigation">
-                <a href="#" class="btn btn-success " id="btnPac">
-                    <i class="fa fa-file"></i>
-                    Nuevo Proceso
-                </a>
-            </div>
+%{--            <div class="col-md-2 btn-group" role="navigation">--}%
+%{--                <a href="#" class="btn btn-success " id="btnPac">--}%
+%{--                    <i class="fa fa-file"></i>--}%
+%{--                    Nuevo Proceso--}%
+%{--                </a>--}%
+%{--            </div>--}%
 
         </div>
 

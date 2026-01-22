@@ -142,7 +142,7 @@
 
         items.header.label = "Acciones";
         items.ver = ver;
-        items.editar = editar;
+        // items.editar = editar;
         items.documentos = documentos;
         if(estado === 'R'){
             items.oferta = oferta;
