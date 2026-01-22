@@ -631,8 +631,8 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
         </div>
 
         <div class="col-md-4">
-            <g:select name="item.ciudad.id" from="${janus.Lugar.findAllByTipoLista(janus.TipoLista.get(3))}"
-                      optionKey="id" optionValue="descripcion" class="col-md-12" id="lista_3"/>
+            <g:select name="item.ciudad.id" from="${janus.Lugar.findAllByTipoLista(janus.TipoLista.get(3), [sort: 'descripcion'])}"
+                      optionKey="id" optionValue="descripcion" class="col-md-12" id="lista_3" value="20"/>
         </div>
     </div>
 
@@ -642,7 +642,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
         </div>
 
         <div class="col-md-4">
-            <g:select name="item.ciudad.id" from="${janus.Lugar.findAllByTipoLista(janus.TipoLista.get(2))}"
+            <g:select name="item.ciudad.id" from="${janus.Lugar.findAllByTipoLista(janus.TipoLista.get(2), [sort: 'descripcion'])}"
                       optionKey="id" optionValue="descripcion" class="col-md-11" id="lista_2"/>
         </div>
 
@@ -651,8 +651,8 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
         </div>
 
         <div class="col-md-4">
-            <g:select name="item.ciudad.id" from="${janus.Lugar.findAllByTipoLista(janus.TipoLista.get(4))}"
-                      optionKey="id" optionValue="descripcion" class="col-md-12" id="lista_4"/>
+            <g:select name="item.ciudad.id" from="${janus.Lugar.findAllByTipoLista(janus.TipoLista.get(4), [sort: 'descripcion'])}"
+                      optionKey="id" optionValue="descripcion" class="col-md-12" id="lista_4" value="21"/>
         </div>
     </div>
 
@@ -664,8 +664,8 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
         </div>
 
         <div class="col-md-4">
-            <g:select name="item.ciudad.id" from="${janus.Lugar.findAllByTipoLista(janus.TipoLista.get(5))}"
-                      optionKey="id" optionValue="descripcion" class="col-md-12" id="lista_5"/>
+            <g:select name="item.ciudad.id" from="${janus.Lugar.findAllByTipoLista(janus.TipoLista.get(5), [sort: 'descripcion'])}"
+                      optionKey="id" optionValue="descripcion" class="col-md-12" id="lista_5" value="22"/>
         </div>
     </div>
 
