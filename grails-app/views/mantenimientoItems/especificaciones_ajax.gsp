@@ -32,9 +32,12 @@
 
                             <g:if test="${ares?.ruta}">
                                 <div class="btn-group" style="margin-top: 20px;">
-                                    <g:link action="downloadFile" id="${item.id}" params="[tipo: 'pdf']" class="btn btn-info">
+%{--                                    <g:link action="downloadFile" id="${item.id}" params="[tipo: 'pdf']" class="btn btn-info">--}%
+%{--                                        <i class="fa fa-download"></i> Descargar--}%
+%{--                                    </g:link>--}%
+                                    <a class="btn btn-info btnDescargarDocumentoPDF" href="#" rel="tooltip" title="Descargar documento" data-id="${item.id}" data-tipo="${"pdf"}">
                                         <i class="fa fa-download"></i> Descargar
-                                    </g:link>
+                                    </a>
                                 </div>
                                 <div class="btn-group" style="margin-top: 20px;">
                                     <a href="#" class="btnBorrarPDF btn btn-danger" data-id="${item?.id}">
@@ -48,9 +51,12 @@
                 <g:else>
                     <g:if test="${ares?.ruta}">
                         <div class="btn-group" style="margin-top: 20px;">
-                            <g:link action="downloadFile" id="${item.id}" params="[tipo: 'pdf']" class="btn btn-info">
+%{--                            <g:link action="downloadFile" id="${item.id}" params="[tipo: 'pdf']" class="btn btn-info">--}%
+%{--                                <i class="fa fa-download"></i> Descargar--}%
+%{--                            </g:link>--}%
+                            <a class="btn btn-info btnDescargarDocumentoPDF" href="#" rel="tooltip" title="Descargar documento" data-id="${item.id}" data-tipo="${"pdf"}">
                                 <i class="fa fa-download"></i> Descargar
-                            </g:link>
+                            </a>
                         </div>
                     </g:if>
                 </g:else>
@@ -82,9 +88,9 @@
 
                                     <g:if test="${ares?.especificacion}">
                                         <div class="btn-group" style="margin-top: 20px;">
-                                            <g:link action="downloadFile" id="${item.id}" params="[tipo: 'wd']" class="btn btn-info">
+                                            <a class="btn btn-info btnDescargarDocumentoWord" href="#" rel="tooltip" title="Descargar documento" data-id="${item.id}" data-tipo="${"wd"}">
                                                 <i class="fa fa-download"></i> Descargar
-                                            </g:link>
+                                            </a>
                                         </div>
                                         <div class="btn-group" style="margin-top: 20px;">
                                             <a href="#" class=" btnBorrarWord btn btn-danger" data-id="${item?.id}">
@@ -98,16 +104,15 @@
                         <g:else>
                             <g:if test="${ares?.especificacion}">
                                 <div class="btn-group" style="margin-top: 20px;">
-                                    <g:link action="downloadFile" id="${item.id}" params="[tipo: 'wd']" class="btn btn-info">
+                                    <a class="btn btn-info btnDescargarDocumentoWord" href="#" rel="tooltip" title="Descargar documento" data-id="${item.id}" data-tipo="${"wd"}">
                                         <i class="fa fa-download"></i> Descargar
-                                    </g:link>
+                                    </a>
                                 </div>
                             </g:if>
                         </g:else>
                     </div>
                 </g:if>
             %{--</g:if>--}%
-
         </div>
 
         <div class="col-md-12">
@@ -130,9 +135,12 @@
 
                         <g:if test="${item?.foto}">
                             <div class="btn-group" style="margin-top: 20px;">
-                                <g:link action="downloadFile" id="${item.id}" params="[tipo: 'il']" class="btn btn-info">
+%{--                                <g:link action="downloadFile" id="${item.id}" params="[tipo: 'il']" class="btn btn-info">--}%
+%{--                                    <i class="fa fa-download"></i> Descargar--}%
+%{--                                </g:link>--}%
+                                <a class="btn btn-info btnDescargarDocumentoImagen" href="#" rel="tooltip" title="Descargar imagen" data-id="${item.id}" data-tipo="${"il"}">
                                     <i class="fa fa-download"></i> Descargar
-                                </g:link>
+                                </a>
                             </div>
                             <div class="btn-group" style="margin-top: 20px;">
                                 <a href="#" class="btnBorrarImagen btn btn-danger" data-id="${item?.id}">
@@ -146,9 +154,12 @@
             <g:else>
                 <g:if test="${item?.foto}">
                     <div class="btn-group" style="margin-top: 20px;">
-                        <g:link action="downloadFile" id="${item.id}" params="[tipo: 'il']" class="btn btn-info">
+%{--                        <g:link action="downloadFile" id="${item.id}" params="[tipo: 'il']" class="btn btn-info">--}%
+%{--                            <i class="fa fa-download"></i> Descargar--}%
+%{--                        </g:link>--}%
+                        <a class="btn btn-info btnDescargarDocumentoImagen" href="#" rel="tooltip" title="Descargar imagen" data-id="${item.id}" data-tipo="${"il"}">
                             <i class="fa fa-download"></i> Descargar
-                        </g:link>
+                        </a>
                     </div>
                 </g:if>
             </g:else>
@@ -322,5 +333,29 @@
             }
         });
     }
+
+    $(".btnDescargarDocumentoWord, .btnDescargarDocumentoPDF, .btnDescargarDocumentoImagen").click(function () {
+        var id = $(this).data("id");
+        var tipo = $(this).data("tipo");
+        $.ajax({
+            type    : "POST",
+            url     : "${createLink(controller: 'mantenimientoItems', action:'downloadFile')}",
+            data    : {
+                id: id,
+                tipo: tipo
+            },
+            success : function (msg) {
+                var parts = msg.split("_");
+                if(parts[0] === 'no' ){
+                    bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
+                    return false;
+                }else{
+                    location.href="${createLink(controller: 'mantenimientoItems', action: 'downloadFile')}?id=" + id + "&tipo=" + tipo
+                }
+
+            } //success
+        }); //ajax
+    });
+
 
 </script>

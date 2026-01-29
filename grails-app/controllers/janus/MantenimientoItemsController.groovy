@@ -2806,25 +2806,23 @@ itemId: item.id
                     break;
             }
 
-            def ext = filePath.split("\\.")
-            ext = ext[ext.size() - 1]
             def path = pathInicial + File.separatorChar + filePath
-//            def path = "/var/janus/" + "item/" +  nuevoAres[0]?.item?.id + File.separatorChar + filePath
-//            println("path " + path)
             def file = new File(path)
             if(file.exists()){
+
+                def ext = filePath.split("\\.")
+                ext = ext[ext.size() - 1]
+
                 def b = file.getBytes()
                 response.setContentType(ext == 'pdf' ? "application/pdf" : ( ext == 'docx' ?  "application/msword" : "image/") + ext)
                 response.setHeader("Content-disposition", "attachment; filename=" + filePath)
                 response.setContentLength(b.length)
                 response.getOutputStream().write(b)
             }else{
-                flash.message="El archivo seleccionado no se encuentra en el servidor."
-                redirect(controller: 'mantenimientoItems',  action: "registro")
+                render "no_No se encontró el archivo " + "_ " + path
             }
         }else{
-            flash.message="El archivo seleccionado no se encuentra en el servidor."
-            redirect(controller: 'mantenimientoItems',  action: "registro")
+            render "no_No se encontró el archivo "
         }
     }
 
