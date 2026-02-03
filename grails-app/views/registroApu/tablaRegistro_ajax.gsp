@@ -22,7 +22,8 @@
             <b style="margin-left: 20px">Obra Ofertada:</b>
         </div>
         <div class="col-md-10">
-            <g:select name="obra" class="form-control" from="${obras}" optionKey="key" optionValue="value" style="width: 100%; margin-left: -80px"/>
+            <g:select name="obra" class="form-control" from="${obras}" optionKey="id" optionValue="nombre" value="${obra}"
+                      style="width: 100%; margin-left: -80px" />
         </div>
 
         <div class="col-md-12" style="margin-top: 20px; margin-bottom: 20px">
@@ -92,7 +93,10 @@
             <g:textField name="rbronmbr" class="form-control allCaps" value="${registro?.rbronmbr ?: 'A'}"/>
         </div>
 
-        <div style="background-color: #e0e0e8; height: 105px; margin-top: 50px">
+        <div class="col-md-12 text-danger" style="font-size: large"><strong>Nota:</strong>
+            Los <strong>valores</strong> ingresados en las celdas deben ser <strong>consecutivos</strong> (A, B, C, D, ..) para todas las secciones: Equipos, Mano de Obra, Materiales y Transporte</div>
+
+        <div style="background-color: #e0e0e8; height: 105px; margin-top: 70px">
             <div class="contenedor">
                 <div class="inside" style="width: 30%; font-weight: bold" >Equipos</div>
 
@@ -332,7 +336,8 @@
                 if(parts[0] === 'ok'){
                     log(parts[1], "success");
                     setTimeout(function () {
-                        location.reload();
+                        location.href = "${createLink(controller: 'rubroOf', action: 'subirExcelApu')}?tipo=1&obra=" + parts[2];
+//                        location.reload();
                     }, 800);
                 }else{
                     bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');

@@ -840,6 +840,7 @@ class RubroOfController {
     }
 
     def subirExcelApu() {
+        println "subirExcelApu params: $params"
         def oferente = session.usuario
         def cn = dbConnectionService.getConnection()
         def obras = [:]
@@ -852,7 +853,8 @@ class RubroOfController {
             obras[r.id] = r.nombre
         }
 
-        [obras: obras, oferente: oferente, tipo: params.tipo]
+//        [obras: obras, oferente: oferente, tipo: params.tipo, obra: params.obra]
+        [oferente: oferente, tipo: params.tipo, obra: params.obra]
     }
 
     def uploadApus() {
@@ -1454,19 +1456,28 @@ class RubroOfController {
                                 }
 
                                 /** --------------- Materiales del rbro ordn ---------------**/
+                                println "materiales: ${rgst[cols[params.cldaMt]]} == ${params.titlMt}"
                                 if (rgst[cols[params.cldaMt]] == params.titlMt) {
                                     sccnEq = false; sccnMo = false; sccnMt = true; sccnTr = false; sccnRubro = false
 //                                println "Mano de Mat... $sccnMt --> rbro: $ordn $rbronmbr"
                                 }
+                                println "materiales-->: ${sccnMt} && ${ofrb_id}"
                                 if (sccnMt && ofrb_id) {
 //                                cdgo, undd, nmbr, cntd, trfa, pcun, rndm, csto
                                     try {
+//                                        println "..1"
                                         cdgo = params.cdgoMt ? rgst[cols[params.cdgoMt]] : ''
+//                                        println "..2"
                                         nmbr = rgst[cols[params.nmbrMt]]
+//                                        println "..3"
                                         undd = params.unddMt ? rgst[cols[params.unddMt]] : ''
+//                                        println "..4"
                                         cntd = rgst[cols[params.cntdMt]].toDouble() //cantidad
+//                                        println "..5"
                                         pcun = rgst[cols[params.pcunMt]].toDouble() //costo
+//                                        println "..6"
                                         csto = rgst[cols[params.cstoMt]].toDouble()
+//                                        println "..7"
                                     } catch (e) {
                                         cntd = 0
                                     }
@@ -1476,6 +1487,8 @@ class RubroOfController {
                                     } catch (e) {
                                         nmbr = ''
                                     }
+
+                                    println "Materiales: cdgo: $cdgo, cntd: $cntd, pcun: $pcun, csto: $csto"
 
                                     if(params.revisar == '1' && sccnMt && rgst.size() > 2) {
 //                                        if(nmbr != 'Descripción') {
@@ -1525,10 +1538,10 @@ class RubroOfController {
                                     }
 
                                     if(params.revisar == '1' && sccnTr && rgst.size() > 2) {
-                                        if(nmbr != 'Descripción') {
+                                        if(cntd && sccnTr){
+//                                        if(nmbr != 'Descripción') {
                                             rg_dataTr = [item: nmbr, cantidad: cntd, tarifa: pcun, total: csto]
                                             tr_Tr += "<tr style='width: 100%'>  " +
-//                                                    "<td style='width: 30%'>${rgst}</td> " +
                                                     "<td style='width: 30%'>${"Código: "}${rgst[0]}</td> " +
                                                     "<td style='width: 30%'>${"Item: "}${rgst[1]}</td> " +
                                                     "<td style='width: 30%'>${"Cantidad: "}${rgst[4]}</td> " +
@@ -1538,7 +1551,6 @@ class RubroOfController {
                                                     "<td style='width: 30%'>${"Total: "}${rgst[7]}</td> " +
                                                     "</tr>" +
                                                     "<tr style='width: 100%'>  " +
-//                                                    "<td style='width: 30%'>${rg_dataTr}</td> " +
                                                     "<td style='width: 30%'>${""}</td> " +
                                                     "<td style='width: 30%'>${"Item: "}${rg_dataTr.item}</td> " +
                                                     "<td style='width: 30%'>${"Cantidad: "}${rg_dataTr.cantidad}</td> " +

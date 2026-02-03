@@ -7,7 +7,7 @@ class RegistroApuController {
     def dbConnectionService
 
     def tablaRegistro_ajax(){
-
+        println "---> ${params}"
         def oferente = session.usuario
         def registroApu
 
@@ -18,20 +18,22 @@ class RegistroApuController {
         }
 
         def cn = dbConnectionService.getConnection()
-        def obras = [:]
+        def lsObras = []
         def sql = "select distinct obra.obra__id id, obracdgo||' - '||obranmbr nombre " +
                 "from obra, obof " +
                 "where obof.obra__id = obra.obra__id and obof.prsn__id = ${oferente.id} " +
                 "order by 1"
         cn.eachRow(sql.toString()) { r ->
-            obras[r.id] = r.nombre
+//            obras[r.id] = r.nombre
+            lsObras.add(["id": r.id, "nombre": "${r.nombre}"])
+
         }
 
-        return [oferente: oferente, registro: registroApu, obras: obras]
+        return [oferente: oferente, registro: registroApu, obras: lsObras, obra: params.obra]
     }
 
     def saveRegistroApu_ajax(){
-
+        println "saveRegistroApu_ajax params: $params"
         def registro
 
         if(params.id){
@@ -88,7 +90,7 @@ class RegistroApuController {
             println("error al guardar la composicion de registro apu " + registro.errors)
             render "no_Error al guardar la composicion de registro apu"
         }else{
-            render "ok_Guardado correctamente"
+            render "ok_Guardado correctamente_${params.obra}"
         }
     }
 

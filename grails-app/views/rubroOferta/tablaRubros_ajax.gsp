@@ -21,7 +21,7 @@
         <tbody>
         <g:if test="${data}">
             <g:each in="${data}" var="d" status="i">
-                <tr class="${Math.abs(d?.diff) > 0.009 ? 'noCuadra' : ''}">
+                <tr class="${Math.abs(d?.diff?:0) > 0.009 ? 'noCuadra' : ''}">
                     <td style="width: 5%">${d?.ofrbordn}</td>
                     <td style="width: 64%">${d?.ofrbnmbr}</td>
                     <td style="width: 10%; text-align: right">${d?.ofrbpcun}</td>

@@ -84,7 +84,8 @@
             url: "${createLink(controller: 'registroApu', action:'tablaRegistro_ajax')}",
             data: {
                 oferente: oferente,
-                id: id
+                id: id,
+                obra: "${obra}"
             },
             success: function (msg) {
                 d.modal("hide");
