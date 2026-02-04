@@ -71,58 +71,62 @@ th, td {
 <div role="main" style="margin-top: 5px;">
     <table class="table table-bordered table-striped table-condensed table-hover">
         <thead>
-        <tr>
+        <tr style="width: 100%">
             <th style="width: 5%;">
                 #
             </th>
             <th style="width: 15%;">
                 Subpresupuesto
             </th>
-            <th style="width: 11%;">
+            <th style="width: 9%;">
                 Código
             </th>
-            <th style="width: 6%">
+            <th style="width: 10%">
                 Especifi.
             </th>
-            <th style="width: 24%;">
+            <th style="width: 25%;">
                 Rubro
             </th>
             <th style="width: 5%" class="col_unidad">
                 Unidad
             </th>
-            <th style="width: 7%">
+            <th style="width: 6%">
                 Cantidad
             </th>
-            <th class="col_precio" style="display: none; width: 7%">Unitario</th>
-            <th class="col_total" style="display: none; width: 10%">C.Total</th>
-            <th style="width: 10%" class="col_delete">Acciones</th>
+            <th class="col_precio" style="display: none; width: 7%">
+                Unitario
+            </th>
+            <th class="col_total" style="display: none; width: 8%">
+                C.Total
+            </th>
+            <th style="width: 10%" class="col_delete">
+                Acciones
+            </th>
         </tr>
         </thead>
     </table>
 </div>
 <div class="" style="width: 99.7%;height: 500px; overflow-y: auto;float: right; margin-top: -20px">
     <g:set var="vols" value="[]"/>
-
-    <table class="table-bordered table-striped table-condensed table-hover">
+    <table class="table-bordered table-striped table-condensed table-hover" style="width: 100%">
         <tbody>
         <g:each in="${valores}" var="val" status="j">
             <tr style="width: 100%" class="item_row ${val.rbrocdgo[0..1] == 'TR'? 'desalojo': (val.rbrocdgo[0] == 'H'? 'historico': '')}" id="${val.vlob__id}"  item="${val}"
                 dscr="${val.vlobdscr}" sub="${val.sbpr__id}" cdgo="${val.item__id}" title="${val.vlobdscr}">
                 <td style="width: 5%" class="orden">${val.vlobordn}</td>
                 <td style="width: 15%" class="sub">${val.sbprdscr.trim()}</td>
-                <td class="cdgo" style="width: 11%">${val.rbrocdgo.trim()}</td>
-                <td class="cdes" style="width: 6%">${val.itemcdes?.trim()}</td>
-                <td class="nombre" style="width: 24%">${val.rbronmbr.trim()}</td>
+                <td class="cdgo" style="width: 9%">${val.rbrocdgo.trim()}</td>
+                <td class="cdes" style="width: 10%">${val.itemcdes?.trim()}</td>
+                <td class="nombre" style="width: 25%">${val.rbronmbr.trim()}</td>
                 <td style="width: 5%;text-align: center" class="col_unidad" >${val.unddcdgo.trim()}</td>
-                <td style="width: 7%; text-align: right" class="cant">
+                <td style="width: 6%; text-align: right" class="cant">
                     <g:formatNumber number="${val.vlobcntd}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/>
                 </td>
                 <td class="col_precio" style="display: none;text-align: right;width: 7%" id="i_${val.item__id}"><g:formatNumber
                         number="${val.pcun}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/></td>
-                <td class="col_total total" style="display: none;text-align: right; width: 10%">
+                <td class="col_total total" style="display: none;text-align: right; width: 8%">
                     <g:formatNumber number="${val.totl}" format="##,##0" minFractionDigits="4"  maxFractionDigits="4" locale="ec"/>
                 </td>
-
                 <td style="width: 10%;text-align: center" class="col_delete">
                     <g:if test="${obra.estado!='R' && duenoObra == 1}">
                         <a class="btn btn-xs btn-success editarItem" href="#" rel="tooltip" title="Editar" iden="${val.vlob__id}"
