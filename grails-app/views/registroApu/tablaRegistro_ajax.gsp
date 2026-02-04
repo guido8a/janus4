@@ -94,7 +94,8 @@
         </div>
 
         <div class="col-md-12 text-danger" style="font-size: large"><strong>Nota:</strong>
-            Los <strong>valores</strong> ingresados en las celdas deben ser <strong>consecutivos</strong> (A, B, C, D, ..) para todas las secciones: Equipos, Mano de Obra, Materiales y Transporte</div>
+            Las <strong>letras</strong> ingresadas en las celdas deben tener valores <strong>consecutivos</strong> (A, B, C, D, ..)
+            en todas las secciones: Equipos, Mano de Obra, Materiales y Transp.</div>
 
         <div style="background-color: #e0e0e8; height: 105px; margin-top: 70px">
             <div class="contenedor">
