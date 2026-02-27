@@ -43,62 +43,62 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
         <i class="fa fa-arrow-left"></i>
         Regresar
     </a>
-%{--    <a href="#" class="btn" id="btn_lista">--}%
-%{--        <i class="fa fa-list"></i>--}%
-%{--        Lista--}%
-%{--    </a>--}%
-%{--    <a href="${g.createLink(action: 'rubroPrincipal')}" class="btn btn-ajax btn-new">--}%
-%{--        <i class="fa fa-file"></i>--}%
-%{--        Nuevo--}%
-%{--    </a>--}%
-%{--    <a href="#" class="btn btn-ajax btn-new btn-primary" id="guardar">--}%
-%{--        <i class="fa fa-save"></i>--}%
-%{--        Guardar--}%
-%{--    </a>--}%
-%{--    <a href="#" class="btn btn-ajax btn-new" id="borrar">--}%
-%{--        <i class="fa fa-trash"></i>--}%
-%{--        Borrar--}%
-%{--    </a>--}%
-%{--    <a href="${g.createLink(action: 'rubroPrincipal')}" class="btn btn-ajax btn-new">--}%
-%{--        <i class="fa fa-times"></i>--}%
-%{--        Cancelar--}%
-%{--    </a>--}%
+    %{--    <a href="#" class="btn" id="btn_lista">--}%
+    %{--        <i class="fa fa-list"></i>--}%
+    %{--        Lista--}%
+    %{--    </a>--}%
+    %{--    <a href="${g.createLink(action: 'rubroPrincipal')}" class="btn btn-ajax btn-new">--}%
+    %{--        <i class="fa fa-file"></i>--}%
+    %{--        Nuevo--}%
+    %{--    </a>--}%
+    %{--    <a href="#" class="btn btn-ajax btn-new btn-primary" id="guardar">--}%
+    %{--        <i class="fa fa-save"></i>--}%
+    %{--        Guardar--}%
+    %{--    </a>--}%
+    %{--    <a href="#" class="btn btn-ajax btn-new" id="borrar">--}%
+    %{--        <i class="fa fa-trash"></i>--}%
+    %{--        Borrar--}%
+    %{--    </a>--}%
+    %{--    <a href="${g.createLink(action: 'rubroPrincipal')}" class="btn btn-ajax btn-new">--}%
+    %{--        <i class="fa fa-times"></i>--}%
+    %{--        Cancelar--}%
+    %{--    </a>--}%
 
-%{--    <a href="#" class="btn btn-ajax btn-new" id="calcular" title="Calcular precios">--}%
-%{--        <i class="fa fa-table"></i>--}%
-%{--        Calcular--}%
-%{--    </a>--}%
-%{--    <a href="#" class="btn btn-ajax btn-new" id="transporte" title="Transporte">--}%
-%{--        <i class="fa fa-truck"></i>--}%
-%{--        Transporte--}%
-%{--    </a>--}%
-%{--    <g:if test="${rubro}">--}%
-%{--        <a href="#" class="btn btn-ajax btn-new" id="imprimir" title="Imprimir">--}%
-%{--            <i class="fa fa-print"></i>--}%
-%{--            Imprimir--}%
-%{--        </a>--}%
-%{--    </g:if>--}%
-%{--    <g:if test="${rubro}">--}%
-%{--        <a href="#" class="btn btn-ajax btn-new" id="excel" title="Imprimir">--}%
-%{--            <i class="fa fa-file-excel"></i>--}%
-%{--            Excel--}%
-%{--        </a>--}%
-%{--    </g:if>--}%
+    %{--    <a href="#" class="btn btn-ajax btn-new" id="calcular" title="Calcular precios">--}%
+    %{--        <i class="fa fa-table"></i>--}%
+    %{--        Calcular--}%
+    %{--    </a>--}%
+    %{--    <a href="#" class="btn btn-ajax btn-new" id="transporte" title="Transporte">--}%
+    %{--        <i class="fa fa-truck"></i>--}%
+    %{--        Transporte--}%
+    %{--    </a>--}%
+    %{--    <g:if test="${rubro}">--}%
+    %{--        <a href="#" class="btn btn-ajax btn-new" id="imprimir" title="Imprimir">--}%
+    %{--            <i class="fa fa-print"></i>--}%
+    %{--            Imprimir--}%
+    %{--        </a>--}%
+    %{--    </g:if>--}%
+    %{--    <g:if test="${rubro}">--}%
+    %{--        <a href="#" class="btn btn-ajax btn-new" id="excel" title="Imprimir">--}%
+    %{--            <i class="fa fa-file-excel"></i>--}%
+    %{--            Excel--}%
+    %{--        </a>--}%
+    %{--    </g:if>--}%
 
-%{--    <g:if test="${rubro}">--}%
-%{--        <g:if test="${rubro?.codigoEspecificacion}">--}%
-%{--            <a href="#" id="detalle" class="btn btn-ajax btn-new">--}%
-%{--                <i class="fa fa-book"></i>--}%
-%{--                Especificaciones--}%
-%{--            </a>--}%
-%{--        </g:if>--}%
-%{--    </g:if>--}%
-%{--    <g:if test="${rubro}">--}%
-%{--        <a href="#" id="foto" class="btn btn-ajax btn-new">--}%
-%{--            <i class="fa fa-image"></i>--}%
-%{--            Ilustración--}%
-%{--        </a>--}%
-%{--    </g:if>--}%
+    %{--    <g:if test="${rubro}">--}%
+    %{--        <g:if test="${rubro?.codigoEspecificacion}">--}%
+    %{--            <a href="#" id="detalle" class="btn btn-ajax btn-new">--}%
+    %{--                <i class="fa fa-book"></i>--}%
+    %{--                Especificaciones--}%
+    %{--            </a>--}%
+    %{--        </g:if>--}%
+    %{--    </g:if>--}%
+    %{--    <g:if test="${rubro}">--}%
+    %{--        <a href="#" id="foto" class="btn btn-ajax btn-new">--}%
+    %{--            <i class="fa fa-image"></i>--}%
+    %{--            Ilustración--}%
+    %{--        </a>--}%
+    %{--    </g:if>--}%
 </div>
 
 <div id="list-grupo" class="col-md-12" role="main" style="margin-top: 10px;margin-left: -10px">
@@ -117,7 +117,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                     Código
                     <g:textField name="rubro.codigo" id="input_codigo" class="allCaps required input-small"
                                  value="${rubro?.codigo ?: ''}"
-                                 maxlength="30" minlength="2"/>
+                                 maxlength="30" minlength="2" readonly=""/>
                     <p class="help-block ui-helper-hidden"></p>
 
                 </div>
@@ -125,14 +125,14 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                 <div class="col-md-2" style="margin-left: 20px">
                     Código Especificación
                     <g:textField name="rubro.codigoEspecificacion" class="allCaps required input-small"
-                                 value="${rubro?.codigoEspecificacion}" id="input_codigo_es" maxlength="30"/>
+                                 value="${rubro?.codigoEspecificacion}" id="input_codigo_es" maxlength="30" readonly=""/>
 
                     <p class="help-block ui-helper-hidden"></p>
                 </div>
 
                 <div class="col-md-5" style="margin-left: -10px">
                     Descripción
-                    <g:textField name="rubro.nombre" class="col-md-12" value="${rubro?.nombre}" id="input_descripcion"/>
+                    <g:textField name="rubro.nombre" class="col-md-12" value="${rubro?.nombre}" id="input_descripcion" readonly=""/>
                 </div>
 
                 <div class="col-md-2" style="margin-left: -10px">
@@ -149,21 +149,27 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
             <div class="row-fluid">
                 <div class="col-md-3" style="width: 150px;">
                     <label>Dirección responsable</label>
-                    <g:select name="rubro.grupo.id" id="selClase" from="${grupos}" class="col-md-12" optionKey="id" optionValue="descripcion"
-                              value="${rubro?.departamento?.subgrupo?.grupo?.id}" noSelection="${['': '--Seleccione--']}"/>
+                    <p>${rubro?.departamento?.subgrupo?.grupo?.descripcion}</p>
+                    %{--                    <g:select name="rubro.grupo.id" id="selClase" from="${grupos}" class="col-md-12" optionKey="id" optionValue="descripcion"--}%
+                    %{--                              value="${rubro?.departamento?.subgrupo?.grupo?.id}" noSelection="${['': '--Seleccione--']}" />--}%
                 </div>
 
-                <div id="seleccionarGrupo" class="col-md-2" style="width: 310px; margin-left: 10px">
-
+                %{--                <div id="seleccionarGrupo" class="col-md-2" style="width: 310px; margin-left: 10px">--}%
+                <div class="col-md-2" style="width: 310px; margin-left: 10px">
+                    <label>Grupo</label>
+                    <p>${rubro?.departamento?.subgrupo?.descripcion}</p>
                 </div>
 
-                <div class="col-md-3" id="seleccionarSubgrupo" style="width: 200px; margin-left: 10px">
-
+                %{--                <div class="col-md-3" id="seleccionarSubgrupo" style="width: 200px; margin-left: 10px">--}%
+                <div class="col-md-3" style="width: 200px; margin-left: 10px">
+                    <label>Subgrupo</label>
+                    <p>${rubro?.departamento?.descripcion}</p>
                 </div>
 
                 <div class="col-md-1" style="width: 100px; margin-left: 10px">
                     <label>Unidad</label>
-                    <g:select name="rubro.unidad.id" from="${janus.Unidad.list()}" class="col-md-12" optionKey="id" optionValue="codigo" value="${rubro?.unidad?.id}"/>
+                    <p> ${rubro?.unidad?.codigo} </p>
+                    %{--                    <g:select name="rubro.unidad.id" from="${janus.Unidad.list()}" class="col-md-12" optionKey="id" optionValue="codigo" value="${rubro?.unidad?.id}"/>--}%
                 </div>
 
                 <div class="col-md-2" style="color: #01a; width: 250px; margin-left: 10px" >
@@ -206,30 +212,30 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                 </span>
             </div>
 
-%{--            <div class="col-md-3"></div>--}%
+            %{--            <div class="col-md-3"></div>--}%
 
-%{--            <g:if test="${rubro}">--}%
-%{--                <div class="col-md-2" style="margin-left: 85px">--}%
-%{--                    <a class="btn btn-xs btn-warning " href="#" rel="tooltip" title="Copiar " id="btn_copiarComp">--}%
-%{--                        <i class="fa fa-copy"></i> Copiar composición--}%
-%{--                    </a>--}%
-%{--                </div>--}%
-%{--                <div class="col-md-1" style="margin-left: -50px; width: 40px">--}%
-%{--                    <a class="btn btn-xs btn-info infoItem" href="#" rel="tooltip" title="Información">--}%
-%{--                        <i class="fa fa-book"></i> Info</a>--}%
-%{--                </div>--}%
-%{--            </g:if>--}%
-%{--            <g:else>--}%
-%{--                <div class="col-md-2" style="margin-left: 30px">--}%
-%{--                    <a class="btn btn-xs btn-warning " href="#" rel="tooltip" title="Copiar " disabled>--}%
-%{--                        <i class="fa fa-copy"></i> Copiar composición--}%
-%{--                    </a>--}%
-%{--                </div>--}%
-%{--                <div class="col-md-1" style="margin-left: -50px; width: 40px">--}%
-%{--                    <a class="btn btn-xs btn-info infoItem" href="#" rel="tooltip" title="Información" disabled>--}%
-%{--                        <i class="fa fa-book"></i> Info</a>--}%
-%{--                </div>--}%
-%{--            </g:else>--}%
+            %{--            <g:if test="${rubro}">--}%
+            %{--                <div class="col-md-2" style="margin-left: 85px">--}%
+            %{--                    <a class="btn btn-xs btn-warning " href="#" rel="tooltip" title="Copiar " id="btn_copiarComp">--}%
+            %{--                        <i class="fa fa-copy"></i> Copiar composición--}%
+            %{--                    </a>--}%
+            %{--                </div>--}%
+            %{--                <div class="col-md-1" style="margin-left: -50px; width: 40px">--}%
+            %{--                    <a class="btn btn-xs btn-info infoItem" href="#" rel="tooltip" title="Información">--}%
+            %{--                        <i class="fa fa-book"></i> Info</a>--}%
+            %{--                </div>--}%
+            %{--            </g:if>--}%
+            %{--            <g:else>--}%
+            %{--                <div class="col-md-2" style="margin-left: 30px">--}%
+            %{--                    <a class="btn btn-xs btn-warning " href="#" rel="tooltip" title="Copiar " disabled>--}%
+            %{--                        <i class="fa fa-copy"></i> Copiar composición--}%
+            %{--                    </a>--}%
+            %{--                </div>--}%
+            %{--                <div class="col-md-1" style="margin-left: -50px; width: 40px">--}%
+            %{--                    <a class="btn btn-xs btn-info infoItem" href="#" rel="tooltip" title="Información" disabled>--}%
+            %{--                        <i class="fa fa-book"></i> Info</a>--}%
+            %{--                </div>--}%
+            %{--            </g:else>--}%
         </div>
 
         <div class="row-fluid" style="margin-bottom: 5px">
@@ -240,11 +246,11 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                 <input type="hidden" id="item_tipoLista">
             </div>
 
-            <div class="col-md-1" style="margin-top: 16px; width: 60px; margin-left: -28px">
-                <a class="btn btn-xs btn-primary btn-ajax" href="#" rel="tooltip" title="Agregar rubro" id="btnRubro">
-                    <i class="fa fa-search"></i> Buscar
-                </a>
-            </div>
+%{--            <div class="col-md-1" style="margin-top: 16px; width: 60px; margin-left: -28px">--}%
+%{--                <a class="btn btn-xs btn-primary btn-ajax" href="#" rel="tooltip" title="Agregar rubro" id="btnRubro">--}%
+%{--                    <i class="fa fa-search"></i> Buscar--}%
+%{--                </a>--}%
+%{--            </div>--}%
 
             <div class="col-md-5" style="margin-left: 5px">
                 DESCRIPCIÓN
@@ -758,7 +764,8 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
         return validarNumDec(ev)
     });
 
-    $("#btnRubro").click(function () {
+    // $("#btnRubro").click(function () {
+    $("#cdgo_buscar").dblclick(function () {
         $("#busqueda").dialog("open");
         $(".ui-dialog-titlebar-close").html("x");
         return false;
