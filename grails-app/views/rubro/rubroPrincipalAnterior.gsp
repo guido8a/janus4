@@ -1,4 +1,4 @@
-<%@ page import="seguridad.Persona; janus.TipoLista; janus.Grupo" %>
+<%@ page import="janus.TipoLista; janus.Grupo" %>
 <!doctype html>
 <html>
 <head>
@@ -37,80 +37,68 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
     <p>Cargando...Por favor espere</p>
 </div>
 
+
 <div class="col-md-12 btn-group" role="navigation">
-    <a href="#" class="btn" id="btn_lista">
-        <i class="fa fa-list"></i>
-        Lista
+    <a href="#" class="btn" id="btnRegresar" title="Regresar a rubro">
+        <i class="fa fa-arrow-left"></i>
+        Regresar
     </a>
-    <a href="${g.createLink(action: 'rubroPrincipal')}" class="btn btn-ajax btn-new">
-        <i class="fa fa-file"></i>
-        Nuevo
-    </a>
-    <g:if test="${!contieneH}">
-        <g:if test="${!volumenes}">
-            <a href="#" class="btn btn-ajax btn-new btn-primary" id="guardar">
-                <i class="fa fa-save"></i>
-                Guardar
-            </a>
-        </g:if>
-    </g:if>
-    <a href="#" class="btn btn-ajax btn-new" id="borrar">
-        <i class="fa fa-trash"></i>
-        Borrar
-    </a>
-    <a href="${g.createLink(action: 'rubroPrincipal')}" class="btn btn-ajax btn-new">
-        <i class="fa fa-times"></i>
-        Cancelar
-    </a>
-    <a href="#" class="btn btn-ajax btn-new" id="transporte" title="Transporte">
-        <i class="fa fa-truck"></i>
-        Transporte
-    </a>
-    <g:if test="${rubro}">
-        <a href="#" class="btn btn-ajax btn-new" id="imprimir" title="Imprimir">
-            <i class="fa fa-print"></i>
-            Imprimir
-        </a>
-    </g:if>
-    <g:if test="${rubro}">
-        <a href="#" class="btn btn-ajax btn-new" id="excel" title="Imprimir">
-            <i class="fa fa-file-excel"></i>
-            Excel
-        </a>
-    </g:if>
+%{--    <a href="#" class="btn" id="btn_lista">--}%
+%{--        <i class="fa fa-list"></i>--}%
+%{--        Lista--}%
+%{--    </a>--}%
+%{--    <a href="${g.createLink(action: 'rubroPrincipal')}" class="btn btn-ajax btn-new">--}%
+%{--        <i class="fa fa-file"></i>--}%
+%{--        Nuevo--}%
+%{--    </a>--}%
+%{--    <a href="#" class="btn btn-ajax btn-new btn-primary" id="guardar">--}%
+%{--        <i class="fa fa-save"></i>--}%
+%{--        Guardar--}%
+%{--    </a>--}%
+%{--    <a href="#" class="btn btn-ajax btn-new" id="borrar">--}%
+%{--        <i class="fa fa-trash"></i>--}%
+%{--        Borrar--}%
+%{--    </a>--}%
+%{--    <a href="${g.createLink(action: 'rubroPrincipal')}" class="btn btn-ajax btn-new">--}%
+%{--        <i class="fa fa-times"></i>--}%
+%{--        Cancelar--}%
+%{--    </a>--}%
 
-    <a href="#" id="detalle" class="btn btn-ajax btn-new" ${rubro?.codigoEspecificacion ?: 'disabled'}>
-        <i class="fa fa-book"></i>
-        Especificaciones
-    </a>
-    <g:if test="${rubro && volumenes > 0 && !(rubro?.codigo[0] == 'H')}">
-        <a href="#" id="btnCrearHistorico" class="btn btn-warning">
-            <i class="fa fa-book"></i>
-            Transformar a Histórico
-        </a>
-    </g:if>
+%{--    <a href="#" class="btn btn-ajax btn-new" id="calcular" title="Calcular precios">--}%
+%{--        <i class="fa fa-table"></i>--}%
+%{--        Calcular--}%
+%{--    </a>--}%
+%{--    <a href="#" class="btn btn-ajax btn-new" id="transporte" title="Transporte">--}%
+%{--        <i class="fa fa-truck"></i>--}%
+%{--        Transporte--}%
+%{--    </a>--}%
+%{--    <g:if test="${rubro}">--}%
+%{--        <a href="#" class="btn btn-ajax btn-new" id="imprimir" title="Imprimir">--}%
+%{--            <i class="fa fa-print"></i>--}%
+%{--            Imprimir--}%
+%{--        </a>--}%
+%{--    </g:if>--}%
+%{--    <g:if test="${rubro}">--}%
+%{--        <a href="#" class="btn btn-ajax btn-new" id="excel" title="Imprimir">--}%
+%{--            <i class="fa fa-file-excel"></i>--}%
+%{--            Excel--}%
+%{--        </a>--}%
+%{--    </g:if>--}%
 
-    <g:if test="${rubro}">
-        <g:if test="${!contieneH}">
-            <g:if test="${(volumenes > 0)}">
-                <div class="col-md-2 alert alert-warning" style="margin-left: 5px; font-weight: bold; text-align: center;
-                height: 35px; padding: 10px">
-                    <i class="fa fa-times text-danger"></i> &nbsp;&nbsp;&nbsp;No se puede editar
-                </div>
-            </g:if>
-            <g:else>
-                <div class="col-md-2 alert alert-success" style="margin-left: 5px; font-weight: bold; text-align: center;
-                height: 35px; padding: 10px">
-                    <i class="fa fa-check"></i> Si se puede editar
-                </div>
-            </g:else>
-        </g:if>
-        <g:else>
-            <div class="col-md-2 alert alert-warning" style="margin-left: 5px; font-weight: bold; text-align: center; height: 35px; padding: 10px">
-                <i class="fa fa-times text-danger"></i> &nbsp;&nbsp;&nbsp;No se puede editar
-            </div>
-        </g:else>
-    </g:if>
+%{--    <g:if test="${rubro}">--}%
+%{--        <g:if test="${rubro?.codigoEspecificacion}">--}%
+%{--            <a href="#" id="detalle" class="btn btn-ajax btn-new">--}%
+%{--                <i class="fa fa-book"></i>--}%
+%{--                Especificaciones--}%
+%{--            </a>--}%
+%{--        </g:if>--}%
+%{--    </g:if>--}%
+%{--    <g:if test="${rubro}">--}%
+%{--        <a href="#" id="foto" class="btn btn-ajax btn-new">--}%
+%{--            <i class="fa fa-image"></i>--}%
+%{--            Ilustración--}%
+%{--        </a>--}%
+%{--    </g:if>--}%
 </div>
 
 <div id="list-grupo" class="col-md-12" role="main" style="margin-top: 10px;margin-left: -10px">
@@ -129,7 +117,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                     Código
                     <g:textField name="rubro.codigo" id="input_codigo" class="allCaps required input-small"
                                  value="${rubro?.codigo ?: ''}"
-                                 maxlength="30" minlength="2" readonly="${volumenes ? true : false}" />
+                                 maxlength="30" minlength="2"/>
                     <p class="help-block ui-helper-hidden"></p>
 
                 </div>
@@ -137,22 +125,14 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                 <div class="col-md-2" style="margin-left: 20px">
                     Código Especificación
                     <g:textField name="rubro.codigoEspecificacion" class="allCaps required input-small"
-                                 value="${rubro?.codigoEspecificacion}" id="input_codigo_es" maxlength="30" readonly="${volumenes ? true : false}"/>
-                    <p class="help-block ui-helper-hidden"></p>
+                                 value="${rubro?.codigoEspecificacion}" id="input_codigo_es" maxlength="30"/>
 
+                    <p class="help-block ui-helper-hidden"></p>
                 </div>
 
-                <g:if test="${rubro}">
-                    <g:if test="${!contieneH}">
-                        <div class="col-md-1" style="margin-left: -35px; margin-top: 15px">
-                            <a href="#" class="btn btn-info btn-xs" id="btnEditarCodigoEspecificacion"><i class="fa fa-edit"></i></a>
-                        </div>
-                    </g:if>
-                </g:if>
-
-                <div class="col-md-5" style="margin-left: -45px">
+                <div class="col-md-5" style="margin-left: -10px">
                     Descripción
-                    <g:textField name="rubro.nombre" class="col-md-12" value="${rubro?.nombre}" id="input_descripcion" readonly="${volumenes ? true : false}"/>
+                    <g:textField name="rubro.nombre" class="col-md-12" value="${rubro?.nombre}" id="input_descripcion"/>
                 </div>
 
                 <div class="col-md-2" style="margin-left: -10px">
@@ -181,109 +161,116 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
 
                 </div>
 
-                <div class="col-md-1" style="width: 100px; margin-left: -20px">
+                <div class="col-md-1" style="width: 100px; margin-left: 10px">
                     <label>Unidad</label>
                     <g:select name="rubro.unidad.id" from="${janus.Unidad.list()}" class="col-md-12" optionKey="id" optionValue="codigo" value="${rubro?.unidad?.id}"/>
                 </div>
 
-                <div class="col-md-2" style="color: #01a; width: 250px; margin-left: -20px" >
+                <div class="col-md-2" style="color: #01a; width: 250px; margin-left: 10px" >
                     <label>Responsable:</label>  <br>
-                    <input type="hidden" name="rubro.responsable" class="col-md-12" value="${rubro?.responsable?.id ?: session.usuario.id}" id="selResponsable">
-                    <g:textField name="responsableName" class="col-md-12" value="${rubro?.responsable?.nombreCompleto ?: seguridad.Persona.get(session.usuario.id)?.nombreCompleto}" id="responsableName" readonly="true" />
-                </div>
-                <div class="col-md-2" style="color: #01a; width: 220px; margin-left: -20px" >
-                    <label>Modificado por:</label>  <br>
-                    <input type="hidden" name="selModifica" class="col-md-12" value="${rubro?.modifica?.id ?: session.usuario.id}" id="selModifica">
-                    <g:textField name="personaModifica" class="col-md-12" value="${rubro?.modifica?.nombre?:''} ${rubro?.modifica?.apellido?:''}" readonly="true" />
+                    <input type="hidden" name="rubro.responsable" class="col-md-12" value="${rubro?.responsable?.id?:session.usuario.id}" id="selResponsable">
+                    <g:textField name="persona" class="col-md-12" value="${rubro?.responsable?:session.usuario}" id="Responsable" readonly="true" />
+
                 </div>
             </div>
         </g:form>
     </div>
 
-    <div style="border-bottom: 1px solid black;padding-left: 50px;margin-top: 10px;position: relative; height: 60px">
+    <div style="border-bottom: 1px solid black;padding-left: 50px;margin-top: 10px;position: relative; height: 80px">
         <p class="css-vertical-text">Items</p>
 
-        <div class="linea" style="height: 80px;"></div>
+        <div class="linea" style="height: 100px;"></div>
 
         <div class="row" style="color: #248">
 
-            <div class="col-md-12">
-                <div class="col-md-1">
-                    <g:if test="${rubro}">
-                        <g:if test="${!contieneH}">
-                            <a class="btn btn-xs btn-primary btn-ajax" href="#" rel="tooltip" title="Agregar item" id="btnRubro" ${ !volumenes ?: 'disabled'}>
-                                <i class="fa fa-plus"></i> Agregar Item
-                            </a>
-                            <a class="btn btn-xs btn-success btn-ajax" href="#" rel="tooltip" title="Ir a detalle anterior" id="btnRubroAnterior" ${ !volumenes ?: 'disabled'}>
-                                <i class="fa fa-plus"></i> Anterior
-                            </a>
-                        </g:if>
-                    </g:if>
-                </div>
+            <div class="col-md-3" style="width: 440px;">
+                Lista de precios: MO y Equipos
+                <g:select name="item.ciudad.id" from="${janus.Lugar.findAllByTipoLista(janus.TipoLista.get(6))}"
+                          optionKey="id" optionValue="descripcion" id="ciudad" style="width: 250px"/>
+            </div>
 
-                <div class="col-md-3">
-                    <label> Lista de precios: <strong> MO y Equipos </strong> </label>
-                    <g:select name="item.ciudad.id" from="${janus.Lugar.findAllByTipoLista(janus.TipoLista.get(6))}"
-                              optionKey="id" optionValue="descripcion" id="ciudad" style="width: 250px"/>
-                </div>
+            <div class="col-md-3" style="width: 180px;">
+                % costos indirectos
+                <g:textField style="width: 40px;" name="costo_indi" value="22.5"/>
+            </div>
 
-
-                <div class="col-md-1" style="margin-top: -15px">
-                    <label>  % costos indirectos </label>
-                    <br>
-                    <g:textField style="width: 40px;" name="costo_indi" value="22.5"/>
-                </div>
-
-                <div class="col-md-2">
-                    <label>
+            <div class="form-group ${hasErrors(bean: administracionInstance, field: 'fechaInicio', 'error')} ">
+                <span class="grupo">
+                    <label class="col-md-1 control-label text-info">
                         Fecha
                     </label>
-                    <br>
-                    <input aria-label="" name="item.fecha" id='fecha_precios' type='text' class="required input-small"
-                           value="${new java.util.Date().format('dd-MM-yyyy')}" style="width: 100px"/>
-                </div>
+                    <span class="col-md-2" style="width: 120px; margin-left: -40px">
+                        <input aria-label="" name="item.fecha" id='fecha_precios' type='text' class="required input-small"
+                               value="${new java.util.Date().format('dd-MM-yyyy')}" style="width: 100px"/>
+                    </span>
+                </span>
+            </div>
 
-                <div class="col-md-2">
-                    <label> Rendimiento </label>
-                    <br>
-                    <g:textField style="width: 90px; margin-left: -20px" name="rendimientoValorDefecto" value="${1}"/>
-                    <g:if test="${!contieneH}">
-                        <g:if test="${!volumenes}">
-                            <a class="btn btn-xs btn-success btnRendimientoTodos" href="#" rel="tooltip"
-                               title="Aplicar rendimiento a todos">
-                                <i class="fa fa-check"></i>
-                            </a>
-                        </g:if>
-                    </g:if>
-                </div>
+%{--            <div class="col-md-3"></div>--}%
 
-                <g:if test="${rubro}">
-                    <div class="col-md-3 btn-group" style="margin-top: 10px">
-                        <a class="btn btn-xs btn-warning " href="#" rel="tooltip" title="Copiar " id="btn_copiarComp">
-                            <i class="fa fa-copy"></i> Copiar composición
-                        </a>
-                        <a class="btn btn-xs btn-info infoItem" href="#" rel="tooltip" title="Información">
-                            <i class="fa fa-book"></i> Info
-                        </a>
-                        <a class="btn btn-xs btn-success infoRubro" href="#" rel="tooltip" title="Información modifica">
-                            <i class="fa fa-book"></i> Modifica
-                        </a>
-                    </div>
-                </g:if>
-                <g:else>
-                    <div class="col-md-3 btn-group" style="margin-top: 10px">
-                        <a class="btn btn-xs btn-warning " href="#" rel="tooltip" title="Copiar " disabled>
-                            <i class="fa fa-copy"></i> Copiar composición
-                        </a>
-                        <a class="btn btn-xs btn-info infoItem" href="#" rel="tooltip" title="Información" disabled>
-                            <i class="fa fa-book"></i> Info
-                        </a>
-                        <a class="btn btn-xs btn-success infoRubro" href="#" rel="tooltip" title="Información modifica" disabled="">
-                            <i class="fa fa-book"></i> Modifica
-                        </a>
-                    </div>
-                </g:else>
+%{--            <g:if test="${rubro}">--}%
+%{--                <div class="col-md-2" style="margin-left: 85px">--}%
+%{--                    <a class="btn btn-xs btn-warning " href="#" rel="tooltip" title="Copiar " id="btn_copiarComp">--}%
+%{--                        <i class="fa fa-copy"></i> Copiar composición--}%
+%{--                    </a>--}%
+%{--                </div>--}%
+%{--                <div class="col-md-1" style="margin-left: -50px; width: 40px">--}%
+%{--                    <a class="btn btn-xs btn-info infoItem" href="#" rel="tooltip" title="Información">--}%
+%{--                        <i class="fa fa-book"></i> Info</a>--}%
+%{--                </div>--}%
+%{--            </g:if>--}%
+%{--            <g:else>--}%
+%{--                <div class="col-md-2" style="margin-left: 30px">--}%
+%{--                    <a class="btn btn-xs btn-warning " href="#" rel="tooltip" title="Copiar " disabled>--}%
+%{--                        <i class="fa fa-copy"></i> Copiar composición--}%
+%{--                    </a>--}%
+%{--                </div>--}%
+%{--                <div class="col-md-1" style="margin-left: -50px; width: 40px">--}%
+%{--                    <a class="btn btn-xs btn-info infoItem" href="#" rel="tooltip" title="Información" disabled>--}%
+%{--                        <i class="fa fa-book"></i> Info</a>--}%
+%{--                </div>--}%
+%{--            </g:else>--}%
+        </div>
 
+        <div class="row-fluid" style="margin-bottom: 5px">
+            <div class="col-md-2">
+                CÓDIGO
+                <g:textField name="item.codigo" id="cdgo_buscar" class="col-md-12 allCaps required input-small" readonly="true"/>
+                <input type="hidden" id="item_id">
+                <input type="hidden" id="item_tipoLista">
+            </div>
+
+            <div class="col-md-1" style="margin-top: 16px; width: 60px; margin-left: -28px">
+                <a class="btn btn-xs btn-primary btn-ajax" href="#" rel="tooltip" title="Agregar rubro" id="btnRubro">
+                    <i class="fa fa-search"></i> Buscar
+                </a>
+            </div>
+
+            <div class="col-md-5" style="margin-left: 5px">
+                DESCRIPCIÓN
+                <g:textField name="item.descripcion" id="item_desc" class="col-md-12" readonly="true"/>
+            </div>
+
+            <div class="col-md-1" style="margin-right: 0px;margin-left: -20px; width: 120px">
+                UNIDAD
+                <g:textField name="item.unidad" id="item_unidad" class="col-md-8" readonly="true"/>
+            </div>
+
+            <div class="col-md-1" style="margin-left: -50px !important; width: 120px">
+                CANTIDAD
+                <g:textField name="item.cantidad" class="col-md-12" id="item_cantidad" value="0" style="text-align: right"/>
+            </div>
+
+            <div class="col-md-1" style="width: 160px; margin-left: -20px">
+                RENDIMIENTO
+                <g:textField name="item.rendimiento" class="col-md-12" id="item_rendimiento" value="1"
+                             style="text-align: right; color: #44a;"/>
+            </div>
+
+            <div class="col-md-1" style="border: 0px solid black;height: 45px;padding-top: 16px;margin-left: -10px; width: 90px">
+                <a class="btn btn-xs btn-primary btn-ajax" href="#" rel="tooltip" title="Agregar" id="btn_agregarItem">
+                    <i class="fa fa-plus"></i>
+                </a>
             </div>
         </div>
     </div>
@@ -294,27 +281,23 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
         <p class="css-vertical-text">Composición</p>
 
         <div class="linea" style="height: 98%;"></div>
-
         <table class="table table-bordered table-striped table-condensed table-hover" style="margin-top: 10px;">
             <thead>
             <tr>
                 <th style="width: 80px;">
                     CÓDIGO
                 </th>
-                <th style="width: 550px;">
+                <th style="width: 600px;">
                     EQUIPO
                 </th>
                 <th style="width: 80px;">
                     CANTIDAD
                 </th>
                 <th class="col_tarifa" style="display: none;">TARIFA <br>($/hora)</th>
-                %{--                <th class="col_tarifa" style="">TARIFA <br>($/hora)</th>--}%
                 <th class="col_hora" style="display: none;">COSTO($)</th>
-                %{--                <th class="col_hora" style="">COSTO($)</th>--}%
                 <th class="col_rend" style="width: 50px">RENDIMIENTO</th>
                 <th class="col_total" style="display: none;"><C class="TOTAL"></C>C.TOTAL($)<br>($/hora)</th>
-                %{--                <th class="col_total" style=""><C class="TOTAL"></C>C.TOTAL($)<br>($/hora)</th>--}%
-                <th style="width: 100px" class="col_delete"></th>
+                <th style="width: 40px" class="col_delete"></th>
             </tr>
             </thead>
             <tbody id="tabla_equipo">
@@ -328,27 +311,15 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                         </td>
 
                         <td class="col_tarifa cod_${rub.item.codigo?.replaceAll('\\.', '_')}" style="display: none;text-align: right" id="i_${rub.item.id}"></td>
-                        %{--                        <td class="col_tarifa cod_${rub.item.codigo?.replaceAll('\\.', '_')}" style="text-align: right" id="i_${rub.item.id}"></td>--}%
                         <td class="col_hora" style="display: none;text-align: right"></td>
-                        %{--                        <td class="col_hora" style="text-align: right"></td>--}%
                         <td class="col_rend rend" style="width: 50px;text-align: right" valor="${rub.rendimiento}">
                             <g:formatNumber number="${rub.rendimiento}" format="##,#####0" minFractionDigits="5" maxFractionDigits="5" locale="ec"/>
                         </td>
                         <td class="col_total" style="display: none;text-align: right"></td>
-                        %{--                        <td class="col_total" style="text-align: right"></td>--}%
-                        <td style="width: 100px;text-align: center" class="col_delete">
-                            <g:if test="${rubro}">
-                                <g:if test="${!contieneH}">
-                                    <g:if test="${!volumenes}">
-                                        <a class="btn btn-xs btn-success editarItem" href="#" rel="tooltip" title="Editar" data-id="${rub.id}">
-                                            <i class="fa fa-edit"></i>
-                                        </a>
-                                        <a class="btn btn-xs btn-danger borrarItem" href="#" rel="tooltip" title="Eliminar" iden="${rub.id}">
-                                            <i class="fa fa-trash"></i>
-                                        </a>
-                                    </g:if>
-                                </g:if>
-                            </g:if>
+                        <td style="width: 50px;text-align: center" class="col_delete">
+                            <a class="btn btn-xs btn-danger borrarItem" href="#" rel="tooltip" title="Eliminar" iden="${rub.id}">
+                                <i class="fa fa-trash"></i>
+                            </a>
                         </td>
                     </tr>
                 </g:if>
@@ -361,7 +332,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                 <th style="width: 80px;">
                     CÓDIGO
                 </th>
-                <th style="width: 550px;">
+                <th style="width: 600px;">
                     MANO DE OBRA
                 </th>
                 <th style="width: 80px">
@@ -372,7 +343,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                 <th class="col_hora" style="display: none;">COSTO($)</th>
                 <th class="col_rend" style="width: 50px;">RENDIMIENTO</th>
                 <th class="col_total" style="display: none;">C.TOTAL($)</th>
-                <th style="width: 100px" class="col_delete"></th>
+                <th style="width: 40px" class="col_delete"></th>
             </tr>
             </thead>
             <tbody id="tabla_mano">
@@ -391,19 +362,10 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                             <g:formatNumber number="${rub.rendimiento}" format="##,#####0" minFractionDigits="5" maxFractionDigits="5" locale="ec"/>
                         </td>
                         <td class="col_total" style="display: none;text-align: right"></td>
-                        <td style="width: 100px;text-align: center" class="col_delete">
-                            <g:if test="${rubro}">
-                                <g:if test="${!contieneH}">
-                                    <g:if test="${!volumenes}">
-                                        <a class="btn btn-xs btn-success editarItem" href="#" rel="tooltip" title="Editar" data-id="${rub.id}">
-                                            <i class="fa fa-edit"></i>
-                                        </a>
-                                        <a class="btn btn-xs btn-danger borrarItem" href="#" rel="tooltip" title="Eliminar" iden="${rub.id}">
-                                            <i class="fa fa-trash"></i>
-                                        </a>
-                                    </g:if>
-                                </g:if>
-                            </g:if>
+                        <td style="width: 50px;text-align: center" class="col_delete">
+                            <a class="btn btn-xs btn-danger borrarItem" href="#" rel="tooltip" title="Eliminar" iden="${rub.id}">
+                                <i class="fa fa-trash"></i>
+                            </a>
                         </td>
                     </tr>
                 </g:if>
@@ -425,9 +387,9 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                 <th style="width: 80px">
                     CANTIDAD
                 </th>
+                <th style="width: 40px" class="col_delete"></th>
                 <th class="col_precioUnit" style="display: none;">UNITARIO</th>
                 <th class="col_total" style="display: none;">C.TOTAL($)</th>
-                <th style="width: 100px" class="col_delete"></th>
             </tr>
             </thead>
             <tbody id="tabla_material">
@@ -443,19 +405,10 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                         <td class="col_precioUnit" style="display: none;text-align: right" id="i_${rub.item.id}"></td>
 
                         <td class="col_total" style="display: none;text-align: right"></td>
-                        <td style="width: 100px;text-align: center" class="col_delete">
-                            <g:if test="${rubro}">
-                                <g:if test="${!contieneH}">
-                                    <g:if test="${!volumenes}">
-                                        <a class="btn btn-xs btn-success editarItem" href="#" rel="tooltip" title="Editar" data-id="${rub.id}">
-                                            <i class="fa fa-edit"></i>
-                                        </a>
-                                        <a class="btn btn-xs btn-danger borrarItem" href="#" rel="tooltip" title="Eliminar" iden="${rub.id}">
-                                            <i class="fa fa-trash"></i>
-                                        </a>
-                                    </g:if>
-                                </g:if>
-                            </g:if>
+                        <td style="width: 50px;text-align: center" class="col_delete">
+                            <a class="btn btn-xs btn-danger borrarItem" href="#" rel="tooltip" title="Eliminar" iden="${rub.id}">
+                                <i class="fa fa-trash"></i>
+                            </a>
                         </td>
                     </tr>
                 </g:if>
@@ -506,17 +459,19 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
 
 </div>
 
-%{--<div id="modal-detalle" style=";overflow: hidden;">--}%
-%{--    <div class="modal-body" id="modalBody-detalle">--}%
-%{--        Especificaciones:<br>--}%
-%{--        <textarea id="especificaciones" style="width: 700px;height: 150px;resize: none;margin-top: 10px">--}%
-%{--            ${rubro?.especificaciones}--}%
-%{--        </textarea>--}%
-%{--    </div>--}%
-%{--    <div class="modal-footer" id="modalFooter-detalle">--}%
-%{--        <a href="#" id="save-espc" class="btn btn-info">Guardar</a>--}%
-%{--    </div>--}%
-%{--</div>--}%
+<div id="modal-detalle" style=";overflow: hidden;">
+
+    <div class="modal-body" id="modalBody-detalle">
+        Especificaciones:<br>
+        <textarea id="especificaciones" style="width: 700px;height: 150px;resize: none;margin-top: 10px">
+            ${rubro?.especificaciones}
+        </textarea>
+    </div>
+
+    <div class="modal-footer" id="modalFooter-detalle">
+        <a href="#" id="save-espc" class="btn btn-info">Guardar</a>
+    </div>
+</div>
 
 <div id="dialTransporte" style="overflow: hidden">
     <fieldset class="borde" style="border-radius: 4px; margin-top: 10px">
@@ -633,8 +588,8 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
         </div>
 
         <div class="col-md-4">
-            <g:select name="item.ciudad.id" from="${janus.Lugar.findAllByTipoLista(janus.TipoLista.get(3), [sort: 'descripcion'])}"
-                      optionKey="id" optionValue="descripcion" class="col-md-12" id="lista_3" value="20"/>
+            <g:select name="item.ciudad.id" from="${janus.Lugar.findAllByTipoLista(janus.TipoLista.get(3))}"
+                      optionKey="id" optionValue="descripcion" class="col-md-12" id="lista_3"/>
         </div>
     </div>
 
@@ -644,7 +599,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
         </div>
 
         <div class="col-md-4">
-            <g:select name="item.ciudad.id" from="${janus.Lugar.findAllByTipoLista(janus.TipoLista.get(2), [sort: 'descripcion'])}"
+            <g:select name="item.ciudad.id" from="${janus.Lugar.findAllByTipoLista(janus.TipoLista.get(2))}"
                       optionKey="id" optionValue="descripcion" class="col-md-11" id="lista_2"/>
         </div>
 
@@ -653,8 +608,8 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
         </div>
 
         <div class="col-md-4">
-            <g:select name="item.ciudad.id" from="${janus.Lugar.findAllByTipoLista(janus.TipoLista.get(4), [sort: 'descripcion'])}"
-                      optionKey="id" optionValue="descripcion" class="col-md-12" id="lista_4" value="21"/>
+            <g:select name="item.ciudad.id" from="${janus.Lugar.findAllByTipoLista(janus.TipoLista.get(4))}"
+                      optionKey="id" optionValue="descripcion" class="col-md-12" id="lista_4"/>
         </div>
     </div>
 
@@ -666,8 +621,8 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
         </div>
 
         <div class="col-md-4">
-            <g:select name="item.ciudad.id" from="${janus.Lugar.findAllByTipoLista(janus.TipoLista.get(5), [sort: 'descripcion'])}"
-                      optionKey="id" optionValue="descripcion" class="col-md-12" id="lista_5" value="22"/>
+            <g:select name="item.ciudad.id" from="${janus.Lugar.findAllByTipoLista(janus.TipoLista.get(5))}"
+                      optionKey="id" optionValue="descripcion" class="col-md-12" id="lista_5"/>
         </div>
     </div>
 
@@ -780,144 +735,9 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
 
 <script type="text/javascript">
 
-    var es;
-
-    $("#btnRubroAnterior").click(function () {
-        location.href="${createLink(controller: 'rubro', action: 'rubroPrincipalAnterior')}?id=" + '${rubro?.id}';
+    $("#btnRegresar").click(function () {
+        location.href="${createLink(controller: 'rubro', action: 'rubroPrincipal')}/" + '${rubro?.id}'
     });
-
-    $("#btnEditarCodigoEspecificacion").click(function () {
-        var id = '${rubro?.id}';
-        $.ajax({
-            type    : "POST",
-            url     : "${createLink(controller: 'rubro', action:'codigoEspecificacion_ajax')}",
-            data    : {
-                id: id
-            },
-            success : function (msg) {
-                var e = bootbox.dialog({
-                    id    : "dlgEditCE",
-                    title : "Editar Código Especificación",
-                    class : "modal-sm",
-                    message : msg,
-                    buttons : {
-                        cancelar : {
-                            label     : "<i class='fa fa-times'></i> Cancelar",
-                            className : "btn-primary",
-                            callback  : function () {
-                            }
-                        },
-                        guardar : {
-                            label     : "<i class='fa fa-save'></i> Guardar",
-                            className : "btn-success",
-                            callback  : function () {
-                                var ou = cargarLoader("Guardando...");
-                                $.ajax({
-                                    type : "POST",
-                                    url : "${g.createLink(controller: 'rubro',action:'guardarCodigoEspecificacion_ajax')}",
-                                    data     : {
-                                        id: '${rubro?.id}',
-                                        codigo: $("#nuevoCodigoEspecificacion").val()
-                                    },
-                                    success  : function (msg) {
-                                        ou.modal("hide");
-                                        var parts = msg.split("_");
-                                        if(parts[0]=== 'ok'){
-                                            log("Guardado correctamente", "success");
-                                            setTimeout(function () {
-                                                location.reload();
-                                            }, 1000);
-                                        }else{
-                                            bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
-                                        }
-                                    }
-                                });
-                            }
-                        }
-                    } //buttons
-                }); //dialog
-            } //success
-        }); //ajax
-    });
-
-    $("#detalle").click(function () {
-        var id = '${rubro?.id}';
-        cargarEspecificaciones(id);
-    });
-
-    function cargarEspecificaciones(id){
-        $.ajax({
-            type    : "POST",
-            url     : "${createLink(controller: 'rubro', action:'especificaciones_ajax')}",
-            data    : {
-                id: id
-            },
-            success : function (msg) {
-                es = bootbox.dialog({
-                    id    : "dlgEspecificacionesMaterial",
-                    title : "Especificaciones del rubro",
-                    message : msg,
-                    buttons : {
-                        cancelar : {
-                            label     : "Cancelar",
-                            className : "btn-primary",
-                            callback  : function () {
-                            }
-                        }
-                    } //buttons
-                }); //dialog
-            } //success
-        }); //ajax
-    }
-
-    function cerrarEspecificaciones(){
-        es.modal("hide");
-    }
-
-    $(".btnRendimientoTodos").click(function () {
-        bootbox.confirm({
-            title: "Rendimiento",
-            message: "<i class='fa fa-exclamation-triangle text-info fa-3x'></i> <strong style='font-size: 14px'>" +
-                " Está seguro de colocar este rendimiento a TODOS los ítems del rubro?</strong> ",
-            buttons: {
-                cancel: {
-                    label: '<i class="fa fa-times"></i> Cancelar',
-                    className: 'btn-primary'
-                },
-                confirm: {
-                    label: '<i class="fa fa-check"></i> Aceptar',
-                    className: 'btn-success'
-                }
-            },
-            callback: function (result) {
-                if(result){
-                    var ou = cargarLoader("Guardando...");
-                    $.ajax({
-                        type : "POST",
-                        url : "${g.createLink(controller: 'rubro',action:'rendimientoTodos_ajax')}",
-                        data     : {
-                            id: '${rubro?.id}',
-                            rendimiento: $("#rendimientoValorDefecto").val()
-                        },
-                        success  : function (msg) {
-                            ou.modal("hide");
-                            var parts = msg.split("_");
-                            if(parts[0]=== 'ok'){
-                                log("Guardado correctamente", "success");
-                                setTimeout(function () {
-                                    %{--location.href="${createLink(controller: 'rubro', action: 'rubroPrincipal')}/" + parts[1];--}%
-                                    location.reload();
-                                }, 1000);
-                            }else{
-                                bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
-                            }
-                        }
-                    });
-                }
-            }
-        });
-    });
-
 
     $('#fecha_precios, #fecha_registro, #fecha_modificacion, #fechaCreacion, #fechaSalidaId').datetimepicker({
         locale: 'es',
@@ -934,108 +754,14 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
             ev.keyCode === 37 || ev.keyCode === 39);
     }
 
-    function validarNum(ev) {
-        /*
-         48-57      -> numeros
-         96-105     -> teclado numerico
-         188        -> , (coma)
-         190        -> . (punto) teclado
-         110        -> . (punto) teclado numerico
-         8          -> backspace
-         46         -> delete
-         9          -> tab
-         37         -> flecha izq
-         39         -> flecha der
-         */
-        return ((ev.keyCode >= 48 && ev.keyCode <= 57) ||
-            (ev.keyCode >= 96 && ev.keyCode <= 105) ||
-            ev.keyCode === 190 || ev.keyCode === 110 ||
-            ev.keyCode === 8 || ev.keyCode === 46 || ev.keyCode === 9 ||
-            ev.keyCode === 37 || ev.keyCode === 39);
-    }
-
-
-    $("#rendimientoValorDefecto").keydown(function (ev) {
-        return validarNum(ev);
-    });
-
-
     $("#codigo").keydown(function (ev) {
         return validarNumDec(ev)
     });
 
-
-    $("#btnCrearHistorico").click(function () {
-        $.ajax({
-            type : "POST",
-            url : "${g.createLink(controller: 'rubro',action:'verificaRubro')}",
-            data     : {
-                id: '${rubro?.id}'
-            },
-            success  : function (msg) {
-                var resp = msg.split('_');
-                if(resp[0] === "1"){
-                    var ou = cargarLoader("Cargando...");
-                    $.ajax({
-                        type : "POST",
-                        url : "${g.createLink(controller: 'rubro',action:'listaObrasUsadas_ajax')}",
-                        data     : {
-                            id : '${rubro?.id}',
-                            tipo: '3'
-                        },
-                        success  : function (msg) {
-                            ou.modal("hide");
-                            var b = bootbox.dialog({
-                                id      : "dlgLOU",
-                                title   : "Lista de obras usadas",
-                                message : msg,
-                                buttons : {
-                                    cancelar : {
-                                        label     :'<i class="fa fa-times"></i> Cancelar',
-                                        className : "btn-primary",
-                                        callback  : function () {
-                                        }
-                                    },
-                                    copiar: {
-                                        label: '<i class="fa fa-copy"></i> Transformar a histótico el rubro',
-                                        className: 'btn-success',
-                                        callback  : function () {
-                                            var cr = cargarLoader("Creando...");
-                                            $.ajax({
-                                                type : "POST",
-                                                url : "${g.createLink(controller: 'rubro',action:'copiaRubro')}",
-                                                data     : {
-                                                    id: '${rubro?.id}'
-                                                },
-                                                success  : function (msg) {
-                                                    cr.modal("hide");
-                                                    var parts = msg.split("_");
-                                                    if(parts[0]=== 'no'){
-                                                        bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
-                                                    }else{
-                                                        // agregar(msg,"H");
-                                                        log("Histórico creado correctamente", "success");
-                                                        setTimeout(function () {
-                                                            location.href="${createLink(controller: 'rubro', action: 'rubroPrincipal')}/" + parts[1];
-                                                        }, 1000);
-                                                    }
-                                                }
-                                            });
-                                        } //callback
-                                    }
-                                } //buttons
-                            }); //dialog
-                        }
-                    });
-                }else{
-                    bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + "No se puede crear un histórico de este rubro" + '</strong>');
-                }
-            }
-        });
-    });
-
     $("#btnRubro").click(function () {
-        location.href="${createLink(controller: 'rubro', action: 'buscarRubro')}/" + '${rubro?.id}';
+        $("#busqueda").dialog("open");
+        $(".ui-dialog-titlebar-close").html("x");
+        return false;
     });
 
     $("#busqueda").dialog({
@@ -1048,6 +774,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
         position: 'center',
         title: 'Items'
     });
+
 
     $("#modal-rubro").dialog({
         autoOpen: false,
@@ -1204,7 +931,8 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                     data     : data,
                     success  : function (msg) {
                         // if(tipo=="H"){
-                        window.location.href="${g.createLink(action: 'rubroPrincipal')}/"+id;
+                        %{--window.location.href="${g.createLink(action: 'rubroPrincipal')}/"+id;--}%
+                        window.location.href="${g.createLink(action: 'rubroPrincipalAnterior')}/"+id;
                         // }
                         var tr = $("<tr class='item_row'>");
                         var td = $("<td>");
@@ -1532,17 +1260,15 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
             window.menubar.visible = false;
         });
 
-        %{--$("#detalle").click(function () {--}%
-        %{--    var id = '${rubro?.id}';--}%
-        %{--    var child = window.open('${createLink(controller:"mantenimientoItems",action:"especificaciones_ajax")}?id=' + id,--}%
-        %{--        'janus4', 'width=850,height=800,toolbar=0,resizable=0,menubar=0,scrollbars=1,status=0');--}%
+        $("#detalle").click(function () {
+            var child = window.open('${createLink(controller:"rubro",action:"showFoto",id: rubro?.id, params:[tipo:"dt"])}',
+                'Mies', 'width=850,height=800,toolbar=0,resizable=0,menubar=0,scrollbars=1,status=0');
 
-        %{--    if (child.opener == null)--}%
-        %{--        child.opener = self;--}%
-        %{--    window.toolbar.visible = false;--}%
-        %{--    window.menubar.visible = false;--}%
-        %{--});--}%
-
+            if (child.opener == null)
+                child.opener = self;
+            window.toolbar.visible = false;
+            window.menubar.visible = false;
+        });
 
         $("#borrar").click(function () {
             <g:if test="${rubro}">
@@ -1677,6 +1403,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
             } else {
                 $("#costo_chofer").val("0.00")
             }
+
         });
 
         $("#cmb_chof").change();
@@ -1752,12 +1479,10 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
             }
         });
 
-        calcularSiempre();
-
-        function calcularSiempre (){
+        $("#calcular").click(function () {
             if ($(this).hasClass("active")) {
                 $(this).removeClass("active");
-                // $(".col_delete").show();
+                $(".col_delete").show();
                 $(".col_unidad").show();
                 $(".col_tarifa").hide();
                 $(".col_hora").hide();
@@ -1778,67 +1503,63 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                     $(this).removeClass("active")
                 } else {
                     var items = $(".item_row");
-                    // if (items.size() < 1) {
-                    //     bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + "Añada items a la composición del rubro antes de calcular los precios" + '</strong>');
-                    //     $(this).removeClass("active")
-                    // } else {
-                    var tipo = "C";
-                    if ($("#V").hasClass("active"))
-                        tipo = "V";
-                    var listas = "";
-                    listas += $("#lista_1").val() + "#" + $("#lista_2").val() + "#" + $("#lista_3").val() + "#" +
-                        $("#lista_4").val() + "#" + $("#lista_5").val() + "#" + $("#ciudad").val();
+                    if (items.size() < 1) {
+                        bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + "Añada items a la composición del rubro antes de calcular los precios" + '</strong>');
+                        $(this).removeClass("active")
+                    } else {
+                        var tipo = "C";
+                        if ($("#V").hasClass("active"))
+                            tipo = "V";
+                        var listas = "";
+                        listas += $("#lista_1").val() + "#" + $("#lista_2").val() + "#" + $("#lista_3").val() + "#" +
+                            $("#lista_4").val() + "#" + $("#lista_5").val() + "#" + $("#ciudad").val();
 
-                    var datos = "fecha=" + $("#fecha_precios").val() + "&ciudad=" + $("#ciudad").val() + "&tipo=" +
-                        tipo + "&listas=" + listas + "&ids=";
-                    $.each(items, function () {
-                        datos += $(this).attr("id") + "#"
-                    });
-                    $.ajax({
-                        type : "POST",
-                        url : "${g.createLink(controller: 'rubro',action:'getPrecios')}",
-                        data     : datos,
-                        success  : function (msg) {
-                            var precios = [];
-                            precios = msg.split("&");
-                            if (precios.length > 1)
-                                for (i = 0; i < precios.length; i++) {
-                                    var parts = precios[i].split(";");
-                                    var celda = $("#i_" + parts[0]);
-                                    celda.html(number_format(parts[1], 5, ".", ""));
-                                    var padre = celda.parent();
-                                    var celdaRend = padre.find(".col_rend");
-                                    var celdaTotal = padre.find(".col_total");
-                                    var celdaCant = padre.find(".cant");
-                                    var celdaHora = padre.find(".col_hora");
-                                    var rend = 1;
-                                    if (celdaHora.hasClass("col_hora")) {
-                                        celdaHora.html(number_format(parseFloat(celda.html()) * parseFloat(celdaCant.html()), 5, ".", ""))
+                        var datos = "fecha=" + $("#fecha_precios").val() + "&ciudad=" + $("#ciudad").val() + "&tipo=" +
+                            tipo + "&listas=" + listas + "&ids=";
+                        $.each(items, function () {
+                            datos += $(this).attr("id") + "#"
+                        });
+                        $.ajax({
+                            type : "POST",
+                            url : "${g.createLink(controller: 'rubro',action:'getPrecios')}",
+                            data     : datos,
+                            success  : function (msg) {
+                                var precios = [];
+                                precios = msg.split("&");
+                                if (precios.length > 1)
+                                    for (i = 0; i < precios.length; i++) {
+                                        var parts = precios[i].split(";");
+                                        var celda = $("#i_" + parts[0]);
+                                        celda.html(number_format(parts[1], 5, ".", ""));
+                                        var padre = celda.parent();
+                                        var celdaRend = padre.find(".col_rend");
+                                        var celdaTotal = padre.find(".col_total");
+                                        var celdaCant = padre.find(".cant");
+                                        var celdaHora = padre.find(".col_hora");
+                                        var rend = 1;
+                                        if (celdaHora.hasClass("col_hora")) {
+                                            celdaHora.html(number_format(parseFloat(celda.html()) * parseFloat(celdaCant.html()), 5, ".", ""))
+                                        }
+                                        if (celdaRend.html()) {
+                                            rend = celdaRend.attr("valor") * 1
+                                        }
+                                        celdaTotal.html(number_format(parseFloat(celda.html()) * parseFloat(celdaCant.html()) * parseFloat(rend), 5, ".", ""))
                                     }
-                                    if (celdaRend.html()) {
-                                        rend = celdaRend.attr("valor") * 1
-                                    }
-                                    celdaTotal.html(number_format(parseFloat(celda.html()) * parseFloat(celdaCant.html()) * parseFloat(rend), 5, ".", ""))
-                                }
-                            calcularTotales()
-                        }
-                    });
+                                calcularTotales()
+                            }
+                        });
 
-                    // $(".col_delete").hide();
-                    $(".col_tarifa").show();
-                    $(".col_hora").show();
-                    $(".col_total").show();
-                    $(".col_jornal").show();
-                    $(".col_precioUnit").show();
-                    $(".col_vacio").show()
-                    // }
+                        $(".col_delete").hide();
+                        $(".col_tarifa").show();
+                        $(".col_hora").show();
+                        $(".col_total").show();
+                        $(".col_jornal").show();
+                        $(".col_precioUnit").show();
+                        $(".col_vacio").show()
+                    }
                 }
             }
-        }
-
-        // $("#calcular").click(function () {
-        //     calcularSiempre();
-        // });
+        });
 
         $("#btn_copiarComp").click(function () {
             var dp = cargarLoader("Cargando...");
@@ -1879,7 +1600,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
 
             bootbox.confirm({
                 title: "Eliminar",
-                message: "<i class='fa fa-exclamation-triangle text-info fa-3x'></i> <strong style='font-size: 14px'> Está seguro de eliminar este registro?</strong> ",
+                message: "Está seguro de eliminar este registro? Esta acción no puede deshacerse.",
                 buttons: {
                     cancel: {
                         label: '<i class="fa fa-times"></i> Cancelar',
@@ -1895,50 +1616,20 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                         $.ajax({
                             type : "POST",
                             url : "${g.createLink(controller: 'rubro',action:'verificaRubro')}",
-                            data     : {
-                                id : '${rubro?.id}'
-                            },
+                            data     : "id=${rubro?.id}",
                             success  : function (msg) {
-
-                                // $("#dlgLoad").dialog("close");
+                                $("#dlgLoad").dialog("close");
                                 var resp = msg.split('_');
                                 if(resp[0] === "1"){
-                                    var ou = cargarLoader("Cargando...");
-                                    $.ajax({
-                                        type : "POST",
-                                        url : "${g.createLink(controller: 'rubro',action:'listaObrasUsadas_ajax')}",
-                                        data     : {
-                                            id : '${rubro?.id}',
-                                            tipo: '1'
-                                        },
-                                        success  : function (msg) {
-                                            ou.modal("hide");
-                                            var b = bootbox.dialog({
-                                                id      : "dlgLOU",
-                                                title   : "Lista de obras usadas",
-                                                message : msg,
-                                                buttons : {
-                                                    cancelar : {
-                                                        label     : "Cancelar",
-                                                        className : "btn-primary",
-                                                        callback  : function () {
-                                                        }
-                                                    }
-                                                } //buttons
-                                            }); //dialog
-                                        }
-                                    });
-
+                                    bootbox.alert('<i class="fa fa-exclamation-triangle text-info fa-3x"></i> ' + '<strong style="font-size: 14px">' + "Este rubro ya forma parte de la(s) obra(s):" + resp[1]  + "</br>  * Si desea eliminar el item, necesita crear el historico del rubro" +'</strong>');
                                 }else{
-                                    $.ajax({
-                                        type : "POST",
-                                        url : "${g.createLink(controller: 'rubro',action:'eliminarRubroDetalle')}",
+                                    $.ajax({type : "POST", url : "${g.createLink(controller: 'rubro',action:'eliminarRubroDetalle')}",
                                         data     : "id=" + boton.attr("iden"),
                                         success  : function (msg) {
-                                            log("Borrado correctamente", "success");
-                                            setTimeout(function () {
-                                                location.reload();
-                                            }, 1000);
+                                            if (msg === "Registro eliminado") {
+                                                tr.remove()
+                                            }
+                                            bootbox.alert('<i class="fa fa-exclamation-triangle text-info fa-3x"></i> ' + '<strong style="font-size: 14px">' + msg  + '</strong>');
                                         }
                                     });
                                 }
@@ -1949,69 +1640,18 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
             });
         });
 
-        $(".infoRubro").click(function () {
-            var ou = cargarLoader("Cargando...");
-            $.ajax({
-                type : "POST",
-                url : "${g.createLink(controller: 'rubro',action:'infoModifica_ajax')}",
-                data     : {
-                    id : '${rubro?.id}'
-                },
-                success  : function (msg) {
-                    ou.modal("hide");
-                    var b = bootbox.dialog({
-                        id      : "dlgIM",
-                        title   : "Información de modificacion",
-                        class: 'modal-lg',
-                        message : msg,
-                        buttons : {
-                            cancelar : {
-                                label     : "Cancelar",
-                                className : "btn-primary",
-                                callback  : function () {
-                                }
-                            }
-                        } //buttons
-                    }); //dialog
-                }
-            });
-        });
-
         $(".infoItem").click(function () {
-            $.ajax({
-                type : "POST",
-                url : "${g.createLink(controller: 'rubro',action:'verificaRubro')}",
-                data     : {
-                    id : '${rubro?.id}'
-                },
+            var tr = $(this).parent().parent();
+            var boton = $(this);
+
+            $("#dlgLoad").dialog("open");
+            $.ajax({type : "POST", url : "${g.createLink(controller: 'rubro',action:'verificaRubro')}",
+                data     : "id=${rubro?.id}",
                 success  : function (msg) {
+                    $("#dlgLoad").dialog("close");
                     var resp = msg.split('_');
                     if(resp[0] === "1"){
-                        var ou = cargarLoader("Cargando...");
-                        $.ajax({
-                            type : "POST",
-                            url : "${g.createLink(controller: 'rubro',action:'listaObrasUsadas_ajax')}",
-                            data     : {
-                                id : '${rubro?.id}',
-                                tipo: '2'
-                            },
-                            success  : function (msg) {
-                                ou.modal("hide");
-                                var b = bootbox.dialog({
-                                    id      : "dlgLOU",
-                                    title   : "Lista de obras usadas",
-                                    message : msg,
-                                    buttons : {
-                                        cancelar : {
-                                            label     : "Cancelar",
-                                            className : "btn-primary",
-                                            callback  : function () {
-                                            }
-                                        }
-                                    } //buttons
-                                }); //dialog
-                            }
-                        });
+                        bootbox.alert('<i class="fa fa-exclamation-triangle text-info fa-3x"></i> ' + '<strong style="font-size: 14px">' + "Este rubro forma parte de la(s) obra(s):" + resp[1]  + '</strong>');
                     }else{
                         bootbox.alert('<i class="fa fa-exclamation-triangle text-info fa-3x"></i> ' + '<strong style="font-size: 14px">' + "Este rubro no forma parte de ninguna obra"  + '</strong>');
                     }
@@ -2112,7 +1752,6 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
         });
 
         $("#guardar").click(function () {
-
             var cod = $("#input_codigo").val();
             var desc = $("#input_descripcion").val();
             var subGr = $("#selSubgrupo").val();
@@ -2315,79 +1954,6 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                 }
             }
         });
-
-        $(".editarItem").click(function () {
-            var id = $(this).data("id");
-            editarFormItem(id)
-        });
-
-        function editarFormItem(id) {
-            $.ajax({
-                type    : "POST",
-                url: "${createLink(controller: 'rubro', action:'editarRubro_ajax')}",
-                data    : {
-                    id: id,
-                    rendimiento: $("#rendimientoValorDefecto").val()
-                },
-                success : function (msg) {
-                    var er = bootbox.dialog({
-                        id      : "dlgCreateEditRubro",
-                        title   : "Editar cantidad y rendimiento",
-                        message : msg,
-                        buttons : {
-                            cancelar : {
-                                label     : "Cancelar",
-                                className : "btn-primary",
-                                callback  : function () {
-                                }
-                            },
-                            guardar  : {
-                                id        : "btnSave",
-                                label     : "<i class='fa fa-save'></i> Guardar",
-                                className : "btn-success",
-                                callback  : function () {
-                                    return submitFormEditarItem();
-                                } //callback
-                            } //guardar
-                        } //buttons
-                    }); //dialog
-                } //success
-            }); //ajax
-        } //createEdit
-
-        function submitFormEditarItem() {
-            var $form = $("#frmEditarRubro");
-            if ($form.valid()) {
-                var data = $form.serialize();
-                var dialog = cargarLoader("Guardando...");
-                $.ajax({
-                    type    : "POST",
-                    url     : $form.attr("action"),
-                    data    : data,
-                    success : function (msg) {
-                        dialog.modal('hide');
-                        var parts = msg.split("_");
-                        if(parts[0] === 'ok'){
-                            log(parts[1], "success");
-                            location.reload();
-                        }else{
-                            if(parts[0] === 'err'){
-                                bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
-                                return false;
-                            }else{
-                                log(parts[1], "error");
-                                return false;
-                            }
-                        }
-                    }
-                });
-            } else {
-                return false;
-            }
-        }
-
-
-
     });
 </script>
 </body>

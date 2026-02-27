@@ -1909,4 +1909,56 @@ class RubroController {
         render texto
     }
 
+    def rubroPrincipalAnterior() {
+        println "rubroPrincipal params: $params"
+        def rubro
+        def campos = ["codigo": ["Código", "string"], "nombre": ["Descripción", "string"]]
+        def grupos = []
+        def volquetes = []
+        def volquetes2 = []
+        def choferes = []
+        def aux = Parametros.get(1)
+        def grupoTransporte = DepartamentoItem.findAllByTransporteIsNotNull()
+        def dpto = Departamento.findAllByPermisosIlike("APU")
+        def resps = Persona.findAllByDepartamentoInList(dpto)
+
+        def listaRbro = [1: 'Materiales', 2: 'Mano de obra', 3: 'Equipos']
+        def listaItems = [1: 'Nombre', 2: 'Código']
+
+        def dptoUser = Persona.get(session.usuario.id).departamento
+        def modifica = false
+        if (dpto.size()>0) {
+            dpto.each {d->
+                if (d.id.toInteger() == dptoUser.id.toInteger())
+                    modifica = true
+            }
+        }
+
+        grupoTransporte.each {
+            if (it.transporte.codigo == "H")
+                choferes = Item.findAllByDepartamento(it)
+            if (it.transporte.codigo == "T")
+                volquetes = Item.findAllByDepartamento(it)
+            volquetes2 += volquetes
+        }
+
+        grupos=Grupo.findAll("from Grupo  where id>3")
+        if (params.id) {
+            rubro = Item.get(params.id)
+            def items = Rubro.findAllByRubro(rubro)
+            items.sort { it.item.codigo }
+            resps = rubro.responsable
+            println "grupos: $grupos.id"
+            [campos: campos, rubro: rubro, grupos: grupos, items: items, choferes: choferes, volquetes: volquetes,
+             aux: aux, volquetes2: volquetes2, dpto: dpto, modifica: modifica, resps: resps,
+             listaRbro: listaRbro, listaItems: listaItems]
+        } else {
+
+            [campos: campos, grupos: grupos, choferes: choferes, volquetes: volquetes, aux: aux,
+             volquetes2: volquetes2, dpto: dpto, modifica: modifica, resps: resps,
+             listaRbro: listaRbro, listaItems: listaItems]
+        }
+    }
+
+
 } //fin controller
