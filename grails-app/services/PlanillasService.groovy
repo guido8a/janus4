@@ -138,7 +138,10 @@ class PlanillasService {
 
         sql = "select rjpl__id, prindscr, rjplprdo from rjpl, plnl, prin " +
                 "where rjpl.plnl__id = ${plnl} and rjpl.fprj__id = ${fprj} and plnl.plnl__id = rjpl.plnl__id and " +
-                "prin.prin__id = rjpl.prin__id order by rjpl.rjplprdo"
+                "prin.prin__id = rjpl.prin__id order by rjpl.rjplprdo "
+
+               /** TODO: " limit 8"  pero también hay que limitar el query del título de la tabla **/
+
 //        println "sql armaTablaFr: $sql"
         cn.eachRow(sql.toString()) {rj ->
 //            println "arma tablaFr --2 rj: ${rj.rjplprdo}, ${rj.rjpl__id} --> indc,vlor: $orden"
@@ -157,6 +160,7 @@ class PlanillasService {
 //        def cb = cabeceraBo(tblaBo, plnl)
         tblaBo.add(titulos[0])
         tblaBo.add(titulos[1])
+        println "Bo: $tblaBo"
         tblaBo  //retorna tabla armada
     }
 

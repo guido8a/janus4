@@ -478,6 +478,7 @@ class ActaController {
 //                    return
 //                }
             }
+            println "editable: $editable"
             return [actaInstance: actaInstance, secciones: jsonSecciones, editable: editable, tipos: tipos, actaProv: actaProv, contrato: cntr]
         } else {
             flash.message = "No puede crear un acta sin contrato"

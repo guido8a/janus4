@@ -207,7 +207,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
 
         <div class="row" style="color: #248">
             <div class="col-md-12" >
-                <div class="col-md-2">
+                <div class="col-md-1">
                     <g:if test="${rubro}">
                         <g:if test="${!contieneH}">
                             <a class="btn btn-xs btn-primary btn-ajax" href="#" rel="tooltip" title="Agregar item" id="btnRubro" ${ !volumenes ?: 'disabled'}>
@@ -220,7 +220,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                     </g:if>
                 </div>
 
-                <div class="col-md-3">
+                <div class="col-md-3" style="margin-left: 40px">
                     <label> Lista de precios: <strong> MO y Equipos </strong> </label>
                     <g:select name="item.ciudad.id" from="${janus.Lugar.findAllByTipoLista(janus.TipoLista.get(6))}"
                               optionKey="id" optionValue="descripcion" id="ciudad" style="width: 250px"/>
@@ -257,7 +257,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                 </div>
 
                 <g:if test="${rubro}">
-                    <div class="col-md-1 btn-group" style="margin-top: -15px">
+                    <div class="col-md-3 btn-group" style="margin-left: -45px; margin-top: 10px">
                         <a class="btn btn-xs btn-warning " href="#" rel="tooltip" title="Copiar " id="btn_copiarComp">
                             <i class="fa fa-copy"></i> Copiar composición
                         </a>
@@ -270,7 +270,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                     </div>
                 </g:if>
                 <g:else>
-                    <div class="col-md-1 btn-group" style="margin-top: -15px">
+                    <div class="col-md-3 btn-group" style="margin-left: -45px; margin-top: 10px">
                         <a class="btn btn-xs btn-warning " href="#" rel="tooltip" title="Copiar " disabled>
                             <i class="fa fa-copy"></i> Copiar composición
                         </a>

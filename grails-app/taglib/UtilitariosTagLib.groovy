@@ -54,7 +54,8 @@ class UtilitariosTagLib {
                 "&permil;": '‰',
 
                 "&hellip;": '...',
-                "&deg;": ':'
+                "&deg;": ':',
+                "&ndash;": '-'
         ]
         def str = attrs.str
 

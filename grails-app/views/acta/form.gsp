@@ -189,9 +189,10 @@
             </g:else>
         </div>
         <div class="col-md-5">
-            Efectuada el
+            Efectuada el ${actaInstance?.fecha?.format("dd-MM-yyyy")}
             <g:if test="${editable}">
-                <input aria-label="" name="fecha" id='fecha' type='text' class="form-control required" style="width: 150px" value="${actaInstance?.fecha?.format("dd-MM-yyyy")}" />
+                <input aria-label="" name="fecha" id='fecha' type='text' class="form-control required" style="width: 150px"
+                       value="${actaInstance?.fecha?.format("dd-MM-yyyy")}" />
             </g:if>
             <g:else>
                 <g:formatDate date="${actaInstance.fecha}" format="dd-MM-yyyy"/>
