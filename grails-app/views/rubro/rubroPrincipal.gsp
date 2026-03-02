@@ -206,16 +206,15 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
         <div class="linea" style="height: 80px;"></div>
 
         <div class="row" style="color: #248">
-
-            <div class="col-md-12">
-                <div class="col-md-1">
+            <div class="col-md-12" >
+                <div class="col-md-2">
                     <g:if test="${rubro}">
                         <g:if test="${!contieneH}">
                             <a class="btn btn-xs btn-primary btn-ajax" href="#" rel="tooltip" title="Agregar item" id="btnRubro" ${ !volumenes ?: 'disabled'}>
                                 <i class="fa fa-plus"></i> Agregar Item
                             </a>
                             <a class="btn btn-xs btn-success btn-ajax" href="#" rel="tooltip" title="Ir a detalle anterior" id="btnRubroAnterior" ${ !volumenes ?: 'disabled'}>
-                                <i class="fa fa-plus"></i> Anterior
+                                <i class="fa fa-plus"></i> Interface anterior
                             </a>
                         </g:if>
                     </g:if>
@@ -258,7 +257,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                 </div>
 
                 <g:if test="${rubro}">
-                    <div class="col-md-3 btn-group" style="margin-top: 10px">
+                    <div class="col-md-1 btn-group" style="margin-top: -15px">
                         <a class="btn btn-xs btn-warning " href="#" rel="tooltip" title="Copiar " id="btn_copiarComp">
                             <i class="fa fa-copy"></i> Copiar composición
                         </a>
@@ -271,7 +270,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                     </div>
                 </g:if>
                 <g:else>
-                    <div class="col-md-3 btn-group" style="margin-top: 10px">
+                    <div class="col-md-1 btn-group" style="margin-top: -15px">
                         <a class="btn btn-xs btn-warning " href="#" rel="tooltip" title="Copiar " disabled>
                             <i class="fa fa-copy"></i> Copiar composición
                         </a>
