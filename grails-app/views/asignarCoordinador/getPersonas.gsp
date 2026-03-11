@@ -15,12 +15,12 @@
 
 <script type="text/javascript">
 
-    <g:if test="${personas?.size() > 0}">
+%{--    <g:if test="${personas?.size() > 0}">--}%
     cargarTablaCoordinadores('${departamento?.id}');
-    </g:if>
-    <g:else>
-    $("#divTablaCoordinadores").html("");
-    </g:else>
+%{--    </g:if>--}%
+%{--    <g:else>--}%
+%{--    $("#divTablaCoordinadores").html("");--}%
+%{--    </g:else>--}%
 
     $("#btnAdicionar").click(function () {
         agregarCoordinador();
