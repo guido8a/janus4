@@ -366,7 +366,8 @@ class PlanillasService {
             println "-- $enSuspension contrato suspendido"
             /* halla el prej relativo a la planilla */
             sql = "select min(prejnmro) nmro from prej where cntr__id = ${plnl.contrato.id} and " +
-                    "prejfcin >= '${plnl.fechaInicio.format('yyyy-MM-dd')}'"
+                    "prejfcin >= '${plnl.fechaInicio.format('yyyy-MM-dd')}' and prejcrpa > 0"
+            println "sql: $sql"
             def nmro = cn.rows(sql.toString())[0].nmro
             println "periodo prej planillado:  $nmro"
 
