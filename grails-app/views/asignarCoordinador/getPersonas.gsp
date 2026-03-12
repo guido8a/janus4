@@ -15,38 +15,10 @@
 
 <script type="text/javascript">
 
-%{--    <g:if test="${personas?.size() > 0}">--}%
     cargarTablaCoordinadores('${departamento?.id}');
-%{--    </g:if>--}%
-%{--    <g:else>--}%
-%{--    $("#divTablaCoordinadores").html("");--}%
-%{--    </g:else>--}%
 
     $("#btnAdicionar").click(function () {
         agregarCoordinador();
     });
 
-    // if($(".persona").val() != null){
-    //     cargarFuncion();
-    // }else {
-    //     $("#funcionPersona").html("");
-    // }
-    //
-    // $(".persona").change(function () {
-    //     cargarFuncion();
-    // });
-
-    %{--function cargarFuncion () {--}%
-    %{--    var idPersona = $(".persona").val();--}%
-    %{--    $.ajax({--}%
-    %{--        type: "POST",--}%
-    %{--        url: "${g.createLink(action: 'obtenerFuncionCoor')}",--}%
-    %{--        data : {--}%
-    %{--            id: idPersona--}%
-    %{--        } ,--}%
-    %{--        success: function (msg) {--}%
-    %{--            $("#funcionPersona").html(msg);--}%
-    %{--        }--}%
-    %{--    });--}%
-    %{--}--}%
 </script>

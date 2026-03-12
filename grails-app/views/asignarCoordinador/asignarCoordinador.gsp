@@ -20,39 +20,6 @@
 
 <div class="col-md-12" id="departamentoSel"></div>
 
-
-
-%{--<div class="col-md-12">--}%
-%{--    <div class="col-md-3" id="funcionDiv" style="margin-top: 10px;">--}%
-%{--        <div class="span2" style="margin-left: -1px; font-weight: bold">Asignar Función:</div>--}%
-%{--        <g:select name="funcion" from="${janus.Funcion?.findAllById(10)}" optionValue="descripcion" optionKey="id" class="form-control"/>--}%
-%{--    </div>--}%
-%{--    <div class="col-md-1" style="margin-top: 26px;">--}%
-%{--        <button class="btn btn-success" id="btnAdicionar"><i class="fa fa-plus"></i> Asignar</button>--}%
-%{--    </div>--}%
-%{--</div>--}%
-
-%{--<div class="col-md-6" style="margin-top: 20px">--}%
-%{--    <table class="table table-bordered table-striped table-hover table-condensed " id="tablaFuncion">--}%
-%{--        <thead>--}%
-%{--        <tr>--}%
-%{--            <th style="width: 50px">N°</th>--}%
-%{--            <th style="width: 250px">Función</th>--}%
-%{--            <th style="width: 20px"><i class="fa fa-trash"></i></th>--}%
-%{--        </tr>--}%
-%{--        </thead>--}%
-
-%{--        <tbody id="tablaCoordinadores">--}%
-
-%{--        </tbody>--}%
-%{--    </table>--}%
-%{--</div>--}%
-
-%{--<div class="span6">--}%
-%{--    <div class="span12" id="directorSel"></div>--}%
-%{--    <div class="span12" id="confirmacion"></div>--}%
-%{--</div>--}%
-
 <script type="text/javascript">
 
     function cargarTablaCoordinadores(id){
@@ -95,91 +62,6 @@
         })
     }
 
-    %{--$("#adicionar").click(function () {--}%
-    %{--    var idDireccion = $("#direccion").val();--}%
-    %{--    if(idDireccion !== -1){--}%
-    %{--        if($(".persona").val() != null){--}%
-    %{--            var idDepar = $("#departamento").val();--}%
-    %{--            var existe;--}%
-    %{--            $.ajax({--}%
-    %{--                type:'POST',--}%
-    %{--                url: "${g.createLink(controller: "asignarCoordinador", action: 'sacarFunciones')}",--}%
-    %{--                data: {--}%
-    %{--                    id: idDepar--}%
-    %{--                },--}%
-    %{--                success: function (msg) {--}%
-    %{--                    if(msg === '0' ){--}%
-    %{--                        var idPersona = $(".persona").val();--}%
-    %{--                        var valorAdicionar = $("#funcion option:selected").attr("class");--}%
-    %{--                        var idAcicionar = $("#funcion").val();--}%
-    %{--                        var tbody = $("#funcionPersona");--}%
-    %{--                        var rows = tbody.children("tr").length;--}%
-    %{--                        var continuar = true;--}%
-
-    %{--                        tbody.children("tr").each(function () {--}%
-    %{--                            var fila = $(this);--}%
-    %{--                            var id = fila.data("id");--}%
-    %{--                            var valor = fila.data("valor");--}%
-
-    %{--                            if (id === idAcicionar || valor === valorAdicionar) {--}%
-    %{--                                continuar = false;--}%
-    %{--                            }--}%
-    %{--                        });--}%
-    %{--                        if (continuar) {--}%
-    %{--                            $.ajax({--}%
-    %{--                                type: "POST",--}%
-    %{--                                url: "${g.createLink(controller: "asignarCoordinador", action: 'grabarFuncion')}",--}%
-    %{--                                data: { id: idPersona,--}%
-
-    %{--                                    rol: idAcicionar--}%
-    %{--                                },--}%
-    %{--                                success: function (msg) {--}%
-    %{--                                    var confirmacion = $("#confirmacion");--}%
-    %{--                                    var comboPersona =  $(".persona option:selected").text();--}%
-    %{--                                    var dir =  $("<div class='span12' id='directorSel' style='font-weight: bold; color: #4f5dff'>Coordinador Seleccionado: "+ comboPersona + "</div>");--}%
-    %{--                                    confirmacion.html(dir);--}%
-    %{--                                    var parts = msg.split("_");--}%
-    %{--                                    if (parts[0] === "OK") {--}%
-    %{--                                        var tr = $("<tr>");--}%
-    %{--                                        var tdNumero = $("<td>");--}%
-    %{--                                        var tdFuncion = $("<td>");--}%
-    %{--                                        var tdAccion = $("<td>");--}%
-    %{--                                        var boton = $("<a href='#' class='btn btn-danger btnBorrar'><i class='icon-trash icon-large'></i></a>");--}%
-    %{--                                        var id = parts[1];--}%
-    %{--                                        boton.attr("id", id);--}%
-    %{--                                        boton.click(function () {--}%
-    %{--                                            borrar(boton);--}%
-    %{--                                        });--}%
-    %{--                                        tdAccion.append(boton);--}%
-
-    %{--                                        tr.data({--}%
-    %{--                                            id: idAcicionar,--}%
-    %{--                                            valor: valorAdicionar--}%
-    %{--                                        });--}%
-
-    %{--                                        tdNumero.html(rows + 1);--}%
-    %{--                                        tdFuncion.html(valorAdicionar);--}%
-    %{--                                        tr.append(tdNumero).append(tdFuncion).append(tdAccion);--}%
-    %{--                                        tbody.append(tr);--}%
-    %{--                                    }--}%
-    %{--                                }--}%
-    %{--                            });--}%
-    %{--                        } else {--}%
-    %{--                            alert("La persona ya tiene asignado el rol de Coordinador!")--}%
-    %{--                        }--}%
-    %{--                    }--}%
-    %{--                    else {--}%
-    %{--                        alert("Ya existe un coordinador asignado!")--}%
-    %{--                    }--}%
-    %{--                }--}%
-    %{--            });--}%
-    %{--        }--}%
-    %{--        else {--}%
-    %{--        }--}%
-    %{--    }else {--}%
-    %{--    }--}%
-    %{--});--}%
-
     $(".btnRegresar").click(function () {
         location.href = "${createLink(controller: 'persona', action: 'list')}";
     });
@@ -197,20 +79,6 @@
             }
         });
     }
-
-    %{--function cargarMensaje () {--}%
-    %{--    var idDep = $("#departamento").val();--}%
-    %{--    $.ajax({--}%
-    %{--        type: "POST",--}%
-    %{--        url: "${g.createLink(controller: 'asignarCoordinador', action:'mensajeCoordinador')}",--}%
-    %{--        data: {--}%
-    %{--            id: idDep--}%
-    %{--        },--}%
-    %{--        success: function (msg) {--}%
-    %{--            $("#confirmacion").html(msg);--}%
-    %{--        }--}%
-    %{--    });--}%
-    %{--}--}%
 
     $("#direccion").change(function () {
         var valor = $(this).val();

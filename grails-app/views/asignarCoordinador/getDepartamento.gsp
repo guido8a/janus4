@@ -23,7 +23,6 @@
             },
             success: function (msg) {
                 $("#personasSel").html(msg);
-                // cargarTablaCoordinadores($("#departamento option:selected").val());
             }
         });
     }
