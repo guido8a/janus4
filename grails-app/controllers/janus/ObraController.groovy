@@ -2005,8 +2005,45 @@ class ObraController {
         }else{
             render "ok_Guardado correctamente"
         }
+    }
 
+    def eliminarObraDialog_ajax(){
+        def obra = Obra.get(params.id)
+        return [obra: obra]
+    }
 
+    def eliminarObra_ajax(){
+        def obra = Obra.get(params.id)
+        def cn = dbConnectionService.getConnection()
+
+        def sqlValoresMatriz = "delete from mfvl where obra__id= ${obra?.id}";
+        def sqlColumnasMatriz = "delete from mfcl where obra__id= ${obra?.id}";
+        def sqlRubrosMatriz = "delete from mfrb where obra__id= ${obra?.id}";
+        def sqlCronograma = "delete from crno where vlob__id in (select vlob__id from vlob where obra__id= ${obra?.id})";
+        def sqlVolumnesObra = "delete from vlob where obra__id= ${obra?.id}";
+        def sqlItemsFP = "delete from itfp where fpob__id in (select fpob__id from fpob where obra__id= ${obra?.id})";
+        def sqlFP = "delete from fpob where obra__id= ${obra?.id}";
+        def sqlRubrosHistoricos = "delete from obrb where obra__id= ${obra?.id}";
+        def sqlItemsHistoricos = "delete from obit where obra__id= ${obra?.id}";
+        def sqlObra = "delete from obra where obra__id= ${obra?.id}";
+
+        try{
+            cn.execute(sqlValoresMatriz.toString())
+            cn.execute(sqlColumnasMatriz.toString())
+            cn.execute(sqlRubrosMatriz.toString())
+            cn.execute(sqlCronograma.toString())
+            cn.execute(sqlVolumnesObra.toString())
+            cn.execute(sqlItemsFP.toString())
+            cn.execute(sqlFP.toString())
+            cn.execute(sqlRubrosHistoricos.toString())
+            cn.execute(sqlItemsHistoricos.toString())
+            cn.execute(sqlObra.toString())
+
+            render "ok_Obra borrada correctamente"
+
+        }catch(e){
+            render "no_Error al borrar la obra "  + e
+        }
     }
 
 } //fin controller

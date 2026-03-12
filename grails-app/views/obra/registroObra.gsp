@@ -1847,8 +1847,11 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
 
         $("#eliminarObra").click(function () {
             if(${obra?.id != null}) {
-                $("#eliminarObraDialog").dialog("open");
-                $(".ui-dialog-titlebar-close").html("x")
+                // $("#eliminarObraDialog").dialog("open");
+                // $(".ui-dialog-titlebar-close").html("x")
+                if(${obra?.estado != 'R'}){
+                    eliminarObraSinRegistro('${obra?.id}')
+                }
             }
         });
 
@@ -2767,6 +2770,59 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                 }
             }
         });
+
+        function eliminarObraSinRegistro(id) {
+            $.ajax({
+                type    : "POST",
+                url     : "${createLink(controller: 'obra', action:'eliminarObraDialog_ajax')}",
+                data    : {
+                    id: id
+                },
+                success : function (msg) {
+                    var b = bootbox.dialog({
+                        id      : "dlgCreateEdit",
+                        title   : "<i class=\"fa fa-trash fa-2x text-danger\"></i> Eliminar obra",
+                        // class: 'modal-lg',
+                        message : msg,
+                        buttons : {
+                            cancelar : {
+                                label     : "<i class='fa fa-times'></i> Cancelar",
+                                className : "btn-primary",
+                                callback  : function () {
+                                }
+                            },
+                            guardar  : {
+                                id        : "btnSave",
+                                label     : "<i class='fa fa-trash'></i> Eliminar",
+                                className : "btn-danger",
+                                callback  : function () {
+                                   var bob = cargarLoader("Borrando...");
+                                    $.ajax({
+                                        type: "POST",
+                                        url: "${createLink(controller: 'obra',  action:'eliminarObra_ajax')}",
+                                        data: {
+                                            id: id
+                                        },
+                                        success: function (msg) {
+                                            bob.modal("hide");
+                                            var parts = msg.split("_");
+                                            if(parts[0] === 'ok'){
+                                                bootbox.alert('<i class="fa fa-check text-success fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
+                                                setTimeout(function () {
+                                                    location.href="${createLink(controller: 'obra', action: 'registroObra')}"
+                                                }, 1000);
+                                            }else{
+                                                bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
+                                            }
+                                        }
+                                    });
+                                } //callback
+                            } //guardar
+                        } //buttons
+                    }); //dialog
+                } //success
+            }); //ajax
+        } //createEdit
 
         $("#noEliminarDialog").dialog({
             autoOpen: false,
