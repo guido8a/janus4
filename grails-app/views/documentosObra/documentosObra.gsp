@@ -146,7 +146,8 @@
                             <g:if test="${duenoObra == 1}">
                                 <tr>
                                     <td>
-                                        <g:select name="coordinador" class="form-control" from="${personasUtfpuCoor}" optionValue="persona" optionKey="id" style="width: 380px"/>
+                                        <g:select name="coordinador" class="form-control" from="${personasUtfpuCoor}"
+                                                  optionValue="persona" optionKey="id" style="width: 380px"/>
                                     </td>
                                     <td>
                                         COORDINADOR
