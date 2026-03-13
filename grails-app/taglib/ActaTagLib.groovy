@@ -34,6 +34,8 @@ class ActaTagLib {
                 "&lacute;": "ĺ",
                 "&lsquo;": "'",
                 "&rsquo;": "'",
+                "&ldquo;": "'",
+                "&rdquo;": "'",
 //                ">" : "&gt;",   -- no usar en texto html
 //                "<" : "&lt;",
         ]
