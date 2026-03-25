@@ -30,7 +30,7 @@
                     <g:each in="${ps}" var="i">
                         <tr>
                             <td>${i?.numero}</td>
-                            <td>${i?.indice?.descripcion}</td>
+                            <td style="text-align: left !important;">${i?.indice?.descripcion}</td>
                             <g:if test="${i.indice.id == 143}">
                                 <td class="editable" data-tipo="p" data-id="${i.id}" id="${i.id}" data-original="${i.valor}" data-valor="${i.valor}" style="text-align: right; width: 40px">
                                     ${g.formatNumber(number: i?.valor, minFractionDigits: 3, maxFractionDigits: 3)}
@@ -87,7 +87,7 @@
                 <g:each in="${cuadrilla}" var="i">
                     <tr>
                         <td>${i?.numero}</td>
-                        <td>${i?.indice?.descripcion}</td>
+                        <td style="text-align: left !important;">${i?.indice?.descripcion}</td>
                         <td data-tipo="c" data-id="${i.id}" id="${i.id}" data-original="${i.valor}" data-valor="${i.valor}" style="text-align: right; width: 40px">
                             ${g.formatNumber(number: i?.valor, minFractionDigits: 3, maxFractionDigits: 3)}
                         </td>
