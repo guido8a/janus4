@@ -1485,7 +1485,8 @@ class ReportesRubros2Controller {
                     totalHer += r["parcial"]
                     totalHerRel += r["relativo"]
 //                    totalHerVae += r["vae_vlor"]
-                    totalHerVae += (r["vae_vlor"] != null ? r["vae_vlor"] : 0)
+//                    totalHerVae += (r["vae_vlor"] != null ? r["vae_vlor"] : 0)
+                    totalHerVae += (r["vae_vlor"] ?: 0)
                 }
             }
 
@@ -1533,7 +1534,8 @@ class ReportesRubros2Controller {
                     totalMan += r["parcial"]
                     totalManRel += r["relativo"]
 //                    totalManVae += r["vae_vlor"]
-                    totalManVae += (r["vae_vlor"] != null ? r["vae_vlor"] : 0)
+//                    totalManVae += (r["vae_vlor"] != null ? r["vae_vlor"] : 0)
+                    totalHerVae += (r["vae_vlor"] ?: 0)
                 }
             }
 
