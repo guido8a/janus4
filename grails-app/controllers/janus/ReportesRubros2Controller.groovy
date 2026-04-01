@@ -1601,7 +1601,7 @@ class ReportesRubros2Controller {
 
                         totalMat += (r["parcial"] + r["parcial_t"])
                         totalMatRel += (r["relativo"] + r["relativo_t"])
-                        totalMatVae += (r["vae_vlor"] + r["vae_vlor_t"])
+                        totalMatVae += ((r["vae_vlor"] ?: 0) + r["vae_vlor_t"])
                     }
 
                 }
