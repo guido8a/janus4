@@ -1484,7 +1484,8 @@ class ReportesRubros2Controller {
                     reportesPdfService.addCellTb(tablaEquipos, new Paragraph((numero(r["vae_vlor"],4))?.toString(), times8normal), prmsFila)
                     totalHer += r["parcial"]
                     totalHerRel += r["relativo"]
-                    totalHerVae += r["vae_vlor"]
+//                    totalHerVae += r["vae_vlor"]
+                    totalHerVae += (r["vae_vlor"] != null ? r["vae_vlor"] : 0)
                 }
             }
 
@@ -1531,7 +1532,8 @@ class ReportesRubros2Controller {
                     reportesPdfService.addCellTb(tablaManoObra, new Paragraph((numero(r["vae_vlor"],4))?.toString(), times8normal), prmsFila)
                     totalMan += r["parcial"]
                     totalManRel += r["relativo"]
-                    totalManVae += r["vae_vlor"]
+//                    totalManVae += r["vae_vlor"]
+                    totalManVae += (r["vae_vlor"] != null ? r["vae_vlor"] : 0)
                 }
             }
 
@@ -1584,7 +1586,8 @@ class ReportesRubros2Controller {
 
                         totalMat += r["parcial"]
                         totalMatRel += r["relativo"]
-                        totalMatVae += r["vae_vlor"]
+//                        totalMatVae += r["vae_vlor"]
+                        totalMatVae += (r["vae_vlor"] != null ? r["vae_vlor"] : 0)
                     }else{
                         reportesPdfService.addCellTb(tablaMateriales, new Paragraph(numero((r["rbpcpcun"] + r["parcial_t"] / r["rbrocntd"]), 4)?.toString(), times8normal), prmsFilaDerecha)
                         reportesPdfService.addCellTb(tablaMateriales, new Paragraph(numero((r["parcial"] + r["parcial_t"]), 4)?.toString(), times8normal), prmsFilaDerecha)
