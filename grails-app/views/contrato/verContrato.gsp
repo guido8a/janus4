@@ -54,8 +54,6 @@
             <g:link controller="documentoProceso" class="btn" action="list" id="${contrato?.oferta?.concursoId}" params="[contrato: contrato?.id]">
                 <i class="fa fa-book"></i> Biblioteca
             </g:link>
-
-%{--            <g:link controller="garantia" class="btn" action="garantiasContrato" id="${contrato?.id}">--}%
             <g:link controller="garantiaFinanciero" class="btn" action="garantiasContratoFi" id="${contrato?.id}">
                 <i class="fa fa-th"></i> Garantías
             </g:link>
@@ -181,7 +179,6 @@
 
             <div class="col-md-12" style="margin-top: 5px">
                 <div class="col-md-2 formato">Oferta</div>
-
                 <div class="col-md-3" id="div_ofertas">
                     ${contrato?.oferta?.descripcion}
                 </div>
@@ -189,7 +186,6 @@
 
             <div class="col-md-12" style="margin-top: 5px">
                 <div class="col-md-2 formato">Contratista</div>
-
                 <div class="col-md-3">
                     ${contrato?.oferta?.proveedor?.nombreContacto ? (contrato?.oferta?.proveedor?.nombreContacto + " " + contrato?.oferta?.proveedor?.apellidoContacto) : contrato?.oferta?.proveedor?.nombre}
                 </div>
@@ -197,11 +193,8 @@
 
             <div class="col-md-12" style="margin-top: 5px">
                 <div class="col-md-2 formato">Parroquia</div>
-
                 <div class="col-md-3">${contrato?.oferta?.concurso?.obra?.parroquia?.nombre}</div>
-
                 <div class="col-md-1 formato">Cantón</div>
-
                 <div class="col-md-2">${contrato?.oferta?.concurso?.obra?.parroquia?.canton?.nombre}</div>
             </div>
 
@@ -244,39 +237,33 @@
         </div>
 
         <div class="col-md-12" style="margin-top: 5px">
-            <g:if test="${contrato?.tipoContrato?.codigo?.trim() == 'C'}">
-                <div class="col-md-2 formato text-info" style="margin-left:0px;">Objeto del Contrato</div>
-                <div class="col-md-10 text-info" style="margin-left: -40px">${contrato?.objeto}</div>
-            </g:if>
-            <g:else>
-                <div class="col-md-2 formato" style="margin-left:0px;">Objeto del Contrato</div>
-                <div class="col-md-10" style="margin-left: -40px">${contrato?.objeto}</div>
-            </g:else>
+            <div class="col-md-2 formato ${contrato?.tipoContrato?.codigo?.trim() == 'C' ? 'text-info' : ''}" style="margin-left:0px;">Objeto del Contrato</div>
+            <div class="col-md-10 ${contrato?.tipoContrato?.codigo?.trim() == 'C' ? 'text-info' : ''}" style="margin-left: -40px">${contrato?.objeto}</div>
         </div>
+
+        <div class="col-md-12" style="margin-top: 5px">
+            <div class="col-md-2 formato ${contrato?.tipoContrato?.codigo?.trim() == 'C' ? 'text-info' : ''}" style="margin-left:0px;">Contrato Modificatorio</div>
+            <div class="col-md-10 ${contrato?.tipoContrato?.codigo?.trim() == 'C' ? 'text-info' : ''}" style="margin-left: -40px">${contrato?.contratoModificatorio}</div>
+        </div>
+
 
         <div class="col-md-12">
-                <div class="col-md-2 formato">Aplica Reajuste</div>
-                <div class="col-md-1">${contrato?.aplicaReajuste == 1 ? 'SI' : 'NO'}</div>
-
-                <div class="col-md-4 formato" style="margin-left:10px;">La multa por retraso de obra incluye el valor del reajuste</div>
-                <div class="col-md-1" style="margin-left: -30px">${contrato?.conReajuste == 1 ? 'SI' : 'NO'}</div>
-
-                <div class="col-md-3 formato" style="margin-left:10px;">Aplica multa al saldo por planillar</div>
-                <div class="col-md-1" style="margin-left: -60px">${contrato?.saldoMulta == 1 ? 'SI' : 'NO'}</div>
+            <div class="col-md-2 formato">Aplica Reajuste</div>
+            <div class="col-md-1">${contrato?.aplicaReajuste == 1 ? 'SI' : 'NO'}</div>
+            <div class="col-md-4 formato" style="margin-left:10px;">La multa por retraso de obra incluye el valor del reajuste</div>
+            <div class="col-md-1" style="margin-left: -30px">${contrato?.conReajuste == 1 ? 'SI' : 'NO'}</div>
+            <div class="col-md-3 formato" style="margin-left:10px;">Aplica multa al saldo por planillar</div>
+            <div class="col-md-1" style="margin-left: -60px">${contrato?.saldoMulta == 1 ? 'SI' : 'NO'}</div>
         </div>
-
     </fieldset>
 
     <fieldset class="" style="position: relative;  padding: 10px;border-bottom: 1px solid black;">
         <div class="col-md-12" style="margin-top: 10px">
             <div class="col-md-3 formato">Multa por retraso</div>
-
             <div class="col-md-2">
                 ${g.formatNumber(number: contrato?.multaRetraso, maxFractionDigits: 0, minFractionDigits: 0, format: '##,##0', locale: 'ec')} x 1000
             </div>
-
             <div class="col-md-4 formato">Multa por no presentación de planilla</div>
-
             <div class="col-md-2">
                 ${g.formatNumber(number: contrato?.multaPlanilla, maxFractionDigits: 0, minFractionDigits: 0, format: '##,##0', locale: 'ec')} x 1000
             </div>
@@ -284,13 +271,10 @@
 
         <div class="col-md-12" style="margin-top: 10px">
             <div class="col-md-3 formato">Multa por incumplimiento del cronograma</div>
-
             <div class="col-md-2">
                 ${g.formatNumber(number: contrato?.multaIncumplimiento, maxFractionDigits: 0, minFractionDigits: 0, format: '##,##0', locale: 'ec')} x 1000
             </div>
-
             <div class="col-md-4 formato">Multa por no acatar disposiciones del fiscalizador</div>
-
             <div class="col-md-2">
                 ${g.formatNumber(number: contrato?.multaDisposiciones, maxFractionDigits: 0, minFractionDigits: 0, format: '##,##0', locale: 'ec')} x 1000
             </div>
@@ -298,11 +282,8 @@
 
         <div class="col-md-12" style="margin-top: 10px">
             <div class="col-md-2 formato">Monto</div>
-
             <div class="col-md-3">${g.formatNumber(number: contrato?.monto, maxFractionDigits: 2, minFractionDigits: 2, format: '##,##0', locale: 'ec')}</div>
-
             <div class="col-md-4 formato">Plazo</div>
-
             <div class="col-md-2">${g.formatNumber(number: contrato?.plazo, maxFractionDigits: 0, minFractionDigits: 0, format: '##,##0', locale: 'ec')} Días</div>
         </div>
 

@@ -85,7 +85,6 @@
     <g:hiddenField name="id" value="${contrato?.id}"/>
 
     <fieldset class="grupo" style="position: relative; margin-top: 10px; height: 30px; border-bottom: 1px solid black;">
-
         <div class="grupo col-md-4" style="display: inline;">
             <label class="col-md-1 formato" style="width: 100px; color: #0b2c89">Contrato N°</label>
             <div class="col-md-2"><g:textField name="codigo" maxlength="20" class="codigo required caps"
@@ -100,9 +99,7 @@
         <div class="col-md-2 " style="font-weight: bolder; font-size: 14px; background-color: ${contrato?.estado == 'R' ? 'green' : '#0b2c89'}; color: white; text-align: center">
             <i class="${contrato?.estado == 'R' ? 'fa fa-check' : 'fa fa-exclamation-triangle'}"></i>  Contrato ${contrato?.estado == 'R'? 'Registrado' : 'No Registrado'}
         </div>
-
     </fieldset>
-
 
     <fieldset class="" style="position: relative; padding: 10px;border-bottom: 1px solid black;">
 
@@ -226,8 +223,7 @@
 
     </fieldset>
 
-    <fieldset class="" style="position: relative; height: 110px; border-bottom: 1px solid black;">
-
+    <fieldset class="" style="position: relative; height: 130px; border-bottom: 1px solid black;">
         <div class="col-md-12" style="margin-top: 10px">
 
             <div class="col-md-2 formato text-info">Tipo de contrato</div>
@@ -266,6 +262,13 @@
             <div class="col-md-2 formato">Objeto del Contrato</div>
             <div class="col-md-9" style="margin-left: -50px">
                 <g:textArea name="objeto" class="activo required" style="height: 55px; width: 960px; resize: none; margin-top: -6px" value="${contrato?.objeto}"/>
+            </div>
+        </div>
+
+        <div class="col-md-12" style="margin-top: 5px">
+            <div class="col-md-2 formato">Contrato Modificatorio</div>
+            <div class="col-md-9" style="margin-left: -50px">
+                <g:textField name="contratoModificatorio" class="input-small" maxlength="20" value="${contrato?.contratoModificatorio}"/>
             </div>
         </div>
 
