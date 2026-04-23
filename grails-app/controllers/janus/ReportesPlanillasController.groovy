@@ -257,7 +257,7 @@ class ReportesPlanillasController {
 
         PdfPTable tablaDetalles = new PdfPTable(11);
         tablaDetalles.setWidthPercentage(100);
-        tablaDetalles.setWidths(arregloEnteros([9, 28, 3, 6, 6, 7, 7, 7, 9, 9, 9]))
+        tablaDetalles.setWidths(arregloEnteros([9, 30, 3, 6, 6, 7, 7, 7, 9, 7, 9]))
         tablaDetalles.setSpacingAfter(10f)
 
         addCellTabla(tablaDetalles, new Paragraph("N.", fontTh), [border: Color.BLACK, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE])
