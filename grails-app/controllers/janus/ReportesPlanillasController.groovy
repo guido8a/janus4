@@ -97,11 +97,6 @@ class ReportesPlanillasController {
         def obra = contrato.oferta.concurso.obra
 
         def planillasAvance = Planilla.findAllByContratoAndTipoPlanillaInList(contrato, TipoPlanilla.findAllByCodigoInList(["P", "Q"]), [sort: 'fechaInicio'])
-//        def planillasAvance = Planilla.withCriteria {
-//            eq("contrato", contrato)
-//            eq("tipoPlanilla", TipoPlanilla.findAllByCodigo("P"))
-//            order("fechaInicio", "asc")
-//        }
 
         def planillasCosto = Planilla.withCriteria {
             eq("contrato", contrato)
@@ -116,7 +111,6 @@ class ReportesPlanillasController {
         def indirecto = obra.totales / 100
         preciosService.ac_rbroObra(obra.id)
         def detalles = [:]
-//        def volumenes = VolumenesObra.findAllByObra(obra, [sort: "item"])
         def volumenes = VolumenContrato.findAllByObra(obra, [sort: "item"])
 
         volumenes.each { vol ->
@@ -147,7 +141,6 @@ class ReportesPlanillasController {
         }
 
         planillasAvance.each { pla ->
-//            def det = DetallePlanilla.findAllByPlanilla(pla)
             def det = DetallePlanillaEjecucion.findAllByPlanilla(pla)
             det.each { dt ->
                 if (detalles[dt.volumenContrato.item]) {
@@ -182,7 +175,7 @@ class ReportesPlanillasController {
         logo.setAlignment(Image.LEFT | Image.TEXTWRAP)
 
         Document document
-        document = new Document(PageSize.A4);
+        document = new Document(PageSize.A4.rotate());
         document.setMargins(60, 30, 60, 60);
         // margins: left, right, top, bottom
         // 1 in = 72, 1cm=28.1, 3cm = 86.4
@@ -264,7 +257,7 @@ class ReportesPlanillasController {
 
         PdfPTable tablaDetalles = new PdfPTable(11);
         tablaDetalles.setWidthPercentage(100);
-        tablaDetalles.setWidths(arregloEnteros([9, 19, 3, 7, 8, 9, 9, 9, 9, 9, 9]))
+        tablaDetalles.setWidths(arregloEnteros([9, 25, 3, 7, 8, 7, 7, 7, 9, 9, 9]))
         tablaDetalles.setSpacingAfter(10f)
 
         addCellTabla(tablaDetalles, new Paragraph("N.", fontTh), [border: Color.BLACK, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE])
@@ -299,8 +292,8 @@ class ReportesPlanillasController {
                 valMas = difVal * -1
             }
 
-            addCellTabla(tablaDetalles, new Paragraph(det.codigo, fontTd), [height: height, border: Color.BLACK, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE])
-            addCellTabla(tablaDetalles, new Paragraph(det.nombre, fontNombre), [height: height, border: Color.BLACK, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE])
+            addCellTabla(tablaDetalles, new Paragraph(det.codigo, fontTd), [border: Color.BLACK, align: Element.ALIGN_CENTER, valign: Element.ALIGN_TOP])
+            addCellTabla(tablaDetalles, new Paragraph(det.nombre, fontNombre), [border: Color.BLACK, align: Element.ALIGN_LEFT, valign: Element.ALIGN_TOP])
             addCellTabla(tablaDetalles, new Paragraph(det.unidad, fontTd), [height: height, border: Color.BLACK, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE])
             addCellTabla(tablaDetalles, new Paragraph(numero(det.precio, 2), fontTd), [height: height, border: Color.BLACK, align: Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE])
             addCellTabla(tablaDetalles, new Paragraph(numero(det.cantidad.contratado, 2), fontTd), [height: height, border: Color.BLACK, align: Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE])
@@ -353,7 +346,7 @@ class ReportesPlanillasController {
 
         PdfPTable tablaDiferencia = new PdfPTable(3);
         tablaDiferencia.setWidthPercentage(100);
-        tablaDiferencia.setWidths(arregloEnteros([64, 9, 27]))
+        tablaDiferencia.setWidths(arregloEnteros([66, 7, 27]))
         tablaDiferencia.setSpacingAfter(10f)
 
         addCellTabla(tablaDiferencia, new Paragraph("DIFERENCIA", fontTh), [border: Color.BLACK, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE])
@@ -368,7 +361,7 @@ class ReportesPlanillasController {
 
         PdfPTable tablaCosto = new PdfPTable(3);
         tablaCosto.setWidthPercentage(100);
-        tablaCosto.setWidths(arregloEnteros([64, 9, 27]))
+        tablaCosto.setWidths(arregloEnteros([66, 7, 27]))
         tablaCosto.setSpacingAfter(10f)
 
         addCellTabla(tablaCosto, new Paragraph("OBRAS BAJO LA MODALIDAD COSTO + PORCENTAJE", fontTh), [padding: 8, border: Color.BLACK, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE])
@@ -391,7 +384,7 @@ class ReportesPlanillasController {
 
         PdfPTable tablaTotal = new PdfPTable(3);
         tablaTotal.setWidthPercentage(100);
-        tablaTotal.setWidths(arregloEnteros([64, 9, 27]))
+        tablaTotal.setWidths(arregloEnteros([66, 7, 27]))
         tablaTotal.setSpacingAfter(1f)
 
         addCellTabla(tablaTotal, new Paragraph("TOTAL OBRAS ADICIONALES", fontTh), [border: Color.BLACK, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE])
