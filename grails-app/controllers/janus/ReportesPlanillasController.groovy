@@ -292,7 +292,7 @@ class ReportesPlanillasController {
                 valMas = difVal * -1
             }
 
-            addCellTabla(tablaDetalles, new Paragraph(det.codigo, fontTd), [border: Color.BLACK, align: Element.ALIGN_CENTER, valign: Element.ALIGN_TOP])
+            addCellTabla(tablaDetalles, new Paragraph(det.codigo, fontTd), [border: Color.BLACK, align: Element.ALIGN_LEFT, valign: Element.ALIGN_TOP])
             addCellTabla(tablaDetalles, new Paragraph(det.nombre, fontNombre), [border: Color.BLACK, align: Element.ALIGN_LEFT, valign: Element.ALIGN_TOP])
             addCellTabla(tablaDetalles, new Paragraph(det.unidad, fontTd), [height: height, border: Color.BLACK, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE])
             addCellTabla(tablaDetalles, new Paragraph(numero(det.precio, 2), fontTd), [height: height, border: Color.BLACK, align: Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE])
