@@ -80,10 +80,14 @@
         <g:if test="${liquidacion}">
             <div class="btn-group">
                 <g:if test="${contrato?.fiscalizador?.id == session.usuario.id}">
-                    <g:link controller="reportesPlanillas" action="reporteDiferencias" class="btn btn-info" id="${contrato.id}">
+                    <a href="#" class="btn btn-info" id="btnReporteDiferencias" data-id="${contrato?.id}">
                         <i class="fa fa-list-ul"></i>
                         Reporte de diferencias
-                    </g:link>
+                    </a>
+%{--                    <g:link controller="reportesPlanillas" action="reporteDiferencias" class="btn btn-info" id="${contrato.id}">--}%
+%{--                        <i class="fa fa-list-ul"></i>--}%
+%{--                        Reporte de diferencias--}%
+%{--                    </g:link>--}%
                     <g:link controller="acta" action="form" class="btn btn-success" params="[contrato: contrato.id, tipo: 'P']">
                         <i class="fa fa-table"></i>
                         Acta de recepción provisional
@@ -447,6 +451,17 @@
 </div>
 
 <script type="text/javascript">
+
+    $("#btnReporteDiferencias").click(function () {
+        var id = $(this).data("id");
+       var a = cargarLoader("Imprimiendo...");
+        try{
+            location.href = "${g.createLink(controller: 'reportesPlanillas',action: 'reporteDiferencias')}?id=" + id;
+            a.modal("hide");
+        }catch (e) {
+            console.log("error " + e)
+        }
+    });
 
     $(".btnAnularMultas").click(function () {
         var id = $(this).data("id") ;
