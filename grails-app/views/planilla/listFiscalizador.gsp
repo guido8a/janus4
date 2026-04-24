@@ -455,12 +455,10 @@
     $("#btnReporteDiferencias").click(function () {
         var id = $(this).data("id");
        var a = cargarLoader("Imprimiendo...");
-        try{
-            location.href = "${g.createLink(controller: 'reportesPlanillas',action: 'reporteDiferencias')}?id=" + id;
-            a.modal("hide");
-        }catch (e) {
-            console.log("error " + e)
-        }
+        location.href = "${g.createLink(controller: 'reportesPlanillas',action: 'reporteDiferencias')}?id=" + id;
+       setTimeout(function () {
+          a.modal("hide");
+       }, 2000)
     });
 
     $(".btnAnularMultas").click(function () {
