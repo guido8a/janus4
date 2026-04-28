@@ -591,11 +591,11 @@ class PreciosService {
         def cn = dbConnectionService.getConnection()
         def sql = "select * from vae_rb_precios_ob("+ rubro + ","+ obra +") order by grpocdgo desc "
         def result = []
+        println("sql " + sql)
         cn.eachRow(sql.toString()) { r ->
             result.add(r.toRowResult())
         }
         cn.close()
-//        println("sql " + sql)
         return result
 
     }

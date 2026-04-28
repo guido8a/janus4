@@ -579,7 +579,7 @@ class ReportesExcelController {
 
                     totalHer += r["parcial"]
                     totalHerRel += r["relativo"]
-                    totalHerVae += r["vae_vlor"]
+                    totalHerVae += r["vae_vlor"]?:0
                     fila++
                 }
 
@@ -636,7 +636,7 @@ class ReportesExcelController {
 
                     totalMan += r["parcial"]
                     totalManRel += r["relativo"]
-                    totalManVae += r["vae_vlor"]
+                    totalManVae += r["vae_vlor"]?:0
                     fila++
                 }
 
@@ -693,7 +693,7 @@ class ReportesExcelController {
 
                     totalMat += r["parcial"]
                     totalMatRel += r["relativo"]
-                    totalMatVae += r["vae_vlor"]
+                    totalMatVae += r["vae_vlor"]?:0
                     fila++
 
                 }
