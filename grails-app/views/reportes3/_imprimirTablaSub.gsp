@@ -368,19 +368,35 @@
                 <th class="col_total" style="width:80px; text-align: right">C.Total</th>
             </tr>
             </thead>
-
             <tr class="item-row">
                 <th colspan="7" style="font-size: 14px; font-weight: bold; text-align: left" class="blanco">
                     ${subPre}
                 </th>
             </tr>
-
             <tbody id="tabla_material">
             <g:set var="total" value="${0}"></g:set>
             <g:each in="${valores}" var="val" status="j">
                 <tr class="item_row" id="${val.item__id}" item="${val}" sub="${val.sbpr__id}">
                     <td style="width: 20px" class="orden">${val.vlobordn}</td>
-                    <td class="cdgo">${val.rbrocdgo.trim()}</td>
+%{--                    <td class="cdgo">${val.rbrocdgo.trim()}</td>--}%
+                    <td class="cdgo">
+                        <g:if test="${janus.Item.get(val.item__id)?.codigoHistorico}">
+                            <g:if test="${janus.Item.get(val.item__id)?.codigoHistorico?.size() > 15}">
+                                ${janus.Item.get(val.item__id)?.codigoHistorico?.trim()?.substring(0,11)}  <br/>${janus.Item.get(val.item__id)?.codigoHistorico?.trim()?.substring(12,janus.Item.get(val.item__id)?.codigoHistorico?.size()-1)}
+                            </g:if>
+                            <g:else>
+                                ${janus.Item.get(val.item__id)?.codigoHistorico?.trim()}
+                            </g:else>
+                        </g:if>
+                        <g:else>
+                            <g:if test="${val.rbrocdgo.size() > 15}">
+                                ${val.rbrocdgo.trim().substring(0,11)}  <br/>${val.rbrocdgo.trim().substring(12,val.rbrocdgo.size()-1)}
+                            </g:if>
+                            <g:else>
+                                ${val.rbrocdgo.trim()}
+                            </g:else>
+                        </g:else>
+                    </td>
                     <td class="nombre">${val.rbronmbr}</td>
                     <td style="width: 60px !important;text-align: center" class="col_unidad">${val.unddcdgo.trim()}</td>
                     <td style="text-align: right" class="cant">

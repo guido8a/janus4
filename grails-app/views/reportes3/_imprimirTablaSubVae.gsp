@@ -24,7 +24,6 @@
     }
 
     .hoja {
-        /*background  : #e6e6fa;*/
         height      : 24.7cm; /*29.7-(1.5*2)*/
         font-family : serif;
         font-size   : 10px;
@@ -220,33 +219,29 @@
         <table class="table table-bordered table-striped table-condensed table-hover" style="width: 900px !important">
             <thead >
             <tr class="theaderBot theaderup padTopBot">
-
                 <th style="width: 20px; text-align: center">
                     N°
                 </th>
-                <th style="width: 90px; text-align: left" >
-                    CÓDIGO
-                </th>
-                <th style="width: 70px; text-align: left" >
-                    ESPEC.
-                </th>
-                <th style="width: 300px;">
+                <th style="width: 80px; text-align: center" >
                     RUBRO
                 </th>
-                <th style="width: 100px;">
+                <th style="width: 130px; text-align: center" >
+                    ESPEC.
+                </th>
+                <th style="width: 340px; text-align: center">
                     DESCRIPCIÓN
                 </th>
                 <th style="width: 80px; text-align: right">
                     UNIDAD
                 </th>
-                <th style="width: 70px; text-align: center">
+                <th style="width: 70px; text-align: right">
                     CANTIDAD
                 </th>
                 <th class="col_precio " style="width:80px ; text-align: right">P. U.</th>
                 <th class="col_total " style="width:80px; text-align: center">C.TOTAL</th>
-                <th class="col_vae_relativo " style="width:60px ; text-align: right">PESO RELATIVO</th>
-                <th class="col_vae_rbro" style="width:60px ; text-align: right">VAE RUBRO</th>
-                <th class="col_vae_total" style="width:60px ; text-align: right">VAE TOTAL</th>
+                <th class="col_vae_relativo " style="width:60px ; text-align: center">PESO RELATIVO</th>
+                <th class="col_vae_rbro" style="width:60px ; text-align: center">VAE RUBRO</th>
+                <th class="col_vae_total" style="width:60px ; text-align: center">VAE TOTAL</th>
             </tr>
             </thead>
         </table>
@@ -258,7 +253,6 @@
                         ${sp.descripcion}
                     </th>
                 </tr>
-
                 </thead>
                 <tbody id="tabla_material">
                 <g:set var="total" value="${0}"/>
@@ -267,25 +261,40 @@
                     <g:if test="${val.sbpr__id == sp.id}">
                         <tr class="item_row" id="${val.item__id}" item="${val}" sub="${val.sbpr__id}">
                             <td style="width: 20px; text-align: left" class="orden">${val.vlobordn}</td>
-
-                            <td class="cdgo" style="width: 90px; text-align: left">
-                                <g:if test="${val.rbrocdgo.size() > 15}">
-                                    ${val.rbrocdgo.trim().substring(0,11)}  <br/>${val.rbrocdgo.trim().substring(12,val.rbrocdgo.size()-1)}
+                            <td class="cdgo" style="width: 80px; text-align: left">
+                                <g:if test="${janus.Item.get(val.item__id)?.codigoHistorico}">
+                                    <g:if test="${janus.Item.get(val.item__id)?.codigoHistorico?.size() > 15}">
+                                        ${janus.Item.get(val.item__id)?.codigoHistorico?.trim()?.substring(0,11)}  <br/>${janus.Item.get(val.item__id)?.codigoHistorico?.trim()?.substring(12,janus.Item.get(val.item__id)?.codigoHistorico?.size())}
+                                    </g:if>
+                                    <g:else>
+                                        ${janus.Item.get(val.item__id)?.codigoHistorico?.trim()}
+                                    </g:else>
                                 </g:if>
                                 <g:else>
-                                    ${val.rbrocdgo.trim()}
+                                    <g:if test="${val.rbrocdgo.size() > 15}">
+                                        ${val.rbrocdgo.trim().substring(0,11)}  <br/>${val.rbrocdgo.trim().substring(12,val.rbrocdgo.size())}
+                                    </g:if>
+                                    <g:else>
+                                        ${val.rbrocdgo.trim()}
+                                    </g:else>
                                 </g:else>
                             </td>
-                            <td class="esp" style="width: 70px; text-align: left">
-                                    ${val.itemcdes?.trim()}
+                            <td class="esp" style="width: 120px; text-align: left">
+                                <g:if test="${val.itemcdes.size() > 15}">
+                                    ${val.itemcdes.trim().substring(0,14)}
+                                    <br/>${val.itemcdes.trim().substring(15,val.itemcdes.size())}
+                                </g:if>
+                                <g:else>
+                                    ${val.itemcdes.trim()}
+                                </g:else>
                             </td>
-                            <td class="nombre" style="text-align: left; width: 200px">
+                            <td class="nombre" style="text-align: left; width: 340px">
                                 ${val.rbronmbr}
                             </td>
-                            <td class="desc" style="text-align: left; width: 100px">
-                                ${val.vlobdscr}
-                            </td>
-                            <td style="width: 50px;text-align: right" class="col_unidad">${val.unddcdgo.trim()}</td>
+                            %{--                            <td class="desc" style="text-align: left; width: 100px">--}%
+                            %{--                                ${val.vlobdscr}--}%
+                            %{--                            </td>--}%
+                            <td style="width: 60px;text-align: center" class="col_unidad">${val.unddcdgo.trim()}</td>
                             <td style="text-align: right; width: 60px" class="cant">
                                 <g:formatNumber number="${val.vlobcntd}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/>
                             </td>
@@ -309,19 +318,16 @@
                                 <g:set var="totalVae" value="${totalVae.toDouble() + 0}"/>
                             </g:else>
 
-
-
                             <g:hiddenField name="totales" value="${totales = val.totl}"/>
                             <g:hiddenField name="totalPrueba" value="${totalPrueba = total2+=totales}"/>
                             <g:hiddenField name="totalPresupuesto" value="${totalPresupuesto = total1 += totales}"/>
 
-
-                        <g:if test="${val.vae_totl != null}">
-                            <g:hiddenField name="totalesVae" value="${totalesVae = val.vae_totl}"/>
-                        </g:if>
-                        <g:else>
-                            <g:hiddenField name="totalesVae" value="${totalesVae = 0}"/>
-                        </g:else>
+                            <g:if test="${val.vae_totl != null}">
+                                <g:hiddenField name="totalesVae" value="${totalesVae = val.vae_totl}"/>
+                            </g:if>
+                            <g:else>
+                                <g:hiddenField name="totalesVae" value="${totalesVae = 0}"/>
+                            </g:else>
                             <g:hiddenField name="finalVae" value="${finalVae = subTotalVae += totalesVae}"/>
                             <g:hiddenField name="totalesRelativo" value="${totalesRelativo = val.relativo}"/>
                             <g:hiddenField name="finalRelativo" value="${finalRelativo = subRelativo += totalesRelativo}"/>
@@ -329,7 +335,7 @@
                     </g:if>
                 </g:each>
                 <tr>
-                    <td style="text-align: right" colspan="8"><b>SUBTOTAL: </b></td>
+                    <td style="text-align: right" colspan="7"><b>SUBTOTAL: </b></td>
                     <td style="text-align: right"><b><g:formatNumber number="${total}" format="##,##0" minFractionDigits="4" maxFractionDigits="4" locale="ec"/></b></td>
                     <td style="text-align: right" colspan="2"><b>SUBTOTAL: </b></td>
                     <td style="text-align: right"><b><g:formatNumber number="${totalVae}" format="##,##0" minFractionDigits="4" maxFractionDigits="4" locale="ec"/></b></td>
@@ -406,22 +412,22 @@
                 <th style="width: 20px; text-align: center">
                     N°
                 </th>
-                <th style="width: 90px; text-align: left" >
-                    CÓDIGO
-                </th>
-                <th style="width: 70px; text-align: left" >
-                    ESPEC.
-                </th>
-                <th style="width: 300px;">
+                <th style="width: 80px; text-align: center " >
                     RUBRO
                 </th>
-                <th style="width: 100px;">
+                <th style="width: 130px; text-align: center" >
+                    ESPEC.
+                </th>
+                <th style="width: 350px; text-align: center">
                     DESCRIPCIÓN
                 </th>
+                %{--                <th style="width: 100px;">--}%
+                %{--                    DESCRIPCIÓN--}%
+                %{--                </th>--}%
                 <th style="width: 80px; text-align: right">
                     UNIDAD
                 </th>
-                <th style="width: 70px; text-align: center">
+                <th style="width: 70px; text-align: right">
                     CANTIDAD
                 </th>
                 <th class="col_precio" style="width:80px ; text-align: right">P. U.</th>
@@ -448,15 +454,37 @@
 
                 <tr class="item_row" id="${val.item__id}" item="${val}" sub="${val.sbpr__id}">
                     <td style="width: 20px" class="orden">${val.vlobordn}</td>
-                    <td class="cdgo" style="width: 90px; text-align: left">${val.rbrocdgo.trim()}</td>
-                    <td class="esp" style="width: 70px; text-align: left">
-                        ${val.itemcdes?.trim()}
+                    <td class="cdgo" style="width: 90px; text-align: left">
+                        <g:if test="${janus.Item.get(val.item__id)?.codigoHistorico}">
+                            <g:if test="${janus.Item.get(val.item__id)?.codigoHistorico?.size() > 15}">
+                                ${janus.Item.get(val.item__id)?.codigoHistorico?.trim()?.substring(0,11)}  <br/>${janus.Item.get(val.item__id)?.codigoHistorico?.trim()?.substring(12,janus.Item.get(val.item__id)?.codigoHistorico?.size())}
+                            </g:if>
+                            <g:else>
+                                ${janus.Item.get(val.item__id)?.codigoHistorico?.trim()}
+                            </g:else>
+                        </g:if>
+                        <g:else>
+                            <g:if test="${val.rbrocdgo.size() > 15}">
+                                ${val.rbrocdgo.trim().substring(0,11)}  <br/>${val.rbrocdgo.trim().substring(12,val.rbrocdgo.size())}
+                            </g:if>
+                            <g:else>
+                                ${val.rbrocdgo.trim()}
+                            </g:else>
+                        </g:else>
                     </td>
-                    <td class="nombre" style="text-align: left; width: 200px">${val.rbronmbr}</td>
-                    <td class="desc" style="text-align: left; width: 100px">
-                        ${val.vlobdscr}
+                    <td class="esp" style="width: 120px; text-align: left">
+                        <g:if test="${val.itemcdes.size() > 15}">
+                            ${val.itemcdes.trim().substring(0,14)}  <br/>${val.itemcdes.trim().substring(15,val.itemcdes.size())}
+                        </g:if>
+                        <g:else>
+                            ${val.itemcdes.trim()}
+                        </g:else>
                     </td>
-                    <td style="width: 50px !important;text-align: center" class="col_unidad">${val.unddcdgo.trim()}</td>
+                    <td class="nombre" style="text-align: left; width: 340px">${val.rbronmbr}</td>
+                    %{--                    <td class="desc" style="text-align: left; width: 100px">--}%
+                    %{--                        ${val.vlobdscr}--}%
+                    %{--                    </td>--}%
+                    <td style="width: 60px !important;text-align: center" class="col_unidad">${val.unddcdgo.trim()}</td>
                     <td style="text-align: right; width: 60px" class="cant">
                         <g:formatNumber number="${val.vlobcntd}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/>
                     </td>

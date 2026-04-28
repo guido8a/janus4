@@ -108,14 +108,13 @@ class ReportesExcel2Controller {
         row7.setRowStyle(style)
 
         def fila = 11
-
         def ultimaFila
 
         Row rowC1 = sheet.createRow(fila)
         rowC1.createCell(0).setCellValue("N°")
-        rowC1.createCell(1).setCellValue("CÓDIGO")
+        rowC1.createCell(1).setCellValue("RUBRO")
         rowC1.createCell(2).setCellValue("SUBPRESUPUESTO")
-        rowC1.createCell(3).setCellValue("RUBRO")
+        rowC1.createCell(3).setCellValue("DESCRIPCIÓN")
         rowC1.createCell(4).setCellValue("UNIDAD")
         rowC1.createCell(5).setCellValue("CANTIDAD")
         rowC1.createCell(6).setCellValue("UNITARIO")
@@ -137,7 +136,7 @@ class ReportesExcel2Controller {
         valores.eachWithIndex { p, i->
             Row rowF1 = sheet.createRow(fila)
             rowF1.createCell(0).setCellValue("${i + 1}")
-            rowF1.createCell(1).setCellValue(p.rbrocdgo ?: '')
+            rowF1.createCell(1).setCellValue(Item.get(p.item__id)?.codigoHistorico ?:  (p.rbrocdgo ?: ''))
             rowF1.createCell(2).setCellValue(p.sbprdscr ?: '')
             rowF1.createCell(3).setCellValue(p.rbronmbr ?: '')
             rowF1.createCell(4).setCellValue(p.unddcdgo ?: '')
@@ -290,17 +289,16 @@ class ReportesExcel2Controller {
 
         Row rowC1 = sheet.createRow(fila)
         rowC1.createCell(0).setCellValue("N°")
-        rowC1.createCell(1).setCellValue("CÓDIGO")
+        rowC1.createCell(1).setCellValue("RUBRO")
         rowC1.createCell(2).setCellValue("ESPEC")
-        rowC1.createCell(3).setCellValue("RUBRO")
-        rowC1.createCell(4).setCellValue("DESCRIPCIÓN")
-        rowC1.createCell(5).setCellValue("UNIDAD")
-        rowC1.createCell(6).setCellValue("CANTIDAD")
-        rowC1.createCell(7).setCellValue("P.U.")
-        rowC1.createCell(8).setCellValue("C.TOTAL")
-        rowC1.createCell(9).setCellValue("PESO RELATIVO")
-        rowC1.createCell(10).setCellValue("VAE RUBRO")
-        rowC1.createCell(11).setCellValue("VAE TOTAL")
+        rowC1.createCell(3).setCellValue("DESCRIPCIÓN")
+        rowC1.createCell(4).setCellValue("UNIDAD")
+        rowC1.createCell(5).setCellValue("CANTIDAD")
+        rowC1.createCell(6).setCellValue("P.U.")
+        rowC1.createCell(7).setCellValue("C.TOTAL")
+        rowC1.createCell(8).setCellValue("PESO RELATIVO")
+        rowC1.createCell(9).setCellValue("VAE RUBRO")
+        rowC1.createCell(10).setCellValue("VAE TOTAL")
         rowC1.setRowStyle(style)
         fila++
 
@@ -327,17 +325,17 @@ class ReportesExcel2Controller {
 
                     Row rowF1 = sheet.createRow(fila)
                     rowF1.createCell(0).setCellValue(val.vlobordn ?: '')
-                    rowF1.createCell(1).setCellValue(val.rbrocdgo.toString() ?: '')
+                    rowF1.createCell(1).setCellValue(Item.get(val.item__id)?.codigoHistorico ?:  (val.rbrocdgo ?: ''))
                     rowF1.createCell(2).setCellValue(val?.itemcdes?.toString() ?: '')
                     rowF1.createCell(3).setCellValue(val.rbronmbr.toString() ?: '')
-                    rowF1.createCell(4).setCellValue(val?.vlobdscr?.toString() ?: '')
-                    rowF1.createCell(5).setCellValue(val.unddcdgo.toString() ?: '')
-                    rowF1.createCell(6).setCellValue(fmt.format(val.vlobcntd ?: 0)?.toDouble())
-                    rowF1.createCell(7).setCellValue(fmt4.format(val.pcun?.toDouble() ?: 0)?.toDouble())
-                    rowF1.createCell(8).setCellValue(fmt4.format(val.totl?.toDouble() ?: 0)?.toDouble())
-                    rowF1.createCell(9).setCellValue(fmt4.format(val.relativo?.toDouble() ?: 0)?.toDouble())
-                    rowF1.createCell(10).setCellValue(fmt4.format(val.vae_rbro != null ? val.vae_rbro?.toDouble() : 0)?.toDouble())
-                    rowF1.createCell(11).setCellValue(fmt4.format(val.vae_totl != null ? val.vae_totl?.toDouble() : 0)?.toDouble())
+//                    rowF1.createCell(4).setCellValue(val?.vlobdscr?.toString() ?: '')
+                    rowF1.createCell(4).setCellValue(val.unddcdgo.toString() ?: '')
+                    rowF1.createCell(5).setCellValue(fmt.format(val.vlobcntd ?: 0)?.toDouble())
+                    rowF1.createCell(6).setCellValue(fmt4.format(val.pcun?.toDouble() ?: 0)?.toDouble())
+                    rowF1.createCell(7).setCellValue(fmt4.format(val.totl?.toDouble() ?: 0)?.toDouble())
+                    rowF1.createCell(8).setCellValue(fmt4.format(val.relativo?.toDouble() ?: 0)?.toDouble())
+                    rowF1.createCell(9).setCellValue(fmt4.format(val.vae_rbro != null ? val.vae_rbro?.toDouble() : 0)?.toDouble())
+                    rowF1.createCell(10).setCellValue(fmt4.format(val.vae_totl != null ? val.vae_totl?.toDouble() : 0)?.toDouble())
 
                     fila++
                     filaSub++
@@ -359,10 +357,10 @@ class ReportesExcel2Controller {
         }
 
         Row rowT = sheet.createRow(ultimaFila)
-        rowT.createCell(7).setCellValue("TOTAL")
-        rowT.createCell(8).setCellValue(fmt4.format(totalPresupuesto?.toDouble()))
-        rowT.createCell(9).setCellValue(100)
-        rowT.createCell(11).setCellValue(fmt4.format(totalVae?.toDouble()))
+        rowT.createCell(6).setCellValue("TOTAL")
+        rowT.createCell(7).setCellValue(fmt4.format(totalPresupuesto?.toDouble()))
+        rowT.createCell(8).setCellValue(100)
+        rowT.createCell(10).setCellValue(fmt4.format(totalVae?.toDouble()))
         rowT.setRowStyle(style)
 
         Row rowT2 = sheet.createRow(ultimaFila + 2)
@@ -508,9 +506,9 @@ class ReportesExcel2Controller {
 
         Row rowC1 = sheet.createRow(fila)
         rowC1.createCell(0).setCellValue("N°")
-        rowC1.createCell(1).setCellValue("CÓDIGO")
+        rowC1.createCell(1).setCellValue("RUBRO")
         rowC1.createCell(2).setCellValue("SUBPRESUPUESTO")
-        rowC1.createCell(3).setCellValue("RUBRO")
+        rowC1.createCell(3).setCellValue("DESCRIPCIÓN")
         rowC1.createCell(4).setCellValue("UNIDAD")
         rowC1.createCell(5).setCellValue("CANTIDAD")
         rowC1.createCell(6).setCellValue("")
@@ -545,10 +543,9 @@ class ReportesExcel2Controller {
         fmt4.setMaximumFractionDigits(4)
 
         valores.each {
-
             Row rowF1 = sheet.createRow(fila)
             rowF1.createCell(0).setCellValue(numero++)
-            rowF1.createCell(1).setCellValue(it.rbrocdgo.toString() ?: '')
+            rowF1.createCell(1).setCellValue( Item.get(it.item__id)?.codigoHistorico ?:  (it.rbrocdgo ?: ''))
             rowF1.createCell(2).setCellValue(it.sbprdscr.toString() ?: '')
             rowF1.createCell(3).setCellValue(it.rbronmbr.toString() ?: '')
             rowF1.createCell(4).setCellValue(it.unddcdgo.toString() ?: '')
