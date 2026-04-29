@@ -234,26 +234,37 @@
                         <tr class="item_row" id="${val.item__id}" item="${val}" sub="${val.sbpr__id}">
                             <td style="width: 20px; text-align: left" class="orden">${val.vlobordn}</td>
                             <td class="cdgo" style="width: 90px; text-align: left">
+
+                                <g:set var="codigoDefinitivo" value="" />
                                 <g:if test="${janus.Item.get(val.item__id)?.codigoHistorico}">
-                                    <g:if test="${janus.Item.get(val.item__id)?.codigoHistorico?.size() > 15}">
-                                        ${janus.Item.get(val.item__id)?.codigoHistorico?.trim()?.substring(0,11)}  <br/>${janus.Item.get(val.item__id)?.codigoHistorico?.trim()?.substring(12,janus.Item.get(val.item__id)?.codigoHistorico?.size()-1)}
-                                    </g:if>
-                                    <g:else>
-                                        ${janus.Item.get(val.item__id)?.codigoHistorico?.trim()}
-                                    </g:else>
+                                    <g:set var="codigoDefinitivo" value="${janus.Item.get(val.item__id)?.codigoHistorico}" />
                                 </g:if>
                                 <g:else>
-                                    <g:if test="${val.rbrocdgo.size() > 15}">
-                                        ${val.rbrocdgo.trim().substring(0,11)}  <br/>${val.rbrocdgo.trim().substring(12,val.rbrocdgo.size()-1)}
+                                    <g:set var="codigoDefinitivo" value="${val.rbrocdgo}" />
+                                </g:else>
+
+                                <g:if test="${codigoDefinitivo?.trim()?.substring(0,1) == 'H'}">
+                                    <g:set var="codigoDefinitivo" value="${codigoDefinitivo?.trim()?.substring(1,codigoDefinitivo?.size())}" />
+                                    <g:if test="${codigoDefinitivo?.trim()?.substring(0,1) == 'H'}">
+                                        <g:set var="codigoDefinitivo" value="${codigoDefinitivo?.trim()?.substring(1,codigoDefinitivo?.size())}" />
+                                        <g:if test="${codigoDefinitivo?.trim()?.substring(0,1) == 'H'}">
+                                            <g:set var="codigoDefinitivo" value="${codigoDefinitivo?.trim()?.substring(1,codigoDefinitivo?.size())}" />
+                                        </g:if>
                                     </g:if>
-                                    <g:else>
-                                        ${val.rbrocdgo.trim()}
-                                    </g:else>
+                                </g:if>
+                                <g:else>
+                                    <g:set var="codigoDefinitivo" value="${codigoDefinitivo?.trim()}" />
+                                </g:else>
+
+                                <g:if test="${codigoDefinitivo?.size() > 15}">
+                                    ${codigoDefinitivo?.trim()?.substring(0,11)}  <br/>${codigoDefinitivo?.trim()?.substring(12,codigoDefinitivo?.size()-1)}
+                                </g:if>
+                                <g:else>
+                                    ${codigoDefinitivo?.trim()}
                                 </g:else>
                             </td>
 
                             <td class="nombre">${val.rbronmbr}</td>
-
                             <td style="width: 40px;text-align: right" class="col_unidad">${val.unddcdgo.trim()}</td>
                             <td style="text-align: right; width: 80px" class="cant">
                                 <g:formatNumber number="${val.vlobcntd}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/>
@@ -378,24 +389,35 @@
             <g:each in="${valores}" var="val" status="j">
                 <tr class="item_row" id="${val.item__id}" item="${val}" sub="${val.sbpr__id}">
                     <td style="width: 20px" class="orden">${val.vlobordn}</td>
-%{--                    <td class="cdgo">${val.rbrocdgo.trim()}</td>--}%
                     <td class="cdgo">
+                        <g:set var="codigoDefinitivo" value="" />
                         <g:if test="${janus.Item.get(val.item__id)?.codigoHistorico}">
-                            <g:if test="${janus.Item.get(val.item__id)?.codigoHistorico?.size() > 15}">
-                                ${janus.Item.get(val.item__id)?.codigoHistorico?.trim()?.substring(0,11)}  <br/>${janus.Item.get(val.item__id)?.codigoHistorico?.trim()?.substring(12,janus.Item.get(val.item__id)?.codigoHistorico?.size()-1)}
-                            </g:if>
-                            <g:else>
-                                ${janus.Item.get(val.item__id)?.codigoHistorico?.trim()}
-                            </g:else>
+                            <g:set var="codigoDefinitivo" value="${janus.Item.get(val.item__id)?.codigoHistorico}" />
                         </g:if>
                         <g:else>
-                            <g:if test="${val.rbrocdgo.size() > 15}">
-                                ${val.rbrocdgo.trim().substring(0,11)}  <br/>${val.rbrocdgo.trim().substring(12,val.rbrocdgo.size()-1)}
-                            </g:if>
-                            <g:else>
-                                ${val.rbrocdgo.trim()}
-                            </g:else>
+                            <g:set var="codigoDefinitivo" value="${val.rbrocdgo}" />
                         </g:else>
+
+                        <g:if test="${codigoDefinitivo?.trim()?.substring(0,1) == 'H'}">
+                            <g:set var="codigoDefinitivo" value="${codigoDefinitivo?.trim()?.substring(1,codigoDefinitivo?.size())}" />
+                            <g:if test="${codigoDefinitivo?.trim()?.substring(0,1) == 'H'}">
+                                <g:set var="codigoDefinitivo" value="${codigoDefinitivo?.trim()?.substring(1,codigoDefinitivo?.size())}" />
+                                <g:if test="${codigoDefinitivo?.trim()?.substring(0,1) == 'H'}">
+                                    <g:set var="codigoDefinitivo" value="${codigoDefinitivo?.trim()?.substring(1,codigoDefinitivo?.size())}" />
+                                </g:if>
+                            </g:if>
+                        </g:if>
+                        <g:else>
+                            <g:set var="codigoDefinitivo" value="${codigoDefinitivo?.trim()}" />
+                        </g:else>
+
+                        <g:if test="${codigoDefinitivo?.size() > 15}">
+                            ${codigoDefinitivo?.trim()?.substring(0,11)}  <br/>${codigoDefinitivo?.trim()?.substring(12,codigoDefinitivo?.size()-1)}
+                        </g:if>
+                        <g:else>
+                            ${codigoDefinitivo?.trim()}
+                        </g:else>
+
                     </td>
                     <td class="nombre">${val.rbronmbr}</td>
                     <td style="width: 60px !important;text-align: center" class="col_unidad">${val.unddcdgo.trim()}</td>
