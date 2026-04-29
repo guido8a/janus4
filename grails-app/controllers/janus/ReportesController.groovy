@@ -1977,7 +1977,7 @@ class ReportesController {
                     def textoC = (it.rbronmbr ?: '')
                     textoC = textoC.decodeHTML()
                     it?.rbronmbr = textoC
-                    addCellTabla(tablaVolObra, new Paragraph(it.rbrocdgo, times8normal), prmsCellLeft)
+                    addCellTabla(tablaVolObra, new Paragraph(Item.get(it.item__id)?.codigoHistorico ?:  (it.rbrocdgo ?: ''), times8normal), prmsCellLeft)
                     addCellTabla(tablaVolObra, new Paragraph(it.rbronmbr, times8normal), prmsCellLeft)
                     addCellTabla(tablaVolObra, new Paragraph(it.unddcdgo, times8normal), prmsCellRight)
                     addCellTabla(tablaVolObra, new Paragraph(g.formatNumber(number: it.vlobcntd, minFractionDigits:
@@ -2705,12 +2705,12 @@ class ReportesController {
         def valores = preciosService.rbro_pcun_vae(obra.id)
         def subPres = VolumenesObra.findAllByObra(obra, [sort: "orden"]).subPresupuesto.unique()
 
-        tablaVolObra.setWidths(arregloEnteros([14,13, 42, 20, 10, 12, 12,12]))
+        tablaVolObra.setWidths(arregloEnteros([14,13, 42, 0, 10, 12, 12,12]))
 
-        addCellTabla(tablaVolObra, new Paragraph("CÓDIGO", times8bold), prmsCellHead2)
-        addCellTabla(tablaVolObra, new Paragraph("ESPEC.", times8bold), prmsCellHead2)
         addCellTabla(tablaVolObra, new Paragraph("RUBRO", times8bold), prmsCellHead2)
+        addCellTabla(tablaVolObra, new Paragraph("ESPEC.", times8bold), prmsCellHead2)
         addCellTabla(tablaVolObra, new Paragraph("DESCRIPCIÓN", times8bold), prmsCellHead2)
+        addCellTabla(tablaVolObra, new Paragraph("", times8bold), prmsCellHead2)
         addCellTabla(tablaVolObra, new Paragraph("UNIDAD", times8bold), prmsCellHead2)
         addCellTabla(tablaVolObra, new Paragraph("CANTIDAD", times8bold), prmsCellHead3)
         addCellTabla(tablaVolObra, new Paragraph("P. U.", times8bold), prmsCellHead3)
@@ -2724,7 +2724,7 @@ class ReportesController {
                     def textoC = (it.rbronmbr ?: '')
                     textoC = textoC.decodeHTML()
                     it?.rbronmbr = textoC
-                    addCellTabla(tablaVolObra, new Paragraph(it.rbrocdgo, times8normal), prmsCellLeft)
+                    addCellTabla(tablaVolObra, new Paragraph(Item.get(it.item__id)?.codigoHistorico ?:  (it.rbrocdgo ?: ''), times8normal), prmsCellLeft)
                     addCellTabla(tablaVolObra, new Paragraph(it.itemcdes, times8normal), prmsCellLeft)
                     addCellTabla(tablaVolObra, new Paragraph(it.rbronmbr, times8normal), prmsCellLeft)
                     addCellTabla(tablaVolObra, new Paragraph(it.vlobdscr, times8normal), prmsCellLeft)
@@ -3224,6 +3224,8 @@ class ReportesController {
                              align : Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE, bordeTop: "1", bordeBot: "1"]
         def prmsCellHead4 = [border: Color.WHITE,
                              align : Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE, bordeTop: "1", bordeBot: "1"]
+        def prmsCellHead5 = [border: Color.WHITE,
+                             align : Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE, bordeTop: "1", bordeBot: "1"]
         def prmsCellHeadRight = [border: Color.WHITE, bg: new Color(73, 175, 205),
                                  align : Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE]
         def prmsCellCenter = [border: Color.WHITE, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE]
@@ -3483,12 +3485,13 @@ class ReportesController {
         def valores = preciosService.rbro_pcun_vae(obra.id)
         def subPres = VolumenesObra.findAllByObra(obra, [sort: "orden"]).subPresupuesto.unique()
 
-        tablaVolObra.setWidths(arregloEnteros([14,13, 42, 20, 10, 12, 12,12,12,10,10]))
+//        tablaVolObra.setWidths(arregloEnteros([14,13, 42, 20, 10, 12, 12,12,12,10,10]))
+        tablaVolObra.setWidths(arregloEnteros([14,13, 42, 0, 10, 12, 12,12,12,10,10]))
 
-        addCellTabla(tablaVolObra, new Paragraph("CÓDIGO", times8bold), prmsCellHead2)
-        addCellTabla(tablaVolObra, new Paragraph("ESPEC.", times8bold), prmsCellHead4)
         addCellTabla(tablaVolObra, new Paragraph("RUBRO", times8bold), prmsCellHead2)
+        addCellTabla(tablaVolObra, new Paragraph("ESPEC.", times8bold), prmsCellHead4)
         addCellTabla(tablaVolObra, new Paragraph("DESCRIPCIÓN", times8bold), prmsCellHead2)
+        addCellTabla(tablaVolObra, new Paragraph("", times8bold), prmsCellHead2)
         addCellTabla(tablaVolObra, new Paragraph("UNIDAD", times8bold), prmsCellHead2)
         addCellTabla(tablaVolObra, new Paragraph("CANTIDAD", times8bold), prmsCellHead3)
         addCellTabla(tablaVolObra, new Paragraph("P. U.", times8bold), prmsCellHead3)
@@ -3505,7 +3508,7 @@ class ReportesController {
                     def textoC = (it.rbronmbr ?: '')
                     textoC = textoC.decodeHTML()
                     it?.rbronmbr = textoC
-                    addCellTabla(tablaVolObra, new Paragraph(it.rbrocdgo, times8normal), prmsCellLeft)
+                    addCellTabla(tablaVolObra, new Paragraph(Item.get(it.item__id)?.codigoHistorico ?:  (it.rbrocdgo ?: ''), times8normal), prmsCellLeft)
                     addCellTabla(tablaVolObra, new Paragraph(it.itemcdes, times8normal), prmsCellLeft)
                     addCellTabla(tablaVolObra, new Paragraph(it.rbronmbr, times8normal), prmsCellLeft)
                     addCellTabla(tablaVolObra, new Paragraph(it.vlobdscr, times8normal), prmsCellLeft)
@@ -3550,21 +3553,33 @@ class ReportesController {
             addCellTabla(tablaVolObra, new Paragraph("", times8bold), prmsCellRight)
         }
 
+        PdfPTable tablaTotalA = new PdfPTable(6);
+        tablaTotalA.setWidthPercentage(100);
+
+        tablaTotalA.setWidths(arregloEnteros([65,9,3,5,1,10]))
+        addCellTabla(tablaTotalA, new Paragraph("TOTAL DEL PRESUPUESTO: ", times8bold), prmsCellHead5)
+        addCellTabla(tablaTotalA, new Paragraph(g.formatNumber(number: totalPresupuesto, format: "##,##0", locale: "ec", maxFractionDigits: 4, minFractionDigits: 4), times8bold), prmsCellHead2)
+        addCellTabla(tablaTotalA, new Paragraph(" ", times8bold), prmsCellHead2)
+        addCellTabla(tablaTotalA, new Paragraph(g.formatNumber(number: finalRelativo, format: "##,##0", locale: "ec", maxFractionDigits: 2, minFractionDigits: 2), times8bold), prmsCellHead2)
+        addCellTabla(tablaTotalA, new Paragraph(" ", times8bold), prmsCellHead2)
+        addCellTabla(tablaTotalA, new Paragraph(g.formatNumber(number: finalVae, format: "##,##0", locale: "ec", maxFractionDigits: 2, minFractionDigits: 2), times8bold), prmsCellHead3)
+
+
         PdfPTable tablaTotal = new PdfPTable(11);
         tablaTotal.setWidthPercentage(100);
 
         tablaTotal.setWidths(arregloEnteros([14,13, 42, 20, 10, 0, 30,15,12,5,10]))
-        addCellTabla(tablaTotal, new Paragraph(" ", times8bold), prmsCellHead2)
-        addCellTabla(tablaTotal, new Paragraph(" ", times8bold), prmsCellHead2)
-        addCellTabla(tablaTotal, new Paragraph(" ", times8bold), prmsCellHead2)
-        addCellTabla(tablaTotal, new Paragraph(" ", times8bold), prmsCellHead2)
-        addCellTabla(tablaTotal, new Paragraph(" ", times8bold), prmsCellHead2)
-        addCellTabla(tablaTotal, new Paragraph(" ", times8bold), prmsCellHead2)
-        addCellTabla(tablaTotal, new Paragraph("TOTAL DEL PRESUPUESTO: ", times8bold), prmsCellHead2)
-        addCellTabla(tablaTotal, new Paragraph(g.formatNumber(number: totalPresupuesto, format: "##,##0", locale: "ec", maxFractionDigits: 4, minFractionDigits: 4), times8bold), prmsCellHead2)
-        addCellTabla(tablaTotal, new Paragraph(g.formatNumber(number: finalRelativo, format: "##,##0", locale: "ec", maxFractionDigits: 2, minFractionDigits: 2), times8bold), prmsCellHead2)
-        addCellTabla(tablaTotal, new Paragraph(" ", times8bold), prmsCellHead2)
-        addCellTabla(tablaTotal, new Paragraph(g.formatNumber(number: finalVae, format: "##,##0", locale: "ec", maxFractionDigits: 2, minFractionDigits: 2), times8bold), prmsCellHead3)
+//        addCellTabla(tablaTotal, new Paragraph(" ", times8bold), prmsCellHead2)
+//        addCellTabla(tablaTotal, new Paragraph(" ", times8bold), prmsCellHead2)
+//        addCellTabla(tablaTotal, new Paragraph(" ", times8bold), prmsCellHead2)
+//        addCellTabla(tablaTotal, new Paragraph(" ", times8bold), prmsCellHead2)
+//        addCellTabla(tablaTotal, new Paragraph(" ", times8bold), prmsCellHead2)
+//        addCellTabla(tablaTotal, new Paragraph(" ", times8bold), prmsCellHead2)
+//        addCellTabla(tablaTotal, new Paragraph("TOTAL DEL PRESUPUESTO: ", times8bold), prmsCellHead2)
+//        addCellTabla(tablaTotal, new Paragraph(g.formatNumber(number: totalPresupuesto, format: "##,##0", locale: "ec", maxFractionDigits: 4, minFractionDigits: 4), times8bold), prmsCellHead2)
+//        addCellTabla(tablaTotal, new Paragraph(g.formatNumber(number: finalRelativo, format: "##,##0", locale: "ec", maxFractionDigits: 2, minFractionDigits: 2), times8bold), prmsCellHead2)
+//        addCellTabla(tablaTotal, new Paragraph(" ", times8bold), prmsCellHead2)
+//        addCellTabla(tablaTotal, new Paragraph(g.formatNumber(number: finalVae, format: "##,##0", locale: "ec", maxFractionDigits: 2, minFractionDigits: 2), times8bold), prmsCellHead3)
 
         //solo IVA
         if (params.iva == 'true' && params.proyeccion == 'false') {
@@ -3668,6 +3683,7 @@ class ReportesController {
         document.add(tablaCoordenadas);
         document.add(tablaReferencia);
         document.add(tablaVolObra)
+        document.add(tablaTotalA);
         document.add(tablaTotal);
 
         PdfPTable tablaRetenciones = new PdfPTable(3);
