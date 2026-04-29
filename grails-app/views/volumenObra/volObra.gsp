@@ -135,7 +135,9 @@
                 para registrar esta obra.
 
             <g:if test="${obra.valor >= valorLicitacion}">
+            </br>
                 <i class="fa fa-exclamation-triangle fa-2x"></i>
+
                 El presupuesto corresponde a una Licitación por lo que es obligatorio presentar el VAE.
             </g:if>
         </div>
