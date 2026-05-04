@@ -39,6 +39,7 @@ class ReportesExcel2Controller {
         def dsvl = obra.distanciaVolumen
         def lugar = obra.lugar
         def subPre
+        def codigoDefinitivo = ''
         preciosService.ac_rbroObra(obra.id)
 
         def valores
@@ -134,9 +135,26 @@ class ReportesExcel2Controller {
         fmt4.setMaximumFractionDigits(4)
 
         valores.eachWithIndex { p, i->
+
+            if(Item.get(p.item__id)?.codigoHistorico){
+                codigoDefinitivo = Item.get(p.item__id)?.codigoHistorico
+            }else{
+                codigoDefinitivo = (p.rbrocdgo ?: '')
+            }
+
+            if(codigoDefinitivo?.trim()?.substring(0,1) == 'H'){
+                codigoDefinitivo = codigoDefinitivo?.trim()?.substring(1,codigoDefinitivo?.size())
+                if(codigoDefinitivo?.trim()?.substring(0,1) == 'H'){
+                    codigoDefinitivo = codigoDefinitivo?.trim()?.substring(1,codigoDefinitivo?.size())
+                    if(codigoDefinitivo?.trim()?.substring(0,1) == 'H'){
+                        codigoDefinitivo = codigoDefinitivo?.trim()?.substring(1,codigoDefinitivo?.size())
+                    }
+                }
+            }
+
             Row rowF1 = sheet.createRow(fila)
             rowF1.createCell(0).setCellValue("${i + 1}")
-            rowF1.createCell(1).setCellValue(Item.get(p.item__id)?.codigoHistorico ?:  (p.rbrocdgo ?: ''))
+            rowF1.createCell(1).setCellValue(codigoDefinitivo)
             rowF1.createCell(2).setCellValue(p.sbprdscr ?: '')
             rowF1.createCell(3).setCellValue(p.rbronmbr ?: '')
             rowF1.createCell(4).setCellValue(p.unddcdgo ?: '')
@@ -176,9 +194,9 @@ class ReportesExcel2Controller {
         def obra = Obra.get(params.id)
         def detalle = VolumenesObra.findAllByObra(obra, [sort: "orden"])
         def subPres = VolumenesObra.findAllByObra(obra, [sort: "orden"]).subPresupuesto.unique()
-
         def subPre
         def valores
+        def codigoDefinitivo = ''
 
         if (params.sub) {
             if (params.sub == '-1') {
@@ -315,17 +333,45 @@ class ReportesExcel2Controller {
 
         subPres.each {sp->
 
-            Row rowC2 = sheet.createRow(fila)
-            rowC2.createCell(0).setCellValue("Subpresupuesto: " + sp?.descripcion?.toString())
-            rowC2.setRowStyle(style)
-            fila++
+            if (params.sub != '-1'){
+                def subpresupuestoSeleccionado = SubPresupuesto.get(params.sub)
+
+                if(subpresupuestoSeleccionado?.id == sp?.id){
+                    Row rowC2 = sheet.createRow(fila)
+                    rowC2.createCell(0).setCellValue("Subpresupuesto: " + sp?.descripcion?.toString())
+                    rowC2.setRowStyle(style)
+                    fila++
+                }
+
+            }else {
+                Row rowC2 = sheet.createRow(fila)
+                rowC2.createCell(0).setCellValue("Subpresupuesto: " + sp?.descripcion?.toString())
+                rowC2.setRowStyle(style)
+                fila++
+            }
 
             valores.each {val->
-                if(val.sbpr__id == sp.id){
 
+                if(Item.get(val.item__id)?.codigoHistorico){
+                    codigoDefinitivo = Item.get(val.item__id)?.codigoHistorico
+                }else{
+                    codigoDefinitivo = (val.rbrocdgo ?: '')
+                }
+
+                if(codigoDefinitivo?.trim()?.substring(0,1) == 'H'){
+                    codigoDefinitivo = codigoDefinitivo?.trim()?.substring(1,codigoDefinitivo?.size())
+                    if(codigoDefinitivo?.trim()?.substring(0,1) == 'H'){
+                        codigoDefinitivo = codigoDefinitivo?.trim()?.substring(1,codigoDefinitivo?.size())
+                        if(codigoDefinitivo?.trim()?.substring(0,1) == 'H'){
+                            codigoDefinitivo = codigoDefinitivo?.trim()?.substring(1,codigoDefinitivo?.size())
+                        }
+                    }
+                }
+
+                if(val.sbpr__id == sp.id){
                     Row rowF1 = sheet.createRow(fila)
                     rowF1.createCell(0).setCellValue(val.vlobordn ?: '')
-                    rowF1.createCell(1).setCellValue(Item.get(val.item__id)?.codigoHistorico ?:  (val.rbrocdgo ?: ''))
+                    rowF1.createCell(1).setCellValue(codigoDefinitivo)
                     rowF1.createCell(2).setCellValue(val?.itemcdes?.toString() ?: '')
                     rowF1.createCell(3).setCellValue(val.rbronmbr.toString() ?: '')
 //                    rowF1.createCell(4).setCellValue(val?.vlobdscr?.toString() ?: '')
@@ -352,7 +398,7 @@ class ReportesExcel2Controller {
                 }
             }
 
-            fila++
+//            fila++
             filaSub++
         }
 
@@ -400,6 +446,7 @@ class ReportesExcel2Controller {
         def prch = 0
         def prvl = 0
         def subPre
+        def codigoDefinitivo = ''
 
         def parcialEquipo = 0
         def parcialMano = 0
@@ -543,9 +590,26 @@ class ReportesExcel2Controller {
         fmt4.setMaximumFractionDigits(4)
 
         valores.each {
+
+            if(Item.get(it.item__id)?.codigoHistorico){
+                codigoDefinitivo = Item.get(it.item__id)?.codigoHistorico
+            }else{
+                codigoDefinitivo = (it.rbrocdgo ?: '')
+            }
+
+            if(codigoDefinitivo?.trim()?.substring(0,1) == 'H'){
+                codigoDefinitivo = codigoDefinitivo?.trim()?.substring(1,codigoDefinitivo?.size())
+                if(codigoDefinitivo?.trim()?.substring(0,1) == 'H'){
+                    codigoDefinitivo = codigoDefinitivo?.trim()?.substring(1,codigoDefinitivo?.size())
+                    if(codigoDefinitivo?.trim()?.substring(0,1) == 'H'){
+                        codigoDefinitivo = codigoDefinitivo?.trim()?.substring(1,codigoDefinitivo?.size())
+                    }
+                }
+            }
+
             Row rowF1 = sheet.createRow(fila)
             rowF1.createCell(0).setCellValue(numero++)
-            rowF1.createCell(1).setCellValue( Item.get(it.item__id)?.codigoHistorico ?:  (it.rbrocdgo ?: ''))
+            rowF1.createCell(1).setCellValue(codigoDefinitivo)
             rowF1.createCell(2).setCellValue(it.sbprdscr.toString() ?: '')
             rowF1.createCell(3).setCellValue(it.rbronmbr.toString() ?: '')
             rowF1.createCell(4).setCellValue(it.unddcdgo.toString() ?: '')

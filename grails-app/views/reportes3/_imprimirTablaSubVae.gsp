@@ -214,7 +214,6 @@
     <g:set var="totalesRelativo" value="${0}"/>
     <g:set var="subRelativo" value="${0}"/>
 
-
     <g:if test="${subPre == -1}">
         <table class="table table-bordered table-striped table-condensed table-hover" style="width: 900px !important">
             <thead >
@@ -225,23 +224,23 @@
                 <th style="width: 80px; text-align: center" >
                     RUBRO
                 </th>
-                <th style="width: 130px; text-align: center" >
+                <th style="width: 100px; text-align: center" >
                     ESPEC.
                 </th>
-                <th style="width: 340px; text-align: center">
+                <th style="width: 300px; text-align: center">
                     DESCRIPCIÓN
                 </th>
-                <th style="width: 80px; text-align: right">
+                <th style="width: 60px; text-align: right">
                     UNIDAD
                 </th>
-                <th style="width: 70px; text-align: right">
+                <th style="width: 60px; text-align: right">
                     CANTIDAD
                 </th>
                 <th class="col_precio " style="width:80px ; text-align: right">P. U.</th>
-                <th class="col_total " style="width:80px; text-align: center">C.TOTAL</th>
-                <th class="col_vae_relativo " style="width:60px ; text-align: center">PESO RELATIVO</th>
-                <th class="col_vae_rbro" style="width:60px ; text-align: center">VAE RUBRO</th>
-                <th class="col_vae_total" style="width:60px ; text-align: center">VAE TOTAL</th>
+                <th class="col_total " style="width:80px; text-align: right">C.TOTAL</th>
+                <th class="col_vae_relativo " style="width:60px ; text-align: right">PESO RELATIVO</th>
+                <th class="col_vae_rbro" style="width:60px ; text-align: right">VAE RUBRO</th>
+                <th class="col_vae_total" style="width:60px ; text-align: right">VAE TOTAL</th>
             </tr>
             </thead>
         </table>
@@ -262,40 +261,56 @@
                         <tr class="item_row" id="${val.item__id}" item="${val}" sub="${val.sbpr__id}">
                             <td style="width: 20px; text-align: left" class="orden">${val.vlobordn}</td>
                             <td class="cdgo" style="width: 80px; text-align: left">
+                                <g:set var="codigoDefinitivo" value="" />
                                 <g:if test="${janus.Item.get(val.item__id)?.codigoHistorico}">
-                                    <g:if test="${janus.Item.get(val.item__id)?.codigoHistorico?.size() > 15}">
-                                        ${janus.Item.get(val.item__id)?.codigoHistorico?.trim()?.substring(0,11)}  <br/>${janus.Item.get(val.item__id)?.codigoHistorico?.trim()?.substring(12,janus.Item.get(val.item__id)?.codigoHistorico?.size())}
-                                    </g:if>
-                                    <g:else>
-                                        ${janus.Item.get(val.item__id)?.codigoHistorico?.trim()}
-                                    </g:else>
+                                    <g:set var="codigoDefinitivo" value="${janus.Item.get(val.item__id)?.codigoHistorico}" />
                                 </g:if>
                                 <g:else>
-                                    <g:if test="${val.rbrocdgo.size() > 15}">
-                                        ${val.rbrocdgo.trim().substring(0,11)}  <br/>${val.rbrocdgo.trim().substring(12,val.rbrocdgo.size())}
+                                    <g:set var="codigoDefinitivo" value="${val.rbrocdgo}" />
+                                </g:else>
+                                <g:if test="${codigoDefinitivo?.trim()?.substring(0,1) == 'H'}">
+                                    <g:set var="codigoDefinitivo" value="${codigoDefinitivo?.trim()?.substring(1,codigoDefinitivo?.size())}" />
+                                    <g:if test="${codigoDefinitivo?.trim()?.substring(0,1) == 'H'}">
+                                        <g:set var="codigoDefinitivo" value="${codigoDefinitivo?.trim()?.substring(1,codigoDefinitivo?.size())}" />
+                                        <g:if test="${codigoDefinitivo?.trim()?.substring(0,1) == 'H'}">
+                                            <g:set var="codigoDefinitivo" value="${codigoDefinitivo?.trim()?.substring(1,codigoDefinitivo?.size())}" />
+                                        </g:if>
                                     </g:if>
-                                    <g:else>
-                                        ${val.rbrocdgo.trim()}
-                                    </g:else>
+                                </g:if>
+                                <g:else>
+                                    <g:set var="codigoDefinitivo" value="${codigoDefinitivo?.trim()}" />
+                                </g:else>
+                                <g:if test="${codigoDefinitivo?.size() > 15}">
+                                    ${codigoDefinitivo?.trim()?.substring(0,11)}
+                                    <br/>${codigoDefinitivo?.trim()?.substring(11,codigoDefinitivo?.size())}
+                                </g:if>
+                                <g:else>
+                                    ${codigoDefinitivo?.trim()}
                                 </g:else>
                             </td>
-                            <td class="esp" style="width: 120px; text-align: left">
-                                <g:if test="${val.itemcdes.size() > 15}">
+                            <td class="esp" style="width: 100px; text-align: left">
+                                <g:if test="${val.itemcdes?.size() > 14}">
                                     ${val.itemcdes.trim().substring(0,14)}
-                                    <br/>${val.itemcdes.trim().substring(15,val.itemcdes.size())}
+                                    <br/>${val.itemcdes.trim().substring(14,val.itemcdes.size())}
                                 </g:if>
                                 <g:else>
-                                    ${val.itemcdes.trim()}
+                                    ${val.itemcdes?.trim()}
                                 </g:else>
                             </td>
-                            <td class="nombre" style="text-align: left; width: 340px">
-                                ${val.rbronmbr}
+                            <td class="nombre" style="text-align: left; width: 300px">
+                                <g:if test="${val.rbronmbr?.size() > 45}">
+                                    ${val.rbronmbr?.trim()?.substring(0,45)}
+                                    <br/>${val.rbronmbr?.trim()?.substring(45,val.rbronmbr?.size())}
+                                </g:if>
+                                <g:else>
+                                    ${val.rbronmbr?.trim()}
+                                </g:else>
                             </td>
                             %{--                            <td class="desc" style="text-align: left; width: 100px">--}%
                             %{--                                ${val.vlobdscr}--}%
                             %{--                            </td>--}%
-                            <td style="width: 60px;text-align: center" class="col_unidad">${val.unddcdgo.trim()}</td>
-                            <td style="text-align: right; width: 60px" class="cant">
+                            <td style="width: 60px;text-align: left" class="col_unidad">${val.unddcdgo.trim()}</td>
+                            <td style="text-align: left; width: 60px" class="cant">
                                 <g:formatNumber number="${val.vlobcntd}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/>
                             </td>
                             <td class="col_precio" style="text-align: right; width: 60px" id="i_${val.item__id}"><g:formatNumber number="${val.pcun}" format="##,##0" minFractionDigits="4" maxFractionDigits="4" locale="ec"/></td>
@@ -348,9 +363,9 @@
             </thead>
             <tbody>
             <tr class="theaderBot theaderup padTopBot" >
-                <td style="text-align: right; width: 400px;"><b>TOTAL PRESUPUESTO:  </b></td>
-                <td style="text-align: right; width: 70px"><b><g:formatNumber number="${totalPresupuesto}" format="##,##0" minFractionDigits="4" maxFractionDigits="4" locale="ec"/></b></td>
-                <td style="text-align: right; width: 35px"><b><g:formatNumber number="${finalRelativo}" format="##,##0" minFractionDigits="4" maxFractionDigits="4" locale="ec"/></b></td>
+                <td style="text-align: right; width: 500px;"><b>TOTAL PRESUPUESTO:  </b></td>
+                <td style="text-align: center; width: 70px"><b><g:formatNumber number="${totalPresupuesto}" format="##,##0" minFractionDigits="4" maxFractionDigits="4" locale="ec"/></b></td>
+                <td style="text-align: center; width: 35px"><b><g:formatNumber number="${finalRelativo}" format="##,##0" minFractionDigits="4" maxFractionDigits="4" locale="ec"/></b></td>
                 <td style="text-align: right; width: 80px;"><b><g:formatNumber number="${finalVae}" format="##,##0" minFractionDigits="4" maxFractionDigits="4" locale="ec"/></b></td>
             </tr>
             </tbody>
@@ -415,23 +430,20 @@
                 <th style="width: 80px; text-align: center " >
                     RUBRO
                 </th>
-                <th style="width: 130px; text-align: center" >
+                <th style="width: 100px; text-align: center" >
                     ESPEC.
                 </th>
-                <th style="width: 350px; text-align: center">
+                <th style="width: 300px; text-align: center">
                     DESCRIPCIÓN
                 </th>
-                %{--                <th style="width: 100px;">--}%
-                %{--                    DESCRIPCIÓN--}%
-                %{--                </th>--}%
-                <th style="width: 80px; text-align: right">
+                <th style="width: 60px; text-align: right">
                     UNIDAD
                 </th>
-                <th style="width: 70px; text-align: right">
+                <th style="width: 60px; text-align: right">
                     CANTIDAD
                 </th>
                 <th class="col_precio" style="width:80px ; text-align: right">P. U.</th>
-                <th class="col_total" style="width:80px; text-align: center">C.TOTAL</th>
+                <th class="col_total" style="width:80px; text-align: right">C.TOTAL</th>
                 <th class="col_vae_relativo " style="width:60px ; text-align: right">VAE RELATIVO</th>
                 <th class="col_vae_rbro" style="width:60px ; text-align: right">VAE RUBRO</th>
                 <th class="col_vae_total" style="width:60px ; text-align: right">VAE TOTAL</th>
@@ -454,38 +466,57 @@
 
                 <tr class="item_row" id="${val.item__id}" item="${val}" sub="${val.sbpr__id}">
                     <td style="width: 20px" class="orden">${val.vlobordn}</td>
-                    <td class="cdgo" style="width: 90px; text-align: left">
+                    <td class="cdgo" style="width: 80px; text-align: left">
+                        <g:set var="codigoDefinitivo" value="" />
                         <g:if test="${janus.Item.get(val.item__id)?.codigoHistorico}">
-                            <g:if test="${janus.Item.get(val.item__id)?.codigoHistorico?.size() > 15}">
-                                ${janus.Item.get(val.item__id)?.codigoHistorico?.trim()?.substring(0,11)}  <br/>${janus.Item.get(val.item__id)?.codigoHistorico?.trim()?.substring(12,janus.Item.get(val.item__id)?.codigoHistorico?.size())}
-                            </g:if>
-                            <g:else>
-                                ${janus.Item.get(val.item__id)?.codigoHistorico?.trim()}
-                            </g:else>
+                            <g:set var="codigoDefinitivo" value="${janus.Item.get(val.item__id)?.codigoHistorico}" />
                         </g:if>
                         <g:else>
-                            <g:if test="${val.rbrocdgo.size() > 15}">
-                                ${val.rbrocdgo.trim().substring(0,11)}  <br/>${val.rbrocdgo.trim().substring(12,val.rbrocdgo.size())}
-                            </g:if>
-                            <g:else>
-                                ${val.rbrocdgo.trim()}
-                            </g:else>
+                            <g:set var="codigoDefinitivo" value="${val.rbrocdgo}" />
                         </g:else>
-                    </td>
-                    <td class="esp" style="width: 120px; text-align: left">
-                        <g:if test="${val.itemcdes.size() > 15}">
-                            ${val.itemcdes.trim().substring(0,14)}  <br/>${val.itemcdes.trim().substring(15,val.itemcdes.size())}
+                        <g:if test="${codigoDefinitivo?.trim()?.substring(0,1) == 'H'}">
+                            <g:set var="codigoDefinitivo" value="${codigoDefinitivo?.trim()?.substring(1,codigoDefinitivo?.size())}" />
+                            <g:if test="${codigoDefinitivo?.trim()?.substring(0,1) == 'H'}">
+                                <g:set var="codigoDefinitivo" value="${codigoDefinitivo?.trim()?.substring(1,codigoDefinitivo?.size())}" />
+                                <g:if test="${codigoDefinitivo?.trim()?.substring(0,1) == 'H'}">
+                                    <g:set var="codigoDefinitivo" value="${codigoDefinitivo?.trim()?.substring(1,codigoDefinitivo?.size())}" />
+                                </g:if>
+                            </g:if>
                         </g:if>
                         <g:else>
-                            ${val.itemcdes.trim()}
+                            <g:set var="codigoDefinitivo" value="${codigoDefinitivo?.trim()}" />
+                        </g:else>
+                        <g:if test="${codigoDefinitivo?.size() > 15}">
+                            ${codigoDefinitivo?.trim()?.substring(0,11)}
+                            <br/>${codigoDefinitivo?.trim()?.substring(11,codigoDefinitivo?.size())}
+                        </g:if>
+                        <g:else>
+                            ${codigoDefinitivo?.trim()}
                         </g:else>
                     </td>
-                    <td class="nombre" style="text-align: left; width: 340px">${val.rbronmbr}</td>
+                    <td class="esp" style="width: 100px; text-align: left">
+                        <g:if test="${val.itemcdes?.size() > 14}">
+                            ${val.itemcdes.trim().substring(0,14)}
+                            <br/>${val.itemcdes.trim().substring(14,val.itemcdes.size())}
+                        </g:if>
+                        <g:else>
+                            ${val.itemcdes?.trim()}
+                        </g:else>
+                    </td>
+                    <td class="nombre" style="text-align: left; width: 300px">
+                        <g:if test="${val.rbronmbr?.size() > 45}">
+                            ${val.rbronmbr?.trim()?.substring(0,45)}
+                            <br/>${val.rbronmbr?.trim()?.substring(45,val.rbronmbr?.size())}
+                        </g:if>
+                        <g:else>
+                            ${val.rbronmbr?.trim()}
+                        </g:else>
+                    </td>
                     %{--                    <td class="desc" style="text-align: left; width: 100px">--}%
                     %{--                        ${val.vlobdscr}--}%
                     %{--                    </td>--}%
                     <td style="width: 60px !important;text-align: center" class="col_unidad">${val.unddcdgo.trim()}</td>
-                    <td style="text-align: right; width: 60px" class="cant">
+                    <td style="text-align: left; width: 60px" class="cant">
                         <g:formatNumber number="${val.vlobcntd}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/>
                     </td>
                     <td class="col_precio" style="text-align: right; width: 60px" id="i_${val.item__id}"><g:formatNumber number="${val.pcun}" format="##,##0" minFractionDigits="4" maxFractionDigits="4" locale="ec"/></td>
@@ -510,9 +541,9 @@
             <thead></thead>
             <tbody>
             <tr class="theaderBot theaderup padTopBot">
-                <td style="text-align: right; width: 400px"><b>TOTAL PRESUPUESTO:</b></td>
-                <td style="text-align: right; width: 70px "><b><g:formatNumber number="${total}" format="##,##0" minFractionDigits="4" maxFractionDigits="4" locale="ec"/></b></td>
-                <td style="text-align: right; width: 35px"><b><g:formatNumber number="${totalVae}" format="##,##0" minFractionDigits="4" maxFractionDigits="4" locale="ec"/></b></td>
+                <td style="text-align: right; width: 500px"><b>TOTAL PRESUPUESTO:</b></td>
+                <td style="text-align: center; width: 70px "><b><g:formatNumber number="${total}" format="##,##0" minFractionDigits="4" maxFractionDigits="4" locale="ec"/></b></td>
+                <td style="text-align: center; width: 35px"><b><g:formatNumber number="${totalVae}" format="##,##0" minFractionDigits="4" maxFractionDigits="4" locale="ec"/></b></td>
                 <td style="text-align: right; width: 80px "><b><g:formatNumber number="${totalVae}" format="##,##0" minFractionDigits="4" maxFractionDigits="4" locale="ec"/></b></td>
             </tr>
             </tbody>

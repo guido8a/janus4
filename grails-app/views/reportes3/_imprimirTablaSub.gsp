@@ -412,7 +412,7 @@
                         </g:else>
 
                         <g:if test="${codigoDefinitivo?.size() > 15}">
-                            ${codigoDefinitivo?.trim()?.substring(0,11)}  <br/>${codigoDefinitivo?.trim()?.substring(12,codigoDefinitivo?.size()-1)}
+                            ${codigoDefinitivo?.trim()?.substring(0,11)}  <br/>${codigoDefinitivo?.trim()?.substring(11,codigoDefinitivo?.size())}
                         </g:if>
                         <g:else>
                             ${codigoDefinitivo?.trim()}
