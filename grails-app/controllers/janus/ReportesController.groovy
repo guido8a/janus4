@@ -1957,6 +1957,7 @@ class ReportesController {
         def totalPrueba1 = 0
         def valores = preciosService.rbro_pcun_v2(obra.id)
         def subPres = VolumenesObra.findAllByObra(obra, [sort: "orden"]).subPresupuesto.unique()
+        def codigoDefinitivo = ''
 
         tablaVolObra.setWidths(arregloEnteros([14, 43, 8, 10, 12, 15]))
 
@@ -1977,7 +1978,24 @@ class ReportesController {
                     def textoC = (it.rbronmbr ?: '')
                     textoC = textoC.decodeHTML()
                     it?.rbronmbr = textoC
-                    addCellTabla(tablaVolObra, new Paragraph(Item.get(it.item__id)?.codigoHistorico ?:  (it.rbrocdgo ?: ''), times8normal), prmsCellLeft)
+
+                    if(Item.get(it.item__id)?.codigoHistorico){
+                        codigoDefinitivo = Item.get(it.item__id)?.codigoHistorico
+                    }else{
+                        codigoDefinitivo = (it.rbrocdgo ?: '')
+                    }
+
+                    if(codigoDefinitivo?.trim()?.substring(0,1) == 'H'){
+                        codigoDefinitivo = codigoDefinitivo?.trim()?.substring(1,codigoDefinitivo?.size())
+                        if(codigoDefinitivo?.trim()?.substring(0,1) == 'H'){
+                            codigoDefinitivo = codigoDefinitivo?.trim()?.substring(1,codigoDefinitivo?.size())
+                            if(codigoDefinitivo?.trim()?.substring(0,1) == 'H'){
+                                codigoDefinitivo = codigoDefinitivo?.trim()?.substring(1,codigoDefinitivo?.size())
+                            }
+                        }
+                    }
+
+                    addCellTabla(tablaVolObra, new Paragraph(codigoDefinitivo, times8normal), prmsCellLeft)
                     addCellTabla(tablaVolObra, new Paragraph(it.rbronmbr, times8normal), prmsCellLeft)
                     addCellTabla(tablaVolObra, new Paragraph(it.unddcdgo, times8normal), prmsCellRight)
                     addCellTabla(tablaVolObra, new Paragraph(g.formatNumber(number: it.vlobcntd, minFractionDigits:
@@ -2704,6 +2722,7 @@ class ReportesController {
         def finalVae = 0
         def valores = preciosService.rbro_pcun_vae(obra.id)
         def subPres = VolumenesObra.findAllByObra(obra, [sort: "orden"]).subPresupuesto.unique()
+        def codigoDefinitivo = ''
 
         tablaVolObra.setWidths(arregloEnteros([14,13, 42, 0, 10, 12, 12,12]))
 
@@ -2724,7 +2743,24 @@ class ReportesController {
                     def textoC = (it.rbronmbr ?: '')
                     textoC = textoC.decodeHTML()
                     it?.rbronmbr = textoC
-                    addCellTabla(tablaVolObra, new Paragraph(Item.get(it.item__id)?.codigoHistorico ?:  (it.rbrocdgo ?: ''), times8normal), prmsCellLeft)
+
+                    if(Item.get(it.item__id)?.codigoHistorico){
+                        codigoDefinitivo = Item.get(it.item__id)?.codigoHistorico
+                    }else{
+                        codigoDefinitivo = (it.rbrocdgo ?: '')
+                    }
+
+                    if(codigoDefinitivo?.trim()?.substring(0,1) == 'H'){
+                        codigoDefinitivo = codigoDefinitivo?.trim()?.substring(1,codigoDefinitivo?.size())
+                        if(codigoDefinitivo?.trim()?.substring(0,1) == 'H'){
+                            codigoDefinitivo = codigoDefinitivo?.trim()?.substring(1,codigoDefinitivo?.size())
+                            if(codigoDefinitivo?.trim()?.substring(0,1) == 'H'){
+                                codigoDefinitivo = codigoDefinitivo?.trim()?.substring(1,codigoDefinitivo?.size())
+                            }
+                        }
+                    }
+
+                    addCellTabla(tablaVolObra, new Paragraph(codigoDefinitivo, times8normal), prmsCellLeft)
                     addCellTabla(tablaVolObra, new Paragraph(it.itemcdes, times8normal), prmsCellLeft)
                     addCellTabla(tablaVolObra, new Paragraph(it.rbronmbr, times8normal), prmsCellLeft)
                     addCellTabla(tablaVolObra, new Paragraph(it.vlobdscr, times8normal), prmsCellLeft)
@@ -3484,6 +3520,7 @@ class ReportesController {
         def finalVae = 0
         def valores = preciosService.rbro_pcun_vae(obra.id)
         def subPres = VolumenesObra.findAllByObra(obra, [sort: "orden"]).subPresupuesto.unique()
+        def codigoDefinitivo = ''
 
 //        tablaVolObra.setWidths(arregloEnteros([14,13, 42, 20, 10, 12, 12,12,12,10,10]))
         tablaVolObra.setWidths(arregloEnteros([14,13, 42, 0, 10, 12, 12,12,12,10,10]))
@@ -3508,7 +3545,24 @@ class ReportesController {
                     def textoC = (it.rbronmbr ?: '')
                     textoC = textoC.decodeHTML()
                     it?.rbronmbr = textoC
-                    addCellTabla(tablaVolObra, new Paragraph(Item.get(it.item__id)?.codigoHistorico ?:  (it.rbrocdgo ?: ''), times8normal), prmsCellLeft)
+
+                    if(Item.get(it.item__id)?.codigoHistorico){
+                        codigoDefinitivo = Item.get(it.item__id)?.codigoHistorico
+                    }else{
+                        codigoDefinitivo = (it.rbrocdgo ?: '')
+                    }
+
+                    if(codigoDefinitivo?.trim()?.substring(0,1) == 'H'){
+                        codigoDefinitivo = codigoDefinitivo?.trim()?.substring(1,codigoDefinitivo?.size())
+                        if(codigoDefinitivo?.trim()?.substring(0,1) == 'H'){
+                            codigoDefinitivo = codigoDefinitivo?.trim()?.substring(1,codigoDefinitivo?.size())
+                            if(codigoDefinitivo?.trim()?.substring(0,1) == 'H'){
+                                codigoDefinitivo = codigoDefinitivo?.trim()?.substring(1,codigoDefinitivo?.size())
+                            }
+                        }
+                    }
+
+                    addCellTabla(tablaVolObra, new Paragraph(codigoDefinitivo, times8normal), prmsCellLeft)
                     addCellTabla(tablaVolObra, new Paragraph(it.itemcdes, times8normal), prmsCellLeft)
                     addCellTabla(tablaVolObra, new Paragraph(it.rbronmbr, times8normal), prmsCellLeft)
                     addCellTabla(tablaVolObra, new Paragraph(it.vlobdscr, times8normal), prmsCellLeft)
