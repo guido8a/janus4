@@ -41,10 +41,7 @@
     });
 
     $("#btnReporteVenceran").click(function () {
-        %{--var url = "${createLink(controller:'reportes', action:'imprimirRubrosExcel')}?obra=${contrato?.oferta?.concurso?.obra?.id}&transporte=";--}%
-        var url = "${createLink(controller:'reportesExcel', action:'imprimirRubrosExcel')}?obra=${contrato?.oferta?.concurso?.obra?.id}&transporte=";
-        url += "1";
-        location.href = url;
+        location.href = "${createLink(controller:'reportesExcel', action:'imprimirRubrosExcel')}?obra=${contrato?.oferta?.concurso?.obra?.id}&transporte=1";
     });
 
     $("#btnReporteDevueltas").click(function (){
@@ -56,31 +53,27 @@
     });
 
     $("#btnExpVaeExcel").click(function () {
-        var urlVaeEx = "${createLink(controller:'reportesExcel', action:'imprimirRubrosVaeExcel')}?obra=${contrato?.oferta?.concurso?.obra?.id}&transporte=";
-        urlVaeEx += "1";
-        location.href = urlVaeEx;
+        location.href = "${createLink(controller:'reportesExcel', action:'imprimirRubrosVaeExcel')}?obra=${contrato?.oferta?.concurso?.obra?.id}&transporte=1";
     });
 
     $("#btnIlustraciones").click(function () {
-            $.ajax({
-                type: "POST",
-                url: "${createLink(controller:'reportes2', action:'comprobarIlustracion')}",
-                data: {
-                    id: '${contrato?.obra?.id}',
-                    tipo: "ie"
-                },
-                success: function (msg) {
-
-                    var parts = msg.split('*');
-
-                    if (parts[0] === 'SI') {
-                        $("#divError").hide();
-                        location.href = "${createLink(controller:'reportes2', action:'reporteRubroIlustracion')}?id=${contrato?.obra?.id}&tipo=ie";
-                    } else {
-                        bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + "Archivo no encontrado" + '</strong>');
-                    }
+        $.ajax({
+            type: "POST",
+            url: "${createLink(controller:'reportes2', action:'comprobarIlustracion')}",
+            data: {
+                id: '${contrato?.obra?.id}',
+                tipo: "ie"
+            },
+            success: function (msg) {
+                var parts = msg.split('*');
+                if (parts[0] === 'SI') {
+                    $("#divError").hide();
+                    location.href = "${createLink(controller:'reportes2', action:'reporteRubroIlustracion')}?id=${contrato?.obra?.id}&tipo=ie";
+                } else {
+                    bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + "Archivo no encontrado" + '</strong>');
                 }
-            });
+            }
+        });
     });
 
 </script>

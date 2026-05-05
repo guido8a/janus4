@@ -169,6 +169,24 @@ class ReportesExcelController {
             def rowsTrans = []
             def fila = 10
             def res = preciosService.presioUnitarioVolumenObra("* ", obra.id, rubro.id)
+            def codigoDefinitivo = ''
+
+            if(Item.get(rubro?.id)?.codigoHistorico){
+                codigoDefinitivo = Item.get(rubro?.id)?.codigoHistorico
+            }else{
+                codigoDefinitivo = (rubro?.codigo ?: '')
+            }
+
+            if(codigoDefinitivo?.trim()?.substring(0,1) == 'H'){
+                codigoDefinitivo = codigoDefinitivo?.trim()?.substring(1,codigoDefinitivo?.size())
+                if(codigoDefinitivo?.trim()?.substring(0,1) == 'H'){
+                    codigoDefinitivo = codigoDefinitivo?.trim()?.substring(1,codigoDefinitivo?.size())
+                    if(codigoDefinitivo?.trim()?.substring(0,1) == 'H'){
+                        codigoDefinitivo = codigoDefinitivo?.trim()?.substring(1,codigoDefinitivo?.size())
+                    }
+                }
+            }
+
             Sheet sheet = wb.createSheet(rubro.codigo)
             sheet.setColumnWidth(1, 40 * 256)
             sheet.setColumnWidth(3, 15 * 256)
@@ -197,7 +215,7 @@ class ReportesExcelController {
             row4.sheet.addMergedRegion(new CellRangeAddress(5, 5, 5, 7))
             row4.setRowStyle(style)
             Row row5 = sheet.createRow(6)
-            row5.createCell(1).setCellValue("Código: " + rubro.codigo)
+            row5.createCell(1).setCellValue("Rubro: " + codigoDefinitivo)
             row5.sheet.addMergedRegion(new CellRangeAddress(6, 6, 1, 3))
             row5.createCell(5).setCellValue("Unidad: " + rubro.unidad?.codigo)
             row5.sheet.addMergedRegion(new CellRangeAddress(6, 6, 5, 7))
@@ -248,7 +266,6 @@ class ReportesExcelController {
                 }
             }
 
-
             def imprimirMano = {
                 res.each { r ->
                     if (r["grpocdgo"] == 2) {
@@ -292,7 +309,6 @@ class ReportesExcelController {
                     fila++
                 }
             }
-
 
             def imprimirMateriales = {
                 res.each { r ->
@@ -339,17 +355,9 @@ class ReportesExcelController {
                 }
             }
 
-
             imprimirEquipos();
             imprimirMano();
             imprimirMateriales();
-
-//            if (band == 3) {
-//            Row rowP3 = sheet.createRow(fila)
-//            rowP3.createCell(0).setCellValue("SUBTOTAL M")
-//            rowP3.createCell(7).setCellValue(totalMat)
-//            fila++
-//            }
 
             /*Tranporte*/
             if (rowsTrans.size() > 0) {
@@ -437,13 +445,11 @@ class ReportesExcelController {
         }
 
         def output = response.getOutputStream()
-        def header = "attachment; filename=" + "rubros.xlsx";
+        def header = "attachment; filename=" + "rubros_${obra?.codigo}.xlsx";
         response.setContentType("application/octet-stream")
         response.setHeader("Content-Disposition", header);
         wb.write(output)
     }
-
-
 
     def imprimirRubrosVaeExcel () {
         println "imprimirRubrosVaeExcel --> "
@@ -490,6 +496,23 @@ class ReportesExcelController {
             def band = 25
             def flag = 0
             def rowsTrans = []
+            def codigoDefinitivo = ''
+
+            if(Item.get(rubro?.id)?.codigoHistorico){
+                codigoDefinitivo = Item.get(rubro?.id)?.codigoHistorico
+            }else{
+                codigoDefinitivo = (rubro?.codigo ?: '')
+            }
+
+            if(codigoDefinitivo?.trim()?.substring(0,1) == 'H'){
+                codigoDefinitivo = codigoDefinitivo?.trim()?.substring(1,codigoDefinitivo?.size())
+                if(codigoDefinitivo?.trim()?.substring(0,1) == 'H'){
+                    codigoDefinitivo = codigoDefinitivo?.trim()?.substring(1,codigoDefinitivo?.size())
+                    if(codigoDefinitivo?.trim()?.substring(0,1) == 'H'){
+                        codigoDefinitivo = codigoDefinitivo?.trim()?.substring(1,codigoDefinitivo?.size())
+                    }
+                }
+            }
 
             Sheet sheet = wb.createSheet(rubro.codigo)
             sheet.setColumnWidth(1, 40 * 256);
@@ -520,7 +543,7 @@ class ReportesExcelController {
             row4.sheet.addMergedRegion(new CellRangeAddress(5, 5, 5, 7));
             row4.setRowStyle(style)
             Row row5 = sheet.createRow(6)
-            row5.createCell(1).setCellValue("Código: " + rubro.codigo)
+            row5.createCell(1).setCellValue("Rubro: " + codigoDefinitivo)
             row5.sheet.addMergedRegion(new CellRangeAddress(6, 6, 1, 3));
             row5.createCell(5).setCellValue("Unidad: " + rubro.unidad?.codigo)
             row5.sheet.addMergedRegion(new CellRangeAddress(6, 6, 5, 7));
