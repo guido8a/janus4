@@ -1957,6 +1957,7 @@ class ReportesController {
         def totalPrueba1 = 0
         def valores = preciosService.rbro_pcun_v2(obra.id)
         def subPres = VolumenesObra.findAllByObra(obra, [sort: "orden"]).subPresupuesto.unique()
+
         def codigoDefinitivo = ''
 
         tablaVolObra.setWidths(arregloEnteros([14, 43, 8, 10, 12, 15]))
@@ -1972,9 +1973,10 @@ class ReportesController {
             total2 = 0
 
             addCellTabla(tablaVolObra, new Paragraph(s.descripcion, times10bold), [border: Color.WHITE, align: Element.ALIGN_LEFT, valign: Element.ALIGN_LEFT, colspan: 6])
+
             valores.each {
 
-                if (it.sbprdscr == s.descripcion) {
+                if (it.sbpr__id == s.id) {
                     def textoC = (it.rbronmbr ?: '')
                     textoC = textoC.decodeHTML()
                     it?.rbronmbr = textoC
@@ -2739,7 +2741,7 @@ class ReportesController {
             total2 = 0
             addCellTabla(tablaVolObra, new Paragraph(s.descripcion, times10bold), [border: Color.WHITE, align: Element.ALIGN_LEFT, valign: Element.ALIGN_LEFT, colspan: 8])
             valores.each {
-                if (it.sbprdscr == s.descripcion) {
+                if (it.sbpr__id == s.id) {
                     def textoC = (it.rbronmbr ?: '')
                     textoC = textoC.decodeHTML()
                     it?.rbronmbr = textoC
@@ -3541,7 +3543,7 @@ class ReportesController {
             total2 = 0
             addCellTabla(tablaVolObra, new Paragraph(s.descripcion, times10bold), [border: Color.WHITE, align: Element.ALIGN_LEFT, valign: Element.ALIGN_LEFT, colspan: 11])
             valores.each {
-                if (it.sbprdscr == s.descripcion) {
+                if (it.sbpr__id == s.id) {
                     def textoC = (it.rbronmbr ?: '')
                     textoC = textoC.decodeHTML()
                     it?.rbronmbr = textoC

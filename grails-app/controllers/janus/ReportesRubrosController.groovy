@@ -1022,11 +1022,25 @@ class reportesRubrosController {
             document.newPage();
 
             def nombre = rubro?.nombre
-
-//            preciosService.ac_rbroObra(obra.id)
             def res = preciosService.precioUnitarioVolumenObraAsc("*", obra.id, rubro.id)
-
             def total = 0, totalHer = 0, totalMan = 0, totalMat = 0
+            def codigoDefinitivo = ''
+
+            if(Item.get(rubro?.id)?.codigoHistorico){
+                codigoDefinitivo = Item.get(rubro?.id)?.codigoHistorico
+            }else{
+                codigoDefinitivo = (rubro?.codigo ?: '')
+            }
+
+            if(codigoDefinitivo?.trim()?.substring(0,1) == 'H'){
+                codigoDefinitivo = codigoDefinitivo?.trim()?.substring(1,codigoDefinitivo?.size())
+                if(codigoDefinitivo?.trim()?.substring(0,1) == 'H'){
+                    codigoDefinitivo = codigoDefinitivo?.trim()?.substring(1,codigoDefinitivo?.size())
+                    if(codigoDefinitivo?.trim()?.substring(0,1) == 'H'){
+                        codigoDefinitivo = codigoDefinitivo?.trim()?.substring(1,codigoDefinitivo?.size())
+                    }
+                }
+            }
 
             Paragraph headers = new Paragraph();
             addEmptyLine(headers, 1);
@@ -1052,7 +1066,8 @@ class reportesRubrosController {
             reportesPdfService.addCellTb(tablaCoeficiente, new Paragraph((obra?.nombre ?: ''), times10normal), [border: Color.WHITE, colspan: 3])
 
             reportesPdfService.addCellTb(tablaCoeficiente, new Paragraph("Código de rubro: ", times10bold), prmsHeaderHoja)
-            reportesPdfService.addCellTb(tablaCoeficiente, new Paragraph((rubro?.codigo ?: ''), times10normal), prmsHeaderHoja)
+//            reportesPdfService.addCellTb(tablaCoeficiente, new Paragraph((rubro?.codigo ?: ''), times10normal), prmsHeaderHoja)
+            reportesPdfService.addCellTb(tablaCoeficiente, new Paragraph((codigoDefinitivo ?: ''), times10normal), prmsHeaderHoja)
             reportesPdfService.addCellTb(tablaCoeficiente, new Paragraph("Unidad: ", times10bold), prmsHeaderHoja)
             reportesPdfService.addCellTb(tablaCoeficiente, new Paragraph((rubro?.unidad?.codigo ?: ''), times10normal), prmsHeaderHoja)
 
@@ -1399,6 +1414,24 @@ class reportesRubrosController {
                 totalHerVae = 0, totalManRel = 0, totalManVae = 0, totalMatRel = 0, totalMatVae = 0,
                 totalTRel=0, totalTVae=0
 
+            def codigoDefinitivo = ''
+
+            if(Item.get(rubro?.id)?.codigoHistorico){
+                codigoDefinitivo = Item.get(rubro?.id)?.codigoHistorico
+            }else{
+                codigoDefinitivo = (rubro?.codigo ?: '')
+            }
+
+            if(codigoDefinitivo?.trim()?.substring(0,1) == 'H'){
+                codigoDefinitivo = codigoDefinitivo?.trim()?.substring(1,codigoDefinitivo?.size())
+                if(codigoDefinitivo?.trim()?.substring(0,1) == 'H'){
+                    codigoDefinitivo = codigoDefinitivo?.trim()?.substring(1,codigoDefinitivo?.size())
+                    if(codigoDefinitivo?.trim()?.substring(0,1) == 'H'){
+                        codigoDefinitivo = codigoDefinitivo?.trim()?.substring(1,codigoDefinitivo?.size())
+                    }
+                }
+            }
+
             Paragraph headers = new Paragraph();
             addEmptyLine(headers, 1);
             headers.setAlignment(Element.ALIGN_CENTER);
@@ -1424,12 +1457,11 @@ class reportesRubrosController {
 
             reportesPdfService.addCellTb(tablaCoeficiente, new Paragraph("Código de obra: ", times10bold), prmsHeaderHoja)
             reportesPdfService.addCellTb(tablaCoeficiente, new Paragraph((obra?.codigo ?: ''), times10normal), [border: Color.WHITE, colspan: 5])
-
             reportesPdfService.addCellTb(tablaCoeficiente, new Paragraph("Presupuesto: ", times10bold), prmsHeaderHoja)
             reportesPdfService.addCellTb(tablaCoeficiente, new Paragraph((obra?.nombre ?: ''), times10normal), [border: Color.WHITE, colspan: 5])
-
             reportesPdfService.addCellTb(tablaCoeficiente, new Paragraph("Código de rubro: ", times10bold), prmsHeaderHoja)
-            reportesPdfService.addCellTb(tablaCoeficiente, new Paragraph((rubro?.codigo ?: ''), times10normal), prmsHeaderHoja)
+            reportesPdfService.addCellTb(tablaCoeficiente, new Paragraph(codigoDefinitivo, times10normal), prmsHeaderHoja)
+//            reportesPdfService.addCellTb(tablaCoeficiente, new Paragraph((rubro?.codigo ?: ''), times10normal), prmsHeaderHoja)
             reportesPdfService.addCellTb(tablaCoeficiente, new Paragraph("Código de especificación: ", times10bold), prmsHeaderHoja)
             reportesPdfService.addCellTb(tablaCoeficiente, new Paragraph((rubro?.codigoEspecificacion ?: ''), times10normal), prmsHeaderHoja)
             reportesPdfService.addCellTb(tablaCoeficiente, new Paragraph("Unidad: ", times10bold), prmsHeaderHoja)
