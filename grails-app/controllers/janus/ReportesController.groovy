@@ -3988,7 +3988,7 @@ class ReportesController {
     }
 
     def reporteDocumentosObraMemo() {
-//        println("-memo-->>" + params)
+        println("-memo-->>" + params)
         def cd
         def auxiliar = Auxiliar.get(1)
         def auxiliarFijo = Auxiliar.get(1)
@@ -4148,7 +4148,6 @@ class ReportesController {
         addCellTabla(tablaDatosMemo, new Paragraph(" ", times8bold), prmsHeaderHoja)
         addCellTabla(tablaDatosMemo, new Paragraph("DE", times10bold), prmsHeaderHoja)
         addCellTabla(tablaDatosMemo, new Paragraph(" : ", times8bold), prmsHeaderHoja)
-//        addCellTabla(tablaDatosMemo, new Paragraph(persona?.departamento?.descripcion, times10bold), prmsHeaderHoja)
         addCellTabla(tablaDatosMemo, new Paragraph(obra?.departamento?.direccion?.nombre + ' - ' + obra?.departamento?.descripcion, times10bold), prmsHeaderHoja)
 
         if (obra?.direccionDestino) {
@@ -6541,8 +6540,7 @@ class ReportesController {
         def firma
         def firmas
         def fina = params.financiero.toDouble()/100 + 1
-
-//        println "----- $fina"
+        def codigoDefinitivo = ''
 
         if (params.firmasIdMP.trim().size() > 0) {
             firma = params.firmasIdMP.split(",")
@@ -6552,11 +6550,8 @@ class ReportesController {
         }
 
         if (params.firmasFijasMP.trim().size() > 0) {
-
             firmaFijaMP = params.firmasFijasMP.split(",")
-//            firmaFijaMP = firmaFijaMP.toList().unique()
         } else {
-
             firmaFijaMP = []
         }
 
@@ -6568,13 +6563,9 @@ class ReportesController {
         def prmsHeaderHojaRight = [border: Color.WHITE, align: Element.ALIGN_RIGHT]
         def prmsHeaderHojaLeft = [border: Color.WHITE, align: Element.ALIGN_LEFT]
         def prmsHeaderHojaLeft2 = [border: Color.WHITE, align: Element.ALIGN_LEFT, colspan: 2]
-
         def prmsHeaderHoja2 = [border: Color.WHITE, colspan: 9]
-
-
         def prmsHeader = [border: Color.WHITE, colspan: 7, bg: new Color(73, 175, 205),
                           align : Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE]
-
         def prmsCellHead2 = [border: Color.WHITE,
                              align : Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE, bordeTop: "1", bordeBot: "1"]
         def prmsCellHead3 = [border: Color.WHITE,
@@ -6585,7 +6576,6 @@ class ReportesController {
                              align : Element.ALIGN_LEFT, valign: Element.ALIGN_LEFT, colspan: 7]
         def prmsCellHead6 = [border: Color.WHITE,
                              align : Element.ALIGN_LEFT, valign: Element.ALIGN_LEFT, colspan: 4]
-
         def prmsHeader2 = [border: Color.WHITE, colspan: 3, bg: new Color(73, 175, 205),
                            align : Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE]
         def prmsCellHead = [border: Color.WHITE, bg: new Color(73, 175, 205),
@@ -6726,9 +6716,7 @@ class ReportesController {
 
         def total1 = 0;
         def total2 = 0;
-
         def totales
-
         def totalPresupuesto = 0;
         def totalPrueba = 0
 
@@ -6751,21 +6739,33 @@ class ReportesController {
             addCellTabla(tablaVolObraMemoPresu, new Paragraph("Total", times8bold), prmsCellHead3)
 
             valores.each {
+                if (it.sbpr__id == s.id) {
 
-                if (it.sbprdscr == s.descripcion) {
-                    addCellTabla(tablaVolObraMemoPresu, new Paragraph(it.rbrocdgo, times8normal), prmsCellLeft)
+                    if(Item.get(it.item__id)?.codigoHistorico){
+                        codigoDefinitivo = Item.get(it.item__id)?.codigoHistorico
+                    }else{
+                        codigoDefinitivo = (it.rbrocdgo ?: '')
+                    }
+
+                    if(codigoDefinitivo?.trim()?.substring(0,1) == 'H'){
+                        codigoDefinitivo = codigoDefinitivo?.trim()?.substring(1,codigoDefinitivo?.size())
+                        if(codigoDefinitivo?.trim()?.substring(0,1) == 'H'){
+                            codigoDefinitivo = codigoDefinitivo?.trim()?.substring(1,codigoDefinitivo?.size())
+                            if(codigoDefinitivo?.trim()?.substring(0,1) == 'H'){
+                                codigoDefinitivo = codigoDefinitivo?.trim()?.substring(1,codigoDefinitivo?.size())
+                            }
+                        }
+                    }
+
+                    addCellTabla(tablaVolObraMemoPresu, new Paragraph(codigoDefinitivo, times8normal), prmsCellLeft)
                     addCellTabla(tablaVolObraMemoPresu, new Paragraph(it.rbronmbr, times8normal), prmsCellLeft)
                     addCellTabla(tablaVolObraMemoPresu, new Paragraph(it.unddcdgo, times8normal), prmsCellCenter)
-
                     addCellTabla(tablaVolObraMemoPresu, new Paragraph(g.formatNumber(number: it.vlobcntd, minFractionDigits:
                             2, maxFractionDigits: 2, format: "##,##0", locale: "ec"), times8normal), prmsCellRight)
-
                     addCellTabla(tablaVolObraMemoPresu, new Paragraph(g.formatNumber(number: (it.pcun), minFractionDigits:
                             2, maxFractionDigits: 2, format: "##,##0", locale: "ec"), times8normal), prmsCellRight)
-
                     addCellTabla(tablaVolObraMemoPresu, new Paragraph(g.formatNumber(number:(it.totl), minFractionDigits:
                             2, maxFractionDigits: 2, format: "##,##0", locale: "ec"), times8normal), prmsCellRight)
-
 
                     totales = it.totl
                     totalPrueba = total2 += totales
@@ -6776,7 +6776,6 @@ class ReportesController {
                 }
             }
         }
-
 
         addCellTabla(tablaVolObraMemoPresu, new Paragraph(" ", times8bold), prmsCellHead6)
         addCellTabla(tablaVolObraMemoPresu, new Paragraph(" ", times8bold), prmsCellHead6)
@@ -6791,7 +6790,6 @@ class ReportesController {
         def trans= 0
         def tra = 0
 
-//        def resMat = Composicion.findAll("from Composicion where obra=${params.id} and grupo in (${1})")
         def resMat = Composicion.findAllByObraAndGrupo(obra, Grupo.get(1))
         resMat.sort { it.item.codigo }
 
@@ -6801,7 +6799,6 @@ class ReportesController {
         def resEq = Composicion.findAllByObraAndGrupo(obra, Grupo.get(3))
         resEq.sort { it.item.codigo }
 
-
         PdfPTable tablaAdmDirecta = new PdfPTable(4);
         tablaAdmDirecta.setWidthPercentage(100);
         tablaAdmDirecta.setWidths(arregloEnteros([35, 25, 20, 20]))
@@ -6809,7 +6806,6 @@ class ReportesController {
         addCellTabla(tablaAdmDirecta, new Paragraph(" ", times8bold), prmsHeaderHoja4)
         addCellTabla(tablaAdmDirecta, new Paragraph(" ", times8bold), prmsHeaderHoja4)
         addCellTabla(tablaAdmDirecta, new Paragraph(" ", times8bold), prmsHeaderHoja4)
-
 
         if(obra.tipo == 'D' & session.perfil.codigo == 'COGS') {
             addCellTabla(tablaAdmDirecta, new Paragraph("PRESUPUESTO REFERENCIAL POR COGESTIÓN", times10bold), [border: Color.WHITE, align: Element.ALIGN_LEFT, valign: Element.ALIGN_LEFT, colspan: 4])
@@ -6853,7 +6849,6 @@ class ReportesController {
             trans = (it?.cantidad * it?.transporte)  * fina
             totalTrans = tra += trans
         }
-
 
         addCellTabla(tablaComMateriales, new Paragraph("", times8bold), prmsCellRight2)
         addCellTabla(tablaComMateriales, new Paragraph("", times8bold), prmsCellRight2)
@@ -6941,10 +6936,8 @@ class ReportesController {
             addCellTabla(tablaComEq, new Paragraph(it?.item?.unidad?.codigo, times8normal), prmsCellCenter)
             addCellTabla(tablaComEq, new Paragraph(g.formatNumber(number: it?.cantidad, minFractionDigits:
                     2, maxFractionDigits: 2, format: "##,##0", locale: "ec"), times8normal), prmsCellRight)
-
             addCellTabla(tablaComEq, new Paragraph(g.formatNumber(number: it?.precio, minFractionDigits:
                     2, maxFractionDigits: 2, format: "##,##0", locale: "ec"), times8normal), prmsCellRight)
-
             addCellTabla(tablaComEq, new Paragraph(g.formatNumber(number: (it?.precio * it?.cantidad), minFractionDigits:
                     2, maxFractionDigits: 2, format: "##,##0", locale: "ec"), times8normal), prmsCellRight)
 
@@ -6952,14 +6945,12 @@ class ReportesController {
             totalPrueba4 = totalP4 += totales4
         }
 
-
         addCellTabla(tablaComEq, new Paragraph("", times8bold), prmsCellRight4)
         addCellTabla(tablaComEq, new Paragraph("", times8bold), prmsCellRight4)
         addCellTabla(tablaComEq, new Paragraph("", times8bold), prmsCellRight4)
         addCellTabla(tablaComEq, new Paragraph("", times8bold), prmsCellRight4)
         addCellTabla(tablaComEq, new Paragraph("Total:", times8bold), prmsCellRight4)
         addCellTabla(tablaComEq, new Paragraph(g.formatNumber(number: totalPrueba4, format: "##,##0", locale: "ec", maxFractionDigits: 2, minFractionDigits: 2), times8bold), prmsCellRight4)
-
 
         def totalParte2 = totalPrueba2+totalTrans+totalPrueba3+totalPrueba4
 
@@ -6991,7 +6982,6 @@ class ReportesController {
         if(params?.costo){
             addCellTabla(tablaTotalCom, new Paragraph(g.formatNumber(number: ((params?.costo.toDouble() ?: 0) + (totalParte2 ?: 0)), format: "##,##0", locale: "ec", maxFractionDigits: 2, minFractionDigits: 2), times8bold), prmsCellRight4)
         }else {
-
             addCellTabla(tablaTotalCom, new Paragraph(g.formatNumber(number: ((totalParte2 ?: 0)), format: "##,##0", locale: "ec", maxFractionDigits: 2, minFractionDigits: 2), times8bold), prmsCellRight4)
         }
 
@@ -6999,7 +6989,6 @@ class ReportesController {
         addCellTabla(tablaTotalCom, new Paragraph(" ", times8bold), prmsCellHead4)
 
         //Presupuesto por Contrato
-
 
         if (!params.sp) {
             params.sp = '-1'
@@ -7117,7 +7106,6 @@ class ReportesController {
             totalTrans5 = tra5 += trans5
         }
 
-
         addCellTabla(tablaContMateriales, new Paragraph("", times8bold), prmsCellRight2)
         addCellTabla(tablaContMateriales, new Paragraph("", times8bold), prmsCellRight2)
         addCellTabla(tablaContMateriales, new Paragraph("", times8bold), prmsCellRight2)
@@ -7220,16 +7208,11 @@ class ReportesController {
         addCellTabla(tablaContEq, new Paragraph("", times8bold), prmsCellRight4)
         addCellTabla(tablaContEq, new Paragraph("Total:", times8bold), prmsCellRight4)
         addCellTabla(tablaContEq, new Paragraph(g.formatNumber(number: totalPrueba7, format: "##,##0", locale: "ec", maxFractionDigits: 2, minFractionDigits: 2), times8bold), prmsCellRight4)
-
         addCellTabla(tablaContEq, new Paragraph("", times8bold), prmsCellHead4)
         addCellTabla(tablaContEq, new Paragraph("", times8bold), prmsCellHead4)
-
-
-//        document.add(tablaContEq);
 
         def resultadoParcial1 = (totalPrueba5+totalTrans5+totalPrueba6+totalPrueba7);
         def resultadoFinal1 = (params?.totalPresupuesto ? params?.totalPresupuesto.toDouble() : 0) - resultadoParcial1;
-
 
         PdfPTable tablaTotalCont = new PdfPTable(6);
         tablaTotalCont.setWidthPercentage(100);

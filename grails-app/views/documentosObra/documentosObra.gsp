@@ -881,7 +881,6 @@
             </fieldset>
         </div>
     </div>
-
     <div class="btn-group" style="margin-bottom: 10px; margin-top: 0px; margin-left: 180px; text-align: center">
         <button class="btn btn-primary" id="btnSalir"><i class="fa fa-arrow-left"></i> Regresar</button>
         <button class="btn btn-info" id="btnImprimir"><i class="fa fa-print"></i> Imprimir</button>
@@ -889,7 +888,6 @@
         <button class="btn btn-info" id="btnImprimirVae"><i class="fa fa-print"></i> Imprimir VAE</button>
         <button class="btn aparecer btn-success" id="btnDocExcel"><i class="fa fa-file-excel"></i> Excel</button>
     </div>
-
     <div id="tipoReporteDialog">
         <fieldset>
             <div class="col-md-3">
@@ -897,44 +895,23 @@
             </div>
         </fieldset>
     </div>
-
     <div id="reajustePresupuestoDialog" class="texto">
-
         <fieldset>
             <div class="col-md-3" style="margin-top: 10px">
 
                 Incluir Iva <g:checkBox name="reajusteIva" style="margin-left: 132px"/>
 
             </div>
-
             <div class="col-md-3" style="margin-top: 10px">
                 Incluir Proyección del reajuste <g:checkBox name="proyeccionReajuste" style="margin-left: 20px"/>
-
             </div>
 
             <div class="col-md-3" style="margin-top: 10px">
-
                 Meses: <g:textField name="mesesReajuste" style="width: 55px; margin-left: 20px"/>
             </div>
-
         </fieldset>
     </div>
-
-
-    %{--    <div id="maxFirmasDialog">--}%
-
-    %{--        <fieldset>--}%
-    %{--            <div class="col-md-3">--}%
-
-    %{--                A ingresado el número máximo de firmas para este documento.--}%
-
-    %{--            </div>--}%
-    %{--        </fieldset>--}%
-    %{--    </div>--}%
-
-
     <div id="mesesCeroDialog">
-
         <fieldset>
             <div class="col-md-3">
                 <br>
@@ -942,95 +919,39 @@
             </div>
         </fieldset>
     </div>
-
-
     <div id="cambioMonedaExcel">
-
         <fieldset>
             <div class="col-md-3" style="margin-bottom: 20px">
-
                 Coloque la tasa de cambio que se aplicará a los valores del reporte en excel.
-
             </div>
-
             <div class="col-md-3">
-
                 Tasa de Cambio: <g:textField name="cambioMoneda" style="width: 55px; margin-left: 20px"/>
-
             </div>
-
         </fieldset>
     </div>
-
-
     <div id="tasaCeroDialog">
-
         <fieldset>
             <div class="col-md-3">
-
                 Si desea que su reporte sea calculado con una tasa de cambio se debe colocar un número válido en el campo Tasa!!
-
             </div>
         </fieldset>
     </div>
-
-
-    %{--    <div id="borrarFirmaPresuDialog">--}%
-    %{--        <fieldset>--}%
-    %{--            <div class="col-md-3">--}%
-    %{--                Está seguro que desea remover esta firma del documento a ser impreso?--}%
-    %{--            </div>--}%
-    %{--        </fieldset>--}%
-    %{--    </div>--}%
-
-
-    %{--    <div class="modal hide fade" id="modal-borrarFirma">--}%
-    %{--        <div class="modal-header">--}%
-    %{--            <button type="button" class="close" data-dismiss="modal">×</button>--}%
-
-    %{--            <div id="modalTitle"></div>--}%
-    %{--        </div>--}%
-
-    %{--        <div class="modal-body" id="modalBody">--}%
-    %{--        </div>--}%
-
-    %{--        <div class="modal-footer" id="modalFooter">--}%
-    %{--        </div>--}%
-    %{--    </div>--}%
-
-
     <div id="reajusteMemoDialog" class="texto">
-
         <fieldset>
             <div class="col-md-12" style="margin-top: 10px">
-
                 Incluir Iva <g:checkBox name="reajusteIvaMemo" style="margin-left: 132px"/>
-
             </div>
-
             <div class="col-md-12" style="margin-top: 10px">
                 Incluir Proyección del reajuste <g:checkBox name="proyeccionReajusteMemo" style="margin-left: 20px"/>
-
             </div>
-
             <div class="col-md-12" style="margin-top: 10px">
-
                 Meses: <g:textField name="mesesReajusteMemo" style="width: 55px; margin-left: 20px"/>
             </div>
-
         </fieldset>
     </div>
-
 </div>
 
 <script type="text/javascript">
-
-    // $(document).ready(function() {
-    //     $('#texto').summernote({
-    //         spellCheck: true,
-    //         disableGrammar: true
-    //     });
-    // });
 
     var tipoClick;
     var tipoClickMemo = $(".radioPresupuestoMemo").attr("value");

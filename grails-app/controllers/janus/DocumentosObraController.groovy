@@ -101,33 +101,22 @@ class DocumentosObraController {
             preciosService.ac_rbroObra(obra.id)
         }
 
-
         def valores = preciosService.rbro_pcun_v2(obra.id)
-
         def subPres = VolumenesObra.findAllByObra(obra,[sort:"orden"]).subPresupuesto.unique()
 
-
         subPres.each { s->
-
             total2 = 0
-
             valores.each {
-
-              if(it.sbprdscr == s.descripcion){
-
+              if(it.sbpr__id == s.id){
                 totales = it.totl
                 totalPresupuestoBien = (total1 += totales)
                 totalPrueba = total2 += totales
-
               }
             }
-
         }
 
         detalle.each {
             def res = preciosService.precioUnitarioVolumenObraSinOrderBy("sum(parcial)+sum(parcial_t) precio ",obra.id,it.item.id)
-
-//            precios.put(it.id.toString(),(res["precio"][0]+res["precio"][0]*indirecto).toDouble().round(2))
 
             if(res["precio"][0]){
                 precios.put(it.id.toString(),(res["precio"][0]+res["precio"][0]*indirecto).toDouble().round(2))
@@ -165,11 +154,8 @@ class DocumentosObraController {
 
         def resComp = Composicion.findAllByObraAndGrupo(obra, Grupo.get(1))
         resComp.sort{it.item.codigo}
-
         def resMano = Composicion.findAllByObraAndGrupo(obra, Grupo.get(2))
         resMano.sort{it.item.codigo}
-
-
         def resEq = Composicion.findAllByObraAndGrupo(obra, Grupo.get(3))
         resEq.sort{it.item.codigo}
 
