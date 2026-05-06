@@ -363,7 +363,7 @@ class CodigoComprasPublicasController {
                                     println " no se pudo insertar $rgst: ${e.erros()}"
                                 }
                             } else {
-                                sql = "update cpac set cpacdscr = '${dscr}', cpacfcha = '${fecha}' " +
+                                sql = "update cpac set cpacdscr = '${dscr}', cpacfcha = '${fecha}', cpacumve = ${umve} " +
                                         "where cpac__id = ${cp_id}"
                                 println "actualiza $cp_id $sql"
                                 try {
@@ -423,6 +423,7 @@ class CodigoComprasPublicasController {
 
         sql = "select itvafcha from itva where itvafcha = '${fcha}' "
         def existe = cn.rows(sql.toString())[0]?.itvafcha
+        println "existe: $existe"
 
         if(!existe) {
             sql = "insert into itva(itvafcha, itvafcin, item__id, itvapcnt, itvargst) " +
