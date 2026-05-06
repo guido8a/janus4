@@ -394,12 +394,10 @@ class CodigoComprasPublicasController {
                 println "DONE!!"
                 redirect(action: "mensajeUploadContrato", id: params.id)
             } else {
-                flash.message = "Seleccione un archivo Excel xlsx para procesar (archivos xls deben ser convertidos a xlsx primero)"
-                redirect(action: 'formArchivo')
+                render "no_Seleccione un archivo Excel de tipo xlsx para procesar (archivos xls deben ser convertidos a xlsx primero)"
             }
         } else {
-            flash.message = "Seleccione un archivo para procesar"
-            redirect(action: 'subirExcel')
+            render "no_Seleccione un archivo"
         }
     }
 
