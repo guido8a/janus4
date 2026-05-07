@@ -105,7 +105,7 @@
         if ($("#frmUpload").valid()) {
             bootbox.confirm({
                 title: "Cargar archivo excel CPC",
-                message: "<i class='fa fa-exclamation-triangle text-warning fa-3x'></i> Está seguro de querer cargar el archivo excel y fijar los valores a la fecha de registro : " + '<strong>' + fecha  + '</strong>',
+                message: "<i class='fa fa-exclamation-triangle text-warning fa-3x'></i> Está seguro de querer cargar el archivo excel y fijar valores del vae a la fecha de registro : " + '<strong>' + fecha  + '</strong>',
                 buttons: {
                     cancel: {
                         label: '<i class="fa fa-times"></i> Cancelar',
