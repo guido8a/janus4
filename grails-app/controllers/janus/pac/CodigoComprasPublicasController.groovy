@@ -377,7 +377,7 @@ class CodigoComprasPublicasController {
                         }
                     }
                 } //sheets.each
-                htmlInfo += "<h3>Se ha actualziado: " + cuenta + " registros del CPC</h3>"
+                htmlInfo += "<h3>Se ha actualizado: " + cuenta + " registros del CPC</h3>"
 
                 if (done > 0) {
                     doneHtml = "<div class='alert alert-success'>Se han ingresado correctamente " + done + " registros</div>"
@@ -392,7 +392,8 @@ class CodigoComprasPublicasController {
                 flash.message = str
 
                 println "DONE!!"
-                redirect(action: "mensajeUploadContrato", id: params.id)
+//                redirect(action: "mensajeUploadContrato", id: params.id)
+                render "ok_${str}"
             } else {
                 render "no_Seleccione un archivo Excel de tipo xlsx para procesar (archivos xls deben ser convertidos a xlsx primero)"
             }
@@ -431,11 +432,7 @@ class CodigoComprasPublicasController {
             cn.execute(sql.toString())
         }
         cn.close()
-        render "ok"
+        render "ok_VAE actualizado correctamente"
     }
-
-    def mensajeUploadContrato() {
-    }
-
 
 } //fin controller

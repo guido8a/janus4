@@ -75,7 +75,25 @@
     });
 
     $(".btnActualiza").click(function () {
-        location.href="${createLink(controller: 'codigoComprasPublicas', action: 'actualizaVae')}"
+        %{--location.href="${createLink(controller: 'codigoComprasPublicas', action: 'actualizaVae')}"--}%
+        var c = cargarLoader("Actualizando...");
+        $.ajax({
+            type    : "POST",
+            url     : "${createLink(controller: 'codigoComprasPublicas', action: 'actualizaVae')}",
+            data    : {},
+            success : function (msg) {
+                c.modal('hide');
+                var parts = msg.split("_");
+                if(parts[0] === 'ok'){
+                    bootbox.alert('<i class="fa fa-check text-success fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
+                    buscarCPC();
+                    return false;
+                }else{
+                    bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
+                    return false;
+                }
+            }
+        });
     });
 
     buscarCPC();
