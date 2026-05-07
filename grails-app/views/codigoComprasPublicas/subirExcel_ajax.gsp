@@ -60,7 +60,7 @@
         <div class="col-md-1"></div>
         <div class="col-md-9 alert alert-warning" style="font-size: 16px; font-weight: bold; text-align: center">
             <i class="fa fa-exclamation-triangle fa-2x text-danger"></i>
-            Antes de cargar el archivo revise la fecha de registro
+            Antes de cargar el archivo revise la fecha de registro Umbral Vae
         </div>
     </div>
 
@@ -104,8 +104,8 @@
         var fecha = $("#fechaRegistro").val();
         if ($("#frmUpload").valid()) {
             bootbox.confirm({
-                title: "Cargar archivo excel CPC",
-                message: "<i class='fa fa-exclamation-triangle text-warning fa-3x'></i> Está seguro de querer cargar el archivo excel y fijar valores del vae a la fecha de registro : " + '<strong>' + fecha  + '</strong>',
+                title: "<i class='fa fa-exclamation-triangle text-warning fa-2x'></i> Cargar archivo excel CPC",
+                message: "<p style='font-size: 14px'> Está seguro de querer cargar el archivo excel y fijar los valores del vae a la fecha de registro : " + '<strong style="font-size: 16px">' + fecha  + '</strong>' +  '</p>',
                 buttons: {
                     cancel: {
                         label: '<i class="fa fa-times"></i> Cancelar',
@@ -153,6 +153,7 @@
                                 label     : "Aceptar",
                                 className : "btn-primary",
                                 callback  : function () {
+                                    location.href="${createLink(controller: 'codigoComprasPublicas', action: 'list')}"
                                 }
                             }
                         } //buttons
