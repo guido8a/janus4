@@ -32,7 +32,7 @@
         Cargar valores desde Excel
     </a>
     <a href="#" class="btn btn-info btnActualiza">
-        <i class="fa fa-upload"></i>
+        <i class="fa fa-retweet"></i>
         Actualizar VAE de CPC subidos de Excel
     </a>
 </div>
