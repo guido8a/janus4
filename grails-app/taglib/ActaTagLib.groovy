@@ -156,7 +156,7 @@ class ActaTagLib {
 
         tabla += "<tbody>"
 
-        def total = 0
+//        def total = 0
         detalles.each { subpres, det ->
             tabla += "<tr>"
             tabla += "<th colspan='4'>${subpres.descripcion}</th>"
@@ -170,7 +170,7 @@ class ActaTagLib {
                 nombre = nombre.replaceAll(/>/, /&gt;/);
                 nombre = nombre.replaceAll(/"/, /&quot;/);
 
-                total += elem.valor.ejecutado
+//                total += elem.valor.ejecutado
                 tabla += "<tr>"
                 tabla += "<td>${elem.codigo}</td>"
                 tabla += "<td>${nombre}</td>"
@@ -185,11 +185,20 @@ class ActaTagLib {
 
         }
 
+        /* se usa el mismo query que para planillas ReportePlanillas4Controller lin: 2057 con todas las planillas */
+        def cn = dbConnectionService.getConnection()
+        def sql = "select sum(plnlmnto) suma from plnl where cntr__id = ${contrato.id} and " +
+                "tppl__id in (3, 9, 11)"
+        println "sql acta: $sql"
+        def totalEjecutado = cn.rows(sql.toString())[0].suma
+        println "totalEjec: $totalEjecutado"
+
         tabla += "</tbody>"
         tabla += "<tfoot>"
         tabla += "<tr>"
         tabla += "<th colspan='6' class='tal'>TOTAL OBRA EJECUTADA</th>"
-        tabla += "<th class='tar'>${numero(numero: total)}</th>"
+//        tabla += "<th class='tar'>${numero(numero: total)}</th>"
+        tabla += "<th class='tar'>${numero(numero: totalEjecutado, decimales: 2)}</th>"
         tabla += "</tr>"
         tabla += "</tfoot>"
 
