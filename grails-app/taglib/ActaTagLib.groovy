@@ -178,7 +178,7 @@ class ActaTagLib {
                 tabla += "<td class='tar'>${numero(numero: elem.precio)}</td>"
                 tabla += "<td class='tar'>${numero(numero: elem.cantidad.contratado)}</td>"
                 tabla += "<td class='tar'>${numero(numero: elem.cantidad.ejecutado)}</td>"
-                tabla += "<td class='tar'>${numero(numero: elem.valor.ejecutado)}</td>"
+                tabla += "<td class='tar'>${numero(numero: elem.valor.ejecutado, decimales: 4)}</td>"
                 tabla += "</tr>"
 //                println "++++ ${elem.nombre}"
             }

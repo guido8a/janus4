@@ -2009,7 +2009,7 @@ class ReportePlanillas4Controller {
 
             addCellTabla(tablaDetalles, new Paragraph(numero(vo.vlorantr, 2, "hide"), fontTdTiny), [bwt: 0.1, bct: Color.BLACK, bwb: 0.1, bcb: Color.WHITE, height: height, border: Color.BLACK, align: Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE])
             addCellTabla(tablaDetalles, new Paragraph(numero(vo.vloractl, 4, "hide"), fontTdTiny), [bwt: 0.1, bct: Color.BLACK, bwb: 0.1, bcb: Color.WHITE, height: height, border: Color.BLACK, align: Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE])
-            addCellTabla(tablaDetalles, new Paragraph(numero(vo.vloracml, 2, "hide"), fontTdTiny), [bwt: 0.1, bct: Color.BLACK, bwb: 0.1, bcb: Color.WHITE, height: height, border: Color.BLACK, align: Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE])
+            addCellTabla(tablaDetalles, new Paragraph(numero(vo.vloracml, 4, "hide"), fontTdTiny), [bwt: 0.1, bct: Color.BLACK, bwb: 0.1, bcb: Color.WHITE, height: height, border: Color.BLACK, align: Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE])
 
 //            currentRows++
             currentRows += vo.vocrlnea
