@@ -2926,7 +2926,8 @@ class ReportesPlanillasController {
         logo.setAlignment(Image.LEFT | Image.TEXTWRAP)
 
         Document document
-        document = new Document(PageSize.A4.rotate());
+//        document = new Document(PageSize.A4.rotate());
+        document = new Document(PageSize.A4);
         def pdfw = PdfWriter.getInstance(document, baos);
 
         document.open();
@@ -3045,7 +3046,7 @@ class ReportesPlanillasController {
 
         def totalCostoPorcentaje = totalConIva+totalIndirectos
 
-        addCellTabla(tablaResumen1, new Paragraph("TOTAL OBRAS BAJO LA MODALIDAD COSTO + PORCENTAJE (NO INCLUYE IVA)", fontResumen), [padding: 5, bg: Color.LIGHT_GRAY, border: Color.BLACK, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE])
+        addCellTabla(tablaResumen1, new Paragraph("TOTAL OBRAS BAJO LA MODALIDAD COSTO + PORCENTAJE (NO INCLUYE IVA)", fontThUsar), [padding: 5, bg: Color.LIGHT_GRAY, border: Color.BLACK, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE])
         addCellTabla(tablaResumen1, new Paragraph(numero(total, 2), fontResumen), [padding: 5, border: 2, bg: Color.LIGHT_GRAY, border: Color.BLACK, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE])
 
         document.add(tablaResumen1)
@@ -3058,7 +3059,7 @@ class ReportesPlanillasController {
 
         def porcentaje = total / contrato.monto
 
-        addCellTabla(tablaResumen2, new Paragraph("% TOTAL OBRAS ADICIONALES NO CONTRACTUALES", fontResumen), [padding: 5, bg: Color.LIGHT_GRAY, border: Color.BLACK, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE])
+        addCellTabla(tablaResumen2, new Paragraph("% TOTAL OBRAS ADICIONALES NO CONTRACTUALES", fontThUsar), [padding: 5, bg: Color.LIGHT_GRAY, border: Color.BLACK, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE])
         addCellTabla(tablaResumen2, new Paragraph(numero(porcentaje*100, 2) + " %", fontResumen), [padding: 5, border: 2, bg: Color.LIGHT_GRAY, border: Color.BLACK, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE])
 
         document.add(tablaResumen2)
