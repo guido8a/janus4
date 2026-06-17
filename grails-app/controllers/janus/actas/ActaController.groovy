@@ -246,15 +246,15 @@ class ActaController {
                                         parrafos: [
                                                 [
                                                         numero   : 1,
-                                                        contenido: "<strong>RECEPCIÓN PROVISIONAL:</strong><br/>" +
-                                                                "<strong>6.1.a.-</strong> La Comisión integrada para el efecto, procede en el sitio de la obra, " +
-                                                                "a realizar la diligencia de recepción de los rubros materia del contrato.<br/>" +
-                                                                "<strong>6.1.b.- Observaciones:</strong>"
+                                                        contenido: "<p><strong>RECEPCIÓN PROVISIONAL:</strong></p>" +
+                                                                "<p><strong>6.1.a.-</strong> La Comisión integrada para el efecto, procede en el sitio de la obra, " +
+                                                                "a realizar la diligencia de recepción de los rubros materia del contrato.</p>" +
+                                                                "<p><strong>6.1.b.- Observaciones:</strong></p>"
                                                 ],
                                                 [
                                                         numero   : 2,
-                                                        contenido: "<strong>RECEPCIÓN DEFINITIVA:</strong><br/>" +
-                                                                "<strong>6.2.a.-</strong>"
+                                                        contenido: "<p><strong>RECEPCIÓN DEFINITIVA:</strong></p>" +
+                                                                "<p><strong>6.2.a.-</strong></p>"
                                                 ]
                                         ]
                                 ],
