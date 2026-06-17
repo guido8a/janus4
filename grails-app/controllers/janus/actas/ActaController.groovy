@@ -170,10 +170,23 @@ class ActaController {
                                                         contenido: "Mediante contrato " + contrato.codigo + " suscrito el " + fechaConFormato(contrato.fechaSubscripcion, "dd-MM-yyyy") + " el contratista " +
                                                                 "" + nombrePersona(contrato.oferta.proveedor, "prov") + " se compromete a construir <strong>" + contrato.objeto + "</strong> en " +
                                                                 "<strong>" + obra.sitio + "</strong> - <strong>Parroquia " + obra.parroquia.nombre + " - Cantón " + obra.parroquia.canton.nombre + "</strong>" +
-                                                                "<br/>Por un monto de \$ <strong>" + numero(contrato.monto, 2) + "</strong>" +
-                                                                "<br/>Anticipo entregado \$ <strong>" + numero(contrato.anticipo, 2) + " (" + numero(contrato.porcentajeAnticipo, 0) + "%)</strong>"
+                                                                "<p>Por un monto de \$ <strong>" + numero(contrato.monto, 2) + "</strong></p>" +
+                                                                "<p>Anticipo entregado \$ <strong>" + numero(contrato.anticipo, 2) + " (" + numero(contrato.porcentajeAnticipo, 0) + "%)</strong></p>"
                                                 ]
                                         ]
+
+//                                        numero  : 2,
+//                                        titulo  : "CONDICIONES GENERALES DE EJECUCIÓN",
+//                                        parrafos: [
+//                                                [
+//                                                        numero   : 1,
+//                                                        contenido: "Mediante contrato " + contrato.codigo + " suscrito el " + fechaConFormato(contrato.fechaSubscripcion, "dd-MM-yyyy") + " el contratista " +
+//                                                                "" + nombrePersona(contrato.oferta.proveedor, "prov") + " se compromete a construir <strong>" + contrato.objeto + "</strong> en " +
+//                                                                "<strong>" + obra.sitio + "</strong> - <strong>Parroquia " + obra.parroquia.nombre + " - Cantón " + obra.parroquia.canton.nombre + "</strong>" +
+//                                                                "<br/>Por un monto de \$ <strong>" + numero(contrato.monto, 2) + "</strong>" +
+//                                                                "<br/>Anticipo entregado \$ <strong>" + numero(contrato.anticipo, 2) + " (" + numero(contrato.porcentajeAnticipo, 0) + "%)</strong>"
+//                                                ]
+//                                        ]
                                 ],
                                 [
                                         numero: 3,

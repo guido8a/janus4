@@ -85,7 +85,7 @@
 
         .contParrafo {
             width      : 600px;
-            text-align : justify-all;
+            text-align : justify;
         }
 
         .tal {
