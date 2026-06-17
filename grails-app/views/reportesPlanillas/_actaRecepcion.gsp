@@ -85,7 +85,7 @@
 
         .contParrafo {
             width      : 600px;
-            text-align : justify;
+            text-align : justify-all;
         }
 
         .tal {
@@ -344,13 +344,10 @@
                                 <div class="parrafo">
                                     <div class="row tituloParrafo ">
                                         <div class="span1 numero lvl2 bold">${seccion.numero}.${parrafo.numero}.-</div>
-
                                         <div class="span9 contParrafo editable ui-corner-all">
-%{--                                            <acta:clean str="${parrafo.contenido}"/>--}%
                                             <util:clean str="${parrafo.contenido}"/>
                                         </div>
                                     </div>
-
                                     <div class="tabla">
                                         <acta:tabla tipo="${parrafo.tipoTabla}" acta="${actaInstance}"/>
                                     </div>
