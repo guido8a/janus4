@@ -40,19 +40,36 @@
 
 <body>
 
+<g:set var="eliminable" value="${planilla.fechaMemoSalidaPlanilla == null}"/>
+
 <div class="row" style="margin-bottom: 10px;">
     <div class="col-md-12 btn-group" role="navigation">
-%{--        <g:link controller="contrato" action="verContrato" params="[contrato: contrato?.id]" class="btn btn-primary btn-new" title="Regresar al contrato">--}%
-%{--            <i class="fa fa-arrow-left"></i>--}%
-%{--            Contrato--}%
-%{--        </g:link>--}%
-        <a href="#" class="btn btn-info" id="btnProcesar" title="Procesar y regresar">
-            <i class="fa fa-arrow-left"></i> Procesar y regresar a Planillas
-        </a>
-%{--        <g:link controller="planilla" action="list" params="[id: contrato?.id]" class="btn btn-info btn-new" title="Regresar a las planillas del contrato">--}%
-%{--            <i class="fa fa-arrow-left"></i>--}%
-%{--            --}%
-%{--        </g:link>--}%
+    %{--        <g:link controller="contrato" action="verContrato" params="[contrato: contrato?.id]" class="btn btn-primary btn-new" title="Regresar al contrato">--}%
+    %{--            <i class="fa fa-arrow-left"></i>--}%
+    %{--            Contrato--}%
+    %{--        </g:link>--}%
+        <g:if test="${contrato?.fiscalizador?.id == session.usuario.id}">
+            <g:if test="${eliminable}">
+                <a href="#" class="btn btn-info" id="btnProcesar" title="Procesar y regresar">
+                    <i class="fa fa-arrow-left"></i> Procesar y regresar a Planillas
+                </a>
+            </g:if>
+            <g:else>
+                <g:link controller="planilla" action="list" params="[id: contrato?.id]" class="btn btn-info btn-new" title="Regresar a las planillas del contrato">
+                    <i class="fa fa-arrow-left"></i> Regresar
+                </g:link>
+            </g:else>
+        </g:if>
+        <g:else>
+            <g:link controller="planilla" action="list" params="[id: contrato?.id]" class="btn btn-info btn-new" title="Regresar a las planillas del contrato">
+                <i class="fa fa-arrow-left"></i> Regresar
+            </g:link>
+        </g:else>
+
+    %{--        <g:link controller="planilla" action="list" params="[id: contrato?.id]" class="btn btn-info btn-new" title="Regresar a las planillas del contrato">--}%
+    %{--            <i class="fa fa-arrow-left"></i>--}%
+    %{--            --}%
+    %{--        </g:link>--}%
         <div class="col-md-3 row" style="margin-top: 5px; text-align: right">
             <label for="subPresupuesto" class="control-label" style="text-align: right">
                 Seleccione un Sub Presupuesto
