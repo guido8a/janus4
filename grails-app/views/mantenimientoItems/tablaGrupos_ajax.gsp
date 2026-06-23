@@ -36,7 +36,8 @@
             <g:each in="${grupos}" status="i" var="grupo">
                 <tr data-id="${grupo?.sbgr__id}">
                     <td style="width: 10%">${grupo?.sbgrcdgo}</td>
-                    <td style="width: 80%">${grupo?.sbgrdscr} ${session.perfil.nombre}</td>
+                    %{--<td style="width: 80%">${grupo?.sbgrdscr} ${session.perfil.nombre}</td>--}%
+                    <td style="width: 80%">${grupo?.sbgrdscr}</td>
                     <td style="width: 10%; text-align: center">
                         <a href="#" class="btn btn-xs btn-warning btnEstructuraGrupo" data-id="${grupo?.sbgr__id}" title="Subgrupos">
                             <i class="fas fa-list"></i>
