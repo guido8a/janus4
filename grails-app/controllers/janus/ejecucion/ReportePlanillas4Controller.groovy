@@ -1939,7 +1939,9 @@ class ReportePlanillas4Controller {
                         border: Color.BLACK, bg: Color.LIGHT_GRAY, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE, colspan: 11]
         def frmtDtIz = [bwt  : 0.1, bct: Color.WHITE, bwb: 0.1, bcb: Color.WHITE, height: height, border: Color.BLACK,
                         align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE]
-        def frmtDtIz2 = [bwt  : 0.1, bct: Color.BLACK, bwb: 0.1, bcb: Color.WHITE, height: height, border: Color.BLACK,
+//        def frmtDtIz2 = [bwt  : 0.1, bct: Color.BLACK, bwb: 0.1, bcb: Color.WHITE, height: height, border: Color.BLACK,
+//                         align: Element.ALIGN_LEFT, valign: Element.ALIGN_LEFT]
+        def frmtDtIz2 = [bwt  : 0.1, bct: Color.BLACK, bwb: 0.1, bcb: Color.WHITE, border: Color.BLACK,
                          align: Element.ALIGN_LEFT, valign: Element.ALIGN_LEFT]
         def frmtDtDr = [bwt  : 0.1, bct: Color.WHITE, bwb: 0.1, bcb: Color.WHITE, height: height, border: Color.BLACK,
                         align: Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE]
