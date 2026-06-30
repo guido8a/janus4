@@ -1864,7 +1864,7 @@ class ReportePlanillas4Controller {
             def tablaHeaderDetalles = new PdfPTable(11);
             tablaHeaderDetalles.setWidthPercentage(100);
 //            tablaHeaderDetalles.setWidths(arregloEnteros([13, 35, 5, 10, 11, 10, 10, 10, 13, 13, 14]))
-            tablaHeaderDetalles.setWidths(arregloEnteros([9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9]))
+            tablaHeaderDetalles.setWidths(arregloEnteros([9, 9, 9, 9, 9, 8, 8, 9, 9, 9, 9]))
 
             addCellTabla(tablaHeaderDetalles, new Paragraph("Obra", fontThTiny), prmsTdNoBorder)
             addCellTabla(tablaHeaderDetalles, new Paragraph(obra.nombre, fontTdTiny), [border: Color.WHITE, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE, colspan: 10])
@@ -1902,7 +1902,7 @@ class ReportePlanillas4Controller {
             addCellTabla(inner6, new Paragraph("Cantidades", fontThTiny), [border: Color.BLACK, bwr: borderWidth, bg: Color.LIGHT_GRAY, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE, colspan: 3])
             addCellTabla(inner6, new Paragraph("Anterior", fontThTiny), [bwb: 0.1, bcb: Color.BLACK, border: Color.BLACK, bg: Color.LIGHT_GRAY, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE])
             addCellTabla(inner6, new Paragraph("Actual", fontThTiny), [bwb: 0.1, bcb: Color.BLACK, border: Color.BLACK, bg: Color.LIGHT_GRAY, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE])
-            addCellTabla(inner6, new Paragraph("Acumulado", fontThTiny), [bwb: 0.1, bcb: Color.BLACK, border: Color.BLACK, bwr: borderWidth, bg: Color.LIGHT_GRAY, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE])
+            addCellTabla(inner6, new Paragraph("Acumulad", fontThTiny), [bwb: 0.1, bcb: Color.BLACK, border: Color.BLACK, bwr: borderWidth, bg: Color.LIGHT_GRAY, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE])
             addCellTabla(tablaDetalles, inner6, [border: Color.BLACK, bg: Color.LIGHT_GRAY, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE, colspan: 3])
 
             PdfPTable inner7 = new PdfPTable(3);
@@ -1927,7 +1927,8 @@ class ReportePlanillas4Controller {
         tablaDetalles = new PdfPTable(11);
         tablaDetalles.setWidthPercentage(100);
 //        tablaDetalles.setWidths(arregloEnteros([12, 35, 5, 11, 11, 10, 10, 11, 11, 13, 11]))
-        tablaDetalles.setWidths(arregloEnteros([7, 24, 4, 8, 8, 8, 8, 8, 8, 8, 8]))
+//        tablaDetalles.setWidths(arregloEnteros([7, 24, 4, 8, 8, 8, 8, 8, 8, 8, 8]))
+        tablaDetalles.setWidths(arregloEnteros([7, 26, 4, 8, 8, 7, 7, 8, 8, 8, 8]))
         tablaDetalles.setSpacingAfter(1f);
         tablaDetalles.setSplitLate(false);
         def currentPag = 1
@@ -2046,7 +2047,8 @@ class ReportePlanillas4Controller {
                 tablaDetalles = new PdfPTable(11);
                 tablaDetalles.setWidthPercentage(100);
 //                tablaDetalles.setWidths(arregloEnteros([12, 35, 5, 11, 11, 10, 10, 11, 11, 13, 11]))
-                tablaDetalles.setWidths(arregloEnteros([7, 24, 4, 8, 8, 8, 8, 8, 8, 8, 8]))
+//                tablaDetalles.setWidths(arregloEnteros([7, 24, 4, 8, 8, 8, 8, 8, 8, 8, 8]))
+                tablaDetalles.setWidths(arregloEnteros([7, 26, 4, 8, 8, 7, 7, 8, 8, 8, 8]))
                 tablaDetalles.setSpacingAfter(1f);
                 printHeaderDetalle([pag: currentPag, total: totalPags])
                 rowsCurPag = 1
