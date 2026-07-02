@@ -1702,6 +1702,7 @@ class ReportesRubros2Controller {
             //COSTOS INDIRECTOS
             def totalRubro = total + totalHer + totalMan + totalMat
             def totalRelativo = totalTRel + totalHerRel + totalMatRel + totalManRel
+            totalRelativo = Math.round(totalRelativo * 100) / 100
             def totalVae = totalTVae + totalHerVae + totalMatVae + totalManVae
 //            def totalVae = 0 + totalHerVae + totalMatVae + totalManVae
             def totalIndi = totalRubro?.toDouble() * indi / 100

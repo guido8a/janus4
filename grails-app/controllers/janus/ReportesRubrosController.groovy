@@ -1617,10 +1617,9 @@ class reportesRubrosController {
                         reportesPdfService.addCellTb(tablaMateriales, new Paragraph((numero(r["vae_vlor"]?:0 + r["vae_vlor_t"],4))?.toString(), times8normal), prmsFila)
 
                         totalMat += (r["parcial"] + r["parcial_t"])
-                        totalMatRel += (r["relativo"]?:0 + r["relativo_t"])
-                        totalMatVae += (r["vae_vlor"]?:0 + r["vae_vlor_t"])
+                        totalMatRel += ( (r["relativo"]?:0) + r["relativo_t"])
+                        totalMatVae += ( (r["vae_vlor"]?:0) + r["vae_vlor_t"])
                     }
-
                 }
             }
 
@@ -1695,6 +1694,7 @@ class reportesRubrosController {
             //COSTOS INDIRECTOS
             def totalRubro = total + totalHer + totalMan + totalMat
             def totalRelativo = totalTRel + totalHerRel + totalMatRel + totalManRel
+             totalRelativo = Math.round(totalRelativo * 100) / 100
 //            def totalVae = totalTVae + totalHerVae + totalMatVae + totalManVae
             def totalVae = 0 + totalHerVae + totalMatVae + totalManVae
             def totalIndi = totalRubro?.toDouble() * indi / 100
