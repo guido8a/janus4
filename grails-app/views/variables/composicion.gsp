@@ -25,7 +25,7 @@
 
 <body>
 <div class="hoja">
-    <div class="span12" style="color: #1a7031; font-size: 18px; margin-bottom: 10px"><strong>Composición de la obra:</strong> ${obra?.descripcion}</div>
+    <div class="breadcrumb span12" style="font-size: 18px; margin-bottom: 10px"><strong>Composición de la obra:</strong> ${obra?.descripcion}</div>
 
     <g:if test="${flash.message}">
         <div class="span12">
@@ -157,120 +157,133 @@
 
             </tr>
             </thead>
-            <tbody>
-            <g:set var="totalEquipo" value="${0}"/>
-            <g:set var="totalMano" value="${0}"/>
-            <g:set var="totalMaterial" value="${0}"/>
-            <g:each in="${res}" var="r">
-                <tr>
-                    <td class="">${r.codigo}</td>
-                    <td class="">${r.item}</td>
-                    <td>${r.unidad}</td>
-                    <td class="numero">
-                        <g:formatNumber number="${r.cantidad}" minFractionDigits="3" maxFractionDigits="3" format="##,##0" locale="ec"/>
-                    </td>
-                    <td class="numero">
-                        <g:formatNumber number="${r.punitario}" minFractionDigits="3" maxFractionDigits="3" format="##,##0" locale="ec"/>
-                    </td>
-                    <g:if test="${tipo.contains(",") || tipo == '1'}">
-                        <td class="numero">
-                            <g:formatNumber number="${r.transporte}" minFractionDigits="4" maxFractionDigits="4" format="##,##0" locale="ec"/>
-                        </td>
-                    </g:if>
-                    <td class="numero">
-                        <g:formatNumber number="${r.costo}" minFractionDigits="4" maxFractionDigits="4" format="##,##0" locale="ec"/>
-                    </td>
-                    <td class="numero">
-                        <g:formatNumber number="${r?.total}" minFractionDigits="2" maxFractionDigits="2" format="##,##0" locale="ec"/>
-
-                        <g:if test="${r?.grid == 1}">
-
-                            <g:if test="${r?.total == null}">
-
-                                <g:set var="totalMaterial" value="${totalMaterial}"/>
-
-                            </g:if>
-                            <g:else>
-
-                                <g:set var="totalMaterial" value="${totalMaterial + r?.total}"/>
-                            </g:else>
-
-                        </g:if>
-                        <g:elseif test="${r?.grid == 2}">
-                            <g:if test="${r?.total == null}">
-                                <g:set var="totalMano" value="${totalMano}"/>
-                            </g:if>
-                            <g:else>
-                                <g:set var="totalMano" value="${totalMano + r?.total}"/>
-                            </g:else>
-                        </g:elseif>
-                        <g:elseif test="${r?.grid == 3}">
-                            <g:if test="${r?.total == null}">
-                                <g:set var="totalEquipo" value="${totalEquipo}"/>
-
-                            </g:if>
-                            <g:else>
-                                <g:set var="totalEquipo" value="${totalEquipo + r?.total}"/>
-
-                            </g:else>
-
-                        </g:elseif>
-
-                    </td>
-                    <g:if test="${tipo.contains(",")}">
-                        <td>${r?.grupo}</td>
-                    </g:if>
-                </tr>
-            </g:each>
-            </tbody>
         </table>
+        <div class="" style="width: 99.7%;height: 600px; overflow-y: auto;float: right; margin-top: -20px">
+            <table class="table table-bordered table-condensed table-hover table-striped">
+                <tbody>
+                <g:set var="totalEquipo" value="${0}"/>
+                <g:set var="totalMano" value="${0}"/>
+                <g:set var="totalMaterial" value="${0}"/>
+                <g:if test="${res.size() > 0}">
+                    <g:each in="${res}" var="r">
+                        <tr>
+                            <td class="">${r.codigo}</td>
+                            <td class="">${r.item}</td>
+                            <td>${r.unidad}</td>
+                            <td class="numero">
+                                <g:formatNumber number="${r.cantidad}" minFractionDigits="3" maxFractionDigits="3" format="##,##0" locale="ec"/>
+                            </td>
+                            <td class="numero">
+                                <g:formatNumber number="${r.punitario}" minFractionDigits="3" maxFractionDigits="3" format="##,##0" locale="ec"/>
+                            </td>
+                            <g:if test="${tipo.contains(",") || tipo == '1'}">
+                                <td class="numero">
+                                    <g:formatNumber number="${r.transporte}" minFractionDigits="4" maxFractionDigits="4" format="##,##0" locale="ec"/>
+                                </td>
+                            </g:if>
+                            <td class="numero">
+                                <g:formatNumber number="${r.costo}" minFractionDigits="4" maxFractionDigits="4" format="##,##0" locale="ec"/>
+                            </td>
+                            <td class="numero">
+                                <g:formatNumber number="${r?.total}" minFractionDigits="2" maxFractionDigits="2" format="##,##0" locale="ec"/>
 
-        <div style="width:100%;">
-            <table class="table table-bordered table-condensed pull-right" style="width: 20%;">
-                <thead style="text-align: right">
-                <tr>
-                    <th>Equipos</th>
-                    <td class="numero"><g:formatNumber number="${totalEquipo}" minFractionDigits="2" maxFractionDigits="2" format="##,##0" locale="ec"/></td>
-                </tr>
-                <tr>
-                    <th>Mano de obra</th>
-                    <td class="numero"><g:formatNumber number="${totalMano}" minFractionDigits="2" maxFractionDigits="2" format="##,##0" locale="ec"/></td>
-                </tr>
-                <tr>
-                    <th>Materiales</th>
-                    <td class="numero"><g:formatNumber number="${totalMaterial}" minFractionDigits="2" maxFractionDigits="2" format="##,##0" locale="ec"/></td>
-                </tr>
-                <tr>
-                    <th>TOTAL DIRECTO</th>
-                    <td class="numero"><g:formatNumber number="${totalEquipo + totalMano + totalMaterial}" minFractionDigits="2" maxFractionDigits="2" format="##,##0" locale="ec"/></td>
-                </tr>
-                </thead>
+                                <g:if test="${r?.grid == 1}">
+
+                                    <g:if test="${r?.total == null}">
+
+                                        <g:set var="totalMaterial" value="${totalMaterial}"/>
+
+                                    </g:if>
+                                    <g:else>
+
+                                        <g:set var="totalMaterial" value="${totalMaterial + r?.total}"/>
+                                    </g:else>
+
+                                </g:if>
+                                <g:elseif test="${r?.grid == 2}">
+                                    <g:if test="${r?.total == null}">
+                                        <g:set var="totalMano" value="${totalMano}"/>
+                                    </g:if>
+                                    <g:else>
+                                        <g:set var="totalMano" value="${totalMano + r?.total}"/>
+                                    </g:else>
+                                </g:elseif>
+                                <g:elseif test="${r?.grid == 3}">
+                                    <g:if test="${r?.total == null}">
+                                        <g:set var="totalEquipo" value="${totalEquipo}"/>
+
+                                    </g:if>
+                                    <g:else>
+                                        <g:set var="totalEquipo" value="${totalEquipo + r?.total}"/>
+
+                                    </g:else>
+
+                                </g:elseif>
+                            </td>
+                            <g:if test="${tipo.contains(",")}">
+                                <td>${r?.grupo}</td>
+                            </g:if>
+                        </tr>
+                    </g:each>
+                </g:if>
+                <g:else>
+                    <tr>
+                        <td colspan="9" style="text-align: center">
+                            <i class="fa fa-exclamation-triangle fa-2x text-warning"></i>  <strong style="font-size: 14px">No se encontraron datos</strong>
+                        </td>
+                    </tr>
+                </g:else>
+                </tbody>
             </table>
         </div>
+        <g:if test="${res.size() > 0}">
+            <div style="width:100%;">
+                <table class="table table-bordered table-condensed pull-right" style="width: 20%;">
+                    <thead style="text-align: right">
+                    <tr>
+                        <th>Equipos</th>
+                        <td class="numero"><g:formatNumber number="${totalEquipo}" minFractionDigits="2" maxFractionDigits="2" format="##,##0" locale="ec"/></td>
+                    </tr>
+                    <tr>
+                        <th>Mano de obra</th>
+                        <td class="numero"><g:formatNumber number="${totalMano}" minFractionDigits="2" maxFractionDigits="2" format="##,##0" locale="ec"/></td>
+                    </tr>
+                    <tr>
+                        <th>Materiales</th>
+                        <td class="numero"><g:formatNumber number="${totalMaterial}" minFractionDigits="2" maxFractionDigits="2" format="##,##0" locale="ec"/></td>
+                    </tr>
+                    <tr>
+                        <th>TOTAL DIRECTO</th>
+                        <td class="numero"><g:formatNumber number="${totalEquipo + totalMano + totalMaterial}" minFractionDigits="2" maxFractionDigits="2" format="##,##0" locale="ec"/></td>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </g:if>
     </div>
 </div>
 
 <g:if test="${rend == 'screen'}">
     <script type="text/javascript">
         $(function () {
-            $('#tbl').dataTable({
-                sScrollY        : "600px",
-                bPaginate       : false,
-                bScrollCollapse : true,
-                bFilter         : false,
-                bSort           : false,
-                oLanguage       : {
-                    sZeroRecords : "No se encontraron datos",
-                    sInfo        : "",
-                    sInfoEmpty   : ""
-                }
-            });
-
-            $(".btn, .sp").click(function () {
-                if ($(this).hasClass("activo")) {
-                    return false;
-                }
-            });
+            // $('#tbl').dataTable({
+            //     sScrollY        : "600px",
+            //     bPaginate       : false,
+            //     bScrollCollapse : true,
+            //     bFilter         : false,
+            //     bSort           : false,
+            //     oLanguage       : {
+            //         sZeroRecords : "No se encontraron datos",
+            //         sInfo        : "",
+            //         sInfoEmpty   : ""
+            //     }
+            // });
+            //
+            // $(".btn, .sp").click(function () {
+            //     if ($(this).hasClass("activo")) {
+            //         return false;
+            //     }
+            // });
 
             <g:if test="${janus.Parametros.findByEmpresaLike('SEP-C-GADPP')}">
             $("#imprimirPdf").click(function () {
