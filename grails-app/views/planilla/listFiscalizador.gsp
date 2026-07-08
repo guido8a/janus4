@@ -373,12 +373,12 @@
                                         Iniciar Obra
                                     </g:if>
                                     <g:else>
-                                        <i class="fa fa-check-circle text-success fa-2x" title="Pago completado: ${planillaInstance?.fechaPago?.format("dd-MM-yyyy")}"></i>
+                                        <i class="fa fa-check-circle text-success fa-2x" title="Pago completado: ${planillaInstance?.fechaPago?.format("dd-MMM-yyyy")}"></i>
                                     </g:else>
                                 </g:if>
                             </g:if>
                             <g:elseif test="${lblBtn == -6}">
-                                <i class="fa fa-check-circle text-success fa-2x" title="Pago completado: ${planillaInstance?.fechaPago?.format("dd-MM-yyyy")}"></i>
+                                <i class="fa fa-check-circle text-success fa-2x" title="Pago completado: ${planillaInstance?.fechaPago?.format("dd-MMM-yyyy")}"></i>
                             </g:elseif>
 
                             <g:if test="${planillaInstance.tipoPlanilla.codigo == 'A' && Math.abs(lblBtn) > 3}">
