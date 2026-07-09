@@ -791,18 +791,30 @@ class PlanillaController {
         def listaAdicionales = []
 
 //        println "---> ..2"
-        def sql = "select plnl__id from plnl where tppl__id = 9 and cntr__id = ${contrato?.id}"
+        def sql = "select plnl__id from plnl where tppl__id = 9 and cntr__id = ${contrato?.id} and plnltipo = 'P'"
 //        println "sql: $sql"
         def plnlLq = cn.rows(sql.toString())[0]?.plnl__id
+
+        sql = "select plnl__id from plnl where tppl__id = 9 and cntr__id = ${contrato?.id} and plnltipo = 'C'"
+//        println "sql: $sql"
+        def plnlLqC = cn.rows(sql.toString())[0]?.plnl__id
 
         /*  aparece en rojo el texto de la planilla de liquidación si no cuadran valores de Po */
         if(plnlLq) {
             sql = "select sum(rjplvlpo) suma from  rjpl where plnl__id = ${plnlLq}"
             def sumaPo = cn.rows(sql.toString())[0]?.suma
-            sql = "select rjplplac from rjpl where plnl__id = ${plnlLq} and plnlrjst = ${plnlLq} order by rjplprdo desc limit 1"
+            sql = "select max(rjplplac) rjplplac from rjpl where plnl__id = ${plnlLq}"
             def sumaRj = cn.rows(sql.toString())[0]?.rjplplac
             noCuadra = (sumaPo != sumaRj)
-            println "sumaPo: $sumaPo != $sumaRj"
+            println "sumaPo: $sumaPo != $sumaRj plnlLq: $plnlLq"
+        }
+        if(plnlLqC) {
+            sql = "select sum(rjplvlpo) suma from  rjpl where plnl__id = ${plnlLqC}"
+            def sumaPo = cn.rows(sql.toString())[0]?.suma
+            sql = "select max(rjplplac) rjplplac from rjpl where plnl__id = ${plnlLqC}"
+            def sumaRj = cn.rows(sql.toString())[0]?.rjplplac
+            noCuadra = (sumaPo != sumaRj)
+            println "sumaPoC: $sumaPo != $sumaRj plnlLqC: $plnlLqC"
         }
 
         return [contrato: contrato, obra: contrato.oferta.concurso.obra, planillaInstanceList: planillaInstanceList,
