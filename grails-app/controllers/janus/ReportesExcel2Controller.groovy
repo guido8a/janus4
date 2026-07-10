@@ -872,7 +872,7 @@ class ReportesExcel2Controller {
         }
 
         def output = response.getOutputStream()
-        def header = "attachment; filename=" + "composicion.xlsx";
+        def header = "attachment; filename=" + "composicion_${obra?.codigo}.xlsx";
         response.setContentType("application/octet-stream")
         response.setHeader("Content-Disposition", header);
         wb.write(output)
@@ -956,7 +956,7 @@ class ReportesExcel2Controller {
         row0.createCell(1).setCellValue(Auxiliar.get(1)?.titulo ?: '')
         row0.setRowStyle(style)
         Row row1 = sheet.createRow(2)
-        row1.createCell(1).setCellValue("COMPOSICIÓN: " + obra?.nombre)
+        row1.createCell(1).setCellValue("COMPOSICIÓN DE LA OBRA: " + obra?.nombre)
         row1.setRowStyle(style)
         Row row2 = sheet.createRow(3)
         row2.createCell(1).setCellValue(obra?.departamento?.direccion?.nombre ?: '')
@@ -965,7 +965,7 @@ class ReportesExcel2Controller {
         row3.createCell(1).setCellValue("CÓDIGO: " + obra?.codigo)
         row3.setRowStyle(style)
         Row row4 = sheet.createRow(5)
-        row4.createCell(1).setCellValue("DOC. REFERENCIA: " + obra?.oficioIngreso)
+        row4.createCell(1).setCellValue("DOC. REFERENCIA: " + (obra?.oficioIngreso ?: ''))
         row4.setRowStyle(style)
         Row rowE = sheet.createRow(6)
         rowE.createCell(1).setCellValue("")
@@ -1024,7 +1024,7 @@ class ReportesExcel2Controller {
         }
 
         def output = response.getOutputStream()
-        def header = "attachment; filename=" + "composicionTotales.xlsx";
+        def header = "attachment; filename=" + "composicionTotales_${obra?.codigo}.xlsx";
         response.setContentType("application/octet-stream")
         response.setHeader("Content-Disposition", header);
         wb.write(output)
@@ -2444,7 +2444,6 @@ class ReportesExcel2Controller {
         response.setContentType("application/octet-stream")
         response.setHeader("Content-Disposition", header);
         wb.write(output)
-
     }
 
     def reporteExcelItemsComposicion() {
@@ -2455,30 +2454,6 @@ class ReportesExcel2Controller {
                 "tplsdscr, obradsps, obradsvl, obradses, obradsmj, obradsca from obra, " +
                 "vlobitem, item, tpls where obra.obra__id = vlobitem.obra__id and item.item__id = vlobitem.item__id and tpls.tpls__id = item.tpls__id and vlobitem.obra__id = ${obra?.id} " +
                 "and item.tpls__id <> 6 order by tplsdscr, itemcdgo;"
-//
-//        def sql = "SELECT\n" +
-//                "  i.itemcdgo              codigo,\n" +
-//                "  i.itemnmbr              item,\n" +
-//                "  u.unddcdgo              unidad,\n" +
-//                "  sum(v.voitcntd)         cantidad,\n" +
-//                "  v.voitpcun              punitario,\n" +
-//                "  v.voittrnp              transporte,\n" +
-//                "  v.voitpcun + v.voittrnp costo,\n" +
-//                "  d.dprtdscr              departamento,\n" +
-//                "  s.sbgrdscr              subgrupo,\n" +
-//                "  g.grpodscr              grupo,\n" +
-//                "  g.grpo__id              grid\n" +
-//                "FROM vlobitem v\n" +
-//                "  LEFT JOIN item i ON v.item__id = i.item__id\n" +
-//                "  LEFT JOIN undd u ON i.undd__id = u.undd__id\n" +
-//                "  LEFT JOIN dprt d ON i.dprt__id = d.dprt__id\n" +
-//                "  LEFT JOIN sbgr s ON d.sbgr__id = s.sbgr__id\n" +
-//                "  LEFT JOIN grpo g ON s.grpo__id = g.grpo__id AND g.grpo__id IN (${params.tipo})\n" +
-//                "WHERE v.obra__id = ${params.id} \n" +
-//                "GROUP BY i.itemcdgo, i.itemnmbr, u.unddcdgo, v.voitpcun, v.voittrnp, d.dprtdscr, s.sbgrdscr, g.grpodscr,\n" +
-//                "  g.grpo__id\n" +
-//                "ORDER BY grid ASC, i.itemnmbr"
-
 
         def cn = dbConnectionService.getConnection()
         def res = cn.rows(sql.toString())
@@ -2512,7 +2487,7 @@ class ReportesExcel2Controller {
         row0.createCell(1).setCellValue(Auxiliar.get(1)?.titulo ?: '')
         row0.setRowStyle(style)
         Row row1 = sheet.createRow(2)
-        row1.createCell(1).setCellValue("COMPOSICIÓN: " + obra?.nombre)
+        row1.createCell(1).setCellValue("COMPOSICIÓN DE LA OBRA: " + obra?.nombre)
         row1.setRowStyle(style)
         Row row2 = sheet.createRow(3)
         row2.createCell(1).setCellValue(obra?.departamento?.direccion?.nombre ?: '')
@@ -2521,7 +2496,7 @@ class ReportesExcel2Controller {
         row3.createCell(1).setCellValue("CÓDIGO: " + obra?.codigo)
         row3.setRowStyle(style)
         Row row4 = sheet.createRow(5)
-        row4.createCell(1).setCellValue("DOC. REFERENCIA: " + obra?.oficioIngreso)
+        row4.createCell(1).setCellValue("DOC. REFERENCIA: " + (obra?.oficioIngreso ?: ''))
         row4.setRowStyle(style)
         Row rowE = sheet.createRow(6)
         rowE.createCell(1).setCellValue("")
@@ -2562,12 +2537,11 @@ class ReportesExcel2Controller {
         }
 
         def output = response.getOutputStream()
-        def header = "attachment; filename=" + "itemsComposicion.xlsx";
+        def header = "attachment; filename=" + "itemsComposicion_${obra?.codigo}.xlsx";
         response.setContentType("application/octet-stream")
         response.setHeader("Content-Disposition", header);
         wb.write(output)
     }
-
 
     def reporteExcelCostos() {
 
@@ -2630,7 +2604,7 @@ class ReportesExcel2Controller {
         row10.setRowStyle(style)
 
         def fila = 14
-//
+
         Row rowC1 = sheet.createRow(fila)
         rowC1.createCell(0).setCellValue("")
         rowC1.createCell(1).setCellValue("DESCRIPCIÓN")

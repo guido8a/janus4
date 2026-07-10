@@ -44,6 +44,9 @@
                     <i class="fa fa-arrow-left"></i>
                     Regresar
                 </a>
+            </div>
+
+            <div class="btn-group" style="margin-left: 30px">
                 <g:link action="validacion" id="${obra?.id}" controller="composicion" class="btn btn-success"
                         title="Cantidades reales de Materiales, M.O. y Equipos">
                     <i class="fa fa-list"></i>
@@ -71,7 +74,7 @@
             </div>
 
             <div class="btn-group">
-                <a class="btn btn-info dropdown-toggle" data-toggle="dropdown" href="#">
+                <a class="btn btn-warning dropdown-toggle" data-toggle="dropdown" href="#">
                     <g:if test="${spsel.toString() == '-1'}">
                         Todos los subpresupuestos
                     </g:if>
@@ -102,7 +105,7 @@
                 </ul>
             </div>
 
-            <div class="btn-group">
+            <div class="btn-group" style="float: right">
                 <a href="#" class="btn  btn-info" id="imprimirPdf">
                     <i class="fa fa-print"></i> PDF
                 </a>
@@ -122,39 +125,38 @@
     <div class="body" style="margin-top: 5px">
         <table class="table table-bordered table-condensed table-hover table-striped" id="tbl">
             <thead>
-            <tr>
+            <tr style="width: 100%">
                 <g:if test="${tipo.contains(",") || tipo == '1'}">
-                    <th>Código</th>
-                    <th>Item</th>
-                    <th>U</th>
-                    <th>Cantidad</th>
-                    <th>P. Unitario</th>
-                    <th>Transporte</th>
-                    <th>Costo</th>
-                    <th>Total</th>
+                    <th style="width: 8%">Código</th>
+                    <th style="width: 43%">Item</th>
+                    <th style="width: 5%">U</th>
+                    <th style="width: 7%">Cantidad</th>
+                    <th style="width: 7%">P. Unitario</th>
+                    <th style="width: 7%">Transporte</th>
+                    <th style="width: 7%">Costo</th>
+                    <th style="width: 7%">Total</th>
                     <g:if test="${tipo.contains(",")}">
-                        <th>Tipo</th>
+                        <th style="width: 9%">Tipo</th>
                     </g:if>
                 </g:if>
                 <g:elseif test="${tipo == '2'}">
-                    <th>Código</th>
-                    <th>Mano de obra</th>
-                    <th>U</th>
-                    <th>Horas hombre</th>
-                    <th>Sal. / hora</th>
-                    <th>Costo</th>
-                    <th>Total</th>
+                    <th style="width: 8%">Código</th>
+                    <th style="width: 43%">Mano de obra</th>
+                    <th style="width: 5%">U</th>
+                    <th style="width: 7%">Horas hombre</th>
+                    <th style="width: 7%">Sal. / hora</th>
+                    <th style="width: 7%">Costo</th>
+                    <th style="width: 7%">Total</th>
                 </g:elseif>
                 <g:elseif test="${tipo == '3'}">
-                    <th>Código</th>
-                    <th>Equipo</th>
-                    <th>U</th>
-                    <th>Cantidad</th>
-                    <th>Tarifa</th>
-                    <th>Costo</th>
-                    <th>Total</th>
+                    <th style="width: 8%">Código</th>
+                    <th style="width: 43%">Equipo</th>
+                    <th style="width: 5%">U</th>
+                    <th style="width: 7%">Cantidad</th>
+                    <th style="width: 7%">Tarifa</th>
+                    <th style="width: 7%">Costo</th>
+                    <th style="width: 7%">Total</th>
                 </g:elseif>
-
             </tr>
             </thead>
         </table>
@@ -166,39 +168,33 @@
                 <g:set var="totalMaterial" value="${0}"/>
                 <g:if test="${res.size() > 0}">
                     <g:each in="${res}" var="r">
-                        <tr>
-                            <td class="">${r.codigo}</td>
-                            <td class="">${r.item}</td>
-                            <td>${r.unidad}</td>
-                            <td class="numero">
+                        <tr style="width: 100%">
+                            <td style="width: 8%" class="">${r.codigo}</td>
+                            <td style="width: 43%" class="">${r.item}</td>
+                            <td style="width: 5%" >${r.unidad}</td>
+                            <td style="width: 7%" class="numero">
                                 <g:formatNumber number="${r.cantidad}" minFractionDigits="3" maxFractionDigits="3" format="##,##0" locale="ec"/>
                             </td>
-                            <td class="numero">
+                            <td style="width: 7%" class="numero">
                                 <g:formatNumber number="${r.punitario}" minFractionDigits="3" maxFractionDigits="3" format="##,##0" locale="ec"/>
                             </td>
                             <g:if test="${tipo.contains(",") || tipo == '1'}">
-                                <td class="numero">
+                                <td  style="width: 7%"class="numero">
                                     <g:formatNumber number="${r.transporte}" minFractionDigits="4" maxFractionDigits="4" format="##,##0" locale="ec"/>
                                 </td>
                             </g:if>
-                            <td class="numero">
+                            <td style="width: 7%" class="numero">
                                 <g:formatNumber number="${r.costo}" minFractionDigits="4" maxFractionDigits="4" format="##,##0" locale="ec"/>
                             </td>
-                            <td class="numero">
+                            <td style="width: 7%" class="numero">
                                 <g:formatNumber number="${r?.total}" minFractionDigits="2" maxFractionDigits="2" format="##,##0" locale="ec"/>
-
                                 <g:if test="${r?.grid == 1}">
-
                                     <g:if test="${r?.total == null}">
-
                                         <g:set var="totalMaterial" value="${totalMaterial}"/>
-
                                     </g:if>
                                     <g:else>
-
                                         <g:set var="totalMaterial" value="${totalMaterial + r?.total}"/>
                                     </g:else>
-
                                 </g:if>
                                 <g:elseif test="${r?.grid == 2}">
                                     <g:if test="${r?.total == null}">
@@ -211,17 +207,14 @@
                                 <g:elseif test="${r?.grid == 3}">
                                     <g:if test="${r?.total == null}">
                                         <g:set var="totalEquipo" value="${totalEquipo}"/>
-
                                     </g:if>
                                     <g:else>
                                         <g:set var="totalEquipo" value="${totalEquipo + r?.total}"/>
-
                                     </g:else>
-
                                 </g:elseif>
                             </td>
                             <g:if test="${tipo.contains(",")}">
-                                <td>${r?.grupo}</td>
+                                <td style="width: 9%">${r?.grupo}</td>
                             </g:if>
                         </tr>
                     </g:each>
@@ -238,23 +231,23 @@
         </div>
         <g:if test="${res.size() > 0}">
             <div style="width:100%;">
-                <table class="table table-bordered table-condensed pull-right" style="width: 20%;">
+                <table class="table table-striped table-bordered table-condensed pull-right" style="width: 20%;">
                     <thead style="text-align: right">
                     <tr>
                         <th>Equipos</th>
-                        <td class="numero"><g:formatNumber number="${totalEquipo}" minFractionDigits="2" maxFractionDigits="2" format="##,##0" locale="ec"/></td>
+                        <td style="font-weight: bold; font-size: 14px" class="numero"><g:formatNumber number="${totalEquipo}" minFractionDigits="2" maxFractionDigits="2" format="##,##0" locale="ec"/></td>
                     </tr>
                     <tr>
                         <th>Mano de obra</th>
-                        <td class="numero"><g:formatNumber number="${totalMano}" minFractionDigits="2" maxFractionDigits="2" format="##,##0" locale="ec"/></td>
+                        <td style="font-weight: bold; font-size: 14px" class="numero"><g:formatNumber number="${totalMano}" minFractionDigits="2" maxFractionDigits="2" format="##,##0" locale="ec"/></td>
                     </tr>
                     <tr>
                         <th>Materiales</th>
-                        <td class="numero"><g:formatNumber number="${totalMaterial}" minFractionDigits="2" maxFractionDigits="2" format="##,##0" locale="ec"/></td>
+                        <td style="font-weight: bold; font-size: 14px" class="numero"><g:formatNumber number="${totalMaterial}" minFractionDigits="2" maxFractionDigits="2" format="##,##0" locale="ec"/></td>
                     </tr>
                     <tr>
                         <th>TOTAL DIRECTO</th>
-                        <td class="numero"><g:formatNumber number="${totalEquipo + totalMano + totalMaterial}" minFractionDigits="2" maxFractionDigits="2" format="##,##0" locale="ec"/></td>
+                        <td style="font-weight: bold; font-size: 14px" class="numero"><g:formatNumber number="${totalEquipo + totalMano + totalMaterial}" minFractionDigits="2" maxFractionDigits="2" format="##,##0" locale="ec"/></td>
                     </tr>
                     </thead>
                 </table>
@@ -288,22 +281,15 @@
             <g:if test="${janus.Parametros.findByEmpresaLike('SEP-C-GADPP')}">
             $("#imprimirPdf").click(function () {
                 if($("#btnTodos").hasClass("active")){
-                    %{--location.href = "${g.createLink(controller: 'reportes' ,action: 'reporteComposicion',id: obra?.id)}?sp=${sub}"--}%
                     location.href = "${g.createLink(controller: 'reportes6' ,action: 'reporteComposicion',id: obra?.id)}?sp=${sub}"
                 }
-
                 if($("#btnMateriales").hasClass("active")){
-                    %{--location.href = "${g.createLink(controller: 'reportes' ,action: 'reporteComposicionMat',id: obra?.id)}?sp=${sub}"--}%
                     location.href = "${g.createLink(controller: 'reportes6' ,action: 'reporteComposicionMat',id: obra?.id)}?sp=${sub}"
                 }
-
                 if($("#btnManoObra").hasClass("active")){
-                    %{--location.href = "${g.createLink(controller: 'reportes' ,action: 'reporteComposicionMano',id: obra?.id)}?sp=${sub}"--}%
                     location.href = "${g.createLink(controller: 'reportes6' ,action: 'reporteComposicionMano',id: obra?.id)}?sp=${sub}"
                 }
-
                 if($("#btnEquipos").hasClass("active")){
-                    %{--location.href = "${g.createLink(controller: 'reportes' ,action: 'reporteComposicionEq',id: obra?.id)}?sp=${sub}"--}%
                     location.href = "${g.createLink(controller: 'reportes6' ,action: 'reporteComposicionEq',id: obra?.id)}?sp=${sub}"
                 }
             });
