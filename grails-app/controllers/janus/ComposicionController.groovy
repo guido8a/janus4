@@ -273,7 +273,8 @@ class ComposicionController {
     }
 
     def formArchivo() {
-        return [obra: params.id]
+        def obra = Obra.get(params.id)
+        return [obra: obra]
     }
 
 //    def uploadFile() {
@@ -648,10 +649,11 @@ class ComposicionController {
                 "rbpcfcha = (select max(rbpcfcha) from rbpc where item__id = r1.item__id)"
         def sqlTx = ""
         def bsca = listaItems[params.buscarPor.toInteger()-1]
-        def ordn = listaItems[params.ordenar.toInteger()-1]
+//        def ordn = listaItems[params.ordenar.toInteger()-1]
         txwh += " and $bsca ilike '%${params.criterio}%' and grpo__id = ${params.grupo}"
 
-        sqlTx = "${select} ${txwh} order by ${ordn} limit 100 ".toString()
+//        sqlTx = "${select} ${txwh} order by ${ordn} limit 100 ".toString()
+        sqlTx = "${select} ${txwh} order by itemnmbr limit 150 ".toString()
         println "sql: $sqlTx"
 
         def cn = dbConnectionService.getConnection()
@@ -706,5 +708,9 @@ class ComposicionController {
             render "er"
             return
         }
+    }
+
+    def buscarItems_ajax(){
+
     }
 }
