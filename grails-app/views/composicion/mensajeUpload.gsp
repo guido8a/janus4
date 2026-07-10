@@ -7,9 +7,9 @@
 
     <body>
         <div class="well">
-            <g:link class="btn btn-primary" controller="composicion" action="tabla" id="${obra}">Regresar a la composición de la obra</g:link>
+            <g:link class="btn btn-primary" controller="composicion" action="tabla" id="${obra}"><i class="fa fa-arrow-left"></i> Regresar a la composición de la obra</g:link>
             <elm:poneHtml textoHtml="${flash.message}"/>
-            <g:link class="btn btn-primary" controller="composicion" action="tabla" id="${obra}">Regresar a la composición de la obra</g:link>
+            <g:link class="btn btn-primary" controller="composicion" action="tabla" id="${obra}"><i class="fa fa-arrow-left"></i> Regresar a la composición de la obra</g:link>
         </div>
     </body>
 </html>

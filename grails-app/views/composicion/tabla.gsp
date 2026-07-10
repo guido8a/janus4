@@ -664,7 +664,7 @@
     $(".recargarComposicion").click(function () {
         bootbox.confirm({
             title: "<i class='fa fa-retweet text-danger'></i> Recargar Composición",
-            message: "<strong style='font-size: 14px'>  Está seguro de querer volver a cargar la composición de la obra: ${obra?.nombre} ? </strong> </br> <strong style='font-size:14px' class='text-danger'> Este proceso elimina todos los datos de la composición actual. </strong> ",
+            message: "<strong style='font-size: 14px'>  Está seguro de querer volver a cargar la composición de la obra: ${obra?.nombre} ? </strong> </br> <strong style='font-size:14px' class='text-danger'> Este proceso elimina todos los datos de la composición actual ingresados manualmente o mediante el archivo de Excel . </strong> ",
             buttons: {
                 cancel: {
                     label: '<i class="fa fa-times"></i> Cancelar',

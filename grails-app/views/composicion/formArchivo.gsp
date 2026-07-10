@@ -28,8 +28,8 @@
     </div>
 </div>
 
-<g:uploadForm action="uploadFile" method="post" name="frmUpload" id="${obra}" style="padding: 10px">
-    <g:hiddenField name="id" value="${obra}"/>
+<g:uploadForm action="uploadFile" method="post" name="frmUpload" id="${obra?.id}" style="padding: 10px">
+    <g:hiddenField name="id" value="${obra?.id}"/>
     <div id="list-grupo" class="col-md-12" role="main" style="margin: 10px 0 0 0;">
         <div class="" style="margin: 0 0 20px 0;">
             <div class="col-md-9">
