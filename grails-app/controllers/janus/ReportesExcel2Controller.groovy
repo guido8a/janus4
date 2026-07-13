@@ -2375,7 +2375,7 @@ class ReportesExcel2Controller {
         row2.createCell(1).setCellValue("TABLA DE DESCRIPCIÓN DE RUBROS, UNIDADES, CANTIDADES Y PRECIOS")
         row2.setRowStyle(style)
         Row row21 = sheet.createRow(4)
-        row21.createCell(1).setCellValue("GOBIERNO AUTÓNOMO DESCENTRALIZADO DE LA PROVINCIA DE PICHINCHA")
+        row21.createCell(1).setCellValue(${janus.Auxiliar.get(1)?.titulo ?: ''})
         row21.setRowStyle(style)
         Row row3 = sheet.createRow(5)
         row3.createCell(1).setCellValue("NOMBRE DEL PROYECTO: " + (obra?.nombre?.toUpperCase() ?: ''))

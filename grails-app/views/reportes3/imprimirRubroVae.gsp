@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page import="janus.Auxiliar" contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
     <title>Rubro :${rubro.codigo}</title>
@@ -144,7 +144,7 @@
 
     <div class="tituloPdf tituloHeader">
         <p style="font-size: 18px">
-            <b>G.A.D. PROVINCIA DE PICHINCHA</b>
+            <b>${janus.Auxiliar.get(1)?.titulo ?: ''}</b>
         </p>
 
         <p style="font-size: 14px; margin-top: -15px;">

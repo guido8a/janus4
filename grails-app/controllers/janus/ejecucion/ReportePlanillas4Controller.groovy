@@ -3007,7 +3007,7 @@ class ReportePlanillas4Controller {
         Paragraph preface = new Paragraph();
         addEmptyLine(preface, 1);
         preface.setAlignment(Element.ALIGN_CENTER);
-        preface.add(new Paragraph("SEP - G.A.D. PROVINCIA DE PICHINCHA", fontTituloGad));
+        preface.add(new Paragraph((janus.Auxiliar.get(1)?.titulo ?: ''), fontTituloGad));
         preface.add(new Paragraph("PLANILLA DE ${planilla.tipoPlanilla.nombre.toUpperCase()} DE LA OBRA " + obra.nombre, fontTituloGad));
         addEmptyLine(preface, espacio);
 

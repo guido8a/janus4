@@ -130,7 +130,7 @@
 
             <div class="tituloPdf tituloHeader">
                 <p class="grande">
-                    <b>G.A.D. PICHINCHA</b>
+                    <b>${janus.Auxiliar.get(1)?.titulo ?: ''}</b>
                 </p>
 
                 <p style="font-size: 14px">

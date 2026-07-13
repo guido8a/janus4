@@ -215,7 +215,7 @@ class Reportes6Controller {
         def fondoGris = [border: Color.BLACK, bwb: 0.1, bcb: Color.BLACK, bg: colorGris, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE]
         def frmtDato = [border: Color.BLACK, bwb: 0.1, bcb: Color.BLACK, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE]
 
-        addCellTabla(tabla1, new Paragraph("GOBIERNO AUTÓNOMO DESCENTRALIZADO DE LA PROVINCIA DE PICHINCHA", fontThTiny), fondoGris + [colspan: 4, height: 30])
+        addCellTabla(tabla1, new Paragraph(${janus.Auxiliar.get(1)?.titulo ?: ''}, fontThTiny), fondoGris + [colspan: 4, height: 30])
 
         addCellTabla(tabla1, new Paragraph("ORDEN DE CAMBIO N° " + (planilla?.numeroOrden ?: ''), fontThTiny), fondoGris + [colspan: 4, height: 30])
 
@@ -412,7 +412,7 @@ class Reportes6Controller {
         tabla1.setWidthPercentage(100);
         tabla1.setWidths(arregloEnteros([15,13,47,15]))
 
-        addCellTabla(tabla1, new Paragraph("GOBIERNO AUTÓNOMO DESCENTRALIZADO DE LA PROVINCIA DE PICHINCHA", fontThTiny), [border: Color.BLACK, bwb: 0.1, bcb: Color.BLACK, bg: Color.LIGHT_GRAY, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE, colspan: 4, height: 30])
+        addCellTabla(tabla1, new Paragraph((janus.Auxiliar.get(1)?.titulo ?: ''), fontThTiny), [border: Color.BLACK, bwb: 0.1, bcb: Color.BLACK, bg: Color.LIGHT_GRAY, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE, colspan: 4, height: 30])
 
         addCellTabla(tabla1, new Paragraph("ORDEN DE TRABAJO N° " + (planilla?.numeroTrabajo ?: '') , fontThTiny), [border: Color.BLACK, bwb: 0.1, bcb: Color.BLACK, bg: Color.LIGHT_GRAY, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE, colspan: 4, height: 20])
 
@@ -2203,7 +2203,7 @@ class Reportes6Controller {
         Paragraph headersTitulo = new Paragraph();
         addEmptyLine(headersTitulo, 1);
         headersTitulo.setAlignment(Element.ALIGN_CENTER);
-        headersTitulo.add(new Paragraph("SEP - G.A.D. PROVINCIA DE PICHINCHA", times14bold));
+        headersTitulo.add(new Paragraph((janus.Auxiliar.get(1)?.titulo ?: ''), times14bold));
         headersTitulo.add(new Paragraph(obra?.departamento?.direccion?.nombre, times12bold));
         headersTitulo.add(new Paragraph("", times12bold));
         document.add(headersTitulo)
@@ -2803,7 +2803,7 @@ class Reportes6Controller {
         Paragraph headersTitulo = new Paragraph();
         addEmptyLine(headersTitulo, 1);
         headersTitulo.setAlignment(Element.ALIGN_CENTER);
-        headersTitulo.add(new Paragraph("SEP - G.A.D. PROVINCIA DE PICHINCHA", times18bold));
+        headersTitulo.add(new Paragraph((janus.Auxiliar.get(1)?.titulo ?: ''), times18bold));
         headersTitulo.add(new Paragraph("COMPOSICIÓN", times14bold));
         headersTitulo.add(new Paragraph(obra?.departamento?.direccion?.nombre, times12bold));
         headersTitulo.add(new Paragraph("", times12bold));
@@ -3011,7 +3011,7 @@ class Reportes6Controller {
         Paragraph headersTitulo = new Paragraph();
         addEmptyLine(headersTitulo, 1);
         headersTitulo.setAlignment(Element.ALIGN_CENTER);
-        headersTitulo.add(new Paragraph("SEP - G.A.D. PROVINCIA DE PICHINCHA", times18bold));
+        headersTitulo.add(new Paragraph((janus.Auxiliar.get(1)?.titulo ?: ''), times18bold));
         headersTitulo.add(new Paragraph("COMPOSICIÓN", times14bold));
         headersTitulo.add(new Paragraph(obra?.departamento?.direccion?.nombre, times12bold));
         headersTitulo.add(new Paragraph("", times12bold));
@@ -3227,7 +3227,7 @@ class Reportes6Controller {
         Paragraph headersTitulo = new Paragraph();
         addEmptyLine(headersTitulo, 1);
         headersTitulo.setAlignment(Element.ALIGN_CENTER);
-        headersTitulo.add(new Paragraph("SEP - G.A.D. PROVINCIA DE PICHINCHA", times18bold));
+        headersTitulo.add(new Paragraph((janus.Auxiliar.get(1)?.titulo ?: ''), times18bold));
         headersTitulo.add(new Paragraph("COMPOSICIÓN", times14bold));
         headersTitulo.add(new Paragraph(obra?.departamento?.direccion?.nombre, times12bold));
         headersTitulo.add(new Paragraph("", times12bold));
@@ -3532,7 +3532,7 @@ class Reportes6Controller {
         Paragraph headersTitulo = new Paragraph();
         addEmptyLine(headersTitulo, 1);
         headersTitulo.setAlignment(Element.ALIGN_CENTER);
-        headersTitulo.add(new Paragraph("SEP - G.A.D. PROVINCIA DE PICHINCHA", times14bold));
+        headersTitulo.add(new Paragraph((janus.Auxiliar.get(1)?.titulo ?: ''), times14bold));
         headersTitulo.add(new Paragraph(obra?.departamento?.direccion?.nombre, times12bold));
         headersTitulo.add(new Paragraph("", times12bold));
         document.add(headersTitulo)

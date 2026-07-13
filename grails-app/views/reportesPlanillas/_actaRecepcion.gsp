@@ -252,7 +252,7 @@
             </div>
 
             <div class="titulo bold tac">
-                G.A.D. PROVINCIA DE PICHINCHA
+                ${janus.Auxiliar.get(1)?.titulo ?: ''}
             </div>
 
             <div class="titulo bold tac upper">

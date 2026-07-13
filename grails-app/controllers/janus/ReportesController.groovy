@@ -457,9 +457,6 @@ class ReportesController {
             document.addKeywords("reporte, elyon," + params.titulo);
             document.addAuthor("Janus");
             document.addCreator("Tedein SA");
-//            Paragraph preface = new Paragraph();
-//            addEmptyLine(headers, 1);
-//            preface.add(new Paragraph("SEP - G.A.D. PROVINCIA DE PICHINCHA", catFont));
             Paragraph headers = new Paragraph();
             addEmptyLine(headers, 1);
             headers.setAlignment(Element.ALIGN_CENTER);
@@ -784,7 +781,7 @@ class ReportesController {
             header =
                     "  <div class=\"tituloPdf\" >\n" +
                             "                <p style=\"font-size: 18px\">\n" +
-                            "                    <b>G.A.D. PROVINCIA DE PICHINCHA</b>\n" +
+                            "                    <b>${janus.Auxiliar.get(1)?.titulo ?: ''}</b>\n" +
                             "                </p>\n" +
                             "\n" +
                             "                <p style=\"font-size: 14px\">\n" +

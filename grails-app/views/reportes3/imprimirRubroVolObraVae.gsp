@@ -151,7 +151,7 @@
 
     <div class="tituloPdf tituloHeader">
         <p style="font-size: 18px">
-            <b>G.A.D. PROVINCIA DE PICHINCHA</b>
+            <b>${janus.Auxiliar.get(1)?.titulo ?: ''}</b>
         </p>
 
         <p style="font-size: 14px; margin-top: -15px;">

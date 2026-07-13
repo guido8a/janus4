@@ -89,7 +89,7 @@
 
             <div class="tituloPdf">
                 <p>
-                    <b>G.A.D. PROVINCIA DE PICHINCHA</b>
+                    <b>${janus.Auxiliar.get(1)?.titulo ?: ''}</b>
                 </p>
 
                 <p>

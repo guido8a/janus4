@@ -106,7 +106,7 @@
 
         <div class="tituloPdf">
             <p>
-                <b>SEP - G.A.D.</b>
+                <b>${janus.Auxiliar.get(1)?.titulo ?: ''}</b>
             </p>
 
             <p>
