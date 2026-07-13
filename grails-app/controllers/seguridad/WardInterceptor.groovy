@@ -44,6 +44,20 @@ class WardInterceptor {
                 return true
             } else {
                 println "******Dar permisos a prfl: ${session?.perfil?.codigo} en acción: $actionName controlador: $controllerName"
+                /**
+                 * Deshabilitar esta sección cuando ya esté completo el control
+                 */
+                def cn = dbConnectionService.getConnection()
+                def sql = ""
+                sql = "select ctrl__id from ctrl where ctrlnmbr ilike '${controllerName.toLowerCase()}'"
+                def ctrl = cn.rows(sql.toString())[0].ctrl__id
+                sql = "select accn__id from accn where ctrl__id = ${ctrl} and accnnmbr ilike '${actionName.toLowerCase()}'"
+                def accn = cn.rows(sql.toString())[0].accn__id
+                sql = "insert into prms(prms__id, accn__id, prfl__id) " +
+                        "values ( default, $accn, ${session?.perfil?.id} )"
+                println ">>> permiso faltante, consedido a: $sql"
+                cn.execute(sql.toString())
+                println ">>>nuevo permiso añadido ($accn, ${session?.perfil?.id}) <<<<"
                 return true   /** quitar para manejar permisos **/
             }
         }
@@ -69,9 +83,8 @@ class WardInterceptor {
             if((request.method == "POST") || (actionName.toLowerCase() =~ 'ajax')) {
                 return true
             }
-
-//            Con SQL
             def cn = dbConnectionService.getConnection()
+//            Con SQL
             def sql = ""
             def puede = false
             if(session?.perfil) {
@@ -81,7 +94,8 @@ class WardInterceptor {
                         "ctrlnmbr ilike '${controllerName.toLowerCase()}' and " +
                         "accnnmbr ilike '${actionName.toLowerCase()}'"
                 puede = cn.rows(sql.toString())[0].cnta > 0
-//                println "sql--: $sql --> puede: $puede"
+                println "sql--: $sql --> puede: $puede"
+                println "sql--: $sql --> puede: $puede"
             }
             return puede
 
