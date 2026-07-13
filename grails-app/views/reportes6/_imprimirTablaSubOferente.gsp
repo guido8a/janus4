@@ -127,7 +127,7 @@
             <b> TABLA DE DESCRIPCIÓN DE RUBROS, UNIDADES, CANTIDADES Y PRECIOS </b>
         </p>
         <p style="font-size: 14px; text-align: left">
-            <b>GOBIERNO AUTÓNOMO DESCENTRALIZADO DE LA PROVINCIA DE PICHINCHA</b>
+            <b>${janus.Auxiliar.get(1)?.titulo ?: ''}</b>
         </p>
         <p style="font-size: 14px; text-align: left; margin-bottom: 80px">
             <b>NOMBRE DEL PROYECTO:</b> ${obra?.nombre?.toUpperCase()}

@@ -110,7 +110,7 @@
 
     <div class="tituloPdf" style="margin-bottom: 5px !important; text-align: center">
         <p style="font-size: 14px; ">
-            <b>G. A. D. PROVINCIA DE PICHINCHA</b>
+            <b>${janus.Auxiliar.get(1)?.titulo ?: ''}</b>
         </p>
         <p style="font-size: 14px; margin-bottom: 5px">
             <b>LISTA DE USUARIOS</b>
