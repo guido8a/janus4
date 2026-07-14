@@ -3403,4 +3403,13 @@ itemId: item.id
         return [fechas: fechas, anio: anio]
     }
 
+    def editarPrecios(){
+
+    }
+
+
+    def tablaEditarPrecios_ajax(){
+
+    }
+
 }
