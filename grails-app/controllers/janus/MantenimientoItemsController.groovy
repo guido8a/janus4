@@ -3404,12 +3404,56 @@ itemId: item.id
     }
 
     def editarPrecios(){
-
+        def item = Item.get(params.id)
+        def cn = dbConnectionService.getConnection()
+        def anio = new Date().format('yyyy').toInteger()
+        def fechas = [:]
+        def sql = "select distinct rbpcfcha from rbpc where extract(year from rbpcfcha) = '${anio}'"
+        "order by 1"
+        println "sql: $sql"
+        def i = 0
+        cn.eachRow(sql.toString()) { r ->
+            fechas[i] = r.rbpcfcha
+            i++
+        }
+        println "fechas: $fechas"
+        cn.close()
+        [fechas: fechas, anio: anio, item: item]
     }
 
 
     def tablaEditarPrecios_ajax(){
+        println("params tp " + params)
+        def cn = dbConnectionService.getConnection()
+        def item = Item.get(params.id)
+//        def sql = "select rbpcpcun from rbpc where rbpcfcha = '${params.fecha}' and item__id = ${item?.id}"
+        def sql = "select item.item__id, p.rbpcfcha, rbpcpcun,  rbpc__id, lgardscr " +
+                "from item, rbpc p, lgar where p.item__id = item.item__id and p.lgar__id = lgar.lgar__id and p.rbpcfcha = '${params.fecha}' and " +
+                "p.item__id = ${item.id} and lgar.lgar__id = 2 "
+        "order by lgardscr"
 
+        def res = cn.rows(sql.toString())
+        println("sql " + sql)
+//        println("res " + res)
+        return [item: item, res: res]
+    }
+
+    def fechasPrecios_ajax(){
+        println("parmas  " + params)
+        def item = Item.get(params.id)
+        def cn = dbConnectionService.getConnection()
+        def anio = params.anio
+        def fechas = [:]
+        def sql = "select distinct rbpcfcha from rbpc where item__id = ${item?.id} and extract(year from rbpcfcha) = '${anio}'  "
+        "order by 1"
+        println "sql: $sql"
+        def i = 0
+        cn.eachRow(sql.toString()) { r ->
+            fechas[i] = r.rbpcfcha.format("dd-MM-yyyy")
+            i++
+        }
+        cn.close()
+        return [fechas: fechas, anio: anio]
     }
 
 }
