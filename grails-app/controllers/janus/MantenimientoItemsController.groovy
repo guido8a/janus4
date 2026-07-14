@@ -3347,6 +3347,7 @@ itemId: item.id
     }
 
     def consultaPrecios(){
+        println "consultaPrecios params $params"
         def cn = dbConnectionService.getConnection()
         def anio = new Date().format('yyyy').toInteger()
         def fechas = [:]
@@ -3431,9 +3432,9 @@ itemId: item.id
                 "from item, rbpc p, lgar where p.item__id = item.item__id and p.lgar__id = lgar.lgar__id and p.rbpcfcha = '${params.fecha}' and " +
                 "p.item__id = ${item.id} and lgar.lgar__id = 2 "
         "order by lgardscr"
+        println("sql " + sql)
 
         def res = cn.rows(sql.toString())
-        println("sql " + sql)
 //        println("res " + res)
         return [item: item, res: res]
     }
@@ -3444,8 +3445,14 @@ itemId: item.id
         def cn = dbConnectionService.getConnection()
         def anio = params.anio
         def fechas = [:]
-        def sql = "select distinct rbpcfcha from rbpc where item__id = ${item?.id} and extract(year from rbpcfcha) = '${anio}'  "
-        "order by 1"
+        /** muestra todas las fechas de precios para cantones para todos los items con tipo de lista "Peso Capital de cantón" */
+//        def sql = "select rbpcfcha from rbpc, item where rbpc.item__id = item.item__id and item.tpls__id = 1 and " +
+//                "extract(year from rbpcfcha) = '${anio}' group by rbpcfcha order by 1"
+
+        /** muestra todas las fechas de precios para cantones definidas para el item */
+        def sql = "select rbpcfcha from rbpc, item where item.item__id = ${params.id} and rbpc.item__id = item.item__id and item.tpls__id = 1 and " +
+                "extract(year from rbpcfcha) = '${anio}' group by rbpcfcha order by 1"
+
         println "sql: $sql"
         def i = 0
         cn.eachRow(sql.toString()) { r ->
