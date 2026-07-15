@@ -3430,8 +3430,7 @@ itemId: item.id
 //        def sql = "select rbpcpcun from rbpc where rbpcfcha = '${params.fecha}' and item__id = ${item?.id}"
         def sql = "select item.item__id, p.rbpcfcha, rbpcpcun,  rbpc__id, lgardscr " +
                 "from item, rbpc p, lgar where p.item__id = item.item__id and p.lgar__id = lgar.lgar__id and p.rbpcfcha = '${params.fecha}' and " +
-                "p.item__id = ${item.id} and lgar.lgar__id = 2 "
-        "order by lgardscr"
+                "p.item__id = ${item.id} order by lgardscr"
         println("sql " + sql)
 
         def res = cn.rows(sql.toString())
