@@ -23,7 +23,7 @@
 
 <div class="row">
     <div class="col-md-12">
-        <div class="col-md-3">
+        <div class="col-md-2">
         </div>
         <div class="col-md-5">
             <span class="grupo">
@@ -39,9 +39,16 @@
                 <button class="btn btn-info" id="btnBuscar" title="Buscar"><i class="fa fa-search"></i> Consultar</button>
             </div>
         </div>
+        <div class="col-md-3" style="margin-top: 20px">
+%{--            <a href="#" class="btn btn-success btnNuevoPrecio" data-id="${item?.id}" title="Nuevo Precio">--}%
+%{--                <i class="fas fa-file"></i> Nuevo Precio--}%
+%{--            </a>--}%
+%{--        </div>--}%
     </div>
-
-    <div class="col-md-12" id="divTablaPrecios" >
+    <div class="col-md-12">
+        <div class="col-md-2"></div>
+        <div class="col-md-7" id="divTablaPrecios" >
+        </div>
     </div>
 </div>
 
@@ -57,20 +64,24 @@
         var fecha = $("#fecha option:selected").val();
         var anio = $("#anio option:selected").val();
         var id = '${item?.id}';
-        var d = cargarLoader("Cargando...");
-        $.ajax({
-            type: 'POST',
-            url: '${createLink(controller: 'mantenimientoItems', action: 'tablaEditarPrecios_ajax')}',
-            data:{
-                id: id,
-                anio: anio,
-                fecha: fecha
-            },
-            success: function (msg){
-                d.modal("hide");
-                $("#divTablaPrecios").html(msg)
-            }
-        })
+        if(fecha){
+            var d = cargarLoader("Cargando...");
+            $.ajax({
+                type: 'POST',
+                url: '${createLink(controller: 'mantenimientoItems', action: 'tablaEditarPrecios_ajax')}',
+                data:{
+                    id: id,
+                    anio: anio,
+                    fecha: fecha
+                },
+                success: function (msg){
+                    d.modal("hide");
+                    $("#divTablaPrecios").html(msg)
+                }
+            })
+        }else{
+            bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 16px">' + "Seleccione una fecha" + '</strong>');
+        }
     }
 
     cargarFechas();

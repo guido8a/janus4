@@ -3383,12 +3383,8 @@ itemId: item.id
         render "ok"
     }
 
-
     def fechas_ajax(){
-        println("parmas  " + params)
-
         def cn = dbConnectionService.getConnection()
-//        def anio = new Date().format('yyyy').toInteger()
         def anio = params.anio
         def fechas = [:]
         def sql = "select distinct rbpcfcha from rbpc where extract(year from rbpcfcha) = '${anio}'"
@@ -3422,19 +3418,16 @@ itemId: item.id
         [fechas: fechas, anio: anio, item: item]
     }
 
-
     def tablaEditarPrecios_ajax(){
         println("params tp " + params)
         def cn = dbConnectionService.getConnection()
         def item = Item.get(params.id)
-//        def sql = "select rbpcpcun from rbpc where rbpcfcha = '${params.fecha}' and item__id = ${item?.id}"
         def sql = "select item.item__id, p.rbpcfcha, rbpcpcun,  rbpc__id, lgardscr " +
                 "from item, rbpc p, lgar where p.item__id = item.item__id and p.lgar__id = lgar.lgar__id and p.rbpcfcha = '${params.fecha}' and " +
                 "p.item__id = ${item.id} order by lgardscr"
         println("sql " + sql)
 
         def res = cn.rows(sql.toString())
-//        println("res " + res)
         return [item: item, res: res]
     }
 
@@ -3460,6 +3453,64 @@ itemId: item.id
         }
         cn.close()
         return [fechas: fechas, anio: anio]
+    }
+
+    def botonesGuardar_ajax(){
+        return [id: params.id, valor: params.valor]
+    }
+
+    def guardarPrecioLugar_ajax(){
+
+        println("params " + params)
+
+        def rubroPrecio = PrecioRubrosItems.get(params.id)
+        def item = Item.get(params.item)
+        def errores = ''
+
+        if(params.precio){
+            if(rubroPrecio.registrado != 'R'){
+                if(params.precio.toDouble()){
+
+                    if(params.tipo == '2'){
+                        def cn = dbConnectionService.getConnection()
+                        def sql = "select rbpc__id " +
+                                "from item, rbpc p, lgar where p.item__id = item.item__id and p.lgar__id = lgar.lgar__id and p.rbpcfcha = '${params.fecha}' and " +
+                                "p.item__id = ${item.id} order by lgardscr"
+                        def res = cn.rows(sql.toString())
+
+                        res.each {
+                            def rubro = PrecioRubrosItems.get(it.rbpc__id)
+                            rubro.precioUnitario = params.precio.toDouble()
+                            if(!rubroPrecio.save(flush:true)){
+                                errores += rubroPrecio.errors
+                            }
+                        }
+
+                        if(errores  != ''){
+                            render "no_Error al guardar los precios"
+                        }else{
+                            render "ok_Guardado correctamente"
+                        }
+
+                    }else{
+                        rubroPrecio.precioUnitario = params.precio.toDouble()
+
+                        if(!rubroPrecio.save(flush:true)){
+                            render "no_Error al guardar el precio"
+                        }else{
+                            render "ok_Guardado correctamente"
+                        }
+                    }
+
+                }else{
+                    render "no_El valor ingresado no es válido"
+                }
+            }else{
+                render "no_El Item se encuentra en estado registrado en esa fecha, no puede ser modificado"
+            }
+        }else{
+            render "no_Ingrese un valor"
+        }
     }
 
 }
