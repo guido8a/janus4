@@ -3442,7 +3442,8 @@ itemId: item.id
 //                "extract(year from rbpcfcha) = '${anio}' group by rbpcfcha order by 1"
 
         /** muestra todas las fechas de precios para cantones definidas para el item */
-        def sql = "select rbpcfcha from rbpc, item where item.item__id = ${params.id} and rbpc.item__id = item.item__id and item.tpls__id = 1 and " +
+//        def sql = "select rbpcfcha from rbpc, item where item.item__id = ${params.id} and rbpc.item__id = item.item__id and item.tpls__id = 1 and " +
+        def sql = "select rbpcfcha from rbpc, item where item.item__id = ${params.id} and rbpc.item__id = item.item__id and " +
                 "extract(year from rbpcfcha) = '${anio}' group by rbpcfcha order by 1"
 
         println "sql: $sql"
