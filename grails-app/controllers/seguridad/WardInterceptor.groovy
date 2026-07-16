@@ -41,23 +41,24 @@ class WardInterceptor {
             } else {
                 println "******Dar permisos a prfl: ${session?.perfil?.codigo} en acción: $actionName controlador: $controllerName"
 
-                if(controllerName && (controllerName?.toLowerCase() != 'js') ) {
-                    def cn = dbConnectionService.getConnection()
-                    def sql = ""
-                    sql = "select ctrl__id from ctrl where ctrlnmbr ilike '${controllerName.toLowerCase()}'"
-                    def ctrl = cn.rows(sql.toString())[0].ctrl__id
-                    sql = "select accn__id from accn where ctrl__id = ${ctrl} and accnnmbr ilike '${actionName.toLowerCase()}'"
-                    def accn = cn.rows(sql.toString())[0].accn__id
-                    sql = "insert into prms(prms__id, accn__id, prfl__id) " +
-                            "values ( default, $accn, ${session?.perfil?.id} )"
+//                if(controllerName && (controllerName?.toLowerCase() != 'js') ) {
+//                    def cn = dbConnectionService.getConnection()
+//                    def sql = ""
+//                    sql = "select ctrl__id from ctrl where ctrlnmbr ilike '${controllerName.toLowerCase()}'"
+//                    def ctrl = cn.rows(sql.toString())[0].ctrl__id
+//                    sql = "select accn__id from accn where ctrl__id = ${ctrl} and accnnmbr ilike '${actionName.toLowerCase()}'"
+//                    def accn = cn.rows(sql.toString())[0]?.accn__id
+//                    sql = "insert into prms(prms__id, accn__id, prfl__id) " +
+//                            "values ( default, $accn, ${session?.perfil?.id} )"
 //                    println ">>> permiso faltante, consedido a: $sql"
-                    cn.execute(sql.toString())
-                    println ">>>nuevo permiso añadido ($accn, ${session?.perfil?.id}) <<<<"
-                    return true   /** quitar para manejar permisos **/
-
-                } else {
-                    return true   /** quitar para manejar permisos **/
-                }
+//                    cn.execute(sql.toString())
+//                    println ">>>nuevo permiso añadido ($accn, ${session?.perfil?.id}) <<<<"
+//                    return true   /** quitar para manejar permisos **/
+//
+//                } else {
+//                    return true   /** quitar para manejar permisos **/
+//                }
+                return true  /** quitar comentario y esta línea para que inserte automáticamente **/
             }
         }
     }
