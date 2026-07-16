@@ -40,10 +40,10 @@
             </div>
         </div>
         <div class="col-md-3" style="margin-top: 20px">
-%{--            <a href="#" class="btn btn-success btnNuevoPrecio" data-id="${item?.id}" title="Nuevo Precio">--}%
-%{--                <i class="fas fa-file"></i> Nuevo Precio--}%
-%{--            </a>--}%
-%{--        </div>--}%
+            <a href="#" class="btn btn-success btnNuevoPrecio" data-id="${item?.id}" title="Nuevo Precio">
+                <i class="fas fa-file"></i> Nuevo Precio
+            </a>
+        </div>
     </div>
     <div class="col-md-12">
         <div class="col-md-2"></div>
@@ -55,6 +55,8 @@
 
 
 <script type="text/javascript">
+
+    var np;
 
     $("#btnBuscar").click(function () {
         cargarTablaPrecios();
@@ -105,6 +107,44 @@
     $("#anio").change(function () {
         cargarFechas();
     });
+
+    $(".btnNuevoPrecio").click(function () {
+        nuevoPrecio();
+    });
+
+    function nuevoPrecio() {
+        $.ajax({
+            type    : "POST",
+            url     : "${createLink(controller: 'mantenimientoItems', action:'formPreciosXLugares_ajax')}",
+            data    : {
+                item : "${item.id}",
+                fechaDefecto: '${fd}'
+            },
+            success : function (msg) {
+                np = bootbox.dialog({
+                    id    : "dlgNuevoPrecio",
+                    title : "Nuevo precio",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        },
+                        guardar  : {
+                            id        : "btnSave",
+                            label     : "<i class='fa fa-save'></i> Guardar",
+                            className : "btn-success",
+                            callback  : function () {
+                                return submitFormPrecio2();
+                            } //callback
+                        } //guardar
+                    } //buttons
+                }); //dialog
+            } //success
+        }); //ajax
+    } //createEdit
 
 </script>
 

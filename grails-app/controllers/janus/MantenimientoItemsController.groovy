@@ -3402,6 +3402,7 @@ itemId: item.id
 
     def editarPrecios(){
         def item = Item.get(params.id)
+        def fechaDefecto = new Date().parse("dd-MM-yyyy", params.fd)
         def cn = dbConnectionService.getConnection()
         def anio = new Date().format('yyyy').toInteger()
         def fechas = [:]
@@ -3415,7 +3416,7 @@ itemId: item.id
         }
         println "fechas: $fechas"
         cn.close()
-        [fechas: fechas, anio: anio, item: item]
+        [fechas: fechas, anio: anio, item: item, fd: fechaDefecto]
     }
 
     def tablaEditarPrecios_ajax(){
@@ -3457,7 +3458,8 @@ itemId: item.id
     }
 
     def botonesGuardar_ajax(){
-        return [id: params.id, valor: params.valor]
+        def item = Item.get(params.item);
+        return [id: params.id, valor: params.valor, item: item]
     }
 
     def guardarPrecioLugar_ajax(){
@@ -3512,6 +3514,21 @@ itemId: item.id
         }else{
             render "no_Ingrese un valor"
         }
+    }
+
+    def formPreciosXLugares_ajax(){
+        def item = Item.get(params.item)
+        def fd
+
+        if(params.fechaDefecto){
+            fd = new Date().parse("dd-MM-yyyy", params.fechaDefecto)
+        }else{
+            fd = new Date()
+        }
+
+        def lugares = Lugar.findAllByTipoLista(item.tipoLista, [sort: 'codigo'])
+
+        return [fd: fd, lugares: lugares, item: item]
     }
 
 }

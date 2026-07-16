@@ -234,30 +234,30 @@
     }
 
     function verPrecios(id) {
-        %{--location.href="${createLink(controller: 'mantenimientoItems', action: 'editarPrecios')}?id=" + id;--}%
-        $.ajax({
-            type    : "POST",
-            url     : "${createLink(controller: 'mantenimientoItems', action:'showPcun_ajax')}",
-            data    : {
-                id: id,
-                fechaDefecto:'${fechaDefecto}'
-            },
-            success : function (msg) {
-                dpre = bootbox.dialog({
-                    id    : "dlgVerMaterial",
-                    title : "Precios del material",
-                    message : msg,
-                    buttons : {
-                        cancelar : {
-                            label     : "Cancelar",
-                            className : "btn-primary",
-                            callback  : function () {
-                            }
-                        }
-                    } //buttons
-                }); //dialog
-            } //success
-        }); //ajax
+        location.href="${createLink(controller: 'mantenimientoItems', action: 'editarPrecios')}?id=" + id + "&fd=" + ${fechaDefecto};
+        %{--$.ajax({--}%
+        %{--    type    : "POST",--}%
+        %{--    url     : "${createLink(controller: 'mantenimientoItems', action:'showPcun_ajax')}",--}%
+        %{--    data    : {--}%
+        %{--        id: id,--}%
+        %{--        fechaDefecto:'${fechaDefecto}'--}%
+        %{--    },--}%
+        %{--    success : function (msg) {--}%
+        %{--        dpre = bootbox.dialog({--}%
+        %{--            id    : "dlgVerMaterial",--}%
+        %{--            title : "Precios del material",--}%
+        %{--            message : msg,--}%
+        %{--            buttons : {--}%
+        %{--                cancelar : {--}%
+        %{--                    label     : "Cancelar",--}%
+        %{--                    className : "btn-primary",--}%
+        %{--                    callback  : function () {--}%
+        %{--                    }--}%
+        %{--                }--}%
+        %{--            } //buttons--}%
+        %{--        }); //dialog--}%
+        %{--    } //success--}%
+        %{--}); //ajax--}%
     } //createEdit
 
 

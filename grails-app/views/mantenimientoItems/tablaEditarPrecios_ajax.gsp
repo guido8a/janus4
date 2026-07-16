@@ -1,3 +1,13 @@
+<style>
+
+    .marco{
+        border-color: #00aa00;
+        border-style: solid;
+        border-width: 3px;
+    }
+
+</style>
+
 <div role="main" style="margin-top: 15px;">
     <table class="table table-bordered table-striped table-condensed table-hover">
         <thead>
@@ -61,7 +71,7 @@
 
     $(".btnEditarPrecioLugar").click(function () {
         var id = $(this).data("id");
-        $("#precio_" + id).removeAttr("readonly");
+        $("#precio_" + id).removeAttr("readonly").addClass("marco");
         $("#btnGuardar_" + id).removeClass("hidden");
         $("#btnEditar_" + id).addClass("hidden")
     });
@@ -69,7 +79,7 @@
     $(".btnCancelarEdicion").click(function () {
         var id = $(this).data("id");
         var precio = $(this).data("precio");
-        $("#precio_" + id).prop("readonly", "true").val(precio);
+        $("#precio_" + id).prop("readonly", "true").val(precio).removeClass("marco");
         $("#btnGuardar_" + id).addClass("hidden");
         $("#btnEditar_" + id).removeClass("hidden")
     });
@@ -77,13 +87,15 @@
     $(".btnGuardarPrecioLugar").click(function () {
         var id = $(this).data("id");
         var valor =   $("#precio_" + id).val();
+        var item = '${item?.id}';
         if(valor && valor > 0){
             $.ajax({
                 type    : "POST",
                 url     : "${createLink(controller: 'mantenimientoItems', action:'botonesGuardar_ajax')}",
                 data    : {
                     id: id,
-                    valor: valor
+                    valor: valor,
+                    item: item
                 },
                 success : function (msg) {
                     dg = bootbox.dialog({
