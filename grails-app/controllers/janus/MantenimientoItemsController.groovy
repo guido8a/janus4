@@ -22,6 +22,7 @@ class MantenimientoItemsController {
     } //index
 
     def precios () {
+        return [recargar: params.r]
     }
 
     def loadTreePartPrecios_ajax() {
@@ -1794,7 +1795,7 @@ class MantenimientoItemsController {
                         precioRubrosItemsInstance.lugar = lugar
                         precioRubrosItemsInstance.item = Item.get(params.item.id)
                         precioRubrosItemsInstance.fecha = params.fecha
-                     }
+                    }
 
 
                     if (!precioRubrosItemsInstance.save(flush: true)) {
@@ -2484,18 +2485,18 @@ itemId: item.id
         def mnsj = ""
 
         if(params.lugares){
-                def sql="update rbpc set rbpcpcun = ${params.precioUnitario} " +
-                        "where rbpcfcha = '${fcha}' and lgar__id in (${params.lugares}) and " +
-                        "item__id = ${params.item.id} "
-                println "sql: $sql"
-                try {
-                    cn.execute(sql.toString())
-                    mnsj = "ok_Precios actualizados correctamente"
-                }
-                catch (e) {
-                    mnsj = "no_Error al actualizar los precios"
-                }
-                cn.close()
+            def sql="update rbpc set rbpcpcun = ${params.precioUnitario} " +
+                    "where rbpcfcha = '${fcha}' and lgar__id in (${params.lugares}) and " +
+                    "item__id = ${params.item.id} "
+            println "sql: $sql"
+            try {
+                cn.execute(sql.toString())
+                mnsj = "ok_Precios actualizados correctamente"
+            }
+            catch (e) {
+                mnsj = "no_Error al actualizar los precios"
+            }
+            cn.close()
 
         }else{
             mnsj = "no_Seleccione al menos una lista"
@@ -3416,7 +3417,7 @@ itemId: item.id
         }
         println "fechas: $fechas"
         cn.close()
-        [fechas: fechas, anio: anio, item: item, fd: fechaDefecto]
+        [fechas: fechas, anio: anio, item: item, fd: params.fd]
     }
 
     def tablaEditarPrecios_ajax(){
@@ -3494,7 +3495,6 @@ itemId: item.id
                         }else{
                             render "ok_Guardado correctamente"
                         }
-
                     }else{
                         rubroPrecio.precioUnitario = params.precio.toDouble()
 
@@ -3504,7 +3504,6 @@ itemId: item.id
                             render "ok_Guardado correctamente"
                         }
                     }
-
                 }else{
                     render "no_El valor ingresado no es válido"
                 }
@@ -3516,7 +3515,7 @@ itemId: item.id
         }
     }
 
-    def formPreciosXLugares_ajax(){
+    def formNuevoPrecio_ajax(){
         def item = Item.get(params.item)
         def fd
 
@@ -3526,9 +3525,69 @@ itemId: item.id
             fd = new Date()
         }
 
-        def lugares = Lugar.findAllByTipoLista(item.tipoLista, [sort: 'codigo'])
+        def lugares = Lugar.findAllByTipoLista(item.tipoLista, [sort: 'descripcion'])
 
         return [fd: fd, lugares: lugares, item: item]
+    }
+
+    def guardarPrecios_ajax() {
+        println("params gf " + params)
+        def item = Item.get(params.item)
+        def fecha = new Date().parse("dd-MM-yyyy", params.fechaNueva)
+
+        if(params.lugarNuevo == null){
+//            def precioRubrosItemsInstance
+//            def error = 0
+//            Lugar.findAllByTipoLista(item.tipoLista).each { lugar ->
+//
+//                def existe = PrecioRubrosItems.findByItemAndFechaAndLugar(item, params.fecha, lugar)
+//
+//                if(existe){
+//                    precioRubrosItemsInstance = PrecioRubrosItems.get(existe?.id)
+//                    precioRubrosItemsInstance.precioUnitario = params.precioUnitario.toDouble()
+//                }else{
+//                    precioRubrosItemsInstance = new PrecioRubrosItems()
+//                    precioRubrosItemsInstance.precioUnitario = params.precioUnitario.toDouble()
+//                    precioRubrosItemsInstance.lugar = lugar
+//                    precioRubrosItemsInstance.item = Item.get(params.item.id)
+//                    precioRubrosItemsInstance.fecha = params.fecha
+//                }
+//
+//
+//                if (!precioRubrosItemsInstance.save(flush: true)) {
+//                    println "mantenimiento items controller l 873: " + precioRubrosItemsInstance.errors
+//                    error++
+//                } else {
+//
+//                }
+//
+//            }
+//
+//            if (error == 0) {
+//                render "OK_Precio guardado correctamente"
+//            } else {
+//                render "NO_Error al guardar el precio"
+//            }
+        }else{
+            def lugar = Lugar.get(params.lugarNuevo)
+            def existe = PrecioRubrosItems.findByItemAndFechaAndLugar(item, fecha, lugar)
+
+            if(existe){
+                render "no_Ya existe un precio para esta fecha y lugar"
+            }else{
+                def precioRubrosItemsInstance = new PrecioRubrosItems()
+                precioRubrosItemsInstance.item = item
+                precioRubrosItemsInstance.fecha = fecha
+                precioRubrosItemsInstance.lugar = lugar
+                precioRubrosItemsInstance.precioUnitario = params.precioUnitario.toDouble()
+                if (!precioRubrosItemsInstance.save(flush: true)) {
+                    println "mantenimiento items controller error: " + precioRubrosItemsInstance.errors
+                    render "no_Error al guardar el precio"
+                } else {
+                    render "ok_Precio guardado correctamente"
+                }
+            }
+        }
     }
 
 }

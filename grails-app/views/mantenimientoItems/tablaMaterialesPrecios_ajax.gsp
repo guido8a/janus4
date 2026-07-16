@@ -234,7 +234,7 @@
     }
 
     function verPrecios(id) {
-        location.href="${createLink(controller: 'mantenimientoItems', action: 'editarPrecios')}?id=" + id + "&fd=" + ${fechaDefecto};
+        location.href="${createLink(controller: 'mantenimientoItems', action: 'editarPrecios')}?id=" + id + "&fd=" + '${fechaDefecto}';
         %{--$.ajax({--}%
         %{--    type    : "POST",--}%
         %{--    url     : "${createLink(controller: 'mantenimientoItems', action:'showPcun_ajax')}",--}%

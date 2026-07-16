@@ -99,6 +99,10 @@
 
     var dfi, ths;
 
+    <g:if test="${recargar == '1'}">
+        $("#tipo").val(3);
+    </g:if>
+
     $("#btnLimpiar").click(function () {
         $("#buscarPor, #tipo").val(1);
         $("#criterio").val('');

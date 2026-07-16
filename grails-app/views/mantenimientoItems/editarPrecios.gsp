@@ -10,9 +10,9 @@
     <div class="col-md-12">
         <div class="col-md-2 btn-toolbar toolbar" >
             <div class="btn-group">
-                <g:link controller="mantenimientoItems" action="precios" class="btn btn-primary">
+                <a href="#" class="btn btn-primary btnRegresarAItems" title="Regresar a Items">
                     <i class="fa fa-arrow-left"></i> Regresar
-                </g:link>
+                </a>
             </div>
         </div>
         <div class="col-md-9 breadcrumb">
@@ -57,6 +57,10 @@
 <script type="text/javascript">
 
     var np;
+
+    $(".btnRegresarAItems").click(function () {
+        location.href="${createLink(controller: 'mantenimientoItems', action: 'precios')}?r=" + 1
+    });
 
     $("#btnBuscar").click(function () {
         cargarTablaPrecios();
@@ -115,7 +119,7 @@
     function nuevoPrecio() {
         $.ajax({
             type    : "POST",
-            url     : "${createLink(controller: 'mantenimientoItems', action:'formPreciosXLugares_ajax')}",
+            url     : "${createLink(controller: 'mantenimientoItems', action:'formNuevoPrecio_ajax')}",
             data    : {
                 item : "${item.id}",
                 fechaDefecto: '${fd}'
@@ -137,7 +141,7 @@
                             label     : "<i class='fa fa-save'></i> Guardar",
                             className : "btn-success",
                             callback  : function () {
-                                return submitFormPrecio2();
+                                return submitFormNuevoPrecio();
                             } //callback
                         } //guardar
                     } //buttons
@@ -145,6 +149,44 @@
             } //success
         }); //ajax
     } //createEdit
+
+    function submitFormNuevoPrecio() {
+        var $form = $("#frmSaveNuevoPrecio");
+        if ($form.valid()) {
+            var valor = $("#precioUnitario").val();
+            if(valor > 0){
+                var data = $form.serialize();
+                var df = cargarLoader("Guardando...");
+                $.ajax({
+                    type    : "POST",
+                    url     : $form.attr("action"),
+                    data    : data,
+                    success : function (msg) {
+                        df.modal('hide');
+                        var parts = msg.split("_");
+                        if(parts[0] === 'ok'){
+                            log(parts[1], "success");
+                            cargarFechas();
+                            cargarTablaPrecios();
+                            cerrarNuevoPrecioxLugar();
+                        }else{
+                            bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
+                            return false;
+                        }
+                    }
+                });
+            }else{
+                bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + "Ingrese un valor diferente de 0" + '</strong>');
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    function cerrarNuevoPrecioxLugar(){
+        np.modal("hide");
+    }
 
 </script>
 
