@@ -15,9 +15,7 @@ class WardInterceptor {
     }
 
     boolean before() {
-//        println "acción: " + actionName + " controlador: " + controllerName + " params: $params"
-//        println "shield sesión: " + session
-//        println "usuario: " + session.usuario
+        println "acción: " + actionName + " controlador: " + controllerName + " params: $params"
         def usro
         if(session) {
             usro = session.usuario
@@ -27,43 +25,43 @@ class WardInterceptor {
         }
 
         if(session.an == 'saveTramite' && session.cn == 'tramite'){
-//            println("entro")
             return true
         } else {
             if (!session?.usuario || !session?.perfil) {
                 println "...sin sesión"
                 if(controllerName != "inicio" && actionName != "index") {
-//                    flash.message = "Usted ha superado el tiempo de inactividad máximo de la sesión"
                 }
                 render "<script type='text/javascript'> window.location.href = '/' </script>"
                 session.finalize()
                 return false
             }
 
-            if (isAllowed()) {
+            if (isAllowed() || controllerName == 'js') {
                 return true
             } else {
                 println "******Dar permisos a prfl: ${session?.perfil?.codigo} en acción: $actionName controlador: $controllerName"
-                /**
-                 * Deshabilitar esta sección cuando ya esté completo el control
-                 */
-                def cn = dbConnectionService.getConnection()
-                def sql = ""
-                sql = "select ctrl__id from ctrl where ctrlnmbr ilike '${controllerName.toLowerCase()}'"
-                def ctrl = cn.rows(sql.toString())[0].ctrl__id
-                sql = "select accn__id from accn where ctrl__id = ${ctrl} and accnnmbr ilike '${actionName.toLowerCase()}'"
-                def accn = cn.rows(sql.toString())[0].accn__id
-                sql = "insert into prms(prms__id, accn__id, prfl__id) " +
-                        "values ( default, $accn, ${session?.perfil?.id} )"
-                println ">>> permiso faltante, consedido a: $sql"
-                cn.execute(sql.toString())
-                println ">>>nuevo permiso añadido ($accn, ${session?.perfil?.id}) <<<<"
-                return true   /** quitar para manejar permisos **/
+
+                if(controllerName && (controllerName?.toLowerCase() != 'js') ) {
+                    def cn = dbConnectionService.getConnection()
+                    def sql = ""
+                    sql = "select ctrl__id from ctrl where ctrlnmbr ilike '${controllerName.toLowerCase()}'"
+                    def ctrl = cn.rows(sql.toString())[0].ctrl__id
+                    sql = "select accn__id from accn where ctrl__id = ${ctrl} and accnnmbr ilike '${actionName.toLowerCase()}'"
+                    def accn = cn.rows(sql.toString())[0].accn__id
+                    sql = "insert into prms(prms__id, accn__id, prfl__id) " +
+                            "values ( default, $accn, ${session?.perfil?.id} )"
+//                    println ">>> permiso faltante, consedido a: $sql"
+                    cn.execute(sql.toString())
+                    println ">>>nuevo permiso añadido ($accn, ${session?.perfil?.id}) <<<<"
+                    return true   /** quitar para manejar permisos **/
+
+                } else {
+                    return true   /** quitar para manejar permisos **/
+                }
             }
         }
-
-        //true
     }
+
 
     boolean after() {
 //        println "+++++después"
@@ -80,7 +78,7 @@ class WardInterceptor {
         println "**--> ${controllerName?.toLowerCase()} --> ${actionName}"
 
         try {
-            if((request.method == "POST") || (actionName.toLowerCase() =~ 'ajax')) {
+            if((request.method == "POST") || (actionName.toLowerCase() =~ 'ajax') )  {
                 return true
             }
             def cn = dbConnectionService.getConnection()
