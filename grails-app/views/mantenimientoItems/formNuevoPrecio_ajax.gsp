@@ -23,19 +23,22 @@
                 <g:select name="lugarNuevo" from="${lugares}" optionKey="id" optionValue="descripcion" class="form-control" noSelection="[null: 'TODOS LOS LUGARES']" />
         </div>
     </div>
-    <div class="col-md-12 breadcrumb" style="margin-top: -10px; font-size: 14px">
-        <div class="col-md-2">
-            <label>
-                Precio:
-            </label>
+    <g:if test="${ultimoPrecio != 0}">
+        <div class="col-md-12 breadcrumb" style="margin-top: -10px; font-size: 14px">
+            <div class="col-md-2">
+                <label>
+                    Precio:
+                </label>
+            </div>
+            <div class="col-md-6">
+                Último precio registrado  <strong>${ultimoPrecio}</strong>
+            </div>
+            <div class="col-md-4">
+                a la fecha  <strong>${ultimaFecha}</strong>
+            </div>
         </div>
-        <div class="col-md-6">
-            Último precio registrado  <strong>${ultimoPrecio}</strong>
-        </div>
-        <div class="col-md-4">
-            a la fecha  <strong>${ultimaFecha}</strong>
-        </div>
-    </div>
+    </g:if>
+
 
     <div class="form-group">
         <span class="grupo">

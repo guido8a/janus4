@@ -3520,6 +3520,7 @@ itemId: item.id
         def cn = dbConnectionService.getConnection()
         def item = Item.get(params.item)
         def fd
+        def ultimo
 
         if(params.fechaDefecto){
             fd = new Date().parse("dd-MM-yyyy", params.fechaDefecto)
@@ -3529,11 +3530,16 @@ itemId: item.id
 
         def lugares = Lugar.findAllByTipoLista(item.tipoLista, [sort: 'descripcion'])
 
-        def sql = "select rbpcpcun,  rbpc__id  " +
-                "from item, rbpc p, lgar where p.item__id = item.item__id and p.lgar__id = lgar.lgar__id and p.rbpcfcha = '${params.fechaAnterior}' and " +
-                "p.item__id = ${item.id} order by lgardscr"
-        def res = cn.rows(sql.toString())?.last()
-        def ultimo = res ? res.rbpcpcun : 0
+        if(params.fechaAnterior){
+
+            def sql = "select rbpcpcun,  rbpc__id  " +
+                    "from item, rbpc p, lgar where p.item__id = item.item__id and p.lgar__id = lgar.lgar__id and p.rbpcfcha = '${params.fechaAnterior}' and " +
+                    "p.item__id = ${item.id} order by lgardscr"
+            def res = cn.rows(sql.toString())?.last()
+            ultimo = res ? res.rbpcpcun : 0
+        }else{
+            ultimo = 0
+        }
 
         return [fd: fd, lugares: lugares, item: item, ultimoPrecio: ultimo, ultimaFecha: params.fechaAnterior]
     }
