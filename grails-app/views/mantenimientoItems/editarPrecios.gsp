@@ -92,7 +92,7 @@
 
     cargarFechas();
 
-    function cargarFechas(){
+    function cargarFechas(fecha){
         var id = '${item?.id}';
         var anio = $("#anio option:selected").val();
         $.ajax({
@@ -100,7 +100,8 @@
             url: '${createLink(controller: 'mantenimientoItems', action: 'fechasPrecios_ajax')}',
             data:{
                 id: id,
-                anio: anio
+                anio: anio,
+                fecha: fecha
             },
             success: function (msg){
                 $("#divFecha").html(msg)
@@ -166,8 +167,15 @@
                         var parts = msg.split("_");
                         if(parts[0] === 'ok'){
                             log(parts[1], "success");
-                            cargarFechas();
-                            cargarTablaPrecios();
+                            setTimeout(function () {
+                                cargarFechas(parts[2]);
+                            },100);
+                            setTimeout(function () {
+                                $("#fecha").change(function () {
+                                    $(this).val(parts[2])
+                                });
+                                cargarTablaPrecios();
+                            },200);
                             cerrarNuevoPrecioxLugar();
                         }else{
                             bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');

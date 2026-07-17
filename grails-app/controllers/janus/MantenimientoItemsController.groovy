@@ -3436,6 +3436,7 @@ itemId: item.id
     def fechasPrecios_ajax(){
         println("parmas  " + params)
         def item = Item.get(params.id)
+        def fechaNueva = params.fecha ? new Date().parse("dd-MM-yyyy", params.fecha) : ''
         def cn = dbConnectionService.getConnection()
         def anio = params.anio
         def fechas = [:]
@@ -3455,7 +3456,7 @@ itemId: item.id
             i++
         }
         cn.close()
-        return [fechas: fechas, anio: anio]
+        return [fechas: fechas, anio: anio, fechaNueva: fechaNueva]
     }
 
     def botonesGuardar_ajax(){
@@ -3535,39 +3536,36 @@ itemId: item.id
         def item = Item.get(params.item)
         def fecha = new Date().parse("dd-MM-yyyy", params.fechaNueva)
 
-        if(params.lugarNuevo == null){
-//            def precioRubrosItemsInstance
-//            def error = 0
-//            Lugar.findAllByTipoLista(item.tipoLista).each { lugar ->
-//
-//                def existe = PrecioRubrosItems.findByItemAndFechaAndLugar(item, params.fecha, lugar)
-//
-//                if(existe){
-//                    precioRubrosItemsInstance = PrecioRubrosItems.get(existe?.id)
-//                    precioRubrosItemsInstance.precioUnitario = params.precioUnitario.toDouble()
-//                }else{
-//                    precioRubrosItemsInstance = new PrecioRubrosItems()
-//                    precioRubrosItemsInstance.precioUnitario = params.precioUnitario.toDouble()
-//                    precioRubrosItemsInstance.lugar = lugar
-//                    precioRubrosItemsInstance.item = Item.get(params.item.id)
-//                    precioRubrosItemsInstance.fecha = params.fecha
-//                }
-//
-//
-//                if (!precioRubrosItemsInstance.save(flush: true)) {
-//                    println "mantenimiento items controller l 873: " + precioRubrosItemsInstance.errors
-//                    error++
-//                } else {
-//
-//                }
-//
-//            }
-//
-//            if (error == 0) {
-//                render "OK_Precio guardado correctamente"
-//            } else {
-//                render "NO_Error al guardar el precio"
-//            }
+        if(params.lugarNuevo == 'null'){
+            def precioRubrosItemsInstance
+            def error = 0
+            Lugar.findAllByTipoLista(item.tipoLista).each { lugar ->
+
+                def existe = PrecioRubrosItems.findByItemAndFechaAndLugar(item, fecha, lugar)
+
+                if(existe){
+                    precioRubrosItemsInstance = PrecioRubrosItems.get(existe?.id)
+                    precioRubrosItemsInstance.precioUnitario = params.precioUnitario.toDouble()
+                }else{
+                    precioRubrosItemsInstance = new PrecioRubrosItems()
+                    precioRubrosItemsInstance.precioUnitario = params.precioUnitario.toDouble()
+                    precioRubrosItemsInstance.lugar = lugar
+                    precioRubrosItemsInstance.item = item
+                    precioRubrosItemsInstance.fecha = fecha
+                }
+
+                if (!precioRubrosItemsInstance.save(flush: true)) {
+                    println "mantenimiento items controller error: " + precioRubrosItemsInstance.errors
+                    error++
+                }
+
+            }
+
+            if (error == 0) {
+                render "ok_Precio guardado correctamente_${fecha.format("dd-MM-yyyy")}"
+            } else {
+                render "no_Error al guardar el precio"
+            }
         }else{
             def lugar = Lugar.get(params.lugarNuevo)
             def existe = PrecioRubrosItems.findByItemAndFechaAndLugar(item, fecha, lugar)
@@ -3584,7 +3582,7 @@ itemId: item.id
                     println "mantenimiento items controller error: " + precioRubrosItemsInstance.errors
                     render "no_Error al guardar el precio"
                 } else {
-                    render "ok_Precio guardado correctamente"
+                    render "ok_Precio guardado correctamente_${fecha.format("dd-MM-yyyy")}"
                 }
             }
         }
