@@ -3517,6 +3517,7 @@ itemId: item.id
     }
 
     def formNuevoPrecio_ajax(){
+        def cn = dbConnectionService.getConnection()
         def item = Item.get(params.item)
         def fd
 
@@ -3528,7 +3529,13 @@ itemId: item.id
 
         def lugares = Lugar.findAllByTipoLista(item.tipoLista, [sort: 'descripcion'])
 
-        return [fd: fd, lugares: lugares, item: item]
+        def sql = "select rbpcpcun,  rbpc__id  " +
+                "from item, rbpc p, lgar where p.item__id = item.item__id and p.lgar__id = lgar.lgar__id and p.rbpcfcha = '${params.fechaAnterior}' and " +
+                "p.item__id = ${item.id} order by lgardscr"
+        def res = cn.rows(sql.toString())?.last()
+        def ultimo = res ? res.rbpcpcun : 0
+
+        return [fd: fd, lugares: lugares, item: item, ultimoPrecio: ultimo, ultimaFecha: params.fechaAnterior]
     }
 
     def guardarPrecios_ajax() {
@@ -3544,8 +3551,10 @@ itemId: item.id
                 def existe = PrecioRubrosItems.findByItemAndFechaAndLugar(item, fecha, lugar)
 
                 if(existe){
-                    precioRubrosItemsInstance = PrecioRubrosItems.get(existe?.id)
-                    precioRubrosItemsInstance.precioUnitario = params.precioUnitario.toDouble()
+                    if(existe?.registrado != 'R'){
+                        precioRubrosItemsInstance = PrecioRubrosItems.get(existe?.id)
+                        precioRubrosItemsInstance.precioUnitario = params.precioUnitario.toDouble()
+                    }
                 }else{
                     precioRubrosItemsInstance = new PrecioRubrosItems()
                     precioRubrosItemsInstance.precioUnitario = params.precioUnitario.toDouble()
@@ -3558,7 +3567,6 @@ itemId: item.id
                     println "mantenimiento items controller error: " + precioRubrosItemsInstance.errors
                     error++
                 }
-
             }
 
             if (error == 0) {

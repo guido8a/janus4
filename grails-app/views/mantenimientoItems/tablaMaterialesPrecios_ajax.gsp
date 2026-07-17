@@ -234,7 +234,9 @@
     }
 
     function verPrecios(id) {
+        //nueva interface
         location.href="${createLink(controller: 'mantenimientoItems', action: 'editarPrecios')}?id=" + id + "&fd=" + '${fechaDefecto}';
+        //antigua interface
         %{--$.ajax({--}%
         %{--    type    : "POST",--}%
         %{--    url     : "${createLink(controller: 'mantenimientoItems', action:'showPcun_ajax')}",--}%

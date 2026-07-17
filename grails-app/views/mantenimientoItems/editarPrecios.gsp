@@ -118,12 +118,14 @@
     });
 
     function nuevoPrecio() {
+        var fechaAnterior = $("#fecha option:last").val();
         $.ajax({
             type    : "POST",
             url     : "${createLink(controller: 'mantenimientoItems', action:'formNuevoPrecio_ajax')}",
             data    : {
                 item : "${item.id}",
-                fechaDefecto: '${fd}'
+                fechaDefecto: '${fd}',
+                fechaAnterior: fechaAnterior
             },
             success : function (msg) {
                 np = bootbox.dialog({
