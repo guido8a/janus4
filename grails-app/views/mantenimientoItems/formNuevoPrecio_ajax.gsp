@@ -9,7 +9,7 @@
                 Item:
             </label>
         </div>
-        <div class="col-md-8">
+        <div class="col-md-10">
             ${item?.codigo + " - " +  item.nombre}
         </div>
     </div>
@@ -38,8 +38,6 @@
             </div>
         </div>
     </g:if>
-
-
     <div class="form-group">
         <span class="grupo">
             <label for="precioUnitario" class="col-md-3 control-label text-info">
