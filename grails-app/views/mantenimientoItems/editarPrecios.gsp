@@ -26,13 +26,13 @@
         <div class="col-md-12">
             <div class="col-md-2">
             </div>
-            <div class="col-md-5">
+            <div class="col-md-4">
                 <span class="grupo">
-                    <span class="col-md-3">
+                    <span class="col-md-4">
                         <label class="control-label text-info" style="text-align: center">Año</label>
                         <g:select style="font-size:large;" name="anio" class="form-control" from="${anio..anio - 1}" />
                     </span>
-                    <span class="col-md-4" id="divFecha" style="text-align: center">
+                    <span class="col-md-5" id="divFecha" style="text-align: center">
 
                     </span>
                 </span>
@@ -40,10 +40,14 @@
                     <button class="btn btn-info" id="btnBuscar" title="Buscar"><i class="fa fa-search"></i> Consultar</button>
                 </div>
             </div>
-            <div class="col-md-3" style="margin-top: 20px">
+            <div class="col-md-1" style="margin-top: 20px">
                 <a href="#" class="btn btn-success btnNuevoPrecio" data-id="${item?.id}" title="Nuevo Precio">
                     <i class="fas fa-file"></i> Nuevo Precio
                 </a>
+            </div>
+            <div class="col-md-2 breadcrumb" style="margin-left: 20px; margin-top: 18px; width: 190px">
+                <label class="control-label text-info" style="text-align: center">Fecha por defecto:</label>
+                ${fd}
             </div>
         </div>
         <div class="col-md-12">
@@ -85,6 +89,7 @@
                     }
                 })
             }else{
+                $("#divTablaPrecios").html(' <div class="alert alert-warning" style="text-align: center"><i class="fa fa-exclamation-triangle fa-2x text-info"></i> <strong style="font-size: 16px"> No existen registros </strong></div>')
                 bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 16px">' + "Seleccione una fecha" + '</strong>');
             }
         }
