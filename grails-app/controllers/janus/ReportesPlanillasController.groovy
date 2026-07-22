@@ -842,7 +842,7 @@ class ReportesPlanillasController {
         PdfPTable tablaDetalle = new PdfPTable(4);
         tablaDetalle.setWidthPercentage(100);
         tablaDetalle.setWidths(arregloEnteros([35, 12, 12, 46]))
-        tablaDetalle.setSpacingBefore(5f);
+        tablaDetalle.setSpacingBefore(15f);
 
         addCellTabla(tablaDetalle, new Paragraph("2.- DETALLE DE PLAZOS", fontTitle), [padding: 3, pb: 5, border: Color.WHITE, bg: Color.LIGHT_GRAY, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE, colspan: 4])
 
@@ -939,7 +939,7 @@ class ReportesPlanillasController {
 
         tablaEvaluacion.setWidthPercentage(100);
         tablaEvaluacion.setWidths(arregloEnteros([35, 33, 32]))
-        tablaEvaluacion.setSpacingBefore(5f);
+        tablaEvaluacion.setSpacingBefore(15f);
 
 
         def anticipo = 0
@@ -977,7 +977,7 @@ class ReportesPlanillasController {
 
         tablaEconomico.setWidthPercentage(100);
         tablaEconomico.setWidths(arregloEnteros([60, 40]))
-        tablaEconomico.setSpacingBefore(5f);
+        tablaEconomico.setSpacingBefore(15f);
 
         addCellTabla(tablaEconomico, new Paragraph("4.- AVANCE ECONÓMICO", fontTitle), [padding: 3, pb: 5, border: Color.WHITE, bg: Color.LIGHT_GRAY, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE, colspan: 2])
 
@@ -998,7 +998,7 @@ class ReportesPlanillasController {
         /* **************************************************************** RESUMEN ******************************************************************************/
         PdfPTable tablaResumen = new PdfPTable(1);
         tablaResumen.setWidthPercentage(100);
-        tablaResumen.setSpacingBefore(5f);
+        tablaResumen.setSpacingBefore(15f);
         addCellTabla(tablaResumen, new Paragraph("5.- RESUMEN DE DECISIONES IMPORTANTES DE AVANCE DE OBRA O ACTIVIDADES REALIZADAS EN ESTE PERIODO", fontTitle), [padding: 3, pb: 5, border: Color.WHITE, bg: Color.LIGHT_GRAY, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE])
         document.add(tablaResumen)
 
@@ -1038,6 +1038,7 @@ class ReportesPlanillasController {
             ]
             def dateFormat = new SimpleDateFormat("EEEE dd-MM-yyyy", new Locale("es"))
             titulos.eachWithIndex { t, i ->
+                document.add(new Paragraph(" ", fontTitle))
                 document.add(new Paragraph(t, fontTitle))
                 if (i == 2) {
                     //lo del clima
@@ -1054,7 +1055,7 @@ class ReportesPlanillasController {
                     def tablaClima = new PdfPTable(3);
                     tablaClima.setWidths(arregloEnteros([40, 30, 30]))
                     tablaClima.setWidthPercentage(50);
-                    tablaClima.setSpacingBefore(5f);
+                    tablaClima.setSpacingBefore(15f);
 
                     addCellTabla(tablaClima, new Paragraph('Día', fontTh), [border: Color.BLACK, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE])
                     addCellTabla(tablaClima, new Paragraph('Mañana', fontTh), [border: Color.BLACK, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE])
@@ -1212,6 +1213,7 @@ class ReportesPlanillasController {
 
         Document document
         document = new Document(PageSize.A4);
+        document.setMargins(56,56,50,28)  // 28 equivale a 1 cm: izq, derecha, arriba y abajo
         def pdfw = PdfWriter.getInstance(document, baos);
 
         document.resetHeader()
@@ -1486,7 +1488,7 @@ class ReportesPlanillasController {
                     document.add(tablaClima)
                 } //if i==2: lo del clima
                 else {
-                    def num = (i + 1).toString().padLeft(2, "0")
+                    def num = (i + 1).toString().padLeft(4, "0")
                     def val = avanceContrato["frase" + num]
                     document.add(new Paragraph(val, fontTd))
                 }// if i!= 2: lo q no es el clima
