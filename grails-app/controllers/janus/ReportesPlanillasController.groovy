@@ -1488,7 +1488,7 @@ class ReportesPlanillasController {
                     document.add(tablaClima)
                 } //if i==2: lo del clima
                 else {
-                    def num = (i + 1).toString().padLeft(4, "0")
+                    def num = (i + 1).toString().padLeft(2, "0")
                     def val = avanceContrato["frase" + num]
                     document.add(new Paragraph(val, fontTd))
                 }// if i!= 2: lo q no es el clima
