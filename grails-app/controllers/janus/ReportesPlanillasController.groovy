@@ -743,6 +743,7 @@ class ReportesPlanillasController {
 
         Document document
         document = new Document(PageSize.A4);
+        document.setMargins(56,56,50,28)  // 28 equivale a 1 cm: izq, derecha, arriba y abajo
         def pdfw = PdfWriter.getInstance(document, baos);
 
 //        HeaderFooter footer = new HeaderFooter(new Phrase("This is page: "), true);
@@ -1213,7 +1214,6 @@ class ReportesPlanillasController {
 
         Document document
         document = new Document(PageSize.A4);
-        document.setMargins(56,56,50,28)  // 28 equivale a 1 cm: izq, derecha, arriba y abajo
         def pdfw = PdfWriter.getInstance(document, baos);
 
         document.resetHeader()
