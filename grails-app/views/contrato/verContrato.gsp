@@ -488,6 +488,62 @@
 
 <script type="text/javascript">
 
+    $("#btnSetFechasComplementario").click(function () {
+        $.ajax({
+            type    : "POST",
+            url     : "${createLink(controller: 'contrato', action: 'fechasComplementario_ajax')}",
+            data    : {
+                id : "${complementario?.id}"
+            },
+            success : function (msg) {
+                var b = bootbox.dialog({
+                    id      : "dlSFC",
+                    title   : "Fechas contrato complementario",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+
+                            }
+                        },
+                        guardar : {
+                            label     : "Guardar",
+                            className : "btn-success",
+                            callback  : function () {
+                                return guardarFechasComplementarias();
+                            }
+                        }
+                    } //buttons
+                }); //dialog
+            }
+        });
+        return false;
+    });
+
+    function guardarFechasComplementarias() {
+        var g = cargarLoader("Guardando...");
+        $.ajax({
+            type: "POST",
+            url: "${createLink(controller: 'contrato', action:'saveFechasComplementario_ajax')}",
+            data: {
+                id: "${complementario?.id}",
+                fechaInicio: $("#datetimepicker1").val(),
+                fechaFin:$("#datetimepicker2").val()
+            },
+            success: function (msg) {
+                g.modal("hide");
+                var parts = msg.split("_");
+                if (parts[0] === 'ok') {
+                    log(parts[1], "success");
+                } else {
+                    bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
+                }
+            }
+        });
+    }
+
     function updateAnticipo() {
         var porcentaje = $("#porcentajeAnticipo").val();
         var monto = $("#monto").val().replace(",", "");

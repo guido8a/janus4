@@ -1593,4 +1593,34 @@ class ContratoController {
         }
     }
 
+    def fechasComplementario_ajax(){
+        def contratoComplementario = Contrato.get(params.id)
+        return [contrato: contratoComplementario]
+    }
+
+    def saveFechasComplementario_ajax(){
+
+        println("params fc " + params)
+
+        def contratoComplementario = Contrato.get(params.id)
+
+        if(params.fechaInicio){
+            params.fechaInicio = new Date().parse("dd-MM-yyyy",params.fechaInicio)
+        }
+
+        if(params.fechaFin){
+            params.fechaFin = new Date().parse("dd-MM-yyyy",params.fechaFin)
+        }
+
+        contratoComplementario.properties = params
+
+        if(!contratoComplementario.save(flush:true)){
+            println("error al guardar las fechas complemantarias " + contratoComplementario.errors)
+            render "no_Error al guardar las fechas"
+        }else{
+            render "ok_Fechas guardadas correctamente"
+        }
+
+    }
+
 } //fin controller
