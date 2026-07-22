@@ -799,7 +799,7 @@ class ReportesPlanillasController {
         addCellTabla(tablaGeneralidades, new Paragraph(contrato.oferta.proveedor.nombre, fontTd), [border: Color.BLACK, bcl: Color.WHITE, bwl: 0.1, bcr: Color.WHITE, bwr: 0.1, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE])
 
         addCellTabla(tablaGeneralidades, new Paragraph("MONTO DEL CONTRATO " + '$.', fontTh), [pl: 20, border: Color.BLACK, bcl: Color.WHITE, bwl: 0.1, bcr: Color.WHITE, bwr: 0.1, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE])
-        addCellTabla(tablaGeneralidades, new Paragraph(numero(contrato.monto, 2), fontTd), [border: Color.BLACK, bcl: Color.WHITE, bwl: 0.1, bcr: Color.WHITE, bwr: 0.1, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE])
+        addCellTabla(tablaGeneralidades, new Paragraph(numero(plnl.tipoContrato == 'C' ? cmpl.monto : contrato.monto, 2), fontTd), [border: Color.BLACK, bcl: Color.WHITE, bwl: 0.1, bcr: Color.WHITE, bwr: 0.1, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE])
 
 //        addCellTabla(tablaGeneralidades, new Paragraph("MONTO DEL CONTRATO COMP. "+'$.', fontTh), [pl: 20, border: Color.BLACK, bcl: Color.WHITE, bwl: 0.1, bcr: Color.WHITE, bwr: 0.1, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE])
 //        addCellTabla(tablaGeneralidades, new Paragraph("?", fontTd), [border: Color.BLACK, bcl: Color.WHITE, bwl: 0.1, bcr: Color.WHITE, bwr: 0.1, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE])
@@ -823,7 +823,7 @@ class ReportesPlanillasController {
         addCellTabla(tablaGeneralidades, new Paragraph(nombrePersona(planillasAvance.size() > 0 ? planillasAvance.last().fiscalizador : null), fontTd), [border: Color.BLACK, bcl: Color.WHITE, bwl: 0.1, bcr: Color.WHITE, bwr: 0.1, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE])
 
         addCellTabla(tablaGeneralidades, new Paragraph("FECHA DE SUSCRIPCIÓN", fontTh), [pl: 20, border: Color.BLACK, bcl: Color.WHITE, bwl: 0.1, bcr: Color.WHITE, bwr: 0.1, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE])
-        addCellTabla(tablaGeneralidades, new Paragraph(fechaConFormato(contrato.fechaSubscripcion, formatoFechasTabla), fontTd), [border: Color.BLACK, bcl: Color.WHITE, bwl: 0.1, bcr: Color.WHITE, bwr: 0.1, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE])
+        addCellTabla(tablaGeneralidades, new Paragraph(fechaConFormato(plnl.tipoContrato == 'C' ? cmpl.fechaSubscripcion : contrato.fechaSubscripcion, formatoFechasTabla), fontTd), [border: Color.BLACK, bcl: Color.WHITE, bwl: 0.1, bcr: Color.WHITE, bwr: 0.1, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE])
 
         document.add(tablaGeneralidades)
         /* **************************************************************** FIN GENERALIDADES **************************************************************************/
@@ -836,7 +836,7 @@ class ReportesPlanillasController {
         addCellTabla(tablaDetalle, new Paragraph("2.- DETALLE DE PLAZOS", fontTitle), [padding: 3, pb: 5, border: Color.WHITE, bg: Color.LIGHT_GRAY, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE, colspan: 4])
 
         addCellTabla(tablaDetalle, new Paragraph("PLAZO CONTRACTUAL", fontTh), [pl: 20, border: Color.BLACK, bcl: Color.WHITE, bwl: 0.1, bcr: Color.WHITE, bwr: 0.1, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE])
-        addCellTabla(tablaDetalle, new Paragraph(numero(contrato.plazo, 0) + " DÍAS CALENDARIO", fontTd), [border: Color.BLACK, bcl: Color.WHITE, bwl: 0.1, bcr: Color.WHITE, bwr: 0.1, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE, colspan: 3])
+        addCellTabla(tablaDetalle, new Paragraph(numero(plnl.tipoContrato == 'C' ? cmpl.plazo :  contrato.plazo, 0) + " DÍAS CALENDARIO", fontTd), [border: Color.BLACK, bcl: Color.WHITE, bwl: 0.1, bcr: Color.WHITE, bwr: 0.1, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE, colspan: 3])
 
 
         //cambio fiscalizacion 10-2025

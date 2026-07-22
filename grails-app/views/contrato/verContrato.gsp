@@ -379,6 +379,11 @@
                     <i class="fa fa-check"></i> Autorización C + %
                 </a>
             </g:if>
+            <g:if test="${complementario}">
+                <a href="#" id="btnSetFechasComplementario" class="btn">
+                    <i class="fa fa-clock"></i> Fechas complementario
+                </a>
+            </g:if>
         </div>
     </div>
 </g:if>
