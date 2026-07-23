@@ -241,28 +241,34 @@
         function submitFormPrecioVarios() {
             var $form = $("#frmSaveCantones");
             if ($form.valid()) {
-                var data = $form.serialize();
-                var lugares = chequeados();
-                var dialog = cargarLoader("Guardando...");
-                $.ajax({
-                    type    : "POST",
-                    url     : $form.attr("action"),
-                    data    : data + "&lugares=" + lugares,
-                    success : function (msg) {
-                        dialog.modal('hide');
-                        var parts = msg.split("_");
-                        if(parts[0] === 'ok'){
-                            log(parts[1], "success");
-                            cargarFechas();
-                            cargarTablaPrecios();
-                            cerrarEditarPreciosVarios();
-                        }else{
-                            bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
-                            return false;
+                var valor = $("#precioUnitario").val();
+                if(valor > 0) {
+                    var data = $form.serialize();
+                    var lugares = chequeados();
+                    var dialog = cargarLoader("Guardando...");
+                    $.ajax({
+                        type: "POST",
+                        url: $form.attr("action"),
+                        data: data + "&lugares=" + lugares,
+                        success: function (msg) {
+                            dialog.modal('hide');
+                            var parts = msg.split("_");
+                            if (parts[0] === 'ok') {
+                                log(parts[1], "success");
+                                cargarFechas();
+                                cargarTablaPrecios();
+                                cerrarEditarPreciosVarios();
+                            } else {
+                                bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
+                                return false;
+                            }
                         }
-                    }
-                });
-                return false
+                    });
+                    return false
+                }else{
+                    bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + "Ingrese un valor diferente de 0" + '</strong>');
+                    return false;
+                }
             } else {
                 return false;
             }
