@@ -23,6 +23,10 @@
         <div class="col-md-12 ">
             <div class="col-md-12 breadcrumb" >
                 <div class="form-group ${hasErrors(bean: precioRubrosItemsInstance, field: 'precioUnitario', 'error')} ">
+                    <span class="col-md-3" style="margin-top: 20px">
+                        <label class="control-label text-info"> Unidad </label>
+                        ${precioRubrosItemsInstance.item.unidad.codigo}
+                    </span>
                     <span class="col-md-4">
                         <label for="precioUnitario" class="control-label text-info">
                             Precio Unitario
@@ -33,10 +37,6 @@
                     <span class="col-md-4">
                         <label class="control-label text-info"> Fecha </label>
                         <input aria-label="" name="fecha" id='datetimepicker3' type='text' class="form-control required" value="${fecha?.format("dd-MM-yyyy") ?: new Date().format("dd-MM-yyyy")}"/>
-                    </span>
-                    <span class="col-md-2">
-                        <label class="control-label text-info"> Unidad </label>
-                        ${precioRubrosItemsInstance.item.unidad.codigo}
                     </span>
                 </div>
             </div>
