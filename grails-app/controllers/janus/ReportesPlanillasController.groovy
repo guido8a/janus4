@@ -695,11 +695,12 @@ class ReportesPlanillasController {
 //                }
 //            }
 //        }
-        def condicion = plnl.tipoPlanilla.id != tipoQ.id? " and prejfcfn < '${plnl.fechaFin}'" : ""
+        def condicion = plnl.tipoPlanilla.id != tipoQ.id? " and prejfcfn <= '${plnl.fechaFin}'" : ""
 
         sql2 = "select coalesce(sum(prejcrpa), 0) programado from prej where cntr__id = ${plnl.contrato.id} and " +
                 "prejtipo = '${plnl.tipoContrato}' " + condicion
 
+        println "inversionProgramada --> $sql2"
 //        def inversionProgramada = crej.sum { it.precio } ?: 0
         def inversionProgramada = cn.rows(sql2.toString())[0].programado
 //        def inversionReal = planillasAvance.sum { it.valor } ?: 0
@@ -949,7 +950,7 @@ class ReportesPlanillasController {
         } else {
             anticipo = contrato.anticipo
         }
-        println "contrato: ${contrato.codigo}  --> compl: ${cmpl.codigo} --tipo: ${plnl.tipoContrato}}"
+        println "contrato: ${contrato.codigo}  --> compl: ${cmpl?.codigo} --tipo: ${plnl.tipoContrato}}"
 
         addCellTabla(tablaEvaluacion, new Paragraph("3.- EVALUACIÓN DEL AVANCE FÍSICO", fontTitle), [padding: 3, pb: 5, border: Color.WHITE, bg: Color.LIGHT_GRAY, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE, colspan: 3])
 
