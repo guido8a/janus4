@@ -235,31 +235,31 @@
 
     function verPrecios(id) {
         //nueva interface
-        location.href="${createLink(controller: 'mantenimientoItems', action: 'editarPrecios')}?id=" + id + "&fd=" + '${fechaDefecto}';
+        %{--location.href="${createLink(controller: 'mantenimientoItems', action: 'editarPrecios')}?id=" + id + "&fd=" + '${fechaDefecto}';--}%
         //antigua interface
-        %{--$.ajax({--}%
-        %{--    type    : "POST",--}%
-        %{--    url     : "${createLink(controller: 'mantenimientoItems', action:'showPcun_ajax')}",--}%
-        %{--    data    : {--}%
-        %{--        id: id,--}%
-        %{--        fechaDefecto:'${fechaDefecto}'--}%
-        %{--    },--}%
-        %{--    success : function (msg) {--}%
-        %{--        dpre = bootbox.dialog({--}%
-        %{--            id    : "dlgVerMaterial",--}%
-        %{--            title : "Precios del material",--}%
-        %{--            message : msg,--}%
-        %{--            buttons : {--}%
-        %{--                cancelar : {--}%
-        %{--                    label     : "Cancelar",--}%
-        %{--                    className : "btn-primary",--}%
-        %{--                    callback  : function () {--}%
-        %{--                    }--}%
-        %{--                }--}%
-        %{--            } //buttons--}%
-        %{--        }); //dialog--}%
-        %{--    } //success--}%
-        %{--}); //ajax--}%
+        $.ajax({
+            type    : "POST",
+            url     : "${createLink(controller: 'mantenimientoItems', action:'showPcun_ajax')}",
+            data    : {
+                id: id,
+                fechaDefecto:'${fechaDefecto}'
+            },
+            success : function (msg) {
+                dpre = bootbox.dialog({
+                    id    : "dlgVerMaterial",
+                    title : "Precios del material",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        }
+                    } //buttons
+                }); //dialog
+            } //success
+        }); //ajax
     } //createEdit
 
 
