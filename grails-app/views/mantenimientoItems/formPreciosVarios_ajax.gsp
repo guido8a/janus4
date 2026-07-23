@@ -20,19 +20,6 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-12 " style="font-size: 14px">
-            <div class="col-md-12 breadcrumb">
-                <div class="col-md-2">
-                    <label>
-                        Unidad:
-                    </label>
-                </div>
-                <div class="col-md-10">
-                    ${precioRubrosItemsInstance.item.unidad.codigo}
-                </div>
-            </div>
-        </div>
-
         <div class="col-md-12 ">
             <div class="col-md-12 breadcrumb" >
                 <div class="form-group ${hasErrors(bean: precioRubrosItemsInstance, field: 'precioUnitario', 'error')} ">
@@ -47,12 +34,16 @@
                         <label class="control-label text-info"> Fecha </label>
                         <input aria-label="" name="fecha" id='datetimepicker3' type='text' class="form-control required" value="${fecha?.format("dd-MM-yyyy") ?: new Date().format("dd-MM-yyyy")}"/>
                     </span>
+                    <span class="col-md-2">
+                        <label class="control-label text-info"> Unidad </label>
+                        ${precioRubrosItemsInstance.item.unidad.codigo}
+                    </span>
                 </div>
             </div>
         </div>
     </g:form>
 
-    <div class="col-md-12" style="width: 99.7%;height: 300px; overflow-y: auto;float: right; margin-top: 20px">
+    <div class="col-md-12" style="width: 99.7%;height: 300px; overflow-y: auto;float: right; margin-top: 10px">
         <ul class="list-group">
             <li class="list-group-item">
                 <input class="form-check-input me-1 " type="checkbox" value="" id="chckTodos" data-id="${cantones?.id}">
