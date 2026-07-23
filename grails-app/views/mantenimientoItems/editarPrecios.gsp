@@ -59,7 +59,7 @@
 
     <script type="text/javascript">
 
-        var np;
+        var np, cepc;
 
         $(".btnRegresarAItems").click(function () {
             location.href="${createLink(controller: 'mantenimientoItems', action: 'precios')}?r=" + 1
@@ -118,7 +118,8 @@
         });
 
         $(".btnNuevoPrecio").click(function () {
-            nuevoPrecio();
+            // nuevoPrecio();
+            createEditPrecioVarios();
         });
 
         function nuevoPrecio() {
@@ -201,6 +202,74 @@
 
         function cerrarNuevoPrecioxLugar(){
             np.modal("hide");
+        }
+
+        function createEditPrecioVarios() {
+            $.ajax({
+                type    : "POST",
+                url     : "${createLink(controller: 'mantenimientoItems',  action:'formPreciosVarios_ajax')}",
+                data    : {
+                    item        : "${item.id}",
+                    fecha: '${fd}'
+                },
+                success : function (msg) {
+                    cepc = bootbox.dialog({
+                        id    : "dlgCreateEditP",
+                        title : "Nuevo precio",
+                        message : msg,
+                        buttons : {
+                            cancelar : {
+                                label     : "Cancelar",
+                                className : "btn-primary",
+                                callback  : function () {
+                                }
+                            },
+                            guardar  : {
+                                id        : "btnSave",
+                                label     : "<i class='fa fa-save'></i> Guardar",
+                                className : "btn-success",
+                                callback  : function () {
+                                    return submitFormPrecioVarios();
+                                } //callback
+                            } //guardar
+                        } //buttons
+                    }); //dialog
+                } //success
+            }); //ajax
+        } //createEdit
+
+        function submitFormPrecioVarios() {
+            var $form = $("#frmSaveCantones");
+            if ($form.valid()) {
+                var data = $form.serialize();
+                var lugares = chequeados();
+                var dialog = cargarLoader("Guardando...");
+                $.ajax({
+                    type    : "POST",
+                    url     : $form.attr("action"),
+                    data    : data + "&lugares=" + lugares,
+                    success : function (msg) {
+                        dialog.modal('hide');
+                        var parts = msg.split("_");
+                        if(parts[0] === 'ok'){
+                            log(parts[1], "success");
+                            cargarFechas();
+                            cargarTablaPrecios();
+                            cerrarEditarPreciosVarios();
+                        }else{
+                            bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
+                            return false;
+                        }
+                    }
+                });
+                return false
+            } else {
+                return false;
+            }
+        }
+
+        function cerrarEditarPreciosVarios() {
+            cepc.modal("hide");
         }
 
     </script>

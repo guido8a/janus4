@@ -3602,4 +3602,71 @@ itemId: item.id
         }
     }
 
+    def formPreciosVarios_ajax(){
+        def item = Item.get(params.item)
+        def lugar = null
+        def precioRubrosItemsInstance
+        def cantones = Lugar.findAllByTipoLista(item.tipoLista, [sort: 'descripcion'])
+        def fechaDefecto = new Date().parse("dd-MM-yyyy",params.fecha)
+
+        if(params.id){
+            precioRubrosItemsInstance = PrecioRubrosItems.get(params.id)
+        }else{
+            precioRubrosItemsInstance = new PrecioRubrosItems()
+            precioRubrosItemsInstance.item = item
+            if (lugar) {
+                precioRubrosItemsInstance.lugar = lugar
+            }
+        }
+
+        return [precioRubrosItemsInstance: precioRubrosItemsInstance, lugar: lugar, lugarNombre: params.nombreLugar, fecha: fechaDefecto, params: params, cantones: cantones]
+    }
+
+    def savePreciosVarios_ajax(){
+        println("sv " + params)
+        def item = Item.get(params.item.id)
+        def fecha = new Date().parse("dd-MM-yyyy", params.fecha)
+        def errores = ""
+
+        if(params.lugares){
+
+            def lugares = params.lugares.split(",")
+            def existe
+
+            lugares.each{
+                def lugar = Lugar.get(it)
+                existe = PrecioRubrosItems.findByItemAndFechaAndLugar(item,fecha,lugar)
+
+                if(existe){
+                    existe.precioUnitario = params.precioUnitario.toDouble()
+
+                    if(!existe.save(flush:true)){
+                        println("error al actualizar el precio" + existe.errors)
+                        errores += existe.errors
+                    }
+                }else{
+
+                    def preciosRubros = new PrecioRubrosItems()
+                    preciosRubros.item = item
+                    preciosRubros.precioUnitario = params.precioUnitario.toDouble()
+                    preciosRubros.fecha = fecha
+                    preciosRubros.lugar = lugar
+
+                    if(!preciosRubros.save(flush:true)) {
+                        println("error al guardar el precio" + preciosRubros.errors)
+                        errores += preciosRubros.errors
+                    }
+                }
+            }
+
+            if(errores == ''){
+                render "ok_Precios guardados correctamente_${fecha.format("dd-MM-yyyy")}"
+            }else{
+                render "no_Error al guardar los precios"
+            }
+        }else{
+            render "no_Seleccione al menos una lista"
+        }
+    }
+
 }
