@@ -101,6 +101,7 @@
 
     <g:if test="${recargar == '1'}">
         $("#tipo").val(3);
+        $("#criterio").val('${criterio ?: ''}');
     </g:if>
 
     $("#btnLimpiar").click(function () {

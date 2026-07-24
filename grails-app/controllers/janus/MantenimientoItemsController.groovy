@@ -22,7 +22,7 @@ class MantenimientoItemsController {
     } //index
 
     def precios () {
-        return [recargar: params.r]
+        return [recargar: params.r, criterio: params.criterio]
     }
 
     def loadTreePartPrecios_ajax() {
@@ -3139,7 +3139,7 @@ itemId: item.id
         def items = cn.rows(sql.toString());
         cn.close()
 
-        return [materiales: materiales, grupo: grupo, id: params.id, departamento: subgrupoBuscar, perfil: perfil, items: items, persona: persona, fechaDefecto: params.fechaDefecto]
+        return [materiales: materiales, grupo: grupo, id: params.id, departamento: subgrupoBuscar, perfil: perfil, items: items, persona: persona, fechaDefecto: params.fechaDefecto, criterio: params.criterio]
     }
 
     def tablaPrecios_ajax(){
@@ -3417,7 +3417,7 @@ itemId: item.id
         }
         println "fechas: $fechas"
         cn.close()
-        [fechas: fechas, anio: anio, item: item, fd: params.fd]
+        [fechas: fechas, anio: anio, item: item, fd: params.fd, criterioAnterior: params.criterioAnterior]
     }
 
     def tablaEditarPrecios_ajax(){

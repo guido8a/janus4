@@ -62,7 +62,7 @@
         var np, cepc;
 
         $(".btnRegresarAItems").click(function () {
-            location.href="${createLink(controller: 'mantenimientoItems', action: 'precios')}?r=" + 1
+            location.href="${createLink(controller: 'mantenimientoItems', action: 'precios')}?r=" + 1 + "&criterio=" + '${criterioAnterior}'
         });
 
         $("#btnBuscar").click(function () {
