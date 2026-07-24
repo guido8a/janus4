@@ -31,15 +31,17 @@
                         <g:textField name="precio" id="precio_${r?.rbpc__id}" value="${r.rbpcpcun}" class="form-control precio" readonly=""/>
                     </td>
                     <td style="width: 10%; text-align: center">
-                        <a href="#" class="btn btn-xs btn-info btnEditarPrecioLugar" id="btnEditar_${r?.rbpc__id}" data-id="${r?.rbpc__id}" title="Editar precios">
-                            <i class="fas fa-edit"></i>
-                        </a>
-                        <a href="#" class="btn btn-xs btn-success btnGuardarPrecioLugar hidden" id="btnGuardar_${r?.rbpc__id}" data-id="${r?.rbpc__id}" title="Guardar precio">
-                            <i class="fas fa-save"></i>
-                        </a>
-                        <a href="#" class="btn btn-xs btn-warning btnCancelarEdicion" data-id="${r?.rbpc__id}" data-precio="${r.rbpcpcun}" title="Cancelar edición de precio">
-                            <i class="fas fa-times"></i>
-                        </a>
+                        <g:if test="${r?.rbpc__id}">
+                            <a href="#" class="btn btn-xs btn-info btnEditarPrecioLugar" id="btnEditar_${r?.rbpc__id}" data-id="${r?.rbpc__id}" title="Editar precios">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <a href="#" class="btn btn-xs btn-success btnGuardarPrecioLugar hidden" id="btnGuardar_${r?.rbpc__id}" data-id="${r?.rbpc__id}" title="Guardar precio">
+                                <i class="fas fa-save"></i>
+                            </a>
+                            <a href="#" class="btn btn-xs btn-warning btnCancelarEdicion" data-id="${r?.rbpc__id}" data-precio="${r.rbpcpcun}" title="Cancelar edición de precio">
+                                <i class="fas fa-times"></i>
+                            </a>
+                        </g:if>
                     </td>
                 </tr>
             </g:each>
