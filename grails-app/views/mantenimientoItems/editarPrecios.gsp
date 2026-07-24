@@ -18,6 +18,9 @@
         <div class="col-md-9 breadcrumb">
             <strong style="font-size: 14px;">${item?.codigo + " - "  +  item?.nombre}</strong>
         </div>
+        <div class="col-md-1 breadcrumb text-info" style="margin-top: -14px">
+            <span style="text-align: right">${item?.tipoLista.descripcion}</span>
+        </div>
     </div>
 </div>
 
@@ -45,6 +48,8 @@
                     <i class="fas fa-file"></i> Nuevo Precio
                 </a>
             </div>
+            <div class="col-md-2" style="margin-top: 20px">
+            </div>
             <div class="col-md-2 breadcrumb" style="margin-left: 20px; margin-top: 18px; width: 190px">
                 <label class="control-label text-info" style="text-align: center">Fecha por defecto:</label>
                 ${fd}
@@ -52,7 +57,7 @@
         </div>
         <div class="col-md-12">
             <div class="col-md-2"></div>
-            <div class="col-md-7" id="divTablaPrecios" >
+            <div class="col-md-9" id="divTablaPrecios" >
             </div>
         </div>
     </div>

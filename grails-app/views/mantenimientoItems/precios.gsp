@@ -40,12 +40,9 @@
             </a>
         </div>
 
-        <span class="col-md-2" style="text-align: center">
-            Fecha por
-            defecto:
-        </span>
+        <span class="col-md-2 text-info" style="text-align: center; margin-top: -15px">Fecha por defecto:</span>
 
-        <span class="col-md-2">
+        <span class="col-md-2" style="margin-left: 20px; width: 160px">
             <input aria-label="" name="fechaPorDefecto" id='datetimepicker2' type='text' class="form-control"
                    value="${ new Date().format("dd-MM-yyyy")}"/>
         </span>
