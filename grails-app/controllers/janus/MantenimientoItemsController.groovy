@@ -3424,9 +3424,10 @@ itemId: item.id
         println("params tp " + params)
         def cn = dbConnectionService.getConnection()
         def item = Item.get(params.id)
-        def sql = "select item.item__id, p.rbpcfcha, rbpcpcun,  rbpc__id, lgardscr " +
-                "from item, rbpc p, lgar where p.item__id = item.item__id and p.lgar__id = lgar.lgar__id and p.rbpcfcha = '${params.fecha}' and " +
-                "p.item__id = ${item.id} order by lgardscr"
+//        def sql = "select item.item__id, p.rbpcfcha, rbpcpcun,  rbpc__id, lgardscr " +
+//                "from item, rbpc p, lgar where p.item__id = item.item__id and p.lgar__id = lgar.lgar__id and p.rbpcfcha = '${params.fecha}' and " +
+//                "p.item__id = ${item.id} order by lgardscr"
+        def sql = "select * from ls_rbpc(${item.id}, '${params.fecha}') order by lgardscr"
         println("sql " + sql)
 
         def res = cn.rows(sql.toString())
