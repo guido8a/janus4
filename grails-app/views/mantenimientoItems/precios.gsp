@@ -105,7 +105,7 @@
     </g:if>
 
     $("#btnLimpiar").click(function () {
-        $("#buscarPor, #tipo").val(1);
+//        $("#buscarPor, #tipo").val(1);
         $("#criterio").val('');
         cargarTablaItemsPrecios();
     });
