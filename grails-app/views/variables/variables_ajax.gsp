@@ -169,7 +169,7 @@
                 </div>
 
                 <div class="col-md-4" style="margin-left: -40px">
-                    <g:select name="lugar.id" from="${janus.Lugar.findAll('from Lugar  where tipoLista=1')}"
+                    <g:select name="lugar.id" from="${janus.Lugar.findAll("from Lugar  where tipoLista=1 and estado = 'A'")}"
                               optionKey="id" optionValue="descripcion" value="${obra?.lugar?.id}" 
                               noSelection="['null': 'Seleccione...']"/>
                 </div>
@@ -179,7 +179,7 @@
                 </div>
 
                 <div class="col-md-4">
-                    <g:select name="listaVolumen0.id" from="${janus.Lugar.findAll('from Lugar where tipoLista=3')}"
+                    <g:select name="listaVolumen0.id" from="${janus.Lugar.findAll("from Lugar where tipoLista=3  and estado = 'A'")}"
                               optionKey="id" optionValue="descripcion" value="${obra?.listaVolumen0?.id}"
                               style="margin-left: -20px;"/>
                 </div>
@@ -196,7 +196,7 @@
                     %{--<g:select name="listaPeso1.id" from="${janus.Lugar.findAll('from Lugar  where tipoLista=2')}"--}%
                               %{--optionKey="id" optionValue="descripcion" value="${obra?.listaPeso1?.id}"--}%
                               %{--noSelection="['null': 'Seleccione...']"/>--}%
-                    <g:select name="listaPeso1.id" from="${janus.Lugar.findAll('from Lugar  where tipoLista=2')}"
+                    <g:select name="listaPeso1.id" from="${janus.Lugar.findAll("from Lugar  where tipoLista=2 and estado = 'A'")}"
                               optionKey="id" optionValue="descripcion" value="${obra?.listaPeso1?.id}"/>
                 </div>
 
@@ -205,7 +205,7 @@
                 </div>
 
                 <div class="col-md-4">
-                    <g:select name="listaVolumen1.id" from="${janus.Lugar.findAll('from Lugar  where tipoLista=4')}"
+                    <g:select name="listaVolumen1.id" from="${janus.Lugar.findAll("from Lugar  where tipoLista=4 and estado = 'A'")}"
                               optionKey="id" optionValue="descripcion" value="${obra?.listaVolumen1?.id}"
                               style="margin-left: -20px;"/>
                 </div>
@@ -222,7 +222,7 @@
                 </div>
 
                 <div class="col-md-4">
-                    <g:select name="listaVolumen2.id" from="${janus.Lugar.findAll('from Lugar  where tipoLista=5')}"
+                    <g:select name="listaVolumen2.id" from="${janus.Lugar.findAll("from Lugar  where tipoLista=5 and estado = 'A'")}"
                               optionKey="id" optionValue="descripcion" value="${obra?.listaVolumen2?.id}"
                               style="margin-left: -20px;"/>
                 </div>
