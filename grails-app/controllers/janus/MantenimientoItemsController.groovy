@@ -3481,7 +3481,7 @@ itemId: item.id
                         def cn = dbConnectionService.getConnection()
                         def sql = "select rbpc__id " +
                                 "from item, rbpc p, lgar where p.item__id = item.item__id and p.lgar__id = lgar.lgar__id and p.rbpcfcha = '${params.fecha}' and " +
-                                "p.item__id = ${item.id} order by lgardscr"
+                                "p.item__id = ${item.id} and lgar.lgaretdo = 'A' order by lgardscr"
                         def res = cn.rows(sql.toString())
 
                         res.each {
@@ -3607,7 +3607,7 @@ itemId: item.id
         def item = Item.get(params.item)
         def lugar = null
         def precioRubrosItemsInstance
-        def cantones = Lugar.findAllByTipoLista(item.tipoLista, [sort: 'descripcion'])
+        def cantones = Lugar.findAllByEstadoAndTipoLista('A', item.tipoLista, [sort: 'descripcion'])
         def fechaDefecto = new Date().parse("dd-MM-yyyy",params.fecha)
 
         if(params.id){

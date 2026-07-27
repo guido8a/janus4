@@ -15,11 +15,11 @@
                 </a>
             </div>
         </div>
-        <div class="col-md-9 breadcrumb">
+        <div class="col-md-7 breadcrumb">
             <strong style="font-size: 14px;">${item?.codigo + " - "  +  item?.nombre}</strong>
         </div>
-        <div class="col-md-1 breadcrumb text-info" style="margin-top: -14px">
-            <span style="text-align: right">${item?.tipoLista.descripcion}</span>
+        <div class="col-md-2 breadcrumb text-info">
+            <span style="font-size: 14px; text-align: right">${item?.tipoLista?.descripcion}</span>
         </div>
     </div>
 </div>
