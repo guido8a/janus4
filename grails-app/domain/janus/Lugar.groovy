@@ -9,6 +9,7 @@ class Lugar implements Auditable {
     String descripcion
     String tipo
     TipoLista tipoLista
+    String estado
 //    Empresa empresa
     static auditable = true
     static mapping = {
@@ -23,13 +24,13 @@ class Lugar implements Auditable {
             descripcion column: 'lgardscr'
             tipo column: 'lgartipo'
             tipoLista column: 'tpls__id'
-//            empresa column: 'empr__id'
+            estado column: 'lgaretdo'
         }
     }
     static constraints = {
         codigo(blank: false, attributes: [title: 'codigo'])
         tipo(size: 1..1, blank: true, nullable: true, inList: ['C', 'V'], attributes: [title: 'tipo'])
         descripcion(size: 1..40, blank: false, attributes: [title: 'descripcion'])
-//        empresa(blank: false, nullable: false)
+        estado(blank: false, nullable: false)
     }
 }
