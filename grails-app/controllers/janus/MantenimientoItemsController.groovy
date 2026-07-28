@@ -3372,8 +3372,9 @@ itemId: item.id
         def fecha = params.fecha
         def sql = "select item.item__id, itemcdgo, itemnmbr, p.rbpcfcha, rbpcpcun,  rbpc__id, lgardscr, unddcdgo " +
                 "from item, rbpc p, lgar, undd where p.item__id = item.item__id and p.rbpcfcha = '${fecha}' and " +
-                "lgar.tpls__id = ${params.lugar} and undd.undd__id = item.undd__id "
-        "order by lgardscr"
+                "lgar.tpls__id = ${params.lugar} and undd.undd__id = item.undd__id and lgar.lgar__id = p.lgar__id " +
+                "order by lgardscr"
+        println "sql: $sql"
         def data = cn.rows(sql.toString())
         cn.close()
 

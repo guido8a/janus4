@@ -18,7 +18,7 @@
                 <td style="width: 25%">${lista?.tipoLista?.descripcion}</td>
                 <td style="width: 10%">${lista?.codigo}</td>
                 <td style="width: 40%">${lista?.descripcion}</td>
-                <td style="width: 15%;font-weight: bold; text-align: center;  background-color: ${lista?.estado == 'A' ? 'green' : 'red'}">${lista?.estado == 'A' ? 'Activo' : 'Inactivo'}</td>
+                <td style="width: 15%;font-weight: bold; text-align: center;  background-color: ${lista?.estado == 'A' ? '#80b080' : '#c08080'}">${lista?.estado == 'A' ? 'Activo' : 'Inactivo'}</td>
                 <td style="width: 9%; text-align: center">
                     <a href="#" class="btn btn-success btn-xs btnEditarLista" title="Editar lista" data-id="${lista.id}">
                         <i class="fa fa-edit"></i>

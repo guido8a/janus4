@@ -12,7 +12,7 @@
     <div class="col-md-12"  style="margin-bottom: 5px; margin-top: 10px">
         <div class="btn-group" >
             <a href="#" id="btnItems" class="btn">
-                <i class="fa fa-arrow-left"></i> Items
+                <i class="fa fa-arrow-left"></i> Reg. y Mant. Items
             </a>
         </div>
         <div class="btn-group">
