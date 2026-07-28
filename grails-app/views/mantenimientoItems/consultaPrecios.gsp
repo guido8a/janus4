@@ -87,11 +87,13 @@
 
     function cargarFechas(){
         var anio = $("#anio").val();
+        var lugar = $("#lugar option:selected").val();
         $.ajax({
             type: 'POST',
             url: '${createLink(controller: 'mantenimientoItems', action: 'fechas_ajax')}',
             data:{
-                anio: anio
+                anio: anio,
+                lugar: lugar
             },
             success: function (msg){
                 $("#divFecha").html(msg)
