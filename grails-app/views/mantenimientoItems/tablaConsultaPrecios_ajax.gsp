@@ -1,14 +1,14 @@
 <div role="main" style="margin-top: 5px;">
     <table class="table table-bordered table-striped table-condensed table-hover">
         <thead>
-        <tr>
+        <tr style="width: 100%">
             <th style="width: 10%">Código</th>
-            <th style="width: 35%">Materiales</th>
+            <th style="width: 45%">Materiales</th>
             <th style="width: 5%">Unidad</th>
             <th style="width: 10%">P. Unitario</th>
-            <th style="width: 15%">Fecha Act.</th>
-            <th style="width: 5%">Lista</th>
-            <th style="width: 5%">Acciones</th>
+            <th style="width: 14%">Fecha Act.</th>
+            <th style="width: 15%">Lista</th>
+            <th style="width: 1%"></th>
         </tr>
         </thead>
     </table>
@@ -19,14 +19,14 @@
         <tbody>
         <g:if test="${materiales}">
             <g:each in="${materiales}" status="i" var="m">
-                <tr>
+                <tr style="width: 100%">
                     <td style="width: 10%">${m.itemcdgo}</td>
-                    <td style="width: 35%">${m.itemnmbr}</td>
-                    <td style="width: 10%">${m.unddcdgo}</td>
+                    <td style="width: 45%">${m.itemnmbr}</td>
+                    <td style="width: 5%">${m.unddcdgo}</td>
                     <td style="width: 10%">${m.rbpcpcun}</td>
-                    <td style="width: 15%">${m.rbpcfcha}</td>
-                    <td style="width: 5%">${m.lgardscr}</td>
-                    <td style="width: 5%"></td>
+                    <td style="width: 14%">${m.rbpcfcha}</td>
+                    <td style="width: 15%">${m.lgardscr}</td>
+                    <td style="width: 1%"></td>
                 </tr>
             </g:each>
         </g:if>

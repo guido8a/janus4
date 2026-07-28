@@ -160,7 +160,9 @@ class ItemController {
             cn.close()
         }
 
-        [rubroPrecio: rubroPrecio, params: params, lugar: lugar]
+        println("rrr " + rubroPrecio)
+
+        return [rubroPrecio: rubroPrecio, params: params, lugar: lugar]
     }
 
     def tablaVolumen() {

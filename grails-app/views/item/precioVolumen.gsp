@@ -27,7 +27,6 @@
     }
 
     .editable {
-        %{--background    : url(${resource(dir:'images', file:'edit.gif')}) right no-repeat;--}%
         padding-right : 18px !important;
     }
 
@@ -44,43 +43,39 @@
 
 <body>
 
-<div class="btn-toolbar" style="margin-top: 5px; margin-bottom: 10px;">
-
-</div>
 
 <div class="row" style="overflow-y: auto;">
     <fieldset class="col-md-12">
-        <div class="col-md-12" style="margin-top: 20px; margin-bottom: 10px">
-
-            <div class="btn-group col-md-1">
-                <a href="${g.createLink(controller: 'mantenimientoItems', action: 'precios')}" class="btn btn-info" title="Regresar">
+        <div class="col-md-12" style="margin-top: 1px; margin-bottom: 10px">
+            <div class="btn-group col-md-2" style="margin-top: 20px">
+                <a href="${g.createLink(controller: 'mantenimientoItems', action: 'precios')}" class="btn btn-info" title="Regresar a mantenimiento de precios">
                     <i class="fa fa-arrow-left"></i>
                     Regresar
                 </a>
             </div>
 
-
-            <div class="col-md-1"><label>Lista de Precios</label></div>
-            <div class="col-md-4">
+            <div class="col-md-4" style="text-align: center">
+                <label>Lista de Precios</label>
                 <g:select class="form-control listPrecio span2" name="listaPrecio"
                           from="${janus.TipoLista.findAllByIdInList([3L, 4L, 5L], [sort: 'descripcion'])}" optionKey="id"
                           optionValue="${{ it.descripcion + ' (' + it.codigo + ')' }}"
-                          disabled="false" style="margin-left: 20px; width: 300px; margin-right: 50px"/>
+                          disabled="false"/>
             </div>
 
-            <div class="col-md-1"><label>Fecha</label></div>
-            <div class="col-md-2" style="align-items: center;" align="center">
+            <div class="col-md-2" style="text-align: center;">
+                <label>Fecha</label>
                 <input aria-label="" name="fecha" id='fecha' type='text' class="fecha form-control" value="${new Date().format("dd-MM-yyyy")}" />
             </div>
 
-            <div class="btn-group col-md-2">
+            <div class="btn-group col-md-2" style="margin-top: 20px">
                 <a href="#" class="btn btn-consultar btn-info"><i class="fa fa-search"></i>Ver</a>
                 <a href="#" class="btn btn-actualizar btn-success"><i class="fa fa-save"></i>Guardar</a>
             </div>
         </div>
-        <div class="col-md-12 alert alert-info" style="font-size: 14px; font-weight: bold">
-            Pasos a seguir para la edición de un valor:
-            <ul>
+        <div class="col-md-3"></div>
+        <div class="col-md-5 alert alert-info" style="font-size: 14px;">
+           <i class="fa fa-exclamation-triangle fa-2x"></i> Pasos a seguir para la edición de un valor:
+            <ul style="font-weight: bold">
                 <li>Doble clic en el valor a editar</li>
                 <li>Modificar el valor</li>
                 <li>Presionar el botón enter en su teclado</li>
@@ -90,7 +85,7 @@
     </fieldset>
 </div>
 
-<div id="divTabla" class="hidden" style=" overflow-y:auto; overflow-x: auto; border-style: groove; border-color: #0d7bdc; margin-top: 5px">
+<div id="divTabla" class="hidden" style=" overflow-y:auto; overflow-x: auto; margin-top: 5px">
 
 </div>
 

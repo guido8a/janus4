@@ -23,7 +23,6 @@
             <span class="grupo">
                 <span class="col-md-4">
                     <label class="control-label text-info">Lugar</label>
-                    %{--<g:set var="tipo" value="${janus.TipoLista.findByCodigo('P')}"/>--}%
                     <g:select name="lugar" from="${janus.TipoLista.list([sort: 'descripcion'])}"
                               optionKey="id"
                               optionValue="descripcion" class="form-control"/>
@@ -33,25 +32,13 @@
                     <g:select style="font-size:large;" name="anio" class="form-control"
                                                 from="${anio - 1..anio}" value="${params.anio}"/>
                 </div>
-                %{--<span class="col-md-2">--}%
-                    %{--<label class="control-label text-info">Fecha</label>--}%
-                    %{--<input aria-label="" name="fecha" id='fechaConsulta' type='text' class="form-control"--}%
-                           %{--value="${new Date().format("dd-MM-yyyy")}" />--}%
-                %{--</span>--}%
                 <div class="col-md-2" id="divFecha" style="text-align: center">
 
-
-
                 </div>
-
             </span>
             <div class="col-md-1" style="margin-top: 20px">
                 <button class="btn btn-info" id="btnBuscar" title="Buscar"><i class="fa fa-search"></i>Consultar</button>
             </div>
-%{--            <div class="col-md-1" style="margin-top: 20px">--}%
-%{--                <button class="btn btn-danger" id="btnBorrar" title="Buscar"><i class="fa fa-trash"></i>--}%
-%{--                    Borrar todos los precios</button>--}%
-%{--            </div>--}%
         </div>
     </fieldset>
 
@@ -72,22 +59,9 @@
         }
     });
 
-    %{--var id = null;--}%
-
-    %{--$("#buscarPor").change(function () {--}%
-    %{--    cargarTablaFabricantes();--}%
-    %{--});--}%
-
-    %{--$("#btnLimpiar").click(function () {--}%
-    %{--    $("#buscarPor").val(1);--}%
-    %{--    $("#criterio").val('');--}%
-    %{--    cargarTablaFabricantes();--}%
-    %{--});--}%
-
     $("#btnBuscar").click(function () {
         cargarTablaConsulta();
     });
-
 
     function cargarTablaConsulta(){
         var lugar = $("#lugar option:selected").val();
@@ -128,14 +102,6 @@
     $("#anio").change(function () {
         cargarFechas();
     });
-
-    %{--$("#criterio").keydown(function (ev) {--}%
-    %{--    if (ev.keyCode === 13) {--}%
-    %{--        cargarTablaFabricantes();--}%
-    %{--        return false;--}%
-    %{--    }--}%
-    %{--    return true;--}%
-    %{--});--}%
 
 </script>
 

@@ -8,49 +8,54 @@
 
 <body>
 
-<div class="span12 btn-group" >
-    <div class="col-md-12 btn-group"  style="margin-bottom: 5px; margin-top: 10px">
+<div class="col-md-10 btn-group" >
+    <div class="col-md-12"  style="margin-bottom: 5px; margin-top: 10px">
+        <div class="btn-group" >
+            <a href="#" id="btnItems" class="btn">
+                <i class="fa fa-arrow-left"></i> Items
+            </a>
+        </div>
         <div class="btn-group">
             <a href="#" id="btnNuevaLista" class="btn btn-info">
-                <i class="fa fa-file"></i> Listas
+                <i class="fa fa-list-ul"></i> Listas de precios
             </a>
-            <a href="#" id="btnItems" class="btn">
-                <i class="fa fa-list-ul"></i> Items
-            </a>
+        </div>
+
+        <div class="btn-group" style="margin-left: 20px">
             <g:if test="${session.perfil.codigo == 'CSTO'}">
-                <a href="#" id="btnMantenimientoPrecios" class="btn">
-                    <i class="fa fa-money-bill"></i> Mantenimiento de precios
+%{--                <a href="#" id="btnMantenimientoPrecios" class="btn">--}%
+%{--                    <i class="fa fa-edit"></i> Mantenimiento de precios--}%
+%{--                </a>--}%
+                <a href="${createLink(controller: 'item', action: 'subirExcelMP')}" class="btn btn-ajas"><i class="fa fa-upload"></i> Precios desde excel
                 </a>
-                <a href="${createLink(controller: 'item', action: 'subirExcelMP')}" class="btn btn-success"><i class="fa fa-file-excel"></i> Precios desde excel
-                </a>
-                <a href="${createLink(controller: 'mantenimientoItems', action: 'consultaPrecios')}" class="btn btn-info"><i class="fa fa-file"></i> Consulta de precios
+                <a href="${createLink(controller: 'mantenimientoItems', action: 'consultaPrecios')}" class="btn btn-ajax"><i class="fa fa-search"></i> Consulta de precios
                 </a>
                 <a href="#" id="btnPreciosVolumen" class="btn">
                     <i class="fa fa-money-bill"></i> Precios por Volumen
                 </a>
                 <a href="#" id="btnRegistrar" class="btn">
-                    <i class="fa fa-check"></i> Registrar
+                    <i class="fa fa-check"></i> Registrar Precios
                 </a>
             </g:if>
-            <a href="#" id="btnReporte" class="btn btn-ajax">
+        </div>
+        <div class="btn-group" style="float: right">
+            <a href="#" id="btnReporte" class="btn btn-info">
                 <i class="fa fa-print"></i> Reporte
             </a>
             <a href="#" id="btnReporteMinas" class="btn btn-success">
                 <i class="fa fa-file-excel"></i> Reporte Minas
             </a>
         </div>
-
-        <span class="col-md-2 text-info" style="text-align: center; margin-top: -15px">Fecha por defecto:</span>
-
-        <span class="col-md-2" style="margin-left: 20px; width: 160px">
-            <input aria-label="" name="fechaPorDefecto" id='datetimepicker2' type='text' class="form-control"
-                   value="${ new Date().format("dd-MM-yyyy")}"/>
-        </span>
-
     </div>
 </div>
 
-<div>
+<span class="col-md-1" style="margin-left: 20px; width: 160px">
+    Fecha por defecto:
+    <input aria-label="" name="fechaPorDefecto" id='datetimepicker2' type='text' class="form-control"
+           value="${ new Date().format("dd-MM-yyyy")}"/>
+</span>
+
+<div class="col-md-12">
     <fieldset class="borde" style="border-radius: 4px; margin-bottom: 10px">
         <div class="row-fluid" style="margin-left: 10px">
             <span class="grupo">
