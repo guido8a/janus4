@@ -1,23 +1,29 @@
 
-<div id="listaRbro" style="overflow: hidden">
-    <fieldset class="borde" style="border-radius: 4px">
-        <div class="row-fluid" style="margin-left: 10px">
-            <span class="grupo">
-                <a href="#" class="btn btn-success btn-sm btnNuevaLista" title="Nueva lista">
-                    <i class="fa fa-file"></i> Nueva Lista
-                </a>
-            </span>
+<div class="row" >
+    <div class="col-md-12">
+        <div class="col-md-6" style="text-align: center">
+            <label>Tipo de Lista</label>
+            <g:select from="${janus.TipoLista.list().sort{it.descripcion}}" optionValue="descripcion" optionKey="id"  name="tipoLista" class="form-control" />
         </div>
-    </fieldset>
-
-    <fieldset class="borde" style="border-radius: 4px">
-        <div id="divTablaListas" style="height: 460px; overflow: auto; margin-top: 5px">
+        <div class="grupo col-md-2" style="margin-top: 20px">
+            <a href="#" class="btn btn-success btn-sm btnNuevaLista" title="Nueva lista">
+                <i class="fa fa-file"></i> Nueva Lista
+            </a>
         </div>
-    </fieldset>
+    </div>
 </div>
+
+<fieldset class="borde" style="border-radius: 4px">
+    <div id="divTablaListas" style="height: 460px; overflow: auto; margin-top: 5px">
+    </div>
+</fieldset>
 
 
 <script type="text/javascript">
+
+    $("#tipoLista").change(function () {
+        cargarTablaListas();
+    });
 
     $(".btnNuevaLista").click(function () {
         createEditLista();
@@ -26,7 +32,6 @@
     function createEditLista(id, parentId) {
         var title = id ? "Editar" : "Crear";
         var data = id ? {id : id} : {};
-        // data.grupo = parentId;
         $.ajax({
             type    : "POST",
             url     : "${createLink( action:'formLg_ajax')}",
@@ -92,11 +97,16 @@
     cargarTablaListas();
 
     function cargarTablaListas(){
+        var d = cargarLoader("Cargando...");
+        var tipo = $("#tipoLista option:selected").val();
         $.ajax({
             type    : "POST",
-            url: "${createLink(action:'tablaListas_ajax')}",
-            data    : {},
+            url: "${createLink(controller: 'mantenimientoItems',  action:'tablaListas_ajax')}",
+            data    : {
+                tipo: tipo
+            },
             success : function (msg) {
+                d.modal("hide");
                 $("#divTablaListas").html(msg)
             } //success
         }); //ajax

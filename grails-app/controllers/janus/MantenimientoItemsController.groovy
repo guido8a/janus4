@@ -3188,7 +3188,8 @@ itemId: item.id
     }
 
     def tablaListas_ajax(){
-        def listas = Lugar.list([sort: 'descripcion'])
+        def tipo = TipoLista.get(params.tipo)
+        def listas = Lugar.findAllByTipoLista(tipo).sort{it.descripcion}
         return [listas: listas]
     }
 

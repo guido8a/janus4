@@ -44,59 +44,21 @@
             </span>
         </div>
 
-%{--        <div class="control-group">--}%
-%{--            <div>--}%
-%{--                <span class="control-label label label-inverse">--}%
-%{--                    Tipo--}%
-%{--                </span>--}%
-%{--            </div>--}%
-
-%{--            <div class="controls">--}%
-%{--                <g:select name="tipoLista.id" id="tipoListaId" from="${janus.TipoLista.list([sort: 'descripcion'])}" optionKey="id" optionValue="descripcion" value="${lugarInstance?.tipoLista?.id}" />--}%
-%{--                <span class="mandatory">*</span>--}%
-
-%{--                <p class="help-block ui-helper-hidden"></p>--}%
-%{--            </div>--}%
-%{--        </div>--}%
-
-
-
-%{--        <div class="control-group">--}%
-%{--            <div>--}%
-%{--                <span class="control-label label label-inverse">--}%
-%{--                    Código--}%
-%{--                </span>--}%
-%{--            </div>--}%
-
-%{--            <div class="controls">--}%
-%{--                <g:field type="number" name="codigo" class="allCaps required input-small" readonly="true" value="${ultimo+1}"/>--}%
-%{--                <span class="mandatory">*</span>--}%
-%{--                <p class="help-block ui-helper-hidden"></p>--}%
-%{--            </div>--}%
-%{--        </div>--}%
-
-%{--        <div class="control-group">--}%
-%{--            <div>--}%
-%{--                <span class="control-label label label-inverse">--}%
-%{--                    Descripcion--}%
-%{--                </span>--}%
-%{--            </div>--}%
-
-%{--            <div class="controls">--}%
-%{--                <g:textField name="descripcion" maxlength="40" class="allCaps required" value="${lugarInstance?.descripcion}"/>--}%
-%{--                <span class="mandatory">*</span>--}%
-
-%{--                <p class="help-block ui-helper-hidden"></p>--}%
-%{--            </div>--}%
-%{--        </div>--}%
+        <div class="form-group ${hasErrors(bean: lugarInstance, field: 'descripcion', 'error')} ">
+            <span class="grupo">
+                <label for="codigo" class="col-md-2 control-label text-info">
+                    Estado
+                </label>
+                <span class="col-md-8">
+                    <g:select name="estado" id="estado" class="form-control" from="${['A' : 'Activo', 'B' : 'Inactivo']}" optionKey="key" optionValue="value" value="${lugarInstance?.estado}" />
+                </span>
+            </span>
+        </div>
 
     </g:form>
 </div>
 
 <script type="text/javascript">
-    //    $(".allCaps").keyup(function () {
-    //        this.value = this.value.toUpperCase();
-    //    });
 
     $("#frmSave").validate({
         rules          : {
