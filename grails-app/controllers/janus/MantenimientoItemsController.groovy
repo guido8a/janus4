@@ -3387,11 +3387,12 @@ itemId: item.id
     }
 
     def fechas_ajax(){
+        println "fechas_ajax $params"
         def cn = dbConnectionService.getConnection()
         def anio = params.anio
         def fechas = [:]
-        def sql = "select distinct rbpcfcha from rbpc where extract(year from rbpcfcha) = '${anio}'"
-        "order by 1"
+        def sql = "select distinct rbpcfcha from rbpc where extract(year from rbpcfcha) = '${anio}' and " +
+                "lgar__id in (select lgar__id from lgar where tpls__id = ${params.lugar}) order by 1"
         println "sql: $sql"
         def i = 0
         cn.eachRow(sql.toString()) { r ->
