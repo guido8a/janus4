@@ -10,9 +10,9 @@
 
 <div class="col-md-10 btn-group" >
     <div class="col-md-12"  style="margin-bottom: 5px; margin-top: 10px">
-        <div class="btn-group" >
+        <div class="btn-group" style="margin-left: -20px">
             <a href="#" id="btnItems" class="btn">
-                <i class="fa fa-arrow-left"></i> Reg. y Mant. Items
+                <i class="fa fa-arrow-left"></i> Reg. y Mant. de Items
             </a>
         </div>
         <div class="btn-group">
@@ -21,14 +21,16 @@
             </a>
         </div>
 
-        <div class="btn-group" style="margin-left: 20px">
+        <div class="btn-group" style="margin-left: 10px">
             <g:if test="${session.perfil.codigo == 'CSTO'}">
 %{--                <a href="#" id="btnMantenimientoPrecios" class="btn">--}%
 %{--                    <i class="fa fa-edit"></i> Mantenimiento de precios--}%
 %{--                </a>--}%
-                <a href="${createLink(controller: 'item', action: 'subirExcelMP')}" class="btn btn-ajas"><i class="fa fa-upload"></i> Precios desde excel
+                <a href="${createLink(controller: 'item', action: 'subirExcelMP')}" class="btn btn-ajas">
+                    <i class="fa fa-upload"></i> Precios desde excel
                 </a>
-                <a href="${createLink(controller: 'mantenimientoItems', action: 'consultaPrecios')}" class="btn btn-ajax"><i class="fa fa-search"></i> Consulta de precios
+                <a href="${createLink(controller: 'mantenimientoItems', action: 'consultaPrecios')}" class="btn btn-ajax">
+                    <i class="fa fa-search"></i> Consulta de precios
                 </a>
                 <a href="#" id="btnPreciosVolumen" class="btn">
                     <i class="fa fa-money-bill"></i> Precios por Volumen
