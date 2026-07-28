@@ -51,6 +51,10 @@
 
 <script type="text/javascript">
 
+    $("#anio, #lugar").change(function () {
+        cargarFechas();
+    });
+
     $('#fechaConsulta').datetimepicker({
         locale: 'es',
         format: 'DD-MM-YYYY',
