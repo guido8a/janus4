@@ -190,15 +190,8 @@ class ItemController {
             tipoLugar = " = " + params.lgar
         }
 
-        def sqlLugares = "SELECT\n" +
-                "  l.lgar__id id,\n" +
-                "  l.lgardscr des,\n" +
-                "  t.tplsdscr tipo\n" +
-                "FROM lgar l\n" +
-                "  INNER JOIN tpls t\n" +
-                "    ON l.tpls__id = t.tpls__id\n" +
-                "WHERE l.tpls__id ${tipoLugar}\n" +
-                "ORDER BY 3, 2"
+        def sqlLugares = "SELECT l.lgar__id id, l.lgardscr des, t.tplsdscr tipo FROM lgar l, tpls t " +
+                "where l.tpls__id = t.tpls__id and l.lgaretdo = 'A' and l.tpls__id ${tipoLugar} ORDER BY 3, 2"
 
         def sqlPrecios = "SELECT\n" +
                 "  r.rbpc__id      rbpc_id,\n" +
