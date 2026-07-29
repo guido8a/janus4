@@ -2218,10 +2218,11 @@ class RubroOfController {
         def oferente = session.usuario
         def cn = dbConnectionService.getConnection()
         def obras = [:]
-        def sql = "select distinct obra.obra__id id, obracdgo||' - '||obranmbr nombre " +
+        def sql = "select distinct obra.obra__id id, obracdgo||' - '||obranmbr nombre, obofetdo " +
                 "from obra, obof " +
                 "where obof.obra__id = obra.obra__id and obof.prsn__id = ${oferente.id}" +
-                "order by 1"
+                "order by obofetdo desc, obra.obra__id"
+        println "sql: $sql"
         cn.eachRow(sql.toString()) { r ->
             obras[r.id] = r.nombre
         }
