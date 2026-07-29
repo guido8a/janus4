@@ -21,13 +21,13 @@
             </div>
 
             <span class="grupo">
-                <span class="col-md-4">
-                    <label class="control-label text-info">Lugar</label>
+                <span class="col-md-4" style="text-align: center">
+                    <label class="control-label text-info">Tipo de lista</label>
                     <g:select name="lugar" from="${janus.TipoLista.list([sort: 'descripcion'])}"
                               optionKey="id"
                               optionValue="descripcion" class="form-control"/>
                 </span>
-                <div class="col-md-1">
+                <div class="col-md-1" style="text-align: center">
                     <label class="control-label text-info" style="text-align: center">Año</label>
                     <g:select style="font-size:large;" name="anio" class="form-control"
                                                 from="${anio - 1..anio}" value="${params.anio}"/>
