@@ -21,13 +21,19 @@
 
 <body>
 <div class="col-md-12">
-    <div class="col-md-3">
+    <div class="col-md-2">
         <a href="#" class="btn btn-primary btnRegresar">
             <i class="fa fa-arrow-left"></i> Regresar
         </a>
     </div>
-    <div class="col-md-6 breadcrumb" style="font-size: 16px; font-weight: bold; text-align: center">
+    <div class="col-md-5 breadcrumb" style="font-size: 16px; font-weight: bold; text-align: center">
         Comprobación de archivo APU cargado en el sistema
+    </div>
+    <div class="col-md-1">
+    </div>
+    <div class="col-md-4 breadcrumb text-info btn" style="font-size: 16px; font-weight: bold; text-align: center"
+         onclick="$('html, body').scrollTop($(document).height());">
+        Haga clic para ir al final de esta página y ver si hay errores
     </div>
 </div>
 

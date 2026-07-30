@@ -147,7 +147,7 @@
                 </a>
             </g:if>
         </div>
-
+        %{--todo poner quí botón de ordenar--}%
     </g:if>
     <div class="btn-group"  style="margin-top: 10px">
         <a href="#" class="btn btn-info" style="margin-top: -10px;" id="btnOrdenarIndices">

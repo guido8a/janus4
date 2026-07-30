@@ -1333,6 +1333,8 @@ class RubroOfController {
                                     ofrb_id = cn.rows(sql.toString())[0]?.ofrb__id ?: 0
                                     if (!ofrb_id) {
                                         errores += "<li>No se encontró rurbo ${ordn} de la hoja: <strong>${sheet.getSheetName().toString()}</strong></li>"
+                                        errores += "Revise que el nombre del rubro ${rbronmbr} coincida con el subido en presupuesto</li>"
+
                                         println "No se encontró rubro con id ${ordn} ${sheet.getSheetName().toString()}"
                                         break
                                     } else {
@@ -1622,7 +1624,7 @@ class RubroOfController {
                 def str = doneHtml
                 str += htmlInfo
                 if (errores != "") {
-                    str += "<ol>" + errores + "</ol>"
+                    str += "<h1>Errores del archivo excel a subir</h1><ol>" + errores + "</ol>"
                 }
 
                 flash.message = str
