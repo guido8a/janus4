@@ -146,7 +146,7 @@ class FormulaPolinomicaController {
                 "itemcdgo not in ('MO') order by valor desc limit 1"
 
         println "editarSugeridos... item: $sql"
-        def item = cn.rows(sql.toString())[0].item__id
+        def item = cn.rows(sql.toString())[0]?.item__id
         sql = "select indc.indc__id, indcdscr from indc, itin " +
                 "where indc.indc__id = itin.indc__id and item__id = ${item} and indcdscr not like '%NO PRINCIPAL%' " +
                 "order by itinnmro desc"
