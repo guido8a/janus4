@@ -147,13 +147,14 @@
                 </a>
             </g:if>
         </div>
-        <div class="btn-group"  style="margin-top: 10px">
-            <a href="#" class="btn btn-info" style="margin-top: -10px;" id="btnOrdenarIndices">
-                <i class="fa fa-retweet"></i>
-                Ordenar coeficientes
-            </a>
-        </div>
+
     </g:if>
+    <div class="btn-group"  style="margin-top: 10px">
+        <a href="#" class="btn btn-info" style="margin-top: -10px;" id="btnOrdenarIndices">
+            <i class="fa fa-retweet"></i>
+            Ordenar coeficientes
+        </a>
+    </div>
  </div>
 
 <div class="col-md-1"></div>
