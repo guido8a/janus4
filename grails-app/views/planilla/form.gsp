@@ -115,21 +115,21 @@
 
                         %{--                                                    <g:if test="${!planillaInstance?.id && !(tipos.find { it.codigo == 'A' })}">--}%
                             <g:if test="${!planillaInstance?.id}">
-%{--                                <g:if test="${!(tipos.contains(TipoPlanilla.findByCodigo('A')))}">--}%
-%{--                                    <g:if test="${!(tipos.contains(TipoPlanilla.findByCodigo('B')))}">--}%
-                                        <span class="grupo">
-                                            <div class="col-md-1"></div>
-                                            <label class="col-md-2 control-label text-info formato periodo">
-                                                Período
-                                            </label>
-                                            <span class="col-md-4 periodo">
-                                                <g:select id="periodoPlanilla" name="periodoPlanilla" from="${periodos}"
-                                                          optionKey="key" class="many-to-one form-control"
-                                                          optionValue="value"/>
-                                            </span>
-                                        </span>
-%{--                                    </g:if>--}%
-%{--                                </g:if>--}%
+                            %{--                                <g:if test="${!(tipos.contains(TipoPlanilla.findByCodigo('A')))}">--}%
+                            %{--                                    <g:if test="${!(tipos.contains(TipoPlanilla.findByCodigo('B')))}">--}%
+                                <span class="grupo">
+                                    <div class="col-md-1"></div>
+                                    <label class="col-md-2 control-label text-info formato periodo">
+                                        Período
+                                    </label>
+                                    <span class="col-md-4 periodo">
+                                        <g:select id="periodoPlanilla" name="periodoPlanilla" from="${periodos}"
+                                                  optionKey="key" class="many-to-one form-control"
+                                                  optionValue="value"/>
+                                    </span>
+                                </span>
+                            %{--                                    </g:if>--}%
+                            %{--                                </g:if>--}%
                             </g:if>
                         </div>
 
@@ -480,7 +480,9 @@
     $('#fechaPresentacion').datetimepicker({
         locale: 'es',
         format: 'DD-MM-YYYY',
-        minDate: new Date(${fechaInicia.format('yyyy')},${fechaInicia.format('MM').toInteger() - 1},${fechaInicia.format('dd').toInteger() + 1},0,0,0,0),
+        <g:if test="${periodos}">
+        minDate: new Date(${fechaInicia?.format('yyyy')},${fechaInicia?.format('MM')?.toInteger() - 1},${fechaInicia?.format('dd')?.toInteger() + 1},0,0,0,0),
+        </g:if>
         sideBySide: true,
         icons: {
         }
