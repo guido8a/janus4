@@ -211,7 +211,7 @@
                                 %{--                                </span>--}%
                             </span>
                             <span class="grupo">
-                                <div class="col-md-1"></div>
+                                <span class="col-md-1"></span>
                                 <label class="col-md-2 control-label text-info formato">
                                     Fecha Presentacion
                                 </label>
@@ -467,7 +467,7 @@
         }
     }
 
-    $('#fechaPresentacion,#fechaOficioEntradaPlanilla').datetimepicker({
+    $('#fechaOficioEntradaPlanilla').datetimepicker({
         locale: 'es',
         format: 'DD-MM-YYYY',
         minDate: new Date(${contrato.fechaSubscripcion.format('yyyy')},${contrato.fechaSubscripcion.format('MM').toInteger() - 1},${contrato.fechaSubscripcion.format('dd')},0,0,0,0),
@@ -476,6 +476,16 @@
         icons: {
         }
     });
+
+    $('#fechaPresentacion').datetimepicker({
+        locale: 'es',
+        format: 'DD-MM-YYYY',
+        minDate: new Date(${fechaInicia.format('yyyy')},${fechaInicia.format('MM').toInteger() - 1},${fechaInicia.format('dd').toInteger() + 1},0,0,0,0),
+        sideBySide: true,
+        icons: {
+        }
+    });
+
 
     %{--$('#fechaIngreso').datetimepicker({--}%
     %{--    locale: 'es',--}%

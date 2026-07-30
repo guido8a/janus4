@@ -1951,6 +1951,13 @@ class PlanillaController {
 
         def anticipoN
 
+        def fechaOriginal
+        def fechaInicia
+
+        if(periodos){
+            fechaOriginal = periodos.keySet()[0].split("_")[0]
+            fechaInicia = new Date().parse("dd-MM-yyyy", fechaOriginal)
+        }
 
         println "esAnticipo: $esAnticipo, tipos: $tiposPlanilla, periodos: ${periodos.class}, suspensiones: ${suspensiones}"
         if(suspensiones) {
@@ -1965,7 +1972,7 @@ class PlanillaController {
                 periodos        : periodos, esAnticipo: esAnticipo, anticipoPagado: anticipoPagado, maxDatePres: maxDatePres,
                 minDatePres     : minDatePres, fiscalizadorAnterior: fiscalizadorAnterior, liquidado: liquidado, fechaMax: fechaMax,
                 suspensiones    : suspensiones, ini: ini, planillas: planillasAvanceAsociada, formulas: formulasVarias,
-                hayCmpl         : (cmpl ? true : false), esAnticipoC: esAnticipoC]
+                hayCmpl         : (cmpl ? true : false), esAnticipoC: esAnticipoC, fechaInicia: fechaInicia]
     }
 
     /* este tipod eobras no requieren anticipo ni FP:
