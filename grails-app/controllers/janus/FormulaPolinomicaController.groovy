@@ -1426,7 +1426,7 @@ class FormulaPolinomicaController {
         def rows = cn.rows(sql.toString())
         def duenoObra = esDuenoObra(obra) ? 1 : 0
 
-       return [obra: obra, json: json, tipo: tipo, rows: rows, total: total, subpre: sbpr?.id ?: 0, cof: cof?.numero,duenoObra: duenoObra, persona: persona]
+        return [obra: obra, json: json, tipo: tipo, rows: rows, total: total, subpre: sbpr?.id ?: 0, cof: cof?.numero,duenoObra: duenoObra, persona: persona]
 //        }
     }
 
@@ -1546,7 +1546,7 @@ class FormulaPolinomicaController {
             def indices = FormulaPolinomica.findAllByObraAndNumeroNotIlikeAndNumeroNotIlikeAndNumeroNotIlike(obra, '%c%', '%px%', '%p01%', [sort: 'valor', order: 'desc'])
 
             indices.eachWithIndex{ fp , int i ->
-                if(i != 8){
+                if(i < 8){
                     fp.numero = 'p0' + (i+2)
                 }else{
                     fp.numero = 'p' + (i+2)
@@ -1555,13 +1555,14 @@ class FormulaPolinomicaController {
                 fp.save(flush:true)
             }
         }else{
-            def indices = FormulaPolinomica.findAllByObraAndNumeroNotIlike(obra, '%p%', [sort: 'valor', order: 'desc'])
+            def indices = FormulaPolinomica.findAllByObraAndNumeroIlike(obra, '%c%', [sort: 'numero', order: 'asc'])
 
             indices.eachWithIndex{ fp , int i ->
-                if(i != 9){
-                    fp.numero = 'c0' + (i+1)
+
+                if(i < 9){
+                    fp.numero = 'c0' + ( i == 0  ? 1 : (i+1))
                 }else{
-                    fp.numero = 'c' + (i+1)
+                    fp.numero = 'c' + (i == 9 ? 10 :   (i+1))
                 }
 
                 fp.save(flush:true)

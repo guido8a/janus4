@@ -271,6 +271,7 @@
 <script type="text/javascript">
 
     $("#btnOrdenarIndices").click(function () {
+        var d = cargarLoader("Cargando...");
         $.ajax({
             type: 'POST',
             url: '${createLink(controller: 'formulaPolinomica', action: 'ordenarIndices_ajax')}',
@@ -279,6 +280,7 @@
                 tipo: '${tipo}'
             },
             success: function (msg) {
+                d.modal("hide");
                 if(msg === 'ok'){
                     log("Ordenado correctamente", "success");
                     setTimeout(function() {
