@@ -480,9 +480,14 @@
     $('#fechaPresentacion').datetimepicker({
         locale: 'es',
         format: 'DD-MM-YYYY',
-        <g:if test="${periodos}">
-        minDate: new Date(${fechaInicia?.format('yyyy')},${fechaInicia?.format('MM')?.toInteger() - 1},${fechaInicia?.format('dd')?.toInteger() + 1},0,0,0,0),
+        <g:if test="${planillaInstance?.id}">
+        <g:if test="${planillaInstance?.tipoPlanilla?.codigo == 'P' || planillaInstance?.tipoPlanilla?.codigo == 'Q'}">
+        minDate: new Date(${planillaInstance?.fechaInicio?.format('yyyy')},${planillaInstance?.fechaInicio?.format('MM')?.toInteger() - 1},${planillaInstance?.fechaInicio?.format('dd')?.toInteger() + 1},0,0,0,0),
         </g:if>
+        </g:if>
+        <g:else>
+        minDate: new Date(${fechaInicia?.format('yyyy')},${fechaInicia?.format('MM')?.toInteger() - 1},${fechaInicia?.format('dd')?.toInteger() + 1},0,0,0,0),
+        </g:else>
         sideBySide: true,
         icons: {
         }
