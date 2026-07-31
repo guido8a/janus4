@@ -96,7 +96,14 @@
     };
 
     $("#btnProcesar").click(function () {
-        procesarPlanilla();
+        console.log('valor', ${planilla.valor})
+        var valor = ${planilla.valor}
+
+        if(parseFloat(valor) == 0) {
+            location.href="${createLink(controller: 'planilla', action: 'list')}?id=" + '${contrato?.id}';
+        } else {
+            procesarPlanilla();
+        }
     });
 
     function procesarPlanilla (){

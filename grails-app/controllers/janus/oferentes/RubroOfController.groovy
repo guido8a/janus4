@@ -1312,7 +1312,7 @@ class RubroOfController {
                                     }
 
                                 }
-                                println "txRubro --> $txRubro"
+//                                println "txRubro --> $txRubro"
 //                                if (rgst[cols[params.cldarbro]] == params.rbro) {
                                 if ( (txRubro != '') && (ofrb_id == 0) ) {
 //                                    rbronmbr = rgst[cols[params.rbronmbr]]
