@@ -1286,8 +1286,8 @@ class RubroOfController {
                                 }
                             }
 
-                            println "reg1: $rgst"
-                            println "reg2--> ${rgst[cols[params.cldatitl]]}"
+//                            println "reg1: $rgst"
+//                            println "reg2--> ${rgst[cols[params.cldatitl]]}"
 
                             if (rgst[cols[params.cldatitl]] == params.rbrotitl) { //ANÁLISIS DE PRECIOS UNITARIOS
                                 println "hoja: " + sheet.getSheetName().toString() + " Ok"
