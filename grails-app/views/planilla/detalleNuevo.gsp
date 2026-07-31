@@ -44,10 +44,6 @@
 
 <div class="row" style="margin-bottom: 10px;">
     <div class="col-md-12 btn-group" role="navigation">
-    %{--        <g:link controller="contrato" action="verContrato" params="[contrato: contrato?.id]" class="btn btn-primary btn-new" title="Regresar al contrato">--}%
-    %{--            <i class="fa fa-arrow-left"></i>--}%
-    %{--            Contrato--}%
-    %{--        </g:link>--}%
         <g:if test="${contrato?.fiscalizador?.id == session.usuario.id}">
             <g:if test="${eliminable}">
                 <a href="#" class="btn btn-info" id="btnProcesar" title="Procesar y regresar">
@@ -65,11 +61,6 @@
                 <i class="fa fa-arrow-left"></i> Regresar
             </g:link>
         </g:else>
-
-    %{--        <g:link controller="planilla" action="list" params="[id: contrato?.id]" class="btn btn-info btn-new" title="Regresar a las planillas del contrato">--}%
-    %{--            <i class="fa fa-arrow-left"></i>--}%
-    %{--            --}%
-    %{--        </g:link>--}%
         <div class="col-md-3 row" style="margin-top: 5px; text-align: right">
             <label for="subPresupuesto" class="control-label" style="text-align: right">
                 Seleccione un Sub Presupuesto
@@ -110,6 +101,7 @@
 
     function procesarPlanilla (){
         var id = '${planilla?.id}';
+        var total = '${planilla?.valor}';
         var g = cargarLoader("Procesando...");
         $.ajax({
             type    : "POST",
@@ -122,7 +114,7 @@
                 if(msg === 'ok'){
                     location.href="${createLink(controller: 'planilla', action: 'list')}?id=" + '${contrato?.id}';
                 }else{
-
+                    bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + "El valor de la planilla debe ser mayor a 0" + '</strong>');
                 }
             }
         });

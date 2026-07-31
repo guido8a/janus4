@@ -4001,7 +4001,12 @@ class PlanillaController {
         }
         poneTotalReajuste(plnl)
         // actualiza en plnlrjst el valor a reconocer de reajuste de esta planilla: actual - diferencias de anteriores
-        render "ok" //debe retornar a planillas y habilitar botón de resumen.
+
+        if(plnl?.valor > 0){
+            render "ok" //debe retornar a planillas y habilitar botón de resumen.
+        }else{
+            render "no"
+        }
     }
 
     def procEntrega() {
