@@ -3485,7 +3485,17 @@ itemId: item.id
                         def sql = "select rbpc__id " +
                                 "from item, rbpc p, lgar where p.item__id = item.item__id and p.lgar__id = lgar.lgar__id and p.rbpcfcha = '${params.fecha}' and " +
                                 "p.item__id = ${item.id} and lgar.lgaretdo = 'A' order by lgardscr"
+                        // precios existentes
                         def res = cn.rows(sql.toString())
+
+                        sql = "select lgar__id from lgar where tpls__id = ${item.tipoLista.id} and lgar__id not in (" +
+                                "select lgar__id from rbpc where item__id = ${item.id} and rbpcfcha = '${params.fecha}')" +
+                                "order by lgar__id"
+                        println "sql: $sql"
+                        // precios existentes
+                        def noExisten = cn.rows(sql.toString())
+
+
 
                         res.each {
                             def rubro = PrecioRubrosItems.get(it.rbpc__id)
