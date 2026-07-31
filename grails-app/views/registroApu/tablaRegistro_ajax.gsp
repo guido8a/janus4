@@ -62,7 +62,7 @@
         </div>
 
         <div class="col-md-1">
-            <label>Celda título</label>
+            <label class="text-info">Celda título (debe ser A)</label>
         </div>
         <div class="col-md-1" style="margin-left: -30px; width: 70px">
             <g:textField name="cldatitl" class="form-control allCaps" value="${registro?.cldatitl ?: 'A'}"/>
