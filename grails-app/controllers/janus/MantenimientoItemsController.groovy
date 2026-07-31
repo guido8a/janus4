@@ -3474,6 +3474,7 @@ itemId: item.id
 
         def rubroPrecio = PrecioRubrosItems.get(params.id)
         def item = Item.get(params.item)
+        def fecha = new Date().parse("dd-MM-yyyy", params.fecha)
         def errores = ''
 
         if(params.precio){
@@ -3488,20 +3489,29 @@ itemId: item.id
                         // precios existentes
                         def res = cn.rows(sql.toString())
 
-                        sql = "select lgar__id from lgar where tpls__id = ${item.tipoLista.id} and lgar__id not in (" +
-                                "select lgar__id from rbpc where item__id = ${item.id} and rbpcfcha = '${params.fecha}')" +
-                                "order by lgar__id"
-                        println "sql: $sql"
-                        // precios existentes
-                        def noExisten = cn.rows(sql.toString())
-
-
-
                         res.each {
                             def rubro = PrecioRubrosItems.get(it.rbpc__id)
                             rubro.precioUnitario = params.precio.toDouble()
                             if(!rubroPrecio.save(flush:true)){
                                 errores += rubroPrecio.errors
+                            }
+                        }
+
+                        sql = "select lgar__id from lgar where tpls__id = ${item.tipoLista.id} and lgar__id not in (" +
+                                "select lgar__id from rbpc where item__id = ${item.id} and rbpcfcha = '${params.fecha}')" +
+                                "order by lgar__id"
+//                        println "sql: $sql"
+                        def noExisten = cn.rows(sql.toString())
+
+                        noExisten.each {
+                            def lugar = Lugar.get(it.lgar__id)
+                            def rubroNuevo = new PrecioRubrosItems()
+                            rubroNuevo.item = item
+                            rubroNuevo.lugar = lugar
+                            rubroNuevo.fecha = fecha
+                            rubroNuevo.precioUnitario = params.precio.toDouble()
+                            if(!rubroNuevo.save(flush:true)){
+                                errores += rubroNuevo.errors
                             }
                         }
 
