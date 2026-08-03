@@ -39,20 +39,19 @@
                         <label>Obra Ofertada:</label>
                     </div>
                     <div class="col-md-11">
-                        <g:select name="obra" class="form-control bootstrap-select wrapped-select"
-                                  from="${obras}" optionKey="key" optionValue="value"
-                                  />
+%{--                        <g:select name="obra" class="form-control bootstrap-select wrapped-select"--}%
+%{--                                  from="${obras}" optionKey="key" optionValue="value"--}%
+%{--                                  />--}%
 
 
 
-%{--                        <select class="js-example-basic-single col-md-12" >--}%
-%{--                        <g:each in="${obras}" var="obra">--}%
-%{--                            <option name="obra" id="${obra?.key}" value="${obra?.value}">--}%
-%{--                               ${obra?.value}--}%
-%{--                            </option>--}%
-%{--                        </g:each>--}%
-
-%{--                        </select>--}%
+                        <select class="selectObras col-md-12" >
+                        <g:each in="${obras}" var="obraSeleccionada">
+                            <option class="obra" value="${obraSeleccionada?.key}">
+                               ${obraSeleccionada?.value}
+                            </option>
+                        </g:each>
+                        </select>
                     </div>
                 </div>
             </div>
@@ -103,7 +102,7 @@
 <script type="text/javascript">
 
 
-    $('.js-example-basic-single').select2();
+    $('.selectObras').select2();
 
     var di;
 
@@ -144,8 +143,13 @@
     //     return true;
     // });
 
+    $(".selectObras").change(function () {
+        cargarTablaBusquedaRubros();
+        // cargarTablaEmpatadosRubros();
+    });
+
     cargarTablaBusquedaRubros();
-    cargarTablaEmpatadosRubros();
+    // cargarTablaEmpatadosRubros();
 
     function cargarTablaBusquedaRubros() {
         var d = cargarLoader("Cargando...");
@@ -159,7 +163,7 @@
                 // buscarPor: buscarPor,
                 // criterio: criterio,
                 // grupo: grupo,
-                obra: $("#obra option:selected").val()
+                obra: $(".selectObras").val()
             },
             success: function (msg) {
                 d.modal("hide");
@@ -177,7 +181,7 @@
             url: "${createLink(controller: 'rubroOf', action:'tablaEmpatadosRubros_ajax')}",
             data: {
                 tipo: tipo,
-                obra: $("#obra").val()
+                obra: $(".selectObras").val()
             },
             success: function (msg) {
                 d.modal("hide");
