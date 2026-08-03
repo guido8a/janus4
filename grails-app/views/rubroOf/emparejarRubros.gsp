@@ -3,9 +3,22 @@
 <html>
 <head>
     <meta name="layout" content="main">
+
+    <asset:stylesheet src="/apli/select2.min.css"/>
+    <asset:javascript src="/apli/select2.min.js"/>
+
     <title>
         Emparejar rubros
     </title>
+
+    <style>
+    /*.select2-container--default .select2-selection--single .select2-selection__rendered {*/
+    /*    white-space: normal !important;*/
+    /*    word-wrap: break-word !important;*/
+    /*    text-overflow: inherit !important;*/
+    /*}*/
+    </style>
+
 </head>
 <body>
 
@@ -23,12 +36,23 @@
             <div id="list-grupo" class="col-md-9" role="main" style="margin-top: 0px;margin-left: -25px">
                 <div class="col-md-12">
                     <div class="col-md-1">
-                        <b>Obra Ofertada:</b>
+                        <label>Obra Ofertada:</label>
                     </div>
                     <div class="col-md-11">
-                        <g:select name="obra" class="form-control"
-                                  from="${obras}" optionKey="key" optionValue="value"
-                                  style="width: 100%;"/>
+%{--                        <g:select name="obra" class="form-control bootstrap-select wrapped-select"--}%
+%{--                                  from="${obras}" optionKey="key" optionValue="value"--}%
+%{--                                  />--}%
+
+
+
+                        <select class="js-example-basic-single col-md-12" >
+                        <g:each in="${obras}" var="obra">
+                            <option name="obra" id="${obra?.key}" value="${obra?.value}">
+                               ${obra?.value}
+                            </option>
+                        </g:each>
+
+                        </select>
                     </div>
                 </div>
             </div>
@@ -77,6 +101,10 @@
 
 
 <script type="text/javascript">
+
+
+    $('.js-example-basic-single').select2();
+
     var di;
 
     $("#btnRegresarPrincipal").click(function () {
