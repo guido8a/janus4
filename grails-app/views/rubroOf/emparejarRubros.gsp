@@ -39,20 +39,20 @@
                         <label>Obra Ofertada:</label>
                     </div>
                     <div class="col-md-11">
-%{--                        <g:select name="obra" class="form-control bootstrap-select wrapped-select"--}%
-%{--                                  from="${obras}" optionKey="key" optionValue="value"--}%
-%{--                                  />--}%
+                        <g:select name="obra" class="form-control bootstrap-select wrapped-select"
+                                  from="${obras}" optionKey="key" optionValue="value"
+                                  />
 
 
 
-                        <select class="js-example-basic-single col-md-12" >
-                        <g:each in="${obras}" var="obra">
-                            <option name="obra" id="${obra?.key}" value="${obra?.value}">
-                               ${obra?.value}
-                            </option>
-                        </g:each>
+%{--                        <select class="js-example-basic-single col-md-12" >--}%
+%{--                        <g:each in="${obras}" var="obra">--}%
+%{--                            <option name="obra" id="${obra?.key}" value="${obra?.value}">--}%
+%{--                               ${obra?.value}--}%
+%{--                            </option>--}%
+%{--                        </g:each>--}%
 
-                        </select>
+%{--                        </select>--}%
                     </div>
                 </div>
             </div>
