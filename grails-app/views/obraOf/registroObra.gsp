@@ -552,6 +552,7 @@
                 },
                 callback: function (result) {
                     if(result){
+                        var b = cargarLoader("Procesando...");
                         $.ajax({
                             type : "POST",
                             url : "${createLink(controller: "export", action: 'importarAProyectos')}",
@@ -559,6 +560,7 @@
                                 obra: id
                             },
                             success  : function (msg) {
+                                b.modal("hide");
                                 if(msg === 'ok'){
                                     log("Obra migrada a Proyectos correctamente", "success");
                                     location.reload()
@@ -566,7 +568,6 @@
                                     bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' +
                                         '<strong style="font-size: 14px">' + "Error al migrar la obra" + '</strong>');
                                 }
-
                             }
                         });
                     }
@@ -1145,73 +1146,73 @@
         title: 'Cambiar estado de la Obra',
         buttons: {
             "Aceptar": function () {
-//
+                var a = cargarLoader("Procesando...");
                 var estadoCambiado = $("#estado").val();
-
-                %{--var estadoCambiado1 = ${obra?.estado}--}%
-
-                %{--console.log(${obra?.estado})--}%
-
-                if (${obra?.estado == 'N'}) {
-//                        estadoCambiado = 'R';
-                    $.ajax({
-                        type: "POST",
-                        url: "${g.createLink(controller: 'obraOf', action: 'regitrarObra')}",
-                        data: "id=${obra?.id}",
-                        success: function (msg) {
-                            console.log(msg)
-                            if (msg != "ok") {
-                                $.box({
-                                    imageClass: "box_info",
-                                    text: msg,
-                                    title: "Errores",
-                                    iconClose: false,
-                                    dialog: {
-                                        resizable: false,
-                                        draggable: false,
-                                        width: 900,
-                                        buttons: {
-                                            "Aceptar": function () {
-                                            }
+                <g:if test="${obra?.estado == 'N'}">
+                $.ajax({
+                    type: "POST",
+                    url: "${g.createLink(controller: 'obraOf', action: 'regitrarObra')}",
+                    data: "id=${obra?.id}",
+                    success: function (msg) {
+                        a.modal("hide");
+                        if (msg !== "ok") {
+                            $.box({
+                                imageClass: "box_info",
+                                text: msg,
+                                title: "Errores",
+                                iconClose: false,
+                                dialog: {
+                                    resizable: false,
+                                    draggable: false,
+                                    width: 900,
+                                    buttons: {
+                                        "Aceptar": function () {
                                         }
                                     }
-                                });
-                            } else {
-                                location.reload(true)
-                            }
+                                }
+                            });
+                        } else {
+                            location.reload()
                         }
-                    });
-//
-                } else {
-                    estadoCambiado = 'N';
-                    $.ajax({
-                        type: "POST",
-                        url: "${g.createLink(controller: 'obraOf', action: 'desregitrarObra')}",
-                        data: "id=${obra?.id}",
-                        success: function (msg) {
-                            if (msg != "ok") {
-                                $.box({
-                                    imageClass: "box_info",
-                                    text: msg,
-                                    title: "Errores",
-                                    iconClose: false,
-                                    dialog: {
-                                        resizable: false,
-                                        draggable: false,
-                                        width: 900,
-                                        buttons: {
-                                            "Aceptar": function () {
-                                            }
+                    }
+                });
+                </g:if>
+                <g:else>
+                estadoCambiado = 'N';
+                $.ajax({
+                    type: "POST",
+                    url: "${g.createLink(controller: 'obraOf', action: 'desregitrarObra')}",
+                    data: "id=${obra?.id}",
+                    success: function (msg) {
+                        a.modal("hide");
+                        if (msg !== "ok") {
+                            $.box({
+                                imageClass: "box_info",
+                                text: msg,
+                                title: "Errores",
+                                iconClose: false,
+                                dialog: {
+                                    resizable: false,
+                                    draggable: false,
+                                    width: 900,
+                                    buttons: {
+                                        "Aceptar": function () {
                                         }
                                     }
-                                });
-                            } else {
-                                location.reload(true)
-                            }
+                                }
+                            });
+                        } else {
+                            location.reload()
                         }
-                    });
-//
-                }
+                    }
+                });
+                </g:else>
+                %{--if (${obra?.estado == 'N'}) {--}%
+
+                %{--} else {--}%
+
+
+                %{--}--}%
 //                            $(".estado").val(estadoCambiado);
                 $("#estadoDialog").dialog("close");
 //
