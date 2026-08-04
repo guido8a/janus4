@@ -10,6 +10,15 @@
 
 <body>
 
+<div class="col-md-1 btn-group" role="navigation">
+    <div class="col-md-1 btn-group" role="navigation">
+        <a href="#" class="btn btn-primary" id="btnRegresar">
+            <i class="fa fa-arrow-left"></i>
+            Regresar
+        </a>
+    </div>
+</div>
+
 <div class="col-md-2 btn-group" role="navigation">
     <a href="#" class="btn  btn-primary" id="btn_lista">
         <i class="fa fa-list"></i>
@@ -119,11 +128,11 @@
                 </a>
             </div>
 
-%{--            <div class="col-md-2" style="float: right">--}%
-%{--                <a class="btn btn-xs btn-warning " href="#" rel="tooltip" title="Copiar " id="btn_copiarComp" ${rubro ? '' : 'disabled'}>--}%
-%{--                    <i class="fa fa-copy"></i> Copiar composición--}%
-%{--                </a>--}%
-%{--            </div>--}%
+            %{--            <div class="col-md-2" style="float: right">--}%
+            %{--                <a class="btn btn-xs btn-warning " href="#" rel="tooltip" title="Copiar " id="btn_copiarComp" ${rubro ? '' : 'disabled'}>--}%
+            %{--                    <i class="fa fa-copy"></i> Copiar composición--}%
+            %{--                </a>--}%
+            %{--            </div>--}%
         </div>
 
         <div class="row-fluid" style="margin-bottom: 5px">
@@ -591,6 +600,10 @@
 </div>
 
 <script type="text/javascript">
+
+    $("#btnRegresar").click(function () {
+        location.href = "${createLink(controller: 'rubroOf', action: 'index')}";
+    });
 
     $('.selectObras').select2();
 
