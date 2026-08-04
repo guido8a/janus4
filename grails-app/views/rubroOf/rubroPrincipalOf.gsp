@@ -21,26 +21,26 @@
     </a>
 </div>
 
-<div class="col-md-4 btn-group" role="navigation">
-    <g:if test="${rubro}">
-        <a href="#" class="btn btn-ajax btn-info" id="imprimir" title="Imprimir">
-            <i class="fa fa-print"></i>
-            Imprimir
-        </a>
-        <a href="#" class="btn btn-ajax btn-info" id="vae" title="Imprimir Vae">
-            <i class="fa fa-print"></i>
-            Imprimir Vae
-        </a>
-        <a href="#" class="btn btn-ajax btn-success" id="excel" title="Imprimir">
-            <i class="fa fa-file-excel"></i>
-            Excel
-        </a>
-        <a href="#" class="btn btn-ajax btn-success" id="excelVae" title="Imprimir Excel Vae">
-            <i class="fa fa-file-excel"></i>
-            Excel Vae
-        </a>
-    </g:if>
-</div>
+%{--<div class="col-md-4 btn-group" role="navigation">--}%
+%{--    <g:if test="${rubro}">--}%
+%{--        <a href="#" class="btn btn-ajax btn-info" id="imprimir" title="Imprimir">--}%
+%{--            <i class="fa fa-print"></i>--}%
+%{--            Imprimir--}%
+%{--        </a>--}%
+%{--        <a href="#" class="btn btn-ajax btn-info" id="vae" title="Imprimir Vae">--}%
+%{--            <i class="fa fa-print"></i>--}%
+%{--            Imprimir Vae--}%
+%{--        </a>--}%
+%{--        <a href="#" class="btn btn-ajax btn-success" id="excel" title="Imprimir">--}%
+%{--            <i class="fa fa-file-excel"></i>--}%
+%{--            Excel--}%
+%{--        </a>--}%
+%{--        <a href="#" class="btn btn-ajax btn-success" id="excelVae" title="Imprimir Excel Vae">--}%
+%{--            <i class="fa fa-file-excel"></i>--}%
+%{--            Excel Vae--}%
+%{--        </a>--}%
+%{--    </g:if>--}%
+%{--</div>--}%
 
 <div class="row">
     <div class="col-md-12" style="margin-top: 20px">
@@ -119,11 +119,11 @@
                 </a>
             </div>
 
-            <div class="col-md-2" style="float: right">
-                <a class="btn btn-xs btn-warning " href="#" rel="tooltip" title="Copiar " id="btn_copiarComp" ${rubro ? '' : 'disabled'}>
-                    <i class="fa fa-copy"></i> Copiar composición
-                </a>
-            </div>
+%{--            <div class="col-md-2" style="float: right">--}%
+%{--                <a class="btn btn-xs btn-warning " href="#" rel="tooltip" title="Copiar " id="btn_copiarComp" ${rubro ? '' : 'disabled'}>--}%
+%{--                    <i class="fa fa-copy"></i> Copiar composición--}%
+%{--                </a>--}%
+%{--            </div>--}%
         </div>
 
         <div class="row-fluid" style="margin-bottom: 5px">
