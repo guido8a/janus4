@@ -238,7 +238,7 @@ class VolumenObraController {
         def persona = Persona.get(session.usuario.id)
 
         if (responsableRol) {
-            println "${obra?.responsableObra?.departamento?.id} ==== ${Persona.get(session.usuario.id).departamento?.id}"
+//            println "${obra?.responsableObra?.departamento?.id} ==== ${Persona.get(session.usuario.id).departamento?.id}"
 
             if (personasUtfpu.contains(responsableRol) && persona.departamento.codigo == 'CRFC') {
                 dueno = true
