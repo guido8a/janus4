@@ -1,23 +1,11 @@
-
 <!doctype html>
 <html>
 <head>
     <meta name="layout" content="main">
 
-    <asset:stylesheet src="/apli/select2.min.css"/>
-    <asset:javascript src="/apli/select2.min.js"/>
-
     <title>
         Emparejar rubros
     </title>
-
-    <style>
-    /*.select2-container--default .select2-selection--single .select2-selection__rendered {*/
-    /*    white-space: normal !important;*/
-    /*    word-wrap: break-word !important;*/
-    /*    text-overflow: inherit !important;*/
-    /*}*/
-    </style>
 
 </head>
 <body>
@@ -33,7 +21,7 @@
                 </a>
             </div>
 
-            <div id="list-grupo" class="col-md-9" role="main" style="margin-top: 0px;margin-left: -25px">
+            <div class="col-md-9" role="main" style="margin-top: 0px;margin-left: -25px">
                 <div class="col-md-12">
                     <div class="col-md-1">
                         <label>Obra Ofertada:</label>
@@ -43,9 +31,7 @@
 %{--                                  from="${obras}" optionKey="key" optionValue="value"--}%
 %{--                                  />--}%
 
-
-
-                        <select class="selectObras col-md-12" >
+                        <select id="obra" class="selectObras col-md-12" >
                         <g:each in="${obras}" var="obraSeleccionada">
                             <option class="obra" value="${obraSeleccionada?.key}">
                                ${obraSeleccionada?.value}
@@ -55,7 +41,7 @@
                     </div>
                 </div>
             </div>
-            <div id="list-grupo" class="col-md-2" role="main" style="margin-top: 0px;margin-left: -35px">
+            <div class="col-md-2" role="main" style="margin-top: 0px;margin-left: -35px">
                 <div class="col-md-9 btn-group" >
                     <button class="btn btn-success" id="btnEmparejaNmbr" title="Limpiar Búsqueda">
                         <i class="fa fa-edit"></i>Emp. por Nombre</button>
@@ -67,24 +53,6 @@
                     </a>
                 </div>
             </div>
-
-
-            %{--            <div class="col-md-2">--}%
-%{--                Grupo--}%
-%{--                <g:select name="buscarGrupo_name" id="buscarGrupo" from="['MT': 'Materiales', 'MO': 'Mano de Obra', 'EQ': 'Equipos']" optionKey="key" optionValue="value" class="form-control" />--}%
-%{--            </div>--}%
-%{--            <div class="col-md-2">--}%
-%{--                Buscar Por--}%
-%{--                <g:select name="buscarPor" class="buscarPor form-control" from="${[1: 'Nombre', 2: 'Código']}" style="width: 100%" optionKey="key" optionValue="value"/>--}%
-%{--            </div>--}%
-%{--            <div class="col-md-4">--}%
-%{--                Criterio--}%
-%{--                <g:textField name="criterio" class="criterio form-control"/>--}%
-%{--            </div>--}%
-%{--            <div class="col-md-2 btn-group" style="margin-top: 20px">--}%
-%{--                <button class="btn btn-info" id="btnBuscar"><i class="fa fa-search"></i></button>--}%
-%{--                <button class="btn btn-warning" id="btnLimpiar" title="Limpiar Búsqueda"><i class="fa fa-eraser"></i></button>--}%
-%{--            </div>--}%
         </div>
     </fieldset>
 
@@ -98,72 +66,33 @@
 
 </div>
 
-
 <script type="text/javascript">
-
-
-    $('.selectObras').select2();
 
     var di;
 
+    $('.selectObras').select2();
+
     $("#btnRegresarPrincipal").click(function () {
-        %{--<g:if test="${tipo == '1'}">--}%
         location.href = "${createLink(controller: 'rubroOf', action: 'index')}";
-        %{--</g:if>--}%
-        %{--<g:else>--}%
-        %{--location.href="${createLink(controller: 'rubroOf', action: 'rubroPrincipalOf')}";--}%
-        %{--</g:else>--}%
     });
 
     $("#btnSiguiente").click(function () {
         location.href = "${createLink(controller: 'rubroOf', action: 'subirExcelApu')}";
     });
 
-    // $("#buscarGrupo").change(function () {
-    //     cargarTablaBusquedaRubros();
-    // });
-
-    // $("#btnBuscar").click(function () {
-    //     cargarTablaBusquedaRubros();
-    // });
-
-    // $("#btnLimpiar").click(function  () {
-    //     $("#buscarGrupo").val('MT');
-    //     $("#buscarPor").val(1);
-    //     $("#criterio").val('');
-    //     $("#ordenar").val(1);
-    //     cargarTablaBusquedaRubros();
-    // });
-
-    // $("#criterio").keydown(function (ev) {
-    //     if (ev.keyCode === 13) {
-    //         cargarTablaBusquedaRubros();
-    //         return false;
-    //     }
-    //     return true;
-    // });
-
     $(".selectObras").change(function () {
         cargarTablaBusquedaRubros();
-        // cargarTablaEmpatadosRubros();
     });
 
     cargarTablaBusquedaRubros();
-    // cargarTablaEmpatadosRubros();
 
     function cargarTablaBusquedaRubros() {
         var d = cargarLoader("Cargando...");
-        // var grupo = $("#buscarGrupo option:selected").val();
-        // var buscarPor = $("#buscarPor option:selected").val();
-        // var criterio = $(".criterio").val();
         $.ajax({
             type: "POST",
             url: "${createLink(controller: 'rubroOf', action:'tablaBusquedaRubros_ajax')}",
             data: {
-                // buscarPor: buscarPor,
-                // criterio: criterio,
-                // grupo: grupo,
-                obra: $(".selectObras").val()
+                obra: $("#obra option:selected").val()
             },
             success: function (msg) {
                 d.modal("hide");
@@ -181,7 +110,7 @@
             url: "${createLink(controller: 'rubroOf', action:'tablaEmpatadosRubros_ajax')}",
             data: {
                 tipo: tipo,
-                obra: $(".selectObras").val()
+                obra: $("#obra option:selected").val()
             },
             success: function (msg) {
                 d.modal("hide");

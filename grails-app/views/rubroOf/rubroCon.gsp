@@ -52,14 +52,22 @@
     </a>
 </div>
 
-<div id="list-grupo" class="col-md-12" role="main" style="margin-top: 10px;margin-left: -10px">
+<div id="list-grupo" class="col-md-12" role="main" style="margin-top: 10px;">
 
     <div class="col-md-12">
-        <div class="col-md-2">
-            <b style="margin-left: 20px">Obra Ofertada:</b>
+        <div class="col-md-2" style="text-align: right">
+            <label class="text-info" style="font-size: 14px">Obra Ofertada:</label>
         </div>
-        <div class="col-md-10">
-            <g:select name="obra" from="${obras}" optionKey="${{it.id}}" optionValue="${{it.nombre}}" style="width: 100%; margin-left: -80px"/>
+        <div class="col-md-9">
+%{--            <g:select name="obra" from="${obras}" optionKey="${{it.id}}" optionValue="${{it.nombre}}" style="width: 100%; margin-left: -80px"/>--}%
+
+            <select id="obra" class="selectObras col-md-12" >
+                <g:each in="${obras}" var="obraSeleccionada">
+                    <option class="obra" value="${obraSeleccionada?.id}">
+                        ${obraSeleccionada?.nombre}
+                    </option>
+                </g:each>
+            </select>
         </div>
     </div>
 
@@ -79,6 +87,8 @@
 
 <script type="text/javascript">
 
+    $('.selectObras').select2();
+
     $("#obra").change(function () {
         cargarRubro();
     });
@@ -86,7 +96,7 @@
     cargarRubro();
 
     function cargarRubro() {
-        var id = $("#obra").val();
+        var id = $("#obra option:selected").val();
         $.ajax({
             type: "POST",
             url: "${createLink(controller: 'rubroOf', action:'listaRubros_ajax')}",
@@ -100,17 +110,11 @@
     }
 
     $("#btnRegresar").click(function () {
-        var cntr = $("#obra").val();
-        %{--<g:if test="${tipo == '1'}">--}%
         location.href = "${createLink(controller: 'rubroOf', action: 'index')}";
-        %{--</g:if>--}%
-        %{--<g:else>--}%
-        %{--location.href = "${createLink(controller: 'rubroOf', action: 'rubroPrincipalOf')}?contrato=" + cntr;--}%
-        %{--</g:else>--}%
     });
 
     $("#btnProcesar").click(function () {
-        var obra = $("#obra").val();
+        var obra = $("#obra option:selected").val();
         var indi = $("#indi").val();
 
         $.ajax({
@@ -136,7 +140,7 @@
     });
 
     $("#btnEmpatar").click(function () {
-        var cntr = $("#obra").val();
+        var cntr = $("#obra option:selected").val();
         location.href = "${createLink(controller: 'rubroOf', action: 'rubroEmpatado')}?contrato=" + cntr
     });
 

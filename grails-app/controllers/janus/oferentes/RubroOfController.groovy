@@ -1202,7 +1202,6 @@ class RubroOfController {
                 XSSFCell cell;
 
                 int hojas = workbook.getNumberOfSheets(); //Obtenemos el número de hojas que contiene el documento
-//                int hojas = 3
                 println "Número Hojas: $hojas"
 
                 def sccnEq = false, sccnMo = false, sccnMt = false, sccnTr = false, sccnRubro = false, hojaRubro = false
@@ -2078,6 +2077,7 @@ class RubroOfController {
         cn.eachRow(sql.toString()) { r ->
             obras[r.id] = r.nombre
         }
+
         [obras: obras, oferente: oferente, tipo: params.tipo]
     }
 
@@ -2147,7 +2147,7 @@ class RubroOfController {
         def sql = "select distinct dtrbjnid dtrb__id, dtrbtipo, dtrbcdgo, dtrbnmbr, dtrbundd, dtrbtipo, itemnmbr, itemcdgo from dtrb, item, ofrb " +
                 "where item.item__id = dtrbjnid and dtrbtipo = '${params.tipo}' and ofrb.ofrb__id = dtrb.ofrb__id and " +
                 "obra__id = ${params.obra}" + // "and obra__id = ${params.obra}"
-                "order by itemcdgo"
+                " order by itemcdgo"
         println "sql: $sql"
         def empatados = cn.rows(sql.toString())
         return [data: empatados, obra: params.obra]

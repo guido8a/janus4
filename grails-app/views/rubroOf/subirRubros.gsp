@@ -63,13 +63,22 @@
 <g:uploadForm controller="rubroOf" action="uploadRubros" method="post" name="frmUpload" id="${contrato?.id}"
               style="padding: 10px">
     <div id="list-grupo" class="col-md-12" role="main">
-        <div class="col-md-2">
-            <b style="margin-left: 20px">Obra Ofertada:</b>
+        <div class="col-md-2" style="text-align: right">
+            <label>Obra Ofertada: </label>
         </div>
         <div class="col-md-10">
-            <g:select name="obra"
-                      from="${obras}" optionKey="key" optionValue="value"
-                      style="width: 100%; margin-left: -80px"/>
+%{--            <g:select name="obra"--}%
+%{--                      from="${obras}" optionKey="key" optionValue="value"--}%
+%{--                      style="width: 100%; margin-left: -80px"/>--}%
+
+
+            <select class="selectObras col-md-12" >
+                <g:each in="${obras}" var="obraSeleccionada">
+                    <option class="obra" value="${obraSeleccionada?.key}">
+                        ${obraSeleccionada?.value}
+                    </option>
+                </g:each>
+            </select>
         </div>
 
         <div style="border-style: groove; border-color: #0d7bdc; margin-top: 40px; margin-bottom: 10px">
@@ -120,9 +129,6 @@
             </fieldset>
         </div>
 
-
-
-
         <div class="col-md-12" style="margin-top: 20px;">
             <div class="col-md-5">
                 <label>Ingrese el nombre de la página excel que contiene los rubros en el formato indicado</label>
@@ -145,13 +151,13 @@
                     Procesar archivo de Rubros</a>
             </div>
         </div>
-
     </div>
-
 
 </g:uploadForm>
 
 <script type="text/javascript">
+
+    $('.selectObras').select2();
 
     $("#btnRegresar").click(function () {
         <g:if test="${tipo == '1'}">
@@ -164,10 +170,10 @@
 
     $("#btnBorrar").click(function () {
         bootbox.confirm({
-            title: "Eliminar los APUS del oferente",
-            message: "<i class='fa fa-exclamation-triangle text-warning fa-3x'></i> " +
+            title: "<i class='fa fa-exclamation-triangle text-danger fa-2x'></i> Eliminar los APUS del oferente",
+            message: " " +
             "Está seguro de que desea borrar " +
-            "todos los APU cargados del oferente para la obra:<br><strong>" + $("#obra").text() + "</strong>" +
+            "todos los APU cargados del oferente para la obra:<br><strong>" + $(".selectObras option:selected").text() + "</strong>" +
             "<br>Se borrarán: <ul><li>Todos los APU cargados</li><li>El emparejamiento de rubros</li>" +
             "<li>Emparejamiento de ítems</li><li>Los APU migrados a cantidades de obra</li></ul>",
             buttons: {
@@ -187,7 +193,7 @@
                         type: "POST",
                         url: "${createLink(controller: 'rubroOf', action: 'borrarApus')}",
                         data: {
-                            obra: $("#obra").val()
+                            obra: $(".selectObras").val()
                         },
                         success: function (msg) {
                             g.modal("hide");

@@ -18,12 +18,22 @@
     </div>
 
     <div id="list-grupo" class="col-md-12" role="main">
-        <div class="col-md-2">
-            <b style="margin-left: 20px">Obra Ofertada:</b>
+        <div class="col-md-2" style="text-align: right">
+            <label >Obra Ofertada:</label>
         </div>
         <div class="col-md-10">
-            <g:select name="obra" class="form-control" from="${obras}" optionKey="id" optionValue="nombre" value="${obra}"
-                      style="width: 100%; margin-left: -80px" />
+%{--            <g:select name="obra" class="form-control" from="${obras}" optionKey="id" optionValue="nombre" value="${obra}"--}%
+%{--                      style="width: 100%; margin-left: -80px" />--}%
+
+
+            <select name="obra" class="selectObra col-md-12" >
+                <g:each in="${obras}" var="obraSeleccionada">
+                    <option class="obra" value="${obraSeleccionada?.id}">
+                        ${obraSeleccionada?.nombre}
+                    </option>
+                </g:each>
+            </select>
+
         </div>
 
         <div class="col-md-12" style="margin-top: 20px; margin-bottom: 20px">
@@ -313,6 +323,8 @@
 
 
 <script type="text/javascript">
+
+    $('.selectObra').select2();
 
     $("#btnGuardarRegistro").click(function () {
         return submitFormRegistro();
