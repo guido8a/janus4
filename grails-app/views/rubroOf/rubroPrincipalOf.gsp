@@ -42,53 +42,26 @@
     </g:if>
 </div>
 
-%{--<div class="col-md-6 btn-group" role="navigation">--}%
-    %{--<div class="col-md-3">--}%
-        %{--<a href="${createLink(controller: 'rubroOf', action: 'subirRubros', id: contrato?.id)}" class="btn" id="btnSubirRubros"--}%
-           %{--title="Subir archivo excel">--}%
-            %{--<i class="fa fa-upload"></i> Subir Rubros Oferta--}%
-        %{--</a>--}%
-    %{--</div>--}%
-    %{--<div class="col-md-3">--}%
-        %{--<a href="#" class="btn  btn-success" id="btnEmparejar">--}%
-            %{--<i class="fa fa-check-circle"></i>--}%
-            %{--Emparejamiento Rubros--}%
-        %{--</a>--}%
-    %{--</div>--}%
-
-    %{--<div class="col-md-3">--}%
-        %{--<a href="${createLink(controller: 'rubroOf', action: 'subirExcelApu', id: contrato?.id)}" class="btn"--}%
-           %{--id="btnSubirExcel" title="Subir archivo excel" style="margin-left: 20px">--}%
-            %{--<i class="fa fa-upload"></i> Subir excel APU--}%
-        %{--</a>--}%
-    %{--</div>--}%
-
-    %{--<div class="col-md-3">--}%
-        %{--<a href="${createLink(controller: 'rubroOf', action: 'subirExcel', id: contrato?.id)}" class="btn"--}%
-           %{--title="Subir archivo excel">--}%
-            %{--<i class="fa fa-upload"></i> Subir excel anterior--}%
-        %{--</a>--}%
-    %{--</div>--}%
-
-%{--</div>--}%
-
-<div class="col-md-12" role="main" style="margin-top: 10px;margin-left: 10px; margin-bottom: 0px;
-border-bottom: 1px solid black;height: 30px; width: 97%">
-    <div class="col-md-12">
-        <div class="col-md-2">
-            <b style="margin-left: 20px">Obra Ofertada:</b>
+<div class="row">
+    <div class="col-md-12" style="margin-top: 20px">
+        <div class="col-md-2" style="text-align: right">
+            <label class="text-info">Obra Ofertada:</label>
         </div>
         <div class="col-md-10">
-            <g:select name="obra"
-                      from="${obras}" optionKey="key" optionValue="value"
-                      style="width: 100%; margin-left: -80px; background-color: #ddeddd" value="${obra?.id}"/>
+            %{--            <g:select name="obra" from="${obras}" optionKey="key" optionValue="value"      style="width: 100%; margin-left: -80px; background-color: #ddeddd" value="${obra?.id}"/>--}%
+
+            <select id="obra" class="selectObras col-md-12" >
+                <g:each in="${obras}" var="obraSeleccionada">
+                    <option class="obra" value="${obraSeleccionada?.key}">
+                        ${obraSeleccionada?.value}
+                    </option>
+                </g:each>
+            </select>
         </div>
     </div>
 </div>
 
-
-
-<div id="list-grupo" class="col-md-12" role="main" style="margin-top: 10px;margin-left: -10px">
+<div id="list-grupo" class="col-md-12" role="main" style="margin-top: 20px;margin-left: -10px">
     <div style="border-bottom: 1px solid black;padding-left: 50px;position: relative;">
         <g:form name="frmRubro" action="save" style="height: 80px;">
             <input type="hidden" id="rubro__id" name="rubro.id" value="${rubro?.id}">
@@ -619,6 +592,8 @@ border-bottom: 1px solid black;height: 30px; width: 97%">
 
 <script type="text/javascript">
 
+    $('.selectObras').select2();
+
     function validarNum(ev) {
         /*
          48-57      -> numeros
@@ -642,7 +617,7 @@ border-bottom: 1px solid black;height: 30px; width: 97%">
     $("#costo_indi").keydown(function (ev) {
         return validarNum(ev);
     });
-    
+
     $("#btnGuardarCostosIndirectos").click(function () {
         var obra = '${obra?.id}';
         var costo = $("#costo_indi").val();

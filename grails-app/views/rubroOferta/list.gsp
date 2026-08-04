@@ -28,13 +28,19 @@
 
             <div id="list-grupo" class="col-md-10" role="main" style="margin-top: 10px;margin-left: 5px">
                 <div class="col-md-12">
-                    <div class="col-md-2">
-                        <b>Obra Ofertada:</b>
+                    <div class="col-md-2" style="text-align: right">
+                        <label>Obra Ofertada:</label>
                     </div>
                     <div class="col-md-10">
-                        <g:select name="obra" class="form-control"
-                                  from="${obras}" optionKey="key" optionValue="value"
-                                  style="width: 100%;"/>
+%{--                        <g:select name="obra" class="form-control"   from="${obras}" optionKey="key" optionValue="value"  style="width: 100%;"/>--}%
+
+                        <select id="obra" class="selectObras col-md-12" >
+                            <g:each in="${obras}" var="obraSeleccionada">
+                                <option class="obra" value="${obraSeleccionada?.key}">
+                                    ${obraSeleccionada?.value}
+                                </option>
+                            </g:each>
+                        </select>
                     </div>
                 </div>
             </div>
@@ -47,9 +53,10 @@
     </fieldset>
 </div>
 
-
 <script type="text/javascript">
     var di;
+
+    $('.selectObras').select2();
 
     $("#btnRegresar").click(function () {
         location.href = "${createLink(controller: 'rubroOf', action: 'index')}";

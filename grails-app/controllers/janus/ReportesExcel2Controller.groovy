@@ -1754,6 +1754,8 @@ class ReportesExcel2Controller {
         def band=0
         def rowsTrans=[]
 
+        println("res " + res)
+
         res.each {r->
             if(r["grpocdgo"]==3){
                 if(band==0){
@@ -1774,10 +1776,10 @@ class ReportesExcel2Controller {
                 rowF1.createCell(1).setCellValue(r["itemnmbr"]?.toString())
                 rowF1.createCell(2).setCellValue(r["rbrocntd"]?.toDouble())
                 rowF1.createCell(3).setCellValue(r["rbpcpcun"]?.toDouble())
-                rowF1.createCell(4).setCellValue(r["rbpcpcun"] * r["rbrocntd"])
+                rowF1.createCell(4).setCellValue((r["rbpcpcun"] ?: 0) * (r["rbrocntd"] ?: 0))
                 rowF1.createCell(5).setCellValue(r["rndm"]?.toDouble())
                 rowF1.createCell(6).setCellValue(r["parcial"]?.toDouble())
-                totalHer += r["parcial"]
+                totalHer += (r["parcial"] ?: 0)
                 fila++
             }
             if(r["grpocdgo"]==2){
