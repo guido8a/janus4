@@ -1672,7 +1672,7 @@ class ReportesExcel2Controller {
 
 
     def imprimirRubroOferentesExcel(){
-//        println "imprimir rubro  excel "+params
+        println "imprimir rubro  excel "+params
         def rubro = Item.get(params.id)
         def indi = params.indi
         def obra = Obra.get(params.obra)
@@ -1753,8 +1753,6 @@ class ReportesExcel2Controller {
         def total = 0
         def band=0
         def rowsTrans=[]
-
-        println("res " + res)
 
         res.each {r->
             if(r["grpocdgo"]==3){

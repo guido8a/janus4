@@ -52,7 +52,7 @@
 
             <select id="obra" class="selectObras col-md-12" >
                 <g:each in="${obras}" var="obraSeleccionada">
-                    <option class="obra" value="${obraSeleccionada?.key}">
+                    <option class="obra" value="${obraSeleccionada?.key}" >
                         ${obraSeleccionada?.value}
                     </option>
                 </g:each>
@@ -593,6 +593,19 @@
 <script type="text/javascript">
 
     $('.selectObras').select2();
+
+    <g:if test="${obra?.id}">
+    $('.selectObras').val('${obra?.id}').trigger('change');
+    </g:if>
+
+    $("#obra").change(function () {
+        var obra = $("#obra option:selected").val();
+        var a = cargarLoader("Cargando...");
+        <g:if test="${obra?.id}">
+        location.href = "${g.createLink(controller: 'rubroOf', action: 'rubroPrincipalOf')}?idRubro=" + '${rubro?.id}' + '&obra=' + obra;
+        </g:if>
+        a.modal("hide");
+    });
 
     function validarNum(ev) {
         /*
