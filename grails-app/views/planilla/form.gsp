@@ -486,7 +486,8 @@
         </g:if>
         </g:if>
         <g:else>
-        minDate: new Date(${fechaInicia?.format('yyyy')},${fechaInicia?.format('MM')?.toInteger() - 1},${fechaInicia?.format('dd')?.toInteger() + 1},0,0,0,0),
+        minDate: new Date(${contrato.fechaSubscripcion.format('yyyy')},${contrato.fechaSubscripcion.format('MM').toInteger() - 1},${contrato.fechaSubscripcion.format('dd')},0,0,0,0),
+        %{--minDate: new Date(${fechaInicia?.format('yyyy')},${fechaInicia?.format('MM')?.toInteger() - 1},${fechaInicia?.format('dd')?.toInteger() + 1},0,0,0,0),--}%
         </g:else>
         sideBySide: true,
         icons: {
