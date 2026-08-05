@@ -856,7 +856,7 @@ class RubroOfController {
                 "from obra, obof " +
                 "where obof.obra__id = obra.obra__id and obof.prsn__id = ${oferente.id}" +
                 "order by obofetdo desc, obra.obra__id"
-//        println "sql: $sql"
+        println "sql: $sql"
         cn.eachRow(sql.toString()) { r ->
             obras[r.id] = r.nombre
         }
@@ -1783,6 +1783,7 @@ class RubroOfController {
                                         println "sql: $sql"
                                         try {
                                             cn.execute(sql.toString())
+                                            done++
                                         } catch (e) {
                                             println " no se pudo guardar $rgst: ${e.erros()}"
                                         }
@@ -1796,9 +1797,9 @@ class RubroOfController {
                     }
 
                 } //sheets.each
-//                if (done > 0) {
+                if (done > 0) {
                     doneHtml = "<div class='alert alert-success'>Se han ingresado correctamente " + done + " registros</div>"
-//                }
+                }
 
                 def str = doneHtml
                 str += htmlInfo
