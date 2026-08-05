@@ -26,7 +26,7 @@ class RubroOfertaController {
 
         def obra = Obra.get(params.id)
         def cn = dbConnectionService.getConnection()
-        def sql = "select ofrb.ofrb__id, ofrbordn, ofrbnmbr, ofrbpcun, sum(dtrbsbtt*(1+ofrbindi/100)), " +
+        def sql = "select ofrb.ofrb__id, ofrbordn, ofrbnmbr, ofrbpcun, sum(dtrbsbtt*(1+ofrbindi/100))::numeric(14,5), " +
                 "ofrbpcun - sum(dtrbsbtt*(1+ofrbindi/100))::numeric(14,5) as diff from ofrb, dtrb where obra__id = ${obra?.id} " +
                 "and dtrb.ofrb__id = ofrb.ofrb__id group by ofrb.ofrb__id, ofrbordn, ofrbnmbr, ofrbpcun order by ofrbordn;"
         println "sql. $sql"
