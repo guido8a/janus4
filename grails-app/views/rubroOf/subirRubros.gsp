@@ -72,7 +72,7 @@
 %{--                      style="width: 100%; margin-left: -80px"/>--}%
 
 
-            <select class="selectObras col-md-12" >
+            <select name="obra" class="selectObras col-md-12" >
                 <g:each in="${obras}" var="obraSeleccionada">
                     <option class="obra" value="${obraSeleccionada?.key}">
                         ${obraSeleccionada?.value}
