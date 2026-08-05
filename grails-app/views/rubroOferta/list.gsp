@@ -51,7 +51,7 @@
             <br/>  punto número 4 <strong> "Validar items y revisar APU del oferente" </strong> y validar los rubros.
             <a href="#" class="btn btn-success" id="btnIrValidar">
                 <i class="fa fa-check"></i>
-                Validar items
+                Ir a Validar items
             </a>
         </div>
     </div>
