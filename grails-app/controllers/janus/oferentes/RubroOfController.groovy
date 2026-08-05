@@ -1184,11 +1184,17 @@ class RubroOfController {
                 def pathFile = path + fileName
                 def src = new File(pathFile)
 
-                def i = 1
-                while (src.exists()) {
-                    pathFile = path + fn + "_" + i + "." + ext
-                    src = new File(pathFile)
-                    i++
+//                def i = 1
+//                while (src.exists()) {
+//                    pathFile = path + fn + "_" + i + "." + ext
+//                    src = new File(pathFile)
+//                    i++
+//                }
+
+
+                def oldFile = new File(pathFile)
+                if (oldFile.exists()) {
+                    oldFile.delete()
                 }
 
                 f.transferTo(new File(pathFile)) // guarda el archivo subido al nuevo path
@@ -1797,9 +1803,9 @@ class RubroOfController {
                     }
 
                 } //sheets.each
-                if (done > 0) {
+//                if (done > 0) {
                     doneHtml = "<div class='alert alert-success'>Se han ingresado correctamente " + done + " registros</div>"
-                }
+//                }
 
                 def str = doneHtml
                 str += htmlInfo
