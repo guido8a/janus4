@@ -58,7 +58,8 @@
             <label style="font-size: 14px"> Composición </label>
         </div>
         <div class="col-md-4">
-            <g:select name="composicion" from="${janus.RegistroApu.findAllByPersona(seguridad.Persona.get(oferente?.id)).sort{it.nombre}}" optionValue="${{it.nombre}}" optionKey="id" class="form-control" noSelection="[null: 'Nueva composición']" />
+            <g:select name="composicion" from="${janus.RegistroApu.findAllByPersona(seguridad.Persona.get(oferente?.id)).sort{it.nombre}}"
+                      optionValue="${{it.nombre}}" optionKey="id" class="form-control" noSelection="[null: 'Nueva composición']" />
         </div>
     </div>
 

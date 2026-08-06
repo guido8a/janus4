@@ -26,7 +26,7 @@
 %{--                      style="width: 100%; margin-left: -80px" />--}%
 
 
-            <select name="obra" class="selectObra col-md-12" >
+            <select name="obra" class="selectObra col-md-11" >
                 <g:each in="${obras}" var="obraSeleccionada">
                     <option class="obra" value="${obraSeleccionada?.id}">
                         ${obraSeleccionada?.nombre}
@@ -37,7 +37,7 @@
         </div>
 
         <div class="col-md-12" style="margin-top: 20px; margin-bottom: 20px">
-            <div class="col-md-2"></div>
+            %{--<div class="col-md-2"></div>--}%
             <div class="col-md-2"><b>Archivo Excel a subir:</b></div>
             <div class="col-md-4">
                 <input type="file" class="required" name="file" multiple accept=".xlsx" style="width: 100%; font-size: 12pt" value="Arch"/>
@@ -48,8 +48,13 @@
                 </a>
             </div>
             <div class="col-md-2">
+                <a href="#" class="btn btn-success" id="btnRubros"><i class="fa fa-check"></i>
+                    1. Comprobar Hojas de APUs
+                </a>
+            </div>
+            <div class="col-md-2">
                 <a href="#" class="btn btn-success" id="btnRevisar"><i class="fa fa-check"></i>
-                    Comprobar archivo APUs
+                    2. Comprobar APUs
                 </a>
             </div>
         </div>
@@ -366,7 +371,6 @@
     $("#btnSubmitCrono").click(function () {
         $("#inputRevisar").val("0")
         var rev = $("#inputRevisar").val()
-        console.log("rev:", rev)
         if ($("#frmUpload").valid()) {
             $("#frmUpload").submit();
         }
@@ -375,9 +379,18 @@
     $("#btnRevisar").click(function () {
         $("#inputRevisar").val("1")
         var rev = $("#inputRevisar").val()
-        console.log("rev:", rev)
         if ($("#frmUpload").valid()) {
             $("#frmUpload").submit();
+        }
+    });
+
+    $("#btnRubros").click(function () {
+        $("#inputRevisar").val("R")
+        $("#frmUpload").attr("action", "revisaAPU");
+        var $form = $("#frmUpload");
+        console.log('acción', $form.action)
+        if ($form.valid()) {
+            $form.submit();
         }
     });
 

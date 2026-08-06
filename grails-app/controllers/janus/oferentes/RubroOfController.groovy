@@ -978,7 +978,7 @@ class RubroOfController {
                                     sql = "select item__id from vlof where obra__id = ${params.obra} and vlofordn = ${ordn}"
                                     def item_id = cn.rows(sql.toString())[0]?.item__id
                                     if (!item_id) {
-                                        errores += "<li>No se encontró rurbo ${ordn} (linea: ${row.rowNum + 1})</li>"
+                                        errores += "<li>No se encontró rubro ${ordn} (linea: ${row.rowNum + 1})</li>"
                                         println "No se encontró rubro con id ${ordn}"
                                         ok = false
                                     } else {
@@ -1337,7 +1337,7 @@ class RubroOfController {
                                     println "---sql: $sql"
                                     ofrb_id = cn.rows(sql.toString())[0]?.ofrb__id ?: 0
                                     if (!ofrb_id) {
-                                        errores += "<li>No se encontró rurbo ${ordn} de la hoja: <strong>${sheet.getSheetName().toString()}</strong></li>"
+                                        errores += "<li>No se encontró rubo ${ordn} de la hoja: <strong>${sheet.getSheetName().toString()}</strong></li>"
                                         errores += "Revise que el nombre del rubro ${rbronmbr} coincida con el subido en presupuesto</li>"
 
                                         println "No se encontró rubro con id ${ordn} ${sheet.getSheetName().toString()}"
@@ -1843,7 +1843,7 @@ class RubroOfController {
                 "obra__id = ${obra} and ofrbordn = ${ordn}"
         def ofrb_id = cn.rows(sql.toString())[0]?.ofrb__id ?: 0
         if (!ofrb_id) {
-            errores += "<li>No se encontró rurbo ${ordn}</li>"
+            errores += "<li>No se encontró rubro ${ordn}</li>"
             println "No se encontró rubro con id ${ordn}"
         } else {
             sql = "select dtrb__id from dtrb where ofrb__id = ${ofrb_id} and " +
@@ -1878,7 +1878,7 @@ class RubroOfController {
         def ofrb_id = cn.rows(sql.toString())[0]?.ofrb__id ?: 0
         println "insertaTrnp $oferente, $obra, $ordn, $cdgo, $nmbr, $undd, $peso, $cntd, $trfa, $pcun, $csto, $dstn"
         if (!ofrb_id) {
-            errores += "<li>No se encontró rurbo ${ordn}</li>"
+            errores += "<li>No se encontró rubro ${ordn}</li>"
             println "No se encontró rubro con id ${ordn}"
         } else {
             println "porcesa transporte: dstn: $dstn"
@@ -2534,6 +2534,242 @@ class RubroOfController {
             }
         }else{
             render "err_Ingrese un costo indirecto"
+        }
+
+    }
+
+
+    def revisaAPU() {
+        println "revisaAPU $params"
+        def obra = params.obra
+        def cn = dbConnectionService.getConnection()
+        def filasNO = [0, 1]
+        def filasTodasNo = []
+        def oferente = session.usuario
+        def path = "/var/janus/" + "xlsOfertas/" + params.obra + "/"   //web-app/archivos
+        new File(path).mkdirs()
+        def sql = ""
+        def cols = [A: 0, B: 1, C: 2, D: 3, E: 4, F: 5, G: 6, H: 7, I: 8, J: 9, K: 10, L: 11, M: 12, N: 13]
+        def rbronmbr = "", rbroundd = ""
+
+        def f = request.getFile('file')  //archivo = name del input type file
+        if (f && !f.empty) {
+            def fileName = f.getOriginalFilename() //nombre original del archivo
+            def ext
+
+            def parts = fileName.split("\\.")
+            fileName = ""
+            parts.eachWithIndex { obj, i ->
+                if (i < parts.size() - 1) {
+                    fileName += obj
+                } else {
+                    ext = obj
+                }
+            }
+
+            if (ext == "xlsx") {
+
+                fileName = "xlsApus_" + params.obra
+
+                def fn = fileName
+                fileName = fileName + "." + ext
+
+                def pathFile = path + fileName
+                def src = new File(pathFile)
+
+                def oldFile = new File(pathFile)
+                if (oldFile.exists()) {
+                    oldFile.delete()
+                }
+
+                f.transferTo(new File(pathFile)) // guarda el archivo subido al nuevo path
+
+                //procesar excel
+                def htmlInfo = "", errores = "", doneHtml = "", done = 0
+                InputStream ExcelFileToRead = new FileInputStream(pathFile);
+                XSSFWorkbook workbook = new XSSFWorkbook(ExcelFileToRead);
+
+                XSSFRow row;
+                XSSFCell cell;
+
+                int hojas = workbook.getNumberOfSheets(); //Obtenemos el número de hojas que contiene el documento
+                println "Número Hojas: $hojas"
+
+                def sccnEq = false, sccnMo = false, sccnMt = false, sccnTr = false, sccnRubro = false, hojaRubro = false
+                def cdgo, nmbr, undd, peso, cntd, trfa, pcun, rndm, csto, dstn
+                def txRubro = "", tipo = "", txHoja = "", hjRubro = ""
+                def ofrb_id = 0
+                def tr_Eq, tr_Mo, tr_Mt, tr_Tr
+                def rg_dataEq, rg_dataMo, rg_dataMt, rg_dataTr
+
+                //for que recorre las hojas existentes
+                def hj = 0
+                while (hj < hojas) {
+                    XSSFSheet sheet = workbook.getSheetAt(hj);
+                    sheet = workbook.getSheetAt(hj);
+                    def ordn = sheet.getSheetName().toString()
+                    try {
+                        ordn = ordn.toInteger()
+                    } catch (e) {
+                        ordn = 0
+                    }
+                    Iterator rows = sheet.rowIterator();
+                    hojaRubro = false
+
+                    txHoja = sheet.getSheetName()
+                    hjRubro = ""
+                    println "Porcesando hoja: $hj --> " + sheet.getSheetName()
+                    errores = ""
+                    tr_Eq = ""; tr_Mo= ""; tr_Mt = ""; tr_Tr = ""
+
+                    def fila = 0
+                    while (rows.hasNext() && (fila < 76)) {
+                        row = (XSSFRow) rows.next()
+                        if (true) {
+                            def ok = true
+                            cdgo = ''; nmbr = ''; undd = ''; cntd = 0; trfa = 0; pcun = 0; rndm = 0; csto = 0; peso = 0;
+                            dstn = 0
+                            Iterator cells = row.cellIterator()
+                            def rgst = []
+                            def meses = []
+//                            println "fila: ${row.rowNum}"
+                            while (cells.hasNext()) {
+                                cell = (XSSFCell) cells.next()
+                                if (row.rowNum == 57) {
+                                    println "Cell: ${cell.getCellType()} ${cell.getRawValue()}"
+                                }
+                                if (cell.getCellType() == XSSFCell.CELL_TYPE_NUMERIC) {
+                                    rgst.add(cell.getNumericCellValue())
+                                } else if (cell.getCellType() == XSSFCell.CELL_TYPE_STRING) {
+                                    rgst.add(cell.getStringCellValue())
+                                } else if (cell.getCellType() == XSSFCell.CELL_TYPE_FORMULA) {
+//                                    rgst.add(cell.getNumericCellValue())
+                                    rgst.add(cell.getRawValue())
+                                } else {
+                                    rgst.add('')
+                                }
+                            }
+
+                            if (rgst[cols[params.cldatitl]] == params.rbrotitl) { //ANÁLISIS DE PRECIOS UNITARIOS
+                                println "hoja: " + sheet.getSheetName().toString() + " Ok"
+                                hojaRubro = true
+                            }
+
+                            if (hojaRubro) { //ANÁLISIS DE PRECIOS UNITARIOS
+                                println "Procesa: " + sheet.getSheetName().toString()
+                                println "--> rgst[cols[params.cldarbro] --> ${rgst[cols[params.cldarbro]]}"
+                                if(rgst[cols[params.cldarbro]]){
+                                    println "${rgst[cols[params.cldarbro]]} == ${params.rbro} && txRubro: ${txRubro}"
+//                                    if (rgst[cols[params.cldarbro]]?.size() >= params.rbro.size()) {
+                                    if ( (rgst[cols[params.cldarbro]] == params.rbro) && (txRubro == '')) {
+                                        if(params.prefijo) {
+                                            txRubro = rgst[cols[params.cldarbro]] ? rgst[cols[params.cldarbro]][0..(params.rbro.size() - 1)] : ''
+                                        } else {
+                                            txRubro = rgst[cols[params.rbronmbr]] ? rgst[cols[params.rbronmbr]] : ''
+                                        }
+                                        hjRubro = txRubro
+                                    } else {
+                                        txRubro = ''
+                                    }
+
+                                }
+//                                println "txRubro --> $txRubro"
+//                                if (rgst[cols[params.cldarbro]] == params.rbro) {
+                                if ( (txRubro != '') && (ofrb_id == 0) ) {
+//                                    rbronmbr = rgst[cols[params.rbronmbr]]
+//                                    rbronmbr = rbronmbr.toString().replaceAll(txRubro, '').trim()
+//                                    rbronmbr = rbronmbr.toString().replaceAll("'", "''")
+                                    rbronmbr = txRubro
+                                    if(params.prefijo) {
+                                        rbronmbr = rbronmbr.toString().replaceAll(txRubro, '').trim()
+                                        rbronmbr = rbronmbr.toString().replaceAll("'", "''")
+                                    } else {
+                                        rbronmbr = rbronmbr.toString().replaceAll("'", "''")
+                                    }
+                                    sccnRubro = true
+                                    println "Rubro: $rbronmbr"
+                                    sql = "select ofrb__id from ofrb where prsn__id = ${oferente.id} and " +
+                                            "obra__id = ${obra} and ofrbnmbr = '${rbronmbr}'"
+                                    println "---sql: $sql"
+                                    ofrb_id = cn.rows(sql.toString())[0]?.ofrb__id ?: 0
+                                    if (!ofrb_id) {
+                                        errores += "<p style='color: #804040'>No se encontró rubro ${ordn} de la hoja: <strong>'${sheet.getSheetName().toString()}'</strong>"
+                                        errores += " Revise que el nombre del rubro '${rbronmbr}' coincida con el subido en el excel de presupuesto</p>"
+
+                                        println "No se encontró rubro con id ${ordn} ${sheet.getSheetName().toString()}"
+                                        break
+                                    } else {
+                                        println "---OFRB: $ofrb_id"
+                                        if(ordn > 0) {
+                                            sql = "update ofrb set ofrbordn = ${ordn} where ofrb__id = '${ofrb_id}'"
+                                            cn.execute(sql.toString())
+                                        }
+                                    }
+
+                                }
+
+                                /** --------------- Equipos del rbro ordn ---------------**/
+
+                            } else {
+                                println "No es hoja de Rubro: ${sheet.getSheetName().toString()}"
+                                break
+                            }
+                            /** va antes que ssnRbro = true porque se analiza en la siguiente pasada **/
+
+                        }
+                        fila++
+                    } //sheets.each
+                    if(params.revisar == '1') {
+//                        htmlInfo += "<p>Hoja : " + sheet.getSheetName() + " Rubro: " + rbronmbr + "</p>" +
+//                                "<p>$rg_lee</p> <p>$rg_data</p>"
+
+                        if(!hjRubro){
+                            htmlInfo += "La hoja $txHoja ($rbronmbr) no tiene un rubro válido"
+                        }
+
+//                        htmlInfo += "<div class='breadcrumb' style='font-size: 14px' ><strong>Hoja : " + sheet.getSheetName() + " Rubro: " + rbronmbr + "<strong></div>" +
+//                                "<table class='table table-bordered table-condensed table-hover table-striped'>" +
+//                                "<tbody> " +
+//                                tr_Eq +
+//                                tr_Mo +
+//                                tr_Mt +
+//                                tr_Tr +
+//                                "</tbody> " +
+//                                "</table>"
+
+                    } else {
+//                        htmlInfo += "<p>Hoja : " + sheet.getSheetName() + " Rubro: " + rbronmbr + "<strong> Ok</strong></p>"
+                        def mnsj = "${!hjRubro? 'No existe el rubro en el presupuesto cargado' : errores?: ' ok'}"
+//                        htmlInfo += "<p>Hoja : " + sheet.getSheetName() + " Rubro: " + rbronmbr + "<strong> " + "${errores?: '  ok'}" + "</strong></p>"
+                        htmlInfo += "<p>Hoja : " + sheet.getSheetName() + " Rubro: " + rbronmbr + "<strong> " + mnsj + "</strong></p>"
+
+                    }
+                    hj++
+                    hojaRubro = false
+                    ofrb_id = 0
+//                    }
+                } //sheets.each
+                if (done > 0) {
+                    doneHtml = "<div class='alert alert-success'>Se han ingresado correctamente " + done + " registros</div>"
+                }
+
+                def str = doneHtml
+                str += htmlInfo
+                if (errores != "") {
+                    str += "<h1>Errores del archivo excel a subir</h1><ol>" + errores + "</ol>"
+                }
+
+                flash.message = str
+
+                println "DONE!!"
+                redirect(action: "mensajeUploadApu", id: params.id)
+            } else {
+                flash.message = "Seleccione un archivo Excel xlsx para procesar (archivos xls deben ser convertidos a xlsx primero)"
+                redirect(action: 'formArchivo')
+            }
+        } else {
+            flash.message = "Seleccione un archivo para procesar"
+            redirect(action: 'subirExcel')
         }
 
     }
