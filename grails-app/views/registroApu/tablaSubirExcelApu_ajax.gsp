@@ -43,6 +43,7 @@
     <g:hiddenField name="persona" value="${oferente?.id}" />
     <g:hiddenField name="id" value="${registro?.id}" />
     <g:hiddenField name="revisar" id='inputRevisar' value='0' />
+    <g:hiddenField name="obra" id='obra' value='${obra}' />
 
     <div id="list-grupo" class="col-md-12" style="margin-left: 30px">
         <strong>El título debe estar en la primera línea de cada hoja de los APU</strong>
