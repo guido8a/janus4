@@ -46,6 +46,8 @@ class RegistroApuController {
             registro = new RegistroApu()
         }
 
+        registro.nombre = params.composicionName
+
         if(params.prefijo){
             params.prefijo = 1
         }else{
@@ -104,5 +106,12 @@ class RegistroApuController {
         return[registro: registro]
     }
 
+    def tablaSubirExcelApu_ajax(){
+        println "---> ${params}"
+        def oferente = session.usuario
+        def obra = Obra.get(params.obra)
+        def registroApu = RegistroApu.findByObra(obra) ?: new RegistroApu()
 
+        return [oferente: oferente, registro: registroApu, obra: params.obra]
+    }
 }

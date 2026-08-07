@@ -4,6 +4,7 @@ import seguridad.Persona
 
 class RegistroApu {
 
+    Obra obra
     Persona persona
     String rbrotitl
     String cldatitl
@@ -58,6 +59,7 @@ class RegistroApu {
         version false
         columns {
             id column: 'rgap__id'
+            obra column: 'obra__id'
             persona column: 'prsn__id'
             rbrotitl column: 'rgaptitl'
             cldatitl column: 'rgapcdti'
@@ -106,6 +108,7 @@ class RegistroApu {
         }
     }
     static constraints = {
+        obra(blank: false, nullable: false)
         persona(blank: false, nullable: false)
         rbrotitl(blank: true, nullable: true)
         cldatitl(blank: true, nullable: true)

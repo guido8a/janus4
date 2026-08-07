@@ -53,29 +53,24 @@
 
 <div class="row" >
     <div class="col-md-12" style="margin-bottom: 10px">
-        <div class="col-md-2" style="text-align: right">
-            <label >Obra Ofertada:</label>
+        <div class="col-md-3"></div>
+        <div class="col-md-1">
+            <label style="font-size: 14px"> Composición </label>
         </div>
-        <div class="col-md-10">
-            <select id="obra" class="selectObra col-md-11" >
-                <g:each in="${obras}" var="obraSeleccionada">
-                    <option class="obra" value="${obraSeleccionada?.id}">
-                        ${obraSeleccionada?.nombre}
-                    </option>
-                </g:each>
-            </select>
+        <div class="col-md-4">
+            <g:select name="composicion" from="${janus.RegistroApu.findAllByPersona(seguridad.Persona.get(oferente?.id)).sort{it.nombre}}"
+                      optionValue="${{it.nombre}}" optionKey="id" class="form-control" noSelection="[null: 'Nueva composición']" />
         </div>
+    </div>
+
+    <div id="divTablaRegistro">
     </div>
 </div>
 
-<div class="row" >
-        <div id="divTablaRegistro">
-        </div>
-</div>
 
 <script type="text/javascript">
 
-     $("#composicion, .selectObra").change(function () {
+    $("#composicion").change(function () {
         cargarTabla();
     });
 
@@ -83,14 +78,15 @@
 
     function cargarTabla(){
         var d = cargarLoader("Cargando...");
+        var id = $("#composicion option:selected").val();
         var oferente = '${oferente}';
-        var obra = $("#obra option:selected").val();
         $.ajax({
             type: "POST",
-            url: "${createLink(controller: 'registroApu', action:'tablaSubirExcelApu_ajax')}",
+            url: "${createLink(controller: 'registroApu', action:'tablaRegistro_ajax')}",
             data: {
                 oferente: oferente,
-                obra: obra
+                id: id,
+                obra: "${obra}"
             },
             success: function (msg) {
                 d.modal("hide");

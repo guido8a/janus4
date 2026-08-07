@@ -844,25 +844,20 @@ class RubroOfController {
     }
 
     def subirExcelApu() {
-        println "subirExcelApu params: $params"
+        println("subirExcelApu params:" + params)
         def oferente = session.usuario
         def cn = dbConnectionService.getConnection()
-        def obras = [:]
-//        def sql = "select distinct obra.obra__id id, obracdgo||' - '||obranmbr nombre " +
-//                "from obra, obof " +
-//                "where obof.obra__id = obra.obra__id and obof.prsn__id = ${oferente.id} " +
-//                "order by 1"
+        def obras = []
         def sql = "select distinct obra.obra__id id, obracdgo||' - '||obranmbr nombre, obofetdo " +
                 "from obra, obof " +
                 "where obof.obra__id = obra.obra__id and obof.prsn__id = ${oferente.id}" +
                 "order by obofetdo desc, obra.obra__id"
-        println "sql: $sql"
+//        println "sql: $sql"
         cn.eachRow(sql.toString()) { r ->
-            obras[r.id] = r.nombre
+            obras.add(["id": r.id, "nombre": "${r.nombre}"])
         }
 
-//        [obras: obras, oferente: oferente, tipo: params.tipo, obra: params.obra]
-        [oferente: oferente, tipo: params.tipo, obra: params.obra]
+        [oferente: oferente, tipo: params.tipo, obras: obras]
     }
 
     def uploadApus() {
