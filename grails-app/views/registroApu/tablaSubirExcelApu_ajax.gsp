@@ -43,6 +43,13 @@
             </div>
         </div>
     </g:if>
+    <g:else>
+        <div class="col-md-12">
+            <div class="alert alert-warning" style="text-align: center; font-size: 16px; font-weight: bold">
+                <i class="fa fa-exclamation-triangle text-info fa-2x"></i> Antes de subir el archivo excel es necesario crear una composición
+            </div>
+        </div>
+    </g:else>
 
     <g:hiddenField name="persona" value="${oferente?.id}" />
     <g:hiddenField name="id" value="${registro?.id}" />
