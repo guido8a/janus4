@@ -160,7 +160,7 @@ class PlanillasService {
 //        def cb = cabeceraBo(tblaBo, plnl)
         tblaBo.add(titulos[0])
         tblaBo.add(titulos[1])
-        println "Bo: $tblaBo"
+//        println "Bo: $tblaBo"
         tblaBo  //retorna tabla armada
     }
 
