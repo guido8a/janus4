@@ -110,7 +110,13 @@ class RegistroApuController {
         println "---> ${params}"
         def oferente = session.usuario
         def obra = Obra.get(params.obra)
-        def registroApu = RegistroApu.findByObra(obra) ?: new RegistroApu()
+        def registroApu
+
+        if(obra){
+            registroApu = RegistroApu.findByObra(obra) ?: new RegistroApu()
+        }else{
+            registroApu = new RegistroApu()
+        }
 
         return [oferente: oferente, registro: registroApu, obra: params.obra]
     }

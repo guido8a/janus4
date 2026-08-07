@@ -9,11 +9,13 @@
         <div class="col-md-4" id="divComposicion" >
             <g:textField name="composicionName" value="${registro?.nombre ?: ''}" class="form-control" />
         </div>
-        <div class="col-md-2">
-            <a href="#" class="btn btn-info" id="btnGuardarComposicion"><i class="fa fa-save"></i>
-                Guardar composición
-            </a>
-        </div>
+        <g:if test="${obra}">
+            <div class="col-md-2">
+                <a href="#" class="btn btn-info" id="btnGuardarComposicion"><i class="fa fa-save"></i>
+                    Guardar composición
+                </a>
+            </div>
+        </g:if>
     </div>
 
     <g:if test="${registro?.id}">
