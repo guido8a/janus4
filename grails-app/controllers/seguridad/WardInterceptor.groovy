@@ -15,7 +15,8 @@ class WardInterceptor {
     }
 
     boolean before() {
-        println "acción: " + actionName + " controlador: " + controllerName + " params: $params"
+        println "us: " + session?.usuario?.login + " - ac: " + actionName + " ct: " + controllerName + " p: " + params + " " + new Date()
+//        println "acción: " + actionName + " controlador: " + controllerName + " params: $params"
         def usro
         if(session) {
             usro = session.usuario
