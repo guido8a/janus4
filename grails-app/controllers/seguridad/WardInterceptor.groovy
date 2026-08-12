@@ -81,7 +81,7 @@ class WardInterceptor {
 
 
     boolean isAllowed() {
-        println "**--> ${controllerName?.toLowerCase()} --> ${actionName}"
+//        println "**--> ${controllerName?.toLowerCase()} --> ${actionName}"
 
         try {
             if((request.method == "POST") || (actionName.toLowerCase() =~ 'ajax') )  {
@@ -98,8 +98,7 @@ class WardInterceptor {
                         "ctrlnmbr ilike '${controllerName.toLowerCase()}' and " +
                         "accnnmbr ilike '${actionName.toLowerCase()}'"
                 puede = cn.rows(sql.toString())[0].cnta > 0
-                println "sql--: $sql --> puede: $puede"
-                println "sql--: $sql --> puede: $puede"
+//                println "sql--: $sql --> puede: $puede"
             }
             return puede
 

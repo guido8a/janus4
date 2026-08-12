@@ -108,7 +108,7 @@ class AccionesController {
         def modulo = Modulo.findByDescripcionLike("noAsignado")
         def tx = "update accn set mdlo__id = " + modulo.id + ", tpac__id = " + tp + " where accn__id in (" + ids + ")"
 
-        println "sql-- $tx"
+//        println "sql-- $tx"
         try {
             cn.execute(tx)
         }
