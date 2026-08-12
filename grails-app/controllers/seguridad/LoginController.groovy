@@ -87,6 +87,7 @@ class LoginController {
         }
     }
 
+    /** no se usa esta función **/
     def validarSesion() {
         println "sesion creada el:" + new Date(session.getCreationTime()) + " hora actual: " + new Date()
         println "último acceso:" + new Date(session.getLastAccessedTime()) + " hora actual: " + new Date()
@@ -175,7 +176,7 @@ class LoginController {
         def conecta = false
 
         message = message.replace("'", '"')
-        println "json: $message"
+//        println "json: $message"
         try {
             post.setRequestMethod("POST")
             post.setDoOutput(true)
@@ -183,15 +184,15 @@ class LoginController {
             post.getOutputStream().write(message.getBytes("UTF-8"));
             def postRC = post.getResponseCode();
 
-            println "responde: ${postRC}"
-            println "responde2: ${post.getResponseMessage()}"
+//            println "responde: ${postRC}"
+//            println "responde2: ${post.getResponseMessage()}"
 
             def jsonSlurper = new JsonSlurper()
             if (postRC.equals(200)) {
                 def texto = post.getInputStream().getText()
                 println(texto);
                 def retorna = jsonSlurper.parseText(texto)
-                println "autorizado: ${retorna.autorizado}"
+//                println "autorizado: ${retorna.autorizado}"
                 conecta = retorna.autorizado
             }
         } catch (e) {
