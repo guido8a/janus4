@@ -31,7 +31,7 @@ class SeccionController {
     } //form_ajax
 
     def updateNumeros() {
-        println params
+//        println params
         def msg = "OK"
         def acta = Acta.get(params.acta)
         def seccion = Seccion.get(params.id)

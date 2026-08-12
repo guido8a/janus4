@@ -17,7 +17,7 @@ class ComunidadController {
     } //list
 
     def form_ajax() {
-        println("params " + params)
+//        println("params " + params)
         def comunidadInstance = new Comunidad(params)
         if (params.id) {
             comunidadInstance = Comunidad.get(params.id)

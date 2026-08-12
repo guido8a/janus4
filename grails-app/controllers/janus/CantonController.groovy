@@ -291,7 +291,7 @@ class CantonController {
     }
 
     def makeTreeNode(params) {
-        println "makeTreeNode.. $params"
+//        println "makeTreeNode.. $params"
         def id = params.id
         def tipo = ""
         def liId = ""
@@ -465,7 +465,7 @@ class CantonController {
      * Acción llamada con ajax que permite realizar búsquedas en el árbol
      */
     def arbolSearch_ajax() {
-        println "arbolSearch_ajax $params"
+//        println "arbolSearch_ajax $params"
         def search = params.str.trim()
         if (search != "") {
             def c = Canton.createCriteria()

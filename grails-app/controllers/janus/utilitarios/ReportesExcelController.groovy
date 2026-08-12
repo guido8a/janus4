@@ -102,7 +102,7 @@ class ReportesExcelController {
                 try {
                     col = Item.get(parts[0].toLong()).nombre
                 } catch (e) {
-                    println "error: " + e
+//                    println "error: " + e
                     col = parts[0]
                 }
                 col += " " + parts[1]?.replaceAll("T", " Total")?.replaceAll("U", " Unitario")
@@ -453,7 +453,7 @@ class ReportesExcelController {
     }
 
     def imprimirRubrosVaeExcel () {
-        println "imprimirRubrosVaeExcel --> "
+//        println "imprimirRubrosVaeExcel --> "
         def obra = Obra.get(params.obra.toLong())
         def lugar = obra.lugar
         def fecha = obra.fechaPreciosRubros
@@ -1942,7 +1942,7 @@ class ReportesExcelController {
         if(params.departamento) sqlWhere += " and obra.dpto__id = ${params.departamento} "
         if(params.fechaInicio) sqlWhere += " and obrafcha >= '${fcin}' "
         if(params.fechaFIn) sqlWhere += " and obrafcha <= '${fcfn}' "
-        println "sql: ${sqlSelect} ${sqlWhere} ${sqlOrder}"
+//        println "sql: ${sqlSelect} ${sqlWhere} ${sqlOrder}"
         "$sqlSelect $sqlWhere $sqlOrder".toString()
     }
 
@@ -2034,7 +2034,7 @@ class ReportesExcelController {
 
         def sqlOrder = "order by obracdgo"
 
-        println "llega params: $params"
+//        println "llega params: $params"
         params.nombre = "Código"
         if(campos.find {it.campo == params.buscador}?.size() > 0) {
             def op = operador.find {it.valor == params.operador}
@@ -2382,7 +2382,7 @@ class ReportesExcelController {
                 "from rbpc r where r.item__id = p.item__id and r.lgar__id = p.lgar__id) and lgar.lgar__id = p.lgar__id and lgar.tpls__id in (3,4,5) " +
                 "and tpls.tpls__id = lgar.tpls__id and itemetdo = 'A' order by lgardscr, tplsdscr, item.itemcdgo;"
 
-        println("sql " + sql)
+//        println("sql " + sql)
 
         def res = cn.rows(sql.toString())
 
@@ -2642,7 +2642,7 @@ class ReportesExcelController {
     def armaSqlPresupuesto(params) {
         def campos = reportesService.obrasPresupuestadas()
         def operador = reportesService.operadores()
-        println "armaSqlPresupuesto: $params"
+//        println "armaSqlPresupuesto: $params"
         def fcin = params.fechaInicio ? new Date().parse("dd-MM-yyyy", params.fechaInicio).format('yyyy-MM-dd') : ''
         def fcfn = params.fechaFin ? new Date().parse("dd-MM-yyyy", params.fechaFin).format('yyyy-MM-dd') : ''
 

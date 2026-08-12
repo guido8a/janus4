@@ -17,7 +17,7 @@ class SubPresupuestoController {
 
     def form_ajax() {
 
-        println("params" + params)
+//        println("params" + params)
 
         def obra = Obra.get(params.obra)
 
@@ -39,7 +39,7 @@ class SubPresupuestoController {
 
     def save() {
 
-        println "save sp: " + params
+//        println "save sp: " + params
 
         def grupoFiltrado = Grupo.findAllByCodigoNotIlikeAndCodigoNotIlikeAndCodigoNotIlike('1','2', '3');
         def subpreFiltrado = []
@@ -65,7 +65,7 @@ class SubPresupuestoController {
         else {
             def grp = Grupo.get(params."grupo.id")
             def subp = SubPresupuesto.findByDescripcionAndGrupo(params.descripcion.toString()?.trim(), grp)
-            println "sub "+subp
+//            println "sub "+subp
             if(subp){
                 if (params.volob.toString() == "1") {
                     render "NO_El subpresupuesto ${params.descripcion} ya existe"

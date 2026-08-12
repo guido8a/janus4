@@ -67,7 +67,7 @@ class ProveedorController {
         if (params.id) {
             proveedorInstance = Proveedor.get(params.id)
             if (!proveedorInstance) {
-                println "nop"
+//                println "nop"
                 render "NO"
                 return
             }//no existe el objeto
@@ -137,7 +137,7 @@ class ProveedorController {
 
 
     def proveedor(){
-        println("params " + params)
+//        println("params " + params)
         return[adquisicion: params.id]
     }
 
@@ -145,7 +145,7 @@ class ProveedorController {
         def usuario = Persona.get(session.usuario.id)
         def empresa = usuario.empresa
 
-        println("emrpesa " + empresa.id)
+//        println("emrpesa " + empresa.id)
 
         def tipo = params.campo
         def parametro = ''
@@ -179,7 +179,7 @@ class ProveedorController {
 
 
     def saveProveedor_ajax(){
-        println("params " + params)
+//        println("params " + params)
         def usuario = Persona.get(session.usuario.id)
         def empresa = usuario.empresa
         def especialidad = EspecialidadProveedor.get(params."especialidad.id")

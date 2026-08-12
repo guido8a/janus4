@@ -48,7 +48,7 @@ class CronogramaController {
             } else if (crono.size() == 0) {
                 crono = new Cronograma()
             } else {
-                println "cronogramaController, l 41: WTF MAS DE UN CRONOGRAMA volumen obra " + vol.id + " periodo " + per + " hay " + crono.size()
+//                println "cronogramaController, l 41: WTF MAS DE UN CRONOGRAMA volumen obra " + vol.id + " periodo " + per + " hay " + crono.size()
                 cont = false
             }
 
@@ -63,7 +63,7 @@ class CronogramaController {
                     ok = "OK"
                 } else {
                     ok = "NO"
-                    println "cronograma controller, l.56: " + crono.errors
+//                    println "cronograma controller, l.56: " + crono.errors
                 }
             }
         }
@@ -104,7 +104,7 @@ class CronogramaController {
     }
 
     def graficos2() {
-        println "graficos2: $params"
+//        println "graficos2: $params"
         def obra = Obra.get(params.obra)
         def sbpr = SubPresupuesto.get(params.sbpr)
 
@@ -113,9 +113,9 @@ class CronogramaController {
 
     
     def grafico() {
-        println "grafico $params"
+//        println "grafico $params"
         def cn = dbConnectionService.getConnection()
-        println "grafico: $params"
+//        println "grafico: $params"
         def obra = Obra.get(params.obra)
         def sbpr = SubPresupuesto.get(params.sbpr)
 
@@ -129,14 +129,14 @@ class CronogramaController {
 
         sql = "select sum(crnoprct) pcnt from crno, vlob where obra__id = ${params.obra} and " +
                 "crno.vlob__id = vlob.vlob__id"
-        println "sql: $sql"
+//        println "sql: $sql"
         def total = cn.rows(sql.toString())[0].pcnt
 
         sql = "select sum(crnoprco) suma, sum(crnoprct) pcnt, crnoprdo from crno, vlob where obra__id = ${params.obra} and " +
                 "crno.vlob__id = vlob.vlob__id group by crnoprdo"
-        println "sql: $sql"
+//        println "sql: $sql"
         cn.eachRow(sql.toString()) { d ->
-            println "valor de suma: $suma"
+//            println "valor de suma: $suma"
             i++
             suma += d.suma
             sumapcnt += Math.round(d.pcnt/total * 10000) / 100
@@ -151,7 +151,7 @@ class CronogramaController {
 //                "rpec.univ__id = ${params.univ} and escl.escl__id = ${params.escl}"
 //        println "sql: $sql"
 //        rcmn = cn.rows(sql.toString())[0].cnta
-        println "data: $data, prdo, datapcnt: $datapcnt"
+//        println "data: $data, prdo, datapcnt: $datapcnt"
         subtitulo = "PROFESORES POR DESEMPEÑO"
 
         /* para demostración */
@@ -386,7 +386,7 @@ class CronogramaController {
                         errores += ","
                     }
                     errores += id
-                    println "error: " + vol.errors
+//                    println "error: " + vol.errors
                 } else {
                     if (ok != "") {
                         ok += ","

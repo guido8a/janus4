@@ -62,7 +62,7 @@ class RubroOfController {
     }
 
     def rubroPrincipalOf() {
-        println("params  " + params)
+//        println("params  " + params)
         def oferente = session.usuario
         def cn = dbConnectionService.getConnection()
         def obras = [:]
@@ -104,7 +104,7 @@ class RubroOfController {
             rubro = Item.get(params.idRubro)
             def items = RubroOferente.findAllByRubroAndObra(rubro, obra)
             items.sort { it.item.codigo }
-            println "items: ${items.id} ${items.item.id} rend: ${items.rendimiento}"
+//            println "items: ${items.id} ${items.item.id} rend: ${items.rendimiento}"
             [campos  : campos, listaRbro: listaRbro, listaItems: listaItems, rubro: rubro, grupos: grupos, items: items,
              choferes: choferes, volquetes: volquetes, aux: aux, obra: obra, obras: obras]
         } else {
@@ -124,7 +124,7 @@ class RubroOfController {
     }
 
     def addItem() {
-        println "addItem $params"
+//        println "addItem $params"
         def obra = Obra.get(params.obra)
         def rubro = Item.get(params.rubro)
         def item = Item.get(params.item)
@@ -160,7 +160,7 @@ class RubroOfController {
         if (detalle.item.departamento.subgrupo.grupo.id == 1)
             detalle.rendimiento = 1
 
-        println "antes de grabar: ${detalle.cantidad}"
+//        println "antes de grabar: ${detalle.cantidad}"
 
         if (!detalle.save(flush: true)) {
             println "detalle " + detalle.errors
@@ -836,7 +836,7 @@ class RubroOfController {
                 "from obra, obof " +
                 "where obof.obra__id = obra.obra__id and obof.prsn__id = ${oferente.id} " +
                 "order by 1"
-        println "sql: $sql"
+//        println "sql: $sql"
         cn.eachRow(sql.toString()) { r ->
             obras[r.id] = r.nombre
         }
@@ -844,7 +844,7 @@ class RubroOfController {
     }
 
     def subirExcelApu() {
-        println("subirExcelApu params:" + params)
+//        println("subirExcelApu params:" + params)
         def oferente = session.usuario
         def cn = dbConnectionService.getConnection()
         def obras = []
@@ -861,7 +861,7 @@ class RubroOfController {
     }
 
     def uploadApus() {
-        println "uploadApus $params"
+//        println "uploadApus $params"
 //        params.obra = 4255
         def obra = params.obra
         def cn = dbConnectionService.getConnection()
@@ -918,7 +918,7 @@ class RubroOfController {
 
                 int hojas = workbook.getNumberOfSheets(); //Obtenemos el número de hojas que contiene el documento
 //                int hojas = 3
-                println "Número Hojas: $hojas"
+//                println "Número Hojas: $hojas"
 
                 def sccnEq = false, sccnMo = false, sccnMt = false, sccnTr = false, sccnRubro = false
                 def cdgo, nmbr, undd, peso, cntd, trfa, pcun, rndm, csto, dstn
@@ -930,7 +930,7 @@ class RubroOfController {
                     sheet = workbook.getSheetAt(hj);
                     def ordn = sheet.getSheetName().toString().toInteger()
                     Iterator rows = sheet.rowIterator();
-                    println "Porcesando hoja: $hj --> $ordn"
+//                    println "Porcesando hoja: $hj --> $ordn"
 
                     def fila = 0
                     while (rows.hasNext() && (fila < 76)) {
@@ -942,11 +942,11 @@ class RubroOfController {
                             Iterator cells = row.cellIterator()
                             def rgst = []
                             def meses = []
-                            println "fila: ${row.rowNum}"
+//                            println "fila: ${row.rowNum}"
                             while (cells.hasNext()) {
                                 cell = (XSSFCell) cells.next()
                                 if (row.rowNum == 57) {
-                                    println "Cell: ${cell.getCellType()} ${cell.getRawValue()}"
+//                                    println "Cell: ${cell.getCellType()} ${cell.getRawValue()}"
                                 }
                                 if (cell.getCellType() == XSSFCell.CELL_TYPE_NUMERIC) {
                                     rgst.add(cell.getNumericCellValue())
@@ -988,7 +988,7 @@ class RubroOfController {
                                                     "values (${oferente.id}, ${params.obra}, '${rbronmbr}', '${rbroundd}', " +
                                                     "$ordn, $item_id)"
                                         }
-                                        println "sql: $sql"
+//                                        println "sql: $sql"
                                         try {
                                             cn.execute(sql.toString())
                                         } catch (e) {
@@ -1001,7 +1001,7 @@ class RubroOfController {
                             if (rgst[cols[params.cldarbro]] == params.rbro) {
                                 rbronmbr = rgst[cols[params.rbronmbr]]
                                 sccnRubro = true
-                                println "Rubro: $rbronmbr"
+//                                println "Rubro: $rbronmbr"
                             }
 
                             /** --------------- Equipos del rbro ordn ---------------**/
@@ -1090,16 +1090,16 @@ class RubroOfController {
                                     nmbr = rgst[cols[params.nmbrTr]]
                                     undd = params.unddTr ? rgst[cols[params.unddTr]] : ''
                                     peso = params.pesoTr ? rgst[cols[params.pesoTr]].toDouble() : ''
-                                    println "ok-peso"
+//                                    println "ok-peso"
                                     dstn = params.dstnTr ? rgst[cols[params.dstnTr]].toDouble() : ''
-                                    println "ok-dstn"
+//                                    println "ok-dstn"
                                     cntd = rgst[cols[params.cntdTr]].toDouble() //cantidad
-                                    println "ok-cntd"
+//                                    println "ok-cntd"
                                     trfa = rgst[cols[params.pcunTr]].toDouble() //tarifa, jornal dtrbpcun
-                                    println "ok-trfa"
+//                                    println "ok-trfa"
 //                                    pcun = rgst[cols[params.pcunTr]].toDouble() //costo
                                     csto = rgst[cols[params.cstoTr]].toDouble()
-                                    println "ok-transporte"
+//                                    println "ok-transporte"
                                 } catch (e) {
                                     csto = 0
                                 }
@@ -1142,7 +1142,7 @@ class RubroOfController {
     /* sube desde excel los APU una vez cargados los rubros con subirRubros: página Rubros */
 
     def uploadAPU() {
-        println "uploadAPU $params"
+//        println "uploadAPU $params"
         def obra = params.obra
         def cn = dbConnectionService.getConnection()
         def filasNO = [0, 1]
@@ -1203,7 +1203,7 @@ class RubroOfController {
                 XSSFCell cell;
 
                 int hojas = workbook.getNumberOfSheets(); //Obtenemos el número de hojas que contiene el documento
-                println "Número Hojas: $hojas"
+//                println "Número Hojas: $hojas"
 
                 def sccnEq = false, sccnMo = false, sccnMt = false, sccnTr = false, sccnRubro = false, hojaRubro = false
                 def cdgo, nmbr, undd, peso, cntd, trfa, pcun, rndm, csto, dstn
@@ -1272,7 +1272,7 @@ class RubroOfController {
                             while (cells.hasNext()) {
                                 cell = (XSSFCell) cells.next()
                                 if (row.rowNum == 57) {
-                                    println "Cell: ${cell.getCellType()} ${cell.getRawValue()}"
+//                                    println "Cell: ${cell.getCellType()} ${cell.getRawValue()}"
                                 }
                                 if (cell.getCellType() == XSSFCell.CELL_TYPE_NUMERIC) {
                                     rgst.add(cell.getNumericCellValue())
@@ -1290,15 +1290,15 @@ class RubroOfController {
 //                            println "reg2--> ${rgst[cols[params.cldatitl]]}"
 
                             if (rgst[cols[params.cldatitl]] == params.rbrotitl) { //ANÁLISIS DE PRECIOS UNITARIOS
-                                println "hoja: " + sheet.getSheetName().toString() + " Ok"
+//                                println "hoja: " + sheet.getSheetName().toString() + " Ok"
                                 hojaRubro = true
                             }
 
                             if (hojaRubro) { //ANÁLISIS DE PRECIOS UNITARIOS
                                 println "Procesa: " + sheet.getSheetName().toString()
-                                println "--> rgst[cols[params.cldarbro] --> ${rgst[cols[params.cldarbro]]}"
+//                                println "--> rgst[cols[params.cldarbro] --> ${rgst[cols[params.cldarbro]]}"
                                 if(rgst[cols[params.cldarbro]]){
-                                    println "${rgst[cols[params.cldarbro]]} == ${params.rbro} && txRubro: ${txRubro}"
+//                                    println "${rgst[cols[params.cldarbro]]} == ${params.rbro} && txRubro: ${txRubro}"
 //                                    if (rgst[cols[params.cldarbro]]?.size() >= params.rbro.size()) {
                                     if ( (rgst[cols[params.cldarbro]] == params.rbro) && (txRubro == '')) {
                                         if(params.prefijo) {
@@ -1326,10 +1326,10 @@ class RubroOfController {
                                         rbronmbr = rbronmbr.toString().replaceAll("'", "''")
                                     }
                                     sccnRubro = true
-                                    println "Rubro: $rbronmbr"
+//                                    println "Rubro: $rbronmbr"
                                     sql = "select ofrb__id from ofrb where prsn__id = ${oferente.id} and " +
                                             "obra__id = ${obra} and ofrbnmbr = '${rbronmbr}'"
-                                    println "---sql: $sql"
+//                                    println "---sql: $sql"
                                     ofrb_id = cn.rows(sql.toString())[0]?.ofrb__id ?: 0
                                     if (!ofrb_id) {
                                         errores += "<li>No se encontró rubo ${ordn} de la hoja: <strong>${sheet.getSheetName().toString()}</strong></li>"
@@ -1338,7 +1338,7 @@ class RubroOfController {
                                         println "No se encontró rubro con id ${ordn} ${sheet.getSheetName().toString()}"
                                         break
                                     } else {
-                                        println "---OFRB: $ofrb_id"
+//                                        println "---OFRB: $ofrb_id"
                                         if(ordn > 0) {
                                             sql = "update ofrb set ofrbordn = ${ordn} where ofrb__id = '${ofrb_id}'"
                                             cn.execute(sql.toString())
@@ -1350,7 +1350,7 @@ class RubroOfController {
                                 /** --------------- Equipos del rbro ordn ---------------**/
                                 if (rgst[cols[params.cldaEq]] == params.titlEq) {
                                     sccnEq = true; sccnMo = false; sccnMt = false; sccnTr = false; sccnRubro = false
-                                    println "Equipos..... $sccnEq --> rbro: $ordn $rbronmbr"
+//                                    println "Equipos..... $sccnEq --> rbro: $ordn $rbronmbr"
                                 }
                                 if (sccnEq && ofrb_id) {
 //                                    rgst.each { r ->
@@ -1359,24 +1359,23 @@ class RubroOfController {
                                     if(ordn == 1) println "...1 id: $ofrb_id"
                                     try {
                                         cdgo = params.cdgoEq ? rgst[cols[params.cdgoEq]] : ''
-                                        println "---> $rgst"
+//                                        println "---> $rgst"
                                         if(ordn == 1) println "..2"
-                                        println "..2"
+//                                        println "..2"
                                         nmbr = rgst[cols[params.nmbrEq]]
                                         if(ordn == 1) println "..3"
-                                        println "..3"
+//                                        println "..3"
                                         cntd = rgst[cols[params.cntdEq]].toDouble() //cantidad
-                                        println "..4"
+//                                        println "..4"
                                         trfa = rgst[cols[params.trfaEq]] == '' ? 0 : rgst[cols[params.trfaEq]].toDouble()
                                         pcun = rgst[cols[params.pcunEq]] ? rgst[cols[params.pcunEq]].toDouble() : trfa //costo
-                                        println "..5"
-
+//                                        println "..5"
                                         rndm = rgst[cols[params.rndmEq]] ? rgst[cols[params.rndmEq]].toDouble() : 1
-                                        println "..6"
+//                                        println "..6"
                                         csto = rgst[cols[params.cstoEq]].toDouble()
-                                        println "..7"
+//                                        println "..7"
                                         if(ordn == 'C-001-016') println "..8 -- rndm: ${rgst[cols[params.rndmEq]]}"
-                                        println "..8 -- rndm: ${rgst[cols[params.rndmEq]]}"
+//                                        println "..8 -- rndm: ${rgst[cols[params.rndmEq]]}"
                                     } catch (e) {
                                         cntd = 0
                                         trfa = 0
@@ -1389,7 +1388,7 @@ class RubroOfController {
                                     } catch (e) {
                                         nmbr = ''
                                     }
-                                    println "Equipos -> rbro: $ofrb_id nombre: $nmbr cantidad: $cntd"
+//                                    println "Equipos -> rbro: $ofrb_id nombre: $nmbr cantidad: $cntd"
 
                                     /** si está habilitado comprobar, se debe visualizar los datos a insertar
                                      * manejar el return para visualizar **/
@@ -1411,7 +1410,7 @@ class RubroOfController {
                                     }
 
                                     if (cntd && sccnEq) {
-                                        println "inserta equipo: $nmbr, $cntd, $trfa, $rndm, $csto"
+//                                        println "inserta equipo: $nmbr, $cntd, $trfa, $rndm, $csto"
 //                                        insertaEq(ofrb_id, cdgo, nmbr, undd, cntd, trfa, pcun, rndm, csto, tipo)
                                         errores += insertaEq(ofrb_id, cdgo, nmbr, undd, cntd, trfa, pcun, rndm, csto, "EQ")
                                     }
@@ -1441,7 +1440,7 @@ class RubroOfController {
                                     } catch (e) {
                                         nmbr = ''
                                     }
-                                    println "MO -> rbro: $ofrb_id nombre: $nmbr cantidad: $cntd"
+//                                    println "MO -> rbro: $ofrb_id nombre: $nmbr cantidad: $cntd"
                                     if(params.revisar == '1' && sccnMo && rgst.size() > 2) {
 //                                        if(nmbr != 'Descripción') {
                                         if( cntd && sccnMo ){
@@ -1466,12 +1465,12 @@ class RubroOfController {
                                 }
 
                                 /** --------------- Materiales del rbro ordn ---------------**/
-                                println "materiales: ${rgst[cols[params.cldaMt]]} == ${params.titlMt}"
+//                                println "materiales: ${rgst[cols[params.cldaMt]]} == ${params.titlMt}"
                                 if (rgst[cols[params.cldaMt]] == params.titlMt) {
                                     sccnEq = false; sccnMo = false; sccnMt = true; sccnTr = false; sccnRubro = false
 //                                println "Mano de Mat... $sccnMt --> rbro: $ordn $rbronmbr"
                                 }
-                                println "materiales-->: ${sccnMt} && ${ofrb_id}"
+//                                println "materiales-->: ${sccnMt} && ${ofrb_id}"
                                 if (sccnMt && ofrb_id) {
 //                                cdgo, undd, nmbr, cntd, trfa, pcun, rndm, csto
                                     try {
@@ -1498,7 +1497,7 @@ class RubroOfController {
                                         nmbr = ''
                                     }
 
-                                    println "Materiales: cdgo: $cdgo, cntd: $cntd, pcun: $pcun, csto: $csto"
+//                                    println "Materiales: cdgo: $cdgo, cntd: $cntd, pcun: $pcun, csto: $csto"
 
                                     if(params.revisar == '1' && sccnMt && rgst.size() > 2) {
 //                                        if(nmbr != 'Descripción') {
@@ -1642,7 +1641,7 @@ class RubroOfController {
     }
 
     def uploadRubros() {
-        println "uploadRubros $params"
+//        println "uploadRubros $params"
 //        params.obra = 4255
         def obra = params.obra
         def cn = dbConnectionService.getConnection()
@@ -1702,11 +1701,11 @@ class RubroOfController {
 
                 int hojas = workbook.getNumberOfSheets(); //Obtenemos el número de hojas que contiene el documento
 //                int hojas = 3
-                println "Número Hojas: $hojas - oferente: ${oferente?.id}"
+//                println "Número Hojas: $hojas - oferente: ${oferente?.id}"
 
                 def nmro, nmbr, undd, cntd, pcun, pctt
                 sql = "select inditotl from obra where obra__id = ${obra}"
-                println "sql: $sql"
+//                println "sql: $sql"
                 def indi = cn.rows(sql.toString())[0]?.inditotl
 
                 //for que recorre las hojas existentes
@@ -1741,7 +1740,7 @@ class RubroOfController {
                                     }
                                 }
 
-                                println "reg: $rgst --> ${rgst[3]}"
+//                                println "reg: $rgst --> ${rgst[3]}"
 
                                 try {
                                     nmro = rgst[0]
@@ -1755,7 +1754,7 @@ class RubroOfController {
                                 }
 
                                 /** va antes que ssnRbro = true porque se analiza en la siguiente pasada **/
-                                println "cntd: $cntd, undd: $undd --> nmbr: $nmbr"
+//                                println "cntd: $cntd, undd: $undd --> nmbr: $nmbr"
                                 if (cntd != 0) {
                                     /** insertar rubro */
                                     if (undd) {
@@ -1781,7 +1780,7 @@ class RubroOfController {
                                                     "values (${oferente.id}, ${params.obra}, '${nmbr}', '${undd}', " +
                                                     "$nmro, 0, $pcun, $indi)"
                                         }
-                                        println "sql: $sql"
+//                                        println "sql: $sql"
                                         try {
                                             cn.execute(sql.toString())
                                             done++
@@ -1855,7 +1854,7 @@ class RubroOfController {
                         "values (${ofrb_id}, '${cdgo}', '${nmbr}', '${undd}', $cntd, $trfa, " +
                         "$pcun, $rndm, $csto, '${tipo}' )"
             }
-            println "sql $tipo: $sql"
+//            println "sql $tipo: $sql"
             try {
                 cn.execute(sql.toString())
             } catch (e) {
@@ -1871,12 +1870,12 @@ class RubroOfController {
         def sql = "select ofrb__id from ofrb where prsn__id = ${oferente} and " +
                 "obra__id = ${obra} and ofrbordn = ${ordn}"
         def ofrb_id = cn.rows(sql.toString())[0]?.ofrb__id ?: 0
-        println "insertaTrnp $oferente, $obra, $ordn, $cdgo, $nmbr, $undd, $peso, $cntd, $trfa, $pcun, $csto, $dstn"
+//        println "insertaTrnp $oferente, $obra, $ordn, $cdgo, $nmbr, $undd, $peso, $cntd, $trfa, $pcun, $csto, $dstn"
         if (!ofrb_id) {
             errores += "<li>No se encontró rubro ${ordn}</li>"
             println "No se encontró rubro con id ${ordn}"
         } else {
-            println "porcesa transporte: dstn: $dstn"
+//            println "porcesa transporte: dstn: $dstn"
             sql = "select dtrb__id from dtrb where ofrb__id = ${ofrb_id} and " +
                     "dtrbnmbr = '${nmbr}' and dtrbdstn > 0 and dtrbtipo = 'TR'"
             def dtrb_id = cn.rows(sql.toString())[0]?.dtrb__id ?: 0
@@ -1892,7 +1891,7 @@ class RubroOfController {
                         "values (${ofrb_id}, '${cdgo}', '${nmbr}', '${undd}', $cntd, $trfa, " +
                         "$pcun, 1, $csto, $peso, $dstn, 'TR' )"
             }
-            println "sql: $sql"
+//            println "sql: $sql"
             try {
                 cn.execute(sql.toString())
             } catch (e) {
@@ -1903,13 +1902,13 @@ class RubroOfController {
     }
 
     def insertaEq(ofrb_id, cdgo, nmbr, undd, cntd, trfa, pcun, rndm, csto, tipo) {
-        println "sinsertaEq++"
+//        println "sinsertaEq++"
         def cn = dbConnectionService.getConnection()
         def sql = ""
         def errores = ""
         sql = "select dtrb__id from dtrb where ofrb__id = ${ofrb_id} and " +
                 "dtrbnmbr = '${nmbr}' and dtrbtipo = '${tipo}'"
-        println "sql dtrb: $sql"
+//        println "sql dtrb: $sql"
         def dtrb_id = cn.rows(sql.toString())[0]?.dtrb__id ?: 0
         if (dtrb_id) {
             sql = "update dtrb set dtrbcdgo = '${cdgo}', dtrbnmbr = '${nmbr}', " +
@@ -1922,7 +1921,7 @@ class RubroOfController {
                     "values (${ofrb_id}, '${cdgo}', '${nmbr}', '${undd}', $cntd, $trfa, " +
                     "$pcun, $rndm, $csto, '${tipo}' )"
         }
-        println "sql $tipo: $sql"
+//        println "sql $tipo: $sql"
         try {
             cn.execute(sql.toString())
         } catch (e) {
@@ -1932,15 +1931,15 @@ class RubroOfController {
     }
 
     def insertaTr(ofrb_id, cdgo, nmbr, undd, cntd, trfa, pcun, rndm, csto, peso, dstn) {
-        println "sinsertaEq++"
+//        println "sinsertaEq++"
         def cn = dbConnectionService.getConnection()
         def sql = ""
         def errores = ""
         sql = "select dtrb__id from dtrb where ofrb__id = ${ofrb_id} and " +
                 "dtrbnmbr = '${nmbr}' and dtrbtipo = 'TR'"
-        println "sql dtrb: $sql"
+//        println "sql dtrb: $sql"
         def dtrb_id = cn.rows(sql.toString())[0]?.dtrb__id ?: 0
-        println "--> dtrb_id: $dtrb_id"
+//        println "--> dtrb_id: $dtrb_id"
 
         if (dtrb_id) {
             sql = "update dtrb set dtrbcdgo = '${cdgo}', dtrbnmbr = '${nmbr}', " +
@@ -1966,7 +1965,7 @@ class RubroOfController {
 //                    "values (${ofrb_id}, '${cdgo}', '${nmbr}', '${undd}', $cntd, $trfa, " +
 //                    "$pcun, $rndm, $csto, '${tipo}' )"
 //        }
-        println "sql TR: $sql"
+//        println "sql TR: $sql"
         try {
             cn.execute(sql.toString())
         } catch (e) {
@@ -1977,7 +1976,7 @@ class RubroOfController {
 
 
     def rubroCon() {
-        println "rubroCon: $params"
+//        println "rubroCon: $params"
         def oferente = session.usuario
         def cn = dbConnectionService.getConnection()
         def obras = []
@@ -1994,14 +1993,14 @@ class RubroOfController {
 //            obras[r.id] = r.nombre + "_" + r.inditotl
         }
 
-        println "obras: $obras"
+//        println "obras: $obras"
 
         [obras: obras, oferente: oferente, tipo: params.tipo]
 
     }
 
     def listaRubros_ajax() {
-        println("params " + params)
+//        println("params " + params)
 //        params.id = 4255
         def oferente = session.usuario
         def cn = dbConnectionService.getConnection()
@@ -2010,7 +2009,7 @@ class RubroOfController {
                 "from ofrb " +
                 "where ofrb.obra__id = ${params.id} and ofrb.prsn__id = ${oferente.id} " +
                 "order by ofrbordn"
-        println "sql: $sql"
+//        println "sql: $sql"
         cn.eachRow(sql.toString()) { r ->
             rubros[r.id] = r.nombre
         }
@@ -2018,7 +2017,7 @@ class RubroOfController {
     }
 
     def tablaComposicion_ajax() {
-        println "tablaComposicion_ajax $params"
+//        println "tablaComposicion_ajax $params"
         def rubro = RubroOferta.get(params.id)
         def obra = Obra.get(params.obra)
 //        def detalles = DetalleRubro.findAllByRubroOferta(rubro, [sort: 'tipo'])
@@ -2031,13 +2030,13 @@ class RubroOfController {
                 (materiales.subtotal.sum() ?: 0) + (transporte.subtotal.sum() ?: 0)
 
 
-        println "mano: $manos"
+//        println "mano: $manos"
         return [equipos: equipos, manos: manos, materiales: materiales, transporte: transporte,
                 precioUnitario: precioUnitario, indirectos: obra.totales]
     }
 
     def procesarRubrosOf() {
-        println "procesarRubrosOf $params"
+//        println "procesarRubrosOf $params"
 //        params.id = 4255
         def oferente = session.usuario
         def cn = dbConnectionService.getConnection()
@@ -2045,7 +2044,7 @@ class RubroOfController {
         def cmpos = ['dtrbpeso', 'dtrbcntd', 'dtrbrndm', 'dtrbdstn', 'dtrbpcun', 'dtrbcsto', 'dtrbsbtt']
         for (i in cmpos) {
             sql = "update dtrb set ${i} = 0 where ${i} is null"
-            println "sql: $sql"
+//            println "sql: $sql"
             cn.execute(sql.toString())
         }
         def indi = 1 + params.indi.toDouble() / 100
@@ -2064,7 +2063,7 @@ class RubroOfController {
 
         sql = "update ofrb set ofrbindi = ( select inditotl from obra where obra.obra__id = ${params.obra} and " +
                 "ofrb.obra__id = obra.obra__id )"
-        println "sql: $sql"
+//        println "sql: $sql"
         cn.execute(sql.toString())
         cn.close()
         render "ok"
@@ -2093,7 +2092,7 @@ class RubroOfController {
         def cn = dbConnectionService.getConnection()
         def obra = Obra.get(params.obra)
 //        def oferente = session.usuario
-        println "tablaBusqueda_ajax: $params"
+//        println "tablaBusqueda_ajax: $params"
 //        def obra = Obra.get(params.id)
         def listaItems = ['dtrbnmbr', 'dtrbcdgo']
         def sql = "select distinct dtrb__id, dtrbcdgo codigo, dtrbnmbr nombre, dtrbtipo tipo from dtrb, ofrb " +
@@ -2115,7 +2114,7 @@ class RubroOfController {
     }
 
     def tablaBuscarRubros_ajax() {
-        println "tablaBuscarRubros_ajax: $params"
+//        println "tablaBuscarRubros_ajax: $params"
         def cn = dbConnectionService.getConnection()
         def listaItems = ['itemnmbr', 'itemcdgo']
 //        def rubro = Item.get(params.rubro)
@@ -2143,27 +2142,27 @@ class RubroOfController {
 
 
         sqlTx = "${select} ${txwh} order by ${ordn} limit 100 ".toString()
-        println "sql: $sqlTx"
+//        println "sql: $sqlTx"
         datos = cn.rows(sqlTx)
 //        println "data: ${datos[0]}"
         [data: datos, rubro: rubro, obra: params.obra]
     }
 
     def tablaEmpatados_ajax() {
-        println "tablaEmpatados_ajax: $params"
+//        println "tablaEmpatados_ajax: $params"
         def cn = dbConnectionService.getConnection()
         def sql = "select distinct dtrbjnid dtrb__id, dtrbtipo, dtrbcdgo, dtrbnmbr, dtrbundd, dtrbtipo, itemnmbr, itemcdgo from dtrb, item, ofrb " +
                 "where item.item__id = dtrbjnid and dtrbtipo = '${params.tipo}' and ofrb.ofrb__id = dtrb.ofrb__id and " +
                 "obra__id = ${params.obra}" + // "and obra__id = ${params.obra}"
                 " order by itemcdgo"
-        println "sql: $sql"
+//        println "sql: $sql"
         def empatados = cn.rows(sql.toString())
         return [data: empatados, obra: params.obra]
     }
 
 
     def empatarRubros_ajax() {
-        println "empatar: $params"
+//        println "empatar: $params"
         def cn = dbConnectionService.getConnection()
         def oferente = session.usuario
 //        def sql = "select dtrbnmbr from dtrb where dtrb__id = ${params.rubro}"
@@ -2172,14 +2171,14 @@ class RubroOfController {
         def sql = "update dtrb set dtrbjnid = ${params.id} where dtrbnmbr = ( select dtrbnmbr from dtrb " +
                 "where dtrb__id = ${params.rubro} ) and ofrb__id in (" +
                 "select ofrb__id from ofrb where prsn__id = ${oferente.id} and obra__id = ${params.obra})"
-        println "sql: $sql"
+//        println "sql: $sql"
         cn.execute(sql.toString())
 
         render "ok_Guardado correctamente"
     }
 
     def copiarRubros() {
-        println "copiarRubros: $params"
+//        println "copiarRubros: $params"
         def cn = dbConnectionService.getConnection()
         def sql = "select * from sp_rubro_of(${params.obra})"
         def resl = cn.execute(sql.toString())
@@ -2187,7 +2186,7 @@ class RubroOfController {
     }
 
     def borrarApus() {
-        println "borrarApus: $params"
+//        println "borrarApus: $params"
         def cn = dbConnectionService.getConnection()
         def sql = "delete from dtrb where ofrb__id in (select ofrb__id from ofrb " +
                 "where obra__id = ${params.obra})"
@@ -2209,7 +2208,7 @@ class RubroOfController {
     }
 
     def subirRubros() {
-        println("params " + params)
+//        println("params " + params)
         def oferente = session.usuario
         def cn = dbConnectionService.getConnection()
         def obras = [:]
@@ -2221,7 +2220,7 @@ class RubroOfController {
                 "from obra, obof " +
                 "where obof.obra__id = obra.obra__id and obof.prsn__id = ${oferente.id}" +
                 "order by obofetdo desc, obra.obra__id"
-        println "sql: $sql"
+//        println "sql: $sql"
         cn.eachRow(sql.toString()) { r ->
             obras[r.id] = r.nombre
         }
@@ -2231,12 +2230,12 @@ class RubroOfController {
 
 //    def quitarEmpateRubros_ajax() {
     def quitarEmpateRubros_ajax(){
-        println "quita: $params"
+//        println "quita: $params"
         def cn = dbConnectionService.getConnection()
         def oferente = session.usuario
         def sql = "update dtrb set dtrbjnid = 0 where dtrbjnid = ${params.id} and ofrb__id in (" +
                 "select ofrb__id from ofrb where prsn__id = ${oferente.id} and obra__id = ${params.obra})"
-        println "sql: $sql"
+//        println "sql: $sql"
         cn.execute(sql.toString())
 
         render "ok_Guardado correctamente"
@@ -2250,7 +2249,7 @@ class RubroOfController {
                 "from obra, obof " +
                 "where obof.obra__id = obra.obra__id and obof.prsn__id = ${oferente.id}" +
                 "order by obofetdo desc, obra.obra__id"
-        println "sql: $sql"
+//        println "sql: $sql"
         cn.eachRow(sql.toString()) { r ->
             obras[r.id] = r.nombre
         }
@@ -2258,7 +2257,7 @@ class RubroOfController {
     }
 
     def tablaBusquedaRubros_ajax(){
-        println "tablaBusquedaRubros_ajax: $params"
+//        println "tablaBusquedaRubros_ajax: $params"
         def cn = dbConnectionService.getConnection()
         def obra = Obra.get(params.obra)
         def oferente = session.usuario
@@ -2269,24 +2268,24 @@ class RubroOfController {
                 "where ofrb.obra__id = ${params.obra} and ofrbjnid = 0 and " +
                 "prsn__id = ${oferente.id}"
         def sqlTx = "${sql} order by ofrbnmbr".toString()
-        println "sql: $sqlTx"
+//        println "sql: $sqlTx"
         def datos = cn.rows(sqlTx)
 
 
         sql = "select count(*) cnta from vlof where item__id not in " +
                 "(select ofrbjnid from ofrb where obra__id = ${params.obra}) and obra__id = ${params.obra}"
-        println "sql: $sql"
+//        println "sql: $sql"
         def faltan = cn.rows(sql.toString())[0].cnta
         return [datos: datos, obra: obra, faltan: faltan]
     }
 
     def tablaEmpatadosRubros_ajax(){
-        println "tablaEmpatadosRubros_ajax: $params"
+//        println "tablaEmpatadosRubros_ajax: $params"
         def cn = dbConnectionService.getConnection()
         def sql = "select ofrb.*, itemcdgo, itemnmbr from ofrb, item " +
                 "where item.item__id = ofrbjnid and obra__id = ${params.obra} " + // "and obra__id = ${params.obra}"
                 "order by itemnmbr"
-        println "sql: $sql"
+//        println "sql: $sql"
         def empatados = cn.rows(sql.toString())
         return [data: empatados, obra: params.obra]
     }
@@ -2297,7 +2296,7 @@ class RubroOfController {
     }
 
     def tablaBuscarRubrosRubros_ajax(){
-        println "tablaBuscar Rubros: $params"
+//        println "tablaBuscar Rubros: $params"
         def cn = dbConnectionService.getConnection()
         def obrajnid = cn.rows("select obrajnid from obof where obra__id = ${params.obra}".toString())[0].obrajnid
         def datos;
@@ -2307,7 +2306,7 @@ class RubroOfController {
         def recorte = longitud > 10 ? longitud * 0.44 : longitud - 2
 //        params.criterio = params.criterio ?: params.nmbr[0..(recorte)]
         params.criterio = params.criterio ?: params.nmbr
-        println "crite:  ${params.criterio}"
+//        println "crite:  ${params.criterio}"
 
 //        def select = "select distinct item.item__id, itemcdgo, itemnmbr, unddcdgo " +
 //                "from item, undd, vlob "
@@ -2327,9 +2326,9 @@ class RubroOfController {
         }
 
         sqlTx = "${select} ${txwh} order by itemnmbr".toString()
-        println "sql: $sqlTx"
+//        println "sql: $sqlTx"
         datos = cn.rows(sqlTx)
-        println "data: ${datos[0]}"
+//        println "data: ${datos[0]}"
         [data: datos, obra: params.obra, rubro: params.rubro]
 
     }
@@ -2340,24 +2339,24 @@ class RubroOfController {
     }
 
     def quitarEmpateRubrosRubros_ajax(){
-        println "quita rurbos: $params"
+//        println "quita rurbos: $params"
         def cn = dbConnectionService.getConnection()
         def oferente = session.usuario
         def sql = "update ofrb set ofrbjnid = 0 where ofrb__id = ${params.id} and obra__id = ${params.obra}"
-        println "sql: $sql"
+//        println "sql: $sql"
         cn.execute(sql.toString())
         render "ok_Guardado correctamente"
     }
 
     def emparejarRubros_ajax(){
-        println "empareja rubro: $params"
+//        println "empareja rubro: $params"
         def cn = dbConnectionService.getConnection()
         def oferente = session.usuario
 //        def sql = "select dtrbnmbr from dtrb where dtrb__id = ${params.rubro}"
 //        println "sql: $sql"
 
         def sql = "update ofrb set ofrbjnid = ${params.id} where ofrb__id = ${params.rubro} "
-        println "sql: $sql"
+//        println "sql: $sql"
         cn.execute(sql.toString())
 
         render "ok_Guardado correctamente"
@@ -2388,11 +2387,11 @@ class RubroOfController {
     }
 
     def empjCdgo() {
-        println "empareja rubro: $params"
+//        println "empareja rubro: $params"
         def cn = dbConnectionService.getConnection()
         def sql = "update dtrb set dtrbjnid = (select item__id from item where item.itemcdgo = dtrb.dtrbcdgo) " +
                 "where dtrbjnid = 0 and obra__id = ${params.obra})"
-        println "sql: $sql"
+//        println "sql: $sql"
         cn.execute(sql.toString())
 
         sql = "update dtrb set dtrbjnid = 0 where dtrbjnid is null"
@@ -2403,12 +2402,12 @@ class RubroOfController {
     }
 
     def empjNmbr() {
-        println "empareja por nombre: $params"
+//        println "empareja por nombre: $params"
         def cn = dbConnectionService.getConnection()
         def sql = "update dtrb set dtrbjnid = (select item__id from item where item.itemnmbr = dtrb.dtrbnmbr and " +
                 "tpit__id = 1) where dtrbjnid = 0 and ofrb__id in (select ofrb__id from ofrb " +
                 "where dtrbjnid = 0 and obra__id = ${params.obra})"
-        println "sql: $sql"
+//        println "sql: $sql"
         cn.execute(sql.toString())
 
         sql = "update dtrb set dtrbjnid = 0 where dtrbjnid is null"
@@ -2418,13 +2417,13 @@ class RubroOfController {
     }
 
     def empjNmbrRbro() {
-        println "empareja por nombre rubros: $params"
+//        println "empareja por nombre rubros: $params"
         def cn = dbConnectionService.getConnection()
         def sql = "update ofrb set ofrbjnid = (select item.item__id from item, vlof " +
                 "where item.item__id = vlof.item__id and vlof.obra__id = ${params.obra} and " +
                 "item.itemnmbr = ofrb.ofrbnmbr and tpit__id = 2 and item.itemcdgo not ilike 'h%' limit 1) " +
                 "where ofrbjnid = 0 and obra__id = ${params.obra}"
-        println "sql: $sql"
+//        println "sql: $sql"
         cn.execute(sql.toString())
 
         sql = "update ofrb set ofrbjnid = 0 where ofrbjnid is null"
@@ -2480,7 +2479,7 @@ class RubroOfController {
     }
 
     def tablaEmpatadosCC_ajax(){
-        println "tablaEmpatados_ajax: $params"
+//        println "tablaEmpatados_ajax: $params"
         def cn = dbConnectionService.getConnection()
 //        def sql = "select distinct dtrbjnid dtrb__id, dtrbtipo, dtrbcdgo, dtrbnmbr, dtrbundd, dtrbtipo, itemnmbr, itemcdgo from dtrb, item, ofrb " +
 //                "where item.item__id = dtrbjnid and ofrb.ofrb__id = dtrb.ofrb__id and " +
@@ -2535,7 +2534,7 @@ class RubroOfController {
 
 
     def revisaAPU() {
-        println "revisaAPU $params"
+//        println "revisaAPU $params"
         def obra = params.obra
         def cn = dbConnectionService.getConnection()
         def filasNO = [0, 1]
@@ -2588,7 +2587,7 @@ class RubroOfController {
                 XSSFCell cell;
 
                 int hojas = workbook.getNumberOfSheets(); //Obtenemos el número de hojas que contiene el documento
-                println "Número Hojas: $hojas"
+//                println "Número Hojas: $hojas"
 
                 def sccnEq = false, sccnMo = false, sccnMt = false, sccnTr = false, sccnRubro = false, hojaRubro = false
                 def cdgo, nmbr, undd, peso, cntd, trfa, pcun, rndm, csto, dstn
@@ -2646,15 +2645,15 @@ class RubroOfController {
                             }
 
                             if (rgst[cols[params.cldatitl]] == params.rbrotitl) { //ANÁLISIS DE PRECIOS UNITARIOS
-                                println "hoja: " + sheet.getSheetName().toString() + " Ok"
+//                                println "hoja: " + sheet.getSheetName().toString() + " Ok"
                                 hojaRubro = true
                             }
 
                             if (hojaRubro) { //ANÁLISIS DE PRECIOS UNITARIOS
                                 println "Procesa: " + sheet.getSheetName().toString()
-                                println "--> rgst[cols[params.cldarbro] --> ${rgst[cols[params.cldarbro]]}"
+//                                println "--> rgst[cols[params.cldarbro] --> ${rgst[cols[params.cldarbro]]}"
                                 if(rgst[cols[params.cldarbro]]){
-                                    println "${rgst[cols[params.cldarbro]]} == ${params.rbro} && txRubro: ${txRubro}"
+//                                    println "${rgst[cols[params.cldarbro]]} == ${params.rbro} && txRubro: ${txRubro}"
 //                                    if (rgst[cols[params.cldarbro]]?.size() >= params.rbro.size()) {
                                     if ( (rgst[cols[params.cldarbro]] == params.rbro) && (txRubro == '')) {
                                         if(params.prefijo) {
@@ -2682,10 +2681,10 @@ class RubroOfController {
                                         rbronmbr = rbronmbr.toString().replaceAll("'", "''")
                                     }
                                     sccnRubro = true
-                                    println "Rubro: $rbronmbr"
+//                                    println "Rubro: $rbronmbr"
                                     sql = "select ofrb__id from ofrb where prsn__id = ${oferente.id} and " +
                                             "obra__id = ${obra} and ofrbnmbr = '${rbronmbr}'"
-                                    println "---sql: $sql"
+//                                    println "---sql: $sql"
                                     ofrb_id = cn.rows(sql.toString())[0]?.ofrb__id ?: 0
                                     if (!ofrb_id) {
                                         errores += "<p style='color: #804040'>No se encontró rubro ${ordn} de la hoja: <strong>'${sheet.getSheetName().toString()}'</strong>"
@@ -2694,7 +2693,7 @@ class RubroOfController {
                                         println "No se encontró rubro con id ${ordn} ${sheet.getSheetName().toString()}"
                                         break
                                     } else {
-                                        println "---OFRB: $ofrb_id"
+//                                        println "---OFRB: $ofrb_id"
                                         if(ordn > 0) {
                                             sql = "update ofrb set ofrbordn = ${ordn} where ofrb__id = '${ofrb_id}'"
                                             cn.execute(sql.toString())

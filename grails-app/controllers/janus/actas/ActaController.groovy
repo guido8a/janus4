@@ -114,7 +114,7 @@ class ActaController {
 
         def actaProv = null
         if (params.contrato || params.id) {
-            println "**1"
+//            println "**1"
             def cntr
             if (!params.id){
                 cntr = Contrato.get(params.contrato)
@@ -122,14 +122,14 @@ class ActaController {
                 cntr = Acta.get(params.id.toLong()).contrato
             }
 
-            println "..." + cntr
+//            println "..." + cntr
             def secciones = []
             def actaInstance = new Acta(params)
             if (params.id) {
-                println "**2 " + params.id
+//                println "**2 " + params.id
                 actaInstance = Acta.get(params.id.toLong())
                 tipo = actaInstance.tipo
-                println "**3 " + tipo + "   " + actaInstance
+//                println "**3 " + tipo + "   " + actaInstance
                 if (!actaInstance) {
                     flash.clase = "alert-error"
                     flash.message = "No se encontró Acta con id " + params.id
@@ -417,13 +417,13 @@ class ActaController {
             } //es edit
             else {
                 if (params.contrato) {
-                    println "**2"
+//                    println "**2"
                     def sec = []
                     def contrato = Contrato.get(params.contrato)
                     def actas = Acta.findAllByContratoAndTipo(contrato, tipo)
-                    println "**3" + actas
+//                    println "**3" + actas
                     if (actas.size() == 0) {
-                        println "no hay el acta .... ${params.id}"
+//                        println "no hay el acta .... ${params.id}"
                         def meses = ['', "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]
                         def hoy = new Date()
                         actaInstance.contrato = contrato
@@ -440,7 +440,7 @@ class ActaController {
                             }
                         }
                     } else if (actas.size() == 1) {
-                        println "**4"
+//                        println "**4"
                         actaInstance = actas[0]
                         actaProv = Acta.findByContratoAndTipo(contrato, "P")
                         sec = actaInstance.secciones
@@ -491,7 +491,7 @@ class ActaController {
 //                    return
 //                }
             }
-            println "editable: $editable"
+//            println "editable: $editable"
             return [actaInstance: actaInstance, secciones: jsonSecciones, editable: editable, tipos: tipos, actaProv: actaProv, contrato: cntr]
         } else {
             flash.message = "No puede crear un acta sin contrato"
@@ -541,7 +541,7 @@ class ActaController {
     }
 
     def save() {
-        println "params save acta: $params"
+//        println "params save acta: $params"
         def cn = dbConnectionService.getConnection()
         if (params.fecha) {
             params.fecha = new Date().parse("dd-MM-yyyy", params.fecha)
@@ -633,25 +633,25 @@ class ActaController {
         def errores = ''
         def sql = "update prrf set prrfcont = replace(prrfcont, '&ldquo;', '\"') where prrf__id in " +
                 "(select prrf__id  from prrf, sccn where sccn.sccn__id = prrf.sccn__id and acta__id = ${actaInstance?.id})"
-        println("sql " + sql)
+//        println("sql " + sql)
         cn.execute(sql.toString())
 
-        println "actualiza 1"
+//        println "actualiza 1"
         sql = "update prrf set prrfcont = replace(prrfcont, '&rdquo;', ' \" ') where prrf__id in " +
                 "(select prrf__id  from prrf, sccn where sccn.sccn__id = prrf.sccn__id and acta__id = ${actaInstance?.id})"
-        println("sql " + sql)
-        println "actualiza 2"
+//        println("sql " + sql)
+//        println "actualiza 2"
         cn.execute(sql.toString())
 
         sql = "update sccn set sccnttlo = replace(sccnttlo, '&ldquo;', ' \" ') where sccn__id in " +
                 "(select sccn__id  from sccn where acta__id = ${actaInstance?.id})"
-        println("sql " + sql)
-        println "actualiza 2"
+//        println("sql " + sql)
+//        println "actualiza 2"
         cn.execute(sql.toString())
         sql = "update sccn set sccnttlo = replace(sccnttlo, '&rdquo;', ' \" ') where sccn__id in " +
                 "(select sccn__id  from sccn where acta__id = ${actaInstance?.id})"
-        println("sql " + sql)
-        println "actualiza 2"
+//        println("sql " + sql)
+//        println "actualiza 2"
         cn.execute(sql.toString())
     }
 
@@ -662,7 +662,7 @@ class ActaController {
 
     def saveEditParrafo_ajax () {
 
-        println("paramns pafff " + params)
+//        println("paramns pafff " + params)
 
         if(params.id){
             def parrafo = Parrafo.get(params.id)

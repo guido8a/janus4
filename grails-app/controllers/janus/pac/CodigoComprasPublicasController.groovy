@@ -25,7 +25,7 @@ class CodigoComprasPublicasController {
     } //list
 
     def tablaCPC_ajax(){
-        println("params " + params)
+//        println("params " + params)
         def datos;
         def sqlTx = ""
         def listaItems = ['cpacdscr', 'cpacnmro']
@@ -251,7 +251,7 @@ class CodigoComprasPublicasController {
 //
 
     def uploadFile() {
-        println "uploadFile $params"
+//        println "uploadFile $params"
         def cn = dbConnectionService.getConnection()
         def filasNO = [0, 1]
         def path = "/var/janus/" + "xls/"   //web-app/archivos
@@ -342,19 +342,19 @@ class CodigoComprasPublicasController {
                         try {
                             umve = vae.toDouble() * 100
                         } catch (e) {umve = -1}
-                        println "valores: $numero $dscr $vae $umve"
+//                        println "valores: $numero $dscr $vae $umve"
 
                         if ( umve != -1 ) {
-                            println "puede procesar: $rgst"
+//                            println "puede procesar: $rgst"
                             sql = "select cpac__id from cpac where cpacnmro = '${numero}'"
-                            println "sql: $sql"
+//                            println "sql: $sql"
                             def cp_id = cn.rows(sql.toString())[0]?.cpac__id
                             if (!cp_id) {
                                 errores += "<li>Se ingresa ${numero} ${dscr})</li>"
-                                println "No se encontró el CPC ${numero}"
+//                                println "No se encontró el CPC ${numero}"
                                 sql = "insert into cpac(cpacnmro, cpacdscr, cpacnvel, cpacfcha, cpacmvnt, cpacumve) " +
                                         "values('${numero}', '${dscr}', 9, '${fecha}', 1, ${umve})"
-                                println "inserta $sql"
+//                                println "inserta $sql"
                                 try {
                                     cn.execute(sql.toString())
                                     htmlInfo += "<p>ITEM añadido: " + numero + ' ' + dscr + "</p>"
@@ -365,7 +365,7 @@ class CodigoComprasPublicasController {
                             } else {
                                 sql = "update cpac set cpacdscr = '${dscr}', cpacfcha = '${fecha}', cpacumve = ${umve} " +
                                         "where cpac__id = ${cp_id}"
-                                println "actualiza $cp_id $sql"
+//                                println "actualiza $cp_id $sql"
                                 try {
                                     cn.execute(sql.toString())
                                     cuenta++
@@ -391,7 +391,7 @@ class CodigoComprasPublicasController {
 
                 flash.message = str
 
-                println "DONE!!"
+//                println "DONE!!"
 //                redirect(action: "mensajeUploadContrato", id: params.id)
                 render "ok_${str}"
             } else {
@@ -422,13 +422,13 @@ class CodigoComprasPublicasController {
 
         sql = "select itvafcha from itva where itvafcha = '${fcha}' "
         def existe = cn.rows(sql.toString())[0]?.itvafcha
-        println "existe: $existe"
+//        println "existe: $existe"
 
         if(!existe) {
             sql = "insert into itva(itvafcha, itvafcin, item__id, itvapcnt, itvargst) " +
                     "select '${fcha}', now()::date, item__id, cpacumve, 'N' from item, cpac " +
                     "where item.cpac__id = cpac.cpac__id and cpacfcha = '${fcha}' "
-            println "sql. $sql"
+//            println "sql. $sql"
             cn.execute(sql.toString())
         }
         cn.close()

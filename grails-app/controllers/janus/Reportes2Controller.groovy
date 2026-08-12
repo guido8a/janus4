@@ -166,7 +166,7 @@ class Reportes2Controller {
     }
 
     def reporteRubroIlustracion() {
-        println "inicia reporteRubroIlustracion"
+//        println "inicia reporteRubroIlustracion"
         def obra = Obra.get(params.id)
         def persona = Persona.get(session.usuario.id)
         def tama = VolumenesObra.findAllByObra(obra, [sort: 'orden']).item.unique().size()
@@ -223,7 +223,7 @@ class Reportes2Controller {
         def rubrosText = "Rubros de la obra " + truncText(obra.nombre)
         def tipo = params.tipo //i: ilustraciones, e: especificaciones, ie: ambas
 
-        println "rubros: ${rubros.size()}"
+//        println "rubros: ${rubros.size()}"
 
         def sinCodigo = true
 
@@ -262,13 +262,13 @@ class Reportes2Controller {
                             pagesIlustracion = readerIlustracion.getNumberOfPages()
                         }
                     }else{
-                        println("no existe archivo pdf" )
+//                        println("no existe archivo pdf" )
                     }
                 }
 
                 def ares = ArchivoEspecificacion.findByCodigo(rubro?.codigoEspecificacion)
                 if (ares && tipo.contains("e")) {
-                    println "---> rbro: ${rubro.codigo} ruta: ${ares?.ruta}"
+//                    println "---> rbro: ${rubro.codigo} ruta: ${ares?.ruta}"
 
                     if(!ares?.ruta) {
                         falta.add("item: " + rubro.codigo + " archivo: " + ares.ruta)
@@ -277,16 +277,16 @@ class Reportes2Controller {
                         extEspecificacion = ares.ruta.split("\\.")
                         extEspecificacion = extEspecificacion[extEspecificacion.size() - 1]
                         pathEspecificacion = "/var/janus/" + "rubros" + File.separatorChar + ares?.ruta
-                        println "ruta: --> ${ares?.ruta} path: ${pathEspecificacion.toLowerCase()}"
+//                        println "ruta: --> ${ares?.ruta} path: ${pathEspecificacion.toLowerCase()}"
                         if (pathEspecificacion.toLowerCase().contains("pdf")) {
                             try {
                                 extEspecificacion = ares.ruta.split("\\.")
                                 extEspecificacion = extEspecificacion[extEspecificacion.size() - 1]
                                 pathEspecificacion = "/var/janus/" + "rubros" + File.separatorChar + ares?.ruta
-                                println "ruta: --> ${ares?.ruta} path: ${pathEspecificacion.toLowerCase()}"
+//                                println "ruta: --> ${ares?.ruta} path: ${pathEspecificacion.toLowerCase()}"
 
                                 readerEspecificacion = new PdfReader(new FileInputStream(pathEspecificacion));
-                                println "pags: ${readerEspecificacion.getNumberOfPages()}"
+//                                println "pags: ${readerEspecificacion.getNumberOfPages()}"
                                 pagesEspecificacion = readerEspecificacion.getNumberOfPages()
                             } catch (e) {
                                 falta.add("item: " + rubro.codigo + " archivo: " + ares.ruta)
@@ -349,7 +349,7 @@ class Reportes2Controller {
                             img.scaleToFit(maxImageSize, maxImageSize);
                             addCellTabla(tablaRubro, img, prmsEs)
                         }else{
-                            println("no existe archivo de imagen" )
+//                            println("no existe archivo de imagen" )
                         }
 
                     } else {
@@ -371,7 +371,7 @@ class Reportes2Controller {
                 document.add(tablaRubro)
 
                 infoText(cb, document, rubrosText, DOC)
-                println "paginas: $pagesEspecificacion"
+//                println "paginas: $pagesEspecificacion"
                 if (extEspecificacion == "pdf") {
                     pagesEspecificacion.times {
                         document.newPage();
@@ -405,7 +405,7 @@ class Reportes2Controller {
             /** pdfs que faltan */
             if(falta.size() > 0) {
                 falta = falta.unique()
-                println "faltan archivos: $falta"
+//                println "faltan archivos: $falta"
 //                def tx = "Archivos que faltan: <br>"
                 def tx = "<br>"
                 falta.each { f ->
@@ -468,7 +468,7 @@ class Reportes2Controller {
 
             document.add(tablaFirmas)
 
-            println "...termina reporte"
+//            println "...termina reporte"
             document.close();
             pdfw.close()
             byte[] b = baos.toByteArray();
@@ -686,7 +686,7 @@ class Reportes2Controller {
 
 
     def comprobarIlustracion (){
-        println ".... comprobarIlustracion, params: $params"
+//        println ".... comprobarIlustracion, params: $params"
         def obra
         if(params.id){
             obra = Obra.get(params.id)
@@ -701,7 +701,7 @@ class Reportes2Controller {
         def pagAct = 1
         def tipo = params.tipo //i: ilustraciones, e: especificaciones, ie: ambas
 
-        println "...1 --> ${rubros.size()}, tipo: $tipo"
+//        println "...1 --> ${rubros.size()}, tipo: $tipo"
         rubros.each { rubro ->
             mensaje = rubro.codigo
             def extIlustracion = "", extEspecificacion = "", pagesEspecificacion = 0, pagesIlustracion = 0, pathEspecificacion, pathIlustracion
@@ -759,7 +759,7 @@ class Reportes2Controller {
             */
         }
 
-        println "....fin"
+//        println "....fin"
         render "SI*"
     }
 
@@ -999,7 +999,7 @@ class Reportes2Controller {
         try {
             indi = indi.toDouble()
         } catch (e) {
-            println "error parse " + e
+//            println "error parse " + e
             indi = 21.5
         }
 
@@ -1069,7 +1069,7 @@ class Reportes2Controller {
         try {
             indi = indi.toDouble()
         } catch (e) {
-            println "error parse " + e
+//            println "error parse " + e
             indi = 21.5
         }
 
@@ -1424,7 +1424,7 @@ class Reportes2Controller {
 
 
     def _reportePrecios() {
-        println "reportePrecios params" + params
+//        println "reportePrecios params" + params
         def grupo = Grupo.get(params.grupo.toLong())
 
         def orden = "itemnmbr"
@@ -1518,7 +1518,7 @@ class Reportes2Controller {
 
     def reporteExcelComposicionPartes() {
 
-        println("!!!" + params)
+//        println("!!!" + params)
 
         if (!params.tipo) {
             params.tipo = "-1"

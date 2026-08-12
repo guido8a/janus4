@@ -21,10 +21,10 @@ class ConcursoController {
 //        def conc = Concurso.count()
         def sec = 1
         def lst = Concurso.list([sort: "id", order: "desc"])
-        println lst
+//        println lst
         if (lst.size() > 1) {
             def last = lst[1].codigo?.split("-")
-            println "... last: $last"
+//            println "... last: $last"
             if (last?.size() > 2) {
 //                def cod = last[2].toInteger()
                 def cod = 0
@@ -32,7 +32,7 @@ class ConcursoController {
                     cod = last[1].toInteger()
                     sec = cod + 1
                 } catch (e) {
-                    println "error $e"
+//                    println "error $e"
                 }
 
 //                println cod
@@ -169,7 +169,7 @@ class ConcursoController {
     } //list
 
     def listaPac(){
-        println "listaPac" + params
+//        println "listaPac" + params
         def datos;
         def listaBuscar = ['pacpdscr', 'dptodscr', 'prspdscr']
 
@@ -179,10 +179,10 @@ class ConcursoController {
         def sqlTx = ""
         def bsca = listaBuscar[params.buscarPor.toInteger()-1]
         def ordn = listaBuscar[params.ordenar.toInteger()-1]
-        println "buscar: $bsca, orden: $ordn ... ${params.buscarPor.toInteger()-1} --> ${listaBuscar[params.buscarPor.toInteger()]}"
+//        println "buscar: $bsca, orden: $ordn ... ${params.buscarPor.toInteger()-1} --> ${listaBuscar[params.buscarPor.toInteger()]}"
         txwh += " and $bsca ilike '%${params.criterio}%'"
         sqlTx = "${select} ${txwh} order by pacp__id, ${ordn} limit 100 ".toString()
-        println "sql: $sqlTx"
+//        println "sql: $sqlTx"
 
         def cn = dbConnectionService.getConnection()
         datos = cn.rows(sqlTx)
@@ -193,14 +193,14 @@ class ConcursoController {
 
 
     def tablaConcursos() {
-        println "buscar concursos .... $params"
+//        println "buscar concursos .... $params"
         def cn = dbConnectionService.getConnection()
         params.old = params.criterio
         params.criterio = buscadorService.limpiaCriterio(params.criterio)
 
         def sql = armaSql(params)
         params.criterio = params.old
-        println "sql: $sql"
+//        println "sql: $sql"
         def data = cn.rows(sql.toString())
 
         def msg = ""
@@ -216,7 +216,7 @@ class ConcursoController {
     }
 
     def armaSql(params){
-        println "armaSql: $params"
+//        println "armaSql: $params"
         def campos = buscadorService.parmProcesos()
 
         def sqlSelect = "select cncr__id, obranmbr, pacpdscr, cncrcdgo, cncrobjt, cncrbase, cncrpmbs, cncretdo," +
@@ -232,13 +232,13 @@ class ConcursoController {
                 sqlWhere += " and ${params.buscador} ilike '%${params.criterio}%' ";
             }
         }
-        println "sql: $sqlSelect $sqlWhere $sqlOrder"
+//        println "sql: $sqlSelect $sqlWhere $sqlOrder"
         "$sqlSelect $sqlWhere $sqlOrder".toString()
     }
 
 
     def nuevoProceso() {
-        println "nuevoProceso $params"
+//        println "nuevoProceso $params"
         def pac = Pac.get(params.id)
         def admin = Administracion.findAllByFechaInicioLessThanEqualsAndFechaFinGreaterThanEquals(new Date(), new Date())
         def concurso = new Concurso()
@@ -246,9 +246,9 @@ class ConcursoController {
         if (admin.size() == 1) {
             concurso.administracion = admin[0]
         } else if (admin.size() > 1) {
-            println "hay mas de una admin: " + admin
+//            println "hay mas de una admin: " + admin
         } else {
-            println "no hay admin q asignar"
+//            println "no hay admin q asignar"
         }
         concurso.costoBases = 0
         concurso.objeto = pac.descripcion
@@ -270,7 +270,7 @@ class ConcursoController {
             flash.message = "Proceso creado"
             redirect(action: 'list')
         } else {
-            println "not saved"
+//            println "not saved"
             println concurso.errors
             flash.clase = "alert-error"
             flash.message = "Ha ocurrido un error al crear el proceso"
@@ -291,7 +291,7 @@ class ConcursoController {
     }
 
     def buscaPac() {
-        println("params" + params)
+//        println("params" + params)
         def listaTitulos = ["Descripción", "Departamento", "Presupuesto"]
         def listaCampos = ["descripcion", "departamento", "presupuesto"]
         def funciones = [null, null]
@@ -340,7 +340,7 @@ class ConcursoController {
     }
 
     def setEtapa() {
-        println "set etapa  " + params
+//        println "set etapa  " + params
         def con = Concurso.get(params.id)
         switch (params.tipo) {
             case "1":
@@ -361,7 +361,7 @@ class ConcursoController {
 
 
     def form_ajax() {
-        println "aqui $params"
+//        println "aqui $params"
         def campos = ["codigo": ["Código", "string"], "nombre": ["Nombre", "string"], "descripcion": ["Descripción", "string"], "oficioIngreso": ["Memo ingreso", "string"], "oficioSalida": ["Memo salida", "string"], "sitio": ["Sitio", "string"], "plazo": ["Plazo", "int"], "parroquia": ["Parroquia", "string"], "comunidad": ["Comunidad", "string"], "canton": ["Canton", "string"]]
         def listaObra = [1: 'Código', 2: 'Nombre', 3: 'Mem. Ingreso', 4: 'Mem. Salida', 5: 'Estado']
         def duracionPrep = 0
@@ -380,7 +380,7 @@ class ConcursoController {
 
         if (params.id) {
             concursoInstance = Concurso.get(params.id.toLong())
-            println("--->"  + concursoInstance?.administracion?.nombrePrefecto)
+//            println("--->"  + concursoInstance?.administracion?.nombrePrefecto)
             if (!concursoInstance) {
                 flash.clase = "alert-error"
                 flash.message = "No se encontró Concurso con id " + params.id
@@ -392,7 +392,7 @@ class ConcursoController {
             maxPrep = concursoInstance.pac.tipoProcedimiento?.preparatorio
             maxPre = concursoInstance.pac.tipoProcedimiento?.precontractual
             maxCon = concursoInstance.pac.tipoProcedimiento?.contractual
-            println "max prep " + maxPrep
+//            println "max prep " + maxPrep
             if (concursoInstance.fechaInicioPreparatorio != null) {
                 use(groovy.time.TimeCategory) {
                     if (concursoInstance.fechaFinPreparatorio == null)
@@ -431,7 +431,7 @@ class ConcursoController {
 
 
     def iniciarPreparatorio() {
-        println "iniciar prep " + params
+//        println "iniciar prep " + params
 
         def concurso = Concurso.get(params.id)
         concurso.memoRequerimiento = params.memo
@@ -448,7 +448,7 @@ class ConcursoController {
 
 
     def buscarObra() {
-        println "buscarObra params: $params"
+//        println "buscarObra params: $params"
         def extraParr = ""
         def extraCom = ""
         if (params.campos instanceof java.lang.String) {
@@ -521,7 +521,7 @@ class ConcursoController {
             limite = TipoProcedimiento.findBySigla("MCD").techo
         }
 
-        println "limite valor obra: ${limite}"
+//        println "limite valor obra: ${limite}"
         def extras = " and (valor<${limite}  or  liquidacion = 1) and estadoSif='R' "
         if (extraParr.size() > 1)
             extras += " and parroquia in (${extraParr})"
@@ -656,7 +656,7 @@ class ConcursoController {
             params.presupuestoReferencial = params.presupuestoReferencial.toDouble()
         }
 
-        println "params ${params.presupuestoReferencial}"
+//        println "params ${params.presupuestoReferencial}"
         def concursoInstance
         if (params.id) {
             concursoInstance = Concurso.get(params.id)
@@ -681,7 +681,7 @@ class ConcursoController {
 
 
         if (!concursoInstance.save(flush: true)) {
-            println "errores concurso " + concursoInstance.errors
+//            println "errores concurso " + concursoInstance.errors
             flash.clase = "alert-error"
             def str = "<h4>No se pudo guardar Concurso " + (concursoInstance.id ? concursoInstance.id : "") + "</h4>"
 
@@ -758,7 +758,7 @@ class ConcursoController {
     }
 
     def tablaObras_ajax(){
-        println "listaItems" + params
+//        println "listaItems" + params
         def datos;
         def listaObra = ['obracdgo', 'obranmbr', 'obrammig', 'obrammsl', 'obraetdo, obrafcha']
 
@@ -771,7 +771,7 @@ class ConcursoController {
 
         txwh += " and $bsca ilike '%${params.criterio}%'"
         sqlTx = "${select} ${txwh} order by obranmbr, ${ordn} limit 100 ".toString()
-        println "sql: $sqlTx"
+//        println "sql: $sqlTx"
 
         def cn = dbConnectionService.getConnection()
         datos = cn.rows(sqlTx)
@@ -800,7 +800,7 @@ class ConcursoController {
 
     def saveConcurso_ajax() {
 
-        println("parmas concurso " + params)
+//        println("parmas concurso " + params)
 
         if (params.codigo) {
             params.codigo = params.codigo.toUpperCase()
@@ -897,7 +897,7 @@ class ConcursoController {
             params.obra = params.obraC
         }
 
-        println "params ${params.presupuestoReferencial}"
+//        println "params ${params.presupuestoReferencial}"
         def concursoInstance
         if (params.id) {
             concursoInstance = Concurso.get(params.id)
@@ -964,7 +964,7 @@ class ConcursoController {
 
     def concursoComplementario_ajax(){
 
-        println("params " + params)
+//        println("params " + params)
 
         def pac = Pac.get(params.pac)
         def tipoConcurso = TipoConcurso.findByCodigo("C")

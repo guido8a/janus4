@@ -1033,7 +1033,7 @@ class ReportesExcel2Controller {
     def reportePreciosExcel() {
 
 
-        println("params " + params)
+//        println("params " + params)
 
         def orden = "itemnmbr"
         if (params.orden == "n") {
@@ -1178,7 +1178,7 @@ class ReportesExcel2Controller {
         try {
             indi = indi.toDouble()
         } catch (e) {
-            println "error parse " + e
+//            println "error parse " + e
             indi = 21.5
         }
 
@@ -1470,7 +1470,7 @@ class ReportesExcel2Controller {
         try {
             indi = indi.toDouble()
         } catch (e) {
-            println "error parse " + e
+//            println "error parse " + e
             indi = 21.5
         }
 
@@ -1672,7 +1672,7 @@ class ReportesExcel2Controller {
 
 
     def imprimirRubroOferentesExcel(){
-        println "imprimir rubro  excel "+params
+//        println "imprimir rubro  excel "+params
         def rubro = Item.get(params.id)
         def indi = params.indi
         def obra = Obra.get(params.obra)
@@ -1680,7 +1680,7 @@ class ReportesExcel2Controller {
         def oferente = Persona.get(params.oferente)
         def obraOferente = ObraOferente.findByOferente(oferente)
         def sql = "SELECT * FROM cncr WHERE obra__id=${obraOferente?.idJanus.id}"
-        println "sql: $sql"
+//        println "sql: $sql"
         def cn = dbConnectionService.getConnection()
         def conc = cn.rows(sql.toString())
         def cncrId
@@ -1692,7 +1692,7 @@ class ReportesExcel2Controller {
         try{
             indi=indi.toDouble()
         } catch (e){
-            println "error parse "+e
+//            println "error parse "+e
             indi=21.5
         }
 
@@ -1972,7 +1972,7 @@ class ReportesExcel2Controller {
         try{
             indi=indi.toDouble()
         } catch (e){
-            println "error parse "+e
+//            println "error parse "+e
             indi=21.5
         }
 
@@ -2757,14 +2757,14 @@ class ReportesExcel2Controller {
                     "tppl__id not in (1,10)"
             def cnta = cn.rows(sql.toString())[0].cnta  //incluir en excel
             def avec = 0
-            println "planillas: $cnta"
+//            println "planillas: $cnta"
             if(cnta > 0) {
                 sql = "select sum(plnlmnto) avec from plnl " +
                         "where plnl.cntr__id = ${contrato.id} and tppl__id not in (1,10)"
-                println "sql: $sql"
+//                println "sql: $sql"
                 avec = cn.rows(sql.toString())[0].avec  //incluir en excel
             }
-            println "avance económico contrato id: ${contrato.id}: es:  ${avec/contrato.monto*100}"
+//            println "avance económico contrato id: ${contrato.id}: es:  ${avec/contrato.monto*100}"
 
             Row rowF1 = sheet.createRow(fila)
             rowF1.createCell(0).setCellValue(contrato?.codigo ?: '')
@@ -2968,11 +2968,11 @@ class ReportesExcel2Controller {
                     "tppl__id not in (1,10)"
             def cnta = cn.rows(sql.toString())[0].cnta  //incluir en excel
             def avec = 0
-            println "planillas: $cnta"
+//            println "planillas: $cnta"
             if(cnta > 0) {
                 sql = "select sum(plnlmnto) avec from plnl " +
                         "where plnl.cntr__id = ${contrato.id} and tppl__id not in (1,10)"
-                println "sql: $sql"
+//                println "sql: $sql"
                 avec = cn.rows(sql.toString())[0].avec  //incluir en excel
             }
 //            println "avance económico contrato id: ${contrato.id}: es:  ${avec/contrato.monto*100}"

@@ -21,13 +21,13 @@ class GarantiaFinancieroController {
         def privKey = '59e423e9214a1250'
         def random64 = Base64.getEncoder().encodeToString(random.getBytes())
         def clave = Base64.getEncoder().encodeToString('GADPP/*1406'.getBytes())
-        println "rand: $random64, clave: $clave"
+//        println "rand: $random64, clave: $clave"
         def passp = random + fcha + privKey
         MessageDigest ms_sha1 = MessageDigest.getInstance("SHA1")
 
         byte[] digest = ms_sha1.digest(passp.getBytes())
         def key = digest.encodeBase64()
-        println "key: ${digest.encodeBase64()}"
+//        println "key: ${digest.encodeBase64()}"
 
         def conecta = false
         def retorna = ""
@@ -42,7 +42,7 @@ class GarantiaFinancieroController {
                 "'moduleCode': 'SEP-P02'}}"
 
         message = message.replace("'", '"')
-        println "$message"
+//        println "$message"
         try {
             post.setRequestMethod("POST")
             post.setDoOutput(true)
@@ -50,8 +50,8 @@ class GarantiaFinancieroController {
             post.getOutputStream().write(message.getBytes("UTF-8"));
             def postRC = post.getResponseCode();
 
-            println "responde: ${postRC}"
-            println "responde2: ${post.getResponseMessage()}"
+//            println "responde: ${postRC}"
+//            println "responde2: ${post.getResponseMessage()}"
 
             def jsonSlurper = new JsonSlurper()
             if (postRC.equals(200)) {
@@ -117,11 +117,11 @@ class GarantiaFinancieroController {
                 if(!garantia.save(flush:true)){
                    println("error al guardar la garantia ")
                 }else{
-                    println "a grabar: ${garantia}"
+//                    println "a grabar: ${garantia}"
                 }
             }
         }else{
-            println("no existen garantias a guardar")
+//            println("no existen garantias a guardar")
         }
 
         return[garantias: resultado?.garantias, contrato: contrato]

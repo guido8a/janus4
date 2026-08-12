@@ -7,7 +7,7 @@ class RegistroApuController {
     def dbConnectionService
 
     def tablaRegistro_ajax(){
-        println "---> ${params}"
+//        println "---> ${params}"
         def oferente = session.usuario
         def registroApu
 
@@ -37,7 +37,7 @@ class RegistroApuController {
     }
 
     def saveRegistroApu_ajax(){
-        println "saveRegistroApu_ajax params: $params"
+//        println "saveRegistroApu_ajax params: $params"
         def registro
 
         if(params.id){
@@ -107,7 +107,7 @@ class RegistroApuController {
     }
 
     def tablaSubirExcelApu_ajax(){
-        println "---> ${params}"
+//        println "---> ${params}"
         def oferente = session.usuario
         def obra = Obra.get(params.obra)
         def registroApu

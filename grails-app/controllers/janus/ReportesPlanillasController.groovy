@@ -147,7 +147,7 @@ class ReportesPlanillasController {
                     detalles[dt.volumenContrato.item].cantidad.ejecutado += dt.cantidad
                     detalles[dt.volumenContrato.item].valor.ejecutado += dt.monto
                 } else {
-                    println "no existe detalle para " + dt.volumenObra.item + "???"
+//                    println "no existe detalle para " + dt.volumenObra.item + "???"
                 }
             }
         }
@@ -455,7 +455,7 @@ class ReportesPlanillasController {
             avanceContrato = avanceContrato[0]
             frases = FraseClima.findAllByAvance(avanceContrato, [sort: "fecha"])
         } else {
-            println "Hay mas de un avance para el contrato ${contrato.id} para la planilla ${params.plnl}: ${avanceContrato.id}"
+//            println "Hay mas de un avance para el contrato ${contrato.id} para la planilla ${params.plnl}: ${avanceContrato.id}"
             avanceContrato = avanceContrato[0]
             frases = FraseClima.findAllByAvance(avanceContrato, [sort: "fecha"])
         }
@@ -481,9 +481,9 @@ class ReportesPlanillasController {
                 "<a href='#' class='btn btn-success btnPrintTotal'><i class='icon icon-print'></i>Imprimir Total</a></legend>"
 //        if (band == 1) {
         def sql = "select prejfcin, prejfcfn from prej where cntr__id = ${contrato.id} and prejtipo = 'S'"
-        println "suspensiones: $sql"
+//        println "suspensiones: $sql"
         def suspension = cn.rows(sql.toString())
-        println "suspensión: $suspension"
+//        println "suspensión: $suspension"
         def dateFormat = new SimpleDateFormat("EEEE dd-MM-yyyy", new Locale("es"))
         titulos.eachWithIndex { t, i ->
             html += "<h5>${t}</h5>"
@@ -561,14 +561,14 @@ class ReportesPlanillasController {
 //            println "1"
             avanceContrato = avanceContrato[0]
         } else {
-            println "error... hay mas de un avance"
+//            println "error... hay mas de un avance"
             avanceContrato = avanceContrato[0]
         }
 
-        println "texto: ${params.texto}"
+//        println "texto: ${params.texto}"
         params.texto.each { t ->
             def parts = t.toString().split("\\^")
-            println "--------- ${parts}"
+//            println "--------- ${parts}"
 //            println "--------- ${parts[0]}: ${parts[1]?.size()}"
             if (parts.size() == 2) {
                 avanceContrato["frase" + parts[0]] = parts[1]
@@ -592,13 +592,13 @@ class ReportesPlanillasController {
                 } else if (fr.size() == 1) {
                     fr = fr[0]
                 } else {
-                    println "WTF hay ${fr.size()} frases clima para el avance ${avanceContrato.id} para la fecha ${parts[0]}: ${avanceContrato.id}"
+//                    println "WTF hay ${fr.size()} frases clima para el avance ${avanceContrato.id} para la fecha ${parts[0]}: ${avanceContrato.id}"
                     fr = fr[0]
                 }
                 fr.manana = parts[1]
                 fr.tarde = parts[2]
                 if (!fr.save(flush: true)) {
-                    println "Error: " + fr.errors
+//                    println "Error: " + fr.errors
                     errores += "<li>Ha ocurrido un error: " + renderErrors(bean: fr) + "</li>"
                 }
             }
@@ -611,7 +611,7 @@ class ReportesPlanillasController {
     }
 
     def reporteAvance() {
-        println "reporteAvance $params"
+//        println "reporteAvance $params"
         def cn = dbConnectionService.getConnection()
         def plnl = Planilla.get(params.plnl)
         if (!params.id) {
@@ -700,7 +700,7 @@ class ReportesPlanillasController {
         sql2 = "select coalesce(sum(prejcrpa), 0) programado from prej where cntr__id = ${plnl.contrato.id} and " +
                 "prejtipo = '${plnl.tipoContrato}' " + condicion
 
-        println "inversionProgramada --> $sql2"
+//        println "inversionProgramada --> $sql2"
 //        def inversionProgramada = crej.sum { it.precio } ?: 0
         def inversionProgramada = cn.rows(sql2.toString())[0].programado
 //        def inversionReal = planillasAvance.sum { it.valor } ?: 0
@@ -716,9 +716,9 @@ class ReportesPlanillasController {
         tx = "select sum(mlplmnto) suma from mlpl where plnl__id in (select plnl__id from plnl " +
                 "where cntr__id = ${plnl.contrato.id} and tppl__id in (3,9,4) and plnlfcfn <= '${plnl.fechaFin}')"
 
-        println "multas: $tx"
+//        println "multas: $tx"
         def multas = cn.rows(tx.toString())[0]?.suma?:0
-        println "multas mlpl: $multas, este plnlmles: ${plnl.multaEspecial?:0}"
+//        println "multas mlpl: $multas, este plnlmles: ${plnl.multaEspecial?:0}"
         tx = "select sum(plnlmles) suma from plnl where cntr__id = ${plnl.contrato.id} and " +
                 "tppl__id in (3,9,4) and plnlfcfn <= '${plnl.fechaFin}'"
         multas += cn.rows(tx.toString())[0]?.suma?:0  /* multas especiales anteriores */
@@ -950,7 +950,7 @@ class ReportesPlanillasController {
         } else {
             anticipo = contrato.anticipo
         }
-        println "contrato: ${contrato.codigo}  --> compl: ${cmpl?.codigo} --tipo: ${plnl.tipoContrato}}"
+//        println "contrato: ${contrato.codigo}  --> compl: ${cmpl?.codigo} --tipo: ${plnl.tipoContrato}}"
 
         addCellTabla(tablaEvaluacion, new Paragraph("3.- EVALUACIÓN DEL AVANCE FÍSICO", fontTitle), [padding: 3, pb: 5, border: Color.WHITE, bg: Color.LIGHT_GRAY, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE, colspan: 3])
 
@@ -1119,7 +1119,7 @@ class ReportesPlanillasController {
 
 
     def reporteAvanceTotal() {
-        println "reporteAvanceTotal: $params"
+//        println "reporteAvanceTotal: $params"
         def cn = dbConnectionService.getConnection()
         def plnl = Planilla.get(params.plnl)
 
@@ -1560,7 +1560,7 @@ class ReportesPlanillasController {
 
         def plncto = Planilla.findByContratoAndTipoPlanilla(contrato,tipoC)
 
-        println("costo " + plncto)
+//        println("costo " + plncto)
 
         def planillaAnticipo = Planilla.withCriteria {
             eq("contrato", contrato)
@@ -1816,7 +1816,7 @@ class ReportesPlanillasController {
     }
 
     def reportePlanillaLiquidacion() {
-        println("entro planillas liquidarcion")
+//        println("entro planillas liquidarcion")
         def planilla = Planilla.get(params.id)
         def obra = planilla.contrato.oferta.concurso.obra
         def contrato = planilla.contrato
@@ -1876,7 +1876,7 @@ class ReportesPlanillasController {
             eq("codigo", obra.codigo + "LQ")
         }
         if (obraLiquidacion.size() == 0) {
-            println "error 1"
+//            println "error 1"
             flash.message = "No se encontró la obra de liquidación"
 
             def url = g.createLink(controller: "planilla", action: "list", id: contrato.id)
@@ -1885,7 +1885,7 @@ class ReportesPlanillasController {
             redirect(action: "errores", params: [link: link])
             return
         } else if (obraLiquidacion.size() > 1) {
-            println "error 2"
+//            println "error 2"
             flash.message = "Se encontró más de una obra de liquidación"
             def url = g.createLink(controller: "planilla", action: "list", id: contrato.id)
             def link = "<a href='${url}' class='btn btn-danger'>Regresar</a>"
@@ -2195,7 +2195,7 @@ class ReportesPlanillasController {
                 periodos.each { per ->
                     def valor = ValorIndice.findByPeriodoAndIndice(per.periodoLiquidacion, c.indice).valor
                     if (!valor) {
-                        println "wtf no valor " + per.periodoLiquidacion + "  " + c.indice
+//                        println "wtf no valor " + per.periodoLiquidacion + "  " + c.indice
                         valor = 0
                     }
                     addCellTabla(tablaB0, new Paragraph(numero(valor, 2), fontTd), [border: Color.BLACK, bcr: Color.WHITE, bwr: 1, align: Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE])
@@ -2204,7 +2204,7 @@ class ReportesPlanillasController {
                     if (vlrj.size() > 0) {
                         valor = vlrj.pop().valor
                     } else {
-                        println "error wtf no hay vlrj => from ValorReajuste where obra=${obra.id} and planilla=${planilla.id} and periodoIndice =${per.periodoLiquidacion.id} and formulaPolinomicaLiq=${c.id} and planillaLiq = ${per.planilla.id}"
+//                        println "error wtf no hay vlrj => from ValorReajuste where obra=${obra.id} and planilla=${planilla.id} and periodoIndice =${per.periodoLiquidacion.id} and formulaPolinomicaLiq=${c.id} and planillaLiq = ${per.planilla.id}"
                         valor = -1
                     }
                     addCellTabla(tablaB0, new Paragraph(numero(valor), fontTd), [border: Color.BLACK, bcl: Color.WHITE, bwl: 1, align: Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE])
@@ -2711,11 +2711,11 @@ class ReportesPlanillasController {
                         cpAnt = planillasAnterioresCP.sum { it.valor } ?: 0
 
                     } else if (cpPlanilla.size() == 0) {
-                        println "No hay planillas de cp"
+//                        println "No hay planillas de cp"
                     } else {
-                        println "WTF hay mas de una planilla cp asociada a esta planilla??? "
-                        println "PLANILLA: " + planilla.id
-                        println "PLANILLAS CP: " + cpPlanilla.id
+//                        println "WTF hay mas de una planilla cp asociada a esta planilla??? "
+//                        println "PLANILLA: " + planilla.id
+//                        println "PLANILLAS CP: " + cpPlanilla.id
                     }
                     def cpAcu = cpAnt + cpAct
 
@@ -3454,7 +3454,7 @@ class ReportesPlanillasController {
         def cn = dbConnectionService.getConnection()
         def sql= "select sum(rjplvlor) suma from rjpl where plnl__id = (select max(plnlrjst) from rjpl " +
                 "where plnl__id = ${planilla.id} and plnlrjst < plnl__id)"
-        println "--sql: $sql"
+//        println "--sql: $sql"
         def reajusteAnterior = cn.rows(sql.toString())[0].suma
         def reajuste = ReajustePlanilla.findAllByPlanilla(planilla).sum{ it.valorReajustado} - reajusteAnterior
 
@@ -3758,7 +3758,7 @@ class ReportesPlanillasController {
         def cn = dbConnectionService.getConnection()
         def sql= "select sum(rjplvlor) suma from rjpl where plnl__id = (select max(plnlrjst) from rjpl " +
                 "where plnl__id = ${planilla.id} and plnlrjst < plnl__id)"
-        println "--sql: $sql"
+//        println "--sql: $sql"
         def reajusteAnterior = cn.rows(sql.toString())[0].suma
         def reajuste = ReajustePlanilla.findAllByPlanilla(planilla).sum{ it.valorReajustado} - reajusteAnterior
 
@@ -3858,7 +3858,7 @@ class ReportesPlanillasController {
 
     def memoPedidoPagoAnticipo() {
         def planilla = Planilla.get(params.id)
-        println("memoPedidoPagoAnticipo - planilla " + params.id)
+//        println("memoPedidoPagoAnticipo - planilla " + params.id)
         def obra = planilla.contrato.oferta.concurso.obra
         def contrato = planilla.contrato
 //        def tramite = Tramite.findByPlanilla(planilla)
@@ -4152,7 +4152,7 @@ class ReportesPlanillasController {
         def str = ""
 
         def texto = Pdfs.findAllByObra(obra)
-        println "................." + texto.size() + " obra:" + obra.id
+//        println "................." + texto.size() + " obra:" + obra.id
         if (texto.size() == 0) {
             /* accede a crear inicio de obra solo el administrador */
             if (contrato.administrador.id == session.usuario.id) {

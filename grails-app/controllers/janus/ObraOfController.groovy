@@ -28,7 +28,7 @@ class ObraOfController {
 
 
     def regitrarObra() {
-        println "regitrarObra Oferentes: $params"
+//        println "regitrarObra Oferentes: $params"
         def obra = Obra.get(params.id)
         def obrafp = new ObraFPController()
 
@@ -41,12 +41,12 @@ class ObraOfController {
             return
         }
 
-        println "...1"
+//        println "...1"
         obraService.registrarObra_of(obra)
         obra.estado = "R"
 
-        println(obra.id)
-        println(obra.estado)
+//        println(obra.id)
+//        println(obra.estado)
 
 
         if (obra.save(flush: true)) {
@@ -84,7 +84,7 @@ class ObraOfController {
         if (params.obra) {
             obra = Obra.get(params.obra)
             def valores = preciosService.rbro_pcun_v4_of(obra.id, 'asc')?.vlobpcun?.sum()
-            println "valores: ${valores} "
+//            println "valores: ${valores} "
 //            def subs = VolumenesObra.findAllByObra(obra, [sort: "orden"]).subPresupuesto.unique()
 //            def volumen = VolumenesObra.findByObra(obra)
 //            def formula = FormulaPolinomica.findByObra(obra)
@@ -308,7 +308,7 @@ class ObraOfController {
                 colorParr = "#00008B";
 
                 if (params.criterio != "") {
-                    println params
+//                    println params
                     comunidades = Comunidad.withCriteria {
                         parroquia {
                             ilike("nombre", "%" + params.criterio + "%")
@@ -364,15 +364,15 @@ class ObraOfController {
 
     def save() {
 
-        println "save " + params
+//        println "save " + params
 
         def usuario = session.usuario.id
 
         def persona = Persona.get(usuario)
 
 
-        println("usuario" + usuario)
-        println("dep" + persona.departamento.id)
+//        println("usuario" + usuario)
+//        println("dep" + persona.departamento.id)
 
 
         if (params.fechaOficioSalida) {
@@ -409,7 +409,7 @@ class ObraOfController {
 
             if ((params.crono == "1" || params.crono == 1) && (oriM.toDouble() != valM.toDouble() || oriD.toDouble() != valD.toDouble())) {
                 //Elimina el cronograma
-                println "Elimina el cronograma"
+//                println "Elimina el cronograma"
                 VolumenesObra.findAllByObra(obraInstance, [sort: "orden"]).each { vol ->
                     Cronograma.findAllByVolumenObra(vol).each { crono ->
                         crono.delete()
@@ -425,7 +425,7 @@ class ObraOfController {
             obraInstance.departamento = persona.departamento
 
 
-            println("AQUIII" + obraInstance.departamento)
+//            println("AQUIII" + obraInstance.departamento)
 
             def par = Parametros.list()
             if (par.size() > 0)
@@ -516,7 +516,7 @@ class ObraOfController {
 
         if (revisarCodigo != null) {
 
-            println("entro1")
+//            println("entro1")
 
             render "NO_No se puede copiar la Obra " + " " + obra.nombre + " " + "porque posee un codigo ya existente."
             return
@@ -524,7 +524,7 @@ class ObraOfController {
 
         } else {
 
-            println("entro2")
+//            println("entro2")
 
 
             obraInstance = new Obra()
@@ -557,11 +557,11 @@ class ObraOfController {
             volumenes.each { volOr ->
                 volumenInstance = new VolumenesObra()
 
-                println("VO:" + volOr)
+//                println("VO:" + volOr)
 
                 volumenInstance.properties = volOr.properties
 
-                println("VI:" + volumenInstance)
+//                println("VI:" + volumenInstance)
                 //
 
                 volumenInstance.obra = obraInstance
@@ -587,7 +587,7 @@ class ObraOfController {
 
     def crearTipoObra() {
 
-        println(params)
+//        println(params)
 
         def tipoObraInstance = new TipoObra(params)
         if (params.id) {
@@ -609,7 +609,7 @@ class ObraOfController {
 
     def delete() {
 
-        println("delete:" + params.id)
+//        println("delete:" + params.id)
 
         def obraInstance = Obra.get(params.id)
         if (!obraInstance) {
@@ -636,7 +636,7 @@ class ObraOfController {
 
     /*lista obrtas */
     def listaObras(){
-        println "listaItems" + params
+//        println "listaItems" + params
         def datos;
 //        [1: 'Código', 2: 'Nombre', 3: 'Mem. Ingreso', 4: 'Mem. Salida', 5: 'Estado']
         def listaObra = ['obracdgo', 'obranmbr', 'obrammig', 'obrammsl', 'obraetdo']
@@ -651,7 +651,7 @@ class ObraOfController {
 
         txwh += " and $bsca ilike '%${params.criterio}%'"
         sqlTx = "${select} ${txwh} order by obranmbr, ${ordn} limit 100 ".toString()
-        println "sql: $sqlTx"
+//        println "sql: $sqlTx"
 
         def cn = dbConnectionService.getConnection()
         datos = cn.rows(sqlTx.toString())
@@ -666,12 +666,12 @@ class ObraOfController {
     }
 
     def verificaRbof_ajax() {
-        println "verificaRbof_ajax"
+//        println "verificaRbof_ajax"
         def cn = dbConnectionService.getConnection()
         def sql = "select rbofcdgo, item__id from rbof where rbofcdgo in " +
                 "(select item__id from vlof where obra__id = ${params.obra}) and " +
                 "rbof.obra__id = ${params.obra} group by rbofcdgo, item__id having count(*) > 1 "
-        println "sql: $sql"
+//        println "sql: $sql"
         def rubros = "("
         cn.eachRow(sql.toString()) { d->
             if(!rubros.contains(d.rbofcdgo.toString())) {
@@ -679,13 +679,13 @@ class ObraOfController {
             }
         }
         rubros += ")"
-        println "rubros: $rubros"
+//        println "rubros: $rubros"
         def datos = []
         if(rubros != "()"){
             sql = "select rbof__id, r.itemnmbr rubro, i.itemnmbr item, rbofcntd, rbofrndt " +
                     "from rbof, item r, item i where obra__id = ${params.obra} and rbofcdgo in ${rubros} and " +
                     "r.item__id = rbofcdgo and i.item__id = rbof.item__id order by rbofcdgo, i.item__id"
-            println "sql: $sql"
+//            println "sql: $sql"
         } else {
 
         }
@@ -697,7 +697,7 @@ class ObraOfController {
 
     def borrarRepetido_ajax(){
         def rubro = RubroOferente.get(params.id)
-        println "borra: $params --> ${rubro.item.nombre}"
+//        println "borra: $params --> ${rubro.item.nombre}"
         if(rubro){
             try{
                 rubro.delete(flush:true)

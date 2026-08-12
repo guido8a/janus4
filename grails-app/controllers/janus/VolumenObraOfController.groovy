@@ -10,7 +10,7 @@ class VolumenObraOfController {
         def obra = Obra.get(params.id)
 //        def volumenes = VolumenesObra.findAllByObra(obra)
         def volumenes = VolumenObraOferente.findAllByObra(obra)
-        println "vlof: ${volumenes.size()}"
+//        println "vlof: ${volumenes.size()}"
 
         def campos = ["codigo": ["Código", "string"], "nombre": ["Descripción", "string"]]
 
@@ -122,7 +122,7 @@ class VolumenObraOfController {
             lista.pop()
             render(view: '../tablaBuscadorColDer', model: [listaTitulos: listaTitulos, listaCampos: listaCampos, lista: lista, funciones: funciones, url: url, controller: "llamada", numRegistros: numRegistros, funcionJs: funcionJs])
         } else {
-            println "entro reporte"
+//            println "entro reporte"
             /*De esto solo cambiar el dominio, el parametro tabla, el paramtero titulo y el tamaño de las columnas (anchos)*/
             session.dominio = Item
             session.funciones = funciones

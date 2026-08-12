@@ -45,7 +45,7 @@ class ParrafoController {
     }
 
     def form_ext_ajax() {
-        println params
+//        println params
         def message
         def parrafoInstance = new Parrafo(params)
         if (params.id) {

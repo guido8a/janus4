@@ -7,7 +7,7 @@ class OferentesController {
     def oferentesService
 
     def obras(){
-        println "params "+params
+//        println "params "+params
         def result = oferentesService.list(params.tipo, params.oferente)
 //        println "res "+result
         [result:result,oferente:params.oferente,tipo:params.tipo?.toUpperCase()]
@@ -16,7 +16,7 @@ class OferentesController {
 
 
     def copiarObra(){
-        println "params "+params
+//        println "params "+params
         def obra = Obra.get(params.obra)
         def oferente = Persona.get(params.oferente)
         def ofId=params.obraOf
@@ -34,11 +34,11 @@ class OferentesController {
         //println "id "+copia.id
 
         def error = oferentesService.copiaVolumen(copia.id, ofId)
-        println "formula error: $error"
+//        println "formula error: $error"
         error += oferentesService.copiaFormula(copia.id, ofId)
-        println " crono "
+//        println " crono "
         error += oferentesService.copiaCrono(copia.id, ofId)
-        println "pasa crono con error: $error"
+//        println "pasa crono con error: $error"
         if(error != "")
             render "error#${error}"
         else

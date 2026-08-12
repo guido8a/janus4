@@ -56,7 +56,7 @@ class PlanillasAdminController {
             fechaMin = obra.fechaInicio
         else
             fechaMin = new Date()
-        println "fecha max... " + obra.fechaInicio.plus(600) + "  Mínimo: " + obra.fechaInicio
+//        println "fecha max... " + obra.fechaInicio.plus(600) + "  Mínimo: " + obra.fechaInicio
 
         return [planillaInstance: planillaInstance, obra: obra, tiposPlanilla: tiposPlanilla, fechaMin: fechaMin, existe: existe]
 
@@ -64,7 +64,7 @@ class PlanillasAdminController {
 
 
     def save() {
-        println "save  " + params
+//        println "save  " + params
         def obra = Obra.get(params.obra.id)
         if (params.fechaIngreso) {
             params.fechaIngreso = new Date().parse("dd-MM-yyyy", params.fechaIngreso)

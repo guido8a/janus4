@@ -76,7 +76,7 @@ class RubroController {
     }
 
     def rubroPrincipal() {
-        println "rubroPrincipal params: $params"
+//        println "rubroPrincipal params: $params"
         def rubro
         def campos = ["codigo": ["Código", "string"], "nombre": ["Descripción", "string"]]
         def grupos = []
@@ -119,7 +119,7 @@ class RubroController {
             items.sort { it.item.codigo }
             resps = rubro.responsable
 
-            println "items: $items"
+//            println "items: $items"
             def volumenes =  verificarVolumnesXRubro(rubro?.id)
 
             [campos: campos, rubro: rubro, grupos: grupos, items: items, choferes: choferes, volquetes: volquetes,
@@ -136,7 +136,7 @@ class RubroController {
         def cn = dbConnectionService.getConnection()
         def sql = "select count(*) cnta from vlob, obra where obraetdo = 'R' and vlob.obra__id = obra.obra__id and " +
                 "item__id = ${id}"
-        println "sql: $sql"
+//        println "sql: $sql"
         def existe = cn.rows(sql)[0].cnta
 
 //        def rubro = Item.get(id)
@@ -154,7 +154,7 @@ class RubroController {
 //
 //        return volumenes?.size()
 
-        println "verificarVolumnesXRubro: ${existe}"
+//        println "verificarVolumnesXRubro: ${existe}"
         return existe
     }
 
@@ -199,7 +199,7 @@ class RubroController {
     }
 
     def addItem() {
-        println "add item " + params
+//        println "add item " + params
         def rubro = Item.get(params.rubro)
         def item = Item.get(params.item)
         def detalle
@@ -290,7 +290,7 @@ class RubroController {
     def buscaRubro() {
         def persona = Persona.get(session.usuario.id)
         def empresa = persona.empresa
-        println "buscar rubro --> empresa: ${empresa.id}, $empresa"
+//        println "buscar rubro --> empresa: ${empresa.id}, $empresa"
         def listaTitulos = ["Código", "Descripción", "Unidad"]
         def listaCampos = ["codigo", "nombre", "unidad"]
         def funciones = [null, null]
@@ -474,7 +474,7 @@ class RubroController {
 
     def save() {
 //        println "save rubro " + params.rubro
-        println("params sr " +  params)
+//        println("params sr " +  params)
 
         def usuarioActual = Persona.get(session.usuario.id)
 
@@ -615,7 +615,7 @@ class RubroController {
     } //delete
 
     def getPrecios() {
-        println "get precios " + params.fecha
+//        println "get precios " + params.fecha
         def lugar = Lugar.get(params.ciudad)
 //        println ".........1"
         def fecha = new Date().parse('dd-MM-yyyy', params.fecha)
@@ -692,7 +692,7 @@ class RubroController {
     }
 
     def getPreciosTransporte() {
-        println "get precios fecha: "+params.fecha
+//        println "get precios fecha: "+params.fecha
         def lugar = Lugar.get(params.ciudad)
         //def fecha = new Date().parse("dd-MM-yyyy", params.fecha)
         def fecha = new Date().parse("dd-MM-yyyyy", params.fecha)
@@ -704,7 +704,7 @@ class RubroController {
                 items.add(Item.get(it))
         }
         def precios = preciosService.getPrecioItemsString(fecha, lugar, items)
-        println "precios " + precios
+//        println "precios " + precios
         render precios
     }
 
@@ -789,7 +789,7 @@ class RubroController {
         def rubro = Item.get(params.id)
         def tipo = params.tipo
         def ares = ArchivoEspecificacion.findByCodigo(rubro.codigoEspecificacion)
-        println "show foto params: $params"
+//        println "show foto params: $params"
         def ret
 
         if(ares){
@@ -817,17 +817,17 @@ class RubroController {
             ext = filePath.split("\\.")
             ext = ext[ext.size() - 1]
         }
-        println "ruta: $filePath"
+//        println "ruta: $filePath"
         return [rubro: rubro, ext: ext, tipo: tipo, titulo: titulo, filePath: filePath, ares: ares?.id]
 //        return [rubro: rubro, ext: ext, tipo: tipo, titulo: "Ilustración", ares: ares?.id]
     }
 
     def getFoto(){
-        println "getFoto: $params"
+//        println "getFoto: $params"
         def path = "/var/janus/rubros/${params.ruta}"
         def fileext = path.substring(path.indexOf(".")+1, path.length())
 
-        println "ruta: $path"
+//        println "ruta: $path"
 
         BufferedImage imagen = ImageIO.read(new File(path));
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -866,7 +866,7 @@ class RubroController {
         ext = ext[ext.size() - 1]
         def folder = "rubros"
         def path = "/var/janus/" + folder + File.separatorChar + filePath
-        println "path "+path
+//        println "path "+path
         def file = new File(path)
         if(file.exists()){
             def b = file.getBytes()
@@ -904,7 +904,7 @@ class RubroController {
             ext = ext[ext.size() - 1]
             def folder = "rubros"
             def path = "/var/janus/" + folder + File.separatorChar + filePath
-            println "path "+path
+//            println "path "+path
             def file = new File(path)
             if(file.exists()){
                 def b = file.getBytes()
@@ -1037,7 +1037,7 @@ class RubroController {
 
 
     def uploadFile() {
-        println "upload "+params
+//        println "upload "+params
 
         def acceptedExt = ["jpg", "png", "gif", "jpeg", "pdf", "doc", "docx"]
 
@@ -1114,7 +1114,7 @@ class RubroController {
                     rubro.save(flush: true)
                     render "ok_Guardado correctamente"
                 } else {
-                    println "${archivEsp.errors}"
+//                    println "${archivEsp.errors}"
                     render "no_Error al guardar"
                 }
             } else {
@@ -1223,7 +1223,7 @@ class RubroController {
     }
 
     def copiaRubro(){
-        println "copia rubro "+params
+//        println "copia rubro "+params
 
         def rubro = Item.get(params.id)
         def error = false
@@ -1232,14 +1232,14 @@ class RubroController {
 
         /** todo: actualizar el campo codigoHistorico de todos los rubros H */
 
-        println "codigoHist: ${rubro.codigoHistorico}"
+//        println "codigoHist: ${rubro.codigoHistorico}"
         if(!rubro?.codigoHistorico){
 
             nuevo.properties=rubro.properties
             def codigo ="H"
             def copias = Item.findAllByCodigoIlike(codigo+'%'+rubro.codigo)
 
-            println "copias: ${copias?.size()}"
+//            println "copias: ${copias?.size()}"
             if(copias.size() > 0){
                 while(copias.size()!= 0){
                     codigo=codigo+"H"
@@ -1298,7 +1298,7 @@ class RubroController {
             render 'ok'
         }catch (e){
             render 'no'
-            println("error al cambiar de estado el rubro" + rubro.errors)
+//            println("error al cambiar de estado el rubro" + rubro.errors)
         }
     }
 
@@ -1310,7 +1310,7 @@ class RubroController {
             render 'ok'
         }catch (e){
             render 'no'
-            println("error al cambiar de estado el rubro" + rubro.errors)
+//            println("error al cambiar de estado el rubro" + rubro.errors)
         }
     }
 
@@ -1322,7 +1322,7 @@ class RubroController {
     }
 
     def listaItem() {
-        println "listaItem" + params
+//        println "listaItem" + params
         def listaItems = ['itemnmbr', 'itemcdgo']
         def datos;
         def usuario = Persona.get(session.usuario.id)
@@ -1338,22 +1338,22 @@ class RubroController {
         txwh += " and $bsca ilike '%${params.criterio}%' and grpo__id = ${params.grupo}"
 
         sqlTx = "${select} ${txwh} order by ${ordn} limit 100 ".toString()
-        println "sql: $sqlTx"
+//        println "sql: $sqlTx"
 
         def cn = dbConnectionService.getConnection()
         datos = cn.rows(sqlTx)
-        println "data: ${datos[0]}"
+//        println "data: ${datos[0]}"
         [data: datos]
     }
 
     def getPrecioOferente(){
-        println "get precio of "+params
+//        println "get precio of "+params
         def item = Item.get(params.id)
         def oferente = Persona.get(session.usuario.id)
         def obra = Obra.get(params.obra)
         def precio = 0
         def vae = 100
-        println "item: ${item.id} prsn: ${oferente.id} obra: ${obra.id}"
+//        println "item: ${item.id} prsn: ${oferente.id} obra: ${obra.id}"
         def tmp = Precio.findByItemAndOferenteAndObra(item,session.usuario, obra)
         if (tmp){
             precio = tmp.precio
@@ -1369,7 +1369,7 @@ class RubroController {
     }
 
     def tablaBusqueda_ajax(){
-        println "listaItem" + params
+//        println "listaItem" + params
         def listaItems = ['itemnmbr', 'itemcdgo']
         def rubro = Item.get(params.rubro)
         def volumenes =  verificarVolumnesXRubro(rubro?.id)
@@ -1387,11 +1387,11 @@ class RubroController {
         txwh += " and $bsca ilike '%${params.criterio}%' and grpo__id = ${params.grupo}"
 
         sqlTx = "${select} ${txwh} order by ${ordn} limit 100 ".toString()
-        println "sql: $sqlTx"
+//        println "sql: $sqlTx"
 
         def cn = dbConnectionService.getConnection()
         datos = cn.rows(sqlTx)
-        println "data: ${datos[0]}"
+//        println "data: ${datos[0]}"
         [data: datos, rubro: rubro, volumenes: volumenes]
     }
 
@@ -1401,7 +1401,7 @@ class RubroController {
                 "where rbrocdgo = ${params.id} and item.item__id = rbro.item__id and " +
                 "dprt.dprt__id = item.dprt__id and sbgr.sbgr__id = dprt.sbgr__id " +
                 "order by grpo__id desc"
-        println "sql: $sql"
+//        println "sql: $sql"
         def rubro = Item.get(params.id)
 //        def items = Rubro.findAllByRubro(rubro).sort { it.item.departamento.subgrupo.grupo.id}
 //        def items = Rubro.findAllByRubro(rubro, [sort: 'it.item.departamento.subgrupo.grupo.descripcion', order: 'desc'] )
@@ -1477,7 +1477,7 @@ class RubroController {
 
     def saveRubro_ajax(){
 
-        println("params sr" + params)
+//        println("params sr" + params)
 
         def usuarioActual = Persona.get(session.usuario.id)
 
@@ -1561,7 +1561,7 @@ class RubroController {
 
     def especificaciones_ajax(){
 
-        println("params es"  + params)
+//        println("params es"  + params)
         def usuario = Persona.get(session.usuario.id)
         def itemO = Item.get(params.id)
 //        def ares = ArchivoEspecificacion.findByCodigo(item.codigoEspecificacion)
@@ -1585,7 +1585,7 @@ class RubroController {
 
 
     def borrarArchivo_ajax(){
-        println("params bb " + params)
+//        println("params bb " + params)
         def rubro = Item.get(params.id)
         def archivoEspe = ArchivoEspecificacion.findByCodigo(rubro.codigoEspecificacion)
 
@@ -1626,7 +1626,7 @@ class RubroController {
         def dir = new File("/var/janus/rubros")
         def busca = ""
         def archivos = [], nombre
-        println "ares: ${ares.size()}"
+//        println "ares: ${ares.size()}"
 
         dir.eachFileRecurse (FileType.FILES) { file ->
             nombre = file.toString()
@@ -1636,9 +1636,9 @@ class RubroController {
             }
         }
 
-        println "<<<< $archivos"
-        println "--${archivos.contains('r_dt_907_24_04_2014_10_43_59.pdf')}"
-        println "--${archivos.contains('907')}"
+//        println "<<<< $archivos"
+//        println "--${archivos.contains('r_dt_907_24_04_2014_10_43_59.pdf')}"
+//        println "--${archivos.contains('907')}"
 
         ares.each { a ->
             arch = ""
@@ -1684,13 +1684,13 @@ class RubroController {
                 archivos = carpeta.listFiles()
                 for(int i=0; i<archivos.length; i++) {
                     if(i<100){
-                        println "${archivos[i].getName()}"
-                        println "${archivos[i].getName().endsWith('pdf')}"
+//                        println "${archivos[i].getName()}"
+//                        println "${archivos[i].getName().endsWith('pdf')}"
                     }
                 }
             }
         }
-        println "se han halla ${archivos.size()} archivos en la carpeta: $ruta"
+//        println "se han halla ${archivos.size()} archivos en la carpeta: $ruta"
         render "se han hallado ${archivos.size()} archivos en la carpeta: $ruta"
     }
 
@@ -1874,7 +1874,7 @@ class RubroController {
             case "pdf":
                 todosPdfs.each {
                     if(!pdfs?.ruta?.contains(it)){
-                        println("--- " + it)
+//                        println("--- " + it)
                         def path = pathOriginal + it
                         def file = new File(path)
                         file.delete()
@@ -1910,7 +1910,7 @@ class RubroController {
     }
 
     def rubroPrincipalAnterior() {
-        println "rubroPrincipal params: $params"
+//        println "rubroPrincipal params: $params"
         def rubro
         def campos = ["codigo": ["Código", "string"], "nombre": ["Descripción", "string"]]
         def grupos = []
@@ -1948,7 +1948,7 @@ class RubroController {
             def items = Rubro.findAllByRubro(rubro)
             items.sort { it.item.codigo }
             resps = rubro.responsable
-            println "grupos: $grupos.id"
+//            println "grupos: $grupos.id"
             [campos: campos, rubro: rubro, grupos: grupos, items: items, choferes: choferes, volquetes: volquetes,
              aux: aux, volquetes2: volquetes2, dpto: dpto, modifica: modifica, resps: resps,
              listaRbro: listaRbro, listaItems: listaItems]

@@ -30,7 +30,7 @@ class MantenimientoItemsController {
     }
 
     def arbolSearchPrecios_ajax(params) {
-        println "makeTreeNode.. $params"
+//        println "makeTreeNode.. $params"
         def id = params.id
         def tipo = ""
         def liId = ""
@@ -234,7 +234,7 @@ class MantenimientoItemsController {
      * Acción llamada con ajax que permite realizar búsquedas en el árbol
      */
     def arbolSearch_ajax() {
-        println "arbolSearch_ajax $params"
+//        println "arbolSearch_ajax $params"
         def search = params.str.trim()
         if (search != "") {
             def c = Item.createCriteria()
@@ -271,7 +271,7 @@ class MantenimientoItemsController {
     }
 
     def makeTreeNodePrecios(params) {
-        println "makeTreeNode.. $params"
+//        println "makeTreeNode.. $params"
         def id = params.id
         def tipo = ""
         def liId = ""
@@ -635,7 +635,7 @@ class MantenimientoItemsController {
             case "item_consultoria":
             case "item_material":
             case "item_equipo":
-                println "ITEMS vae "+vae+"   params="+params
+//                println "ITEMS vae "+vae+"   params="+params
                 def tipoLista = Item.get(id).tipoLista
 //                println(tipoLista)
 //
@@ -841,7 +841,7 @@ class MantenimientoItemsController {
                     break;
                 case "item_material":
                 case "item_equipo":
-                    println "AQUI hijo="+hijo
+//                    println "AQUI hijo="+hijo
                     if (precios) {
                         hijosH = []
                         if (ignore) {
@@ -878,7 +878,7 @@ class MantenimientoItemsController {
             if (!hijosH) {
                 hijosH = []
             }
-            println "hijosH " + hijosH
+//            println "hijosH " + hijosH
             clase = (hijosH?.size() > 0) ? "jstree-closed hasChildren" : ""
 
             tree += "<li id='" + liId + "' class='" + clase + "' rel='" + rel + "' " + extra + ">"
@@ -890,7 +890,7 @@ class MantenimientoItemsController {
     }
 
     def loadMO() {
-        println "loadMO"
+//        println "loadMO"
         def hijos = SubgrupoItems.findAllByGrupo(Grupo.get(2), [sort: 'codigo'])
         def html = ""
         def open = ""
@@ -911,7 +911,7 @@ class MantenimientoItemsController {
     }
 
     def loadTreePart() {
-        println "loadTreePart ----"
+//        println "loadTreePart ----"
         render(makeBasicTree(params))
     }
 
@@ -1329,7 +1329,7 @@ class MantenimientoItemsController {
 
     def showPcun_ajax() {
         def itemInstance = Item.get(params.id)
-        println "showPcun_ajax $params"
+//        println "showPcun_ajax $params"
         def cn = dbConnectionService.getConnection()
 
         def sql = "select item.item__id, itemcdgo, itemnmbr, p.rbpcfcha, rbpcpcun,  rbpc__id, lgardscr,  p.lgar__id " +
@@ -1339,7 +1339,7 @@ class MantenimientoItemsController {
                 "item.item__id = ${params.id} " +
                 "order by lgardscr"
 
-        println("showPcun_ajax sql " + sql)
+//        println("showPcun_ajax sql " + sql)
         def items = cn.rows(sql.toString());
         cn.close()
 
@@ -1396,14 +1396,14 @@ class MantenimientoItemsController {
             grupo = Grupo.get(params.grupo)?.id
         }
 
-        println("grupo " + grupo)
+//        println("grupo " + grupo)
 
         return [itemInstance: itemInstance, grupo: grupo, departamento: departamento,
                 listaDepartamentos: listaDepartamentos, subgrupos: subgrupos]
     }
 
     def buscaCpac() {
-        println("params Cpac" + params)
+//        println("params Cpac" + params)
         def listaTitulos = ["Código", "Descripción"]
         def listaCampos = ["numero", "descripcion"]
         def funciones = [null, null]
@@ -1441,7 +1441,7 @@ class MantenimientoItemsController {
 
     def checkCdIt_ajax() {
 
-        println("params cit " + params)
+//        println("params cit " + params)
 
         def dep = DepartamentoItem.get(params.dep)
 
@@ -1450,7 +1450,7 @@ class MantenimientoItemsController {
         else
             params.codigo = dep.codigo.toString().padLeft(3, '0') + "." + params.codigo
 
-        println("codigo " + params.codigo)
+//        println("codigo " + params.codigo)
 
         if (params.id) {
             def item = Item.get(params.id)
@@ -1659,7 +1659,7 @@ class MantenimientoItemsController {
     }
 
     def formPrecio_ajax() {
-        println "formPrecio_ajax" + params
+//        println "formPrecio_ajax" + params
 
         def fd = new Date().parse("dd-MM-yyyy", params.fd)
 
@@ -1681,7 +1681,7 @@ class MantenimientoItemsController {
     }
 
     def formPreciosLugares_ajax() {
-        println("form precios " + params)
+//        println("form precios " + params)
         def item = Item.get(params.item)
         def fd = new Date().parse("dd-MM-yyyy", params.fd)
         def lugares = Lugar.findAllByTipoLista(item.tipoLista, [sort: 'codigo'])
@@ -1704,7 +1704,7 @@ class MantenimientoItemsController {
     }
 
     def formPreciosLugares2_ajax() {
-        println("form precios " + params)
+//        println("form precios " + params)
         def item = Item.get(params.item)
         def fd
 
@@ -1755,7 +1755,7 @@ class MantenimientoItemsController {
     }
 
     def savePrecio_ajax() {
-        println "savePrecio_ajax $params"
+//        println "savePrecio_ajax $params"
         def item = Item.get(params.item.id)
         params.fecha = new Date().parse("dd-MM-yyyy", params.fecha)
 
@@ -1912,7 +1912,7 @@ class MantenimientoItemsController {
         try{
             precioRef = formatNumber(number: calcPrecioRef(params.precio.toDouble()), maxFractionDigits: 5, minFractionDigits: 5)
         }catch(e){
-            println("error " + e)
+//            println("error " + e)
             precioRef = "error"
         }
         render precioRef
@@ -1944,7 +1944,7 @@ class MantenimientoItemsController {
     }
 
     def calcPrecio(params) {
-        println ">>" + params
+//        println ">>" + params
 //        println params.fecha
 //        println params.fecha.class
 
@@ -1971,7 +1971,7 @@ class MantenimientoItemsController {
             lugar.add(Lugar.get(params.lugarId))
         }
 
-        println ">>> " + fecha + "   " + params.itemId + "    " + params.operador + " lugar: " + lugar
+//        println ">>> " + fecha + "   " + params.itemId + "    " + params.operador + " lugar: " + lugar
         lugar.each {
             def tmp = preciosService.getPrecioRubroItemOperador(fecha, it, params.itemId, params.operador)
             if (tmp.size() > 0)
@@ -2018,7 +2018,7 @@ class MantenimientoItemsController {
     }
 
     def showLg_ajax() {
-        println "showLg_ajax... params: $params"
+//        println "showLg_ajax... params: $params"
 
         def tipo = params.tipo
 
@@ -2178,7 +2178,7 @@ itemId: item.id
         if (lugar.save(flush: true)) {
             render "OK_" + accion + "_" + lugar.id + "_" + (lugar.descripcion + (params.all.toString().toBoolean() ? " (" + lugar.tipo + ")" : "")) + "_c"
         } else {
-            println "mantenimiento items controller l 1158: " + lugar.errors
+//            println "mantenimiento items controller l 1158: " + lugar.errors
             def errores = g.renderErrors(bean: lugar)
             render "NO_" + errores
         }
@@ -2209,8 +2209,8 @@ itemId: item.id
 //                println "p deleted " + p.id
                     cant++
                 } catch (DataIntegrityViolationException e) {
-                    println "mantenimiento items controller l 1177: " + e
-                    println "\tp not deleted " + p.id
+//                    println "mantenimiento items controller l 1177: " + e
+//                    println "\tp not deleted " + p.id
                 }
             }
 
@@ -2218,7 +2218,7 @@ itemId: item.id
                 lugar.delete(flush: true)
                 render "OK"
             } catch (DataIntegrityViolationException e) {
-                println "mantenimiento items controller l 1186: " + e
+//                println "mantenimiento items controller l 1186: " + e
                 render "NO"
             }
         }
@@ -2260,7 +2260,7 @@ itemId: item.id
     }
 
     def saveVa_ajax() {
-        println ("saveVae_ajax" +  params)
+//        println ("saveVae_ajax" +  params)
 
         def vaeItem
 
@@ -2343,7 +2343,7 @@ itemId: item.id
                 render "ok_Borrado correctamente"
             }
             catch (DataIntegrityViolationException e) {
-                println ("error al borrar el vae " + e)
+//                println ("error al borrar el vae " + e)
                 render "no_No se pudo eliminar el vae."
             }
         }
@@ -2355,7 +2355,7 @@ itemId: item.id
     }
 
     def tablaCPC(){
-        println("params " + params)
+//        println("params " + params)
         def datos;
         def sqlTx = ""
         def listaItems = ['cpacdscr', 'cpacnmro']
@@ -2382,7 +2382,7 @@ itemId: item.id
     }
 
     def tablaCPCTransporte_ajax(){
-        println("params " + params)
+//        println("params " + params)
         def datos;
         def sqlTx = ""
         def listaItems = ['cpacdscr', 'cpacnmro']
@@ -2439,12 +2439,12 @@ itemId: item.id
                 cn.execute("$sql2 ${it.toInteger()}".toString())
                 cn.execute("$sql3 ${it.toInteger()}".toString())
                 cn.execute("$sql4 ${it.toInteger()}".toString())
-                println "borrado id: $it"
+//                println "borrado id: $it"
                 flash.clase = "alert-success"
                 flash.message = "Se ha borrado el item con éxito"
                 cn.execute("commit")
             } catch (e) {
-                println "error: $e"
+//                println "error: $e"
                 flash.clase = "alert-error"
                 flash.message = "No se puede borrar el item"
             }
@@ -2455,7 +2455,7 @@ itemId: item.id
 
     def formPreciosCantones_ajax(){
 
-        println "formPrecio_ajax" + params
+//        println "formPrecio_ajax" + params
         def item = Item.get(params.item)
         def lugar = null
         def precioRubrosItemsInstance
@@ -2488,7 +2488,7 @@ itemId: item.id
             def sql="update rbpc set rbpcpcun = ${params.precioUnitario} " +
                     "where rbpcfcha = '${fcha}' and lgar__id in (${params.lugares}) and " +
                     "item__id = ${params.item.id} "
-            println "sql: $sql"
+//            println "sql: $sql"
             try {
                 cn.execute(sql.toString())
                 mnsj = "ok_Precios actualizados correctamente"
@@ -2522,7 +2522,7 @@ itemId: item.id
 
     def tablaGrupos_ajax(){
         def cn = dbConnectionService.getConnection()
-        println "tablaGrupos_ajax $params"
+//        println "tablaGrupos_ajax $params"
         def grupo = Grupo.get(params.buscarPor)
         def sql = ''
         def campo, busca
@@ -2543,7 +2543,7 @@ itemId: item.id
                     "${campo} ilike '%${params.criterio}%' order by sbgrcdgo"
         }
 
-        println "sql: $sql"
+//        println "sql: $sql"
         def grupos = cn.rows(sql.toString());
         cn.close()
         return [grupos: grupos, grupo: grupo]
@@ -2551,7 +2551,7 @@ itemId: item.id
 
     def tablaSubgrupos_ajax(){
         def cn = dbConnectionService.getConnection()
-        println "tablaSubgrupos_ajax $params"
+//        println "tablaSubgrupos_ajax $params"
         def grupo = Grupo.get(params.buscarPor)
         def grupos = SubgrupoItems.findAllByGrupo(grupo, [sort: 'codigo'])
         def grupoBuscar = null
@@ -2608,13 +2608,13 @@ itemId: item.id
 
         cn.close()
 
-        println("gb " + grupoBuscar)
+//        println("gb " + grupoBuscar)
 
         return [subgrupos: subgrupos, grupo: grupo, id_grupo: subgrupos.sbgr__id, grupoBuscar: grupoBuscar ]
     }
 
     def tablaMateriales_ajax(){
-        println "tablaMateriales_ajax $params"
+//        println "tablaMateriales_ajax $params"
         def cn = dbConnectionService.getConnection()
         def grupo = Grupo.get(params.buscarPor)
 //        def grupos = SubgrupoItems.findAllByGrupo(grupo)
@@ -2646,7 +2646,7 @@ itemId: item.id
             subgrupoBuscar = DepartamentoItem.get(params.id)
         }
 
-        println "sql:, $sql"
+//        println "sql:, $sql"
 
 //        if(params.id){
 //            subgrupoBuscar = DepartamentoItem.get(params.id)
@@ -3000,7 +3000,7 @@ itemId: item.id
             }
 
             if ( ext == 'pdf' ?  acceptedPdf.contains(ext?.toLowerCase()) : acceptedWord.contains(ext?.toLowerCase())) {
-                println("entro??")
+//                println("entro??")
 
                 def old
 
@@ -3040,7 +3040,7 @@ itemId: item.id
                     rubro.save(flush: true)
                     render "ok_Guardado correctamente"
                 } else {
-                    println "${archivEsp.errors}"
+//                    println "${archivEsp.errors}"
                     render "no_Error al guardar"
                 }
             } else {
@@ -3135,7 +3135,7 @@ itemId: item.id
                     "order by lgardscr limit 100"
         }
 
-        println("tablaMaterialesPrecios_ajax sql " + sql)
+//        println("tablaMaterialesPrecios_ajax sql " + sql)
         def items = cn.rows(sql.toString());
         cn.close()
 
@@ -3143,7 +3143,7 @@ itemId: item.id
     }
 
     def tablaPrecios_ajax(){
-        println("--> " + params)
+//        println("--> " + params)
         def persona = Persona.get(session.usuario.id)
         def cn = dbConnectionService.getConnection()
         def grupo = Grupo.get(params.buscarPor)
@@ -3177,7 +3177,7 @@ itemId: item.id
 
 
 
-        println("tablaMaterialesPrecios_ajax sql " + sql)
+//        println("tablaMaterialesPrecios_ajax sql " + sql)
         def items = cn.rows(sql.toString());
         cn.close()
 
@@ -3231,7 +3231,7 @@ itemId: item.id
 
 
     def borrarArchivo_ajax(){
-        println("params " + params)
+//        println("params " + params)
         def rubro = Item.get(params.id)
 //        def archivoEspe = ArchivoEspecificacion.findByCodigo(rubro.codigoEspecificacion)
 
@@ -3246,7 +3246,7 @@ itemId: item.id
             def old = params.tipo == 'pdf' ?  nuevoAres[0]?.ruta : ( params.tipo == 'word' ?  nuevoAres[0]?.especificacion :rubro?.foto)
             def archivoEspe = ArchivoEspecificacion.get(nuevoAres[0]?.id)
 
-            println("old " + old)
+//            println("old " + old)
 
             if (old) {
                 def oldPath =   (params.tipo == 'pdf' ||   params.tipo == 'word') ?   "/var/janus/" + "item/" + nuevoAres[0]?.item?.id+ "/" + old : "/var/janus/" + "item/" + rubro?.id+ "/" + old
@@ -3282,7 +3282,7 @@ itemId: item.id
 
     def imagenMateriales_ajax(){
 
-        println("params " + params)
+//        println("params " + params)
 
 
         def item = Item.get(params.id)
@@ -3349,32 +3349,32 @@ itemId: item.id
     }
 
     def consultaPrecios(){
-        println "consultaPrecios params $params"
+//        println "consultaPrecios params $params"
         def cn = dbConnectionService.getConnection()
         def anio = new Date().format('yyyy').toInteger()
         def fechas = [:]
         def sql = "select distinct rbpcfcha from rbpc where extract(year from rbpcfcha) = '${anio}'"
         "order by 1"
-        println "sql: $sql"
+//        println "sql: $sql"
         def i = 0
         cn.eachRow(sql.toString()) { r ->
             fechas[i] = r.rbpcfcha
             i++
         }
-        println "fechas: $fechas"
+//        println "fechas: $fechas"
         cn.close()
         [fechas: fechas, anio: anio]
     }
 
     def tablaConsultaPrecios_ajax(){
-        println "tablaConsultaPrecios_ajax: $params"
+//        println "tablaConsultaPrecios_ajax: $params"
         def cn = dbConnectionService.getConnection()
         def fecha = params.fecha
         def sql = "select item.item__id, itemcdgo, itemnmbr, p.rbpcfcha, rbpcpcun,  rbpc__id, lgardscr, unddcdgo " +
                 "from item, rbpc p, lgar, undd where p.item__id = item.item__id and p.rbpcfcha = '${fecha}' and " +
                 "lgar.tpls__id = ${params.lugar} and undd.undd__id = item.undd__id and lgar.lgar__id = p.lgar__id " +
                 "order by lgardscr"
-        println "sql: $sql"
+//        println "sql: $sql"
         def data = cn.rows(sql.toString())
         cn.close()
 
@@ -3382,24 +3382,24 @@ itemId: item.id
     }
 
     def borrarVariosPrecios_ajax(){
-        println("borrar precios " + params)
+//        println("borrar precios " + params)
         render "ok"
     }
 
     def fechas_ajax(){
-        println "fechas_ajax $params"
+//        println "fechas_ajax $params"
         def cn = dbConnectionService.getConnection()
         def anio = params.anio
         def fechas = [:]
         def sql = "select distinct rbpcfcha from rbpc where extract(year from rbpcfcha) = '${anio}' and " +
                 "lgar__id in (select lgar__id from lgar where tpls__id = ${params.lugar}) order by 1"
-        println "sql: $sql"
+//        println "sql: $sql"
         def i = 0
         cn.eachRow(sql.toString()) { r ->
             fechas[i] = r.rbpcfcha
             i++
         }
-        println "fechas: $fechas"
+//        println "fechas: $fechas"
         cn.close()
         return [fechas: fechas, anio: anio]
     }
@@ -3412,33 +3412,33 @@ itemId: item.id
         def fechas = [:]
         def sql = "select distinct rbpcfcha from rbpc where extract(year from rbpcfcha) = '${anio}'"
         "order by 1"
-        println "sql: $sql"
+//        println "sql: $sql"
         def i = 0
         cn.eachRow(sql.toString()) { r ->
             fechas[i] = r.rbpcfcha
             i++
         }
-        println "fechas: $fechas"
+//        println "fechas: $fechas"
         cn.close()
         [fechas: fechas, anio: anio, item: item, fd: params.fd, criterioAnterior: params.criterioAnterior]
     }
 
     def tablaEditarPrecios_ajax(){
-        println("params tp " + params)
+//        println("params tp " + params)
         def cn = dbConnectionService.getConnection()
         def item = Item.get(params.id)
 //        def sql = "select item.item__id, p.rbpcfcha, rbpcpcun,  rbpc__id, lgardscr " +
 //                "from item, rbpc p, lgar where p.item__id = item.item__id and p.lgar__id = lgar.lgar__id and p.rbpcfcha = '${params.fecha}' and " +
 //                "p.item__id = ${item.id} order by lgardscr"
         def sql = "select * from ls_rbpc(${item.id}, '${params.fecha}') order by lgardscr"
-        println("sql " + sql)
+//        println("sql " + sql)
 
         def res = cn.rows(sql.toString())
         return [item: item, res: res]
     }
 
     def fechasPrecios_ajax(){
-        println("parmas  " + params)
+//        println("parmas  " + params)
         def item = Item.get(params.id)
         def fechaNueva = params.fecha ? new Date().parse("dd-MM-yyyy", params.fecha) : ''
         def cn = dbConnectionService.getConnection()
@@ -3453,7 +3453,7 @@ itemId: item.id
         def sql = "select rbpcfcha from rbpc, item where item.item__id = ${params.id} and rbpc.item__id = item.item__id and " +
                 "extract(year from rbpcfcha) = '${anio}' group by rbpcfcha order by 1"
 
-        println "sql: $sql"
+//        println "sql: $sql"
         def i = 0
         cn.eachRow(sql.toString()) { r ->
             fechas[i] = r.rbpcfcha.format("dd-MM-yyyy")
@@ -3470,7 +3470,7 @@ itemId: item.id
 
     def guardarPrecioLugar_ajax(){
 
-        println("params " + params)
+//        println("params " + params)
 
         def rubroPrecio = PrecioRubrosItems.get(params.id)
         def item = Item.get(params.item)
@@ -3569,7 +3569,7 @@ itemId: item.id
     }
 
     def guardarPrecios_ajax() {
-        println("params gf " + params)
+//        println("params gf " + params)
         def item = Item.get(params.item)
         def fecha = new Date().parse("dd-MM-yyyy", params.fechaNueva)
 
@@ -3647,7 +3647,7 @@ itemId: item.id
     }
 
     def savePreciosVarios_ajax(){
-        println("sv " + params)
+//        println("sv " + params)
         def item = Item.get(params.item.id)
         def fecha = new Date().parse("dd-MM-yyyy", params.fecha)
         def errores = ""

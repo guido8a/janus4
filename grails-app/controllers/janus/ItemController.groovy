@@ -160,7 +160,7 @@ class ItemController {
             cn.close()
         }
 
-        println("rrr " + rubroPrecio)
+//        println("rrr " + rubroPrecio)
 
         return [rubroPrecio: rubroPrecio, params: params, lugar: lugar]
     }
@@ -297,7 +297,7 @@ class ItemController {
     }
 
     def tabla() {
-        println "tabla " + params
+//        println "tabla " + params
         if (!params.max || params.max == 0) {
             params.max = 20
         } else {
@@ -350,7 +350,7 @@ class ItemController {
             sql += "limit ${params.max} "
             sql += "offset ${params.offset} "
 
-            println "SQL:" + sql
+//            println "SQL:" + sql
 
             def itemsIds = ""
 
@@ -551,7 +551,7 @@ class ItemController {
             rubroPrecioInstance.registrado = reg
 
             if (!rubroPrecioInstance.save(flush: true)) {
-                println "item controller l 547: " + "error " + parts
+//                println "item controller l 547: " + "error " + parts
                 if (nos != "") {
                     nos += ","
                 }
@@ -765,17 +765,17 @@ class ItemController {
 
     def subirExcelMP() {
         def fechas = poneFechaPrecios()
-        println "fechas: $fechas"
+//        println "fechas: $fechas"
         [fechas: fechas]
     }
 
     def uploadPetreos() {
-        println("uploadPetreos subir excel " + params)
+//        println("uploadPetreos subir excel " + params)
 
         def cn = dbConnectionService.getConnection()
         def lista = Lugar.get(params.listaPrecio)
         def fecha = leeFechaPrecios(params.fechaPetreos).format('yyyy-MM-dd')
-        println "fecha: $fecha"
+//        println "fecha: $fecha"
         def filasNO = [0..6]
         def path = "/var/janus/" + "xlsMP/"   //web-app/archivos
         new File(path).mkdirs()
@@ -829,7 +829,7 @@ class ItemController {
                     row = (XSSFRow) rows.next()
 
                     if (row.rowNum in filasNO) {
-                        println("rows NO " + row.rowNum)
+//                        println("rows NO " + row.rowNum)
                     } else {
                         def ok = true
                         def sql = ""
@@ -848,7 +848,7 @@ class ItemController {
                             }
                         }
 
-                        println "reg: $rgst"
+//                        println "reg: $rgst"
 
 //                        def id_lgar = rgst[0]
                         def id_lgar = rgst[1]
@@ -862,13 +862,13 @@ class ItemController {
                             precio = -999
                         }
 
-                        println "reg: $id_lgar $id_item $nombre $precio"
+//                        println "reg: $id_lgar $id_item $nombre $precio"
 
                         if (rgst[3] && (precio != -999)) {
-                            println "pasa.."
+//                            println "pasa.."
                             sql = "insert into rbpc(item__id, lgar__id, rbpcfcha, rbpcpcun, rbpcfcin, rbpcrgst) " +
                                     "values(${id_item.toInteger()}, ${id_lgar.toInteger()}, '${fecha}', $precio, now(), 'N')"
-                            println "sql: $sql"
+//                            println "sql: $sql"
 
                             try {
                                 cn.execute(sql.toString())
@@ -912,12 +912,12 @@ class ItemController {
     }
 
     def uploadMO() {
-        println("uploadMO subir excel " + params)
+//        println("uploadMO subir excel " + params)
 
         def cn = dbConnectionService.getConnection()
         def lista = Lugar.get(params.listaPrecio)
         def fecha = leeFechaPrecios(params.fechaMO).format('yyyy-MM-dd')
-        println "fecha: $fecha"
+//        println "fecha: $fecha"
         def filasNO = [0..6]
         def path = "/var/janus/" + "xlsMO/"   //web-app/archivos
         new File(path).mkdirs()
@@ -971,7 +971,7 @@ class ItemController {
                     row = (XSSFRow) rows.next()
 
                     if (row.rowNum in filasNO) {
-                        println("rows NO " + row.rowNum)
+//                        println("rows NO " + row.rowNum)
                     } else {
                         def ok = true
                         def sql = ""
@@ -990,7 +990,7 @@ class ItemController {
                             }
                         }
 
-                        println "reg: $rgst"
+//                        println "reg: $rgst"
 
                         def id_lgar = rgst[1]
                         def id_item = rgst[0]
@@ -1002,13 +1002,13 @@ class ItemController {
                             precio = -999
                         }
 
-                        println "reg: $id_lgar $id_item $nombre $precio"
+//                        println "reg: $id_lgar $id_item $nombre $precio"
 
                         if (rgst[3] && (precio != -999)) {
-                            println "pasa.."
+//                            println "pasa.."
                             sql = "insert into rbpc(item__id, lgar__id, rbpcfcha, rbpcpcun, rbpcfcin, rbpcrgst) " +
                                     "values(${id_item.toInteger()}, ${id_lgar.toInteger()}, '${fecha}', $precio, now(), 'N')"
-                            println "sql: $sql"
+//                            println "sql: $sql"
 
                             try {
                                 cn.execute(sql.toString())
@@ -1058,7 +1058,7 @@ class ItemController {
         def cn = dbConnectionService.getConnection()
         def lista = Lugar.get(params.listaPrecio)
         def fecha = leeFechaPrecios(params.fechaGrupo).format('yyyy-MM-dd')
-        println "fecha: $fecha"
+//        println "fecha: $fecha"
         def filasNO = [0..6]
         def path = "/var/janus/" + "xlsGrupo/"   //web-app/archivos
         new File(path).mkdirs()
@@ -1112,7 +1112,7 @@ class ItemController {
                     row = (XSSFRow) rows.next()
 
                     if (row.rowNum in filasNO) {
-                        println("rows NO " + row.rowNum)
+//                        println("rows NO " + row.rowNum)
                     } else {
                         def ok = true
                         def sql = ""
@@ -1131,7 +1131,7 @@ class ItemController {
                             }
                         }
 
-                        println "reg: $rgst"
+//                        println "reg: $rgst"
 
                         def id_lgar = rgst[1]
                         def id_item = rgst[0]
@@ -1143,13 +1143,13 @@ class ItemController {
                             precio = -999
                         }
 
-                        println "reg: $id_lgar $id_item $nombre $precio"
+//                        println "reg: $id_lgar $id_item $nombre $precio"
 
                         if (rgst[3] && (precio != -999)) {
-                            println "pasa.."
+//                            println "pasa.."
                             sql = "insert into rbpc(item__id, lgar__id, rbpcfcha, rbpcpcun, rbpcfcin, rbpcrgst) " +
                                     "values(${id_item.toInteger()}, ${id_lgar.toInteger()}, '${fecha}', $precio, now(), 'N')"
-                            println "sql: $sql"
+//                            println "sql: $sql"
 
                             try {
                                 cn.execute(sql.toString())
@@ -1223,7 +1223,7 @@ class ItemController {
         def sql = "select item.item__id, itemcdgo, itemnmbr, ares.itemcdes, aresruta, aresespe, itemfoto " +
                 "from item, ares where ares.itemcdes = item.itemcdes and tpit__id = 2 and " +
                 "itemnmbr ilike '%${params.criterio}%' order by itemcdgo"
-        println "sql: $sql"
+//        println "sql: $sql"
         def data = cn.rows(sql.toString())
 
         return [datos: data]
@@ -1251,7 +1251,7 @@ class ItemController {
                 for (int i = 0; i < archivos.length; i++) {
                     if (archivos[i].getName().endsWith('pdf')) {
                         arch = archivos[i].getName()
-                        println "$arch"
+//                        println "$arch"
                         try {
                             partes = arch.split("_")[2]
                         } catch (e) {
@@ -1267,8 +1267,8 @@ class ItemController {
                 }
             }
         }
-        println "se han halla ${archivos.size()} archivos en la carpeta: $ruta"
-        println(" > " + filtrados)
+//        println "se han halla ${archivos.size()} archivos en la carpeta: $ruta"
+//        println(" > " + filtrados)
 
         return [cdes: cdes, datos: filtrados, codigos: codigos, ids: ids, nombres: nombres, item: item]
     }
@@ -1281,7 +1281,7 @@ class ItemController {
         def nombre = params.id + "." + ext
         def folder = "rubros"
         def path = "/var/janus/" + folder + File.separatorChar + nombre
-        println "path " + path
+//        println "path " + path
         def file = new File(path)
         if (file.exists()) {
             def b = file.getBytes()

@@ -79,7 +79,7 @@ class GrupoController {
 
 
     def formGr_ajax() {
-        println(">>>>" + params)
+//        println(">>>>" + params)
         def grupo = Grupo.get(params.id)
 //        def direcciones = Dir
         def subgrupoItemsInstance = new SubgrupoItems()
@@ -575,7 +575,7 @@ class GrupoController {
     }
 
     def makeTreeNode(params) {
-        println "makeTreeNode.. $params"
+//        println "makeTreeNode.. $params"
         def id = params.id
         def tipo = ""
         def liId = ""
@@ -685,7 +685,7 @@ class GrupoController {
     }
 
     def arbolSearch_ajax() {
-        println "arbolSearch_ajax $params"
+//        println "arbolSearch_ajax $params"
         def search = params.str.trim()
         if (search != "") {
             def c = Item.createCriteria()
@@ -743,7 +743,7 @@ class GrupoController {
     }
 
     def tablaRubros_ajax(){
-        println("tr " + params)
+//        println("tr " + params)
 
         def grupo = Grupo.get(params.buscarPor)
         def grupos = SubgrupoItems.findAllByGrupo(grupo)
@@ -756,7 +756,7 @@ class GrupoController {
         }else{
             materiales = Item.findAllByDepartamentoInListAndNombreIlike(subgrupos, '%' + params.criterio + '%').sort{a,b -> a.departamento.descripcion <=> b.departamento.descripcion ?: a.codigo <=> b.codigo }.take(50)
         }
-        println "rubros mostrados:  ${materiales.size()}"
+//        println "rubros mostrados:  ${materiales.size()}"
         return [materiales: materiales, grupo: grupo, id: params.id, numero: materiales.size()]
     }
 

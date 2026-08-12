@@ -77,7 +77,7 @@ class DiaLaborableController {
         }
 
         if (dias.size() < 365) {
-            println "No hay todos los dias para ${params.anio}: hay " + dias.size()
+//            println "No hay todos los dias para ${params.anio}: hay " + dias.size()
 
             def fecha = enero01
             def cont = 1

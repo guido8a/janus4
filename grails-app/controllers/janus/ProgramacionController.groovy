@@ -117,7 +117,7 @@ class ProgramacionController {
             programacionInstance = Programacion.get(params.id)
             if (!programacionInstance) {
                 message = "No se encontró Programacion con id " + params.id
-                println message
+//                println message
                 render "error"
                 return
             }//no existe el objeto
@@ -141,7 +141,7 @@ class ProgramacionController {
             str += "</ul>"
 
             message = str
-            println message
+//            println message
             render "error"
             return
         }
@@ -151,7 +151,7 @@ class ProgramacionController {
         } else {
             message = "Se ha creado correctamente la Programacion " + programacionInstance.id
         }
-        println message
+//        println message
 
         def sel = g.select(id: "programacion", name: "programacion.id", "class": "programacion required", from: Programacion.list(), value: programacionInstance.id, optionValue: "descripcion",
                 optionKey: "id", title: "Programa")

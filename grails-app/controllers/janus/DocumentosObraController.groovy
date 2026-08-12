@@ -56,7 +56,7 @@ class DocumentosObraController {
 //        def cuadrilla = FormulaPolinomica.findAllByObraAndNumeroIlike(obra,'c%')
 //        println("cuadrilla:" + cuadrilla)
         def departamento = Departamento.get(obra?.departamento?.id)
-        println("departamento: " + obra?.departamento?.descripcion)
+//        println("departamento: " + obra?.departamento?.descripcion)
 //        def personas = Persona.list()
         def departamentos = Departamento.list()
 
@@ -96,7 +96,7 @@ class DocumentosObraController {
         def totalPresupuestoBien=0;
 
         if(obra.estado != 'R') {
-            println "antes de imprimir rubros.. actualiza desalojo y herramienta menor"
+//            println "antes de imprimir rubros.. actualiza desalojo y herramienta menor"
             preciosService.ac_transporteDesalojo(obra.id)
             preciosService.ac_rbroObra(obra.id)
         }
@@ -148,7 +148,7 @@ class DocumentosObraController {
         def firmaDirector = PersonaRol.findByFuncionAndPersonaInList(funcionDirector, personalDireccion)
         def coordinadores = PersonaRol.findAllByFuncionAndPersonaInList(funcionCoordinador, personalDireccion)
 
-        println "coordinadores: ${coordinadores.persona.nombre}"
+//        println "coordinadores: ${coordinadores.persona.nombre}"
 
         //calculo de composición
 

@@ -23,7 +23,7 @@ class ContratoController {
     } //list
 
     def fechasPedidoRecepcion() {
-        println("params f" + params)
+//        println("params f" + params)
         def contrato = Contrato.get(params.id)
         return [contrato: contrato]
     }
@@ -59,24 +59,24 @@ class ContratoController {
         def complementario
         def listaContrato = [1: 'Código', 2: 'Nombre', 3: 'Contratista', 4: 'Fiscalizador (apellido)', 5: 'Administrador (apellido)']
 
-        println "params de verContrato: $params"
-        println "perfil: ${session.perfil.codigo}"
+//        println "params de verContrato: $params"
+//        println "perfil: ${session.perfil.codigo}"
         /* si es FISCALIZADOR EXTERNO no tiene acceso a otros contratos */
         if(params.id) params.contrato = params.id
         if (params.contrato) {
             contrato = Contrato.get(params.contrato)
             complementario = Contrato.findByPadre(contrato)
-            println "***complementario: $complementario"
+//            println "***complementario: $complementario"
 //            println "ANT " + contrato
 
             if (contrato) {
-                println "fiscalizador: ${contrato.fiscalizador}  --> ${session.usuario}"
+//                println "fiscalizador: ${contrato.fiscalizador}  --> ${session.usuario}"
 
                 if(session.perfil.codigo == 'FSEX') {
                     if(contrato.fiscalizador.id == session.usuario.id) {
-                        println "si puede ver"
+//                        println "si puede ver"
                     } else {
-                        println "no puede ver"
+//                        println "no puede ver"
                         redirect(controller: "shield", action: "ataques")
                     }
                 }
@@ -89,7 +89,7 @@ class ContratoController {
                         contrato.anticipo = anticipo
                         contrato.save(flush: true)
                     } else {
-                        println "\tno tiene monto o porcentaje de anticipo...no puedo calcular el monto del anticipo...."
+//                        println "\tno tiene monto o porcentaje de anticipo...no puedo calcular el monto del anticipo...."
                     }
                 }
 
@@ -108,7 +108,7 @@ class ContratoController {
                 def personalFis = Persona.findAllByDepartamento(Departamento.findByCodigo('FISC'))
                 def directoresFis = PersonaRol.findAllByFuncionAndPersonaInList(Funcion.findByCodigo("D"), personalFis).persona.id
                 def esDirFis = directoresFis.contains(session.usuario.id) ? "S" : "N"
-                println "esDirector: $esDirector directores: ${directoresFis}, dirFis: ${esDirFis}"
+//                println "esDirector: $esDirector directores: ${directoresFis}, dirFis: ${esDirFis}"
 
                 def campos = ["codigo": ["Contrato No.", "string"], "nombre": ["Nombre", "string"],
                               "prov": ["Contratista", "string"]]
@@ -171,7 +171,7 @@ class ContratoController {
         def detalle = VolumenContrato.findAllByObra(obra, [sort: "volumenOrden"])
         def cronos = CronogramaContratado.findAllByVolumenContratoInList(detalle)
 
-        println "suma de la obra: ${cronos.precio.sum()}, valor de la obra: ${contrato.monto} " +
+//        println "suma de la obra: ${cronos.precio.sum()}, valor de la obra: ${contrato.monto} " +
                 "--> ${cronos?.precio?.sum()?.round(4) - contrato?.monto?.round(2)}"
 
 //        if (cronos?.precio?.sum()?.round(2) != contrato?.monto?.round(4)) {
@@ -250,7 +250,7 @@ class ContratoController {
 
         def planoContrato = documentosContrato.findAll { it.nombre.toLowerCase().contains("plano") }
         def justificativoContrato = documentosContrato.findAll { it.nombre.toLowerCase().contains("justificativo") }
-        println "documentos: ${documentosContrato} planos: ${planoContrato}, justificativo: ${justificativoContrato}"
+//        println "documentos: ${documentosContrato} planos: ${planoContrato}, justificativo: ${justificativoContrato}"
 
         if (planoContrato.size() == 0) {
             errores += "<li>Debe cargar un documento a la biblioteca con nombre 'Plano'</li>"
@@ -302,7 +302,7 @@ class ContratoController {
 
 
     def registroContrato() {
-        println "registroContrato: $params"
+//        println "registroContrato: $params"
         def contrato
         def planilla  // si hay planillas de inhabilita el desregistrar
         def complementario
@@ -324,15 +324,15 @@ class ContratoController {
             def volumenesCopiados = VolumenContrato.findAllByContratoAndContratoComplementarioIsNotNull(contrato).contratoComplementario.unique()
             def filtrados = []
 
-            println "complementario: $complementario, volumenesCopiados: $volumenesCopiados"
+//            println "complementario: $complementario, volumenesCopiados: $volumenesCopiados"
             if(complementario) {
-                println "?????1: ${volumenesCopiados?.id}"
+//                println "?????1: ${volumenesCopiados?.id}"
                 //println "?????2: ${Contrato.findAllByIdInList(volumenesCopiados?.id)}"
                 filtrados = [complementario] //- Contrato.findAllByIdInList(volumenesCopiados?.id)
             }
 
-            println "campos: $campos, contrato: $contrato, planilla: $planilla, complementario: $complementario, \n " +
-                    "compFp: $fp, complementarios: $filtrados, formula: $complementario]"
+//            println "campos: $campos, contrato: $contrato, planilla: $planilla, complementario: $complementario, \n " +
+//                    "compFp: $fp, complementarios: $filtrados, formula: $complementario]"
 
             [campos: campos, contrato: contrato, planilla: planilla, complementario: complementario,
              compFp: fp, complementarios: filtrados, formula: complementario, listaContrato: listaContrato,
@@ -344,7 +344,7 @@ class ContratoController {
     }
 
     def listaContratos(){
-        println "listaContratos" + params
+//        println "listaContratos" + params
         def datos;
         def listaObra = ['cntrcdgo', 'cntrobjt', 'prvenmbr']
 
@@ -357,7 +357,7 @@ class ContratoController {
 
         txwh += " and $bsca ilike '%${params.criterio}%'"
         sqlTx = "${select} ${txwh} order by cntrfcsb desc, ${ordn} limit 100 ".toString()
-        println "sql: $sqlTx"
+//        println "sql: $sqlTx"
 
         def cn = dbConnectionService.getConnection()
         datos = cn.rows(sqlTx)
@@ -367,7 +367,7 @@ class ContratoController {
     }
 
     def contratos(){
-        println "contratos" + params
+//        println "contratos" + params
         def datos;
         def listaObra = ['cntrcdgo', 'cntrobjt', 'prvenmbr', 'fscl', 'admn']
 
@@ -386,7 +386,7 @@ class ContratoController {
 
         txwh += " and $bsca ilike '%${params.criterio}%'"
         sqlTx = "${select} ${txwh} order by cntrfcsb desc, ${ordn} limit 100 ".toString()
-        println "sql: $sqlTx"
+//        println "sql: $sqlTx"
 
         def cn = dbConnectionService.getConnection()
         datos = cn.rows(sqlTx)
@@ -396,7 +396,7 @@ class ContratoController {
     }
 
     def tablaObras_ajax(){
-        println "listaItems" + params
+//        println "listaItems" + params
         def datos;
         def listaObra = ['obracdgo', 'obranmbr', 'obrammig', 'obrammsl', 'obraetdo, obrafcha']
 
@@ -411,7 +411,7 @@ class ContratoController {
 
         txwh += " and $bsca ilike '%${params.criterio}%'"
         sqlTx = "${select} ${txwh} order by obranmbr, ${ordn} limit 21 ".toString()
-        println "sql: $sqlTx"
+//        println "sql: $sqlTx"
 
         def cn = dbConnectionService.getConnection()
         datos = cn.rows(sqlTx)
@@ -453,7 +453,7 @@ class ContratoController {
     }
 
     def copiarPolinomica() {
-        println " copiarPolinomica: params $params"
+//        println " copiarPolinomica: params $params"
         def contrato = Contrato.get(params.id)
         def formulasVarias = FormulaPolinomicaReajuste.findAllByContrato(contrato)
 
@@ -492,17 +492,17 @@ class ContratoController {
     }
 
     def grabaFprj() {
-        println "grabaFprj params: $params"
+//        println "grabaFprj params: $params"
         def fprj = new FormulaPolinomicaReajuste()
         def fprjDsde = FormulaPolinomicaReajuste.get(params.copiarDe)
         fprj.properties = params
-        println "nueva: cntr: ${fprj.contrato} tp: ${fprj.tipoFormulaPolinomica.codigo} " +
-                "dscr: ${fprj.descripcion}"
+//        println "nueva: cntr: ${fprj.contrato} tp: ${fprj.tipoFormulaPolinomica.codigo} " +
+//                "dscr: ${fprj.descripcion}"
 
         if (!fprj.save(flush: true)) {
             println "error al crear la FP del contrato, errores: " + fprj.errors
         } else {
-            println "+++si guarda fprj, $fprj"
+//            println "+++si guarda fprj, $fprj"
         }
 
         def fp = FormulaPolinomicaContractual.findAllByContratoAndReajuste(fprj.contrato, fprjDsde)
@@ -668,7 +668,7 @@ class ContratoController {
                 params.operadores = ""
             }
         } else {
-            println "else"
+//            println "else"
             def remove = []
             params.campos.eachWithIndex { p, i ->
                 if (p == "nombre") {
@@ -776,7 +776,7 @@ class ContratoController {
 
     def buscarContrato2() {
 
-        println "buscar contrato 2 " + params
+//        println "buscar contrato 2 " + params
 
         def extraObra = ""
         if (params.campos instanceof java.lang.String) {
@@ -876,7 +876,7 @@ class ContratoController {
             }
         }
 
-        println "extra obra "+extraObra
+//        println "extra obra "+extraObra
 
         def codObra = { contrato ->
             return contrato?.oferta?.concurso?.obra?.codigo
@@ -937,7 +937,7 @@ class ContratoController {
     }
 
     def buscarObra() {
-        println "buscar obra "+params
+//        println "buscar obra "+params
         def extras = " "
         def parr = { p ->
             return p.parroquia?.nombre
@@ -1065,7 +1065,7 @@ class ContratoController {
     } //form_ajax
 
     def save() {
-        println "-->> save: >>>>>>${params}<<<<<"
+//        println "-->> save: >>>>>>${params}<<<<<"
         def contratoInstance
         def padre
 
@@ -1122,7 +1122,7 @@ class ContratoController {
             }
 
         } catch (e) {
-            println "errrr: $e "
+//            println "errrr: $e "
             flash.clase = "alert-error"
             def str = "<h4>No se pudo guardar Contrato </h4>"
             str += "<ul>"
@@ -1249,7 +1249,7 @@ class ContratoController {
 
     def saveAsignarFormula2() {
 
-        println("saveAsignarFormula2 " + params)
+//        println("saveAsignarFormula2 " + params)
 
         def su = []
         def fxs = []
@@ -1265,9 +1265,9 @@ class ContratoController {
 
         part = params.formu.toString().split("_")
 
-        println "formula: " + part
-        println "subpr: " + su
-        println "formula x sp: " + fxs
+//        println "formula: " + part
+//        println "subpr: " + su
+//        println "formula x sp: " + fxs
 
         def cont
 
@@ -1296,7 +1296,7 @@ class ContratoController {
 
     // copia true: copia FP de la obra, false, ya existe FP contractual
     def copiaFpDesdeObra(cntr, copia) {
-        println "cntr: $cntr, copia: $copia"
+//        println "cntr: $cntr, copia: $copia"
         def fpReajuste = FormulaPolinomicaReajuste.findByContrato(cntr)
         def tipo = TipoFormulaPolinomica.get(1)
 
@@ -1308,7 +1308,7 @@ class ContratoController {
             if (!fprj.save(flush: true)) {
                 println "error al crear la FP del contrato, errores: " + fprj.errors
             } else {
-                println "fprj creada pero sin fprj"
+//                println "fprj creada pero sin fprj"
                 fpReajuste = fprj
             }
         }
@@ -1325,7 +1325,7 @@ class ContratoController {
                     frpl.numero = it.numero
                     frpl.reajuste = fpReajuste
                     if (!frpl.save(flush: true)) {
-                        println "error frpl" + frpl.errors
+//                        println "error frpl" + frpl.errors
                     }
                 }
             }
@@ -1340,7 +1340,7 @@ class ContratoController {
 
         }
 
-        println "fin de actualización de frpl"
+//        println "fin de actualización de frpl"
         // inserta valores en fpsp: FormulaSubpresupuesto
         def sbpr = VolumenesObra.findAllByObra(cntr.obra, [sort: "orden"]).subPresupuesto.unique()
 //        println "inserta fpsp, sbpr: $sbpr"
@@ -1373,7 +1373,7 @@ class ContratoController {
     }
 
     def integrarCrono () {
-        println "integrarCrono: $params"
+//        println "integrarCrono: $params"
         def contrato = Contrato.get(params.id)
         def complementario = Contrato.get(params.comp)
         def cronogramaComp = CronogramaContratado.findByContrato(complementario)
@@ -1392,7 +1392,7 @@ class ContratoController {
 
             def volumenesContrato = VolumenContrato.findAllByContrato(complementario)
             volumenesContrato.each{ v ->
-                println "procesa ${v.item}"
+//                println "procesa ${v.item}"
                 def nuevoVocr = new VolumenContrato(v.properties)
                 nuevoVocr.contrato = contrato
                 nuevoVocr.contratoComplementario = complementario
@@ -1407,7 +1407,7 @@ class ContratoController {
                         nuevoCrono.contrato = contrato
                         nuevoCrono.volumenContrato = nuevoVocr
                         nuevoCrono.periodo = c.periodo + periodos
-                        println "nuevoCrono: ${c.volumenContrato.item} ${c.periodo + periodos}"
+//                        println "nuevoCrono: ${c.volumenContrato.item} ${c.periodo + periodos}"
 
                         nuevoCrono.save(flush:true)
                         if (!nuevoCrono.save(flush:true)) {
@@ -1439,7 +1439,7 @@ class ContratoController {
     /* copia en frpl la FP del complementario y,
      * en fprj añade la frpl copiada */
     def integrarFP () {
-        println("params " + params)
+//        println("params " + params)
         def contrato = Contrato.get(params.id)
         def complementario = Contrato.get(params.comp)
         def fpComplementaria = FormulaPolinomicaReajuste.findByContrato(complementario)
@@ -1573,18 +1573,18 @@ class ContratoController {
     }
 
     def cambiarCodigo_ajax(){
-        println "cambiarCodigo_ajax: $params"
+//        println "cambiarCodigo_ajax: $params"
         def cn = dbConnectionService.getConnection()
         def sql = "select cncr__id from ofrt, cntr where ofrt.ofrt__id = cntr.ofrt__id and cntr__id = ${params.id}"
-        println sql
+//        println sql
         def cncr = cn.rows(sql.toString())[0].cncr__id
         def cdgo = params.cdgo[-2..-1] == "OF" ? params.cdgo[0..-4] : params.cdgo + '-OF'
         sql = "select obra__id from obra where obracdgo = '${cdgo}'"
-        println sql
+//        println sql
         def obra = cn.rows(sql.toString())[0].obra__id
-        println "cncr: ${cncr}, obra: $obra"
+//        println "cncr: ${cncr}, obra: $obra"
         sql = "update cncr set obra__id = $obra where cncr__id = $cncr"
-        println "--> $sql"
+//        println "--> $sql"
         if(obra > 0) {
             cn.execute(sql.toString())
             render "ok"
@@ -1600,7 +1600,7 @@ class ContratoController {
 
     def saveFechasComplementario_ajax(){
 
-        println("params fc " + params)
+//        println("params fc " + params)
 
         def contratoComplementario = Contrato.get(params.id)
 

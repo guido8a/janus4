@@ -12,7 +12,7 @@ class FiscalizadorContratoController {
     } //index
 
     def addFisc() {
-        println params
+//        println params
         def contrato = Contrato.get(params.contrato)
         def persona = Persona.get(params.fisc)
         def desde = new Date().parse("dd-MM-yyyy", params.desde)
@@ -64,7 +64,7 @@ class FiscalizadorContratoController {
     def tabla() {
         def contrato = Contrato.get(params.contrato)
         def lista = FiscalizadorContrato.findAllByContrato(contrato, [sort: "fechaInicio", order: "desc"])
-        println("lista " + lista)
+//        println("lista " + lista)
         [fiscalizadorContratoInstanceList: lista, params: params]
     }
 

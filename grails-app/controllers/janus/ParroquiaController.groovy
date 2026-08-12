@@ -48,7 +48,7 @@ class ParroquiaController {
             def ok = false
             if (Parroquia.countByCodigoAndIdNotEqual(nc, parr.id) > 0) {
                 while (Parroquia.countByCodigoAndIdNotEqual(nc, parr.id) > 0) {
-                    println "repetido: ${parr.id} ${nc}"
+//                    println "repetido: ${parr.id} ${nc}"
                     nc += "r"
                 }
             }
@@ -56,7 +56,7 @@ class ParroquiaController {
             if (parr.save(flush: true)) {
                 ok = true
             } else {
-                println parr.errors
+//                println parr.errors
             }
 
             html += "<tr class='${ok ? 'ok' : 'no'}'>"

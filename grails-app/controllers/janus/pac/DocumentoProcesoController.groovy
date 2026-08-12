@@ -25,7 +25,7 @@ class DocumentoProcesoController {
         def path = "/var/janus/" + folder + File.separatorChar + doc.path
 
 //        println servletContext.getRealPath("/")
-        println "path: $path"
+//        println "path: $path"
 
         def file = new File(path)
         if (file.exists()) {
@@ -213,7 +213,7 @@ class DocumentoProcesoController {
     } //form_ajax
 
     def save() {
-        println("params doc" + params)
+//        println("params doc" + params)
         def documentoProcesoInstance
         if (params.id) {
             documentoProcesoInstance = DocumentoProceso.get(params.id)

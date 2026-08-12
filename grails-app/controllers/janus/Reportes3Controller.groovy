@@ -147,7 +147,7 @@ class Reportes3Controller {
             prueba += it.rbronmbr
         }
 
-        println("valores " + valores)
+//        println("valores " + valores)
 
         def subPres = VolumenesObra.findAllByObra(obra, [sort: "orden"]).subPresupuesto.unique()
         def precios = [:]
@@ -183,7 +183,7 @@ class Reportes3Controller {
         try {
             indi = indi.toDouble()
         } catch (e) {
-            println "error parse " + e
+//            println "error parse " + e
             indi = 21.5
         }
 
@@ -365,7 +365,7 @@ class Reportes3Controller {
         try {
             indi = indi.toDouble()
         } catch (e) {
-            println "error parse " + e
+//            println "error parse " + e
             indi = 21.5
         }
 
@@ -593,7 +593,7 @@ class Reportes3Controller {
     }
 
     def imprimirRubro() {
-        println "imprimir rubro "+params
+//        println "imprimir rubro "+params
 
         def rubro = Item.get(params.id)
         def corregido
@@ -625,7 +625,7 @@ class Reportes3Controller {
         try {
             indi = indi.toDouble()
         } catch (e) {
-            println "error parse " + e
+//            println "error parse " + e
             indi = 21.5
         }
         def obra
@@ -790,7 +790,7 @@ class Reportes3Controller {
     //VAE
 
     def imprimirRubroVae() {
-        println "imprimir rubro "+params
+//        println "imprimir rubro "+params
 
         def rubro = Item.get(params.id)
         def corregido
@@ -821,7 +821,7 @@ class Reportes3Controller {
         try {
             indi = indi.toDouble()
         } catch (e) {
-            println "error parse " + e
+//            println "error parse " + e
             indi = 21.5
         }
         def obra
@@ -1042,7 +1042,7 @@ class Reportes3Controller {
 
 
     def imprimirRubros() {
-        println "imprimir rubros " + params
+//        println "imprimir rubros " + params
 
         def rubros = []
 
@@ -1068,7 +1068,7 @@ class Reportes3Controller {
         try {
             indi = indi.toDouble()
         } catch (e) {
-            println "error parse " + e
+//            println "error parse " + e
             indi = 21.5
         }
 
@@ -1362,7 +1362,7 @@ class Reportes3Controller {
         try {
             indi = indi.toDouble()
         } catch (e) {
-            println "error parse " + e
+//            println "error parse " + e
             indi = 21.5
         }
 
@@ -2780,7 +2780,7 @@ class Reportes3Controller {
             try {
                 indi = indi.toDouble()
             } catch (e) {
-                println "error parse " + e
+//                println "error parse " + e
                 indi = 21.5
             }
 

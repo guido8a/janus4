@@ -733,7 +733,7 @@ class ReportesController {
     }
 
     def imprimirRubros() {
-        println "imprimirRubros... $params"
+//        println "imprimirRubros... $params"
         def obra = Obra.get(params.obra)
         def fecha1
         def fecha2
@@ -756,12 +756,12 @@ class ReportesController {
         try {
             indi = indi.toDouble()
         } catch (e) {
-            println "error parse " + e
+//            println "error parse " + e
             indi = 21.5
         }
 
         if(obra.estado != 'R') {
-            println "antes de imprimir rubros.. actualiza desalojo y herramienta menor"
+//            println "antes de imprimir rubros.. actualiza desalojo y herramienta menor"
             preciosService.ac_transporteDesalojo(obra.id)
             preciosService.ac_rbroObra(obra.id)
         }
@@ -1639,7 +1639,7 @@ class ReportesController {
     }
 
     def reporteDocumentosObra() {
-        println "*****--->reporteDocumentosObra: $params"
+//        println "*****--->reporteDocumentosObra: $params"
 
         def cd
         def auxiliar = janus.Auxiliar.get(1);
@@ -1897,7 +1897,7 @@ class ReportesController {
         addCellTabla(tablaPresupuesto, new Paragraph(" : ", times8bold), prmsHeaderHoja)
         addCellTabla(tablaPresupuesto, new Paragraph((obra?.inspector?.titulo ?: '')+ ' ' + obra?.inspector?.nombre + " " + obra?.inspector?.apellido, times8normal), prmsHeaderHoja)
 
-        println "coordenadas: ${obra?.coordenadas}"
+//        println "coordenadas: ${obra?.coordenadas}"
         PdfPTable tablaCoordenadas = new PdfPTable(3);
         tablaCoordenadas.setWidthPercentage(100);
         tablaCoordenadas.setWidths(arregloEnteros([17, 3, 72]))
@@ -3985,7 +3985,7 @@ class ReportesController {
     }
 
     def reporteDocumentosObraMemo() {
-        println("-memo-->>" + params)
+//        println("-memo-->>" + params)
         def cd
         def auxiliar = Auxiliar.get(1)
         def auxiliarFijo = Auxiliar.get(1)
@@ -4824,9 +4824,9 @@ class ReportesController {
 
         if(obra?.codigo?.contains("-OF")){
             def obraOferente = ObraOferente.findByObra(obra)
-            println("-- " + obraOferente?.id)
+//            println("-- " + obraOferente?.id)
             def oferente = obraOferente?.oferente
-            println("-- " + oferente?.firma)
+//            println("-- " + oferente?.firma)
 //            addCellTabla(tablaFirmas, new Paragraph((firmaCoordinador?.titulo?.toUpperCase() ?: '') + " " + (firmaCoordinador?.nombre?.toUpperCase() ?: '') + " " + (firmaCoordinador?.apellido?.toUpperCase() ?: ''), times8bold), prmsHeaderHoja)
             addCellTabla(tablaFirmas, new Paragraph((oferente?.firma?.toUpperCase() ?: ''), times8bold), prmsHeaderHoja)
 

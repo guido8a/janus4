@@ -76,7 +76,7 @@ class ObraFPController {
         def sbpr = params.sub.toInteger()
         def res
 
-        println "Inicia cálculo de la MF"
+//        println "Inicia cálculo de la MF"
         if (params.borraFP == "true") obraService.borrarFP(params.obra)
 
         res = pone_ids()
@@ -89,7 +89,7 @@ class ObraFPController {
             return
         }
 
-        println "actualiza herramienta menor"
+//        println "actualiza herramienta menor"
 
         res = ejecutaSQL("select * from ac_rbro_hr_v2(${obra__id})")
         if (!res) {
@@ -97,20 +97,20 @@ class ObraFPController {
             return
         }
 
-        println "ejecuta sp_obra_v2"
+//        println "ejecuta sp_obra_v2"
         res = ejecutaSQL("select * from sp_obra_v2(${obra__id}, ${sbpr})")   /** optimizar **/
         if (!res) {
             render "Error: no se pudo ejecutar sp_obra_v2"
             return
         }
 
-        println "inicia verifica Matriz"
+//        println "inicia verifica Matriz"
         res = verificaMatriz(obra__id)
         if (res != "") {
             render res
             return
         }
-        println "inicia verifica precios obra"
+//        println "inicia verifica precios obra"
         res = verifica_precios(obra__id)
         if (res.size() > 0) {
             def msg = "<span style='color:red'>Errores detectados</span><br> <span class='label-azul'>No se encontraron precios para los siguientes items:</span><br>"
@@ -119,13 +119,13 @@ class ObraFPController {
             return
         }
 
-        println "calcula Matriz"
+//        println "calcula Matriz"
         redirect(action: "matrizFP", params: ["obra": params.obra, "sub": params.sub, "trans": params.trans])
         return
     }
 
     def matrizFP() {
-        println "matriz fp " + params
+//        println "matriz fp " + params
         def inicio = new Date()
         /* --------------------- parámetros que se requieren para correr el proceso  --------------------- */
         def obra__id = params.obra.toInteger()         // obra de pruebas dos rubros: 550, varios 921. Pruebas 886
@@ -138,13 +138,13 @@ class ObraFPController {
             obra.desgloseTransporte = "N"
         obra.save(flush: true)
         /* ----------------------------------- FIN de parámetros  ---------------------------------------- */
-        println "1. con transporte:" + conTransporte
+//        println "1. con transporte:" + conTransporte
         pone_ids()
         //def obra = Obra.get(obra__id)
 
         //ejecutaSQL("select * from ac_rbro_hr(${obra__id})")
         ejecutaSQL("select * from ac_rbro_hr_v2(${obra__id})")
-        println "2. ejecutó ac_rbro_hr"
+//        println "2. ejecutó ac_rbro_hr"
 
         /* solo se debe correr sp_obra cuando esta no está registrada */
         if (Obra.get(obra__id).estado == "N") {
@@ -194,7 +194,7 @@ class ObraFPController {
         * ------------------------------------------------------------------------------------- */
         /* 1. Eliminar las tablas obxx_user si existen y crear nuevas                           */
         creaTablas(obra__id, "S", sbpr)  /* cambio obra__id */
-        println "4. fin .. creaTablas"
+//        println "4. fin .. creaTablas"
 
         numeroCampos = 0
 
@@ -218,7 +218,7 @@ class ObraFPController {
         /* ------------------------------------------------------------------------------------- */
         /* Desglose de la Mano de Obra                                                           */
 
-        println "5. inicia crear campos"
+//        println "5. inicia crear campos"
 
         creaCampo(obra__id, 'ORDEN', 'R', sbpr)          /* cambio obra__id */
         creaCampo(obra__id, 'CODIGO', 'R', sbpr)
@@ -226,7 +226,7 @@ class ObraFPController {
         creaCampo(obra__id, 'UNIDAD', 'R', sbpr)
         creaCampo(obra__id, 'CANTIDAD', 'R', sbpr)
 
-        println "6. fin crear campos"
+//        println "6. fin crear campos"
 
         /* campos de Mano de Obra que figuran en la obra --------------------------------------- */
 
@@ -246,43 +246,43 @@ class ObraFPController {
         creaCampo(obra__id, 'TOTAL_U', 'T', sbpr);
         creaCampo(obra__id, 'TOTAL_T', 'T', sbpr);
         /* ---- Inserta los rubros y títulos de totales --------------------------------------- */
-        println "7. inicio inserta rubros"
+//        println "7. inicio inserta rubros"
         insertaRubro("obra__id, codigo, rubro, orden, sbpr__id", "${obra__id},'sS1', 'SUMAN', 10000, ${sbpr}")
         insertaRubro("obra__id, codigo, rubro, orden, sbpr__id", "${obra__id},'sS2', 'TOTALES', 10001, ${sbpr}")
         insertaRubro("obra__id, codigo, rubro, orden, sbpr__id", "${obra__id},'sS3', 'COEFICIENTES DE LA FORMULA', 10002, ${sbpr}")
         insertaRubro("obra__id, codigo, rubro, orden, sbpr__id", "${obra__id},'sS4', 'TARIFA HORARIA', 10003, ${sbpr}")
         insertaRubro("obra__id, codigo, rubro, orden, sbpr__id", "${obra__id},'sS6', 'HORAS HOMBRE POR COMPONENTE', 10004, ${sbpr}")
         insertaRubro("obra__id, codigo, rubro, orden, sbpr__id", "${obra__id},'sS5', 'COEFICIENTES DE LA CUADRILLA TIPO',10005, ${sbpr}")
-        println "8. fin inserta rubros"
+//        println "8. fin inserta rubros"
 
         /* ---- ejecuta Rubros(subPrsp) y Descomposicion(subPrsp) ----------------------------- */
         rubros(obra__id, sbpr)
-        println "9. completa rubros"
+//        println "9. completa rubros"
         descomposicion(obra__id, sbpr)
-        println "10. completa descomposicion"
+//        println "10. completa descomposicion"
         des_Materiales(obra__id, sbpr, conTransporte)
-        println "11. completa des_Materiales, conTranp: $conTransporte ... Hay equipos: $hayEquipos"
+//        println "11. completa des_Materiales, conTranp: $conTransporte ... Hay equipos: $hayEquipos"
         if (hayEquipos) {
             if (conTransporte) acTransporte(obra__id, sbpr)
             acEquipos(obra__id, sbpr)
         }
-        println "11. completa hayEquipos"
+//        println "11. completa hayEquipos"
 
         acManoDeObra(obra__id, sbpr)                      /* cambio obra__id */
-        println "12. completa acManoDeObra"
+//        println "12. completa acManoDeObra"
         acTotal(obra__id, sbpr)                           /* cambio obra__id */
-        println "13. completa acTotal"
+//        println "13. completa acTotal"
 
         if (hayEquipos) desgloseTrnp(obra__id, conTransporte, sbpr)      /* cambio obra__id */
-        println "14. completa desgloseTrnp"
+//        println "14. completa desgloseTrnp"
 
         completaTotalS2(obra__id, hayEquipos, sbpr)
-        println "15. completa completaTotalS2"
+//        println "15. completa completaTotalS2"
         acTotalS2(obra__id, sbpr)                         /* cambio obra__id */
-        println "16. completa acTotalS2"
+//        println "16. completa acTotalS2"
 
         tarifaHoraria(obra__id, sbpr)
-        println "17. completa tarifaHoraria"
+//        println "17. completa tarifaHoraria"
 
         cuadrillaTipo(obra__id, sbpr)            /* cambio obra__id */
 
@@ -292,9 +292,9 @@ class ObraFPController {
         acColumnasMo(obra__id, sbpr)
         //guarda subpresupuestos
 //        guardaSbpr(obra__id, sbpr)
-        println "fin de poner sbpr"
+//        println "fin de poner sbpr"
         def fin = new Date()
-        println "cronogramaObraEjec: totales --> ${TimeCategory.minus(fin, inicio)}"
+//        println "cronogramaObraEjec: totales --> ${TimeCategory.minus(fin, inicio)}"
 
         render "ok_${sbpr}"
     }
@@ -308,7 +308,7 @@ class ObraFPController {
     }
 
     def verificaMatriz(id) {
-        println "verificaMatriz"
+//        println "verificaMatriz"
         def obra = Obra.get(id)
         def errr = ""
         if (!VolumenesObra.findAllByObra(obra)) errr += "<br><span class='label-azul'>No se ha ingresado los volúmenes de Obra</span>"
@@ -333,11 +333,11 @@ class ObraFPController {
     }
 
     def rubrosSinCantidad(id) {
-        println "rubrosSinCantidad ---1"
+//        println "rubrosSinCantidad ---1"
         def cn = dbConnectionService.getConnection()
         def er = 0;
         def tx_sql = "select count(*) nada from vlob where obra__id = ${id} and vlobcntd <= 0"
-        println "rubrosSinCantidad: $tx_sql"
+//        println "rubrosSinCantidad: $tx_sql"
         cn.eachRow(tx_sql.toString()) { row ->
             er = row.nada
         }
@@ -1101,13 +1101,13 @@ class ObraFPController {
         if (conTrnp) {
             tx_sql = "select rbpcpcun pcun from item_pcun_v2 (${obra.chofer.id}, '${obra.fechaPreciosRubros}', ${obra.lugar.id}," +
                     "${obra.listaPeso1.id}, ${obra.listaVolumen0.id}, ${obra.listaVolumen1.id}, ${obra.listaVolumen2.id}, ${obra.listaManoObra.id})"
-            println "desgloseTrnp: " + tx_sql
+//            println "desgloseTrnp: " + tx_sql
             cn.eachRow(tx_sql.toString()) { row ->
                 pu_chfr = row.pcun
             }
             tx_sql = "select rbpcpcun pcun from item_pcun_v2 (${obra.volquete.id}, '${obra.fechaPreciosRubros}', ${obra.lugar.id}," +
                     "${obra.listaPeso1.id}, ${obra.listaVolumen0.id}, ${obra.listaVolumen1.id}, ${obra.listaVolumen2.id}, ${obra.listaManoObra.id})"
-            println "desgloseTrnp: " + tx_sql
+//            println "desgloseTrnp: " + tx_sql
             cn.eachRow(tx_sql.toString()) { row ->
                 pu_vlqt = row.pcun
             }

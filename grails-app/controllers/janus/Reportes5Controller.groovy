@@ -135,7 +135,7 @@ class Reportes5Controller{
                 "where dpto.dpto__id = obra.dpto__id and dire.dire__id = dpto.dire__id and " +
                 "cntr.obra__id = obra.obra__id and cntretdo = 'R' " +
                 "order by 2"
-        println "sqlReg: $sql"
+//        println "sqlReg: $sql"
         cn.eachRow(sql.toString()) { r ->
             departamento[r.id] = r.nombre
         }
@@ -178,7 +178,7 @@ class Reportes5Controller{
         params.criterio = reportesService.limpiaCriterio(params.criterio)
 
         def sql = armaSqlAvance(params)
-        println "sql: $sql"
+//        println "sql: $sql"
         def obras = cn.rows(sql)
 
         params.criterio = params.old
@@ -188,7 +188,7 @@ class Reportes5Controller{
     def armaSqlAvance(params){
         def campos = reportesService.obrasAvance()
         def operador = reportesService.operadores()
-        println "armaSqlAvance: $params"
+//        println "armaSqlAvance: $params"
         def fcin = params.fechaInicio ? new Date().parse("dd-MM-yyyy", params.fechaInicio).format('yyyy-MM-dd') : ''
         def fcfn = params.fechaFin ? new Date().parse("dd-MM-yyyy", params.fechaFin).format('yyyy-MM-dd') : ''
 
@@ -210,14 +210,14 @@ class Reportes5Controller{
         params.nombre = "Código"
         if(campos.find {it.campo == params.buscador}?.size() > 0) {
             def op = operador.find {it.valor == params.operador}
-            println "op: $op"
+//            println "op: $op"
             sqlWhere += " and ${params.buscador} ${op.operador} ${op.strInicio}${params.criterio}${op.strFin}";
         }
 
         if(params.departamento) sqlWhere += " and obra.dpto__id = ${params.departamento} "
         if(params.fechaInicio) sqlWhere += " and obrafcha >= '${fcin}' "
         if(params.fechaFIn) sqlWhere += " and obrafcha <= '${fcfn}' "
-        println "sql: ${sqlSelect} ${sqlWhere} ${sqlOrder}"
+//        println "sql: ${sqlSelect} ${sqlWhere} ${sqlOrder}"
         "$sqlSelect $sqlWhere $sqlOrder".toString()
     }
 
@@ -1007,7 +1007,7 @@ class Reportes5Controller{
                 "dprt.dprt__id = i.dprt__id and sbgr.sbgr__id = dprt.sbgr__id and grpo__id in (1,2) and " +
                 "obra__id = ${params.id} ORDER BY grupo, i.itemnmbr;"
 
-        println "sql: $sql"
+//        println "sql: $sql"
 
         def tablaDatos = new PdfPTable(3);
         tablaDatos.setWidthPercentage(100);
@@ -1360,7 +1360,7 @@ class Reportes5Controller{
     }
 
     def reporteExistencias() {
-        println("params " + params)
+//        println("params " + params)
 
         def usuario = Persona.get(session.usuario.id)
         def empresa = usuario.empresa
@@ -1369,7 +1369,7 @@ class Reportes5Controller{
         def cn = dbConnectionService.getConnection()
         def datos = cn.rows(sql)
 
-        println("sql " + sql)
+//        println("sql " + sql)
 
         def totales = 0
 

@@ -67,7 +67,7 @@ class CronogramaEjecucionController {
 
 
     def terminaSuspension_ajax() {
-        println "terminaSuspension_ajax: $params"
+//        println "terminaSuspension_ajax: $params"
         def obra = Obra.get(params.obra)
         def fi = Modificaciones.withCriteria {
             eq("obra", obra)
@@ -77,7 +77,7 @@ class CronogramaEjecucionController {
                 max("fechaInicio")
             }
         }
-        println "suspensión en curso: ${fi}"
+//        println "suspensión en curso: ${fi}"
         def suspension = "<strong>Suspensión iniciada el ${fi.first().format('dd-MM-yyyy'.toString())}</strong>"
         def minDate = fi.first().format("yyyy") + "," + (fi.first().format("MM").toInteger() - 1) + "," + fi.first().format("dd")
 
@@ -90,7 +90,7 @@ class CronogramaEjecucionController {
      */
 
     def suspensionNueva() {
-        println "suspensionNueva, params: $params"
+//        println "suspensionNueva, params: $params"
         def cntr = Contrato.get(params.cntr)
         def obra = cntr.obra
         def periodos = PeriodoEjecucion.findAllByContratoAndObra(cntr, obra, [sort: 'fechaInicio'])
@@ -101,7 +101,7 @@ class CronogramaEjecucionController {
         def ini = new Date().parse("dd-MM-yyyy", params.ini)
 
         def plnl = Planilla.findAllByContratoAndFechaFinGreaterThan(cntr, ini, [sort: 'fechaInicio'])
-        println "planillas: ${plnl.fechaInicio} - ${plnl.fechaFin}"
+//        println "planillas: ${plnl.fechaInicio} - ${plnl.fechaFin}"
 
         if (plnl.size() > 0) {
 //            flash.message = "ERROR: La fecha ingresada corresponde a un periodo planillado con la planilla: ${plnl.numero} del " +
@@ -115,7 +115,7 @@ class CronogramaEjecucionController {
                 finSusp = fin - 1
                 dias = finSusp - ini + 1
             }
-            println "fcha fin: $finSusp"
+//            println "fcha fin: $finSusp"
 
             /* crea la modificación */
             def modificacion = new Modificaciones([
@@ -135,7 +135,7 @@ class CronogramaEjecucionController {
                 println "error modificacion: " + modificacion.errors
                 render "Error"
             } else {
-                println "modificacion $modificacion.id ini: $modificacion.fechaInicio fin: $modificacion.fechaFin dias: $modificacion.dias"
+//                println "modificacion $modificacion.id ini: $modificacion.fechaInicio fin: $modificacion.fechaFin dias: $modificacion.dias"
                 if (finSusp) { /** si existe fecha de finaliazazcion **/
                     params.cntr = cntr.id
                     params.suspension = modificacion.id
@@ -724,7 +724,7 @@ class CronogramaEjecucionController {
     def ampliacion_ajax() {}
 
     def ampliacion() {  /** ampliacion de plazo **/
-        println "params ampliacion de plazo: $params"
+//        println "params ampliacion de plazo: $params"
         def cn = dbConnectionService.getConnection()
         def dias = params.dias.toInteger()
         def obra = Obra.get(params.obra)
@@ -791,7 +791,7 @@ class CronogramaEjecucionController {
 
         fcfm = preciosService.ultimoDiaDelMes(fcin)
         prdo++
-        println "inicio de otros periodos con dias: $dias"
+//        println "inicio de otros periodos con dias: $dias"
 
         while (dias > 0) {
             fcin = fcfn + 1
@@ -806,7 +806,7 @@ class CronogramaEjecucionController {
                 fcfn = fcin + dias - 1
                 dias -= (fcfn - fcin + 1)
                 error = periodoAmpliacion(obra, prdo, fcin, fcfn, cntr)
-                println "crea nuevo periodo parcial, queda: fcfm: $fcfm, fcin: $fcin, dias: $dias"
+//                println "crea nuevo periodo parcial, queda: fcfm: $fcfm, fcin: $fcin, dias: $dias"
             }
         }
 
@@ -857,7 +857,7 @@ class CronogramaEjecucionController {
     }
 
     def modificarVolumen() {
-        println params
+//        println params
         def vol = VolumenesObra.get(params.vol)
         def crejs = CronogramaEjecucion.findAllByVolumenObra(vol)
 //        println ".....modificarVolumen" + crejs
@@ -868,7 +868,7 @@ class CronogramaEjecucionController {
         def obra = Obra.get(params.id)
         def html = ""
 
-        println "tabla: $params"
+//        println "tabla: $params"
         def desde = params?.desde?.toInteger() ?: 1
         def hasta = params?.hasta?.toInteger() ?: 10
         def offset = desde - 1
@@ -962,7 +962,7 @@ class CronogramaEjecucionController {
         html += "<tbody>"
 
         fin = new Date()
-        println "cronogramaObraEjec: inicia tabla --> ${TimeCategory.minus(fin, inicio)}"
+//        println "cronogramaObraEjec: inicia tabla --> ${TimeCategory.minus(fin, inicio)}"
 
 
         cronos.each { crono ->
@@ -1036,7 +1036,7 @@ class CronogramaEjecucionController {
             html += filaPor
             html += "<td class='num prct total totalRubro'>"
             if (totPor != 100) {
-                println "****** ${crono}"
+//                println "****** ${crono}"
             }
             html += numero(totPor)
             html += "</td>"
@@ -1071,7 +1071,7 @@ class CronogramaEjecucionController {
         html += "<td>T</td>"
 
         fin = new Date()
-        println "cronogramaObraEjec: totales --> ${TimeCategory.minus(fin, inicio)}"
+//        println "cronogramaObraEjec: totales --> ${TimeCategory.minus(fin, inicio)}"
 
 
         def filaDolAcum = "", filaPor = "", filaPorAcum = "", sumaDol = 0, sumaPor = 0
@@ -1149,7 +1149,7 @@ class CronogramaEjecucionController {
         def obra = cntr.obra
         def html = ""
 
-        println "tablaNueva: $params"
+//        println "tablaNueva: $params"
         def desde = params?.desde?.toInteger() ?: 1
         def hasta = params?.hasta?.toInteger() ?: 10
         def offset = desde - 1
@@ -1165,7 +1165,7 @@ class CronogramaEjecucionController {
         def detalle = VolumenContrato.findAllByContrato(cntr, [sort: "volumenOrden", max: hasta - desde + 1, offset: offset])
         def clase = ''
 
-        println "detalle: ${detalle.size()}"
+//        println "detalle: ${detalle.size()}"
 
         detalle.each { vol ->
             cronos.add([
@@ -1246,7 +1246,7 @@ class CronogramaEjecucionController {
         html += "<tbody>"
 
         fin = new Date()
-        println "cronogramaObraEjec: inicia tabla --> ${TimeCategory.minus(fin, inicio)}"
+//        println "cronogramaObraEjec: inicia tabla --> ${TimeCategory.minus(fin, inicio)}"
 
 
         cronos.each { crono ->
@@ -1284,7 +1284,7 @@ class CronogramaEjecucionController {
 //                def cronoPer = CronogramaEjecucion.findAllByVolumenObraAndPeriodo(crono.volumen, periodo)
                 def cronoPer = CrngEjecucionObra.findAllByVolumenObraAndPeriodo(crono.volumen, periodo)
                 if ((periodo.id == 628) && crono.compl) {
-                    println "---- periodo: $periodo, vocr: ${crono.volumen.id} --> ${cronoPer.size()}"
+//                    println "---- periodo: $periodo, vocr: ${crono.volumen.id} --> ${cronoPer.size()}"
                 }
 
                 filaDol += "<td class='dol num ${periodo.tipo}'>"
@@ -1369,7 +1369,7 @@ class CronogramaEjecucionController {
 //        println "html: $html"
 
         fin = new Date()
-        println "cronogramaObraEjec: totales --> ${TimeCategory.minus(fin, inicio)}"
+//        println "cronogramaObraEjec: totales --> ${TimeCategory.minus(fin, inicio)}"
 
 
         def filaDolAcum = "", filaPor = "", filaPorAcum = "", sumaDol = 0, sumaPor = 0
@@ -1444,7 +1444,7 @@ class CronogramaEjecucionController {
 
     def index() {
 
-        println "tabla: $params"
+//        println "tabla: $params"
         def desde = params.desde ?: 1
         def hasta = params.hasta?.toInteger() ?: 10
 //        hasta = Math.min(hasta, 10)
@@ -1501,7 +1501,7 @@ class CronogramaEjecucionController {
 
     def indexNuevo() {
 
-        println "indexNuevo: $params"
+//        println "indexNuevo: $params"
         def cn = dbConnectionService.getConnection()
         def desde = params.desde ?: 1
         def hasta = params.hasta?.toInteger() ?: 10
@@ -1536,7 +1536,7 @@ class CronogramaEjecucionController {
             isNull("fechaFin")
         }
 
-        println "obra: ${obra.id}, suspensiones: ${suspensiones}"
+//        println "obra: ${obra.id}, suspensiones: ${suspensiones}"
 
         def ini = Modificaciones.withCriteria {
             eq("obra", obra)
@@ -1546,7 +1546,7 @@ class CronogramaEjecucionController {
                 min("fechaInicio")
             }
         }
-        println "--suspensiones+: ${ini}"
+//        println "--suspensiones+: ${ini}"
 //        println "..... 2....."
 
         def comp = Contrato.findByPadreAndTipoContrato(contrato, TipoContrato.findByCodigo('C'))
@@ -1556,7 +1556,7 @@ class CronogramaEjecucionController {
         cn.rows(sqlP.toString())[0].cnta.times {
             pagn.add(it+1)
         }
-        println pagn
+//        println pagn
 
         return [obra : obra, contrato: contrato, suspensiones: suspensiones, ini: ini.last(),
                 desde: desde.toInteger(), hasta: hasta.toInteger(), maximo: 100,
@@ -1566,7 +1566,7 @@ class CronogramaEjecucionController {
 
     def actualizaPrej() {
         /** en base a prej ingresa o actualiza dato en prej **/
-        println "actualizaPrej params: $params"
+//        println "actualizaPrej params: $params"
         def cntr = Contrato.get(params.cntr)
         def cn = dbConnectionService.getConnection()
         def prej = PeriodoEjecucion.findAllByContratoAndTipoNotEqual(cntr, 'S')
@@ -1602,7 +1602,7 @@ class CronogramaEjecucionController {
 
 
     def creaCronogramaEjec() {
-        println "creaCronogramaEjec para contrato: $params.id"
+//        println "creaCronogramaEjec para contrato: $params.id"
         def contrato = Contrato.get(params.id)
         if (!contrato) {
             flash.message = "No se encontró el contrato"
@@ -1624,8 +1624,8 @@ class CronogramaEjecucionController {
             redirect(action: "errores", params: [contrato: params.id])
             return
         }
-        println "Id contrato: $contrato"
-        println "Id obra: $obra"
+//        println "Id contrato: $contrato"
+//        println "Id obra: $obra"
 
         /** copia el cronograma del contrato (crng) a la tabla cronograma de ejecucion (crej)
          *  --Se debe crear primero los prej y luego insertar cada rubro desde cronogramaContrato
@@ -1648,10 +1648,10 @@ class CronogramaEjecucionController {
 
         def detalle = VolumenesObra.findAllByObra(obra, [sort: "orden"])
         def periodos = CronogramaEjecucion.executeQuery("select max(periodo) from CronogramaContrato where contrato = :c", [c: contrato])
-        println "periodos: $periodos"
+//        println "periodos: $periodos"
 
         def hayPrej = PeriodoEjecucion.findAllByContrato(contrato)
-        println "hayPrej: $hayPrej"
+//        println "hayPrej: $hayPrej"
         if (!hayPrej) {
             fcin = obra.fechaInicio
             for (pr in (1..periodos[0])) {
@@ -1681,7 +1681,7 @@ class CronogramaEjecucionController {
                         prej.tipo = 'P'
                         if (!prej.save(flush: true)) {
                             flash.message = "No se pudo crear prej"
-                            println "Error al crear prej*******: " + prej.errors
+//                            println "Error al crear prej*******: " + prej.errors
                         } else {
 //                            println "se ha creado el prej: ${pr} para ${fcin} a ${fcfn}"
                             flash.message = "Prej actualizado exitosamente"
@@ -1701,7 +1701,7 @@ class CronogramaEjecucionController {
                         prej.tipo = 'P'
                         if (!prej.save(flush: true)) {
                             flash.message = "No se pudo crear prej"
-                            println "Error al crear prej*******: " + prej.errors
+//                            println "Error al crear prej*******: " + prej.errors
                         } else {
 //                            println "se ha creado el prej: ${pr} para ${fcin} a ${fcfn}"
                             flash.message = "Prej actualizado exitosamente"
@@ -1719,7 +1719,7 @@ class CronogramaEjecucionController {
                         prej.tipo = 'P'
                         if (!prej.save(flush: true)) {
                             flash.message = "No se pudo crear prej"
-                            println "Error al crear prej*******: " + prej.errors
+//                            println "Error al crear prej*******: " + prej.errors
                         } else {
 //                            println "se ha creado el prej: ${pr} para ${fcin} a ${fcfn}"
                             flash.message = "Prej actualizado exitosamente"
@@ -1734,7 +1734,7 @@ class CronogramaEjecucionController {
         def cronogramas = CronogramaEjecucion.countByVolumenObraInList(detalle)
 
         if (cronogramas == 0) {
-            println "no hay datos de cronograma ... inicia cargado"
+//            println "no hay datos de cronograma ... inicia cargado"
             detalle.each { vol ->
                 def cronoCntr = CronogramaContrato.findAllByVolumenObra(vol, [sort: 'periodo'])
                 cronoCntr.each { crono ->
@@ -1759,7 +1759,7 @@ class CronogramaEjecucionController {
                             } else {
                                 mes = 30
                             }
-                            println "dias: $dias, restan: ${contrato.plazo - 30 * (crono.periodo - 1)}, mes = $mes, ultimo: $ultimo"
+//                            println "dias: $dias, restan: ${contrato.plazo - 30 * (crono.periodo - 1)}, mes = $mes, ultimo: $ultimo"
                         }
 
                         if (prco > 0) {
@@ -1780,7 +1780,7 @@ class CronogramaEjecucionController {
                                 cantidad   : cntd
                         ])
                         if (!cronoEjecucion.save(flush: true)) {
-                            println "Error al guardar el crono ejecucion del crono " + crono.id
+//                            println "Error al guardar el crono ejecucion del crono " + crono.id
                             println cronoEjecucion.errors
                         } else {
 //                            println "ok " + crono.id + "  =>  " + cronoEjecucion.id
@@ -1798,7 +1798,7 @@ class CronogramaEjecucionController {
     }
 
     def creaCrngEjecNuevo() {
-        println "creaCrngEjecNuevo para contrato: $params.id"
+//        println "creaCrngEjecNuevo para contrato: $params.id"
         def contrato = Contrato.get(params.id)
         if (!contrato) {
             flash.message = "No se encontró el contrato"
@@ -1845,7 +1845,7 @@ class CronogramaEjecucionController {
         def detalle = VolumenContrato.findAllByObra(obra, [sort: "volumenOrden"])
         def periodos = CronogramaEjecucion.executeQuery("select max(periodo) from CronogramaContratado where contrato = :c", [c: contrato])
         def hayPrej = PeriodoEjecucion.findAllByContrato(contrato)
-        println "periodos: $periodos --- hayPrej: $hayPrej, obra: ${obra.id}"
+//        println "periodos: $periodos --- hayPrej: $hayPrej, obra: ${obra.id}"
 
         if (!hayPrej) {
             fcin = obra.fechaInicio
@@ -1876,7 +1876,7 @@ class CronogramaEjecucionController {
                         prej.tipo = 'P'
                         if (!prej.save(flush: true)) {
                             flash.message = "No se pudo crear prej"
-                            println "Error al crear prej*******: " + prej.errors
+//                            println "Error al crear prej*******: " + prej.errors
                         } else {
 //                            println "se ha creado el prej: ${pr} para ${fcin} a ${fcfn}"
                             flash.message = "Prej actualizado exitosamente"
@@ -1896,7 +1896,7 @@ class CronogramaEjecucionController {
                         prej.tipo = 'P'
                         if (!prej.save(flush: true)) {
                             flash.message = "No se pudo crear prej"
-                            println "Error al crear prej*******: " + prej.errors
+//                            println "Error al crear prej*******: " + prej.errors
                         } else {
 //                            println "se ha creado el prej: ${pr} para ${fcin} a ${fcfn}"
                             flash.message = "Prej actualizado exitosamente"
@@ -1914,7 +1914,7 @@ class CronogramaEjecucionController {
                         prej.tipo = 'P'
                         if (!prej.save(flush: true)) {
                             flash.message = "No se pudo crear prej"
-                            println "Error al crear prej*******: " + prej.errors
+//                            println "Error al crear prej*******: " + prej.errors
                         } else {
 //                            println "se ha creado el prej: ${pr} para ${fcin} a ${fcfn}"
                             flash.message = "Prej actualizado exitosamente"
@@ -1954,7 +1954,7 @@ class CronogramaEjecucionController {
                             } else {
                                 mes = 30
                             }
-                            println "dias: $dias, restan: ${contrato.plazo - 30 * (crono.periodo - 1)}, mes = $mes, ultimo: $ultimo"
+//                            println "dias: $dias, restan: ${contrato.plazo - 30 * (crono.periodo - 1)}, mes = $mes, ultimo: $ultimo"
                         }
 
                         if (prco > 0) {
@@ -1975,7 +1975,7 @@ class CronogramaEjecucionController {
                                 cantidad   : cntd
                         ])
                         if (!cronoEjecucion.save(flush: true)) {
-                            println "Error al guardar el crono ejecucion del crono " + crono.id
+//                            println "Error al guardar el crono ejecucion del crono " + crono.id
                             println cronoEjecucion.errors
                         } else {
 //                            println "ok " + crono.id + "  =>  " + cronoEjecucion.id
@@ -1998,13 +1998,13 @@ class CronogramaEjecucionController {
 
     def insertaPrej(prmt) {
         def prej = new PeriodoEjecucion()
-        println "inserta prej del contrato : ${prmt}"
+//        println "inserta prej del contrato : ${prmt}"
         def prej_an = PeriodoEjecucion.findByContratoAndFechaInicioAndFechaFin(prmt.contrato, prmt.fechaInicio, prmt.fechaFin)
         if (prej_an) {
             prej_an.obra = prmt.obra
             prej_an.periodoEjecucion = prmt.periodoEjecucion
             prej_an.parcialCronograma = prmt.parcialCronograma
-            println "actualiza valores de: $prmt"
+//            println "actualiza valores de: $prmt"
         } else {
             prej.contrato = prmt.contrato
             prej.obra = prmt.obra
@@ -2012,12 +2012,12 @@ class CronogramaEjecucionController {
             prej.fechaInicio = prmt.fechaInicio
             prej.fechaFin = prmt.fechaFin
             prej.parcialCronograma = prmt.parcialCronograma
-            println "inserta valores de: $prmt"
+//            println "inserta valores de: $prmt"
         }
 
         if (!prej.save(flush: true)) {
             flash.message = "No se pudo actualizar prej"
-            println "Error al actualizar prej: " + prej.errors
+//            println "Error al actualizar prej: " + prej.errors
         } else {
             flash.message = "Pems actualizado exitosamente"
         }
@@ -2029,7 +2029,7 @@ class CronogramaEjecucionController {
      * a lo que se ejecuta en el periodo correspondiente
      */
     def terminaSuspensionTemp() {
-        println "termina suspension temp params: $params"
+//        println "termina suspension temp params: $params"
         def cn = dbConnectionService.getConnection()
         def cntr = Contrato.get(params.cntr)
         def prejActual = PeriodoEjecucion.findAllByContrato(cntr)
@@ -2046,7 +2046,7 @@ class CronogramaEjecucionController {
         cn.execute(tx1.toString())
         cn.execute(tx2.toString())
 
-        println "ha borrado registros temporales"
+//        println "ha borrado registros temporales"
         prejActual.each { pr ->
             def prejTemp = new PeriodoEjecucionTmp()
             prejTemp.contrato = pr.contrato
@@ -2071,14 +2071,14 @@ class CronogramaEjecucionController {
                 }
             }
         }
-        println "se ha creado registros temporales en prej_t y crej_t"
+//        println "se ha creado registros temporales en prej_t y crej_t"
         //=================
 
         /** borra crej y prej actuales **/
         cn.execute("delete from crej where prej__id in (select prej__id from prej where cntr__id = ${cntr.id})".toString())
         cn.execute("delete from prej where cntr__id = ${cntr.id}".toString())
 
-        println "borrado de datos actuales de prej y crej"
+//        println "borrado de datos actuales de prej y crej"
 
         def suspension
         def diasSusp = 0
@@ -2113,7 +2113,7 @@ class CronogramaEjecucionController {
             }
         }
 
-        println "Fin de suspensión actualizada a: ${suspension.fechaFin}, dias: ${suspension.dias}"
+//        println "Fin de suspensión actualizada a: ${suspension.fechaFin}, dias: ${suspension.dias}"
 
         // Los periodos anteriores a la fecha de suspension quedan igual
         //// arreglar fechas de periodos y numero de dias
@@ -2144,13 +2144,13 @@ class CronogramaEjecucionController {
         }
         fechaFinal = iniPrej + plazoActual + diasSusp - 1 // no cuenta fin de suspension y dia final
         fechaFinalObra = iniPrej + plazoActual + diasSusp - 2 // no cuenta fin de suspension y dia final
-        println "fecha final de la obra: ${fechaFinal.format('dd-MMM-yyyy')}"
+//        println "fecha final de la obra: ${fechaFinal.format('dd-MMM-yyyy')}"
 
         def cambiar = false
         def fcha = iniPrej
 
         def i = 0
-        println "periodos: $periodos, fcha: $fcha, fechaFinal: $fechaFinal"
+//        println "periodos: $periodos, fcha: $fcha, fechaFinal: $fechaFinal"
         while (fcha < fechaFinal) {   /* puede existir un periodo de 1 día --nuevo*/
             def pr = periodos[i]
             def pe = new PeriodoEjecucion()
@@ -2164,7 +2164,7 @@ class CronogramaEjecucionController {
                 println "Error al crear prej de suspension: " + pe.errors
             }
 
-            println "procesa peridodo: $pr.id, cambiar = $cambiar, desde ${pr.fechaInicio.format('dd-MMM-yyyy')} a " +
+//            println "procesa peridodo: $pr.id, cambiar = $cambiar, desde ${pr.fechaInicio.format('dd-MMM-yyyy')} a " +
                     "${pr.fechaFin.format('dd-MMM-yyyy')}, fcha: ${fcha.format('dd-MMM-yyyy')}"
             if (!cambiar) {
                 if (pr.fechaFin >= suspension.fechaInicio) {
@@ -2174,7 +2174,7 @@ class CronogramaEjecucionController {
                         println "Error al crear prej de suspension: " + prej.errors
                     }
                     cambiar = true
-                    println "++++inserta perdiodo de suspension"
+//                    println "++++inserta perdiodo de suspension"
                     def prdoNuevo = new PeriodoEjecucion()
                     prdoNuevo.fechaInicio = suspension.fechaInicio
                     prdoNuevo.fechaFin = suspension.fechaFin - 1
@@ -2191,14 +2191,14 @@ class CronogramaEjecucionController {
                 // cambiar periodos
                 def prej = PeriodoEjecucion.get(pe.id)
                 prej.fechaInicio = fcha
-                println "fechaFinal: $fechaFinal,  ultimo día del mes: ${preciosService.ultimoDiaDelMes(fcha)}"
+//                println "fechaFinal: $fechaFinal,  ultimo día del mes: ${preciosService.ultimoDiaDelMes(fcha)}"
 //                if (fechaFinal > preciosService.ultimoDiaDelMes(fcha)) {
                 if (fechaFinalObra > preciosService.ultimoDiaDelMes(fcha)) {
-                    println "hace 1...."
+//                    println "hace 1...."
                     prej.fechaFin = preciosService.ultimoDiaDelMes(fcha)
                     fcha = prej.fechaFin + 1
                 } else {
-                    println "hace 2...."
+//                    println "hace 2...."
 //                    prej.fechaFin = fechaFinal
                     prej.fechaFin = fechaFinalObra
 //                    fcha = fechaFinal
@@ -2228,7 +2228,7 @@ class CronogramaEjecucionController {
                 cn.execute(tx1.toString())
                 periodoTmpProcesado = prAntes.id
             } else {
-                println "procesar la suspension.... periodoTmpProcesado: $periodoTmpProcesado"
+//                println "procesar la suspension.... periodoTmpProcesado: $periodoTmpProcesado"
                 def prParciales = PeriodoEjecucionTmp.findAllByContratoAndIdGreaterThanAndTipoNotEqualAndFechaFinLessThanEquals(cntr,
                         periodoTmpProcesado, 'S', pe.fechaFin + diasSusp)
 //                println "prparciales: $prParciales"
@@ -2263,7 +2263,7 @@ class CronogramaEjecucionController {
 //                        println "si existe se incrementa si no se inserta, procesa $c.id"
                         def crej = CronogramaEjecucion.findAllByPeriodoAndVolumenObra(prNuevos[actual], c.volumenObra)
                         if (crej.size() > 1) {
-                            pritln "--------------------Error... existe mas de un regisro de vlob: ${c.volumenObra} en prej: ${prNuevos[actual].id} "
+//                            println "--------------------Error... existe mas de un regisro de vlob: ${c.volumenObra} en prej: ${prNuevos[actual].id} "
                         }
 //                        println "periodo actual a procesar: ${prNuevos[actual]} con crej: $crej"
                         if (!crej) {
@@ -2316,7 +2316,7 @@ class CronogramaEjecucionController {
      */
 
     def terminaSuspensionNuevo() {
-        println "termina suspension nuevo (2018) params: $params"
+//        println "termina suspension nuevo (2018) params: $params"
         def cn = dbConnectionService.getConnection()
         def cntr = Contrato.get(params.cntr)
         def prejActual = PeriodoEjecucion.findAllByContrato(cntr)
@@ -2332,7 +2332,7 @@ class CronogramaEjecucionController {
 //        println "tx2: $tx2"
         cn.execute(tx1.toString())
         cn.execute(tx2.toString())
-        println "ha borrado registros temporales, prejActual: ${prejActual.id}"
+//        println "ha borrado registros temporales, prejActual: ${prejActual.id}"
 
         tx1 = "insert into prej_t(prej__id, cntr__id, obra__id, prejfcfn, prejfcin, prejnmro, prejtipo, " +
                 "prejcrpa, prejcntr, prejcmpl) " +
@@ -2344,14 +2344,14 @@ class CronogramaEjecucionController {
                 "select creo__id, prej__id, vocr__id, creocntd, creoprct, creoprco " +
                 "from creo where prej__id in (select prej__id from prej where cntr__id = ${cntr.id})"
         cn.execute(tx1.toString())
-        println "se ha creado registros temporales en prej_t y creo_t"
+//        println "se ha creado registros temporales en prej_t y creo_t"
 
 
         /** borra crej y prej actuales **/
         cn.execute("delete from crej where prej__id in (select prej__id from prej where cntr__id = ${cntr.id})".toString())
         cn.execute("delete from creo where prej__id in (select prej__id from prej where cntr__id = ${cntr.id})".toString())
         cn.execute("delete from prej where cntr__id = ${cntr.id}".toString())
-        println "borrado de datos actuales de prej y crej"
+//        println "borrado de datos actuales de prej y crej"
 
         def suspension
         def diasSusp = 0
@@ -2370,7 +2370,7 @@ class CronogramaEjecucionController {
         if (fcfn) {
             suspensiones = Modificaciones.findAllByContratoAndTipoAndFechaFinIsNull(cntr, "S")
         }
-        println "suspensión: ${suspensiones.size()}, inicio en ${suspensiones[0]?.fechaInicio?.format('dd-MMM-yyyy'.toString())}"
+//        println "suspensión: ${suspensiones.size()}, inicio en ${suspensiones[0]?.fechaInicio?.format('dd-MMM-yyyy'.toString())}"
 
         def finSusp = fcfn
         cn.close()
@@ -2411,7 +2411,7 @@ class CronogramaEjecucionController {
         def prejOk = insertaSuspensionNuevo(cntr, suspension.fechaInicio, suspension.fechaFin, 'S')
 
         if (prejOk) {
-            println "Fin de suspensión actualizada a: ${suspension.fechaFin}, dias: ${suspension.dias}"
+//            println "Fin de suspensión actualizada a: ${suspension.fechaFin}, dias: ${suspension.dias}"
             params.contrato = cntr.id
             actualizaPrej()
 //            render "OK"
@@ -2420,7 +2420,7 @@ class CronogramaEjecucionController {
     }
 
     def insertaSuspensionNuevo(cntr, pfcin, pfcfn, tipo) {
-        println "insertaSuspensionNuevo: contrato: $cntr, modificación inicio: $pfcin fin: $pfcfn tipo: $tipo"
+//        println "insertaSuspensionNuevo: contrato: $cntr, modificación inicio: $pfcin fin: $pfcfn tipo: $tipo"
 
         def cn = dbConnectionService.getConnection()
         def obra = cntr.obra
@@ -2452,14 +2452,14 @@ class CronogramaEjecucionController {
 
         sql = "delete from prej_t where prej__id in (select prej__id from prej where cntr__id = ${cntr.id})"
         cn.execute(sql.toString())
-        println "Insertados los periodos hasta la suspensión: ${mdfc.id}, anteriores a ${pfcin.format('yyyy-MM-dd')}"
+//        println "Insertados los periodos hasta la suspensión: ${mdfc.id}, anteriores a ${pfcin.format('yyyy-MM-dd')}"
 
         /* se procesa el primer periodo luego de la suspensión */
         sql = "select prej__id, prejfcin, prejfcfn, prejnmro, prejfcfn::date - prejfcin::date dias from prej_t " +
                 "where cntr__id = ${cntr.id} and prejtipo in ('P', 'C', 'A') and " +
 //                "prejfcin <= '${pfcin.format('yyyy-MM-dd')}' order by prejfcin limit 1"
                 "prejfcin < '${pfcin.format('yyyy-MM-dd')}' order by prejfcin limit 1"
-        println "1 ---> $sql"
+//        println "1 ---> $sql"
 
         def fcin = pfcin
         def fcfn = pfcin
@@ -2481,7 +2481,7 @@ class CronogramaEjecucionController {
         def diasrsto = fcfn - pfcin + 1
         def fcfm = preciosService.ultimoDiaDelMes(pfcfn)
 
-        println "procesa primer periodo: ${prej_id} desde ${pfcin} a ${fcfn}, inicia en: $fcin, diasPrdo: $diasPrdo"
+//        println "procesa primer periodo: ${prej_id} desde ${pfcin} a ${fcfn}, inicia en: $fcin, diasPrdo: $diasPrdo"
 
         def nuevoId
         /* se proceso solo el periodo hasta antes de la suspensión */
@@ -2489,25 +2489,25 @@ class CronogramaEjecucionController {
             diasrsto = fcfn - pfcin + 1
             fctr = 1 - (diasrsto / diasPrdo)
             fcha = (pfcin - 1).format('yyyy-MM-dd')
-            println "diasrsto: $diasrsto, fctr: $fctr"
+//            println "diasrsto: $diasrsto, fctr: $fctr"
             sql = "insert into prej(prej__id, cntr__id, obra__id, prejfcfn, prejfcin, prejnmro, prejtipo, " +
                     "prejcrpa, prejcntr, prejcmpl) " +
                     "select prej__id, cntr__id, obra__id, '${fcha}', prejfcin, prejnmro, prejtipo, " +
                     "prejcrpa, prejcntr, prejcmpl from prej_t where prej__id = ${prej_id}"
-            println "--1> $sql"
+//            println "--1> $sql"
             cn.execute(sql.toString())
             sql = "insert into creo(creo__id, prej__id, vocr__id, creocntd, creoprct, creoprco) " +
                     "select creo__id, prej__id, vocr__id, creocntd*${fctr}, creoprct*${fctr}, creoprco * ${fctr} " +
                     "from creo_t where prej__id = ${prej_id} "
 //            println "--2> $sql"
             cn.execute(sql.toString())
-            println "se ha modificado el último periodo antes de la susp."
+//            println "se ha modificado el último periodo antes de la susp."
 
             /* inserta el periodo de suspensión */
             nuevoId = insertaPrejNuevo(obra, prdo, 'S', pfcin, pfcfn, cntr)
             if (nuevoId) {
                 if(fcfm > pfcfn) {
-                    println ">>luego de crear suspensión fcfm: $fcfm, pfcfn: $pfcfn"
+//                    println ">>luego de crear suspensión fcfm: $fcfm, pfcfn: $pfcfn"
                     dias = fcfm - pfcfn
                     fcin = pfcfn + 1
 
@@ -2550,7 +2550,7 @@ class CronogramaEjecucionController {
                         cn.execute(sql.toString())
                     }
                 } else {
-                    println "+++ se supera los días restantes"
+//                    println "+++ se supera los días restantes"
                     fcin = fcfm + 1
                     fcfn = fcin + diasrsto
                     fctr = diasrsto / diasPrdo
@@ -2559,13 +2559,13 @@ class CronogramaEjecucionController {
                     sql = "insert into creo(prej__id, vocr__id, creocntd, creoprct, creoprco) " +
                             "select ${nuevoId}, vocr__id, creocntd*${fctr}, creoprct*${fctr}, creoprco * ${fctr} " +
                             "from creo_t where prej__id = ${prej_id} "
-                    println "====> $sql"
+//                    println "====> $sql"
                     cn.execute(sql.toString())
                 }
                 /* falta la segunda parte del prdo 2 **/
             }
         } else {
-            println "---> obra: $obra, prdo: $prdo, 'S', de: $pfcin, a. $pfcfn, cntr: $cntr"
+//            println "---> obra: $obra, prdo: $prdo, 'S', de: $pfcin, a. $pfcfn, cntr: $cntr"
             nuevoId = insertaPrejNuevo(obra, prdo, 'S', pfcin, pfcfn, cntr)
             fcfn = pfcfn
             prej_id = 0
@@ -2576,7 +2576,7 @@ class CronogramaEjecucionController {
         /* insertar siguientes periodos recalculando las partes */
         fcin = fcfn + 1
 //        fcin = fcfn
-        println "**** procesa periodos posteriores: $fcin, prej__id: $prej_id"
+//        println "**** procesa periodos posteriores: $fcin, prej__id: $prej_id"
         fcfm = preciosService.ultimoDiaDelMes(fcin)
 
         sql = "delete from creo_t where prej__id = ${prej_id}"
@@ -2589,7 +2589,7 @@ class CronogramaEjecucionController {
 //        sql = "select prejnmro, sum((prejfcfn::date - prejfcin::date) + 1) dias from prej_t " +
 //                "where cntr__id = ${cntr.id} and prejtipo in ('P', 'C', 'A') " +
 //                "group by prejnmro order by 1"
-        println "2 ---> $sql"
+//        println "2 ---> $sql"
 
         def periodos = cn.rows(sql.toString())
         def prejtipo = ''
@@ -2599,13 +2599,13 @@ class CronogramaEjecucionController {
             prdo = pr.prejnmro
             diasPrdo = pr.dias
             prejtipo = pr.prejtipo
-            println "....reprogramar periodo $prdo +++ rsto: $diasrsto, diasPrdo: $diasPrdo"
+//            println "....reprogramar periodo $prdo +++ rsto: $diasrsto, diasPrdo: $diasPrdo"
             while(diasPrdo > 0) {
                 diasrsto = (fcfm - fcin + 1)
-                println "-------diasresto: $diasrsto"
+//                println "-------diasresto: $diasrsto"
                 if(diasrsto < diasPrdo) {
                     fctr = diasrsto / diasPrdo
-                    println "+++++ se debe dividir en otro mes ++++++"
+//                    println "+++++ se debe dividir en otro mes ++++++"
 //                    sql = "select prej__id from prej_t where cntr__id = ${cntr.id} and prejtipo in ('P', 'C', 'A') and " +
 //                            "prejnmro = ${prdo} order by 1;"
                     sql = "select prej__id from prej_t where cntr__id = ${cntr.id} and prejtipo = '${prejtipo}' and " +
@@ -2622,17 +2622,17 @@ class CronogramaEjecucionController {
                             "select ${nuevoId}, vocr__id, sum(creocntd)*${fctr}, sum(creoprct)*${fctr}, " +
                             "sum(creoprco) * ${fctr} " +
                             "from creo_t where prej__id in (${prej}) group by vocr__id"
-                    println "--2r> $sql"
+//                    println "--2r> $sql"
                     cn.execute(sql.toString())
                     diasPrdo -= diasrsto
                     fcin = fcfm + 1
                     fcfm = preciosService.ultimoDiaDelMes(fcin)
 
                 } else {
-                    println "+++++ completa el periodo, diasresto: $diasrsto, fctr: $fctr"
+//                    println "+++++ completa el periodo, diasresto: $diasrsto, fctr: $fctr"
                     fctr = 1 - fctr
                     fcfn = fcin + diasPrdo.toInteger() - 1
-                    println "NuevoPrej: ${obra.id}, $prdo, $prejtipo, $fcin, $fcfn, ${cntr.id}"
+//                    println "NuevoPrej: ${obra.id}, $prdo, $prejtipo, $fcin, $fcfn, ${cntr.id}"
                     nuevoId = insertaPrejNuevo(obra, prdo, prejtipo, fcin, fcfn, cntr)
 
 //                    sql = "select prej__id from prej_t where cntr__id = ${cntr.id} and prejtipo in ('P', 'C', 'A') and " +
@@ -2648,7 +2648,7 @@ class CronogramaEjecucionController {
                             "select ${nuevoId}, vocr__id, sum(creocntd)*${fctr}, sum(creoprct)*${fctr}, " +
                             "sum(creoprco) * ${fctr} " +
                             "from creo_t where prej__id in (${prej}) group by vocr__id"
-                    println "--suma> $sql"
+//                    println "--suma> $sql"
                     cn.execute(sql.toString())
 
                     diasPrdo = 0
@@ -2660,7 +2660,7 @@ class CronogramaEjecucionController {
         }
 
 
-        println "fin de periodos posteriores a la suspensión"
+//        println "fin de periodos posteriores a la suspensión"
         return true
 
     }
@@ -2670,7 +2670,7 @@ class CronogramaEjecucionController {
      * 2. Ingresar valores prorrateados en PREJ nuevos
      * **/
     def armaCrcrComp = {
-        println "params armaCrcrComp: $params"
+//        println "params armaCrcrComp: $params"
         def cn = dbConnectionService.getConnection()
         def cntr = Contrato.get(params.contrato)
         def comp = Contrato.findByPadreAndTipoContrato(cntr, TipoContrato.findByCodigo('C'))
@@ -2727,7 +2727,7 @@ class CronogramaEjecucionController {
     }
 
     def insertaSuspension(cntr, dias, tipo) {
-        println "params armaCrcrComp: $params"
+//        println "params armaCrcrComp: $params"
         def cn = dbConnectionService.getConnection()
 //        def cntr = Contrato.get(params.contrato)
         def comp = Contrato.findByPadreAndTipoContrato(cntr, TipoContrato.findByCodigo(tipo))
@@ -2750,7 +2750,7 @@ class CronogramaEjecucionController {
             ])
             if (!modificacion.save(flush: true)) {
 //            if (false) {
-                println "error modificacion: " + modificacion.errors
+//                println "error modificacion: " + modificacion.errors
             } else {
                 /* crea los periodos de ejecución */
                 def ultimoPeriodo = PeriodoEjecucion.findAllByObra(obra, [sort: "fechaInicio"]).last()
@@ -2762,7 +2762,7 @@ class CronogramaEjecucionController {
                 def diasPrdo = cn.rows(sql.toString())[0].dias
                 def fcfm
 
-                println "ultimoperiodo: $prdo, dias: ${diasPrdo}"
+//                println "ultimoperiodo: $prdo, dias: ${diasPrdo}"
                 fcfm = preciosService.ultimoDiaDelMes(fcin)
                 def diasMes
                 def diasNuevo = dias >= 30 ? 30 : dias
@@ -2770,56 +2770,56 @@ class CronogramaEjecucionController {
 //                println "dias: $dias, diasPrdo: $diasPrdo, fcfm: $fcfm, final: ${fcfn}"
                 if ((dias + diasPrdo) <= 30 && (fcfm >= (fcfn + dias))) {
                     ultimoPeriodo.fechaFin = fcfn + dias
-                    println "modifica ultimo periodo"
+//                    println "modifica ultimo periodo"
                     if (!ultimoPeriodo.save(flush: true)) {
                         errores = true
                         println "ERROR!!!!: " + ultimoPeriodo.errors
                     } else {
-                        println " se ha modificado el último prej"
+//                        println " se ha modificado el último prej"
                         dias = 0
                     }
                 }
 
                 if (fcfm == fcfn) {
-                    println "cambia fecha de inicio"
+//                    println "cambia fecha de inicio"
                     fcin = fcfn + 1
                     fcfn = fcin
                     fcfm = preciosService.ultimoDiaDelMes(fcin)
                 } else {
-                    println "pone fecha de inicio"
+//                    println "pone fecha de inicio"
                     fcin = fcfn + 1
                     fcfm = preciosService.ultimoDiaDelMes(fcin)
                 }
 
                 prdo++
-                println "inicio: $fcin, dias: $dias, diasPeriodo: $diasNuevo"
+//                println "inicio: $fcin, dias: $dias, diasPeriodo: $diasNuevo"
                 while (dias > 0) {
-                    println "----dias: $dias--- fcfn: $fcfn"
+//                    println "----dias: $dias--- fcfn: $fcfn"
                     diasMes = fcfm - fcin + 1
                     if (diasMes > diasNuevo) {
                         if (insertaPrejNuevo(obra, prdo, tipo, fcin, fcin + diasNuevo.toInteger(), cntr)) {
-                            println "++++crea nuevo periodo hasta ${fcfm}"
+//                            println "++++crea nuevo periodo hasta ${fcfm}"
                             dias -= diasNuevo
                             if (dias) {
                                 prdo++
                             }
-                            println "......10 diasNuevo: $diasNuevo"
+//                            println "......10 diasNuevo: $diasNuevo"
                             diasNuevo = dias > 30 ? 30 : dias        //aqui...
-                            println "......11: dd: $diasNuevo"
+//                            println "......11: dd: $diasNuevo"
                             fcin = fcin + diasNuevo.toInteger() + 1
-                            println "......12"
+//                            println "......12"
                             fcfm = preciosService.ultimoDiaDelMes(fcin)
                         }
 //                        diasNuevo = 30
-                        println "resto del mes: ${diasMes - diasNuevo}"
+//                        println "resto del mes: ${diasMes - diasNuevo}"
                     } else {
                         /* inserta periodo parcial por diasMes */
                         if (insertaPrejNuevo(obra, prdo, tipo, fcin, fcfm, cntr)) {
-                            println "----crea nuevo periodo hasta ${fcfm}"
+//                            println "----crea nuevo periodo hasta ${fcfm}"
                             dias -= diasMes + 1
                             diasNuevo -= diasMes + 1
                             fcin = fcfm + 1
-                            println "....2"
+//                            println "....2"
                             fcfm = preciosService.ultimoDiaDelMes(fcin)
                         }
                     }
@@ -2835,7 +2835,7 @@ class CronogramaEjecucionController {
     }
 
     def insertaPrejNuevo(obra, prdo, tipo, fcin, fcfn, cntr) {
-        println "insertaPrejNuevo: obra: ${obra.id}, prdo: $prdo, tipo: $tipo, de ${fcin.format('yyyy-MM-dd')} a " +
+//        println "insertaPrejNuevo: obra: ${obra.id}, prdo: $prdo, tipo: $tipo, de ${fcin.format('yyyy-MM-dd')} a " +
                 "${fcfn.format('yyyy-MM-dd')}, cntr: ${cntr.id}"
         def periodo = new PeriodoEjecucion([
                 obra       : obra,
@@ -2861,7 +2861,7 @@ class CronogramaEjecucionController {
 
     def modificacionNuevo() {
 
-        println("params grabar mod " + params)
+//        println("params grabar mod " + params)
 
         def obra = Obra.get(params.obra.toLong())
         def modificaciones = [:]
@@ -2954,7 +2954,7 @@ class CronogramaEjecucionController {
 
 
     def modificacionNuevo_ajax() {
-        println("params modajax " + params)
+//        println("params modajax " + params)
         def contrato = Contrato.get(params.contrato.toLong())
         def obra = contrato.obra
         def vol = VolumenContrato.get(params.vol.toLong())
@@ -2963,8 +2963,8 @@ class CronogramaEjecucionController {
         def plAvance = Planilla.findAllByContratoAndTipoPlanilla(contrato, TipoPlanilla.findByCodigo("P"))
         def plLiquidacion = Planilla.findAllByContratoAndTipoPlanilla(contrato, TipoPlanilla.findByCodigo("Q"))
 
-        println("pl 1 " + plAvance.id)
-        println("pl 2 " + plLiquidacion.id)
+//        println("pl 1 " + plAvance.id)
+//        println("pl 2 " + plLiquidacion.id)
 
         def sql1
         def resP = []
@@ -2988,7 +2988,7 @@ class CronogramaEjecucionController {
 
         fechasFinPlanilla.sort(true)
 
-        println("fec " + fechasFinPlanilla)
+//        println("fec " + fechasFinPlanilla)
 
         def html = "", row2 = ""
 
@@ -3310,7 +3310,7 @@ class CronogramaEjecucionController {
     }
 
     def tablax() {
-        println "params: $params"
+//        println "params: $params"
         def cn = dbConnectionService.getConnection()
         def cn1 = dbConnectionService.getConnection()
         def cnp = dbConnectionService.getConnection()
@@ -3330,7 +3330,7 @@ class CronogramaEjecucionController {
                 "when prejtipo = 'S' then 'Suspensión' when prejtipo = 'A' then 'Ampliación' " +
                 "when prejtipo = 'C' then 'Complement.' end tipo, prejnmro, '<br>('||prejfcfn-prejfcin+1||' días)' dias " +
                 "from prej where cntr__id = ${params.id} order by prejfcin"
-        println "sql: $sql"
+//        println "sql: $sql"
 
         cn.eachRow(sql.toString()) { d ->
             titulo1.add(["${d.prejfcin.format('dd-MM-yyyy')} a ${d.prejfcfn.format('dd-MM-yyyy')}", d.prejtipo])
@@ -3373,7 +3373,7 @@ class CronogramaEjecucionController {
                         "where prej__id in (select prej__id from prej where cntr__id = ${params.id}) and " +
                         "nullif (creoprco, 'NaN') is null)"
                 cn.execute(sql.toString())
-                println "cronograma con valores nulos"
+//                println "cronograma con valores nulos"
             }
 
             sqlp = "select prej__id from prej where cntr__id = ${params.id} order by prejfcin"
@@ -3421,7 +3421,7 @@ class CronogramaEjecucionController {
         cn.rows(sql.toString())[0].cnta.times {
             pagn.add(it+1)
         }
-        println pagn
+//        println pagn
 
 
         cn.close()
@@ -3434,7 +3434,7 @@ class CronogramaEjecucionController {
     }
 
     def tabla_jx() {
-        println "params: $params"
+//        println "params: $params"
 
         def cn = dbConnectionService.getConnection()
         def cn1 = dbConnectionService.getConnection()
@@ -3485,7 +3485,7 @@ class CronogramaEjecucionController {
             val.add("\$<br>%<br>F")
 
             sqlp = "select prej__id from prej where cntr__id = ${params.id} order by prejfcin"
-            println "sql: $sqlp"
+//            println "sql: $sqlp"
             sumaprco = 0; sumaprct = 0; sumacntd = 0
             cnp.eachRow(sqlp.toString()) { pr ->
                 sql1 = "select creoprco, creoprct, creocntd, prej__id from creo where vocr__id = ${d.vocr__id} and prej__id = ${pr.prej__id}"
@@ -3551,7 +3551,7 @@ class CronogramaEjecucionController {
 
 
     def index_jx() {
-        println "indexNuevo: $params"
+//        println "indexNuevo: $params"
         def desde = params.desde ?: 1
         def hasta = params.hasta?.toInteger() ?: 10
 
@@ -3584,7 +3584,7 @@ class CronogramaEjecucionController {
             isNull("fechaFin")
         }
 
-        println "obra: ${obra.id}, suspensiones: ${suspensiones}"
+//        println "obra: ${obra.id}, suspensiones: ${suspensiones}"
 
         def ini = Modificaciones.withCriteria {
             eq("obra", obra)
@@ -3594,7 +3594,7 @@ class CronogramaEjecucionController {
                 min("fechaInicio")
             }
         }
-        println "--suspensiones+: ${ini}"
+//        println "--suspensiones+: ${ini}"
 
         def comp = Contrato.findByPadreAndTipoContrato(contrato, TipoContrato.findByCodigo('C'))
 
@@ -3641,13 +3641,13 @@ class CronogramaEjecucionController {
             val.add("\$<br>%<br>F")
 
             sqlp = "select prej__id from prej where cntr__id = ${params.contrato} order by prejfcin"
-            println "sql: $sqlp"
+//            println "sql: $sqlp"
             sumaprco = 0; sumaprct = 0; sumacntd = 0
             cnp.eachRow(sqlp.toString()) { pr ->
                 sql1 = "select creoprco, creoprct, creocntd, prej__id from creo where vocr__id = ${d.vocr__id} and prej__id = ${pr.prej__id}"
                 sqle = "select count(*) cuenta from creo where vocr__id = ${d.vocr__id} and prej__id = ${pr.prej__id}"
                 cont = cne.rows(sqle.toString())[0].cuenta
-                println "sql1: $sql1"
+//                println "sql1: $sql1"
                 if(cont > 0) {
                     cnp.eachRow(sql1.toString()) { p ->
                         val.add("${p.creoprco}<br>${p.creoprct}<br>${p.creocntd}")
@@ -3686,7 +3686,7 @@ class CronogramaEjecucionController {
 
     def totales_ajax() {
 
-        println("ct " + params)
+//        println("ct " + params)
 
         def cn = dbConnectionService.getConnection()
         def cn1 = dbConnectionService.getConnection()
@@ -3826,7 +3826,7 @@ class CronogramaEjecucionController {
         def cn = dbConnectionService.getConnection()
         def sql = "update creo set creoprco = 0 where creo__id in (select creo__id from creo where prej__id in " +
                 "(select prej__id from prej where cntr__id = ${params.id}) and nullif (creoprco, 'NaN') is null);"
-        println("sql " + sql)
+//        println("sql " + sql)
         cn.execute(sql.toString())
 
         render "ok"
@@ -3839,7 +3839,7 @@ class CronogramaEjecucionController {
 
     /** Carga el cronopgrama desde exccel */
     def uploadFileExcel() {
-        println "*** $params"
+//        println "*** $params"
         def contrato = Contrato.get(params.contrato)
         def cn = dbConnectionService.getConnection()
         def sql = ""
@@ -3898,7 +3898,7 @@ class CronogramaEjecucionController {
                     def rgst = []
                     def meses = []
 
-                    println "fila: ${row.rowNum}"
+//                    println "fila: ${row.rowNum}"
 
                     while (cells.hasNext()) {
                         cell = (XSSFCell) cells.next()
@@ -3915,10 +3915,10 @@ class CronogramaEjecucionController {
                     }
 
 
-                    println "reg: $rgst"
+//                    println "reg: $rgst"
 
                     if (rgst[0] == "Periodos Núm.") { //prej__ids
-                        println "leyendo prej.. "
+//                        println "leyendo prej.. "
                         sccnPrej = true
                         sccnData = false
                         prej = rgst[1..rgst.size() - 1]
@@ -3927,14 +3927,14 @@ class CronogramaEjecucionController {
 //                    println "prej: $prej"
 
                     if (rgst[0] == "TOTALES") { //fin de data
-                        println "final de datos.. "
+//                        println "final de datos.. "
                         sccnPrej = true
                         sccnData = false
                     }
 
                     if (rgst[0] == "Código" && sccnPrej) {
                         sccnTitl = true;
-                        println "Activa título..."
+//                        println "Activa título..."
                     }
 
                     cntd = rgst[3]
@@ -3946,7 +3946,7 @@ class CronogramaEjecucionController {
                     if (sccnTitl && cntd > 0) {
                         sccnData = true;
                         sccnTitl = false
-                        println "Activa data...."
+//                        println "Activa data...."
                     }
 
                     /** comprueba que coincidan los prej:
@@ -3956,15 +3956,15 @@ class CronogramaEjecucionController {
                         if (sccnData && (cntd > 0)) {
                             def periodos = prej.join(',')
                             sql = "select count(*) cnta from prej where cntr__id = ${params.contrato} and prej__id in (${periodos})"
-                            println("sqlc " + sql)
-                            println "IN --> ${prej.join(',')}"
+//                            println("sqlc " + sql)
+//                            println "IN --> ${prej.join(',')}"
                             cnta = cn.rows(sql.toString())[0].cnta
                             if (cnta == prej.size()) {
                                 prejOk = true
                                 iniciaCarga = true
-                                println "Ok prej comprobados: ($cnta == $prej.size())"
+//                                println "Ok prej comprobados: ($cnta == $prej.size())"
                             } else {
-                                println "No coinden los períodos de ejecución ($cnta == $prej.size())"
+//                                println "No coinden los períodos de ejecución ($cnta == $prej.size())"
                             }
                         }
                     }
@@ -4049,7 +4049,7 @@ class CronogramaEjecucionController {
 
                 }
 
-                println "termina el proceso con prejOk: $prejOk --> $doneHtml"
+//                println "termina el proceso con prejOk: $prejOk --> $doneHtml"
 
                 def str = doneHtml
                 str += htmlInfo
@@ -4198,7 +4198,7 @@ class CronogramaEjecucionController {
     }
 
     def tablaHistoricos_ajax() {
-        println "params: $params"
+//        println "params: $params"
         def modificacion = ModificacionCronograma.get(params.modificacion)
         def cn = dbConnectionService.getConnection()
         def cn1 = dbConnectionService.getConnection()

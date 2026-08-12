@@ -75,7 +75,7 @@ class ReportesRubros2Controller {
 
 
     def reporteRubrosTransporteV2(){
-        println("reporteRubrosTransporteV2 -rubros2 " + params)
+//        println("reporteRubrosTransporteV2 -rubros2 " + params)
         def auxiliar = Auxiliar.get(1)
 
         def obra
@@ -103,7 +103,7 @@ class ReportesRubros2Controller {
         try {
             indi = indi.toDouble()
         } catch (e) {
-            println "error parse " + e
+//            println "error parse " + e
             indi = 21.5
         }
 
@@ -472,7 +472,7 @@ class ReportesRubros2Controller {
         try {
             indi = indi.toDouble()
         } catch (e) {
-            println "error parse " + e
+//            println "error parse " + e
             indi = 22
         }
 
@@ -902,7 +902,7 @@ class ReportesRubros2Controller {
 //        if(bandMat != 1){
 //            document.add(tablaMaterialesVacia)
 //        }
-        println "total: $total"
+//        println "total: $total"
         if (total == 0 || params.trans == "no"){
         }else{
             document.add(tablaTransporte)
@@ -949,7 +949,7 @@ class ReportesRubros2Controller {
         }
 
         if(obra.estado != 'R') {
-            println "antes de imprimir rubros.. actualiza desalojo y herramienta menor"
+//            println "antes de imprimir rubros.. actualiza desalojo y herramienta menor"
             preciosService.ac_transporteDesalojo(obra.id)
             preciosService.ac_rbroObra(obra.id)
         }
@@ -963,7 +963,7 @@ class ReportesRubros2Controller {
         try {
             indi = indi.toDouble()
         } catch (e) {
-            println "error parse " + e
+//            println "error parse " + e
             indi = 21.5
         }
 
@@ -1299,7 +1299,7 @@ class ReportesRubros2Controller {
     }
 
     def reporteRubrosVaeRegistro(){
-        println("params rrvr " + params)
+//        println("params rrvr " + params)
 
         def obra = Obra.get(params.obra)
         def fecha1
@@ -1318,7 +1318,7 @@ class ReportesRubros2Controller {
         }
 
         if(obra.estado != 'R') {
-            println "antes de imprimir rubros.. actualiza desalojo y herramienta menor"
+//            println "antes de imprimir rubros.. actualiza desalojo y herramienta menor"
             preciosService.ac_transporteDesalojo(obra.id)
             preciosService.ac_rbroObra(obra.id)
         }
@@ -1332,7 +1332,7 @@ class ReportesRubros2Controller {
         try {
             indi = indi.toDouble()
         } catch (e) {
-            println "error parse " + e
+//            println "error parse " + e
             indi = 21.5
         }
 
@@ -1815,7 +1815,7 @@ class ReportesRubros2Controller {
         try {
             indi = indi.toDouble()
         } catch (e) {
-            println "error parse " + e
+//            println "error parse " + e
             indi = 21.5
         }
 
@@ -2172,7 +2172,7 @@ class ReportesRubros2Controller {
 
 
     def reporteRubrosVolumen(){
-        println("params rrvo " + params)
+//        println("params rrvo " + params)
 
         def obra = Obra.get(params.obra)
         def fecha1
@@ -2195,7 +2195,7 @@ class ReportesRubros2Controller {
         try {
             indi = indi.toDouble()
         } catch (e) {
-            println "error parse " + e
+//            println "error parse " + e
             indi = 21.5
         }
 
@@ -2560,7 +2560,7 @@ class ReportesRubros2Controller {
         try {
             indi = indi.toDouble()
         } catch (e) {
-            println "error parse " + e
+//            println "error parse " + e
             indi = 21.5
         }
 
@@ -3007,7 +3007,7 @@ class ReportesRubros2Controller {
         try {
             indi = indi.toDouble()
         } catch (e) {
-            println "error parse " + e
+//            println "error parse " + e
             indi = 21.5
         }
 
@@ -3490,7 +3490,7 @@ class ReportesRubros2Controller {
         try {
             indi = indi.toDouble()
         } catch (e) {
-            println "error parse " + e
+//            println "error parse " + e
             indi = 21.5
         }
 
@@ -3679,7 +3679,7 @@ class ReportesRubros2Controller {
     }
 
     def reporteRubrosConsolidadoGrupo2(){
-        println("params rrcg " + params)
+//        println("params rrcg " + params)
 
         def rubros = []
         def parts = params.id.split("_")
@@ -3725,7 +3725,7 @@ class ReportesRubros2Controller {
         try {
             indi = indi.toDouble()
         } catch (e) {
-            println "error parse " + e
+//            println "error parse " + e
             indi = 21.5
         }
 

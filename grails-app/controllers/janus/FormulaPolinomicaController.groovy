@@ -15,7 +15,7 @@ class FormulaPolinomicaController {
     def addItemFormula() {
 
 //        println "add item"
-        println "addItemFormula params:" + params
+//        println "addItemFormula params:" + params
 
         def parts = params.formula.split("_")
         def formula = FormulaPolinomica.get(parts[1])
@@ -66,11 +66,11 @@ class FormulaPolinomicaController {
     }
 
     def delItemFormula() {
-        println "delete " + params
+//        println "delete " + params
         def itemFormulaPolinomica = ItemsFormulaPolinomica.get(params.id)
         def formula = itemFormulaPolinomica.formulaPolinomica
         formula.valor = formula.valor - itemFormulaPolinomica.valor
-        println "valor: ${formula.valor}"
+//        println "valor: ${formula.valor}"
         if (formula.save(flush: true)) {
             itemFormulaPolinomica.delete(flush: true)
             render "OK_" + formula.valor
@@ -89,14 +89,14 @@ class FormulaPolinomicaController {
                 "(select indc__id from vlin where vlinvalr > 0 and prin__id = " +
                 "(select prin.prin__id from prin, vlin where vlin.prin__id = prin.prin__id " +
                 "order by prinfcin desc limit 1)) order by tpin__id desc, indcdscr"
-        println "editarGrupo... indicaes: $sql"
+//        println "editarGrupo... indicaes: $sql"
         def indices = cn.rows(sql.toString())
         cn.close()
         return [formula: formula, total: total, indices: indices]
     }
 
     def editarSugeridos() {
-        println "editarSugeridos: $params"
+//        println "editarSugeridos: $params"
         def formula = FormulaPolinomica.get(params.id)
         def children = ItemsFormulaPolinomica.findAllByFormulaPolinomica(formula)
         def total = children.sum { it.valor }
@@ -114,20 +114,20 @@ class FormulaPolinomicaController {
                 "where itfp.fpob__id = fpob.fpob__id and obra__id = ${params.obra} and sbpr__id = 0) AND " +
                 "itemcdgo not in ('EQPO', 'REP', 'COMB', 'SLDO', '103.001.009') order by valor desc limit 1"
 
-        println "editarSugeridos... item: $sql"
+//        println "editarSugeridos... item: $sql"
         def item = cn.rows(sql.toString())[0].item__id
         sql = "select indc.indc__id, indcdscr from indc, itin " +
                 "where indc.indc__id = itin.indc__id and item__id = ${item} and indcdscr not like '%NO PRINCIPAL%' " +
                 "order by itinnmro desc"
 
-        println "editarSugeridos... indicaes: $sql"
+//        println "editarSugeridos... indicaes: $sql"
         def indices = cn.rows(sql.toString())
         cn.close()
         return [formula: formula, total: total, indices: indices]
     }
 
     def editarSugeridosCt() {
-        println "editarSugeridos: $params"
+//        println "editarSugeridos: $params"
         def formula = FormulaPolinomica.get(params.id)
         def children = ItemsFormulaPolinomica.findAllByFormulaPolinomica(formula)
         def total = children.sum { it.valor }
@@ -145,13 +145,13 @@ class FormulaPolinomicaController {
                 "where itfp.fpob__id = fpob.fpob__id and obra__id = ${params.obra} and sbpr__id = 0) AND " +
                 "itemcdgo not in ('MO') order by valor desc limit 1"
 
-        println "editarSugeridos... item: $sql"
+//        println "editarSugeridos... item: $sql"
         def item = cn.rows(sql.toString())[0]?.item__id
         sql = "select indc.indc__id, indcdscr from indc, itin " +
                 "where indc.indc__id = itin.indc__id and item__id = ${item} and indcdscr not like '%NO PRINCIPAL%' " +
                 "order by itinnmro desc"
 
-        println "editarSugeridos... indicaes: $sql"
+//        println "editarSugeridos... indicaes: $sql"
         def indices = cn.rows(sql.toString())
         cn.close()
         return [formula: formula, total: total, indices: indices]
@@ -170,7 +170,7 @@ class FormulaPolinomicaController {
     }
 
     def guardarGrupoSgrc() {
-        println "guardarGrupoSgrc $params"
+//        println "guardarGrupoSgrc $params"
         def formula = FormulaPolinomica.get(params.id)
         def cn = dbConnectionService.getConnection()
         def sql = "SELECT item.item__id, itemcdgo codigo, item.itemnmbr, valor " +
@@ -185,7 +185,7 @@ class FormulaPolinomicaController {
                 "(select item__id from itin where indc__id = ${params.indice} order by valor desc;"
         formula.indice = Indice.get(params.indice)
         formula.valor = params.valor? params.valor.toDouble() : 0
-        println "sql: $sql"
+//        println "sql: $sql"
         if (formula.save(flush: true)) {
 //            Guardar items sugeridos
             sql = "insert into itfp(fpob__id, item__id, itfpvlor) select ${params.id}, item.item__id, valor " +
@@ -198,7 +198,7 @@ class FormulaPolinomicaController {
                     "obra__id = ${params.obra} and sbpr__id = ${params.sbpr}) AND " +
                     "itemcdgo not in ('EQPO', 'REP', 'COMB', 'SLDO', '103.001.009') and item__id in " +
                     "(select item__id from itin where indc__id = ${params.indice} ) order by valor desc"
-            println "sql insert: $sql"
+//            println "sql insert: $sql"
             cn.execute(sql.toString())
             sql = "update fpob set fpobvlor = (select sum(itfpvlor) from itfp where fpob__id = ${params.id} ) " +
                     "where fpob.fpob__id = ${params.id}"
@@ -212,7 +212,7 @@ class FormulaPolinomicaController {
     }
 
     def guardarGrupoSgrcCt() {
-        println "guardarGrupoSgrcCt $params"
+//        println "guardarGrupoSgrcCt $params"
         def formula = FormulaPolinomica.get(params.id)
         def cn = dbConnectionService.getConnection()
         def sql = "SELECT item.item__id, itemcdgo codigo, item.itemnmbr, valor " +
@@ -227,7 +227,7 @@ class FormulaPolinomicaController {
                 "(select item__id from itin where indc__id = ${params.indice} order by valor desc;"
         formula.indice = Indice.get(params.indice)
         formula.valor = params.valor? params.valor.toDouble() : 0
-        println "sql: $sql"
+//        println "sql: $sql"
         if (formula.save(flush: true)) {
 //            Guardar items sugeridos
             sql = "insert into itfp(fpob__id, item__id, itfpvlor) select ${params.id}, item.item__id, valor " +
@@ -240,7 +240,7 @@ class FormulaPolinomicaController {
                     "obra__id = ${params.obra} and sbpr__id = ${params.sbpr}) AND " +
                     "itemcdgo not in ('MO') and item__id in " +
                     "(select item__id from itin where indc__id = ${params.indice} ) order by valor desc"
-            println "sql insert: $sql"
+//            println "sql insert: $sql"
             cn.execute(sql.toString())
             sql = "update fpob set fpobvlor = (select sum(itfpvlor) from itfp where fpob__id = ${params.id} ) " +
                     "where fpob.fpob__id = ${params.id}"
@@ -387,7 +387,7 @@ class FormulaPolinomicaController {
                         "order by valor desc"
             }
 
-            println "sql FP: $sql"
+//            println "sql FP: $sql"
 
             def rows = cn.rows(sql.toString())
 
@@ -402,7 +402,7 @@ class FormulaPolinomicaController {
     }
 
     def makeTreeNodeFP(params) {
-        println "makeTreeNode.. $params"
+//        println "makeTreeNode.. $params"
         def cn = dbConnectionService.getConnection()
         def id = params.id
         def tipo = ""
@@ -490,7 +490,7 @@ class FormulaPolinomicaController {
     }
 
     def insertarVolumenesItem() {
-        println "insertarVolumenesItem " + params
+//        println "insertarVolumenesItem " + params
         def obra = Obra.get(params.obra)
         def sbpr = SubPresupuesto.get(params.sbpr)
         def cn = dbConnectionService.getConnection()
@@ -515,7 +515,7 @@ class FormulaPolinomicaController {
                                 "from item where itemcdgo = 'MO') and obra__id = ${params.obra} and sbpr__id = ${sbpr.id}"
                         def columna
                         def valor = 0
-                        println "sql it 0 mfcl " + select
+//                        println "sql it 0 mfcl " + select
                         cn.eachRow(select.toString()) { r ->
                             columna = r[0]
                         }
@@ -671,13 +671,13 @@ class FormulaPolinomicaController {
     }
 
     def creaIndice() {
-        println "crear indice"
+//        println "crear indice"
         redirect(controller: "Indice", action: "form_adicional")
     }
 
     def tablaItems () {
 
-        println("params " + params)
+//        println("params " + params)
         def obra = Obra.get(params.id)
 
         def cn = dbConnectionService.getConnection()
@@ -770,7 +770,7 @@ class FormulaPolinomicaController {
 
 
     def tablaFormula_ajax(){
-        println("params " + params)
+//        println("params " + params)
 
         def obra = Obra.get(params.id)
         def tipo = params.tipo
@@ -778,7 +778,7 @@ class FormulaPolinomicaController {
 
         def fp = FormulaPolinomica.findAllByObraAndSubPresupuesto(obra, subpresupuesto, [sort: 'numero'])
 
-        println("fp " + fp)
+//        println("fp " + fp)
 
         def res = []
 
@@ -788,7 +788,7 @@ class FormulaPolinomicaController {
             }
         }
 
-        println("res " + res)
+//        println("res " + res)
 
         return [res: res, subpresupuesto: subpresupuesto, obra: obra, tipo: tipo]
     }
@@ -814,7 +814,7 @@ class FormulaPolinomicaController {
     }
 
     def tablaItemsNuevos_ajax(){
-        println("------ -- - - " + params)
+//        println("------ -- - - " + params)
 
         def formula = FormulaPolinomica.get(params.formula)
         def cn = dbConnectionService.getConnection()
@@ -836,7 +836,7 @@ class FormulaPolinomicaController {
 
     def buscarIndices_ajax(){
 
-        println("parmas " + params)
+//        println("parmas " + params)
 
         def cn = dbConnectionService.getConnection()
         def obra = Obra.get(params.obra)
@@ -1044,13 +1044,13 @@ class FormulaPolinomicaController {
 
     def coeficientesFp() {
 
-        println "coef " + params
+//        println "coef " + params
         def cn4 = dbConnectionService.getConnection()
         def obra = Obra.get(params.id)
 //        def sbpr = params.sbpr != 'null' ? SubPresupuesto.get(params.sbpr) : SubPresupuesto.get(0)
         def sbpr = SubPresupuesto.get(params.sbpr)
 
-        println("sbor " + sbpr)
+//        println("sbor " + sbpr)
 
         if (!params.tipo) {
             params.tipo = 'p'
@@ -1072,7 +1072,7 @@ class FormulaPolinomicaController {
             def persona = Persona.get(session.usuario.id)
             def sqlFP = "update fpob set fpobvlor = 0 where fpobvlor is null"
             cn.execute(sqlFP.toString())
-            println "arregla valores FP: $sqlFP"
+//            println "arregla valores FP: $sqlFP"
 
             def sqlValidacion = "select count(*) cuantos from vlobitem where obra__id = ${obra?.id} and voitcoef is not null"
             def validacion = cn.rows(sqlValidacion.toString())[0].cuantos
@@ -1086,8 +1086,8 @@ class FormulaPolinomicaController {
 
             def data = []
 
-            println("obra " + obra?.id)
-            println("sub " + sbpr?.id)
+//            println("obra " + obra?.id)
+//            println("sub " + sbpr?.id)
             def fp = FormulaPolinomica.findAllByObraAndSubPresupuesto(obra, sbpr, [sort: "numero"])
 
             def total = 0
@@ -1175,7 +1175,7 @@ class FormulaPolinomicaController {
                         "order by valor desc"
             }
 
-            println "sql FP: $sql"
+//            println "sql FP: $sql"
 
             def rows = cn.rows(sql.toString())
             def duenoObra = esDuenoObra(obra) ? 1 : 0
@@ -1195,7 +1195,7 @@ class FormulaPolinomicaController {
                 def persona = Persona.get(session.usuario.id)
                 def sqlFP = "update fpob set fpobvlor = 0 where fpobvlor is null"
                 cn.execute(sqlFP.toString())
-                println "arregla valores FP: $sqlFP"
+//                println "arregla valores FP: $sqlFP"
 
 
                 def sqlValidacion = "select count(*) cuantos from vlobitem where obra__id = ${obra?.id} and voitcoef is not null"
@@ -1210,8 +1210,8 @@ class FormulaPolinomicaController {
 
                 def data = []
 
-                println("obra " + obra?.id)
-                println("sub " + sbpr?.id)
+//                println("obra " + obra?.id)
+//                println("sub " + sbpr?.id)
                 def fp = FormulaPolinomica.findAllByObraAndSubPresupuesto(obra, sbpr, [sort: "numero"])
 
                 def total = 0
@@ -1299,7 +1299,7 @@ class FormulaPolinomicaController {
                             "order by valor desc"
                 }
 
-                println "sql FP: $sql"
+//                println "sql FP: $sql"
 
                 def rows = cn.rows(sql.toString())
                 def duenoObra = esDuenoObra(obra) ? 1 : 0
@@ -1317,7 +1317,7 @@ class FormulaPolinomicaController {
         def persona = Persona.get(session.usuario.id)
         def sqlFP = "update fpob set fpobvlor = 0 where fpobvlor is null"
         cn.execute(sqlFP.toString())
-        println "arregla valores FP: $sqlFP"
+//        println "arregla valores FP: $sqlFP"
 
 
         def sqlValidacion = "select count(*) cuantos from vlobitem where obra__id = ${obra?.id} and voitcoef is not null"
@@ -1332,8 +1332,8 @@ class FormulaPolinomicaController {
 
         def data = []
 
-        println("obra " + obra?.id)
-        println("sub " + sbpr?.id)
+//        println("obra " + obra?.id)
+//        println("sub " + sbpr?.id)
         def fp = FormulaPolinomica.findAllByObraAndSubPresupuesto(obra, sbpr, [sort: "numero"])
 
         def total = 0
@@ -1421,7 +1421,7 @@ class FormulaPolinomicaController {
                     "order by valor desc"
         }
 
-        println "sql FP: $sql"
+//        println "sql FP: $sql"
 
         def rows = cn.rows(sql.toString())
         def duenoObra = esDuenoObra(obra) ? 1 : 0
@@ -1523,7 +1523,7 @@ class FormulaPolinomicaController {
         def cn = dbConnectionService.getConnection()
         def sql = "delete from itin"
         def resl = cn.execute(sql.toString())
-        println " borrado itin $resl"
+//        println " borrado itin $resl"
         sql = "insert into itin(indc__id, item__id, itinnmro) " +
                 "select indc__id, item__id, count(*) " +
                 "from itfp, fpob " +

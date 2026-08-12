@@ -140,7 +140,7 @@ class IndiceController {
                                                     codigo: codigo
                                             ])
                                             if (!indice.save(flush: true)) {
-                                                println "indice controller l 139: "+"ERROR al guardar el indice: " + indice.errors
+//                                                println "indice controller l 139: "+"ERROR al guardar el indice: " + indice.errors
                                                 html += 'fila ' + (j + 1) + ' ERROR Indice no creado' + renderErrors(bean: indice)
                                             } else {
                                                 html += 'fila ' + (j + 1) + ' Indice creado:' + indice.id + "<br/>"
@@ -158,7 +158,7 @@ class IndiceController {
                                             valor = valor? valor.toString().replaceAll(',', '.') : ''
                                             try {
                                                 valor = valor.toDouble()
-                                                println(valor)
+//                                                println(valor)
                                             }
                                             catch (e) {
                                                 println(e)
@@ -210,7 +210,7 @@ class IndiceController {
 
 
     def grabar() {
-        println params
+//        println params
         guardar()
         render "ok"
     }
@@ -440,7 +440,7 @@ class IndiceController {
     }
 
     def actualizaVlin() {
-        println "actualizaVlin: " + params
+//        println "actualizaVlin: " + params
 
         if(params?.item?.class == java.lang.String) {
             params?.item = [params?.item]
@@ -452,7 +452,7 @@ class IndiceController {
             def vlor = it.split("_")
             def nuevo = new ValorIndice()
             def existe = ValorIndice.findByPeriodoAndIndice(PeriodosInec.get(vlor[1].toInteger()), Indice.get(vlor[2].toInteger()))
-            println "inidice: ${existe?.indice}"
+//            println "inidice: ${existe?.indice}"
 
             if(existe){
                 nuevo = ValorIndice.get(existe.id)
@@ -482,7 +482,7 @@ class IndiceController {
     }
 
     def repetidos() {
-        println "repetidos: $params"
+//        println "repetidos: $params"
         def cn = dbConnectionService.getConnection()
         def cn1 = dbConnectionService.getConnection()
         //println params
@@ -569,7 +569,7 @@ class IndiceController {
     }
 
     def borrarVlin() {
-        println "borrarVlin: $params"
+//        println "borrarVlin: $params"
         ValorIndice.get(params.vlin_id)?.delete()
         render "ok"
     }

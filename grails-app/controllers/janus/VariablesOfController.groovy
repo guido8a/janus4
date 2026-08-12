@@ -5,7 +5,7 @@ class VariablesOfController {
     def dbConnectionService
 
     def variables_ajax() {
-        println params
+//        println params
 
         def obra = Obra.get(params.obra)
         def par = Parametros.list()
@@ -19,7 +19,7 @@ class VariablesOfController {
     }
 
     def saveVar_ajax() {
-        println "save vars aqui " + params
+//        println "save vars aqui " + params
 
         if(!params.mecanico){
             render "no_No se pudo actualizar las variables, debe ingresar una cantidad válida en mecánico"
@@ -32,7 +32,7 @@ class VariablesOfController {
 
         if (precioMecanico) {
             precioMecanico.precio = params.mecanico.toDouble()
-            println "precio double "+precioMecanico.precio
+//            println "precio double "+precioMecanico.precio
             precioMecanico.save(flush: true)
         } else {
 
@@ -45,7 +45,7 @@ class VariablesOfController {
             if (precioMecanico.save(flush: true)) {
 
             } else {
-                println(precioMecanico.errors)
+//                println(precioMecanico.errors)
             }
         }
 
@@ -55,7 +55,7 @@ class VariablesOfController {
         if (obra.save(flush: true)) {
             render "ok_Variables guardadas correctamente"
         } else {
-            println obra.errors
+//            println obra.errors
             render "no_Error al guardar las variables"
         }
     }

@@ -19,7 +19,7 @@ class ReportesInventarioController {
     }
 
     def listaConsumo() {
-        println "listaConsumo" + params
+//        println "listaConsumo" + params
         def datos;
         def listaConsumo = ['obranmbr', 'bdga.bdganmbr', 'prsnapll', 'cnsmfcha::text']
 
@@ -34,7 +34,7 @@ class ReportesInventarioController {
 
         txwh += " and $bsca ilike '%${params.criterio}%'"
         sqlTx = "${select} ${txwh} order by ${ordn} limit 100 ".toString()
-        println "sql: $sqlTx"
+//        println "sql: $sqlTx"
 
         def cn = dbConnectionService.getConnection()
         datos = cn.rows(sqlTx)
@@ -106,7 +106,7 @@ class ReportesInventarioController {
     }
 
     def listaDevoluciones() {
-        println "listaDev" + params
+//        println "listaDev" + params
         def datos;
         def listaConsumo = ['obranmbr', 'bdga.bdganmbr', 'prsnapll', 'cnsmfcha::text']
 
@@ -121,7 +121,7 @@ class ReportesInventarioController {
 
         txwh += " and $bsca ilike '%${params.criterio}%'"
         sqlTx = "${select} ${txwh} order by ${ordn} limit 100 ".toString()
-        println "sql: $sqlTx"
+//        println "sql: $sqlTx"
 
         def cn = dbConnectionService.getConnection()
         datos = cn.rows(sqlTx)

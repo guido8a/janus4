@@ -74,7 +74,7 @@ class Reportes4Controller {
                 "from obra, dpto, dire " +
                 "where dpto.dpto__id = obra.dpto__id and dire.dire__id = dpto.dire__id " +
                 "order by 2"
-        println "sqlReg: $sql"
+//        println "sqlReg: $sql"
         cn.eachRow(sql.toString()) { r ->
             departamento[r.id] = r.nombre
         }
@@ -89,7 +89,7 @@ class Reportes4Controller {
                 "where dpto.dpto__id = obra.dpto__id and dire.dire__id = dpto.dire__id and " +
                 "obracdgo ilike 'CO%' and obraetdo = 'N' " +
                 "order by 2"
-        println "sql+: $sql"
+//        println "sql+: $sql"
         cn.eachRow(sql.toString()) { r ->
             departamento[r.id] = r.nombre
         }
@@ -421,7 +421,7 @@ class Reportes4Controller {
     }
 
     def tablaRegistradas_old() {
-        println("paramsReg" + params)
+//        println("paramsReg" + params)
         def obras
         def sql
         def cn
@@ -524,7 +524,7 @@ class Reportes4Controller {
 
         cn = dbConnectionService.getConnection()
 
-        println(sql)
+//        println(sql)
         res = cn.rows(sql.toString())
 //        println(res)
 
@@ -580,7 +580,7 @@ class Reportes4Controller {
     }
 
     def tablaRegistradas() {
-        println "tablaRegistradas: $params"
+//        println "tablaRegistradas: $params"
         def cn = dbConnectionService.getConnection()
         def campos = reportesService.obrasPresupuestadas()
 
@@ -598,7 +598,7 @@ class Reportes4Controller {
     def armaSqlRegistradas(params) {
         def campos = reportesService.obrasPresupuestadas()
         def operador = reportesService.operadores()
-        println "armaSqlRegistradas $params"
+//        println "armaSqlRegistradas $params"
         def fcin = params.fechaInicio ? new Date().parse("dd-MM-yyyy", params.fechaInicio).format('yyyy-MM-dd') : ''
         def fcfn = params.fechaFin ? new Date().parse("dd-MM-yyyy", params.fechaFin).format('yyyy-MM-dd') : ''
 
@@ -621,7 +621,7 @@ class Reportes4Controller {
         if(params.departamento) sqlWhere += " and obra.dpto__id = ${params.departamento} "
         if(params.fechaInicio) sqlWhere += " and obrafcha >= '${fcin}' "
         if(params.fechaFIn) sqlWhere += " and obrafcha <= '${fcfn}' "
-        println "sql: ${sqlSelect} ${sqlWhere} ${sqlOrder}"
+//        println "sql: ${sqlSelect} ${sqlWhere} ${sqlOrder}"
         //retorna sql armado:
         "$sqlSelect $sqlWhere $sqlOrder".toString()
     }
@@ -787,7 +787,7 @@ class Reportes4Controller {
         if(params.departamento) sqlWhere += " and obra.dpto__id = ${params.departamento} "
         if(params.fechaInicio) sqlWhere += " and obrafcha >= '${fcin}' "
         if(params.fechaFIn) sqlWhere += " and obrafcha <= '${fcfn}' "
-        println "sql: ${sqlSelect} ${sqlWhere} ${sqlOrder}"
+//        println "sql: ${sqlSelect} ${sqlWhere} ${sqlOrder}"
         "$sqlSelect $sqlWhere $sqlOrder".toString()
     }
 
@@ -1131,7 +1131,7 @@ class Reportes4Controller {
                 "where dpto.dpto__id = obra.dpto__id and dire.dire__id = dpto.dire__id and " +
                 "obra.obra__id in (select obra__id from cntr) " +
                 "order by 2"
-        println "sqlReg: $sql"
+//        println "sqlReg: $sql"
         cn.eachRow(sql.toString()) { r ->
             departamento[r.id] = r.nombre
         }
@@ -1213,13 +1213,13 @@ class Reportes4Controller {
         if(params.departamento) sqlWhere += " and obra.dpto__id = ${params.departamento} "
         if(params.fechaInicio) sqlWhere += " and obrafcha >= '${fcin}' "
         if(params.fechaFIn) sqlWhere += " and obrafcha <= '${fcfn}' "
-        println "sql: ${sqlSelect} ${sqlWhere} ${sqlOrder}"
+//        println "sql: ${sqlSelect} ${sqlWhere} ${sqlOrder}"
 
         "$sqlSelect $sqlWhere $sqlOrder".toString()
     }
 
     def armaSqlSuspendidas(params) {
-        println "armaSqlSuspendidas $params"
+//        println "armaSqlSuspendidas $params"
         def campos = reportesService.obrasAvance()
         def operador = reportesService.operadores()
         def fcin = params.fi ? new Date().parse("dd-MM-yyyy", params.fi).format('yyyy-MM-dd') : ''
@@ -1248,7 +1248,7 @@ class Reportes4Controller {
         params.nombre = "Código"
         if (campos.find { it.campo == params.buscador }?.size() > 0) {
             def op = operador.find { it.valor == params.operador }
-            println "op: $op"
+//            println "op: $op"
             sqlWhere += " and ${params.buscador} ${op.operador} ${op.strInicio}${params.criterio}${op.strFin}";
         }
 //        println "++sql: $sqlSelect $sqlWhere $sqlOrder".toString()
@@ -1269,7 +1269,7 @@ class Reportes4Controller {
 
         def sqlOrder = "order by obracdgo"
 
-        println "llega params: $params"
+//        println "llega params: $params"
         params.nombre = "Código"
         if (campos.find { it.campo == params.buscador }?.size() > 0) {
             def op = operador.find { it.valor == params.operador }
@@ -1906,7 +1906,7 @@ class Reportes4Controller {
 
     def reporteContratos() {
 
-        println("params r " + params)
+//        println("params r " + params)
 
         def sql
         def cn
@@ -2106,7 +2106,7 @@ class Reportes4Controller {
     }
 
     def tablaGarantias() {
-        println(params)
+//        println(params)
         def sql
         def res
         def cn
@@ -2177,8 +2177,8 @@ class Reportes4Controller {
                 try {
                     filtroBuscador = " where g.grntmnto=${params.criterio.trim().toDouble()} "
                 } catch (e) {
-                    println "error: " + params.criterio
-                    println e
+//                    println "error: " + params.criterio
+//                    println e
                     params.criterio = -5
                     filtroBuscador = " where g.grntmnto=-5"
                 }
@@ -2418,7 +2418,7 @@ class Reportes4Controller {
     }
 
     def buscarObraPre() {
-        println "buscar obra pre"
+//        println "buscar obra pre"
         def extraParr = ""
         def extraCom = ""
         def extraDep = ""
@@ -2573,7 +2573,7 @@ class Reportes4Controller {
 
         sql = "select * from items_ver_vae( cast( '${fecha}' as date))"
 
-        println("vae " + sql)
+//        println("vae " + sql)
 
         cn = dbConnectionService.getConnection()
         res = cn.rows(sql.toString())
@@ -2931,7 +2931,7 @@ class Reportes4Controller {
                 "where dpto.dpto__id = obra.dpto__id and dire.dire__id = dpto.dire__id and " +
                 "obraetdo = 'R' " +
                 "order by 2"
-        println "sqlReg: $sql"
+//        println "sqlReg: $sql"
         cn.eachRow(sql.toString()) { r ->
             departamento[r.id] = r.nombre
         }
@@ -2946,7 +2946,7 @@ class Reportes4Controller {
         params.criterio = reportesService.limpiaCriterio(params.criterio)
 
         def sql = armaSqlPresupuesto(params)
-        println "sql presupuestadas: $sql"
+//        println "sql presupuestadas: $sql"
         def obras = cn.rows(sql)
 
         params.criterio = params.old
@@ -2957,7 +2957,7 @@ class Reportes4Controller {
     def armaSqlPresupuesto(params) {
         def campos = reportesService.obrasPresupuestadas()
         def operador = reportesService.operadores()
-        println "armaSqlPresupuesto: $params"
+//        println "armaSqlPresupuesto: $params"
         def fcin = params.fechaInicio ? new Date().parse("dd-MM-yyyy", params.fechaInicio).format('yyyy-MM-dd') : ''
         def fcfn = params.fechaFin ? new Date().parse("dd-MM-yyyy", params.fechaFin).format('yyyy-MM-dd') : ''
 
@@ -2979,7 +2979,7 @@ class Reportes4Controller {
         if(params.departamento) sqlWhere += " and obra.dpto__id = ${params.departamento} "
         if(params.fechaInicio) sqlWhere += " and obrafcha >= '${fcin}' "
         if(params.fechaFIn) sqlWhere += " and obrafcha <= '${fcfn}' "
-        println "sql: ${sqlSelect} ${sqlWhere} ${sqlOrder}"
+//        println "sql: ${sqlSelect} ${sqlWhere} ${sqlOrder}"
 
         "$sqlSelect $sqlWhere $sqlOrder".toString()
     }
@@ -3083,7 +3083,7 @@ class Reportes4Controller {
 
 
     def tablaComparadas() {
-        println "tablaComparadas: $params"
+//        println "tablaComparadas: $params"
         def cn = dbConnectionService.getConnection()
         def campos = reportesService.obrasContratadas()
 
@@ -3098,7 +3098,7 @@ class Reportes4Controller {
     }
 
     def preciosComp() {
-        println "tablaComparadas: $params"
+//        println "tablaComparadas: $params"
         def cn = dbConnectionService.getConnection()
         def campos = reportesService.obrasContratadas()
 
@@ -3113,7 +3113,7 @@ class Reportes4Controller {
     }
 
     def armaSqlComparadas(params) {
-        println "armaSqlComparadas $params"
+//        println "armaSqlComparadas $params"
         def campos = reportesService.obrasAvance()
         def operador = reportesService.operadores()
 
@@ -3130,10 +3130,10 @@ class Reportes4Controller {
         params.nombre = "Código"
         if (campos.find { it.campo == params.buscador }?.size() > 0) {
             def op = operador.find { it.valor == params.operador }
-            println "op: $op"
+//            println "op: $op"
             sqlWhere += " and ${params.buscador} ${op.operador} ${op.strInicio}${params.criterio}${op.strFin}";
         }
-        println "sql: $sqlSelect $sqlWhere $sqlOrder"
+//        println "sql: $sqlSelect $sqlWhere $sqlOrder"
         "$sqlSelect $sqlWhere $sqlOrder".toString()
     }
 
@@ -3145,17 +3145,17 @@ class Reportes4Controller {
 
     def tablaComparacion_ajax(){
         def obraOf = Obra.get(params.id)
-        println "tablaComparacion_ajax: $params"
+//        println "tablaComparacion_ajax: $params"
         def cn = dbConnectionService.getConnection()
         def sql = "select obra__id from obra where obracdgo = '${obraOf.codigo[0..-4]}'"
-        println "sql: $sql"
+//        println "sql: $sql"
         def obraPr = cn.rows(sql.toString())[0].obra__id
         sql = "select itemcdgo, itemnmbr, unddcdgo, vo.vlobcntd, vo.vlobpcun pcun, vf.vlobpcun pcof, " +
                 "vo.vlobpcun - vf.vlobpcun diffpcun, vo.vlobsbtt, vf.vlobsbtt, vo.vlobsbtt - vf.vlobsbtt diffsbtt " +
                 "from item, vlob vo, vlob vf, undd where vf.obra__id = ${params.id} and " +
                 "vo.obra__id = ${obraPr} and item.item__id = vo.item__id and " +
                 "undd.undd__id = item.undd__id and vo.item__id = vf.item__id order by vo.vlobordn"
-        println "sql2: $sql"
+//        println "sql2: $sql"
         def data = cn.rows(sql.toString())
 
         [data: data]

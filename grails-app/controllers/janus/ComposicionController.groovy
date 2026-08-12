@@ -43,15 +43,15 @@ class ComposicionController {
     }
 
     def cargarDatos() {
-        println "cargarDatos $params"
+//        println "cargarDatos $params"
         def sql = "select item__id,voitpcun,voitcntd, voitcoef, voittrnp from vlobitem where obra__id=${params.id} and voitpcun is not null and voitcntd is not null order by 1"
         def obra = Obra.get(params.id)
         def cn = dbConnectionService.getConnection()
         cn.eachRow(sql.toString()) { r ->
-            println "r " +r
+//            println "r " +r
 //            def comp = Composicion.findAll("from Composicion  where obra=${params.id} and item=${r[0]}")
             def comp = Composicion.findAllByObraAndItem(obra, Item.get(r.item__id))
-            println "comp "+comp
+//            println "comp "+comp
             if (comp.size() == 0) {
                 def item = Item.get(r[0])
                 comp = new Composicion([obra: obra, item: item, grupo: item.departamento.subgrupo.grupo, cantidad: r[2], precio: r[1], transporte: r[4]])
@@ -235,7 +235,7 @@ class ComposicionController {
 
 
     def tabla() {
-        println "tabla: $params"
+//        println "tabla: $params"
         def persona = Persona.get(session.usuario.id)
         def duenoObra = 0
         def cn = dbConnectionService.getConnection()
@@ -267,7 +267,7 @@ class ComposicionController {
             tieneMatriz = d.cuenta > 0
         }
 
-        println "--> ${obra.id}"
+//        println "--> ${obra.id}"
         return [res: res, obra: obra, tipo: params.tipo, rend: params.rend, campos: campos, duenoObra: duenoObra,
                 persona: persona, tieneMatriz: tieneMatriz]
     }
@@ -428,7 +428,7 @@ class ComposicionController {
 //    }
 
     def uploadFile() {
-        println "uploadFile: $params"
+//        println "uploadFile: $params"
         def filasNO = [0,1,2,3,4,5,6,7,8,9]
         def obra = Obra.get(params.id)
         def path = "/var/janus/" + "xlsComposicion/"   //web-app/archivos
@@ -486,7 +486,7 @@ class ComposicionController {
                     row = (XSSFRow) rows.next()
 
                     if(row.rowNum in filasNO){
-                        println("rows NO " + row.rowNum)
+//                        println("rows NO " + row.rowNum)
                     }else{
                         def ok = true
 
@@ -518,10 +518,10 @@ class ComposicionController {
                                 item = item[0]
                             } else if (item.size() == 0) {
                                 errores += "<li>No se encontró item con código ${cod} (l. ${row.rowNum + 1})</li>"
-                                println "No se encontró item con código ${cod}"
+//                                println "No se encontró item con código ${cod}"
                                 ok = false
                             } else {
-                                println "Se encontraron ${item.size()} items con código ${cod}!! ${item.id}"
+//                                println "Se encontraron ${item.size()} items con código ${cod}!! ${item.id}"
                                 errores += "<li>Se encontraron ${item.size()} items con código ${cod}!! (l. ${row.rowNum + 1})</li>"
                                 ok = false
                             }
@@ -576,12 +576,12 @@ class ComposicionController {
     }
 
     def mensajeUpload() {
-        println "mensajeUpload: $params"
+//        println "mensajeUpload: $params"
         return [obra: params.id]
     }
 
     def save() {
-        println "save comp " + params
+//        println "save comp " + params
 
         def parts = params.data.split("X")
         parts.each { p ->
@@ -654,7 +654,7 @@ class ComposicionController {
 
 //        sqlTx = "${select} ${txwh} order by ${ordn} limit 100 ".toString()
         sqlTx = "${select} ${txwh} order by itemnmbr limit 150 ".toString()
-        println "sql: $sqlTx"
+//        println "sql: $sqlTx"
 
         def cn = dbConnectionService.getConnection()
         datos = cn.rows(sqlTx)
@@ -704,7 +704,7 @@ class ComposicionController {
                 render "ok"
             }
         }else{
-            println("error ya existe este item en la composicion")
+//            println("error ya existe este item en la composicion")
             render "er"
             return
         }

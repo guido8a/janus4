@@ -32,7 +32,7 @@ class AsignacionController {
     } //form_ajax
 
     def tabla(){
-        println("tabla ba " + params)
+//        println("tabla ba " + params)
 
         def anio = Anio.get(params.anio)
         def asignaciones
@@ -46,7 +46,7 @@ class AsignacionController {
         def txwh = " where asgn.prsp__id = prsp.prsp__id and $bsca ilike '%${params.criterio}%' and asgn.anio__id = ${anio?.id}"
         sqlTx = "${select} ${txwh} order by prsp.prspproy limit 30 ".toString()
 
-        println "sql: $sqlTx"
+//        println "sql: $sqlTx"
 
         def cn = dbConnectionService.getConnection()
         datos = cn.rows(sqlTx)
@@ -56,7 +56,7 @@ class AsignacionController {
 
     def buscaPrsp(){
 //        println("entro prsp!")
-        println("params" + params)
+//        println("params" + params)
         def listaTitulos = ["Código", "Descripción","Fuente","programa","Subprograma","Proyecto"]
         def listaCampos = ["numero", "descripcion","fuente","programa","subPrograma","proyecto"]
         def funciones = [null, null]
@@ -101,7 +101,7 @@ class AsignacionController {
             }else{
                 /* Dominio, nombre del dominio , excluyente o incluyente ,params tal cual llegan de la interfaz del buscador, ignore case */
                 def lista = buscadorService.buscar(janus.Presupuesto, "Presupuesto", "excluyente", params, true, extras)
-                println "lista: $lista"
+//                println "lista: $lista"
                 lista.pop()
 /*
                 render(view: '../tablaBuscador', model: [listaTitulos: listaTitulos, listaCampos: listaCampos,
@@ -199,7 +199,7 @@ class AsignacionController {
     }
 
     def tablaPresupuesto_ajax(){
-        println("tabla pre " + params)
+//        println("tabla pre " + params)
 
         def anio = Anio.get(params.anio)
         def datos;
@@ -210,7 +210,7 @@ class AsignacionController {
         def select = "select * from prsp"
         def txwh = " where $bsca ilike '%${params.criterio}%' and anio__id = ${anio?.id}"
         sqlTx = "${select} ${txwh} order by prspdscr limit 30 ".toString()
-        println "sql: $sqlTx"
+//        println "sql: $sqlTx"
 
         def cn = dbConnectionService.getConnection()
         datos = cn.rows(sqlTx)
@@ -328,7 +328,7 @@ class AsignacionController {
         def txwh = " where asgn.prsp__id = prsp.prsp__id and $bsca ilike '%${params.criterio}%' and asgn.anio__id = ${anio?.id}"
         sqlTx = "${select} ${txwh} order by prsp.prspproy limit 30 ".toString()
 
-        println "sql: $sqlTx"
+//        println "sql: $sqlTx"
 
         def cn = dbConnectionService.getConnection()
         datos = cn.rows(sqlTx)

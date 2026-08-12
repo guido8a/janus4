@@ -190,7 +190,7 @@ class PrflController {
     * **/
 
     def grabar = {
-        println "grabar: $params"
+//        println "grabar: $params"
         def ids = params.ids
         def modulo = params.menu
         def prfl = params.prfl
@@ -208,15 +208,15 @@ class PrflController {
                 "prms.accn__id not in (select accn__id " +
                 "from accn where mdlo__id = " + modulo + " and  " +
                 "accn__id in (${ids})) and prfl__id = ${prfl} and tpac__id = ${tpac}"
-        println "a borrar: $tx"
+//        println "a borrar: $tx"
         cn.eachRow(tx.toString()) { d ->
             try {
                 def prms = Prms.get(d.prms__id)
-                println "borrando ${prms.id}"
+//                println "borrando ${prms.id}"
                 prms.delete(flush: true)
             }
             catch (Exception ex) {
-                println "borrar permiso: " + ex.getMessage()
+//                println "borrar permiso: " + ex.getMessage()
             }
         }
         // se debe barrer tosos los menús señalados y si está chequeado añadir a prms.
@@ -226,7 +226,7 @@ class PrflController {
                 "from accn where mdlo__id = " + modulo + " and accn__id in (${ids})) and prfl__id = ${prfl} and " +
                 "tpac__id = ${tpac}"
         exst = []
-        println "a añadir: $tx"
+//        println "a añadir: $tx"
         cn.eachRow(tx) { d ->
             exst.add(d.accn__id)
         }
@@ -238,12 +238,12 @@ class PrflController {
         }
         (actl - exst).each {
             tx1 = "insert into prms(prfl__id, accn__id) values (${prfl.toInteger()}, ${it})"
-            println "añadiendo: $tx1"
+//            println "añadiendo: $tx1"
             try {
                 cn.execute(tx1)
             }
             catch (Exception ex) {
-                println "grabar: " + ex.getMessage()
+//                println "grabar: " + ex.getMessage()
             }
         }
         cn.close()
@@ -274,7 +274,7 @@ class PrflController {
                 "prpf.perm__id not in (select perm__id " +
                 "from perm where perm__id in (${ids})) and prfl__id = ${prfl}"
         cn.eachRow(tx) { d ->
-            println "borra: $d.perm__id"
+//            println "borra: $d.perm__id"
             cn1.execute("delete from prpf where prpf__id = ${d.prpf__id}")  /* añade permisos nuevos */
         }
 
@@ -298,10 +298,10 @@ class PrflController {
             tx1 = "insert into prpf(prfl__id, perm__id) values (${prfl.toInteger()}, ${it.toInteger()})"
             try {
                 cn.execute(tx1)
-                println "insertando.... ${tx1}"
+//                println "insertando.... ${tx1}"
             }
             catch (Exception ex) {
-                println ex.getMessage()
+//                println ex.getMessage()
             }
         }
 
@@ -323,7 +323,7 @@ class PrflController {
                 cn1.execute(tx2.toString())  /* añade permisos nuevos */
             }
             catch (Exception ex) {
-                println ex.getMessage()
+//                println ex.getMessage()
                 error += ex.getMessage()
             }
         }

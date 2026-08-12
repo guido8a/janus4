@@ -18,7 +18,7 @@ class CostoController {
      * Acción que muestra las partidas presupuestarias en forma de árbol
      */
     def arbol() {
-        println "arbol: $params"
+//        println "arbol: $params"
         return [arbol: makeTree()]
     }
 
@@ -26,7 +26,7 @@ class CostoController {
      * Acción llamada con ajax que permite realizar búsquedas en el árbol
      */
     def arbolSearch_ajax() {
-        println "arbolSearch_ajax: $params"
+//        println "arbolSearch_ajax: $params"
         def search = params.str.trim()
         if (search != "") {
             def c = Costo.createCriteria()
@@ -36,12 +36,12 @@ class CostoController {
                     ilike("descripcion", "%" + search + "%")
                 }
             }
-            println find
+//            println find
             def costos = []
             find.each { pres ->
                 if (pres && !costos.contains(pres.descripcion)) {
                     def pr = pres
-                    println "pr: ${pr.descripcion}"
+//                    println "pr: ${pr.descripcion}"
 //                    while (pr) {
                         if (pr.descripcion && !costos.contains(pr.descripcion)) {
                             costos.add(pr)
@@ -71,7 +71,7 @@ class CostoController {
      * Función que genera el árbol de partidas presupuestarias
      */
     def makeTree() {
-        println "makeTree: $params"
+//        println "makeTree: $params"
         def lista = Costo.findAllByNivel(1, [sort: "numero"]).id//Costo.list(sort: "codigo")
         def res = ""
         res += "<ul>"
@@ -89,7 +89,7 @@ class CostoController {
      * Función que genera las hojas del árbol de un padre específico
      */
     def imprimeHijos(padre) {
-        println "imprimeHijos: $padre"
+//        println "imprimeHijos: $padre"
         def band = true
         def t = ""
         def txt = ""
@@ -267,7 +267,7 @@ class CostoController {
      * @render ERROR*[mensaje] cuando no se pudo grabar correctamente, SUCCESS*[mensaje] cuando se grabó correctamente
      */
     def save_ajax() {
-        println "save_ajax: $params"
+//        println "save_ajax: $params"
         def costoInstance = new Costo()
         if (params.id) {
             costoInstance = Costo.get(params.id)
@@ -292,7 +292,7 @@ class CostoController {
      * @render ERROR*[mensaje] cuando no se pudo eliminar correctamente, SUCCESS*[mensaje] cuando se eliminó correctamente
      */
     def delete_ajax() {
-        println "delete_ajax, $params"
+//        println "delete_ajax, $params"
         def error = ""
         if (params.id) {
             def costo = Costo.get(params.id)
@@ -323,7 +323,7 @@ class CostoController {
     } //delete para eliminar via ajax
 
     def precio_ajax() {
-        println "precio_ajax: $params"
+//        println "precio_ajax: $params"
 //        def costoInstance = new Costo()
 //        if (params.id) {
 //            costoInstance = Costo.get(params.padre)
@@ -365,7 +365,7 @@ class CostoController {
     } //form para cargar con ajax en un dialog
 
     def savePrecio_ajax() {
-        println "savePrecio_ajax: $params"
+//        println "savePrecio_ajax: $params"
 
         def costo = Costo.get(params.costo)
         def precioCosto
@@ -417,14 +417,14 @@ class CostoController {
         def txto = "<table class='table table-bordered table-striped table-condensed table-hover'><tbody><tr>"
         def sql = "select p.prcsfcha, p.prcspcun, p.prcspcnt from prcs p where p.prcsfcha = (select max(prcsfcha) from prcs " +
                 "where prcs.csto__id = p.csto__id) and p.csto__id = ${params.id}"
-        println "sql: $sql"
+//        println "sql: $sql"
         def data = []
         cn.eachRow(sql.toString()) { d ->
             txto += "<td width='140px'>${d.prcsfcha}</td><td width='100px'>${d.prcspcun}</td>" +
                     "<td width='100px'>${d.prcspcnt?:'-'} %</td>"
         }
         txto += "</tr></tbody></table>"
-        println "txto: $txto"
+//        println "txto: $txto"
         render txto
     }
 

@@ -20,7 +20,7 @@ class PersonaController {
     } //index
 
     def getLista(params, all) {
-        println "getLista: " + params
+//        println "getLista: " + params
         params.offset = params.offset ?: 0
         if (params.search) {
             def tx = params.search.toList()
@@ -126,7 +126,7 @@ class PersonaController {
                 try {
                     f.transferTo(new File(pathFile)) // guarda el archivo subido al nuevo path
                 } catch (e) {
-                    println "????????\n" + e + "\n???????????"
+//                    println "????????\n" + e + "\n???????????"
                 }
                 /* RESIZE */
                 def img = ImageIO.read(new File(pathFile))
@@ -310,7 +310,7 @@ class PersonaController {
 
         personasFiltradas.remove(usuario)
 
-        println("usuario " + usuario?.id)
+//        println("usuario " + usuario?.id)
 
         return [usuario: usuario, params: params, personas: personasFiltradas]
     }
@@ -363,7 +363,7 @@ class PersonaController {
     }
 
     def validar_aut_previa_ajax() {
-        println "validar_aut_previa_ajax $params"
+//        println "validar_aut_previa_ajax $params"
         params.input1 = params.input1.trim()
         def obj = Persona.get(params.id)
         if (obj.autorizacion == params.input1.encodeAsMD5()) {
@@ -403,7 +403,7 @@ class PersonaController {
 
 
     def savePass_ajax() {
-        println "savePass_ajax  $params"
+//        println "savePass_ajax  $params"
         def persona = Persona.get(params.id)
 //        params.input2 = params.input2.trim()
 
@@ -504,7 +504,7 @@ class PersonaController {
     }
 
     def saveAccesos_ajax() {
-        println "asig acc " + params
+//        println "asig acc " + params
         params.asignadoPor = session.usuario
         def accs = new Accs(params)
         if (!accs.save(flush: true)) {
@@ -559,7 +559,7 @@ class PersonaController {
                         }
                     }
                 } else {
-                    println "wtf no hay perfil " + params
+//                    println "wtf no hay perfil " + params
                 }
             } else {
                 def usu = accs.usuario
@@ -569,7 +569,7 @@ class PersonaController {
                 if (accs.accsFechaInicial <= new Date()) {
 
                     session.flag = 2
-                    println "session.flag " + session.flag
+//                    println "session.flag " + session.flag
                     render "OK_Restricción agregada_logout"
                 } else {
                     render "OK_Restricción agregada"
@@ -583,7 +583,7 @@ class PersonaController {
     }
 
     def terminarAcceso_ajax() {
-        println "terminarAcceso_ajax: $params"
+//        println "terminarAcceso_ajax: $params"
         def accs = Accs.get(params.id)
         def now = new Date()
         if (accs.accsFechaFinal <= now) {
@@ -603,11 +603,11 @@ class PersonaController {
                 }
                 if (usu) {
                     def sesn = Sesn.findAllByUsuarioAndFechaInicio(usu, accs.accsFechaInicial)
-                    println "session " + sesn
+//                    println "session " + sesn
                     if (sesn.size() > 0) {
                         sesn.each {
                             it.fechaFin = now
-                            println "$it"
+//                            println "$it"
                             it.save(flush: true)
                         }
 
@@ -664,7 +664,7 @@ class PersonaController {
      * @return
      */
     def savePerfiles_ajax() {
-        println "save perfiles: " + params
+//        println "save perfiles: " + params
         def usu = Persona.get(params.id)
         def now = new Date()
 //        def perfilesUsu = Sesn.findAllByUsuario(usu).perfil.id*.toString()
@@ -677,7 +677,7 @@ class PersonaController {
             params.perfil = [params.perfil]
         }
 //        println "params perfil: " + params.perfil
-        println "perfiles usu: " + perfilesUsu
+//        println "perfiles usu: " + perfilesUsu
 
         params.perfil.each { pid ->
             if (perfilesUsu.contains(pid)) {
@@ -689,8 +689,8 @@ class PersonaController {
             }
         }
 
-        println "ADD " + arrAdd
-        println "REMOVE " + arrRemove
+//        println "ADD " + arrAdd
+//        println "REMOVE " + arrRemove
 
         arrRemove.each { pid ->
             def perf = Prfl.get(pid)
@@ -719,7 +719,7 @@ class PersonaController {
                 permisosDebeTener += prpf.permiso
             }
             permisosDebeTener = permisosDebeTener.unique()
-            println "permisos que debe tener: $permisosDebeTener"
+//            println "permisos que debe tener: $permisosDebeTener"
 
             def permisosTiene = PermisoUsuario.findAllByPersonaAndFechaFinIsNull(usu)
             def permisosAgregar = permisosDebeTener.clone()
@@ -733,7 +733,7 @@ class PersonaController {
                     permisosAgregar.remove(actual.permisoTramite)
                 }
             }
-            println "permisos que debe terminar: $permisosTerminar"
+//            println "permisos que debe terminar: $permisosTerminar"
             permisosTerminar.each {
                 it.fechaFin = new Date()
                 if (!it.save(flush: true)) {
@@ -790,7 +790,7 @@ class PersonaController {
         }
 
 
-        println("p " + personaInstanceList)
+//        println("p " + personaInstanceList)
 //        println("p2 " + personaInstanceCount)
 
 
@@ -824,7 +824,7 @@ class PersonaController {
     } //show para cargar con ajax en un dialog
 
     def form_ajax() {
-        println("params fp " + params)
+//        println("params fp " + params)
         def unidad = null
         if(params.padre){
             unidad = UnidadEjecutora.get(params.padre)
@@ -888,7 +888,7 @@ class PersonaController {
                 obs += " el ${new Date().format('dd-MM-yyyy HH:mm')} por ${session.usuario.login}"
                 def tramite = pr.tramite
 
-                println "NO DEBERIA IMPRIMIR ESTO NUNCA"
+//                println "NO DEBERIA IMPRIMIR ESTO NUNCA"
                 tramite.observaciones = tramitesService.modificaObservaciones(tramite.observaciones, obs)
                 pr.observaciones = tramitesService.modificaObservaciones(pr.observaciones, obs)
                 if (tramite.save(flush: true)) {
@@ -899,7 +899,7 @@ class PersonaController {
                 if (!pr.persona && !pr.departamento) {
                     pr.persona = personaAntes
                     pr.departamento = dptoAntes
-                    println "NO DEBERIA IMPRIMIR ESTO NUNCA"
+//                    println "NO DEBERIA IMPRIMIR ESTO NUNCA"
                     pr.observaciones = tramitesService.modificaObservaciones(pr.observaciones, "Ocurrió un error al redireccionar (${new Date().format('dd-MM-yyyy HH:mm')}).")
                     errores += "<ul><li>Ha ocurrido un error al redireccionar.</li></ul>"
                 }
@@ -912,7 +912,7 @@ class PersonaController {
             }
         }
         if (errores != "") {
-            println "NOPE: " + errores
+//            println "NOPE: " + errores
             return "NO_" + errores
         } else {
             return "OK_Cambio realizado exitosamente"
@@ -1002,7 +1002,7 @@ class PersonaController {
         personaInstance.properties = params
 
         if (!personaInstance.save(flush: true)) {
-            println "error al guardar la persona " + personaInstance.errors
+//            println "error al guardar la persona " + personaInstance.errors
             render "ERROR*Ha ocurrido un error al guardar Persona: "
         }else{
             render "SUCCESS*${params.id ? 'Actualización' : 'Creación'} de Persona exitosa."
@@ -1104,7 +1104,7 @@ class PersonaController {
                 }
             }
             if (errores != "") {
-                println "NOPE: " + errores
+//                println "NOPE: " + errores
                 render "NO_" + errores
             } else {
                 render "OK_Cambio realizado exitosamente"
@@ -1446,7 +1446,7 @@ class PersonaController {
     }
 
     def tablaUsuarios_ajax(){
-        println "tablaUsuarios_ajax params $params"
+//        println "tablaUsuarios_ajax params $params"
         def datos;
         def sqlTx = ""
         def listaItems = ['prsnlogn', 'prsnnmbr', 'prsnapll' ]
@@ -1476,10 +1476,10 @@ class PersonaController {
 //                " $bsca ilike '%${params.criterio}%' and prsnactv::text ilike '${estados[params.estado.toInteger()-1]}' "
         def txwh = " where dpto__id != 13 and prsn.dpto__id::text ilike '${dpto}' and " +
                 " $bsca ilike '%${params.criterio}%' and prsnactv::text ilike '${estados[params.estado.toInteger()-1]}' "
-        println "perfil: $perfil"
+//        println "perfil: $perfil"
         txwh = (perfil != '%')? txwh + " and sesn.prfl__id::text ilike '${perfil}' ${estado} " : txwh
         sqlTx = "${select} ${txwh} order by prsnapll limit 50 ".toString()
-        println "sql: $sqlTx"
+//        println "sql: $sqlTx"
         def cn = dbConnectionService.getConnection()
         datos = cn.rows(sqlTx)
         [data: datos, tipo: params.tipo]

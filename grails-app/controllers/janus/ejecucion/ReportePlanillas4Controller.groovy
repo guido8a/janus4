@@ -299,13 +299,13 @@ class ReportePlanillas4Controller {
      * crear reporte de resumen de reajustes
      **/
     def reportePlanillaNuevo1f() {
-        println "reportePlanillaNuevo1f --> params: $params"
+//        println "reportePlanillaNuevo1f --> params: $params"
         def planilla = Planilla.get(params.id)
         if(planilla.tipoPlanilla.codigo.trim() == 'E') {
             redirect action: 'rptPlnlEntrega', params: params
         }
 
-        println "tipo planilla: ${planilla.tipoPlanilla.codigo}"
+//        println "tipo planilla: ${planilla.tipoPlanilla.codigo}"
         if (planilla.tipoPlanilla.codigo == 'Q') {
             if (!planilla.contrato.fechaPedidoRecepcionContratista || !planilla.contrato.fechaPedidoRecepcionFiscalizador) {
                 flash.message = "Por favor ingrese las fechas de pedido de recepción para generar la planilla " +
@@ -462,7 +462,7 @@ class ReportePlanillas4Controller {
      * crear reporte de resumen de reajustes
      **/
     def reportePlanillaTotal1f() {
-        println "reportePlanillaTotal1f params: $params"
+//        println "reportePlanillaTotal1f params: $params"
         def planilla = Planilla.get(params.id)
 
         if (planilla.tipoPlanilla.codigo == 'Q') {
@@ -503,7 +503,7 @@ class ReportePlanillas4Controller {
 
 
         //** genera B0, P0 y Fr de la planilla **
-        println "reajustes: ${reajustes}"
+//        println "reajustes: ${reajustes}"
         reajustes.each {
             pl = reporteTablas(it.planilla, it.reajuste)
             pdfs.add(pl.toByteArray())
@@ -579,7 +579,7 @@ class ReportePlanillas4Controller {
      * Imprime B0, P0 y Fr de la planilla
      **/
     def reporteTablas(planilla, fpReajuste) {
-        println "reporteTablas de la planilla ${planilla.id} y fpReajuste: ${fpReajuste.id}"
+//        println "reporteTablas de la planilla ${planilla.id} y fpReajuste: ${fpReajuste.id}"
         def obra = planilla.contrato.obra
         def contrato = planilla.contrato
         def reajustesPlanilla = ReajustePlanilla.findAllByPlanillaAndFpReajuste(planilla, fpReajuste, [sort: "periodo", order: "asc"])
@@ -630,7 +630,7 @@ class ReportePlanillas4Controller {
         def tbBo = planillasService.armaTablaFr(rjpl.planilla.id, rjpl.fpReajuste.id, 'c')
         def titlIndices = tbBo.pop()
         def titulos = tbBo.pop()
-        println "tbBo: $tbBo"
+//        println "tbBo: $tbBo"
 //        println "resumen titulosIndices: $titlIndices"
 
         Paragraph tituloB0 = new Paragraph();
@@ -676,7 +676,7 @@ class ReportePlanillas4Controller {
         }
 
         def planillas = (tbBo[0].size() - 5)/2
-        println "<<< ${tbBo[0].size()} planillas: $planillas"
+//        println "<<< ${tbBo[0].size()} planillas: $planillas"
         tbBo.each { d ->
 //            println "Bo --> ${d}"
             addCellTabla(tablaB0, new Paragraph(d.descripcion + "(" + d.numero + ")", fontTd), bordeTdRecuadro)
@@ -688,7 +688,7 @@ class ReportePlanillas4Controller {
                 if(!totalAvance[i-1]) totalAvance[i-1] = 0
                 addCellTabla(tablaB0, new Paragraph(numero(d["indc$i"], 2), fontTd), bordeTdRecuadroDer)
                 addCellTabla(tablaB0, new Paragraph(numero(d["vlor$i"], 3), fontTd), bordeTdRecuadroDer)
-                println "----- d[vlor $i ]: ${d["vlor$i"]}"
+//                println "----- d[vlor $i ]: ${d["vlor$i"]}"
                 totalAvance[i-1] += d["vlor$i"]
 //                totalAvance[i-1] += d["vlor$i"]?:0
             }
@@ -1966,7 +1966,7 @@ class ReportePlanillas4Controller {
 //        println "registros: ${vocr.size()}, ln: ${vocr.vocrlnea.sum()} sps: $sps, extra: $extraRows --> num: ${(vocr.vocrlnea.sum() + sps )} / $maxRows + 0.3 "
 //        def totalPags = Math.ceil((vocr.size() + sps + extraRows) / maxRows).toInteger()
         def totalPags = Math.ceil((vocr.vocrlnea.sum() + sps + extraRows) / maxRows).toInteger()
-        println "número de páginas: $totalPags, ${(vocr.vocrlnea.sum() + sps) / maxRows + 0.3}"
+//        println "número de páginas: $totalPags, ${(vocr.vocrlnea.sum() + sps) / maxRows + 0.3}"
         printHeaderDetalle([pag: currentPag, total: totalPags])
 
 
@@ -1989,7 +1989,7 @@ class ReportePlanillas4Controller {
 
 
         sp = 0
-        println("---- " + vocr.size())
+//        println("---- " + vocr.size())
         vocr.each {vo ->
             if (sp != vo.sbpr__id) {
                 addCellTabla(tablaDetalles, new Paragraph('Subpresupuesto: ' + vo.sbprdscr, fontThTiny), frmtSbpr)
@@ -2027,7 +2027,7 @@ class ReportePlanillas4Controller {
 
 //            println "currentRows $currentRows, maxRows $maxRows"
             if(currentRows >= (maxRows) ) {
-                println "antrP $sumaPrclAntr, antrT: $sumaTotlAntr"
+//                println "antrP $sumaPrclAntr, antrT: $sumaTotlAntr"
 
                 printFooterDetalle([ant: sumaPrclAntr, act: sumaPrclActl, acu: sumaPrclAcml])
 
@@ -2095,18 +2095,18 @@ class ReportePlanillas4Controller {
         def cstoAntr = cn.rows(sql.toString())[0].suma?:0
         sql = "select plnlmnto from plnl where plnl__id = (select plnl__id from plnl " +
                 "where plnlpdcs = ${planilla.id})"
-        println "sql.....: $sql"
+//        println "sql.....: $sql"
         def cstoActl = cn.rows(sql.toString())[0]?.plnlmnto?:0
         def cstoAcml = cstoAntr + cstoActl
 
-        println "SUmas: ${cstoAntr} ${cstoActl} ${cstoAcml}"
+//        println "SUmas: ${cstoAntr} ${cstoActl} ${cstoAcml}"
 
         addCellTabla(tablaDetalles, new Paragraph("RUBROS NO CONTRACTUALES COSTO + PORCENTAJE", fontThFooter), frmtCol8)
         addCellTabla(tablaDetalles, new Paragraph(numero(cstoAntr, 2), fontThFooter), frmtSuma)
         addCellTabla(tablaDetalles, new Paragraph(numero(cstoActl, 2), fontThFooter), frmtSuma)
         addCellTabla(tablaDetalles, new Paragraph(numero(cstoAcml, 2), fontThFooter), frmtSuma)
 
-        println "SUmas: ${cstoAntr} ${cstoActl} ${cstoAcml}"
+//        println "SUmas: ${cstoAntr} ${cstoActl} ${cstoAcml}"
 
         addCellTabla(tablaDetalles, new Paragraph("SUMATORIA DE AVANCE DE OBRA Y COSTO + PORCENTAJE", fontThFooter), frmtCol8)
         addCellTabla(tablaDetalles, new Paragraph(numero(sumaTotlAntr + cstoAntr, 2), fontThFooter), frmtSuma)
@@ -2182,7 +2182,7 @@ class ReportePlanillas4Controller {
         def mltaActl = cn.rows(sql.toString())[0].suma?:0
 
         sql = "select sum(plnlmles) suma from plnl where plnl__id in (${plnlIn})"
-        println "sql. multas....: $sql"
+//        println "sql. multas....: $sql"
         mltaActl += cn.rows(sql.toString())[0].suma?:0
 
         def mltaAcml = mltaAntr + mltaActl
@@ -2233,7 +2233,7 @@ class ReportePlanillas4Controller {
 
 
     def detalle(planilla, tipoRprt) {
-        println "detalle de la planilla ${planilla.id}, tipo: $tipoRprt"
+//        println "detalle de la planilla ${planilla.id}, tipo: $tipoRprt"
         def obra = planilla.contrato.obra
         def cntr = planilla.contrato
         def cn = dbConnectionService.getConnection()
@@ -2382,10 +2382,10 @@ class ReportePlanillas4Controller {
 
         def sps = cn.rows(sql.toString())[0].cnta
         sql = "select * from detalle(${cntr.id}, ${obra.id}, ${planilla.id}, '${tipoRprt}')"
-        println "sql: $sql"
+//        println "sql: $sql"
         def vocr = cn.rows(sql.toString())
 
-        println "registros: ${vocr.size()}, sps: $sps, extra: $extraRows --> num: ${(vocr.size() + sps + extraRows)} / $maxRows "
+//        println "registros: ${vocr.size()}, sps: $sps, extra: $extraRows --> num: ${(vocr.size() + sps + extraRows)} / $maxRows "
         def totalPags = Math.ceil((vocr.size() + sps + extraRows) / maxRows).toInteger()
         printHeaderDetalle([pag: currentPag, total: totalPags])
 
@@ -2575,7 +2575,7 @@ class ReportePlanillas4Controller {
         def mltaActl = cn.rows(sql.toString())[0].suma?:0
 
         sql = "select sum(plnlmles) suma from plnl where plnl__id in (${plnlIn})"
-        println "sql. multas....: $sql"
+//        println "sql. multas....: $sql"
         mltaActl += cn.rows(sql.toString())[0].suma?:0
 
         def mltaAcml = mltaAntr + mltaActl
@@ -3202,7 +3202,7 @@ class ReportePlanillas4Controller {
 
     def detalleNuevoPlanillas(planilla, tipoRprt){
 
-        println "detalle de la planilla ${planilla.id}, tipo: $tipoRprt"
+//        println "detalle de la planilla ${planilla.id}, tipo: $tipoRprt"
         def obra = planilla.contrato.obra
         def cntr = planilla.contrato
         def cn = dbConnectionService.getConnection()
@@ -3342,7 +3342,7 @@ class ReportePlanillas4Controller {
         def sps = cn.rows(sql.toString())[0].cnta
         sql = "select * from detalle(${cntr.id}, ${obra.id}, ${planilla.id}, '${tipoRprt}')"
 
-        println "+++sql: $sql"
+//        println "+++sql: $sql"
         def vocr = cn.rows(sql.toString())
 
         def totalPags = Math.ceil((vocr.vocrlnea.sum() + sps + extraRows) / maxRows).toInteger()
@@ -3410,7 +3410,7 @@ class ReportePlanillas4Controller {
             sumaPrclAcml += (vo.cntdacml * vo.vocrpcun)
 
             if(currentRows >= (maxRows) ) {
-                println "antrP $sumaPrclAntr, antrT: $sumaTotlAntr"
+//                println "antrP $sumaPrclAntr, antrT: $sumaTotlAntr"
 
                 printFooterDetalle([ant: sumaPrclAntr, act: sumaPrclActl, acu: sumaPrclAcml])
 
@@ -3467,18 +3467,18 @@ class ReportePlanillas4Controller {
         def cstoAntr = cn.rows(sql.toString())[0].suma?:0
         sql = "select plnlmnto from plnl where plnl__id = (select plnl__id from plnl " +
                 "where plnlpdcs = ${planilla.id})"
-        println "sql.....: $sql"
+//        println "sql.....: $sql"
         def cstoActl = cn.rows(sql.toString())[0]?.plnlmnto?:0
         def cstoAcml = cstoAntr + cstoActl
 
-        println "SUmas: ${cstoAntr} ${cstoActl} ${cstoAcml}"
+//        println "SUmas: ${cstoAntr} ${cstoActl} ${cstoAcml}"
 
         addCellTabla(tablaDetalles, new Paragraph("RUBROS NO CONTRACTUALES COSTO + PORCENTAJE", fontThFooter), frmtCol8)
         addCellTabla(tablaDetalles, new Paragraph(numero(cstoAntr, 2), fontThFooter), frmtSuma)
         addCellTabla(tablaDetalles, new Paragraph(numero(cstoActl, 2), fontThFooter), frmtSuma)
         addCellTabla(tablaDetalles, new Paragraph(numero(cstoAcml, 2), fontThFooter), frmtSuma)
 
-        println "SUmas: ${cstoAntr} ${cstoActl} ${cstoAcml}"
+//        println "SUmas: ${cstoAntr} ${cstoActl} ${cstoAcml}"
 
         addCellTabla(tablaDetalles, new Paragraph("SUMATORIA DE AVANCE DE OBRA Y COSTO + PORCENTAJE", fontThFooter), frmtCol8)
         addCellTabla(tablaDetalles, new Paragraph(numero(sumaTotlAntr + cstoAntr, 2), fontThFooter), frmtSuma)
@@ -3593,13 +3593,13 @@ class ReportePlanillas4Controller {
      * valor actual = valor_actual_con_3_decimales - acumulado de valor pagado: detalleNuevoPlanillas
      **/
     def reporteNuevoPlanillas() {
-        println "reporteNuevoPlanillas --> params: $params"
+//        println "reporteNuevoPlanillas --> params: $params"
         def planilla = Planilla.get(params.id)
         if(planilla.tipoPlanilla.codigo.trim() == 'E') {
             redirect action: 'rptPlnlEntrega', params: params
         }
 
-        println "tipo planilla: ${planilla.tipoPlanilla.codigo}"
+//        println "tipo planilla: ${planilla.tipoPlanilla.codigo}"
         if (planilla.tipoPlanilla.codigo == 'Q') {
             if (!planilla.contrato.fechaPedidoRecepcionContratista || !planilla.contrato.fechaPedidoRecepcionFiscalizador) {
                 flash.message = "Por favor ingrese las fechas de pedido de recepción para generar la planilla " +

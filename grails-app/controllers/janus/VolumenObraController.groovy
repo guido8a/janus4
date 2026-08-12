@@ -28,8 +28,8 @@ class VolumenObraController {
         def direccion = Direccion.get(persona?.departamento?.direccion?.id)
         def grupo = Grupo.findAllByDireccion(direccion)
 //
-        println("direccion:" + direccion)
-        println("grupo:" + grupo)
+//        println("direccion:" + direccion)
+//        println("grupo:" + grupo)
 
         def subPresupuesto1 = []
         if(grupo) subPresupuesto1 = SubPresupuesto.findAllByGrupoInList(grupo)
@@ -53,7 +53,7 @@ class VolumenObraController {
         def valorLicitacion = TipoProcedimiento.findBySigla("LICO")?.minimo?: 30000000
 
         def campos = ["codigo": ["Código", "string"], "nombre": ["Descripción", "string"]]
-        println "valores: valorLicitacion: $valorLicitacion, valorMenorCuantia: $valorMenorCuantia"
+//        println "valores: valorLicitacion: $valorLicitacion, valorMenorCuantia: $valorMenorCuantia"
 
         [obra: obra, volumenes: volumenes, campos: campos, subPresupuesto1: subPresupuesto1, grupoFiltrado: grupoFiltrado,
          subpreFiltrado: subpreFiltrado, grupos: grupoFiltrado, persona: persona, vmc: valorMenorCuantia, duenoObra: duenoObra,
@@ -104,7 +104,7 @@ class VolumenObraController {
     }
 
     def addItem() {
-        println "addItem " + params
+//        println "addItem " + params
         def obra = Obra.get(params.obra)
         def rubro = Item.findByCodigoIlike(params.cod)
         def sbpr = SubPresupuesto.get(params.sub)
@@ -146,7 +146,7 @@ class VolumenObraController {
 
     def copiarItem() {
 
-        println "copiarItem "+params
+//        println "copiarItem "+params
 
         def obra = Obra.get(params.obra)
         def rubro = Item.get(params.rubro)
@@ -250,7 +250,7 @@ class VolumenObraController {
     }
 
     def eliminarRubro() {
-        println "elm rubro " + params
+//        println "elm rubro " + params
         def vol = VolumenesObra.get(params.id)
         def obra = vol.obra
         def orden = vol.orden
@@ -271,7 +271,7 @@ class VolumenObraController {
             }
 
         } catch (e) {
-            println "e " + e
+//            println "e " + e
             msg = "Error"
         }
 
@@ -289,7 +289,7 @@ class VolumenObraController {
     }
 
     def tablaCopiarRubro() {
-        println "params copiar rubro: $params"
+//        println "params copiar rubro: $params"
 
         def obra = Obra.get(params.obra)
 
@@ -406,7 +406,7 @@ class VolumenObraController {
 
     def tablaBusqueda_ajax(){
 
-        println("params bu " + params)
+//        println("params bu " + params)
 
         def obra = Obra.get(params.obra)
         def duenoObra = esDuenoObra(obra)? 1 : 0
@@ -443,7 +443,7 @@ class VolumenObraController {
 
 
     def formRubroVolObra_ajax(){
-        println("params fvo " + params)
+//        println("params fvo " + params)
         def cn = dbConnectionService.getConnection()
         def subpresupuesto
         def obra
@@ -466,14 +466,14 @@ class VolumenObraController {
         def datos = cn.rows(sql.toString())
         def maximo = (datos[0].max)
 
-        println("maximo " + maximo)
-        println("volobra " + volumenObra)
+//        println("maximo " + maximo)
+//        println("volobra " + volumenObra)
 
         return [volumenObra: volumenObra, obra: obra, subpresupuesto: subpresupuesto, rubro: rubro, tipo: params.tipo, max: maximo]
     }
 
     def verificarEstado_ajax(){
-        println("pve " + params)
+//        println("pve " + params)
 
         def obra = Obra.get(params.obra)
         def rubro = Item.get(params.rubro)

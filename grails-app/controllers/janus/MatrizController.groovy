@@ -16,7 +16,7 @@ class MatrizController {
     }
 
     def pantallaMatriz_old(){
-        println "....." + params
+//        println "....." + params
         def obra = params.id
         def cn = dbConnectionService.getConnection()
         def sql = "SELECT clmncdgo,clmndscr,clmntipo from mfcl where obra__id = ${obra} and sbpr__id = ${params.sbpr} order by  1"
@@ -212,7 +212,7 @@ class MatrizController {
         def obra = params.id
         def cn = dbConnectionService.getConnection()
         def sql = "SELECT clmncdgo,clmndscr,clmntipo from mfcl where obra__id = ${obra} and sbpr__id = ${params.sbpr} order by  1"
-        println "sql desc "+sql
+//        println "sql desc "+sql
         def columnas = []
         def nombre = ""
         def cont = 0
@@ -259,14 +259,14 @@ class MatrizController {
         def estilo
         def estiloF
         def offset = params.offset?: 0
-        println("off " + offset)
+//        println("off " + offset)
         cont = offset.toInteger() + 1
 
         /** usar el parámetro pagina **/
         def sq = "select * from valores(${obra}, ${params.sbpr}) order by 1 limit 30 offset $offset"
         def gris = ""
         def i = 0
-        println("sq " + sq)
+//        println("sq " + sq)
         cn2.eachRow(sq.toString()) { v ->
 
             gris = (cont%2==0)? 'gr' : 'bl'

@@ -28,7 +28,7 @@ class ObraController {
     }
 
     def iniciarObraAdm() {
-        println "incio obra dm " + params
+//        println "incio obra dm " + params
         def obra = Obra.get(params.obra)
         def fecha
         try {
@@ -67,7 +67,7 @@ class ObraController {
                 "where dpto.dpto__id = obra.dpto__id and dire.dire__id = dpto.dire__id and " +
                 "obrafcin is not null " +
                 "order by 2"
-        println "sqlReg: $sql"
+//        println "sqlReg: $sql"
         cn.eachRow(sql.toString()) { r ->
             departamento[r.id] = r.nombre
         }
@@ -83,7 +83,7 @@ class ObraController {
 
     /*lista obrtas */
     def listaObras(){
-        println "listaItems" + params
+//        println "listaItems" + params
         def datos;
 //        [1: 'Código', 2: 'Nombre', 3: 'Mem. Ingreso', 4: 'Mem. Salida', 5: 'Estado']
         def listaObra = ['obracdgo', 'obranmbr', 'obrammig', 'obrammsl', 'obraetdo']
@@ -97,7 +97,7 @@ class ObraController {
 
         txwh += " and $bsca ilike '%${params.criterio}%'"
         sqlTx = "${select} ${txwh} order by obranmbr, ${ordn} limit 100 ".toString()
-        println "sql: $sqlTx"
+//        println "sql: $sqlTx"
 
         def cn = dbConnectionService.getConnection()
         datos = cn.rows(sqlTx)
@@ -271,7 +271,7 @@ class ObraController {
         def crono = 0
         vols.each {
             def tmp = Cronograma.findAllByVolumenObra(it)
-            println "crono: ${tmp.size()}"
+//            println "crono: ${tmp.size()}"
             if(tmp.size() > 0){
                 tmp.each { tm ->
                     crono += tm.porcentaje
@@ -287,7 +287,7 @@ class ObraController {
             }
         }
 
-        println "msg: ${(msg != "")}"
+//        println "msg: ${(msg != "")}"
         if (msg != "") {
             render msg
             return
@@ -297,12 +297,12 @@ class ObraController {
         def res = verificaMatriz(obra.id)
         if (res != "") {
             msg = res
-            println "1 res "+msg
+//            println "1 res "+msg
             render msg
             return
         }
 
-        println "....ok"
+//        println "....ok"
 
 //        res = obrafp.verifica_precios(obra.id)
         res = verifica_precios(obra.id)
@@ -312,7 +312,7 @@ class ObraController {
             render msg
             return
         }
-        println "2 res "+msg
+//        println "2 res "+msg
 
         def fps = FormulaPolinomica.findAllByObra(obra)
 //        println "fps "+fps
@@ -335,7 +335,7 @@ class ObraController {
         def valorMenorCuantia = TipoProcedimiento.findBySigla("MCD")?.techo
         def consultoria = janus.Parametros.findByEmpresaLike(message(code: 'ambiente2'))
         if(consultoria) valorMenorCuantia = 0
-        println "es consultoría: ${consultoria}"
+//        println "es consultoría: ${consultoria}"
         def valorObra = obra.valor
         if (valorObra <= valorMenorCuantia) {
             if (obra.tipo != 'D') {
@@ -392,7 +392,7 @@ class ObraController {
         if (obra.save(flush: true))
             render "ok"
         else
-            println "error: " + obra.errors
+//            println "error: " + obra.errors
         return
     }
 
@@ -554,7 +554,7 @@ class ObraController {
             }
 
             def sqlMatriz = "select count(*) cuantos from mfcl where obra__id = ${params.obra}"
-            println "matriz: $sqlMatriz"
+//            println "matriz: $sqlMatriz"
             def matriz = cn.rows(sqlMatriz.toString())[0].cuantos
             if (matriz > 0) {
                 matrizOk = true
@@ -569,7 +569,7 @@ class ObraController {
             cn.close()
 
             duenoObra = esDuenoObra(obra) ? 1 : 0
-            println "dueño: $duenoObra, concurso: $concurso, obra: ${obra.estadoSif}"
+//            println "dueño: $duenoObra, concurso: $concurso, obra: ${obra.estadoSif}"
 
             def existeObraOferente = ObraOferente.findByIdJanus(obra)
 
@@ -610,7 +610,7 @@ class ObraController {
 
     def generaNumeroFP() {
 
-        println("FP:" + params)
+//        println("FP:" + params)
         /*
         El sistema debe generar un número de fórmula polinómica de liquidación en el formato: FP-nnn-CEV-13-LIQ,
         para oferentes:  FP-nnn-CEV-13-OFE. Para las otras obras el formato se mantiene (FP-nnn-CEV-13).
@@ -655,7 +655,7 @@ class ObraController {
         } else if (obra.liquidacion == 2) {
             numero += "-OFE"
         }
-        println("numero:" + numero)
+//        println("numero:" + numero)
         obra.formulaPolinomica = numero
         if (obra.save(flush: true)) {
             dpto.documento = num
@@ -696,7 +696,7 @@ class ObraController {
                     params.operadores = ""
                 }
                 if (params.campos == "canton") {
-                    println "busca canton"
+//                    println "busca canton"
                     def cans = Canton.findAll("from Canton where nombre like '%${params.criterios.toUpperCase()}%'")
                     params.criterios = ""
                     cans.eachWithIndex { p, i ->
@@ -835,7 +835,7 @@ class ObraController {
         funcionJs += 'location.href="' + g.createLink(action: 'registroObra', controller: 'obra') + '?obra="+$(this).attr("regId");'
         funcionJs += '}'
         def numRegistros = 20
-        println "params " + params.reporte + "  " + params.excel
+//        println "params " + params.reporte + "  " + params.excel
 
         if (!params.reporte) {
             if (params.excel) {
@@ -863,7 +863,7 @@ class ObraController {
     }
 
     def buscarObraLq() {
-        println "buscar obra LQ"
+//        println "buscar obra LQ"
         def extraParr = ""
         def extraCom = ""
         if (params.campos instanceof java.lang.String) {
@@ -950,7 +950,7 @@ class ObraController {
         funcionJs += 'location.href="' + g.createLink(action: 'registroObra', controller: 'obra') + '?obra="+$(this).attr("regId");'
         funcionJs += '}'
         def numRegistros = 20
-        println "params " + params.reporte + "  " + params.excel
+//        println "params " + params.reporte + "  " + params.excel
 
         if (!params.reporte) {
             if (params.excel) {
@@ -1129,11 +1129,11 @@ class ObraController {
 
     def getSalida() {
 
-        println("getSalida:" + params)
+//        println("getSalida:" + params)
 
         params.direccion = params.direccion ?: Obra.get(params?.obra)?.departamento?.id
 
-        println "dirección: ${params.direccion}"
+//        println "dirección: ${params.direccion}"
 
         def direccion = Departamento.get(params.direccion?:21)?.direccion
 //        def direccion = Direccion.get(params.direccion)
@@ -1166,7 +1166,7 @@ class ObraController {
         txwh += " and ${campos[cmpo - 1]} ilike '%${params.criterio}%'"
 
         sqlTx = "${select} ${txwh} order by ${campos[cmpo - 1]} limit 1500".toString()
-        println "sql: cmpo: $cmpo $sqlTx"
+//        println "sql: cmpo: $cmpo $sqlTx"
 
         def cn = dbConnectionService.getConnection()
         comunidades = cn.rows(sqlTx)
@@ -1219,7 +1219,7 @@ class ObraController {
 
 
     def save() {
-        println "save " + params
+//        println "save " + params
 
         def usuario = session.usuario.id
         def persona = Persona.get(usuario)
@@ -1264,7 +1264,7 @@ class ObraController {
             params.formulaPolinomica = params.formulaPolinomica.toUpperCase()
         }
 
-        println "params.fechaOficioSalida: ${params.fechaOficioSalida.class}"
+//        println "params.fechaOficioSalida: ${params.fechaOficioSalida.class}"
         if (params.fechaCreacionObra) {
             params.fechaCreacionObra = new Date().parse("dd-MM-yyyy", params.fechaCreacionObra)
         }
@@ -1289,7 +1289,7 @@ class ObraController {
         }
         params."departamento.id" = params.departamento.id
 
-        println "obra: ${params.id} depto: ${params.departamento.id}"
+//        println "obra: ${params.id} depto: ${params.departamento.id}"
 
         def obraInstance
         def bandera
@@ -1438,7 +1438,7 @@ class ObraController {
 
             str += "<ul>"
 
-            println "errores: ${params.fechaCreacionObra} ${obraInstance.errors} "
+//            println "errores: ${params.fechaCreacionObra} ${obraInstance.errors} "
 
             obraInstance.errors.allErrors.each { err ->
                 def msg = err.defaultMessage
@@ -1644,7 +1644,7 @@ class ObraController {
     }
 
     def verificaMatriz(id) {
-        println "verificaMatriz"
+//        println "verificaMatriz"
         def obra = Obra.get(id)
         def errr = ""
         if (!VolumenesObra.findAllByObra(obra)) errr += "<br><span class='label-azul'>No se ha ingresado los volúmenes de Obra</span>"
@@ -1669,11 +1669,11 @@ class ObraController {
     }
 
     def rubrosSinCantidad(id) {
-        println "rubrosSinCantidad ---1"
+//        println "rubrosSinCantidad ---1"
         def cn = dbConnectionService.getConnection()
         def er = 0;
         def tx_sql = "select count(*) nada from vlob where obra__id = ${id} and vlobcntd <= 0"
-        println "rubrosSinCantidad: $tx_sql"
+//        println "rubrosSinCantidad: $tx_sql"
         cn.eachRow(tx_sql.toString()) { row ->
             er = row.nada
         }
@@ -1696,7 +1696,7 @@ class ObraController {
     }
 
     def tablaObrasFinalizadas(){
-        println "tablaObrasFinalizadas params $params"
+//        println "tablaObrasFinalizadas params $params"
         def fcin = params.fechaInicio ? new Date().parse("dd-MM-yyyy", params.fechaInicio).format('yyyy-MM-dd') : ''
         def fcfn = params.fechaFin ? new Date().parse("dd-MM-yyyy", params.fechaFin).format('yyyy-MM-dd') : ''
         def campos = ['obracdgo', 'obranmbr', 'obradscr',
@@ -1713,7 +1713,7 @@ class ObraController {
         if(params.fechaInicio) sqlWhere += " and obrafcha >= '${fcin}' "
         if(params.fechaFIn) sqlWhere += " and obrafcha <= '${fcfn}' "
         sql += sqlWhere + sqlOrder
-        println "sql: $sql"
+//        println "sql: $sql"
         def obras = cn.rows(sql)
         params.criterio = params.old
         return [data: obras, params: params]
@@ -1948,18 +1948,18 @@ class ObraController {
 
     def completa(valor) {
         def txto = '0'*(3-valor.toString().size())
-        println "txto: $txto"
+//        println "txto: $txto"
         return "${txto}${valor}"
     }
 
     def comprobarAres_ajax(){
-        println "comprobarAres_ajax: $params"
+//        println "comprobarAres_ajax: $params"
         def cn = dbConnectionService.getConnection()
         def departamento = [:]
         def sql = "select itemcdgo, itemnmbr from item where itemcdes is null and item__id in (" +
                 "select item__id from vlob where obra__id = ${params.id}) " +
                 "order by 1"
-        println "sql: $sql"
+//        println "sql: $sql"
         def sinCodigo = cn.rows(sql.toString())
 
         if(sinCodigo.size() > 0){
@@ -1976,7 +1976,7 @@ class ObraController {
         def sql = "select itemcdgo, itemnmbr from item where itemcdes is null and item__id in (" +
                 "select item__id from vlob where obra__id = ${params.id}) " +
                 "order by 1"
-        println "sql: $sql"
+//        println "sql: $sql"
         rubrosSin = cn.rows(sql.toString())
 
         return [rubros: rubrosSin]
@@ -1988,7 +1988,7 @@ class ObraController {
     }
 
     def guardarFecha_ajax(){
-        println("params " + params)
+//        println("params " + params)
 
         def obra = Obra.get(params.id)
         def fecha

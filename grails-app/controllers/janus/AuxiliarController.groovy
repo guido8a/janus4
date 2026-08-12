@@ -300,7 +300,7 @@ class AuxiliarController {
 
     def saveMemoAdj() {
 
-        println("params adj:" + params)
+//        println("params adj:" + params)
 
         def auxiliarInstance
         if(params.id) {

@@ -24,7 +24,7 @@ class ReportesPlanillas2Controller {
         def obra = planilla.contrato.oferta.concurso.obra
         def contrato = planilla.contrato
 
-        println "obra: ${obra.id}"
+//        println "obra: ${obra.id}"
         def prej = PeriodoEjecucion.findAllByObra(obra, [sort: 'fechaFin', order: 'desc'])
 
 //
@@ -40,7 +40,7 @@ class ReportesPlanillas2Controller {
 
 
         def liquidacion = false
-        println "planilla" + planilla
+//        println "planilla" + planilla
         if (planilla?.fechaFin) {
             liquidacion = planilla.fechaFin >= prej[0].fechaFin
         }
@@ -337,7 +337,7 @@ class ReportesPlanillas2Controller {
             periodos.each { per ->
                 def valor = ValorIndice.findByPeriodoAndIndice(per.periodo, c.indice).valor
                 if (!valor) {
-                    println "wtf no valor " + per.periodo + "  " + c.indice
+//                    println "wtf no valor " + per.periodo + "  " + c.indice
                     valor = 0
                 }
                 addCellTabla(tablaB0, new Paragraph(numero(valor, 2), fontTd), [border: Color.BLACK, bcr: Color.WHITE, bwr: 1, align: Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE])
@@ -965,11 +965,11 @@ class ReportesPlanillas2Controller {
                         cpAnt = planillasAnterioresCP.sum { it.valor } ?: 0
 
                     } else if (cpPlanilla.size() == 0) {
-                        println "No hay planillas de cp"
+//                        println "No hay planillas de cp"
                     } else {
-                        println "WTF hay mas de una planilla cp asociada a esta planilla??? "
-                        println "PLANILLA: " + planilla.id
-                        println "PLANILLAS CP: " + cpPlanilla.id
+//                        println "WTF hay mas de una planilla cp asociada a esta planilla??? "
+//                        println "PLANILLA: " + planilla.id
+//                        println "PLANILLAS CP: " + cpPlanilla.id
                     }
                     def cpAcu = cpAnt + cpAct
 
@@ -999,9 +999,9 @@ class ReportesPlanillas2Controller {
                     def multasAct = planilla.multaIncumplimiento + planilla.multaRetraso + planilla.multaDisposiciones + planilla.multaPlanilla
                     def multasAcu = multasAnt + multasAct
 
-                    println "multas Ant = " + m1 + " + " + m2 + " + " + m3 + " + " + m4 + " = " + multasAnt
-                    println "multas Act = " + planilla.multaIncumplimiento + " + " + planilla.multaRetraso + " + " + planilla.multaDisposiciones + " + " + planilla.multaPlanilla + " = " + multasAct
-                    println "multas Acu = " + multasAcu
+//                    println "multas Ant = " + m1 + " + " + m2 + " + " + m3 + " + " + m4 + " = " + multasAnt
+//                    println "multas Act = " + planilla.multaIncumplimiento + " + " + planilla.multaRetraso + " + " + planilla.multaDisposiciones + " + " + planilla.multaPlanilla + " = " + multasAct
+//                    println "multas Acu = " + multasAcu
 
                     def totalAnt = cAnt - antAnt - multasAnt
                     def totalAct = cAct - antAct - multasAct
@@ -1232,7 +1232,7 @@ class ReportesPlanillas2Controller {
 //        }
 //        // Close the stamper
 //        stamper.close();
-            println "abb"
+//            println "abb"
         pdfw.close()
         byte[] b = baos.toByteArray();
         response.setContentType("application/pdf")
@@ -1247,12 +1247,12 @@ class ReportesPlanillas2Controller {
     def solucion(fechaFinFiscalizador, fechaFin) {
         def res3 = diasLaborablesService.diasLaborablesEntre(fechaFinFiscalizador, fechaFin)
         def retLiq = -1
-        println "\t\t" + res3
+//        println "\t\t" + res3
         if (res3[0]) {
-            println "SI existe retrasoLiq2"
+//            println "SI existe retrasoLiq2"
             retLiq = res3[1]
         } else {
-            println "No existe retrasoLiq2: " + res3
+//            println "No existe retrasoLiq2: " + res3
             def url = g.createLink(controller: "planilla", action: "list", id: contrato.id)
             def url2 = g.createLink(controller: "diaLaborable", action: "calendario", params: [anio: res3[2] ?: ""])
             def link = "<a href='${url}' class='btn btn-danger'>Lista de planillas</a>"

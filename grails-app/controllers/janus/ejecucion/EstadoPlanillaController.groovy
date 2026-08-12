@@ -32,7 +32,7 @@ class EstadoPlanillaController {
 
     def save() {
 
-        println("params" + params)
+//        println("params" + params)
         if(params.codigo){
             params.codigo = params.codigo?.toUpperCase();
         }

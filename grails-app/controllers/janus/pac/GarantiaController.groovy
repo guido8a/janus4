@@ -130,7 +130,7 @@ class GarantiaController {
      }
 
     def addGarantiaContrato() {
-        println("params gara " + params)
+//        println("params gara " + params)
         def garantia, datos = true, padre = null
 
         switch (params.tipo.toString().trim().toLowerCase()) {
@@ -146,7 +146,7 @@ class GarantiaController {
                 padre.estado = EstadoGarantia.findByCodigo("6") //renovada
                 if (!padre.save(flush: true)) {
                     println "error save padre" + padre.errors
-                    println renderErrors(bean: padre)
+//                    println renderErrors(bean: padre)
                 }
                 break;
         }
@@ -167,7 +167,7 @@ class GarantiaController {
         garantia.observaciones = params.observaciones
 
         if (!garantia.save(flush: true)) {
-            println "Errores: " + garantia.errors
+//            println "Errores: " + garantia.errors
             render "NO"
         } else {
             render "OK_" + garantia.id

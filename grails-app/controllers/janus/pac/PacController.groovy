@@ -80,7 +80,7 @@ class PacController {
 //                    if (sheet == 0) {
                     Sheet s = workbook.getSheet(sheet)
                     if (!s.getSettings().isHidden()) {
-                        println s.getName() + "  " + sheet
+//                        println s.getName() + "  " + sheet
                         htmlInfo += "<h2>Hoja " + (sheet + 1) + ": " + s.getName() + "</h2>"
                         errores += "<h2>Hoja " + (sheet + 1) + ": " + s.getName() + "</h2>"
                         Cell[] row = null
@@ -88,9 +88,9 @@ class PacController {
                             if (j == 0) {
                                 errores+="<ol>"
                             }
-                            println ">>>>>>>>>>>>>>>" + (j + 1)
+//                            println ">>>>>>>>>>>>>>>" + (j + 1)
                             row = s.getRow(j)
-                            println "row.length: ${row.length}"
+//                            println "row.length: ${row.length}"
                             if (row.length > 12) {
 
                                 def ok = ["obra", "consultoria", "consultoría"]
@@ -105,7 +105,7 @@ class PacController {
                                     if (anioObj.size() == 1) {
                                         anioObj = anioObj[0]
                                     } else if (anioObj.size() == 0) {
-                                        println "no hay anio " + anio + " crea uno"
+//                                        println "no hay anio " + anio + " crea uno"
                                         errores += "<li>No se encontró el año " + anio + ", se lo ha creado.</li>"
                                         anioObj = new Anio([
                                                 anio: anio.toString()
@@ -117,7 +117,7 @@ class PacController {
                                     } else {
                                         error = true
                                         errores += "<li>Se ha encontrado más de un año " + anio + ". El registro de la fila " + (j + 1) + " no fue ingresado</li>"
-                                        println "hay mas de un anio " + anio + ": " + anioObj.id
+//                                        println "hay mas de un anio " + anio + ": " + anioObj.id
                                     }
                                     def partida = row[1].getContents().toString()
                                     partida = partida.replaceAll(",", ".")
@@ -125,7 +125,7 @@ class PacController {
                                     if (presupuesto.size() == 1) {
                                         presupuesto = presupuesto[0]
                                     } else if (presupuesto.size() == 0) {
-                                        println "no hay presupuesto con numero " + partida + " crea uno"
+//                                        println "no hay presupuesto con numero " + partida + " crea uno"
                                         errores += "<li>No se encontró el presupuesto con número " + partida + ", se lo ha creado.</li>"
                                         presupuesto = new Presupuesto([
                                                 numero: partida,
@@ -133,12 +133,12 @@ class PacController {
                                         ])
                                         if (!presupuesto.save(flush: true)) {
                                             error = true
-                                            println "Error al guardar presupuesto: " + presupuesto.errors
+//                                            println "Error al guardar presupuesto: " + presupuesto.errors
                                             errores += "<li>Ha ocurrido un error al guardar presupuesto: " + presupuesto.errors + ". El registro de la fila " + (j + 1) + " no fue ingresado</li>"
                                         }
                                     } else {
                                         error = true
-                                        println "hay mas de un presupuesto con numero " + partida + ": " + presupuesto.id
+//                                        println "hay mas de un presupuesto con numero " + partida + ": " + presupuesto.id
                                         errores += "<li>Se ha encontrado más de un presupuesto con número " + partida + ". El registro de la fila " + (j + 1) + " no fue ingresado</li>"
                                     }
 /*
@@ -162,19 +162,19 @@ class PacController {
                                     if (tipoCompraObj.size() == 1) {
                                         tipoCompraObj = tipoCompraObj[0]
                                     } else if (tipoCompraObj.size() == 0) {
-                                        println "no hay tipo compra con descripcion " + tipoCompra
+//                                        println "no hay tipo compra con descripcion " + tipoCompra
                                         errores += "<li>No se encontró el tipo de compra " + tipoCompra + ", se lo ha creado.</li>"
                                         tipoCompraObj = new TipoCompra([
                                                 descripcion: tipoCompra
                                         ])
                                         if (!tipoCompraObj.save(flush: true)) {
                                             error = true
-                                            println "Error al guardar tipo compra: " + tipoCompraObj.errors
+//                                            println "Error al guardar tipo compra: " + tipoCompraObj.errors
                                             errores += "<li>Ha ocurrido un error al guardar el tipo de compra: " + tipoCompraObj.errors + ". El registro de la fila " + (j + 1) + " no fue ingresado</li>"
                                         }
                                     } else {
                                         error = true
-                                        println "hay mas de un tipo compra con descripcion " + tipoCompra + ": " + tipoCompraObj
+//                                        println "hay mas de un tipo compra con descripcion " + tipoCompra + ": " + tipoCompraObj
                                         errores += "<li>Se ha encontrado más de un tipo de compra " + tipoCompra + ". El registro de la fila " + (j + 1) + " no fue ingresado</li>"
                                     }
                                     def descripcion = row[4].getContents()
@@ -189,7 +189,7 @@ class PacController {
                                     try {
                                         cant = cant.toDouble()
                                     } catch (e) {
-                                        println e
+//                                        println e
                                         error = true
                                         errores += "<li>No se pudo convertir el valor de cantidad (" + cant + ") a número. El registro de la fila " + (j + 1) + " no fue ingresado</li>"
                                     }
@@ -197,13 +197,13 @@ class PacController {
                                     try {
                                         costoUnitario = costoUnitario.toDouble()
                                     } catch (e) {
-                                        println e
+//                                        println e
                                         error = true
                                         errores += "<li>No se pudo convertir el valor de costo unitario (" + costoUnitario + ") a número. El registro de la fila " + (j + 1) + " no fue ingresado</li>"
                                     }
 //                                            println "\t cant: " + cant + " cu: " + costoUnitario
 
-                                    println "errores: ${error}"
+//                                    println "errores: ${error}"
                                     if (!error) {
                                         def total = cant * costoUnitario
 
@@ -212,11 +212,11 @@ class PacController {
                                             tipoProcedimiento = tipoProcedimiento[0]
                                         } else if (tipoProcedimiento.size() == 0) {
                                             error = true
-                                            println "no hay tipoProcedimiento para el valor " + total
+//                                            println "no hay tipoProcedimiento para el valor " + total
                                             errores += "<li>No se encontró un tipo de procedimiento para el valor " + total + ". El registro de la fila " + (j + 1) + " no fue ingresado</li>"
                                         } else {
                                             error = true
-                                            println "hay mas de un tipoProcedimiento para el valor " + total + ": " + tipoProcedimiento
+//                                            println "hay mas de un tipoProcedimiento para el valor " + total + ": " + tipoProcedimiento
                                             errores += "<li>Se ha encontrado más de un tipo de procedimiento para el valor " + total + ". El registro de la fila " + (j + 1) + " no fue ingresado</li>"
                                         }
 
@@ -241,10 +241,10 @@ class PacController {
                                                     asignacion.prespuesto = presupuesto
                                                     asignacion.valor = total
                                                     if(!asignacion.save(flush:true)) {
-                                                        println "Error al guardar nueva asignacion"
+//                                                        println "Error al guardar nueva asignacion"
                                                     }
                                                 } else {
-                                                    println "Existen ${asignaciones.size()} asignaciones del anio: ${anio.anio} y presupuesto ${presupuesto.descripcion}"
+//                                                    println "Existen ${asignaciones.size()} asignaciones del anio: ${anio.anio} y presupuesto ${presupuesto.descripcion}"
                                                 }
 
                                                 def pac = new Pac([
@@ -265,14 +265,14 @@ class PacController {
                                                         requiriente: requirente
                                                 ])
                                                 if (pac.save(flush: true)) {
-                                                    println "guardado pac con id=" + pac.id
+//                                                    println "guardado pac con id=" + pac.id
                                                     done++
                                                 } else {
                                                     println pac.errors
                                                     errores += "<li><strong>Ha ocurrido un error al guardar el pac: " + pac.errors + "</strong></li>"
                                                 }
                                             } else {
-                                                println "ya existia un registro: " + pacs
+//                                                println "ya existia un registro: " + pacs
                                                 errores += "<li><i>Ya se encontró un registro con los mismos CCP, partida presupuestaria, descripción y año. El registro de la fila " + (j + 1) + " no fue ingresado</li>"
                                             }
                                         }
@@ -305,7 +305,7 @@ class PacController {
 
                 flash.message = str
 
-                println "DONE!!"
+//                println "DONE!!"
                 redirect(action: "mensajeUpload")
             } else {
                 flash.message = "Seleccione un archivo Excel xls para procesar (archivos xlsx deben ser convertidos a xls primero)"
@@ -336,7 +336,7 @@ class PacController {
     }
 
     def buscaCpac() {
-        println("params C" + params)
+//        println("params C" + params)
         def listaTitulos = ["Código", "Descripción"]
         def listaCampos = ["numero", "descripcion"]
         def funciones = [null, null]
@@ -372,7 +372,7 @@ class PacController {
     }
 
     def buscaPrsp() {
-        println "buscaPrsp $params"
+//        println "buscaPrsp $params"
         def listaTitulos = ["Código", "Descripción", "Fuente", "programa", "Subprograma", "Proyecto"]
         def listaCampos = ["numero", "descripcion", "fuente", "programa", "subPrograma", "proyecto"]
         def funciones = [null, null]
@@ -507,7 +507,7 @@ class PacController {
     }
 
     def tablaPartida_ajax(){
-        println("tabla pre " + params)
+//        println("tabla pre " + params)
 
         def anio = Anio.get(params.anio)
         def datos;
@@ -518,7 +518,7 @@ class PacController {
         def select = "select * from prsp"
         def txwh = " where $bsca ilike '%${params.criterio}%' and anio__id = ${anio?.id}"
         sqlTx = "${select} ${txwh} order by prspdscr limit 30 ".toString()
-        println "sql: $sqlTx"
+//        println "sql: $sqlTx"
 
         def cn = dbConnectionService.getConnection()
         datos = cn.rows(sqlTx)
@@ -530,7 +530,7 @@ class PacController {
 
     def tablaPac_ajax(){
 
-        println("tabla pac " + params)
+//        println("tabla pac " + params)
 
         def anio = Anio.get(params.anio)
         def datos;
@@ -545,7 +545,7 @@ class PacController {
 
         sqlTx = "${select} ${txwh} order by pacp.pacpdscr limit 30 ".toString()
 
-        println("sql " + sqlTx)
+//        println("sql " + sqlTx)
 
         def cn = dbConnectionService.getConnection()
         datos = cn.rows(sqlTx)
@@ -617,7 +617,7 @@ class PacController {
 
     def pac() {
 
-        println("params pac" + params)
+//        println("params pac" + params)
 
         def presupuesto = null
         def asignacion = null

@@ -58,7 +58,7 @@ class TramiteController {
             }
             sql.close()
         } catch (e) {
-            println "error "+e
+//            println "error "+e
             e.printStackTrace()
         }
         [memo: memo, header: header, tramites: tramites]
@@ -86,7 +86,7 @@ class TramiteController {
             }
             sql.close()
         } catch (e) {
-            println "error "+e
+//            println "error "+e
             e.printStackTrace()
         }
         [memo: memo, tramites: tramites]
@@ -117,7 +117,7 @@ class TramiteController {
                 header.put("MCREADOR",r["MCREADOR"])
                 header.put("MUSDES",r["MUSDES"])
             }
-            println "select * from doctrami where NMASTER= '${memo}' or NTRAMITE = '${memo}' "
+//            println "select * from doctrami where NMASTER= '${memo}' or NTRAMITE = '${memo}' "
             sql.eachRow("select * from doctrami where NMASTER= '${memo}' or NTRAMITE = '${memo}'".toString()) {r->
                 def tmp =[:]
                 tmp.put("NMASTER",r["NMASTER"])
@@ -133,14 +133,14 @@ class TramiteController {
             }
             sql.close()
         } catch (e) {
-            println "error "+e
+//            println "error "+e
             e.printStackTrace()
         }
         [memo: memo, header: header, tramites: tramites]
     }
 
     def cargarDatos(){
-        println "cargar datos dbf"
+//        println "cargar datos dbf"
         try{
 //            def command="dbf2mysql -c -d dbf -Uroot -Psvt2579 -t docmaster -o NMASTER,MFECHA,MPRIORI,MDE,MPARA,MASUNTO,MCREADOR,MUSDES /home/svt/grails/Aplicaciones/janus/web-app/sad2013xx/docmaster.DBF"
             def command="dbf2mysql -c -d dbf -Uroot -Proot -t docmaster -o NMASTER,MFECHA,MPRIORI,MDE,MPARA,MASUNTO,MCREADOR,MUSDES /mnt/sad/docmaster.DBF"

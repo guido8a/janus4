@@ -88,7 +88,7 @@ class PlanillaController {
                     [tipo: "E", string: strParrafo4, w: "940px", h: "50px"]
             ]
         } else if (texto.size() > 1) {
-            println "Se encontraron ${texto.size()} textos para la obra ${obra.id}: ${texto.id}"
+//            println "Se encontraron ${texto.size()} textos para la obra ${obra.id}: ${texto.id}"
             texto = texto.first()
         } else {
             texto = texto.first()
@@ -205,7 +205,7 @@ class PlanillaController {
             ]
 
         } else if (texto.size() > 1) {
-            println "Se encontraron ${texto.size()} textos para la obra ${obra.id}: ${texto.id}"
+//            println "Se encontraron ${texto.size()} textos para la obra ${obra.id}: ${texto.id}"
             texto = texto.first()
         } else {
             texto = texto.first()
@@ -332,7 +332,7 @@ class PlanillaController {
             ]
 
         } else if (texto.size() > 1) {
-            println "Se encontraron ${texto.size()} textos para la obra ${obra.id}: ${texto.id}"
+//            println "Se encontraron ${texto.size()} textos para la obra ${obra.id}: ${texto.id}"
             texto = texto.first()
         } else {
             texto = texto.first()
@@ -414,7 +414,7 @@ class PlanillaController {
                     [tipo: "S", string: str32]
             ]
         } else if (texto.size() > 1) {
-            println "Se encontraron ${texto.size()} textos para la obra ${obra.id}: ${texto.id}"
+//            println "Se encontraron ${texto.size()} textos para la obra ${obra.id}: ${texto.id}"
             texto = texto.first()
         } else {
             texto = texto.first()
@@ -512,7 +512,7 @@ class PlanillaController {
     }
 
     def savePedidoPagoAnticipo() {
-        println "savePedidoPagoAnticipo textos " + params
+//        println "savePedidoPagoAnticipo textos " + params
         def planilla = Planilla.get(params.id)
         def contrato = planilla.contrato
         def obra = contrato.obra
@@ -576,7 +576,7 @@ class PlanillaController {
         def cn = dbConnectionService.getConnection()
         def sql = "select sum(rjplvlor) suma from rjpl where plnl__id = (select max(plnlrjst) from rjpl " +
                 "where plnl__id = ${planilla.id} and plnlrjst < plnl__id)"
-        println "--sql: $sql"
+//        println "--sql: $sql"
         def reajusteAnterior = cn.rows(sql.toString())[0].suma
         def reajuste = ReajustePlanilla.findAllByPlanilla(planilla).sum { it.valorReajustado } - reajusteAnterior
 
@@ -651,7 +651,7 @@ class PlanillaController {
         def cn = dbConnectionService.getConnection()
         def sql = "select sum(rjplvlor) suma from rjpl where plnl__id = (select max(plnlrjst) from rjpl " +
                 "where plnl__id = ${planilla.id} and plnlrjst < plnl__id)"
-        println "--sql: $sql"
+//        println "--sql: $sql"
         def reajusteAnterior = cn.rows(sql.toString())[0].suma
         def reajuste = ReajustePlanilla.findAllByPlanilla(planilla).sum { it.valorReajustado } - reajusteAnterior
 
@@ -756,7 +756,7 @@ class PlanillaController {
     }
 
     def listFiscalizador() {
-        println "listFiscalizador: $params"
+//        println "listFiscalizador: $params"
         def cn = dbConnectionService.getConnection()
         def codigoPerfil = session.perfil.codigo
         def noCuadra = false
@@ -806,7 +806,7 @@ class PlanillaController {
             sql = "select max(rjplplac) rjplplac from rjpl where plnl__id = ${plnlLq}"
             def sumaRj = cn.rows(sql.toString())[0]?.rjplplac
             noCuadra = (sumaPo != sumaRj)
-            println "sumaPo: $sumaPo != $sumaRj plnlLq: $plnlLq"
+//            println "sumaPo: $sumaPo != $sumaRj plnlLq: $plnlLq"
         }
         if(plnlLqC) {
             sql = "select sum(rjplvlpo) suma from  rjpl where plnl__id = ${plnlLqC}"
@@ -814,7 +814,7 @@ class PlanillaController {
             sql = "select max(rjplplac) rjplplac from rjpl where plnl__id = ${plnlLqC}"
             def sumaRj = cn.rows(sql.toString())[0]?.rjplplac
             noCuadra = (sumaPo != sumaRj)
-            println "sumaPoC: $sumaPo != $sumaRj plnlLqC: $plnlLqC"
+//            println "sumaPoC: $sumaPo != $sumaRj plnlLqC: $plnlLqC"
         }
 
         return [contrato: contrato, obra: contrato.oferta.concurso.obra, planillaInstanceList: planillaInstanceList,
@@ -1115,7 +1115,7 @@ class PlanillaController {
             }
             redirect(action: "list", id: planilla.contratoId)
         } else {
-            println "Error al grabar la fecha y el memo en la planilla: " + planilla.errors
+//            println "Error al grabar la fecha y el memo en la planilla: " + planilla.errors
             flash.clase = "alert-error"
             str = "<h4>" + str2 + "</h4>"
 
@@ -1127,7 +1127,7 @@ class PlanillaController {
     }
 
     def pago_ajax() {
-        println "pago_ajax: params: " + params
+//        println "pago_ajax: params: " + params
 
         def fechaMin, fechaMax, fecha
         def planilla = Planilla.get(params.id)
@@ -1178,7 +1178,7 @@ class PlanillaController {
         }
         if (dptoDirFinanciera.size() == 1) {
             dptoDirFinanciera = dptoDirFinanciera[0]
-            println "ok: ${dptoDirFinanciera} ----1"
+//            println "ok: ${dptoDirFinanciera} ----1"
         } else if (dptoDirFinanciera.size() == 0) {
             render "No se encontró el departamento de Dirección Financiera con código FINA. Por favor asegúrese de " +
                     "que exista para continuar con el trámite."
@@ -1206,7 +1206,7 @@ class PlanillaController {
                 especial = "PARA"
                 fiscalizador = "DE"
                 if (!tipoTramite) {
-                    println "NOP: crear un tipo de tramite con codigo ENRJ, para: " + obraDpto
+//                    println "NOP: crear un tipo de tramite con codigo ENRJ, para: " + obraDpto
                     tipoTramite = new TipoTramite([
                             padre            : null,
                             codigo           : "ENRJ",
@@ -1216,14 +1216,14 @@ class PlanillaController {
                             requiereRespuesta: "S"
                     ])
                     if (tipoTramite.save(flush: true)) {
-                        println "Creado tipo de tramite OK, creando dptos"
+//                        println "Creado tipo de tramite OK, creando dptos"
                         def dDe = new DepartamentoTramite([
                                 tipoTramite : tipoTramite,
                                 rolTramite  : RolTramite.findByCodigo("DE"),
                                 departamento: dptoFiscalizacion
                         ])
                         if (!dDe.save(flush: true)) {
-                            println "error al guardar DE: " + dDe.errors
+//                            println "error al guardar DE: " + dDe.errors
                         }
                         def dPara = new DepartamentoTramite([
                                 tipoTramite : tipoTramite,
@@ -1231,10 +1231,10 @@ class PlanillaController {
                                 departamento: obraDpto
                         ])
                         if (!dPara.save(flush: true)) {
-                            println "error al guardar PARA: " + dPara.errors
+//                            println "error al guardar PARA: " + dPara.errors
                         }
                     } else {
-                        println "error al guardar tipo tramite: " + tipoTramite.errors
+//                        println "error al guardar tipo tramite: " + tipoTramite.errors
                     }
                 }
                 def dDe = DepartamentoTramite.withCriteria {
@@ -1300,7 +1300,7 @@ class PlanillaController {
                             requiereRespuesta: "S"
                     ])
                     if (tipoTramite.save(flush: true)) {
-                        println "Creado tipo de tramite OK, creando dptos"
+//                        println "Creado tipo de tramite OK, creando dptos"
                         def dDe = new DepartamentoTramite([
                                 tipoTramite : tipoTramite,
                                 rolTramite  : RolTramite.findByCodigo("DE"),
@@ -1365,13 +1365,13 @@ class PlanillaController {
                 }
                 especial = "PARA"
                 if (!tipoTramite) {
-                    println "NOP: crear un tipo de tramite con codigo INPG, para: " + obraDpto
+//                    println "NOP: crear un tipo de tramite con codigo INPG, para: " + obraDpto
                     //////////////////////////////////
                     def tiposTramitePadre = TipoTramite.findAllByCodigo("PDPG")
                     def tipoTramitePadre
                     tiposTramitePadre.each { tt ->
                         def dptoDe = DepartamentoTramite.findByTipoTramiteAndRolTramite(tt, RolTramite.findByCodigo("DE"))
-                        println "dptode " + dptoDe + "   " + tt
+//                        println "dptode " + dptoDe + "   " + tt
                         if (dptoDe?.departamento == obraDpto) {
                             tipoTramitePadre = tt
                         }
@@ -1385,7 +1385,7 @@ class PlanillaController {
                             requiereRespuesta: "N"
                     ])
                     if (tipoTramite.save(flush: true)) {
-                        println "Creado tipo de tramite OK, creando dptos"
+//                        println "Creado tipo de tramite OK, creando dptos"
                         def dDe = new DepartamentoTramite([
                                 tipoTramite : tipoTramite,
                                 rolTramite  : RolTramite.findByCodigo("DE"),
@@ -1436,7 +1436,7 @@ class PlanillaController {
 
         tramite = Tramite.findByPlanillaAndTipoTramite(planilla, TipoTramite.findByCodigo('INPG'))
         def envia = PersonasTramite.findByTramiteAndRolTramite(tramite, RolTramite.findByCodigo('DE'))
-        println "pago_ajax: persona que envía: ${envia?.persona?.id}, trmaite: ${tramite?.id}"
+//        println "pago_ajax: persona que envía: ${envia?.persona?.id}, trmaite: ${tramite?.id}"
 
 
         def roles = DepartamentoTramite.findAllByTipoTramite(tipoTramite)
@@ -1483,7 +1483,7 @@ class PlanillaController {
     }
 
     def inicioObra_ajax() {
-        println "inicioObra_ajax: " + params
+//        println "inicioObra_ajax: " + params
 
         def fechaMin, fechaMax, fecha
         def planilla = Planilla.get(params.id)
@@ -1505,13 +1505,13 @@ class PlanillaController {
         fechaMax = "new Date(${y + 2},${m},${d})"
 
         def firma = Persona.findAllByCargoIlike("Direct%");
-        println "fache min: $fechaMin"
+//        println "fache min: $fechaMin"
 
         [planilla: planilla, tipo: tipo, lblMemo: lblMemo, lblFecha: lblFecha, fechaMin: fechaMin, fechaMax: fechaMax, extra: extra, fecha: fecha, firma: firma]
     }
 
     def iniObraNoReajuste() {
-        println "iniObraNoReajuste: " + params
+//        println "iniObraNoReajuste: " + params
 
         def fechaMin, fechaMax, fecha
         def contrato = Contrato.get(params.id)
@@ -1532,7 +1532,7 @@ class PlanillaController {
         fechaMax = "new Date(${y+2},${m+6},${d})"    //plazo de inicio 2.5 años
 
         def firma = Persona.findAllByCargoIlike("Direct%");
-        println "fache min: $fechaMin"
+//        println "fache min: $fechaMin"
 
         [cntr: contrato.id, tipo: tipo, lblMemo: lblMemo, lblFecha: lblFecha, fechaMin: fechaMin, fechaMax: fechaMax, extra: extra, fecha: fecha, firma: firma]
     }
@@ -1603,7 +1603,7 @@ class PlanillaController {
             def estadoTramite = EstadoTramite.findByCodigo("C")
             if (trmt) {
                 // TODO: actualiza el trami te existente y no cre otro
-                println "trmite id: ${trmt.id}"
+//                println "trmite id: ${trmt.id}"
                 trmt.descripcion = params.asunto
                 trmt.fecha = fecha   //params.fecha corregido
                 trmt.fechaEnvio = new Date()   //ahora
@@ -1693,7 +1693,7 @@ class PlanillaController {
 
     /** Guarda fecha de inicio de obra **/
     def iniciarObra() {
-        println "iniciarObra: $params"
+//        println "iniciarObra: $params"
 
         def memo = params.memo.toString().toUpperCase()
         def fecha = new Date().parse("dd-MM-yyyy", params.fecha)
@@ -1701,7 +1701,7 @@ class PlanillaController {
         def planilla = Planilla.get(params.id)
         def contrato = planilla.contrato
 
-        println "contrato: $contrato"
+//        println "contrato: $contrato"
         contrato.numeralPlazo = params.numeralPlazo
         contrato.numeralAnticipo = params.numeralAnticipo
         contrato.clausula = params.clausula
@@ -1713,7 +1713,7 @@ class PlanillaController {
         }
 
         def obra = Obra.get(contrato.obra.id)
-        println "obra a iniciar: ${obra.id}"
+//        println "obra a iniciar: ${obra.id}"
         obra.fechaInicio = fecha
         obra.memoInicioObra = memo
         obra.fechaImpresionInicioObra = new Date()
@@ -1735,7 +1735,7 @@ class PlanillaController {
             flash.message = "Obra iniciada exitosamente"
 //            if (params.cntr) {
             if (params.id) {
-                println "---> si"
+//                println "---> si"
 //                render "ok"
                 redirect(controller: "contrato", action: "verContrato", id: contrato.id)
             } else {
@@ -1746,7 +1746,7 @@ class PlanillaController {
 
 
     def form() {
-        println "form... planillas: $params"
+//        println "form... planillas: $params"
         def contrato = Contrato.get(params.contrato)
         def obra = contrato.obra
         def liquidado = false
@@ -1804,7 +1804,7 @@ class PlanillaController {
         def cPlanillas = Planilla.findAllByContrato(contrato, [sort: 'fechaInicio']).size()
         def planillasAvance = Planilla.findAllByContratoAndTipoPlanilla(contrato, avance, [sort: "fechaInicio"])
 
-        println "---- cPlanillas: $cPlanillas, planillasAvance: $planillasAvance"
+//        println "---- cPlanillas: $cPlanillas, planillasAvance: $planillasAvance"
 
         if (cPlanillas == 0) {
             tiposPlanilla = TipoPlanilla.findAllByCodigo('A')
@@ -1812,7 +1812,7 @@ class PlanillaController {
             esAnticipo = true
         } else {
             cmpl = Contrato.findByPadre(contrato)
-            println "hay complementario: $cmpl"
+//            println "hay complementario: $cmpl"
             if (cmpl) {
                 def plaC = Planilla.findByContratoAndTipoPlanillaInList(contrato, [anticipoCmpl])
                 if (!plaC) {
@@ -1838,7 +1838,7 @@ class PlanillaController {
                 if (plc) {
                     def plcs = Planilla.findAllByContratoAndTipoPlanilla(contrato, costoPorcentaje)
                     def tt = plcs.sum { it.valor }
-                    println "total planillas C + %: ${tt}"
+//                    println "total planillas C + %: ${tt}"
                     if (tt >= (contrato.monto * 0.1).round(2)) {  /* TODO: validar Porcentaje */
                         tiposPlanilla -= plc.tipoPlanilla
                     }
@@ -1889,7 +1889,7 @@ class PlanillaController {
         if (!params.id) {
             planillaInstance.numero = cPlanillas + 1
             periodos = ponePeriodos(tiposPlanilla, contrato, anticipo, periodosEjec, finalObra)
-            println "retorna periodos: $periodos"
+//            println "retorna periodos: $periodos"
         }
 
         def now = new Date()
@@ -1959,12 +1959,12 @@ class PlanillaController {
             fechaInicia = new Date().parse("dd-MM-yyyy", fechaOriginal)
         }
 
-        println "esAnticipo: $esAnticipo, tipos: $tiposPlanilla, periodos: ${periodos.class}, suspensiones: ${suspensiones}"
+//        println "esAnticipo: $esAnticipo, tipos: $tiposPlanilla, periodos: ${periodos.class}, suspensiones: ${suspensiones}"
         if(suspensiones) {
             def inicia = periodos.keySet()[0]
-            println "inicia: $inicia"
+//            println "inicia: $inicia"
             def fchaFin = new Date().parse("dd-MM-yyyy", inicia.split("_")[0])
-            println "--> $fchaFin"
+//            println "--> $fchaFin"
             if(fchaFin > suspensiones.first().fechaInicio) periodos = []
         }
 
@@ -1980,7 +1980,7 @@ class PlanillaController {
     *  no hay control de planillas ni periodos*/
 
     def sinAnticipo() {
-        println "sinAnticipo planillas: $params"
+//        println "sinAnticipo planillas: $params"
         def contrato = Contrato.get(params.contrato)
         def obra = contrato.obra
 
@@ -2032,7 +2032,7 @@ class PlanillaController {
     }
 
     def save() {  /* guarda planilla */
-        println "save " + params
+//        println "save " + params
         def cntr = Contrato.get(params.contrato.id)
         def tipo
         def fechaInicio = ""
@@ -2141,16 +2141,16 @@ class PlanillaController {
 //            session.override = true
         }//es edit
         else {
-            println "params luego de override: ${params}"
+//            println "params luego de override: ${params}"
 
             planillaInstance = new Planilla(params)
-            println " creando planilla: ${params.id} con ${params.descripcionMulta}"
+//            println " creando planilla: ${params.id} con ${params.descripcionMulta}"
 
             switch (planillaInstance.tipoPlanilla.codigo) {
                 case 'A':
                     //es anticipo hay q ingresar el valor de la planilla
                     planillaInstance.valor = planillaInstance.contrato.anticipo
-                    println "llego al save !!!!!  " + params.periodoPlan
+//                    println "llego al save !!!!!  " + params.periodoPlan
 //                    planillaInstance.periodoAnticipo = PeriodosInec.get(params.periodoPlan)
                     break;
                 case ['P', 'Q']:
@@ -2177,8 +2177,8 @@ class PlanillaController {
 
                     def planillaPorAsociar = Planilla.get(params.asociada)
                     planillaInstance.padreCosto = planillaPorAsociar
-                    println("params asociada " + params.asociada)
-                    println("padre " + planillaInstance.padreCosto)
+//                    println("params asociada " + params.asociada)
+//                    println("padre " + planillaInstance.padreCosto)
                     break;
             }
 
@@ -2235,7 +2235,8 @@ class PlanillaController {
         if (generaCmpl) {
             def plnlCmpl = new Planilla()
             def fp = FormulaPolinomicaReajuste.findByContratoAndDescripcionIlike(cntr, '%compl%')
-            if (!fp) println "Error: no se ha definido la FP para complementario"
+            if (!fp)
+//                println "Error: no se ha definido la FP para complementario"
             plnlCmpl.properties = planillaInstance.properties
             plnlCmpl.tipoContrato = 'C'
             plnlCmpl.numero += '-C'
@@ -2275,7 +2276,7 @@ class PlanillaController {
     }
 
     def saveSinAntc() {  /* guarda planilla */
-        println "saveSinAntc " + params
+//        println "saveSinAntc " + params
         def cntr = Contrato.get(params.contrato.id)
         def tipo
         def fechaInicio = ""
@@ -2294,8 +2295,8 @@ class PlanillaController {
         if (params.fechaMemoSalida) params.fechaMemoSalida = new Date().parse("dd-MM-yyyy", params.fechaMemoSalida)
         if (params.fechaOficioEntradaPlanilla) params.fechaOficioEntradaPlanilla = new Date().parse("dd-MM-yyyy", params.fechaOficioEntradaPlanilla)
 
-        println "params.formulaPolinomicaReajuste.id:" + params."formulaPolinomicaReajuste.id"
-        println "fecha inicio: ${params.fechaInicio}"
+//        println "params.formulaPolinomicaReajuste.id:" + params."formulaPolinomicaReajuste.id"
+//        println "fecha inicio: ${params.fechaInicio}"
 
         if (params.fechaInicio && !fechaInicio) {
             params.fechaInicio = new Date().parse("dd-MM-yyyy", params.fechaInicio)
@@ -2341,10 +2342,10 @@ class PlanillaController {
             planillaInstance.noPagoValor = params.noPagoValor.toDouble()
         }//es edit
         else {
-            println "params luego de override: ${params}"
+//            println "params luego de override: ${params}"
 
             planillaInstance = new Planilla(params)
-            println " creando planilla: ${params.id} con ${params.descripcionMulta}"
+//            println " creando planilla: ${params.id} con ${params.descripcionMulta}"
 
             def contrato = Contrato.get(params.contrato.id)
             planillaInstance.fiscalizador = contrato.fiscalizador
@@ -2671,7 +2672,7 @@ class PlanillaController {
                             val = valores.last().valor
                             alert = "ALERTA - No se encontró un valor de índice para " + per?.descripcion + " para " + c.indice.descripcion + ", se utilizó el de " + valores.last().periodo.descripcion + "<br/>"
                         } else {
-                            println "ERROR!!!!!"
+//                            println "ERROR!!!!!"
                             erroresIndice += "ERROR - No se encontró un valor de índice para " + c.indice.descripcion + "<br/>"
                             failIndice = true
                             failed = true
@@ -3391,16 +3392,16 @@ class PlanillaController {
         def contrato = Contrato.get(params.contrato)
         def cmpl = Contrato.findByPadre(contrato)
 
-        println "eje. detalle"
+//        println "eje. detalle"
         redirect(action: "detalleNuevo", params: params)
-        println "eje. detalle ...."
+//        println "eje. detalle ...."
 
         def obra = contrato.obra
         def detalle = [:]
         def obrasAdicionales = 1.25
         def respaldo = DocumentoProceso.findByConcursoAndDescripcionIlike(contrato.oferta.concurso, '%respaldo%adicio%')
 
-        println "repaldo: $respaldo"
+//        println "repaldo: $respaldo"
         if (contrato.fechaSubscripcion > Date.parse('dd-MM-yyy', '20-03-2017')) {
             obrasAdicionales = 1.05
         }
@@ -3410,7 +3411,7 @@ class PlanillaController {
         fpsp.each {
             sbpr.add(it.subPresupuesto)
         }
-        println "subpresupuestos de la obra con esta FP: $sbpr"
+//        println "subpresupuestos de la obra con esta FP: $sbpr"
         detalle = VolumenesObra.findAllByObraAndSubPresupuestoInList(obra, sbpr, [sort: "orden"])
 
         def precios = [:]
@@ -3432,20 +3433,20 @@ class PlanillaController {
             }
         }
 
-        println("planillas anterioers " + planillasAnteriores)
+//        println("planillas anterioers " + planillasAnteriores)
 
         def editable = planilla.fechaMemoSalidaPlanilla == null && contrato.fiscalizador.id == session.usuario.id
 
         if (!respaldo) obrasAdicionales = 0
 
-        println "adicionales: $obrasAdicionales"
-        println "planillasAnteriores: ${planillasAnteriores.id}"
+//        println "adicionales: $obrasAdicionales"
+//        println "planillasAnteriores: ${planillasAnteriores.id}"
         return [planilla           : planilla, detalle: detalle, precios: precios, obra: obra, adicionales: obrasAdicionales,
                 planillasAnteriores: planillasAnteriores, contrato: contrato, editable: editable]
     }
 
     def detalleNuevo() {
-        println "detalleNuevo $params"
+//        println "detalleNuevo $params"
         def planilla = Planilla.get(params.id)
         def contrato = Contrato.get(params.contrato)
         def obra = contrato.obra
@@ -3492,7 +3493,7 @@ class PlanillaController {
         def editable = planilla.fechaMemoSalidaPlanilla == null && contrato.fiscalizador.id == session.usuario.id
 //        println "${planilla.fechaMemoSalidaPlanilla} == null && ${contrato.fiscalizador.id} == ${session.usuario.id}"
 
-        println "editable: $editable"
+//        println "editable: $editable"
 
         if (!respaldo) obrasAdicionales = 0
 
@@ -3502,7 +3503,7 @@ class PlanillaController {
     }
 
     def tablaDtpe_ajax() {
-        println "tablaDtpe_ajax $params"
+//        println "tablaDtpe_ajax $params"
         def planilla = Planilla.get(params.id)
         def contrato = Contrato.get(params.contrato)
         def obra = contrato.obra
@@ -3549,14 +3550,14 @@ class PlanillaController {
         }
 
         def editable = planilla.fechaMemoSalidaPlanilla == null && contrato.fiscalizador.id == session.usuario.id
-        println "${planilla.fechaMemoSalidaPlanilla} == null && ${contrato.fiscalizador.id} == ${session.usuario.id}"
+//        println "${planilla.fechaMemoSalidaPlanilla} == null && ${contrato.fiscalizador.id} == ${session.usuario.id}"
 
-        println "editable: $editable"
+//        println "editable: $editable"
 
         if (!respaldo) obrasAdicionales = 0
         def subPrsp = VolumenContrato.findAllByContrato(planilla.contrato).subPresupuesto.unique()
 
-        println "adicionales: $obrasAdicionales, complementario: $cmpl, planillasAnteriores: $planillasAnteriores"
+//        println "adicionales: $obrasAdicionales, complementario: $cmpl, planillasAnteriores: $planillasAnteriores"
         return [planilla           : planilla, detalle: detalle, precios: precios, obra: obra, adicionales: obrasAdicionales,
                 planillasAnteriores: planillasAnteriores, contrato: contrato, editable: editable, cmpl: cmpl, sbpr: subPrsp]
     }
@@ -3585,7 +3586,7 @@ class PlanillaController {
             sbpr.add(it.subPresupuesto)
         }
         sbpr = sbpr.unique()
-        println "detalle: $detalle"
+//        println "detalle: $detalle"
 
         def planillasAnteriores
 
@@ -3594,13 +3595,13 @@ class PlanillaController {
             lt("fechaFin", planilla.fechaInicio)
         }
 
-        println "anteriores: ${planillasAnteriores.id}"
+//        println "anteriores: ${planillasAnteriores.id}"
         def editable = planilla.fechaMemoSalidaPlanilla == null && contrato.fiscalizador.id == session.usuario.id
 
         if (!respaldo) obrasAdicionales = 0
 //        obrasAdicionales = 0
 
-        println "adicionales: $obrasAdicionales"
+//        println "adicionales: $obrasAdicionales"
         return [planilla           : planilla, detalle: detalle, precios: precios, obra: obra, adicionales: obrasAdicionales,
                 planillasAnteriores: planillasAnteriores, contrato: contrato, editable: editable]
     }
@@ -3621,7 +3622,7 @@ class PlanillaController {
     }
 
     def addDetalleCosto() {
-        println "params detalle costo" + params
+//        println "params detalle costo" + params
         def detalle = new DetallePlanillaCosto()
         if (params.id) {
             detalle = DetallePlanillaCosto.get(params.id)
@@ -3797,7 +3798,7 @@ class PlanillaController {
                 def cant = parts[1].toDouble()
                 def val = parts[2].toDouble()
 
-                println "guarda: vocr: ${vol.id}, plnl: ${pln.id}, cant: $cant, monto: $val"
+//                println "guarda: vocr: ${vol.id}, plnl: ${pln.id}, cant: $cant, monto: $val"
                 def detalle = new DetallePlanillaEjecucion([
                         planilla       : pln,
                         volumenContrato: vol,
@@ -3842,7 +3843,7 @@ class PlanillaController {
     }
 
     def saveDetalleUno_ajax(){
-        println("params --> " + params)
+//        println("params --> " + params)
         def cn = dbConnectionService.getConnection()
         def planilla = Planilla.get(params.planilla)
         def vol = VolumenContrato.get(params.vol)
@@ -3871,7 +3872,7 @@ class PlanillaController {
         }else{
             sql = "update plnl set plnlmnto = (select sum(dtpemnto) from dtpe where plnl__id = ${params.planilla}) " +
                     "where plnl__id = ${params.planilla}"
-            println "actualiza $sql"
+//            println "actualiza $sql"
             cn.execute(sql.toString())
             render "ok_Guardado correctamente"
         }
@@ -3890,18 +3891,18 @@ class PlanillaController {
         def nx = 0.0
         100.times {
             nx = nn.nextInt(50005) / 101
-            println NumberToLetterConverter.convertNumberToLetter(numero(nx, 2).replaceAll(',', '').toDouble()) +
-                    " valor original : $nx"
+//            println NumberToLetterConverter.convertNumberToLetter(numero(nx, 2).replaceAll(',', '').toDouble()) +
+//                    " valor original : $nx"
         }
     }
 
     def procesarLq() {
-        println "Inicio de procesar planilla Lq, params: $params"
+//        println "Inicio de procesar planilla Lq, params: $params"
         //TODO: hacer una funcion para que aplique descuentos a las planillas
         def plnl = Planilla.get(params.id)
         def conReajuste = plnl.contrato.aplicaReajuste == 1
 
-        println "---tipo planilla: ${plnl.tipoPlanilla.toString()}"
+//        println "---tipo planilla: ${plnl.tipoPlanilla.toString()}"
         if (plnl.tipoPlanilla.codigo == 'O') {
             procesaAdicionales(plnl)
             flash.message = "Procesa obras adicionales"
@@ -3915,11 +3916,11 @@ class PlanillaController {
                 }
             }
             procesaReajusteLq(params.id) /** inserta valores de reajuste --> rjpl **/
-            println "1.completa procesaReajuste"
+//            println "1.completa procesaReajuste"
             detalleReajuste(params.id) /** inserta valores del detalle del reajuste --> dtrj **/
 
             if (Planilla.get(params.id).tipoPlanilla.codigo in ['P', 'Q']) {
-                println "---multas con reajuste ${plnl.contrato.aplicaReajuste}, --> $conReajuste"
+//                println "---multas con reajuste ${plnl.contrato.aplicaReajuste}, --> $conReajuste"
                 if (conReajuste) {
                     procesaMultas(params.id)  /* multas */
                 } else {
@@ -3950,7 +3951,7 @@ class PlanillaController {
 
 //                dsct   = Math.round(plnl.valor*(plnl.contrato.porcentajeAnticipo/100)*100)/100
                 def resto = Math.round((plnl.contrato.anticipo - totDsct[0]) * 100) / 100
-                println "totDsct[0]: ${totDsct[0]}, resto: ${resto}, dsct: $dsct"
+//                println "totDsct[0]: ${totDsct[0]}, resto: ${resto}, dsct: $dsct"
 
                 if (dsct > resto) {
                     plnl.descuentos = resto
@@ -3974,13 +3975,13 @@ class PlanillaController {
                 def anteriores = Planilla.findAllByContratoAndTipoContratoAndTipoPlanilla(plnl.contrato,
                         plnl.tipoContrato, TipoPlanilla.findByCodigo('P')).sum { it.descuentos }
 
-                println "anteriores: $anteriores, ${plnl.contrato.anticipo}, C: ${Contrato.findByPadre(plnl.contrato)?.anticipo ?: 0} "
+//                println "anteriores: $anteriores, ${plnl.contrato.anticipo}, C: ${Contrato.findByPadre(plnl.contrato)?.anticipo ?: 0} "
                 if (anteriores == null) anteriores = 0
                 if (plnl.tipoContrato == 'P') {
                     plnl.descuentos = plnl.contrato.anticipo - anteriores
                 } else {
                     def dsct = (Contrato.findByPadre(plnl.contrato)?.anticipo ?: 0) - anteriores
-                    println "Aplica dscta compl: ${Contrato.findByPadre(plnl.contrato)?.anticipo ?: 0} - ${anteriores} : $dsct"
+//                    println "Aplica dscta compl: ${Contrato.findByPadre(plnl.contrato)?.anticipo ?: 0} - ${anteriores} : $dsct"
                     plnl.descuentos = dsct
                 }
                 plnl.save(flush: true)
@@ -4010,7 +4011,7 @@ class PlanillaController {
     }
 
     def procEntrega() {
-        println "Inicio de procesar contra entrega, params: $params"
+//        println "Inicio de procesar contra entrega, params: $params"
         //TODO: hacer una funcion para que aplique descuentos a las planillas
         def plnl = Planilla.get(params.id)
 
@@ -4072,12 +4073,12 @@ class PlanillaController {
      * están disponibles los ínidices se retorna null **/
     def indicesDisponiblesAnticipo(plnl, fcha, tp) {
         //* todo: verficar que todos los ínidices de todas las FPRJ del contrato
-        println "indicesDisponiblesAnticipo para fecha: ${fcha}, con tp: $tp"
+//        println "indicesDisponiblesAnticipo para fecha: ${fcha}, con tp: $tp"
         def existe = false
         def prin
         prin = PeriodosInec.findByFechaInicioLessThanEqualsAndFechaFinGreaterThanEquals(fcha, fcha)
         if (!tp) {   /** se refiere al primer pago **/
-            println "periodo de indices para fcha: ${prin}"
+//            println "periodo de indices para fcha: ${prin}"
             if (prin) {
                 existe = preciosService.verificaIndicesPeriodoTodo(plnl.contrato.id, prin.id).size() == 0
             }
@@ -4088,7 +4089,7 @@ class PlanillaController {
                 def max = 10
                 def fecha = fcha
                 while (!existe) {
-                    println "periodo actual...: $prin, fcha: ${fcha}, fecha: ${fecha}"
+//                    println "periodo actual...: $prin, fcha: ${fcha}, fecha: ${fecha}"
                     fecha = preciosService.primerDiaDelMes(fecha) - 15
                     prin = PeriodosInec.findByFechaInicioLessThanAndFechaFinGreaterThan(fecha, fecha)
                     existe = preciosService.verificaIndicesPeriodoTodo(plnl.contrato.id, prin.id).size() == 0
@@ -4111,7 +4112,7 @@ class PlanillaController {
                 def max = 10
                 def fecha = fcha
                 while (!existe) {
-                    println "periodo actual para recalculo de reajuste...: $prin, fcha: ${fcha}, fecha: ${fecha}"
+//                    println "periodo actual para recalculo de reajuste...: $prin, fcha: ${fcha}, fecha: ${fecha}"
                     fecha = preciosService.primerDiaDelMes(fecha) - 15
                     prin = PeriodosInec.findByFechaInicioLessThanAndFechaFinGreaterThan(fecha, fecha)
                     print "...1+ ${plnl?.contrato?.id}, ${prin?.id}"
@@ -4147,12 +4148,12 @@ class PlanillaController {
                 def max = 10
                 def fecha = fcha
                 while (!existe) {
-                    println "periodo actual...: $prin, fcha: ${fcha}, fecha: ${fecha}"
+//                    println "periodo actual...: $prin, fcha: ${fcha}, fecha: ${fecha}"
                     fecha = preciosService.primerDiaDelMes(fecha) - 15
                     prin = PeriodosInec.findByFechaInicioLessThanAndFechaFinGreaterThan(fecha, fecha)
 //                    existe = preciosService.verificaIndicesPeriodo(plnl.contrato, prin).size() == 0
                     existe = preciosService.verificaIndicesPeriodo(plnl.id, prin).size() == 0
-                    println "verifica indices para ${prin?.descripcion} --> ${existe}"
+//                    println "verifica indices para ${prin?.descripcion} --> ${existe}"
                     if (!max--) {
                         return null
                     }
@@ -4207,7 +4208,7 @@ class PlanillaController {
 //            println "inserta valores de: $prmt"
         }
 
-        println "inserta valores de: ${rjpl.planilla.id} ${rjpl.planillaReajustada.id} --> ${rjpl.valorPo}"
+//        println "inserta valores de: ${rjpl.planilla.id} ${rjpl.planillaReajustada.id} --> ${rjpl.valorPo}"
         if (rjpl.save([flush: true])) {
             flash.clase = "alert-success"
             flash.message = "Reajuste guardado exitosamente."
@@ -4231,7 +4232,7 @@ class PlanillaController {
      *   - actualizar rjpl.rjplfctr --factor -- ya está en dtrj */
 
     def detalleReajusteAnticipo(id) {
-        println "inicia detalleReajuste Anticipo"
+//        println "inicia detalleReajuste Anticipo"
         def prmt = [:]
         def plnl = Planilla.get(id)
         def tpfp = TipoFormulaPolinomica.findByCodigo('C')  /* FP contractual */
@@ -4339,7 +4340,7 @@ class PlanillaController {
      *   - actualizar rjpl.rjplfctr --factor -- ya está en dtrj */
 
     def detalleReajuste(id) {
-        println "inicia detalleReajuste.... para $id"
+//        println "inicia detalleReajuste.... para $id"
         def prmt = [:]
         def plnl = Planilla.get(id)
         def frpl
@@ -4354,7 +4355,7 @@ class PlanillaController {
         def reajuste = plnl.contrato.aplicaReajuste
 
         def rjpl = ReajustePlanilla.findAllByPlanilla(plnl, [sort: 'planillaReajustada'])
-        println "rjpl para plnl__id = ${plnl.id}: $rjpl"
+//        println "rjpl para plnl__id = ${plnl.id}: $rjpl"
         rjpl.each { rj ->
 //            println "Bo: Reajuste de planilla ${plnl.id}, reajustando: ${rjpl.planillaReajustada.id}"
 
@@ -4485,7 +4486,7 @@ class PlanillaController {
 
     /** calcula multas se aplica sólo a planillas de avance **/
     def procesaMultas(id) {
-        println "procesaMultas"
+//        println "procesaMultas"
         def cn = dbConnectionService.getConnection()
         def plnl = Planilla.get(id)
         def cmpl = Contrato.findByPadre(plnl.contrato)
@@ -4503,7 +4504,7 @@ class PlanillaController {
         def anio = new Date().format("yyyy").toInteger()
         anio -= 1
         def diciembre31 = new Date().parse("dd-MM-yyyy", "31-12-" + anio)
-        println "fcfm: $fcfm, diciembre31: $diciembre31"
+//        println "fcfm: $fcfm, diciembre31: $diciembre31"
 
         if (plnl.tipoPlanilla.codigo == 'Q') {
             fcfm = plnl.fechaFin
@@ -4511,21 +4512,21 @@ class PlanillaController {
             fcfm = preciosService.ultimoDiaDelMes(plnl.fechaFin)
         }
 
-        println "fcfm: $fcfm"
+//        println "fcfm: $fcfm"
         if (fcfm == diciembre31) {
             fcfm++
             diasMax--
         }
-        println "fcfm: $fcfm, diasMax: $diasMax"
+//        println "fcfm: $fcfm, diasMax: $diasMax"
         def res = diasLaborablesService.diasLaborablesDesde(fcfm, diasMax)
-        println "No presentación de planilla --> fcfm: $fcfm, multas: $res, diasMax: ${diasMax}"
+//        println "No presentación de planilla --> fcfm: $fcfm, multas: $res, diasMax: ${diasMax}"
         /* si hay error, res[0] = false */
         if (!res[0]) {
             errorDiasLaborables(plnl.contrato.id, res[2], res[1])
         } else {
             fechaMax = res[1]
         }
-        println "fechaPresentacion: $fechaPresentacion, fechaMax: $fechaMax --> $res "
+//        println "fechaPresentacion: $fechaPresentacion, fechaMax: $fechaMax --> $res "
 
         res = diasLaborablesService.diasLaborablesEntre(fechaPresentacion, fechaMax)
         if (!res[0]) {
@@ -4535,14 +4536,14 @@ class PlanillaController {
         }
 
         if (fechaPresentacion <= fechaMax) {
-            println "--- no hay retraso"
+//            println "--- no hay retraso"
             retraso *= -1
         }
 
-        println "retraso: $retraso"
+//        println "retraso: $retraso"
 //        if (retraso > 0 || plnl.valor == 0) {
         if (retraso > 0) {
-            println "retraso presentación de planillas: $retraso"
+//            println "retraso presentación de planillas: $retraso"
             retraso = 1
         } else {
             retraso = 0
@@ -4550,7 +4551,7 @@ class PlanillaController {
 
         /** manejar datos de:  * tipo de multa, * dias de retraso, * multa descripción y * valor de la multa */
         def rjpl = ReajustePlanilla.findAllByPlanillaAndPlanillaReajustada(plnl, plnl, [sort: 'periodo'])
-        println "rjpl ---> ${rjpl.size()}, plnlrjst: ${plnl.id}"
+//        println "rjpl ---> ${rjpl.size()}, plnlrjst: ${plnl.id}"
 
         def baseMulta = 0
         def formatoNum = new DecimalFormat("#,###.##")
@@ -4581,7 +4582,7 @@ class PlanillaController {
         if (plnl.tipoPlanilla.codigo == 'P') {
 //            multaPlanilla = Math.round(((rjpl.last().acumuladoPlanillas / rjpl.last().acumuladoCronograma < 0.80) ? plnl.contrato.monto / 1000 : 0) * 100) / 100
             dias = 0
-            println "dias_eje: ${plnl.fechaFin} - ${plnl.contrato.obra.fechaInicio} cronograma: ${rjpl.last().acumuladoCronograma}"
+//            println "dias_eje: ${plnl.fechaFin} - ${plnl.contrato.obra.fechaInicio} cronograma: ${rjpl.last().acumuladoCronograma}"
 //            def dias_eje = plnl.fechaFin - plnl.contrato.obra.fechaInicio + 1
             def dias_eje = dias_obra(plnl)
 //            dias = (rjpl.last().acumuladoCronograma - rjpl.last().acumuladoPlanillas) / ( (rjpl.last().acumuladoCronograma)/dias_eje )
@@ -4596,11 +4597,11 @@ class PlanillaController {
 //            dias = (rjpl.last().acumuladoCronograma - rjpl.last().acumuladoPlanillas) / valor_dia
             dias = (cronograma - rjpl.last().acumuladoPlanillas) / valor_dia
 
-            println "dias en multas: $dias"
+//            println "dias en multas: $dias"
 
             dias = Math.round(dias)
             dias = (dias > 0) ? dias : 0
-            println "dias_eje: $dias_eje dias: $dias"
+//            println "dias_eje: $dias_eje dias: $dias"
 //            multaPlanilla = Math.round(((rjpl.last().acumuladoPlanillas < rjpl.last().acumuladoCronograma) ?
             multaPlanilla = Math.round(((rjpl.last().acumuladoPlanillas < cronograma) ?
                     (plnl.contrato.monto - rjpl.last().acumuladoPlanillas) / 1000 * dias : 0) * 100) / 100
@@ -4619,7 +4620,7 @@ class PlanillaController {
             prmt.monto = multaPlanilla
             prmt.periodo = "${rjpl.last().mes}"
             prmt.dias = dias
-            println "a insertar: ${prmt}"
+//            println "a insertar: ${prmt}"
             insertaMulta(prmt)
         }
 
@@ -4633,7 +4634,7 @@ class PlanillaController {
             def diasmlta = dias_obra_total(plnl)
             if (diasmlta > 0 && plnl.tipoContrato != 'C') {
                 def restante = plnl.contrato.monto - valor_ejecutado(plnl.id)
-                println "dias: $diasmlta, ejecutado: ${valor_ejecutado(plnl.id)} restante: $restante, tppl: ${plnl.tipoPlanilla}"
+//                println "dias: $diasmlta, ejecutado: ${valor_ejecutado(plnl.id)} restante: $restante, tppl: ${plnl.tipoPlanilla}"
                 multaPlanilla = Math.round((restante / 1000 * diasmlta))
                 prmt = [:]
                 prmt.planilla = plnl
@@ -4697,7 +4698,7 @@ class PlanillaController {
 */
 
             dias = calcula_dias(plnl)
-            println "retraso de obra: ${dias} dias"
+//            println "retraso de obra: ${dias} dias"
 
             if (dias > 0) {
                 prmt = [:]
@@ -4729,19 +4730,19 @@ class PlanillaController {
         def cn = dbConnectionService.getConnection()
         def sql = "select sum((prejfcfn - prejfcin) + 1) dias from prej where cntr__id = ${plnl.contrato.id} and " +
                 "prejtipo in ('P', 'C')"
-        println "sql: $sql"
+//        println "sql: $sql"
         def dias = (int) cn.rows(sql.toString())[0].dias
         sql = "select coalesce(sum(mdcedias),0) dias from mdce where cntr__id = ${plnl.contrato.id} and mdcetipo = 'A'"
-        println "sql: $sql"
+//        println "sql: $sql"
         def ampliacion = (int) cn.rows(sql.toString())[0].dias ?: 0
 
-        println "...dias: $dias, ampliacion: $ampliacion, plazo: ${plnl.contrato.plazo}"
+//        println "...dias: $dias, ampliacion: $ampliacion, plazo: ${plnl.contrato.plazo}"
 
         dias -= plnl.contrato.plazo + ampliacion
         sql = "select plnlfcfn - max(prejfcfn) cntd from plnl, prej " +
                 "where plnl__id = ${plnl.id} and plnl.cntr__id = prej.cntr__id group by plnlfcfn"
 
-        println "retraso sql: $sql"
+//        println "retraso sql: $sql"
         def retrasoObra = cn.rows(sql.toString())[0].cntd
 
         dias += retrasoObra
@@ -4752,7 +4753,7 @@ class PlanillaController {
         def cn = dbConnectionService.getConnection()
         def sql = "select sum((prejfcfn - prejfcin) + 1) dias from prej, plnl where prej.cntr__id = ${plnl.contrato.id} and " +
                 "prejtipo in ('P', 'C') and plnl.cntr__id = prej.cntr__id and plnl__id = ${plnl.id} and prejfcfn <= plnlfcfn"
-        println "dias_obra sql: $sql"
+//        println "dias_obra sql: $sql"
         def dias = (int) cn.rows(sql.toString())[0].dias
 
         def valores = planillasService.plnl_suspension(plnl)
@@ -4761,7 +4762,7 @@ class PlanillaController {
 
         if(enSuspension) {
             dias += plnl.fechaFin - plnl.fechaInicio + 1
-            println "dias_obra corregido:  $dias"
+//            println "dias_obra corregido:  $dias"
         }
 
         return dias
@@ -4772,7 +4773,7 @@ class PlanillaController {
         def sql = "select max(prejfcfn) final from prej where prej.cntr__id = ${plnl.contrato.id}"
         def termina = cn.rows(sql.toString())[0].final
         sql = "select plnlfcfn - '${termina}'::date dias from plnl where plnl__id = ${plnl.id}"
-        println "dias_obra_total sql: $sql"
+//        println "dias_obra_total sql: $sql"
         def dias = (int) cn.rows(sql.toString())[0].dias
         return dias
     }
@@ -4822,7 +4823,7 @@ class PlanillaController {
         def cn = dbConnectionService.getConnection()
         def sql1 = "select max(rjplplac) suma from rjpl where plnl__id = ${plnl_id} and plnlrjst < ${plnl_id}"
         def valor = cn.rows(sql1.toString())[0].suma
-        println "valor ejecutado: $valor sql: $sql1"
+//        println "valor ejecutado: $valor sql: $sql1"
         return valor
     }
 
@@ -4949,14 +4950,14 @@ class PlanillaController {
             def cn = dbConnectionService.getConnection()
 //            def sql = "select sum(cast(to_char(prejfcfn - prejfcin, 'dd') as integer) + 1) dias from prej where cntr__id = ${plnl.contrato.id} and prejtipo = 'P'"
             def sql = "select sum((prejfcfn - prejfcin) + 1) dias from prej where cntr__id = ${plnl.contrato.id} and prejtipo in ('P', 'C')"
-            println "sql: $sql"
+//            println "sql: $sql"
             dias = (int) cn.rows(sql.toString())[0].dias
-            println "dias: $dias"
+//            println "dias: $dias"
             sql = "select coalesce(sum(mdcedias),0) dias from mdce where cntr__id = ${plnl.contrato.id} and mdcetipo = 'A'"
-            println "sql... $sql"
+//            println "sql... $sql"
             def ampliacion = (int) cn.rows(sql.toString())[0].dias ?: 0
 
-            println "...dias: $dias, ampliacion: $ampliacion, plazo: ${plnl.contrato.plazo}"
+//            println "...dias: $dias, ampliacion: $ampliacion, plazo: ${plnl.contrato.plazo}"
 
             dias -= plnl.contrato.plazo + ampliacion
 
@@ -4965,12 +4966,12 @@ class PlanillaController {
             sql = "select plnlfcfn - max(prejfcfn) cntd from plnl, prej " +
                     "where plnl__id = ${plnl.id} and plnl.cntr__id = prej.cntr__id group by plnlfcfn"
 
-            println "retraso sql: $sql"
+//            println "retraso sql: $sql"
             def retrasoObra = cn.rows(sql.toString())[0].cntd
 
             dias += retrasoObra
 
-            println "retraso de obra: ${dias} dias"
+//            println "retraso de obra: ${dias} dias"
 
 //            dias = 4
             if (dias > 0) {
@@ -5033,7 +5034,7 @@ class PlanillaController {
 
     def insertaMulta(prmt) {
         def mlpl = new MultasPlanilla()
-        println "inserta multas de la planilla : ${prmt}"
+//        println "inserta multas de la planilla : ${prmt}"
         def mlpl_an = MultasPlanilla.findByPlanillaAndTipoMulta(prmt.planilla, prmt.tipoMulta)
         if (mlpl_an) {
             mlpl = MultasPlanilla.get(mlpl_an.id)
@@ -5086,7 +5087,7 @@ class PlanillaController {
         def fcha
         def reajuste = cntr.aplicaReajuste
 
-        println "procesa Reajuste: planilla ${plnl.id}, tipo: ${plnl.tipoPlanilla}"
+//        println "procesa Reajuste: planilla ${plnl.id}, tipo: ${plnl.tipoPlanilla}"
 
         if (plnl.tipoPlanilla.codigo == 'A') {
             /** no hay planillas a recalcular reajuste **/
@@ -5096,7 +5097,7 @@ class PlanillaController {
             fcha = plnl.periodoIndices ? plnl.periodoIndices.fechaInicio : plnl.fechaIngreso
 //            println "es anticipo -- $fcha"
             def prin = indicesDisponiblesAnticipo(plnl, fcha, null)
-            println "Indices disponibles anticipo: ${prin.id}: ${prin.descripcion} ${prin.fechaInicio}"
+//            println "Indices disponibles anticipo: ${prin.id}: ${prin.descripcion} ${prin.fechaInicio}"
             /** para cada FPRJ crea un registro en RJPL **/
             FormulaPolinomicaReajuste.findAllByContrato(plnl.contrato).each {
 //                println "++++indice disponible: $prin, fprj: ${it.id}"
@@ -5140,10 +5141,10 @@ class PlanillaController {
             def pl = Planilla.findAllByContratoAndTipoPlanillaInListAndFechaPresentacionLessThanAndTipoContrato(plnl.contrato,
                     TipoPlanilla.findAllByCodigoInList(listPl), plnl.fechaPresentacion, plnl.tipoContrato,
                     [sort: 'fechaPresentacion'])
-            println "planillas AB por procesar: ${pl.size()}: ${pl.id}"
-            println "${plnl.contrato}, ${TipoPlanilla.findAllByCodigoInList(listPl)}, ${plnl.fechaPresentacion}, ${plnl.tipoContrato}"
+//            println "planillas AB por procesar: ${pl.size()}: ${pl.id}"
+//            println "${plnl.contrato}, ${TipoPlanilla.findAllByCodigoInList(listPl)}, ${plnl.fechaPresentacion}, ${plnl.tipoContrato}"
             pl.each { p ->   /** las planillas anteriores solo son A o B **/
-                println "procesa planilla ${p.id} tipo: ${p.tipoPlanilla}"
+//                println "procesa planilla ${p.id} tipo: ${p.tipoPlanilla}"
                 prmt = [:]
                 if (p.tipoPlanilla.toString() in ['A', 'B']) {
                     fcha = p.periodoIndices ? p.periodoIndices.fechaInicio : plnl.fechaIngreso
@@ -5155,7 +5156,7 @@ class PlanillaController {
                         prmt.periodoInec = indicesDisponiblesAnticipo(p, fcha, null)
                         prmt.mes = preciosService.componeMes(p.fechaIngreso.format('MMM-yyyy'))
                     }
-                    println "hay que recalcular reajuste de plnl: ${p.id}, tipo: ${p.tipoPlanilla}, pagada: ${p?.fechaPago}, --> $prdoInec"
+//                    println "hay que recalcular reajuste de plnl: ${p.id}, tipo: ${p.tipoPlanilla}, pagada: ${p?.fechaPago}, --> $prdoInec"
 
                     prmt.periodoInec = prdoInec ?: indicesDisponibles(p, fcha, '')
                     prmt.planilla = plnl
@@ -5174,7 +5175,7 @@ class PlanillaController {
             listPl = ['P', 'Q']
             pl = Planilla.findAllByContratoAndTipoPlanillaInListAndFechaPresentacionLessThanAndTipoContrato(plnl.contrato,
                     TipoPlanilla.findAllByCodigoInList(listPl), plnl.fechaPresentacion, plnl.tipoContrato, [sort: 'fechaPresentacion'])
-            println "planillas P por procesar: ${pl.size()}: ${pl.id}"
+//            println "planillas P por procesar: ${pl.size()}: ${pl.id}"
             pl.each { p ->   /** las planillas anteriores de avance P o Q **/
                 if ((p == pl.last())) {  // reajusta sólo planillas de avance
                     /** pone Po en base a lo recalculado de la planilla anterior **/
@@ -5248,10 +5249,10 @@ class PlanillaController {
             def totalCmpl = 0.0
             if (plnl.tipoPlanilla.codigo == 'R') {
                 prdo = ReajustePlanilla.executeQuery("select max(periodo) from ReajustePlanilla where planilla = :c", [c: pl?.last()])[0]
-                println "Planilla de Reliquidación, periodo: $prdo"
+//                println "Planilla de Reliquidación, periodo: $prdo"
             }
-            println "dias planillados: $diasPlanillados, fchaFinPlanillado: $fchaFinPlanillado, periodo: $prdo, plnl: ${plnl.id}"
-            println "antes del while total: $totalCr"
+//            println "dias planillados: $diasPlanillados, fchaFinPlanillado: $fchaFinPlanillado, periodo: $prdo, plnl: ${plnl.id}"
+//            println "antes del while total: $totalCr"
             total = totalCr
             while (fchaFinPlanillado <= plnl.fechaFin) {
                 prdo++
@@ -5260,22 +5261,22 @@ class PlanillaController {
 
                 fcfm = preciosService.ultimoDiaDelMes(fchaFinPlanillado)
 
-                println "(0)fecha fin Planillado: $fchaFinPlanillado, fchaFin: ${plnl.fechaFin}, fcfm: $fcfm"
+//                println "(0)fecha fin Planillado: $fchaFinPlanillado, fchaFin: ${plnl.fechaFin}, fcfm: $fcfm"
                 if (plnl.fechaFin > fcfm)   /*** la planilla sobrepasa el mes: tiene dos o mas Po  **/ {
                     diasEsteMes = preciosService.diasEsteMes(plnl.contrato.id, fchaFinPlanillado.format('yyyy-MM-dd'), fcfm.format('yyyy-MM-dd'))
-                    println "dias este mes: ${fchaFinPlanillado.format('yyyy-MMM-dd')}  dias: ${diasEsteMes}"
+//                    println "dias este mes: ${fchaFinPlanillado.format('yyyy-MMM-dd')}  dias: ${diasEsteMes}"
                     esteMes = Math.round(plnl.valor * diasEsteMes / diasPlanillados * 100) / 100
                     plAcumulado += esteMes
                     planilladoEsteMes += esteMes
 
-                    println "(1)fecha fin Planillado: $fchaFinPlanillado, esteMes: $esteMes, fcfm: $fcfm"
+//                    println "(1)fecha fin Planillado: $fchaFinPlanillado, esteMes: $esteMes, fcfm: $fcfm"
 
                     pems = PeriodoEjecucion.findAllByContratoAndFechaInicioGreaterThanEqualsAndFechaFinLessThanEqualsAndTipoInList(plnl.contrato,
                             fchaFinPlanillado, fcfm, ['P', 'A', 'C'])
                     parcial = 0.0
                     totalCmpl = 0.0
 
-                    println "!!periodo ejecutado: $pems"
+//                    println "!!periodo ejecutado: $pems"
                     pems.each { ms ->
                         if (plnl.tipoContrato == 'P') {
                             parcial += ms.parcialContrato
@@ -5285,29 +5286,29 @@ class PlanillaController {
                             total += ms.parcialCmpl
                         }
                     }
-                    println "**-- fin Planillado: $fchaFinPlanillado, esteMes: $esteMes, plAcumulado: $plAcumulado, cr: $parcial -- $total"
+//                    println "**-- fin Planillado: $fchaFinPlanillado, esteMes: $esteMes, plAcumulado: $plAcumulado, cr: $parcial -- $total"
                     /** manejo especial de la planilla 217 no reajusto en todos los periodos borrar y dejar solo el ELSE **/
 //                    if (plnl.id == 217) {
 //                        registraRjpl(prdo, esteMes, plAcumulado, plnl.contrato, plnl, fchaFinPlanillado, fcfm, parcial, total, true)
 //                        fchaFinPlanillado = plnl.fechaFin
 //                    } else {
-                    println "registraRjpl: $prdo, $esteMes, $plAcumulado, ${plnl.id}, $fchaFinPlanillado, $fcfm, $parcial, $total"
+//                    println "registraRjpl: $prdo, $esteMes, $plAcumulado, ${plnl.id}, $fchaFinPlanillado, $fcfm, $parcial, $total"
 
                     registraRjpl(prdo, esteMes, plAcumulado, plnl.contrato, plnl, fchaFinPlanillado, fcfm, parcial, total, false)
                     fchaFinPlanillado = preciosService.sumaUnDia(fcfm)
 //                    }
                 } else {  // se crea el último periodo en rjpl
-                    println "------------ fechaFin: ${plnl.fechaFin} > finMes: ${fcfm}, fchaFinPlanillado $fchaFinPlanillado"
+//                    println "------------ fechaFin: ${plnl.fechaFin} > finMes: ${fcfm}, fchaFinPlanillado $fchaFinPlanillado"
                     diasEsteMes = preciosService.diasEsteMes(plnl.contrato.id, fchaFinPlanillado.format('yyyy-MM-dd'), plnl.fechaFin.format('yyyy-MM-dd'))
                     esteMes = plnl.valor - planilladoEsteMes
                     plAcumulado += esteMes
 
                     if (plnl.tipoPlanilla.codigo in ['Q', 'R']) {
                         pems = PeriodoEjecucion.findAllByContratoAndFechaInicioGreaterThanEqualsAndTipoInList(plnl.contrato, plnl.fechaInicio, ['P', 'A', 'C'])
-                        println "------ pems: ${pems}"
+//                        println "------ pems: ${pems}"
                     } else if (plnl.tipoPlanilla.codigo == 'P') {
 //                    } else if (plnl.tipoPlanilla.codigo in ['P', 'L']) {
-                        println "ejecuta con: ${plnl.contrato.id}, $fchaFinPlanillado, ${plnl.fechaFin}"
+//                        println "ejecuta con: ${plnl.contrato.id}, $fchaFinPlanillado, ${plnl.fechaFin}"
                         pems = PeriodoEjecucion.findAllByContratoAndFechaInicioGreaterThanEqualsAndFechaFinLessThanEqualsAndTipoInList(plnl.contrato,
                                 fchaFinPlanillado, plnl.fechaFin, ['P', 'A', 'C'])
                     }
@@ -5316,7 +5317,7 @@ class PlanillaController {
 
 //                    total = totalCr /* revisar TODO */
 //                    if((totalCmpl > 0) && pems[0].fechaFin < fchaFinPlanillado) total += totalCmpl
-                    println "---- pems: ${pems.parcialContrato}"
+//                    println "---- pems: ${pems.parcialContrato}"
                     pems.each { ms ->
 //                        println "ms.parcialCronograma ${ms.parcialCmpl}, ${ms.fechaFin} >= ${fchaFinPlanillado}"
                         if (ms.fechaFin >= fchaFinPlanillado) {
@@ -5336,11 +5337,11 @@ class PlanillaController {
                     def enSuspension = valores.suspension
                     if(enSuspension) {
                         total += valor_dia * valores.dias
-                        println "acumulado cronograma corregido: $total"
+//                        println "acumulado cronograma corregido: $total"
                     }
 
 
-                    println "**fecha fin Planillado: $fchaFinPlanillado, esteMes: $esteMes, plAcumulado: $plAcumulado, cr: $parcial -- $total, prdo: $prdo"
+//                    println "**fecha fin Planillado: $fchaFinPlanillado, esteMes: $esteMes, plAcumulado: $plAcumulado, cr: $parcial -- $total, prdo: $prdo"
                     registraRjpl(prdo, esteMes, plAcumulado, plnl.contrato, plnl, fchaFinPlanillado, plnl.fechaFin, parcial, total, true)
 
                     fchaFinPlanillado = plnl.fechaFin + 1
@@ -5348,26 +5349,26 @@ class PlanillaController {
             }
         }
 
-        println "+++++ tppl: ${plnl.tipoPlanilla.toString()}  ${plnl.tipoPlanilla.toString() in ['L']}"
+//        println "+++++ tppl: ${plnl.tipoPlanilla.toString()}  ${plnl.tipoPlanilla.toString() in ['L']}"
         if (plnl.tipoPlanilla.toString() in ['L']) { /** planillas de liquidacion del reajuste **/
-            println "----+porcesa planillas anteriores----------..."
+//            println "----+porcesa planillas anteriores----------..."
 //            def pl = Planilla.findAllByContratoAndTipoPlanillaInListAndFechaPresentacionLessThan(plnl.contrato,
 //                    TipoPlanilla.findAllByCodigoInList(['A', 'P', 'Q']), plnl.fechaPresentacion, [sort: 'fechaPresentacion'])
             def pl = Planilla.findAllByContratoAndTipoPlanillaInListAndFechaPresentacionLessThanAndTipoContrato(plnl.contrato,
                     TipoPlanilla.findAllByCodigoInList(['A', 'B', 'P', 'Q']), plnl.fechaPresentacion, plnl.tipoContrato, [sort: 'fechaPresentacion'])
             pl.each { p ->   /** las planillas anteriores solo son A o P **/
-                println "procesa planilla ${p.id} tipo: ${p.tipoPlanilla}"
+//                println "procesa planilla ${p.id} tipo: ${p.tipoPlanilla}"
                 prmt = [:]
                 if (p.tipoPlanilla.toString() in ['A', 'B']) {
                     fcha = p.periodoIndices ? p.periodoIndices.fechaInicio : plnl.fechaIngreso
                     def fechaPago = p.fechaPago ?: p.fechaPresentacion
 //                    prdoInec = indicesDisponiblesAnticipo(p, p.fechaPago, 'R') // para recalcular reajuste
                     prdoInec = indicesDisponiblesAnticipo(p, fechaPago, 'R') // para recalcular reajuste
-                    println "P_Q:+++ existe indices para prdo: $prdoInec"
+//                    println "P_Q:+++ existe indices para prdo: $prdoInec"
 
 //                    FormulaPolinomicaReajuste.findAllByContrato(p.contrato).each {
                     /** debe reajustar con índices de la fecha de pago si ya esá apgada y si existen los índices **/
-                    println "hay que recalcular reajuste de plnl: ${p.id}, tipo: ${p.tipoPlanilla}, pagada: ${fechaPago}"
+//                    println "hay que recalcular reajuste de plnl: ${p.id}, tipo: ${p.tipoPlanilla}, pagada: ${fechaPago}"
                     prmt.periodoInec = prdoInec ?: indicesDisponibles(p, fcha, '')
                     prmt.planilla = plnl
                     prmt.planillaReajustada = p
@@ -5388,7 +5389,7 @@ class PlanillaController {
 //                } else if((p.tipoPlanilla.toString() == 'P') && (p == pl.last())) {  // reajusta sólo planillas de avance
                 } else if ((p.tipoPlanilla.toString() in ['P', 'Q'])) {
                     /** recalcula Po en base a lo recalculado de la planilla anterior **/
-                    println "planilla de avance anterior -------------------- ${p.id}"
+//                    println "planilla de avance anterior -------------------- ${p.id}"
 //                    plAcumulado += p.valor
                     /** para cada planilla anterior se debe saber el Po aplicado antes para ingresar la diferencia de aplicarse **/
                     if (p.fechaInicio < plnl.fechaInicio) {    //verifica que es de un periodo anterior
@@ -5432,7 +5433,7 @@ class PlanillaController {
                             /**para recalcular el prin se requiere la fecha a la que corresponde el reajuste po.fechaInicio, po.fechaFin ok **/
                             prdoInec = indicesDisponibles(po.planillaReajustada, po.planillaReajustada.fechaPago, 'R') /* para recalcular reajuste */
 //                            println "****L***** para plnl: ${po.id} con pr: ${po.periodoInec} se retorna de indicesDisponibles: $prdoInec, fcha: $po.fechaInicio "
-                            println "**** plnl: ${po.planillaReajustada.id} fecha de pago: ${po.planillaReajustada.fechaPago} --> $prdoInec"
+//                            println "**** plnl: ${po.planillaReajustada.id} fecha de pago: ${po.planillaReajustada.fechaPago} --> $prdoInec"
                             prmt.periodoInec = prdoInec ?: indicesDisponibles(po.planillaReajustada, po.fechaInicio, '')
 
 //                            println "  inserta avance RR... si hay indices actuales $prmt"
@@ -5453,7 +5454,7 @@ class PlanillaController {
     def calculaPo(id, vlor, plFinal, prdo) { /** calcula Po para cada periodo -- uno o varios meses **/
         /** hasta el valor contratado al Po se le debe descontar la proporción del anticipo, si ya se supera este
          ** valor el valor, el Po es el valorplanillado completo                                                  */
-        println "calculaPo recibe: id: $id, vlor: $vlor, plFinal: $plFinal"
+//        println "calculaPo recibe: id: $id, vlor: $vlor, plFinal: $plFinal"
         def plnl = Planilla.get(id)
         def valorPo = 0.0
 
@@ -5485,7 +5486,7 @@ class PlanillaController {
         }
         def totPlnlCmpl = ReajustePlanilla.executeQuery("select max(acumuladoPlanillas) from ReajustePlanilla where planilla = :p and " +
                 "planillaReajustada = :p", [p: plnl])[0] ?: 0
-        println ".....2 $totPlnl"
+//        println ".....2 $totPlnl"
 
 //        def resto  = Math.round((plnl.contrato.anticipo - totPo - totPoAc)*100)/100
         /* el resto de Po debería ser respecto del monto del contrato - lo aplicado en Po */
@@ -5500,7 +5501,7 @@ class PlanillaController {
 
         vlor = Math.round(vlor*100)/100  //redondea a 2 decimales
 
-        println "totalPo --> totPlnl: $totPlnl, plVlor: ${plnl.valor}, vlor: $vlor, anterior: ${totPo}, actual: ${totPoAc}, resto: $resto, estePo: $estePo"
+//        println "totalPo --> totPlnl: $totPlnl, plVlor: ${plnl.valor}, vlor: $vlor, anterior: ${totPo}, actual: ${totPoAc}, resto: $resto, estePo: $estePo"
 
         if ((estePo > resto) && (plnl.tipoPlanilla.codigo != 'Q')) {
             valorPo = resto   //nunca existe
@@ -5516,7 +5517,7 @@ class PlanillaController {
             println "------- $estePo"
             valorPo = estePo
         }
-        println "valor de Po a aplicar: $valorPo"
+//        println "valor de Po a aplicar: $valorPo"
         valorPo
     }
 
@@ -5681,7 +5682,7 @@ class PlanillaController {
                 if (!lleno) {  // ya se completó los días del mes en curso
                     if (pe.fechaFin == fcfm) {
                         if (inicio) { // viene de un periodo anterior
-                            println "xxsi hay inicio, dias: $dias"
+//                            println "xxsi hay inicio, dias: $dias"
                             texto = inicio.format("dd-MM-yyyy") + "_" + pe.fechaFin.format("dd-MM-yyyy")
                         } else {
 //                            println "xxno hay inicio, dias: $dias"
@@ -5749,15 +5750,15 @@ class PlanillaController {
 
     //calcula el total sbpr que aplica a esta FP
     def prorrateaPo(fprj, cntr, plnl) {
-        println "prorrateaPo: fprj: $fprj, obra: ${cntr.obraContratada.id}, valor: $plnl"
+//        println "prorrateaPo: fprj: $fprj, obra: ${cntr.obraContratada.id}, valor: $plnl"
         def cn = dbConnectionService.getConnection()
 //        def sql = "select sum(vlobsbtt) suma from fpsp, vlob where vlob.sbpr__id = fpsp.sbpr__id and " +
 //                "fprj__id = ${fprj} and obra__id = ${cntr.obraContratada.id}"
         def sql = "select sum(vocrsbtt) suma from fpsp, vocr where vocr.sbpr__id = fpsp.sbpr__id and " +
                 "fprj__id = ${fprj} and obra__id = ${cntr.obraContratada.id}"
-        println "prorrateaPo--sql: $sql"
+//        println "prorrateaPo--sql: $sql"
         def valor = cn.rows(sql.toString())[0].suma * plnl / cntr.monto
-        println "valor: $valor"
+//        println "valor: $valor"
         /* todo*/
         /* verificar que no hayan registro repetidos en fpsp
         * algo como select sbpr__id from fpsp where fprj__id = ${fprj__id} group by sbpr__id
@@ -5772,7 +5773,7 @@ class PlanillaController {
      * @return
      */
     def registraRjpl(prdo, esteMes, plAcumulado, contrato, planilla, fcin, fcfn, crpa, crac, planillaFinal) {
-        println "***prdo: $prdo, esteMes: $esteMes, fcin: $fcin, fcfn: $fcfn,  crpa: $crpa, crac: $crac"
+//        println "***prdo: $prdo, esteMes: $esteMes, fcin: $fcin, fcfn: $fcfn,  crpa: $crpa, crac: $crac"
         def prmt = [:]
         def prdoInec = indicesDisponibles(planilla, fcin, null) /* para recalcular reajuste */
         prmt.periodoInec = prdoInec
@@ -5792,7 +5793,7 @@ class PlanillaController {
 
         def dsct1 = calculaPo(planilla.id, esteMes, planillaFinal, prmt.periodo)
         prmt.valorPo = dsct1
-        println "inserta segunda parte Po: $dsct1"
+//        println "inserta segunda parte Po: $dsct1"
 
         /** procesa planillas con valor negativo **/
 //        insertaRjpl(prmt)
@@ -5808,7 +5809,7 @@ class PlanillaController {
     }
 
     def anticipo_ajax() {
-        println "anticipo_ajax: $params"
+//        println "anticipo_ajax: $params"
         def contrato = Contrato.get(params.contrato)
         def tipoPlanilla = TipoPlanilla.get(params.tipo)
         def com
@@ -5944,13 +5945,13 @@ class PlanillaController {
     }
 
     def verificarPeriodo_ajax(){
-        println("params  " + params)
+//        println("params  " + params)
         def cn = dbConnectionService.getConnection()
         def planilla = Planilla.get(params.planilla)
         def sql = "select * from verifica_indices_v2(${planilla?.id},${planilla?.periodoIndices?.id});"
         def res = cn.rows(sql.toString())
 
-        println("planilla " + planilla.periodoIndices.id)
+//        println("planilla " + planilla.periodoIndices.id)
 
         return [datos: res]
     }
@@ -5972,7 +5973,7 @@ class PlanillaController {
 
             def planillas = Planilla.findAllByContratoAndTipoPlanillaNotEqualAndFechaFinGreaterThanEquals(contrato, tipoAvance, fecha)
 
-            println("plaillas " + planillas)
+//            println("plaillas " + planillas)
 
             if(planillas.size() > 0){
                 planillas.each {
@@ -6036,7 +6037,7 @@ class PlanillaController {
     }
 
     def verificarFecha_ajax(){
-        println "verificarFecha_ajax: $params"
+//        println "verificarFecha_ajax: $params"
         def fechaMax = new Date().parse("yyyy-MM-dd", params.fechaMax)
         def contrato = Contrato.get(params.id)
         def planilla = Planilla.get(params.planilla)
@@ -6046,7 +6047,7 @@ class PlanillaController {
 
         def fecha;
 
-        println "contrato: ${contrato} anticipo: ${contrato?.anticipo}"
+//        println "contrato: ${contrato} anticipo: ${contrato?.anticipo}"
 
         if(params.tipo){
             if(params.tipo == '3' || params.tipo == '9'){
@@ -6178,7 +6179,7 @@ class PlanillaController {
 
         /** si es complementario se desliga la planilla complementaria y se borra: no se implementa **/
 
-        println("errores " + errores)
+//        println("errores " + errores)
 
         if(errores == ''){
             render"ok_Planilla borrada correctamente"

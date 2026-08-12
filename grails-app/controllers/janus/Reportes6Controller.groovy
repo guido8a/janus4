@@ -849,7 +849,7 @@ class Reportes6Controller {
 
     def reporteExcelCronograma() {
 
-        println("params excel cronograma " + params)
+//        println("params excel cronograma " + params)
 
         def tipo = params.tipo
         def obra = null, contrato = null, lbl = ""
@@ -1095,7 +1095,7 @@ class Reportes6Controller {
         try {
             indi = indi.toDouble()
         } catch (e) {
-            println "error parse " + e
+//            println "error parse " + e
             indi = 21.5
         }
         def obra
@@ -1262,7 +1262,7 @@ class Reportes6Controller {
         try {
             indi = indi.toDouble()
         } catch (e) {
-            println "error parse " + e
+//            println "error parse " + e
             indi = 21.5
         }
         def obra
@@ -1591,7 +1591,7 @@ class Reportes6Controller {
         try{
             indi=indi.toDouble()
         } catch (e){
-            println "error parse "+e
+//            println "error parse "+e
             indi=21.5
         }
 
@@ -1745,7 +1745,7 @@ class Reportes6Controller {
         try{
             indi=indi.toDouble()
         } catch (e){
-            println "error parse "+e
+//            println "error parse "+e
             indi=21.5
         }
 
@@ -1949,7 +1949,7 @@ class Reportes6Controller {
         def datos;
         def select = "select distinct * from prsn where dpto__id != 13 and prsnactv = 1 order by prsnapll".toString()
 //        def select = "select distinct prsn.* , dptodscr from prsn, dpto where prsn.dpto__id != 13 and prsnactv = 1 and dpto.dpto__id = prsn.dpto__id order by prsnapll".toString()
-        println "sql: $select"
+//        println "sql: $select"
         def cn = dbConnectionService.getConnection()
         datos = cn.rows(select)
 
@@ -1960,7 +1960,7 @@ class Reportes6Controller {
         def datos;
 //        def select = "select distinct * from prsn where dpto__id != 13 and prsnactv = 1 order by prsnapll".toString()
         def select = "select distinct prsn.* , dptodscr from prsn, dpto where prsn.dpto__id != 13 and prsnactv = 1 and dpto.dpto__id = prsn.dpto__id order by prsnapll".toString()
-        println "sql: $select"
+//        println "sql: $select"
         def cn = dbConnectionService.getConnection()
         datos = cn.rows(select)
 
@@ -2092,7 +2092,7 @@ class Reportes6Controller {
     }
 
     def reporteComposicion() {
-        println " reporteComposicion "
+//        println " reporteComposicion "
 
         def obra = Obra.get(params.id)
         def totales
@@ -2506,7 +2506,7 @@ class Reportes6Controller {
         tablaTotales1.setWidths(arregloEnteros([87, 13]))
 
         def totalCD = (valorTotal ?: 0) + (valorTotalMano ?: 0) + (valorTotalEquipos ?: 0) + (total4 ?: 0) + (total5 ?: 0) + (total6?: 0) + (total7 ?: 0)
-        println "total: ${totalCD}"
+//        println "total: ${totalCD}"
         addCellTabla(tablaTotales1, new Paragraph("TOTAL COSTO DIRECTO:", times10bold), prmsCellDerecha)
         addCellTabla(tablaTotales1, new Paragraph(g.formatNumber(number: (totalCD), minFractionDigits:
                 3, maxFractionDigits: 3, format: "##,##0", locale: "ec"), times10bold), prmsNum)
@@ -2726,7 +2726,7 @@ class Reportes6Controller {
 
         def wsp = ""
         if (params.sp.toString() != "-1") {
-            println("entro")
+//            println("entro")
             wsp = "      AND v.sbpr__id = ${params.sp} \n"
         }
 
@@ -2933,7 +2933,7 @@ class Reportes6Controller {
         }
         def wsp = ""
         if (params.sp.toString() != "-1") {
-            println("entro")
+//            println("entro")
             wsp = "      AND v.sbpr__id = ${params.sp} \n"
         }
 
@@ -3383,7 +3383,7 @@ class Reportes6Controller {
 
         sql = "select * from audt ${wh} order by audtfcha limit 200"
 
-        println("sql " + sql)
+//        println("sql " + sql)
 
         def cn = dbConnectionService.getConnection()
         def res = cn.rows(sql.toString())

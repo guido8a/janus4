@@ -20,7 +20,7 @@ class DocumentoObraController {
         def path = "/var/janus/" + folder + File.separatorChar + doc.path
 
 //        println servletContext.getRealPath("/")
-        println path
+//        println path
 
         def file = new File(path)
         if(file.exists()) {

@@ -79,11 +79,11 @@ class ParametrosController {
     //save Factores en variables de parámetros
 
     def saveFactores() {
-        println "saveFactores: $params"
+//        println "saveFactores: $params"
         def parametrosInstance
         if(params.id) {
             parametrosInstance = Parametros.get(params.id)
-            println "totales: ${parametrosInstance.totales}"
+//            println "totales: ${parametrosInstance.totales}"
             if(!parametrosInstance) {
                 flash.clase = "alert-error"
                 flash.message = "No se encontró Parametros con id " + params.id
@@ -95,7 +95,7 @@ class ParametrosController {
         else {
             parametrosInstance = new Parametros(params)
         } //es create
-        println "antes del save --totales: ${parametrosInstance.totales}"
+//        println "antes del save --totales: ${parametrosInstance.totales}"
         if (!parametrosInstance.save(flush: true)) {
             flash.clase = "alert-error"
             def str = "<h4>No se pudo guardar las variables " + (parametrosInstance.id ? parametrosInstance.id : "") + "</h4>"
@@ -114,7 +114,7 @@ class ParametrosController {
             redirect(controller: 'inicio', action: 'variables')
             return
         } else {
-            println "save ok: total: ${params.totales} --> ${parametrosInstance.totales}"
+//            println "save ok: total: ${params.totales} --> ${parametrosInstance.totales}"
         }
 
         if(params.id) {
@@ -171,7 +171,7 @@ class ParametrosController {
 
 
     def tablaAuditoria_ajax(){
-        println("params " + params)
+//        println("params " + params)
 
         def desde
         def hasta
@@ -203,7 +203,7 @@ class ParametrosController {
         sql = "select * from audt ${wh} order by audtfcha limit 200"
 
 
-        println("sql " + sql)
+//        println("sql " + sql)
 
         def cn = dbConnectionService.getConnection()
         def res = cn.rows(sql.toString())

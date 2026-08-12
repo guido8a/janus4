@@ -107,7 +107,7 @@ class InicioController {
             ar.withReader('UTF-8') { reader ->
                 print "Cargando datos desde: $ar "
                 while ((line = reader.readLine()) != null) {
-                    println ">>${line}"
+//                    println ">>${line}"
                     if(cuenta == 0){
                         rgst = line.split('\t')
                         rgst = rgst*.trim()
@@ -117,7 +117,7 @@ class InicioController {
                     } else if(cuenta < procesa && line?.size() > 20) {
                         rgst = line.split('\t')
                         rgst = rgst*.trim()
-                        println "***** $rgst"
+//                        println "***** $rgst"
                         if(rgst[6]) {
                             inserta = cargaData(rgst, fechas)
                             cont += inserta.insertados
@@ -129,7 +129,7 @@ class InicioController {
                     }
                 }
             }
-            println "---> archivo: ${ar.toString()} --> cont: $cont, repetidos: $repetidos"
+//            println "---> archivo: ${ar.toString()} --> cont: $cont, repetidos: $repetidos"
         }
 //        return "Se han cargado ${cont} líneas de datos y han existido : <<${repetidos}>> repetidos"
         render "Se han cargado ${cont} líneas de datos y han existido : <<${repetidos}>> repetidos"

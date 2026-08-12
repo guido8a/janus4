@@ -7,7 +7,7 @@ class VariablesController {
     def dbConnectionService
 
     def variables_ajax() {
-        println "variables_ajax $params"
+//        println "variables_ajax $params"
 
         def obra = Obra.get(params.obra)
         def par = Parametros.list()
@@ -19,7 +19,7 @@ class VariablesController {
         def choferes = []
         def grupoTransporte = DepartamentoItem.findAllByTransporteIsNotNull()
 
-        println "transporte: $grupoTransporte"
+//        println "transporte: $grupoTransporte"
         grupoTransporte.each {
             if (it.transporte.codigo == "H")
                 choferes = Item.findAllByDepartamento(it)
@@ -41,7 +41,7 @@ class VariablesController {
             obra.save(flush: true)
         }
 
-        println "sale de variables_ajax"
+//        println "sale de variables_ajax"
         [choferes: choferes, volquetes: volquetes, obra: obra, par: par, volquetes2: volquetes2, transporteCamioneta: transporteCamioneta, transporteAcemila: transporteAcemila, total1: total1, total2: total2]
     }
 
@@ -95,7 +95,7 @@ class VariablesController {
         if (obra.save(flush: true)) {
             render "OK"
         } else {
-            println obra.errors
+//            println obra.errors
             render "NO"
         }
     }
