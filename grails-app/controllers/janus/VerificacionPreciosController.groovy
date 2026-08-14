@@ -6,8 +6,11 @@ class VerificacionPreciosController {
 
     def verificacion () {
         /** muestra precios no actualizados 7 meses atras */
-        def cn = dbConnectionService.getConnection()
         def obra = Obra.get(params.id)
+        def referencia = obra?.fechaCreacionObra?.format("dd") + "-" + (obra?.fechaCreacionObra?.format("MM")?.toInteger() - 4) + "-" + (obra?.fechaCreacionObra?.format("yyyy"))
+        println("fff " + referencia)
+        def fechaReferencia = new Date().parse("dd-MM-yyyy", referencia)
+        def cn = dbConnectionService.getConnection()
 
         def sql = "SELECT distinct itemcdgo codigo, itemnmbr item, item__id, unddcdgo unidad, rbpcpcun  punitario, " +
                 "rbpcfcha fecha FROM obra_rbpc(${params.id}) " +
@@ -17,7 +20,7 @@ class VerificacionPreciosController {
 //        println "verif: $sql"
         def res = cn.rows(sql.toString())
 
-        return[res: res, obra: obra]
+        return[res: res, obra: obra, fechaReferencia: fechaReferencia]
     }
 
     def preciosCero () {
