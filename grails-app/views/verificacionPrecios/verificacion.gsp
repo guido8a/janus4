@@ -43,7 +43,7 @@
             </tr>
             </thead>
         </table>
-        <div class="" style="width: 99.7%; height: 450px; overflow-y: auto;float: right; margin-top: -20px">
+        <div class="" style="width: 99.7%; height: 550px; overflow-y: auto;float: right; margin-top: -20px">
             <table class="table-bordered table-condensed table-striped table-hover" style="width: 100%; font-size: 14px">
                 <tbody>
                 <g:each in="${res}" var="r">
