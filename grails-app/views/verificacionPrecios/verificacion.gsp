@@ -20,7 +20,7 @@
             </div>
             <div class="col-md-10">
                 <div class="breadcrumb" style="font-size: 14px">
-                    Verificación de precios en obra: ${obra?.descripcion} <br>
+                    Verificación de precios en la obra: ${obra?.descripcion} <br>
                 </div>
             </div>
         </div>
@@ -32,6 +32,9 @@
             <i class="fa fa-exclamation-triangle text-info"></i>
             Precios no actualizados o sin valor a la fecha de referencia:
             <strong>  ${obra?.fechaCreacionObra?.format('dd-MM-yyyy')} (Fecha creación de obra)</strong>
+        </div>
+        <div class="col-md-1">
+            <a href="#" class="btn btn-success btnImprimir" ><i class="fa fa-file-excel"></i> Imprimir</a>
         </div>
     </div>
 
@@ -72,6 +75,10 @@
 
 
 <script type="text/javascript">
+
+    $(".btnImprimir").click(function () {
+        location.href = "${g.createLink(controller: 'reportesExcel', action:'reporteVerificacionPrecios' )}?id=" + '${obra?.id}';
+    });
 
     $(".btnEditar").click(function () {
         var id = $(this).data("id");

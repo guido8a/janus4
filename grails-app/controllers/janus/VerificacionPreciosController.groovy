@@ -8,7 +8,6 @@ class VerificacionPreciosController {
         /** muestra precios no actualizados 7 meses atras */
         def obra = Obra.get(params.id)
         def referencia = obra?.fechaCreacionObra?.format("dd") + "-" + (obra?.fechaCreacionObra?.format("MM")?.toInteger() - 4) + "-" + (obra?.fechaCreacionObra?.format("yyyy"))
-        println("fff " + referencia)
         def fechaReferencia = new Date().parse("dd-MM-yyyy", referencia)
         def cn = dbConnectionService.getConnection()
 
@@ -35,7 +34,6 @@ class VerificacionPreciosController {
 //        println "sql: $sql"
 
         def res = cn.rows(sql.toString())
-
         return[res: res, obra: obra]
     }
 

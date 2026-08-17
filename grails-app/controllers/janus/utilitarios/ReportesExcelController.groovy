@@ -22,6 +22,7 @@ import org.apache.poi.ss.usermodel.Row
 import org.apache.poi.ss.usermodel.Sheet
 import org.apache.poi.ss.util.CellRangeAddress
 import org.apache.poi.xssf.usermodel.XSSFCellStyle
+import org.apache.poi.xssf.usermodel.XSSFColor
 import org.apache.poi.xssf.usermodel.XSSFFont
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
 
@@ -2971,6 +2972,85 @@ class ReportesExcelController {
         response.setContentType("application/octet-stream")
         response.setHeader("Content-Disposition", header)
         wb.write(output)
+    }
+
+    def reporteVerificacionPrecios () {
+
+        def cn = dbConnectionService.getConnection()
+        def obra = Obra.get(params.id)
+        def referencia = obra?.fechaCreacionObra?.format("dd") + "-" + (obra?.fechaCreacionObra?.format("MM")?.toInteger() - 4) + "-" + (obra?.fechaCreacionObra?.format("yyyy"))
+        def fechaReferencia = new Date().parse("dd-MM-yyyy", referencia)
+
+        def sql = "SELECT distinct itemcdgo codigo, itemnmbr item, item__id, unddcdgo unidad, rbpcpcun  punitario, " +
+                "rbpcfcha fecha FROM obra_rbpc(${params.id}) " +
+                "where rbpcfcha <= (cast('${obra.fechaPreciosRubros.format('yyyy-MM-dd')}' as date) - 1) or " +
+                "rbpcfcha is null " +
+                "ORDER BY itemnmbr"
+//        println "verif: $sql"
+        def precios = cn.rows(sql.toString())
+
+        XSSFWorkbook wb = new XSSFWorkbook()
+        XSSFCellStyle style = wb.createCellStyle()
+        XSSFFont font = wb.createFont()
+        font.setBold(true)
+        style.setFont(font)
+
+
+        XSSFCellStyle style2 = wb.createCellStyle()
+        XSSFFont font2 = wb.createFont()
+//        font2.setBold(true)
+        font2.setColor(new XSSFColor(new Color(21,158,78)))
+        style2.setFont(font2)
+
+        Sheet sheet = wb.createSheet("Verificación de precios")
+        sheet.setColumnWidth(0, 20 * 256)
+        sheet.setColumnWidth(1, 70 * 256)
+        sheet.setColumnWidth(2, 10 * 256)
+        sheet.setColumnWidth(3, 20 * 256)
+        sheet.setColumnWidth(4, 20 * 256)
+
+        Row row = sheet.createRow(0)
+        row.createCell(0).setCellValue("")
+        Row row0 = sheet.createRow(1)
+        row0.createCell(1).setCellValue(Auxiliar.get(1)?.titulo ?: '')
+        row0.setRowStyle(style)
+        Row row1 = sheet.createRow(2)
+        row1.createCell(1).setCellValue("REPORTE EXCEL DE VERIFICACIÓN DE PRECIOS")
+        row1.setRowStyle(style)
+        Row row2 = sheet.createRow(3)
+        row2.createCell(1).setCellValue("OBRA: ${obra?.codigo + " - " + obra?.descripcion}")
+        row2.setRowStyle(style)
+
+        def fila = 4
+
+        Row rowC1 = sheet.createRow(fila)
+        rowC1.createCell(0).setCellValue("Código")
+        rowC1.createCell(1).setCellValue("Item")
+        rowC1.createCell(2).setCellValue("U")
+        rowC1.createCell(3).setCellValue("Precio unitario")
+        rowC1.createCell(4).setCellValue("Fecha")
+        rowC1.setRowStyle(style)
+        fila++
+
+        precios.eachWithIndex {i, j->
+            Row rowF1 = sheet.createRow(fila)
+            rowF1.createCell(0).setCellValue(i.codigo.toString() ?: '')
+            rowF1.createCell(1).setCellValue(i.item.toString() ?: '')
+            rowF1.createCell(2).setCellValue(i?.unidad?.toString() ?: '')
+            rowF1.createCell(3).setCellValue(i?.punitario?.toString() ?: '')
+            rowF1.createCell(4).setCellValue(i?.fecha?.format("dd-MM-yyyy")?.toString() ?: '')
+            if(i?.fecha > fechaReferencia){
+                rowF1.setRowStyle(style2)
+            }
+            fila++
+        }
+
+        def output = response.getOutputStream()
+        def header = "attachment; filename=" + "verificacionPrecios_${obra?.codigo + " - " + obra?.descripcion}.xlsx"
+        response.setContentType("application/octet-stream")
+        response.setHeader("Content-Disposition", header)
+        wb.write(output)
+
     }
 
 }
