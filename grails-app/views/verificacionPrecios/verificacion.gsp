@@ -21,6 +21,7 @@
             <div class="col-md-10">
                 <div class="breadcrumb" style="font-size: 14px">
                     Verificación de precios en la obra: ${obra?.descripcion} <br>
+                    (Fecha de referencia para precios actualizados: ${obra.fechaCreacionObra})<br>
                 </div>
             </div>
         </div>
