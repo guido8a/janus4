@@ -21,21 +21,12 @@
             <div class="col-md-10">
                 <div class="breadcrumb" style="font-size: 14px">
                     Verificación de precios en la obra: ${obra?.descripcion} <br>
-                    (Fecha de referencia para precios actualizados: ${obra.fechaCreacionObra})<br>
+                  <strong> (Fecha de referencia para precios actualizados: ${obra.fechaCreacionObra?.format("dd-MM-yyyy")}) </strong><br>
                 </div>
             </div>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-md-2"></div>
-        <div class="col-md-8 alert alert-info" style="font-size: 14px; text-align: center">
-            <i class="fa fa-exclamation-triangle text-info"></i>
-            Precios no actualizados o sin valor a la fecha de referencia:
-            <strong>  ${obra?.fechaCreacionObra?.format('dd-MM-yyyy')} (Fecha creación de obra)</strong>
-        </div>
-        <div class="col-md-1">
-            <a href="#" class="btn btn-success btnImprimir" ><i class="fa fa-file-excel"></i> Imprimir</a>
+            <div class="col-md-1">
+                <a href="#" class="btn btn-success btnImprimir" ><i class="fa fa-file-excel"></i> Imprimir</a>
+            </div>
         </div>
     </div>
 
