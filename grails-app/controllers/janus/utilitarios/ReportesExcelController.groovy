@@ -2999,7 +2999,7 @@ class ReportesExcelController {
         XSSFCellStyle style2 = wb.createCellStyle()
         XSSFFont font2 = wb.createFont()
 //        font2.setBold(true)
-        font2.setColor(new XSSFColor(new Color(21,158,78)))
+        font2.setColor(new XSSFColor(new Color(0,118,78)))
         style2.setFont(font2)
 
         Sheet sheet = wb.createSheet("Verificación de precios")
