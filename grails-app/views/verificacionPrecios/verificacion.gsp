@@ -47,7 +47,7 @@
             <table class="table-bordered table-condensed table-striped table-hover" style="width: 100%; font-size: 14px">
                 <tbody>
                 <g:each in="${res}" var="r">
-                    <tr style="background-color:  ${r?.fecha > fechaReferencia ? '#B2DFD7' : '#FEEEEA'}">
+                    <tr style="background-color:  ${r?.fecha > fechaReferencia ? '#D0FFD0' : '#FFE0E0'}">
                         <td style="width: 10%">${r?.codigo}</td>
                         <td style="width: 50%">${r?.item}</td>
                         <td style="text-align: center; width: 5%">${r?.unidad}</td>
