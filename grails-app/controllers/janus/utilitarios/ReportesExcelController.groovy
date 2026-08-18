@@ -3046,7 +3046,8 @@ class ReportesExcelController {
         }
 
         def output = response.getOutputStream()
-        def header = "attachment; filename=" + "verificacionPrecios_${obra?.codigo + " - " + obra?.descripcion}.xlsx"
+//        def header = "attachment; filename=" + "verificacionPrecios_${obra?.codigo + " - " + obra?.descripcion}.xlsx"
+        def header = "attachment; filename=" + "verificacionPrecios_${obra?.codigo}.xlsx"
         response.setContentType("application/octet-stream")
         response.setHeader("Content-Disposition", header)
         wb.write(output)
