@@ -88,8 +88,16 @@
 <body>
 
 <div class="tituloTree">
-    <div class="alert alert-info " style="margin-top: 5px">FP obra: ${obra.descripcion + " (" + obra.codigo + ")"}</div>
+    <div class="breadcrumb" style="margin-top: 5px">FP de la obra: <strong> ${obra.descripcion + " (" + obra.codigo + ")"} </strong> </div>
 </div>
+
+<div class="alert alert-warning alert-dismissible" style="text-align: center; font-size: 14px; font-weight: bold">
+  <i class="fa fa-exclamation-triangle fa-2x text-info"></i>  Si no se muestran los índices sugeridos, generar nuevamente la fórmula polinómica.
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
 
 <div class="btn-toolbar" style="margin-top: 15px;">
 
