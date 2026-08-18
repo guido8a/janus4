@@ -730,7 +730,7 @@ class FormulaPolinomicaController {
                     sql_cdgo + sql_dscr +
                     "order by valor desc"
         }
-            println "SQL items: " + sql
+//            println "SQL items: " + sql
         def rows = cn.rows(sql.toString())
 
         return [rows: rows, tipo: params.tipo, obra: obra]
