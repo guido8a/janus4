@@ -3061,9 +3061,11 @@ class ReportesExcelController {
 
     def reporteRubrosSubgrupoExcel(){
 
+        println("params " + params)
+
         def parts = params.id.split("_")
         def departamento = DepartamentoItem.get(parts[1].toLong())
-        def rubros =  Item.findAllByDepartamento(departamento)
+        def rubros =  []
         def auxiliar = Auxiliar.get(1)
 
         def fecha = new Date().parse("dd-MM-yyyy", params.fecha)
@@ -3082,6 +3084,23 @@ class ReportesExcelController {
             name = "reporteRubrosConDesgloseTransporte_" + new Date().format("ddMMyyyy_hhmm") + ".pdf";
         }else{
             name = "reporteRubrosSinDesgloseTransporte_" + new Date().format("ddMMyyyy_hhmm") + ".pdf";
+        }
+
+        switch (parts[0]) {
+            case "sg":
+                def departamentos = DepartamentoItem.findAllBySubgrupo(SubgrupoItems.get(parts[1].toLong()))
+                if(departamentos.size() > 0){
+                    rubros = Item.findAllByDepartamentoInList(departamentos, [sort: "nombre"])
+                }else{
+                    rubros = []
+                }
+                break;
+            case "dp":
+                rubros = Item.findAllByDepartamento(DepartamentoItem.get(parts[1].toLong()))
+                break;
+            case "rb":
+                rubros = [Item.get(parts[1].toLong())]
+                break;
         }
 
         XSSFWorkbook wb = new XSSFWorkbook()
@@ -3381,7 +3400,7 @@ class ReportesExcelController {
             }
 
         def output = response.getOutputStream()
-        def header = "attachment; filename=" + "rubros_${departamento?.descripcion}.xlsx";
+        def header = "attachment; filename=" + "rubros_${parts[0] == 'dp' ? departamento?.descripcion : 'analisisPrecios'}.xlsx";
         response.setContentType("application/octet-stream")
         response.setHeader("Content-Disposition", header);
         wb.write(output)
