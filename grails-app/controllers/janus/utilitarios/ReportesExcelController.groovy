@@ -3059,317 +3059,7 @@ class ReportesExcelController {
 
     }
 
-
-    def imprimirRubrosSubgrupo() {
-        def obra = Obra.get(params.obra.toLong())
-        def lugar = obra.lugar
-        def fecha = obra.fechaPreciosRubros
-        def itemsChofer = [obra.chofer]
-        def itemsVolquete = [obra.volquete]
-        def indi = obra.totales
-        preciosService.ac_rbroObra(obra.id)
-
-        XSSFWorkbook wb = new XSSFWorkbook()
-        XSSFCellStyle style = wb.createCellStyle();
-        XSSFFont font = wb.createFont();
-        font.setBold(true);
-        style.setFont(font);
-
-        VolumenesObra.findAllByObra(obra, [sort: "orden"]).item.unique().eachWithIndex { rubro, i ->
-
-            def number
-            def totalHer = 0
-            def totalMan = 0
-            def totalMat = 0
-            def total = 0
-            def band = 0
-            def rowsTrans = []
-            def fila = 10
-            def res = preciosService.presioUnitarioVolumenObra("* ", obra.id, rubro.id)
-            def codigoDefinitivo = ''
-
-//            if(Item.get(rubro?.id)?.codigoHistorico){
-//                codigoDefinitivo = Item.get(rubro?.id)?.codigoHistorico
-//            }else{
-//                codigoDefinitivo = (rubro?.codigo ?: '')
-//            }
-//
-//            if(codigoDefinitivo?.trim()?.substring(0,1) == 'H'){
-//                codigoDefinitivo = codigoDefinitivo?.trim()?.substring(1,codigoDefinitivo?.size())
-//                if(codigoDefinitivo?.trim()?.substring(0,1) == 'H'){
-//                    codigoDefinitivo = codigoDefinitivo?.trim()?.substring(1,codigoDefinitivo?.size())
-//                    if(codigoDefinitivo?.trim()?.substring(0,1) == 'H'){
-//                        codigoDefinitivo = codigoDefinitivo?.trim()?.substring(1,codigoDefinitivo?.size())
-//                    }
-//                }
-//            }
-
-            Sheet sheet = wb.createSheet(rubro.codigo)
-            sheet.setColumnWidth(1, 40 * 256)
-            sheet.setColumnWidth(3, 15 * 256)
-            sheet.setColumnWidth(4, 15 * 256)
-            sheet.setColumnWidth(5, 15 * 256)
-            sheet.setColumnWidth(6, 15 * 256)
-            sheet.setColumnWidth(7, 15 * 256)
-
-            Row row = sheet.createRow(0)
-            row.createCell(0).setCellValue("")
-            Row row0 = sheet.createRow(1)
-            row0.createCell(1).setCellValue(Auxiliar.get(1)?.titulo ?: '')
-            row0.setRowStyle(style)
-            Row row1 = sheet.createRow(2)
-            row1.createCell(1).setCellValue((obra?.departamento?.direccion?.nombre?.toUpperCase() ?: '') + " - " +  obra?.departamento?.descripcion?.toUpperCase())
-            row1.setRowStyle(style)
-            Row row2 = sheet.createRow(3)
-            row2.createCell(1).setCellValue("ANÁLISIS DE PRECIOS UNITARIOS")
-            row2.setRowStyle(style)
-            Row row3 = sheet.createRow(4)
-            row3.createCell(1).setCellValue("")
-            Row row4 = sheet.createRow(5)
-            row4.createCell(1).setCellValue("Fecha: " + new Date().format("dd-MM-yyyy"))
-            row4.sheet.addMergedRegion(new CellRangeAddress(5, 5, 1, 3))
-            row4.createCell(5).setCellValue("Fecha Act. P.U: " + fecha?.format("dd-MM-yyyy"))
-            row4.sheet.addMergedRegion(new CellRangeAddress(5, 5, 5, 7))
-            row4.setRowStyle(style)
-            Row row5 = sheet.createRow(6)
-            row5.createCell(1).setCellValue("Rubro: " + codigoDefinitivo)
-            row5.sheet.addMergedRegion(new CellRangeAddress(6, 6, 1, 3))
-            row5.createCell(5).setCellValue("Unidad: " + rubro.unidad?.codigo)
-            row5.sheet.addMergedRegion(new CellRangeAddress(6, 6, 5, 7))
-            row5.setRowStyle(style)
-            Row row6 = sheet.createRow(7)
-            row6.createCell(1).setCellValue("Descripción: " + rubro.nombre)
-            row6.setRowStyle(style)
-
-            def imprimirEquipos = {
-                res.each { r ->
-                    if (r["grpocdgo"] == 3) {
-                        if (band == 0) {
-                            Row rowT1 = sheet.createRow(9)
-                            rowT1.createCell(0).setCellValue("Equipos")
-                            rowT1.sheet.addMergedRegion(new CellRangeAddress(9, 9, 0, 2))
-                            rowT1.setRowStyle(style)
-                            Row rowC1 = sheet.createRow(fila)
-                            rowC1.createCell(0).setCellValue("Código")
-                            rowC1.createCell(1).setCellValue("Descripción")
-                            rowC1.createCell(2).setCellValue("Unidad")
-                            rowC1.createCell(3).setCellValue("Cantidad")
-                            rowC1.createCell(4).setCellValue("Tarifa")
-                            rowC1.createCell(5).setCellValue("Costo")
-                            rowC1.createCell(6).setCellValue("Rendimiento")
-                            rowC1.createCell(7).setCellValue("C.Total")
-                            rowC1.setRowStyle(style)
-                            fila++
-                        }
-                        band = 1
-                        Row rowF1 = sheet.createRow(fila)
-                        rowF1.createCell(0).setCellValue(r["itemcdgo"]?.toString())
-                        rowF1.createCell(1).setCellValue(r["itemnmbr"]?.toString())
-                        rowF1.createCell(2).setCellValue(r["unddcdgo"]?.toString())
-                        rowF1.createCell(3).setCellValue(r["rbrocntd"]?.toDouble())
-                        rowF1.createCell(4).setCellValue(r["rbpcpcun"]?.toDouble())
-                        rowF1.createCell(5).setCellValue(r["rbpcpcun"] * r["rbrocntd"])
-                        rowF1.createCell(6).setCellValue(r["rndm"]?.toDouble())
-                        rowF1.createCell(7).setCellValue(r["parcial"]?.toDouble())
-                        totalHer += r["parcial"]
-                        fila++
-                    }
-                }
-                if(band == 1) {
-                    Row rowP1 = sheet.createRow(fila)
-                    rowP1.createCell(0).setCellValue("SUBTOTAL")
-                    rowP1.createCell(7).setCellValue(totalHer)
-                    fila++
-                }
-            }
-
-            def imprimirMano = {
-                res.each { r ->
-                    if (r["grpocdgo"] == 2) {
-                        if (band != 2) {
-                            fila++
-                            Row rowT2 = sheet.createRow(fila)
-                            rowT2.createCell(0).setCellValue("Mano de obra")
-                            rowT2.sheet.addMergedRegion(new CellRangeAddress(fila, fila, 0, 2));
-                            rowT2.setRowStyle(style)
-                            fila++
-                            Row rowC2 = sheet.createRow(fila)
-                            rowC2.createCell(0).setCellValue("Código")
-                            rowC2.createCell(1).setCellValue("Descripción")
-                            rowC2.createCell(2).setCellValue("Unidad")
-                            rowC2.createCell(3).setCellValue("Cantidad")
-                            rowC2.createCell(4).setCellValue("Jornal")
-                            rowC2.createCell(5).setCellValue("Costo")
-                            rowC2.createCell(6).setCellValue("Rendimiento")
-                            rowC2.createCell(7).setCellValue("C.Total")
-                            rowC2.setRowStyle(style)
-                            fila++
-                        }
-                        band = 2
-                        Row rowF2 = sheet.createRow(fila)
-                        rowF2.createCell(0).setCellValue(r["itemcdgo"]?.toString())
-                        rowF2.createCell(1).setCellValue(r["itemnmbr"]?.toString())
-                        rowF2.createCell(2).setCellValue(r["unddcdgo"]?.toString())
-                        rowF2.createCell(3).setCellValue(r["rbrocntd"]?.toDouble())
-                        rowF2.createCell(4).setCellValue(r["rbpcpcun"]?.toDouble())
-                        rowF2.createCell(5).setCellValue(r["rbpcpcun"] * r["rbrocntd"])
-                        rowF2.createCell(6).setCellValue(r["rndm"]?.toDouble())
-                        rowF2.createCell(7).setCellValue(r["parcial"]?.toDouble())
-                        totalMan += r["parcial"]
-                        fila++
-                    }
-                }
-                if(band == 2){
-                    Row rowP2 = sheet.createRow(fila)
-                    rowP2.createCell(0).setCellValue("SUBTOTAL")
-                    rowP2.createCell(7).setCellValue(totalMan)
-                    fila++
-                }
-            }
-
-            def imprimirMateriales = {
-                res.each { r ->
-                    if (r["grpocdgo"] == 1) {
-                        if (band != 3) {
-                            fila++
-                            Row rowT3 = sheet.createRow(fila)
-                            rowT3.createCell(0).setCellValue("Materiales")
-                            rowT3.sheet.addMergedRegion(new CellRangeAddress(fila, fila, 0, 2));
-                            rowT3.setRowStyle(style)
-                            fila++
-                            Row rowC3 = sheet.createRow(fila)
-                            rowC3.createCell(0).setCellValue("Código")
-                            rowC3.createCell(1).setCellValue("Descripción")
-                            rowC3.createCell(2).setCellValue("Unidad")
-                            rowC3.createCell(3).setCellValue("Cantidad")
-                            rowC3.createCell(4).setCellValue("Unitario")
-                            rowC3.createCell(7).setCellValue("C.Total")
-                            rowC3.setRowStyle(style)
-                            fila++
-                        }
-                        band = 3
-                        Row rowF3 = sheet.createRow(fila)
-                        rowF3.createCell(0).setCellValue(r["itemcdgo"]?.toString())
-                        rowF3.createCell(1).setCellValue(r["itemnmbr"]?.toString())
-                        rowF3.createCell(2).setCellValue(r["unddcdgo"]?.toString())
-                        rowF3.createCell(3).setCellValue(r["rbrocntd"]?.toDouble())
-                        rowF3.createCell(4).setCellValue(r["rbpcpcun"]?.toDouble())
-                        rowF3.createCell(7).setCellValue(r["parcial"]?.toDouble())
-                        totalMat += r["parcial"]
-                        fila++
-                    }
-                    if (r["grpocdgo"] == 1) {
-                        rowsTrans.add(r)
-                        total += r["parcial_t"]
-                    }
-                }
-
-                if(band == 3){
-                    Row rowP3 = sheet.createRow(fila)
-                    rowP3.createCell(0).setCellValue("SUBTOTAL")
-                    rowP3.createCell(7).setCellValue(totalMat)
-                    fila++
-                }
-            }
-
-            imprimirEquipos();
-            imprimirMano();
-            imprimirMateriales();
-
-            /*Tranporte*/
-            if (rowsTrans.size() > 0) {
-                fila++
-                Row rowT4 = sheet.createRow(fila)
-                rowT4.createCell(0).setCellValue("Transporte")
-                rowT4.sheet.addMergedRegion(new CellRangeAddress(fila, fila, 0, 2));
-                rowT4.setRowStyle(style)
-                fila++
-                Row rowC4 = sheet.createRow(fila)
-                rowC4.createCell(0).setCellValue("Código")
-                rowC4.createCell(1).setCellValue("Descripción")
-                rowC4.createCell(2).setCellValue("Unidad")
-                rowC4.createCell(3).setCellValue("Peso/Vol")
-                rowC4.createCell(4).setCellValue("Cantidad")
-                rowC4.createCell(5).setCellValue("Distancia")
-                rowC4.createCell(6).setCellValue("Unitario")
-                rowC4.createCell(7).setCellValue("C.Total")
-                rowC4.setRowStyle(style)
-                fila++
-                rowsTrans.each { rt ->
-                    def tra = rt["parcial_t"]
-                    def tot = 0
-                    if (tra > 0)
-                        tot = rt["parcial_t"] / (rt["itempeso"] * rt["rbrocntd"] * rt["distancia"])
-                    Row rowF4 = sheet.createRow(fila)
-                    rowF4.createCell(0).setCellValue(rt["itemcdgo"]?.toString())
-                    rowF4.createCell(1).setCellValue(rt["itemnmbr"]?.toString())
-                    rowF4.createCell(2).setCellValue(rt["unddcdgo"]?.toString())
-                    rowF4.createCell(3).setCellValue(rt["itempeso"]?.toDouble())
-                    rowF4.createCell(4).setCellValue(rt["rbrocntd"]?.toDouble())
-                    rowF4.createCell(5).setCellValue(rt["distancia"]?.toDouble())
-                    rowF4.createCell(6).setCellValue(tot)
-                    rowF4.createCell(7).setCellValue(rt["parcial_t"]?.toDouble())
-                    fila++
-                }
-                Row rowP4 = sheet.createRow(fila)
-                rowP4.createCell(0).setCellValue("SUBTOTAL")
-                rowP4.createCell(7).setCellValue(total)
-                fila++
-            }
-
-            /*indirectos */
-            fila++
-            Row rowT5 = sheet.createRow(fila)
-            rowT5.createCell(0).setCellValue("Costos Indirectos")
-            rowT5.sheet.addMergedRegion(new CellRangeAddress(fila, fila, 0, 2));
-            rowT5.setRowStyle(style)
-            fila++
-            Row rowC5 = sheet.createRow(fila)
-            rowC5.createCell(0).setCellValue("Descripción")
-            rowC5.createCell(6).setCellValue("Porcentaje")
-            rowC5.createCell(7).setCellValue("Valor")
-            rowC5.setRowStyle(style)
-            fila++
-            def totalRubro = total + totalHer + totalMan + totalMat
-            def totalIndi = totalRubro * indi / 100
-            Row rowF5 = sheet.createRow(fila)
-            rowF5.createCell(0).setCellValue("Costos indirectos")
-            rowF5.createCell(6).setCellValue(indi)
-            rowF5.createCell(7).setCellValue(totalIndi)
-
-            /*Totales*/
-            fila += 4
-            Row rowP6 = sheet.createRow(fila)
-            rowP6.createCell(4).setCellValue("Costo unitario directo")
-            rowP6.createCell(7).setCellValue(totalRubro)
-            rowP6.setRowStyle(style)
-
-            Row rowP7 = sheet.createRow(fila + 1)
-            rowP7.createCell(4).setCellValue("Costos indirectos")
-            rowP7.createCell(7).setCellValue(totalIndi)
-            rowP7.setRowStyle(style)
-
-            Row rowP8 = sheet.createRow(fila + 2)
-            rowP8.createCell(4).setCellValue("Costo total del rubro")
-            rowP8.createCell(7).setCellValue(totalRubro + totalIndi)
-            rowP8.setRowStyle(style)
-
-            Row rowP9 = sheet.createRow(fila + 3)
-            rowP9.createCell(4).setCellValue("Precio unitario")
-            rowP9.createCell(7).setCellValue((totalRubro + totalIndi).toDouble().round(2))
-            rowP9.setRowStyle(style)
-
-        }
-
-        def output = response.getOutputStream()
-        def header = "attachment; filename=" + "rubros_${obra?.codigo}.xlsx";
-        response.setContentType("application/octet-stream")
-        response.setHeader("Content-Disposition", header);
-        wb.write(output)
-    }
-
-    def reporteRubrosSubgrupo2(){
-//        println("params rrtgr " + params)
+    def reporteRubrosSubgrupoExcel(){
 
         def parts = params.id.split("_")
         def departamento = DepartamentoItem.get(parts[1].toLong())
@@ -3400,8 +3090,6 @@ class ReportesExcelController {
         font.setBold(true);
         style.setFont(font);
 
-
-        if(rubros.size() > 0){
             rubros.eachWithIndex{ rubro, indice->
 
                 def nombre = rubro?.nombre
@@ -3434,12 +3122,9 @@ class ReportesExcelController {
                 Row row = sheet.createRow(0)
                 row.createCell(0).setCellValue("")
                 Row row0 = sheet.createRow(1)
-                row0.createCell(1).setCellValue(Auxiliar.get(1)?.titulo ?: '')
+                row0.createCell(1).setCellValue(auxiliar?.titulo ?: '')
                 row0.setRowStyle(style)
-//                Row row1 = sheet.createRow(2)
-//                row1.createCell(1).setCellValue((obra?.departamento?.direccion?.nombre?.toUpperCase() ?: '') + " - " +  obra?.departamento?.descripcion?.toUpperCase())
-//                row1.setRowStyle(style)
-                Row row2 = sheet.createRow(3)
+                Row row2 = sheet.createRow(2)
                 row2.createCell(1).setCellValue("ANÁLISIS DE PRECIOS UNITARIOS")
                 row2.setRowStyle(style)
                 Row row3 = sheet.createRow(4)
@@ -3460,40 +3145,7 @@ class ReportesExcelController {
                 row6.createCell(1).setCellValue("Descripción: " + rubro.nombre)
                 row6.setRowStyle(style)
 
-
-
                 //EQUIPOS
-//                PdfPTable tablaEquipos = new PdfPTable(7);
-//                tablaEquipos.setWidthPercentage(100);
-//                tablaEquipos.setWidths(arregloEnteros([8,40,8,9,8,10,8]))
-//
-//                reportesPdfService.addCellTb(tablaEquipos, new Paragraph("EQUIPOS", times12bold), tituloRubro)
-//
-//                reportesPdfService.addCellTb(tablaEquipos, new Paragraph("CÓDIGO", times7bold), celdaCabecera)
-//                reportesPdfService.addCellTb(tablaEquipos, new Paragraph("DESCRIPCIÓN", times7bold), celdaCabecera)
-//                reportesPdfService.addCellTb(tablaEquipos, new Paragraph("CANTIDAD", times7bold), celdaCabecera)
-//                reportesPdfService.addCellTb(tablaEquipos, new Paragraph("TARIFA(\$/H)", times7bold), celdaCabecera)
-//                reportesPdfService.addCellTb(tablaEquipos, new Paragraph("COSTOS(\$)", times7bold), celdaCabecera)
-//                reportesPdfService.addCellTb(tablaEquipos, new Paragraph("RENDIMIENTO", times7bold), celdaCabecera)
-//                reportesPdfService.addCellTb(tablaEquipos, new Paragraph("C.TOTAL(\$)", times7bold), celdaCabecera)
-
-//                res.eachWithIndex { r, i ->
-//                    if (r["grpocdgo"] == 3) {
-//                        reportesPdfService.addCellTb(tablaEquipos, new Paragraph(r["itemcdgo"], times8normal), prmsFilaIzquierda)
-//                        reportesPdfService.addCellTb(tablaEquipos, new Paragraph(r["itemnmbr"], times8normal), prmsFilaIzquierda)
-//                        reportesPdfService.addCellTb(tablaEquipos, new Paragraph(numero(r["rbrocntd"], 5)?.toString(), times8normal), prmsFilaDerecha)
-//                        reportesPdfService.addCellTb(tablaEquipos, new Paragraph(numero(r["rbpcpcun"], 5)?.toString(), times8normal), prmsFilaDerecha)
-//                        reportesPdfService.addCellTb(tablaEquipos, new Paragraph((numero((r["rbpcpcun"] * r["rbrocntd"]), 5))?.toString(), times8normal), prmsFilaDerecha)
-//                        reportesPdfService.addCellTb(tablaEquipos, new Paragraph(numero(r["rndm"], 5)?.toString(), times8normal), prmsFilaDerecha)
-//                        reportesPdfService.addCellTb(tablaEquipos, new Paragraph(numero(r["parcial"], 5)?.toString(), times8normal), prmsFilaDerecha)
-//                        totalHer += r["parcial"]
-//                    }
-//                }
-//
-//                reportesPdfService.addCellTb(tablaEquipos, new Paragraph("", times14bold), [border: Color.WHITE, colspan: 5])
-//                reportesPdfService.addCellTb(tablaEquipos, new Paragraph("TOTAL", times8bold), prmsFilaDerecha)
-//                reportesPdfService.addCellTb(tablaEquipos, new Paragraph(numero(totalHer, 5)?.toString(), times8bold), prmsFilaDerecha)
-//                reportesPdfService.addCellTb(tablaEquipos, new Paragraph("", times14bold), [border: Color.WHITE, colspan: 7])
 
                 def imprimirEquipos = {
                     res.each { r ->
@@ -3537,40 +3189,7 @@ class ReportesExcelController {
                     }
                 }
 
-
                 //MANO DE OBRA
-//                PdfPTable tablaManoObra = new PdfPTable(7);
-//                tablaManoObra.setWidthPercentage(100);
-//                tablaManoObra.setWidths(arregloEnteros([6,42,8,9,8,10,8]))
-//
-//                reportesPdfService.addCellTb(tablaManoObra, new Paragraph("MANO DE OBRA", times12bold), tituloRubro)
-//
-//                reportesPdfService.addCellTb(tablaManoObra, new Paragraph("CÓDIGO", times7bold), celdaCabecera)
-//                reportesPdfService.addCellTb(tablaManoObra, new Paragraph("DESCRIPCIÓN", times7bold), celdaCabecera)
-//                reportesPdfService.addCellTb(tablaManoObra, new Paragraph("CANTIDAD", times7bold), celdaCabecera)
-//                reportesPdfService.addCellTb(tablaManoObra, new Paragraph("JORNAL(\$/H)", times7bold), celdaCabecera)
-//                reportesPdfService.addCellTb(tablaManoObra, new Paragraph("COSTOS(\$)", times7bold), celdaCabecera)
-//                reportesPdfService.addCellTb(tablaManoObra, new Paragraph("RENDIMIENTO", times7bold), celdaCabecera)
-//                reportesPdfService.addCellTb(tablaManoObra, new Paragraph("C.TOTAL(\$)", times7bold), celdaCabecera)
-//
-//                res.eachWithIndex { r, i ->
-//                    if (r["grpocdgo"] == 2) {
-//                        reportesPdfService.addCellTb(tablaManoObra, new Paragraph(r["itemcdgo"], times8normal), prmsFilaIzquierda)
-//                        reportesPdfService.addCellTb(tablaManoObra, new Paragraph(r["itemnmbr"], times8normal), prmsFilaIzquierda)
-//                        reportesPdfService.addCellTb(tablaManoObra, new Paragraph(numero(r["rbrocntd"], 5)?.toString(), times8normal), prmsFilaDerecha)
-//                        reportesPdfService.addCellTb(tablaManoObra, new Paragraph(numero(r["rbpcpcun"], 5)?.toString(), times8normal), prmsFilaDerecha)
-//                        reportesPdfService.addCellTb(tablaManoObra, new Paragraph((numero((r["rbpcpcun"] * r["rbrocntd"]), 5))?.toString(), times8normal), prmsFilaDerecha)
-//                        reportesPdfService.addCellTb(tablaManoObra, new Paragraph(numero(r["rndm"], 5)?.toString(), times8normal), prmsFilaDerecha)
-//                        reportesPdfService.addCellTb(tablaManoObra, new Paragraph(numero(r["parcial"], 5)?.toString(), times8normal), prmsFilaDerecha)
-//                        totalMan += r["parcial"]
-//                    }
-//                }
-//
-//                reportesPdfService.addCellTb(tablaManoObra, new Paragraph("", times8bold), [border: Color.WHITE, colspan: 5])
-//                reportesPdfService.addCellTb(tablaManoObra, new Paragraph("TOTAL", times8bold), prmsFilaDerecha)
-//                reportesPdfService.addCellTb(tablaManoObra, new Paragraph(numero(totalMan, 5)?.toString(), times8bold), prmsFilaDerecha)
-//                reportesPdfService.addCellTb(tablaManoObra, new Paragraph("", times8bold), [border: Color.WHITE, colspan: 7])
-
 
                 def imprimirMano = {
                     res.each { r ->
@@ -3616,48 +3235,7 @@ class ReportesExcelController {
                     }
                 }
 
-
                 //MATERIALES
-//                PdfPTable tablaMateriales = new PdfPTable(6);
-//                tablaMateriales.setWidthPercentage(100);
-//                tablaMateriales.setWidths(arregloEnteros([8,48,9,8,10,8]))
-//
-//                if(params.trans == 'no'){
-//                    reportesPdfService.addCellTb(tablaMateriales, new Paragraph("MATERIALES INCLUIDO TRANSPORTE", times12bold), tituloRubro)
-//                }else{
-//                    reportesPdfService.addCellTb(tablaMateriales, new Paragraph("MATERIALES", times12bold), tituloRubro)
-//                }
-//
-//                reportesPdfService.addCellTb(tablaMateriales, new Paragraph("CÓDIGO", times7bold), celdaCabecera)
-//                reportesPdfService.addCellTb(tablaMateriales, new Paragraph("DESCRIPCIÓN", times7bold), celdaCabecera)
-//                reportesPdfService.addCellTb(tablaMateriales, new Paragraph("UNIDAD", times7bold), celdaCabecera)
-//                reportesPdfService.addCellTb(tablaMateriales, new Paragraph("CANTIDAD", times7bold), celdaCabecera)
-//                reportesPdfService.addCellTb(tablaMateriales, new Paragraph("UNITARIO(\$)", times7bold), celdaCabecera)
-//                reportesPdfService.addCellTb(tablaMateriales, new Paragraph("C.TOTAL(\$)", times7bold), celdaCabecera)
-//
-//                res.eachWithIndex { r, i ->
-//                    if (r["grpocdgo"] == 1) {
-//                        bandMat = 1
-//                        reportesPdfService.addCellTb(tablaMateriales, new Paragraph(r["itemcdgo"], times8normal), prmsFilaIzquierda)
-//                        reportesPdfService.addCellTb(tablaMateriales, new Paragraph(r["itemnmbr"], times8normal), prmsFilaIzquierda)
-//                        reportesPdfService.addCellTb(tablaMateriales, new Paragraph(r["unddcdgo"], times8normal), prmsFila)
-//                        reportesPdfService.addCellTb(tablaMateriales, new Paragraph(numero(r["rbrocntd"], 5)?.toString(), times8normal), prmsFila)
-//                        if (params.trans != 'no') {
-//                            reportesPdfService.addCellTb(tablaMateriales, new Paragraph(numero(r["rbpcpcun"], 5)?.toString(), times8normal), prmsFilaDerecha)
-//                            reportesPdfService.addCellTb(tablaMateriales, new Paragraph(numero(r["parcial"], 5)?.toString(), times8normal), prmsFilaDerecha)
-//                            totalMat += r["parcial"]
-//                        }else{
-//                            reportesPdfService.addCellTb(tablaMateriales, new Paragraph(numero((r["rbpcpcun"] + r["parcial_t"] / r["rbrocntd"]), 5)?.toString(), times8normal), prmsFilaDerecha)
-//                            reportesPdfService.addCellTb(tablaMateriales, new Paragraph(numero((r["parcial"] + r["parcial_t"]), 5)?.toString(), times8normal), prmsFilaDerecha)
-//                            totalMat += (r["parcial"] + r["parcial_t"])
-//                        }
-//                    }
-//                }
-//
-//                reportesPdfService.addCellTb(tablaMateriales, new Paragraph("", times8bold), [border: Color.WHITE, colspan: 4])
-//                reportesPdfService.addCellTb(tablaMateriales, new Paragraph("TOTAL", times8bold), prmsFilaDerecha)
-//                reportesPdfService.addCellTb(tablaMateriales, new Paragraph(numero(totalMat, 5)?.toString(), times8bold), prmsFilaDerecha)
-//                reportesPdfService.addCellTb(tablaMateriales, new Paragraph("", times8bold), [border: Color.WHITE, colspan: 6])
 
                 def imprimirMateriales = {
                     res.each { r ->
@@ -3709,47 +3287,6 @@ class ReportesExcelController {
                 imprimirMateriales();
 
                 //TRANSPORTE
-//                PdfPTable tablaTransporte = new PdfPTable(8);
-//                tablaTransporte.setWidthPercentage(100);
-//                tablaTransporte.setWidths(arregloEnteros([11,25,8,11,11,12,10,10]))
-//
-//                reportesPdfService.addCellTb(tablaTransporte, new Paragraph("TRANSPORTE", times12bold), tituloRubro)
-//
-//                reportesPdfService.addCellTb(tablaTransporte, new Paragraph("CÓDIGO", times7bold), celdaCabecera)
-//                reportesPdfService.addCellTb(tablaTransporte, new Paragraph("DESCRIPCIÓN", times7bold), celdaCabecera)
-//                reportesPdfService.addCellTb(tablaTransporte, new Paragraph("UNIDAD", times7bold), celdaCabecera)
-//                reportesPdfService.addCellTb(tablaTransporte, new Paragraph("PES/VOL", times7bold), celdaCabecera)
-//                reportesPdfService.addCellTb(tablaTransporte, new Paragraph("CANTIDAD", times7bold), celdaCabecera)
-//                reportesPdfService.addCellTb(tablaTransporte, new Paragraph("DISTANCIA", times7bold), celdaCabecera)
-//                reportesPdfService.addCellTb(tablaTransporte, new Paragraph("TARIFA", times7bold), celdaCabecera)
-//                reportesPdfService.addCellTb(tablaTransporte, new Paragraph("C.TOTAL(\$)", times7bold), celdaCabecera)
-//
-//                res.eachWithIndex { r, i ->
-//                    if (r["grpocdgo"]== 1 && params.trans != 'no') {
-//                        reportesPdfService.addCellTb(tablaTransporte, new Paragraph(r["itemcdgo"], times8normal), prmsFilaIzquierda)
-//                        reportesPdfService.addCellTb(tablaTransporte, new Paragraph(r["itemnmbr"], times8normal), prmsFilaIzquierda)
-//                        if(r["tplscdgo"].trim() =='P' || r["tplscdgo"].trim() =='P1' ){
-//                            reportesPdfService.addCellTb(tablaTransporte, new Paragraph("ton-km", times8normal), prmsFila)
-//                        }else{
-//                            if(r["tplscdgo"].trim() =='V' || r["tplscdgo"].trim() =='V1' || r["tplscdgo"].trim() =='V2') {
-//                                reportesPdfService.addCellTb(tablaTransporte, new Paragraph("m3-km", times8normal), prmsFila)
-//                            }else{
-//                                reportesPdfService.addCellTb(tablaTransporte, new Paragraph(r["unddcdgo"], times8normal), prmsFila)
-//                            }
-//                        }
-//                        reportesPdfService.addCellTb(tablaTransporte, new Paragraph(numero(r["itempeso"], 5)?.toString(), times8normal), prmsFila)
-//                        reportesPdfService.addCellTb(tablaTransporte, new Paragraph(numero(r["rbrocntd"], 5)?.toString(), times8normal), prmsFila)
-//                        reportesPdfService.addCellTb(tablaTransporte, new Paragraph(numero(r["distancia"], 5)?.toString(), times8normal), prmsFila)
-//                        reportesPdfService.addCellTb(tablaTransporte, new Paragraph(numero(r["tarifa"], 5)?.toString(), times8normal), prmsFila)
-//                        reportesPdfService.addCellTb(tablaTransporte, new Paragraph(numero(r["parcial_t"], 5)?.toString(), times8normal), prmsFilaDerecha)
-//                        total += r["parcial_t"]
-//                    }
-//                }
-//
-//                reportesPdfService.addCellTb(tablaTransporte, new Paragraph("", times8bold), [border: Color.WHITE, colspan: 6])
-//                reportesPdfService.addCellTb(tablaTransporte, new Paragraph("TOTAL", times8bold), prmsFila)
-//                reportesPdfService.addCellTb(tablaTransporte, new Paragraph(numero(total, 5)?.toString(), times8bold), prmsFilaDerecha)
-//                reportesPdfService.addCellTb(tablaTransporte, new Paragraph("", times8bold), [border: Color.WHITE, colspan: 6])
 
                 if (rowsTrans.size() > 0) {
                     fila++
@@ -3791,7 +3328,6 @@ class ReportesExcelController {
                     fila++
                 }
 
-
                 //COSTOS INDIRECTOS
                 def totalRubro
 
@@ -3802,23 +3338,6 @@ class ReportesExcelController {
                 }
 
                 def totalIndi = totalRubro?.toDouble() * indi / 100
-
-//                PdfPTable tablaIndirectos = new PdfPTable(3);
-//                tablaIndirectos.setWidthPercentage(70);
-//                tablaIndirectos.setWidths(arregloEnteros([50,25,25]))
-//                tablaIndirectos.horizontalAlignment = Element.ALIGN_LEFT;
-//
-//                reportesPdfService.addCellTb(tablaIndirectos, new Paragraph("COSTOS INDIRECTOS", times12bold), tituloRubro)
-//
-//                reportesPdfService.addCellTb(tablaIndirectos, new Paragraph("DESCRIPCIÓN", times7bold), celdaCabecera)
-//                reportesPdfService.addCellTb(tablaIndirectos, new Paragraph("PORCENTAJE", times7bold), celdaCabecera)
-//                reportesPdfService.addCellTb(tablaIndirectos, new Paragraph("VALOR", times7bold), celdaCabecera)
-//
-//                reportesPdfService.addCellTb(tablaIndirectos, new Paragraph("COSTOS INDIRECTOS", times8normal), prmsFilaIzquierda)
-//                reportesPdfService.addCellTb(tablaIndirectos, new Paragraph(numero(indi, 1)?.toString() + "%", times8normal), prmsFila)
-//                reportesPdfService.addCellTb(tablaIndirectos, new Paragraph(numero(totalIndi, 5)?.toString(), times8normal), prmsFila)
-//                reportesPdfService.addCellTb(tablaIndirectos, new Paragraph("", times8bold), [border: Color.WHITE, colspan: 3])
-
 
                 fila++
                 Row rowT5 = sheet.createRow(fila)
@@ -3832,31 +3351,12 @@ class ReportesExcelController {
                 rowC5.createCell(7).setCellValue("Valor")
                 rowC5.setRowStyle(style)
                 fila++
-//                def totalRubro = total + totalHer + totalMan + totalMat
-//                def totalIndi = totalRubro * indi / 100
                 Row rowF5 = sheet.createRow(fila)
                 rowF5.createCell(0).setCellValue("Costos indirectos")
                 rowF5.createCell(6).setCellValue(indi)
                 rowF5.createCell(7).setCellValue(totalIndi)
 
                 //TOTALES
-//
-//                PdfPTable tablaTotales = new PdfPTable(2);
-//                tablaTotales.setWidthPercentage(40);
-//                tablaTotales.setWidths(arregloEnteros([50,25]))
-//                tablaTotales.horizontalAlignment = Element.ALIGN_RIGHT;
-//
-//                reportesPdfService.addCellTb(tablaTotales, new Paragraph("COSTO UNITARIO DIRECTO", times8bold), celdaCabeceraIzquierda)
-//                reportesPdfService.addCellTb(tablaTotales, new Paragraph(numero(totalRubro, 2)?.toString(), times8bold), celdaCabeceraDerecha)
-//
-//                reportesPdfService.addCellTb(tablaTotales, new Paragraph("COSTOS INDIRECTO", times8bold), prmsFilaIzquierda)
-//                reportesPdfService.addCellTb(tablaTotales, new Paragraph(numero(totalIndi, 2)?.toString(), times8bold), prmsFilaDerecha)
-//
-//                reportesPdfService.addCellTb(tablaTotales, new Paragraph("COSTO TOTAL DEL RUBRO", times8bold), prmsFilaIzquierda)
-//                reportesPdfService.addCellTb(tablaTotales, new Paragraph(numero((totalRubro + totalIndi), 2)?.toString(), times8bold), prmsFilaDerecha)
-//
-//                reportesPdfService.addCellTb(tablaTotales, new Paragraph("PRECIO UNITARIO \$USD", times8bold), celdaCabeceraIzquierda2)
-//                reportesPdfService.addCellTb(tablaTotales, new Paragraph(numero((totalRubro + totalIndi), 2)?.toString(), times8bold), celdaCabeceraDerecha2)
 
                 fila += 4
                 Row rowP6 = sheet.createRow(fila)
@@ -3878,55 +3378,12 @@ class ReportesExcelController {
                 rowP9.createCell(4).setCellValue("Precio unitario")
                 rowP9.createCell(7).setCellValue((totalRubro + totalIndi).toDouble().round(2))
                 rowP9.setRowStyle(style)
-
-//                PdfPTable tablaNota = new PdfPTable(2);
-//                tablaNota.setWidthPercentage(100);
-//                tablaNota.setWidths(arregloEnteros([6, 94]))
-//
-//                reportesPdfService.addCellTb(tablaNota, new Paragraph("Nota:", times8bold), prmsFilaIzquierda)
-//                reportesPdfService.addCellTb(tablaNota, new Paragraph("Los cálculos se hacen con todos los " +
-//                        "decimales y el resultado final se lo redondea a dos decimales.", times8normal), prmsFilaIzquierda)
-//
-//                document.add(headers)
-//                document.add(tablaCoeficiente)
-//                document.add(tablaEquipos)
-//                document.add(tablaManoObra)
-//                document.add(tablaMateriales)
-//                if(params.trans != 'no'){
-//                    document.add(tablaTransporte)
-//                }
-//                document.add(tablaIndirectos)
-//                document.add(tablaTotales)
-//                document.add(tablaNota)
             }
-        }else{
-//            Paragraph headers = new Paragraph();
-//            addEmptyLine(headers, 1);
-//            headers.setAlignment(Element.ALIGN_CENTER);
-//            headers.add(new Paragraph(auxiliar?.titulo, times14bold));
-//            headers.add(new Paragraph(auxiliar?.memo1, times10bold));
-//            headers.add(new Paragraph("ANÁLISIS DE PRECIOS UNITARIOS", times10bold));
-//            headers.add(new Paragraph("", times14bold));
-//            headers.add(new Paragraph("-- NO EXISTEN DATOS --", times14bold));
-//            document.add(headers)
-        }
-
-
-//        document.close();
-//        pdfw.close()
-//        byte[] b = baos.toByteArray();
-//        response.setContentType("application/pdf")
-//        response.setHeader("Content-disposition", "attachment; filename=" + name)
-//        response.setContentLength(b.length)
-//        response.getOutputStream().write(b)
 
         def output = response.getOutputStream()
         def header = "attachment; filename=" + "rubros_${departamento?.descripcion}.xlsx";
         response.setContentType("application/octet-stream")
         response.setHeader("Content-Disposition", header);
         wb.write(output)
-
     }
-
-
 }

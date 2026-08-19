@@ -163,15 +163,11 @@
         <g:else>
             <a href= "#" data-dismiss="modal" class="btn btn-primary" id="print_totales" data-transporte="true"><i class="fa fa-print"></i> Consolidado</a>
             <a href="#" data-dismiss="modal" class="btn btn-info btnPrint" data-transporte="si"><i class="fa fa-truck"></i> Con transporte</a>
+            <a href="#" class="btn btn-success btnImprimirTransporteExcel" data-transporte="si"><i class="fa fa-file-excel"></i> Con transporte Excel</a>
             <a href="#" data-dismiss="modal" class="btn btn-primary btnPrint" data-transporte="no"><i class="fa fa-print"></i> Sin transporte</a>
             <a href="#" data-dismiss="modal" class="btn btn-info btnPrintVae" data-transporte="si"><i class="fa fa-truck"></i> VAE con transporte</a>
             <a href="#" data-dismiss="modal" class="btn btn-primary btnPrintVae" data-transporte="no"><i class="fa fa-print"></i> VAE sin transporte</a>
         </g:else>
-    </div>
-    <div class="col-md-12" style="text-align: right; margin-top: 20px">
-        <g:hiddenField name="nodeId" val=""/>
-        <g:hiddenField name="nodeGrupo" val=""/>
-            <a href="#" class="btn btn-success btnImprimirTransporteExcel" data-transporte="si"><i class="fa fa-file-excel"></i> Con transporte Excel</a>
     </div>
 </div>
 
@@ -193,7 +189,7 @@
             "&dsv2=" + dsv2 + "&prvl=" + volqueta + "&prch=" + chofer + "&fecha=" + $("#fecha_precios2").val() +
             "&id=" + nodeId + "&lugar=" + $("#ciudad").val() + "&listas=" + listas + "&chof=" + $("#cmb_chof2").val() +
             "&volq=" + $("#cmb_vol2").val() + "&indi=" + $("#costo_indi2").val() + "&trans=" + trans;
-        location.href = "${g.createLink(controller: 'reportesExcel',action: 'reporteRubrosSubgrupo2')}?" + datos;
+        location.href = "${g.createLink(controller: 'reportesExcel',action: 'reporteRubrosSubgrupoExcel')}?" + datos;
     });
 
     $('#fecha_precios2').datetimepicker({
