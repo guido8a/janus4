@@ -12,14 +12,8 @@
         <div class="row-fluid" style="margin-left: 10px">
             <span class="grupo">
 
-                <span class="col-md-1" style="margin-top: 20px">
-                    <button class="btn btn-success btnEditarSolicitante" title="Editar solicitante"><i class="fa fa-edit"></i> </button>
-                </span>
-
                 <span class="col-md-2">
                     <label class="control-label text-info">Buscar Por</label>
-                    %{--                    <g:select name="buscarPor" class="buscarPor col-md-12 form-control btn-success" from="${solicitantes}" optionKey="id"--}%
-                    %{--                              optionValue="descripcion" att="descripcion" onchange="jsFunction(this)" />--}%
 
                     <g:select name="buscarPor" class="buscarPor col-md-12 form-control btn-success" from="${solicitantes}" optionKey="id"
                               optionValue="descripcion" att="descripcion" />
@@ -31,29 +25,25 @@
                               optionValue="value"/>
                 </span>
                 <span class="col-md-3">
-                    <label class="control-label text-info">Criterio</label>
+                    <label class="control-label text-info">Dirección</label>
                     <g:textField name="criterio" id="criterio" class="form-control"/>
                 </span>
             </span>
 
-            <div class="col-md-4" style="margin-top: 20px">
-                <button class="btn btn-info" id="btnBuscar"><i class="fa fa-search"></i>Buscar</button>
+            <div class="col-md-5" style="margin-top: 20px">
+                <button class="btn btn-info" id="btnBuscar"><i class="fa fa-search"></i></button>
                 <button class="btn btn-warning" id="btnLimpiar" title="Limpiar Búsqueda"><i class="fa fa-eraser"></i>Limpiar</button>
+                <button class="btn btn-success btnEditarSolicitante" title="Editar dirección"><i class="fa fa-edit"></i> Editar </button>
                 <button class="btn btn-primary btnImprimirPrincipal" title="Imprimir rubros del grupo"><i class="fa fa-print"></i> Imprimir rubros <strong class="pNombre"></strong>  </button>
             </div>
 
-            <div class="col-md-2" style="width: 260px; margin-top: 0px">
+            <div class="col-md-2" style="width: 260px; margin-top: 10px">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="#" id="bc_grpo">Grupo</a></li>
                     <li class="breadcrumb-item"><a href="#" id="bc_sbgr">Subgrupo</a></li>
                     <li class="breadcrumb-item" aria-current="page" id="bc_item">Rubros</li>
                 </ol>
             </div>
-
-%{--            <span class="col-md-2" style="margin-top: 20px">--}%
-
-%{--            </span>--}%
-
         </div>
     </fieldset>
 
