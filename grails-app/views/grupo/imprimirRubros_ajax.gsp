@@ -168,9 +168,33 @@
             <a href="#" data-dismiss="modal" class="btn btn-primary btnPrintVae" data-transporte="no"><i class="fa fa-print"></i> VAE sin transporte</a>
         </g:else>
     </div>
+    <div class="col-md-12" style="text-align: right; margin-top: 20px">
+        <g:hiddenField name="nodeId" val=""/>
+        <g:hiddenField name="nodeGrupo" val=""/>
+            <a href="#" class="btn btn-success btnImprimirTransporteExcel" data-transporte="si"><i class="fa fa-file-excel"></i> Con transporte Excel</a>
+    </div>
 </div>
 
 <script type="text/javascript">
+
+    $(".btnImprimirTransporteExcel").click(function () {
+        var dsp0 = $("#dist_p1g").val();
+        var dsp1 = $("#dist_p2g").val();
+        var dsv0 = $("#dist_v1g").val();
+        var dsv1 = $("#dist_v2g").val();
+        var dsv2 = $("#dist_v3g").val();
+        var listas = $("#lista_1g").val() + "," + $("#lista_2g").val() + "," + $("#lista_3g").val() + "," + $("#lista_4g").val() + "," + $("#lista_5g").val() + "," + $("#ciudad").val();
+        var volqueta = $("#costo_volqueta2").val();
+        var chofer = $("#costo_chofer2").val();
+        var trans = $(this).data("transporte");
+        var nodeId = '${id}';
+
+        var datos = "dsp0=" + dsp0 + "&dsp1=" + dsp1 + "&dsv0=" + dsv0 + "&dsv1=" + dsv1 +
+            "&dsv2=" + dsv2 + "&prvl=" + volqueta + "&prch=" + chofer + "&fecha=" + $("#fecha_precios2").val() +
+            "&id=" + nodeId + "&lugar=" + $("#ciudad").val() + "&listas=" + listas + "&chof=" + $("#cmb_chof2").val() +
+            "&volq=" + $("#cmb_vol2").val() + "&indi=" + $("#costo_indi2").val() + "&trans=" + trans;
+        location.href = "${g.createLink(controller: 'reportesExcel',action: 'reporteRubrosSubgrupo2')}?" + datos;
+    });
 
     $('#fecha_precios2').datetimepicker({
         locale: 'es',
