@@ -3061,8 +3061,6 @@ class ReportesExcelController {
 
     def reporteRubrosSubgrupoExcel(){
 
-        println("params " + params)
-
         def parts = params.id.split("_")
         def departamento = DepartamentoItem.get(parts[1].toLong())
         def rubros =  []
