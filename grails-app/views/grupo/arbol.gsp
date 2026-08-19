@@ -11,21 +11,25 @@
     <fieldset class="borde" style="border-radius: 4px; margin-bottom: 10px">
         <div class="row-fluid" style="margin-left: 10px">
             <span class="grupo">
-                <span class="col-md-2">
-                    <label class="control-label text-info">Dirección</label>
-                    <g:select name="buscarPor" class="buscarPor col-md-12 form-control btn-success" from="${solicitantes}" optionKey="id"
+                <span class="col-md-3">
+                    <span class="col-md-12">
+                    <label class="control-label text-info">Tipo de obra (Dirección o Depto. Requirente)</label>
+                    </span>
+                    <span class="col-md-9">
+                    <g:select name="buscarPor" class="buscarPor form-control btn-success" from="${solicitantes}" optionKey="id"
                               optionValue="descripcion" att="descripcion" />
-                </span>
-                <span class="col-md-1" style="margin-top: 22px">
-                    <button class="btn btn-success btnEditarSolicitante" title="Editar dirección"><i class="fa fa-edit"></i> Editar </button>
+                    </span>
+                    <span class="col-md-3" style="margin-left: -20px">
+                        <button class="btn btn-success btnEditarSolicitante" title="Editar dirección"><i class="fa fa-edit"></i> Editar </button>
+                    </span>
                 </span>
                 <span class="col-md-2">
-                    <label class="control-label text-info">Tipo</label>
+                    <label class="control-label text-info">Rubros organizados por:</label>
                     <g:select name="tipo" class="tipo col-md-12 form-control btn-info" from="${[1: 'Grupo', 2: 'Subgrupo', 3: 'Rubros']}" optionKey="key"
                               optionValue="value"/>
                 </span>
                 <span class="col-md-3">
-                    <label class="control-label text-info">Criterio</label>
+                    <label class="control-label text-info">Criterio de búsqueda</label>
                     <g:textField name="criterio" id="criterio" class="form-control"/>
                 </span>
             </span>

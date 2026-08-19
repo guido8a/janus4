@@ -52,7 +52,7 @@
                     <a href="#" class="btn btn-xs btn-warning btnEstructuraSubgrupo" data-id="${subgrupo?.id}" title="Rubros">
                         <i class="fas fa-list"></i>
                     </a>
-                    <a href="#" class="btn btn-xs btn-primary btnImprimirSubgrupo" data-id="${subgrupo?.id}" title="Imprimir capítulo">
+                    <a href="#" class="btn btn-xs btn-primary btnImprimirSubgrupo" data-id="${subgrupo?.id}" title="Imprimir rubros del subgrupo">
                         <i class="fas fa-print"></i>
                     </a>
                     <a href="#" class="btn btn-xs btn-danger btnEliminarSubgrupo" data-id="${subgrupo?.id}" title="Eliminar">
