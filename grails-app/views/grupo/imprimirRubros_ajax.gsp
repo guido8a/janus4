@@ -163,9 +163,10 @@
         <g:else>
             <a href= "#" data-dismiss="modal" class="btn btn-primary" id="print_totales" data-transporte="true"><i class="fa fa-print"></i> Consolidado</a>
             <a href="#" data-dismiss="modal" class="btn btn-info btnPrint" data-transporte="si"><i class="fa fa-truck"></i> Con transporte</a>
-            <a href="#" class="btn btn-success btnImprimirTransporteExcel" data-transporte="si"><i class="fa fa-file-excel"></i> Con transporte Excel</a>
+            <a href="#" class="btn btn-success btnImprimirTransporteExcel" data-transporte="si"><i class="fa fa-file-excel"></i> Transporte Excel</a>
             <a href="#" data-dismiss="modal" class="btn btn-primary btnPrint" data-transporte="no"><i class="fa fa-print"></i> Sin transporte</a>
             <a href="#" data-dismiss="modal" class="btn btn-info btnPrintVae" data-transporte="si"><i class="fa fa-truck"></i> VAE con transporte</a>
+            <a href="#" class="btn btn-success btnImprimirVaeExcel" data-transporte="si"><i class="fa fa-file-excel"></i> VAE Excel</a>
             <a href="#" data-dismiss="modal" class="btn btn-primary btnPrintVae" data-transporte="no"><i class="fa fa-print"></i> VAE sin transporte</a>
         </g:else>
     </div>
@@ -191,6 +192,26 @@
             "&volq=" + $("#cmb_vol2").val() + "&indi=" + $("#costo_indi2").val() + "&trans=" + trans;
         location.href = "${g.createLink(controller: 'reportesExcel',action: 'reporteRubrosSubgrupoExcel')}?" + datos;
     });
+
+    $(".btnImprimirVaeExcel").click(function () {
+        var dsp0 = $("#dist_p1g").val();
+        var dsp1 = $("#dist_p2g").val();
+        var dsv0 = $("#dist_v1g").val();
+        var dsv1 = $("#dist_v2g").val();
+        var dsv2 = $("#dist_v3g").val();
+        var listas = $("#lista_1g").val() + "," + $("#lista_2g").val() + "," + $("#lista_3g").val() + "," + $("#lista_4g").val() + "," + $("#lista_5g").val() + "," + $("#ciudad").val();
+        var volqueta = $("#costo_volqueta2").val();
+        var chofer = $("#costo_chofer2").val();
+        var trans = $(this).data("transporte");
+        var nodeId = '${id}';
+
+        var datos = "dsp0=" + dsp0 + "&dsp1=" + dsp1 + "&dsv0=" + dsv0 + "&dsv1=" + dsv1 +
+            "&dsv2=" + dsv2 + "&prvl=" + volqueta + "&prch=" + chofer + "&fecha=" + $("#fecha_precios2").val() +
+            "&id=" + nodeId + "&lugar=" + $("#ciudad").val() + "&listas=" + listas + "&chof=" + $("#cmb_chof2").val() +
+            "&volq=" + $("#cmb_vol2").val() + "&indi=" + $("#costo_indi2").val() + "&trans=" + trans;
+        location.href = "${g.createLink(controller: 'reportesExcel',action: 'reporteVaeExcel')}?" + datos;
+    });
+
 
     $('#fecha_precios2').datetimepicker({
         locale: 'es',
