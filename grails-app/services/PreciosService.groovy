@@ -327,6 +327,7 @@ class PreciosService {
         def cn = dbConnectionService.getConnection()
         def sql = "select * from vae_rb_precios(" + parametros + ") order by itemcdgo asc " + condicion
         def result = []
+        println "sql: $sql"
         cn.eachRow(sql) { r ->
             result.add(r.toRowResult())
         }
