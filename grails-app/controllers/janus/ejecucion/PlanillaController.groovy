@@ -4506,11 +4506,14 @@ class PlanillaController {
         def diciembre31 = new Date().parse("dd-MM-yyyy", "31-12-" + anio)
 //        println "fcfm: $fcfm, diciembre31: $diciembre31"
 
-        if (plnl.tipoPlanilla.codigo == 'Q') {
-            fcfm = plnl.fechaFin
-        } else {
-            fcfm = preciosService.ultimoDiaDelMes(plnl.fechaFin)
-        }
+        /** para todas las planillas corre el fin de mes cambio: 25-ago-2026 **/
+//        if (plnl.tipoPlanilla.codigo == 'Q') {
+//            fcfm = plnl.fechaFin
+//        } else {
+//            fcfm = preciosService.ultimoDiaDelMes(plnl.fechaFin)
+//        }
+        fcfm = preciosService.ultimoDiaDelMes(plnl.fechaFin)
+
 
 //        println "fcfm: $fcfm"
         if (fcfm == diciembre31) {
@@ -4518,8 +4521,9 @@ class PlanillaController {
             diasMax--
         }
 //        println "fcfm: $fcfm, diasMax: $diasMax"
+
         def res = diasLaborablesService.diasLaborablesDesde(fcfm, diasMax)
-//        println "No presentación de planilla --> fcfm: $fcfm, multas: $res, diasMax: ${diasMax}"
+        println "Presentación de planilla --> fcfm: $fcfm, multas: $res, diasMax: ${diasMax}"
         /* si hay error, res[0] = false */
         if (!res[0]) {
             errorDiasLaborables(plnl.contrato.id, res[2], res[1])
