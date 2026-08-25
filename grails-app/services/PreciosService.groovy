@@ -327,7 +327,7 @@ class PreciosService {
         def cn = dbConnectionService.getConnection()
         def sql = "select * from vae_rb_precios(" + parametros + ") order by itemcdgo asc " + condicion
         def result = []
-        println "sql: $sql"
+//        println "sql: $sql"
         cn.eachRow(sql) { r ->
             result.add(r.toRowResult())
         }
@@ -592,7 +592,7 @@ class PreciosService {
         def cn = dbConnectionService.getConnection()
         def sql = "select * from vae_rb_precios_ob("+ rubro + ","+ obra +") order by grpocdgo desc "
         def result = []
-        println("sql " + sql)
+//        println("sql " + sql)
         cn.eachRow(sql.toString()) { r ->
             result.add(r.toRowResult())
         }
