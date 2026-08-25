@@ -95,4 +95,4 @@ assets {
 }
 
 String env = System.getProperty('grails.env') ?: 'prod'
-war.baseName "${rootProject.name}-${env}"  
+war.baseName "${rootProject.name}-${env}"
