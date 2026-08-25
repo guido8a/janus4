@@ -3514,10 +3514,11 @@ class ReportesExcelController {
                 vae.each { r ->
                     if (r["grpocdgo"] == 3) {
                         if (band == 0) {
-                            Row rowT1 = sheet.createRow(12)
+                            Row rowT1 = sheet.createRow(10)
                             rowT1.createCell(0).setCellValue("Equipos")
-                            rowT1.sheet.addMergedRegion(new CellRangeAddress(9, 9, 0, 2))
+                            rowT1.sheet.addMergedRegion(new CellRangeAddress(10, 10, 0, 2))
                             rowT1.setRowStyle(style)
+                            fila++
                             Row rowC1 = sheet.createRow(fila)
                             rowC1.createCell(0).setCellValue("Código")
                             rowC1.createCell(1).setCellValue("Descripción")
@@ -3647,7 +3648,7 @@ class ReportesExcelController {
                             rowC3.createCell(7).setCellValue("C.Total")
                             rowC3.createCell(8).setCellValue("Peso Relat(%)")
                             rowC3.createCell(9).setCellValue("CPC")
-                            rowC3.createCell(0).setCellValue("NP/EP/ND")
+                            rowC3.createCell(10).setCellValue("NP/EP/ND")
                             rowC3.createCell(11).setCellValue("VAE(%)")
                             rowC3.createCell(12).setCellValue("VAE(%) Elemento")
                             rowC3.setRowStyle(style)
