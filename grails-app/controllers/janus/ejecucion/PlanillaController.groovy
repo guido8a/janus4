@@ -4755,9 +4755,9 @@ class PlanillaController {
 
     def dias_obra(plnl) {
         def cn = dbConnectionService.getConnection()
-        def sql = "select sum((prejfcfn - prejfcin) + 1) dias from prej, plnl where prej.cntr__id = ${plnl.contrato.id} and " +
+        def sql = "select coalesce(sum((prejfcfn - prejfcin) + 1),0) dias from prej, plnl where prej.cntr__id = ${plnl.contrato.id} and " +
                 "prejtipo in ('P', 'C') and plnl.cntr__id = prej.cntr__id and plnl__id = ${plnl.id} and prejfcfn <= plnlfcfn"
-//        println "dias_obra sql: $sql"
+        println "dias_obra sql: $sql"
         def dias = (int) cn.rows(sql.toString())[0].dias
 
         def valores = planillasService.plnl_suspension(plnl)
