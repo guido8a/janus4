@@ -378,7 +378,7 @@ class PlanillasService {
             println "valor cronograma:  $valor"
         } else {
             println "-- $enSuspension no suspendido"
-            sql1 = "select sum(prejcrpa) suma from prej, plnl where prejfcin >= plnlfcin and prejfcfn <= plnlfcfn and " +
+            sql1 = "select coalesce(sum(prejcrpa),0) suma from prej, plnl where prejfcin >= plnlfcin and prejfcfn <= plnlfcfn and " +
                     "plnl__id = ${plnl.id} and prej.cntr__id = plnl.cntr__id"
             println "sql1: $sql1"
             def acumulado = (int) cn.rows(sql1.toString())[0].suma
