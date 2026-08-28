@@ -1889,7 +1889,7 @@ class PlanillaController {
         if (!params.id) {
             planillaInstance.numero = cPlanillas + 1
             periodos = ponePeriodos(tiposPlanilla, contrato, anticipo, periodosEjec, finalObra)
-            println "retorna periodos: $periodos"
+//            println "retorna periodos: $periodos"
         }
 
         def now = new Date()
