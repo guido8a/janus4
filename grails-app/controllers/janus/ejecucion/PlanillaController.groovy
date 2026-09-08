@@ -2235,20 +2235,24 @@ class PlanillaController {
         if (generaCmpl) {
             def plnlCmpl = new Planilla()
             def fp = FormulaPolinomicaReajuste.findByContratoAndDescripcionIlike(cntr, '%compl%')
-            if (!fp)
-//                println "Error: no se ha definido la FP para complementario"
-            plnlCmpl.properties = planillaInstance.properties
-            plnlCmpl.tipoContrato = 'C'
-            plnlCmpl.numero += '-C'
-            plnlCmpl.descripcion += "Contrato Complementario"
-            plnlCmpl.formulaPolinomicaReajuste = fp
-            if (!plnlCmpl.save(flush: true)) {
-                println "Error al crear plnlCmpl: ${plnlCmpl.errors}"
-            } else {
-                plnlCmpl.refresh()
-                planillaInstance.planillaCmpl = plnlCmpl
-                planillaInstance.save(flush: true)
+            println("fp " + fp)
+            if (!fp){
+                //                println "Error: no se ha definido la FP para complementario"
+            }else{
+                plnlCmpl.properties = planillaInstance.properties
+                plnlCmpl.avanceFisico = planillaInstance.avanceFisico
+                plnlCmpl.tipoContrato = 'C'
+                plnlCmpl.numero += '-C'
+                plnlCmpl.descripcion += "Contrato Complementario"
+                plnlCmpl.formulaPolinomicaReajuste = fp
+                if (!plnlCmpl.save(flush: true)) {
+                    println "Error al crear plnlCmpl: ${plnlCmpl.errors}"
+                } else {
+                    plnlCmpl.refresh()
+                    planillaInstance.planillaCmpl = plnlCmpl
+                    planillaInstance.save(flush: true)
 //                render "ok_Planilla guardada correctamente"
+                }
             }
         }
 
