@@ -72,7 +72,7 @@ class RubroOfController {
 //                "order by 1"
         def sql = "select distinct obra.obra__id id, obracdgo||' - '||obranmbr nombre, obofetdo " +
                 "from obra, obof " +
-                "where obof.obra__id = obra.obra__id and obof.prsn__id = ${oferente.id}" +
+                "where obof.obra__id = obra.obra__id and obof.prsn__id = ${oferente.id} " +
                 "order by obofetdo desc, obra.obra__id"
         cn.eachRow(sql.toString()) { r ->
             obras[r.id] = r.nombre
@@ -850,7 +850,7 @@ class RubroOfController {
         def obras = []
         def sql = "select distinct obra.obra__id id, obracdgo||' - '||obranmbr nombre, obofetdo " +
                 "from obra, obof " +
-                "where obof.obra__id = obra.obra__id and obof.prsn__id = ${oferente.id}" +
+                "where obof.obra__id = obra.obra__id and obof.prsn__id = ${oferente.id} " +
                 "order by obofetdo desc, obra.obra__id"
 //        println "sql: $sql"
         cn.eachRow(sql.toString()) { r ->
@@ -933,7 +933,7 @@ class RubroOfController {
 //                    println "Porcesando hoja: $hj --> $ordn"
 
                     def fila = 0
-                    while (rows.hasNext() && (fila < 76)) {
+                    while (rows.hasNext() && (fila < 88)) {
                         row = (XSSFRow) rows.next()
                         if (!(row.rowNum in filasNO)) {
                             def ok = true
@@ -1258,7 +1258,7 @@ class RubroOfController {
 
 //                    if(ordn > 0) {
                     def fila = 0
-                    while (rows.hasNext() && (fila < 76)) {
+                    while (rows.hasNext() && (fila < 100)) {
                         row = (XSSFRow) rows.next()
 //                        if (!(row.rowNum in filasNO)) {
                         if (true) {
@@ -1937,7 +1937,7 @@ class RubroOfController {
         def errores = ""
         sql = "select dtrb__id from dtrb where ofrb__id = ${ofrb_id} and " +
                 "dtrbnmbr = '${nmbr}' and dtrbtipo = 'TR'"
-//        println "sql dtrb: $sql"
+        println "sql dtrb: $sql"
         def dtrb_id = cn.rows(sql.toString())[0]?.dtrb__id ?: 0
 //        println "--> dtrb_id: $dtrb_id"
 
@@ -1945,7 +1945,7 @@ class RubroOfController {
             sql = "update dtrb set dtrbcdgo = '${cdgo}', dtrbnmbr = '${nmbr}', " +
                     "dtrbundd = '${undd}', dtrbcntd = $cntd, dtrbpcun = $trfa, " +
                     "dtrbcsto = $pcun, dtrbrndm = 1, dtrbsbtt = $csto, dtrbpeso = $peso," +
-                    "dtrbdstn = $dstn" +
+                    "dtrbdstn = $dstn " +
                     "where dtrb__id = ${ofrb_id}"
         } else {
             sql = "insert into dtrb(ofrb__id, dtrbcdgo, dtrbnmbr, dtrbundd, dtrbcntd, dtrbpcun, " +
@@ -1965,7 +1965,7 @@ class RubroOfController {
 //                    "values (${ofrb_id}, '${cdgo}', '${nmbr}', '${undd}', $cntd, $trfa, " +
 //                    "$pcun, $rndm, $csto, '${tipo}' )"
 //        }
-//        println "sql TR: $sql"
+        println "sql TR: $sql"
         try {
             cn.execute(sql.toString())
         } catch (e) {
@@ -1986,7 +1986,7 @@ class RubroOfController {
 //                "order by 1"
         def sql = "select distinct obra.obra__id id, obracdgo||' - '||obranmbr nombre, obofetdo, inditotl " +
                 "from obra, obof " +
-                "where obof.obra__id = obra.obra__id and obof.prsn__id = ${oferente.id}" +
+                "where obof.obra__id = obra.obra__id and obof.prsn__id = ${oferente.id} " +
                 "order by obofetdo desc, obra.obra__id"
         cn.eachRow(sql.toString()) { r ->
             obras.add([id: r.id, nombre: r.nombre, indi: r.inditotl])
@@ -2079,7 +2079,7 @@ class RubroOfController {
 //                "order by 1"
         def sql = "select distinct obra.obra__id id, obracdgo||' - '||obranmbr nombre, obofetdo " +
                 "from obra, obof " +
-                "where obof.obra__id = obra.obra__id and obof.prsn__id = ${oferente.id}" +
+                "where obof.obra__id = obra.obra__id and obof.prsn__id = ${oferente.id} " +
                 "order by obofetdo desc, obra.obra__id"
         cn.eachRow(sql.toString()) { r ->
             obras[r.id] = r.nombre
@@ -2218,7 +2218,7 @@ class RubroOfController {
 //                "order by 1"
         def sql = "select distinct obra.obra__id id, obracdgo||' - '||obranmbr nombre, obofetdo " +
                 "from obra, obof " +
-                "where obof.obra__id = obra.obra__id and obof.prsn__id = ${oferente.id}" +
+                "where obof.obra__id = obra.obra__id and obof.prsn__id = ${oferente.id} " +
                 "order by obofetdo desc, obra.obra__id"
 //        println "sql: $sql"
         cn.eachRow(sql.toString()) { r ->
@@ -2247,7 +2247,7 @@ class RubroOfController {
         def obras = [:]
         def sql = "select distinct obra.obra__id id, obracdgo||' - '||obranmbr nombre, obofetdo " +
                 "from obra, obof " +
-                "where obof.obra__id = obra.obra__id and obof.prsn__id = ${oferente.id}" +
+                "where obof.obra__id = obra.obra__id and obof.prsn__id = ${oferente.id} " +
                 "order by obofetdo desc, obra.obra__id"
 //        println "sql: $sql"
         cn.eachRow(sql.toString()) { r ->
@@ -2469,7 +2469,7 @@ class RubroOfController {
 //                "order by 1"
         def sql = "select distinct obra.obra__id id, obracdgo||' - '||obranmbr nombre, obofetdo " +
                 "from obra, obof " +
-                "where obof.obra__id = obra.obra__id and obof.prsn__id = ${oferente.id}" +
+                "where obof.obra__id = obra.obra__id and obof.prsn__id = ${oferente.id} " +
                 "order by obofetdo desc, obra.obra__id"
         cn.eachRow(sql.toString()) { r ->
             obras[r.id] = r.nombre
@@ -2617,7 +2617,7 @@ class RubroOfController {
                     tr_Eq = ""; tr_Mo= ""; tr_Mt = ""; tr_Tr = ""
 
                     def fila = 0
-                    while (rows.hasNext() && (fila < 76)) {
+                    while (rows.hasNext() && (fila < 80)) {
                         row = (XSSFRow) rows.next()
                         if (true) {
                             def ok = true

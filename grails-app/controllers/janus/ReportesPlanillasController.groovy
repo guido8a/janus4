@@ -703,6 +703,14 @@ class ReportesPlanillasController {
 //        println "inversionProgramada --> $sql2"
 //        def inversionProgramada = crej.sum { it.precio } ?: 0
         def inversionProgramada = cn.rows(sql2.toString())[0].programado
+
+        // si no hay extensión de plazo el valor debería ser el total del complementario
+        println "... complementario"
+        if(inversionProgramada == 0 && plnl.tipoContrato == 'C') {
+            sql2 = "select cntrmnto from cntr where cntr__id = ${cmpl.id}"
+            inversionProgramada = cn.rows(sql2.toString())[0].cntrmnto
+            println "sql compl: $sql2"
+        }
 //        def inversionReal = planillasAvance.sum { it.valor } ?: 0
 
 

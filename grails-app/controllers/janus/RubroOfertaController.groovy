@@ -14,7 +14,7 @@ class RubroOfertaController {
 //                "order by 1"
         def sql = "select distinct obra.obra__id id, obracdgo||' - '||obranmbr nombre, obofetdo " +
                 "from obra, obof " +
-                "where obof.obra__id = obra.obra__id and obof.prsn__id = ${oferente.id}" +
+                "where obof.obra__id = obra.obra__id and obof.prsn__id = ${oferente.id} " +
                 "order by obofetdo desc, obra.obra__id"
         cn.eachRow(sql.toString()) { r ->
             obras[r.id] = r.nombre
