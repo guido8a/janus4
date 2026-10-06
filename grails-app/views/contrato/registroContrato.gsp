@@ -118,7 +118,7 @@
 
                     <g:if test="${contrato?.estado != 'R'}">
                         <a href="#" class="btn btn-info btn-xs" id="btnCambiarCodigoOF"><i class="fa fa-retweet"></i>
-                            Cambiar a Oferente/Presupuesto</a>
+                            Cambiar a Oferente</a>
                     </g:if>
 
                 </div>
