@@ -647,10 +647,12 @@
 
     $("#btnCambiarCodigoOF").click(function () {
         var contrato = '${contrato?.id}';
-        var codigo = '${contrato?.obra?.codigo?.contains("OF") ? (contrato?.obra?.codigo + " a " +  contrato?.obra?.codigo?.replace("-OF" , " ")) :(contrato?.obra?.codigo + " a " +  contrato?.obra?.codigo + "-OF" ) }';
+        var codigo = '${contrato?.obra?.codigo?.contains("OF") ? (contrato?.obra?.codigo + " a " + contrato?.obra?.codigo?.replace("-OF" , " ")) : (contrato?.obra?.codigo + " a " +  contrato?.obra?.codigo + "-OF" ) }';
+        console.log('-->', codigo)
         bootbox.confirm({
             title: "Modificar código",
-            message: "<i class='fa fa-exclamation-triangle text-info fa-3x'></i> Esta seguro de cambiar el código de " + "<strong style='font-size: 14px'>" + codigo + "</strong>" + " ?",
+            message: "<i class='fa fa-exclamation-triangle text-info fa-3x'></i> Esta seguro de cambiar el código de " +
+                     "<strong style='font-size: 14px'>" + codigo + "</strong>" + " ?",
             buttons: {
                 cancel: {
                     label: '<i class="fa fa-times"></i> Cancelar',
