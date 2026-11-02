@@ -220,7 +220,7 @@
                     <div style="width: 450px; height: 220px">
                         <h2 class="mbr-fonts-style mbr-bold mbr-section-title3 display-5"><span>Validar Items y Revisar APU del Oferente</span></h2>
                         <p class="mbr-fonts-style text1 mbr-text display-6">Validar los valores y la estructura
-                        del los APUS subidos al sistema desde el archivo de excel. Al validarse se debe porder <strong>
+                        del los APUS subidos al sistema desde el archivo de excel. Al validarse se debe poder <strong>
                             visualizar</strong> la composición de los APU en pantalla</p>
                     </div>
                 </div>

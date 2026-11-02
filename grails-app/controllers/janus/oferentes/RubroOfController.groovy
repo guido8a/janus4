@@ -1296,7 +1296,7 @@ class RubroOfController {
 
                             if (hojaRubro) { //ANÁLISIS DE PRECIOS UNITARIOS
                                 println "Procesa: " + sheet.getSheetName().toString()
-//                                println "--> rgst[cols[params.cldarbro] --> ${rgst[cols[params.cldarbro]]}"
+                                println "--> rgst[cols[params.cldarbro] --> ${rgst[cols[params.cldarbro]]}"
                                 if(rgst[cols[params.cldarbro]]){
 //                                    println "${rgst[cols[params.cldarbro]]} == ${params.rbro} && txRubro: ${txRubro}"
 //                                    if (rgst[cols[params.cldarbro]]?.size() >= params.rbro.size()) {
