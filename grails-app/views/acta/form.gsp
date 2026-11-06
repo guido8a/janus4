@@ -139,6 +139,7 @@
             <g:if test="${actaInstance?.id}">
                 <a href="#" class="btn btn-info" id="btnPrint"><i class="fa fa-print"></i> Imprimir</a>
                 <a href="#" class="btn btn-primary" id="btnPrintCmpl"><i class="fa fa-print"></i> Impr. Complementario</a>
+                <a href="#" class="btn btn-success" id="btnSacarTexto"><i class="fa fa-book"></i> Texto plano</a>
             </g:if>
         </div>
 
@@ -315,6 +316,10 @@
 <script type="text/javascript">
     var secciones = 1;
     var $btnSaveActa = $("#btnSave");
+
+    $("#btnSacarTexto").click(function () {
+        location.href="${createLink(controller: 'acta', action: 'sacarTexto')}?id=${actaInstance?.id}"
+    });
 
     $('#fecha').datetimepicker({
         locale: 'es',

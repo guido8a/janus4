@@ -5,6 +5,8 @@ import groovy.json.JsonBuilder
 import janus.Contrato
 import janus.NumberToLetterConverter
 import org.springframework.dao.DataIntegrityViolationException
+import javax.swing.text.html.HTMLEditorKit
+import javax.swing.text.html.parser.ParserDelegator
 
 class ActaController {
     def dbConnectionService
@@ -733,6 +735,73 @@ class ActaController {
         }else{
             render "no"
         }
+    }
+
+//    def sacarTexto(){
+//        def cn = dbConnectionService.getConnection()
+//        def contrato = Contrato.get(params.id)
+//
+//        def sql = "select pfrrfcont from prrf where sccn__id in (select sccn__id from sccn where acta__id = 318) order by sccn__id, prrfnmro;"
+//        def res = cn.execute(sql.toString())
+//
+//
+//    }
+
+
+    def sacarTexto() {
+        def cn = dbConnectionService.getConnection()
+        def contrato = Contrato.get(params.id) // Si no usas 'contrato', puedes remover esta línea
+
+        def sql = "select prrfcont from prrf where sccn__id in (select sccn__id from sccn where acta__id = 318) order by sccn__id, prrfnmro;"
+
+        println("sql " + sql)
+
+        // 1. Usar rows en lugar de execute para obtener los datos devueltos
+        def filas = cn.rows(sql.toString())
+
+        // 2. Construir el contenido del archivo de texto
+        def sb = new StringBuilder()
+//        filas.each { fila ->
+//            // pfrrfcont es la columna seleccionada en tu SQL
+//            sb.append(fila.prrfcont ?: "").append("\n")
+//        }
+
+
+        filas.each { fila ->
+            def htmlOriginal = fila.prrfcont ?: ""
+
+            // Contenedor para el texto limpio de la fila actual
+            def sbTextoLimpio = new StringBuilder()
+
+            // Callback que captura únicamente los textos y los saltos de línea del parser
+            def callback = new HTMLEditorKit.ParserCallback() {
+                @Override
+                void handleText(char[] data, int pos) {
+                    sbTextoLimpio.append(data)
+                }
+                @Override
+                void handleEndOfLineString(String eol) {
+                    sbTextoLimpio.append("\n")
+                }
+            }
+
+            // Ejecutar el limpiador sobre el String HTML
+            new ParserDelegator().parse(new StringReader(htmlOriginal), callback, true)
+
+            // Adjuntar el contenido limpio al buffer del archivo final separando los bloques
+            sb.append(sbTextoLimpio.toString().trim()).append("\n\n")
+        }
+
+
+        // 3. Configurar las cabeceras de la respuesta HTTP para forzar la descarga del .txt
+        response.setContentType("text/plain; charset=UTF-8")
+        response.setHeader("Content-disposition", "attachment; filename=\"resultado_contrato_${params.id ?: 318}.txt\"")
+
+        // 4. Escribir el contenido directamente en el flujo de salida
+        response.outputStream << sb.toString()
+        response.outputStream.flush()
+
+        return null // Evita que Grails intente renderizar una vista .gsp
     }
 
 
