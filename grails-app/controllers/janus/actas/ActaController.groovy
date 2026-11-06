@@ -750,9 +750,10 @@ class ActaController {
 
     def sacarTexto() {
         def cn = dbConnectionService.getConnection()
-        def contrato = Contrato.get(params.id) // Si no usas 'contrato', puedes remover esta línea
+        def acta = Acta.get(params.id)
 
-        def sql = "select prrfcont from prrf where sccn__id in (select sccn__id from sccn where acta__id = 318) order by sccn__id, prrfnmro;"
+        def sql = "select prrfcont from prrf where sccn__id in (select sccn__id from sccn " +
+                "where acta__id = ${params.id}) order by sccn__id, prrfnmro;"
 
         println("sql " + sql)
 
@@ -795,7 +796,7 @@ class ActaController {
 
         // 3. Configurar las cabeceras de la respuesta HTTP para forzar la descarga del .txt
         response.setContentType("text/plain; charset=UTF-8")
-        response.setHeader("Content-disposition", "attachment; filename=\"resultado_contrato_${params.id ?: 318}.txt\"")
+        response.setHeader("Content-disposition", "attachment; filename=\"acta_${acta.tipo}_contrato_${acta.contrato.codigo}.txt\"")
 
         // 4. Escribir el contenido directamente en el flujo de salida
         response.outputStream << sb.toString()
